@@ -6,15 +6,21 @@ import {AppRouteNames} from '@src/shared/config/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {AuthorisedUserByEmail} from '@src/features/authByEmail/model/types/authByEmail';
-import {SignInData} from '../types/signIn';
-import {validateSignInFields} from '../services/validation/validateFields';
+import {
+  AuthErrorCodes,
+  AuthorisedUserByEmail,
+} from '../../../../model/types/authByEmail';
+import {SignInData, SignInErrorInfo} from '../types/signIn';
+import {validateFields} from '../../../../model/services/validation/validateFields';
 
 class SignInStore {
   signInData: SignInData = {
     email: '',
     password: '',
-    error: '',
+  };
+  errorInfo: SignInErrorInfo = {
+    emailError: '',
+    passwordError: '',
   };
 
   constructor() {
@@ -29,8 +35,31 @@ class SignInStore {
     this.signInData.password = password;
   }
 
+  setValidationError(errorInfo: SignInErrorInfo) {
+    this.errorInfo = errorInfo;
+  }
+
+  setServerError(errorInfo: SignInErrorInfo) {
+    this.errorInfo = errorInfo;
+  }
+
+  clearErrors() {
+    this.setValidationError({
+      emailError: '',
+      passwordError: '',
+    });
+  }
+
   singIn() {
-    if (validateSignInFields(this.signInData)) {
+    this.clearErrors();
+
+    const {isError, errorInfo} = validateFields({
+      isSignUp: false,
+      authData: this.signInData,
+    });
+
+    if (isError) {
+      this.setValidationError(errorInfo);
       return;
     }
 
@@ -56,15 +85,28 @@ class SignInStore {
         console.log('signed in!');
       })
       .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          const serverError: SignInErrorInfo = {
+            ...this.errorInfo,
+            emailError: AuthErrorCodes.INVALID_EMAIL,
+          };
+
+          this.setServerError(serverError);
         }
 
-        console.error(error);
+        if (
+          error.code === 'auth/wrong-password' ||
+          error.code === 'auth/user-not-found'
+        ) {
+          const serverError: SignInErrorInfo = {
+            ...this.errorInfo,
+            passwordError: AuthErrorCodes.INVALID_EMAIL_OR_PASSWORD,
+          };
+
+          this.setServerError(serverError);
+        }
+
+        console.log(error, 'error');
       });
   }
 }

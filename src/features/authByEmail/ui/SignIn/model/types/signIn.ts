@@ -1,5 +1,9 @@
 export interface SignInData {
   email: string;
   password: string;
-  error: string;
+}
+
+export interface SignInErrorInfo {
+  emailError: string;
+  passwordError: string;
 }

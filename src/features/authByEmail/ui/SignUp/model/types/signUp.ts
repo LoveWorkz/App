@@ -6,4 +6,6 @@ export interface SignUpData {
 
 export interface SignUpErrorInfo {
   confirmPasswordError: string;
+  emailError: string;
+  passwordError: string;
 }

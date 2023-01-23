@@ -6,9 +6,12 @@ import {navigate} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/configRoute';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {AuthorisedUserByEmail} from '../../../../model/types/authByEmail';
+import {
+  AuthErrorCodes,
+  AuthorisedUserByEmail,
+} from '../../../../model/types/authByEmail';
 import {SignUpData, SignUpErrorInfo} from '../types/signUp';
-import {validateSignUpFields} from '../services/validation/validateFields';
+import {validateFields} from '../../../../model/services/validation/validateFields';
 
 class SignUpStore {
   signUpData: SignUpData = {
@@ -18,6 +21,8 @@ class SignUpStore {
   };
   errorInfo: SignUpErrorInfo = {
     confirmPasswordError: '',
+    emailError: '',
+    passwordError: '',
   };
   agreeWithPrivacyPolicy: boolean = false;
 
@@ -37,16 +42,36 @@ class SignUpStore {
     this.signUpData.confirmPassword = password;
   }
 
-  setConfirmPasswordError(error: string) {
-    this.errorInfo.confirmPasswordError = error;
-  }
-
   setAgreeWithPrivacyPolicy(isAgree: boolean) {
     this.agreeWithPrivacyPolicy = isAgree;
   }
 
+  setValidationError(errorInfo: SignUpErrorInfo) {
+    this.errorInfo = errorInfo;
+  }
+
+  setServerError(errorInfo: SignUpErrorInfo) {
+    this.errorInfo = errorInfo;
+  }
+
+  clearErrors() {
+    this.setValidationError({
+      emailError: '',
+      passwordError: '',
+      confirmPasswordError: '',
+    });
+  }
+
   register() {
-    if (validateSignUpFields(this.signUpData)) {
+    this.clearErrors();
+
+    const {isError, errorInfo} = validateFields({
+      isSignUp: true,
+      authData: this.signUpData,
+    });
+
+    if (isError) {
+      this.setValidationError(errorInfo as SignUpErrorInfo);
       return;
     }
 
@@ -73,14 +98,23 @@ class SignUpStore {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          const serverError: SignUpErrorInfo = {
+            ...this.errorInfo,
+            emailError: AuthErrorCodes.EMAIL_ALREADY_IN_USE,
+          };
+
+          this.setServerError(serverError);
         }
 
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
+          const serverError: SignUpErrorInfo = {
+            ...this.errorInfo,
+            emailError: AuthErrorCodes.INVALID_EMAIL,
+          };
 
-        console.error(error);
+          this.setServerError(serverError);
+        }
+        console.log(error, 'erro');
       });
   }
 }

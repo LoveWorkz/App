@@ -37,6 +37,11 @@ const SignUp = () => {
           onChange={onEmailChangeHandler}
           placeholder={'Enter Email'}
         />
+        {signUpStore.errorInfo.emailError && (
+          <Text style={styles.errorText}>
+            {signUpStore.errorInfo.emailError}{' '}
+          </Text>
+        )}
       </View>
       <View style={styles.password}>
         <Text style={styles.emailText}>Password</Text>
@@ -45,6 +50,11 @@ const SignUp = () => {
           onChange={onPasswordChangeHandler}
           placeholder={'Enter Password'}
         />
+        {signUpStore.errorInfo.passwordError && (
+          <Text style={styles.errorText}>
+            {signUpStore.errorInfo.passwordError}{' '}
+          </Text>
+        )}
       </View>
       <View>
         <Text style={styles.passwordText}>Repeat Password</Text>
@@ -54,7 +64,7 @@ const SignUp = () => {
           placeholder={'Repeat Password'}
         />
         {signUpStore.errorInfo.confirmPasswordError && (
-          <Text style={styles.confirmPasswordError}>
+          <Text style={styles.errorText}>
             {signUpStore.errorInfo.confirmPasswordError}
           </Text>
         )}
@@ -103,7 +113,7 @@ const styles = StyleSheet.create({
   singInBtnText: {
     color: 'white',
   },
-  confirmPasswordError: {
+  errorText: {
     color: 'red',
   },
   checkbox: {

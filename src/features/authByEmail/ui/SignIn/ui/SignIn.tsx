@@ -28,6 +28,11 @@ const SignIn = () => {
           onChange={onEmailChangeHandler}
           placeholder={'Enter Email'}
         />
+        {signInStore.errorInfo.emailError && (
+          <Text style={styles.errorText}>
+            {signInStore.errorInfo.emailError}
+          </Text>
+        )}
       </View>
       <View style={styles.password}>
         <Text style={styles.passwordText}>Password</Text>
@@ -36,6 +41,11 @@ const SignIn = () => {
           onChange={onPasswordChangeHandler}
           placeholder={'Enter Password'}
         />
+        {signInStore.errorInfo.passwordError && (
+          <Text style={styles.errorText}>
+            {signInStore.errorInfo.passwordError}
+          </Text>
+        )}
       </View>
       <Button
         onPress={singIn}
@@ -74,5 +84,8 @@ const styles = StyleSheet.create({
   },
   singInBtnText: {
     color: 'white',
+  },
+  errorText: {
+    color: 'red',
   },
 });
