@@ -1,42 +1,47 @@
 import React, {memo} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  ActivityIndicator,
-} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {observer} from 'mobx-react-lite';
+import auth from '@react-native-firebase/auth';
 
-import {user} from '../../../entities/User';
-import {AppRouteNames} from '../../../shared/config/configRoute';
-import {navigationRef} from '../../../shared/config/navigation/navigation';
-import {Button, ButtonTheme} from '../../../shared/ui/Button/Button';
+import {AuthMethod, userStore} from '@src/entities/User';
+import {AppRouteNames} from '@src/shared/config/configRoute';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {navigate} from '@src/shared/config/navigation/navigation';
+import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
+import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
 
 export const HomePage = memo(
   observer(() => {
     const signOut = async () => {
-      try {
-        console.log('sing out work');
-        await GoogleSignin.signOut();
-        user.setAuthUser(null);
-        navigationRef.navigate(AppRouteNames.AUTH);
-      } catch (error) {
-        console.error(error);
+      const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
+
+      if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
+        try {
+          await GoogleSignin.signOut();
+          await auth().signOut();
+          userStore.setAuthUser(null);
+          navigate(AppRouteNames.AUTH);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        try {
+          await auth().signOut();
+          userStore.setAuthUser(null);
+          navigate(AppRouteNames.AUTH);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
 
-    if (!user?.authUser) {
-      return <ActivityIndicator size="large" />;
-    }
-
-    const image = {uri: user.authUser?.user?.photo};
+    const image = {uri: userStore.authUser?.photo as string};
 
     return (
       <View style={styles.container}>
         <View>
-          <Text style={styles.username}>{user.authUser.user.name}</Text>
+          <Text style={styles.username}>{userStore.authUser?.name}</Text>
         </View>
         <ImageBackground
           source={image}

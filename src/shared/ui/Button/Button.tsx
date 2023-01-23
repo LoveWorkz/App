@@ -1,4 +1,4 @@
-import React, {memo, ReactElement} from 'react';
+import React, {memo, ReactElement, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 export enum ButtonTheme {
@@ -10,22 +10,30 @@ interface ButtonProps {
   onPress?: () => void;
   children: ReactElement;
   theme?: ButtonTheme;
-  style?: any;
+  style?: Record<string, string | number>;
+  disabled?: boolean;
 }
 
 export const Button = memo((props: ButtonProps) => {
-  const {onPress, children, theme = ButtonTheme.CLEAR, style} = props;
+  const {onPress, children, theme = ButtonTheme.CLEAR, style, disabled} = props;
+
+  const mode = useMemo(() => {
+    return [
+      style,
+      styles.Button,
+      styles[theme],
+      disabled ? styles.disabled : '',
+    ];
+  }, [disabled, theme, style]);
 
   return (
-    <TouchableOpacity
-      style={[style, styles.Button, styles[theme]]}
-      onPress={onPress}>
+    <TouchableOpacity disabled={disabled} style={mode} onPress={onPress}>
       {children}
     </TouchableOpacity>
   );
 });
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Record<string, any>>({
   Button: {
     padding: 7,
     justifyContent: 'center',
@@ -36,5 +44,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderStyle: 'solid',
     borderRadius: 10,
+  },
+  disabled: {
+    opacity: 0.4,
   },
 });

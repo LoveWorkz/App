@@ -1,23 +1,30 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 
 export enum Inputheme {}
 
 interface InputProps {
-  onChange?: () => void;
+  onChange?: (value: string) => void;
   value?: string;
   theme?: Inputheme;
-  style?: any;
+  style?: Record<string, string | number>;
   placeholder?: string;
 }
 
 export const Input = memo((props: InputProps) => {
   const {onChange, value, theme = '', style, placeholder, ...rest} = props;
 
+  const onChangeTextHandler = useCallback(
+    (text: string) => {
+      onChange?.(text);
+    },
+    [onChange],
+  );
+
   return (
     <TextInput
       style={[style, styles.input, styles[theme]]}
-      onChangeText={onChange}
+      onChangeText={onChangeTextHandler}
       value={value}
       placeholder={placeholder}
       {...rest}
@@ -25,7 +32,7 @@ export const Input = memo((props: InputProps) => {
   );
 });
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Record<string, any>>({
   input: {
     padding: 4,
     alignItems: 'center',

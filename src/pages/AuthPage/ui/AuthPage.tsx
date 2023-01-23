@@ -1,9 +1,9 @@
 import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 
-import {AuthByApple} from '../../../features/authByApple';
-import {AuthByEmail} from '../../../features/authByEmail';
-import {AuthByGoogle} from '../../../features/authByGmail';
+import {AuthByApple} from '@src/features/authByApple';
+import {AuthByEmail} from '@src/features/authByEmail';
+import {AuthByGoogle} from '@src/features/authByGmail';
 
 export const AuthPage = memo(() => {
   const [isSignIn, setISignIn] = useState(true);

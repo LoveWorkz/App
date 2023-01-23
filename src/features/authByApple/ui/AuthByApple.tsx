@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+
 import {ButtonTheme, Button} from '../../../shared/ui/Button/Button';
 
 export const AuthByApple = () => {

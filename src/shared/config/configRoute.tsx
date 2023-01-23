@@ -1,16 +1,19 @@
 import {ComponentType} from 'react';
 
-import {HomePage} from '../../pages/HomePage';
-import {AuthPage} from '../../pages/AuthPage';
+import {HomePage} from '@src/pages/HomePage';
+import {AuthPage} from '@src/pages/AuthPage';
+import {SplashPage} from '@src/pages/SplashPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
   MAIN = 'main',
+  SPLASH = 'splash',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.AUTH]: 'auth',
   [AppRouteNames.MAIN]: 'main',
+  [AppRouteNames.SPLASH]: 'splash',
 };
 
 type NewRouteProps = {
@@ -27,5 +30,9 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.MAIN]: {
     name: appRoutePaths.main,
     element: HomePage,
+  },
+  [AppRouteNames.SPLASH]: {
+    name: appRoutePaths.splash,
+    element: SplashPage,
   },
 };

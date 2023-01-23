@@ -1,12 +1,8 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
-import {user} from '../../../entities/User';
-import {ButtonTheme, Button} from '../../../shared/ui/Button/Button';
-import {navigationRef} from '../../../shared/config/navigation/navigation';
-import {AppRouteNames} from '../../../shared/config/configRoute';
+import {ButtonTheme, Button} from '@src/shared/ui/Button/Button';
+import authByGoogleStore from '../model/store/authByGoogleStore';
 
 interface AuthByGoogleProps {
   style: Record<string, string | number>;
@@ -15,36 +11,13 @@ interface AuthByGoogleProps {
 export const AuthByGoogle = memo((props: AuthByGoogleProps) => {
   const {style} = props;
 
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userData = await GoogleSignin.signIn();
-
-      user.setAuthUser(userData);
-      navigationRef.navigate(AppRouteNames.MAIN);
-
-      const googleCredential = auth.GoogleAuthProvider.credential(
-        userData.idToken,
-      );
-
-      await auth().signInWithCredential(googleCredential);
-    } catch (error) {
-      console.log(error, 'error');
-      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      //   // user cancelled the login flow
-      // } else if (error.code === statusCodes.IN_PROGRESS) {
-      //   // operation (e.g. sign in) is in progress already
-      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      //   // play services not available or outdated
-      // } else {
-      //   // some other error happened
-      // }
-    }
-  };
+  const onHandlePress = useCallback(() => {
+    authByGoogleStore.signIn();
+  }, []);
 
   return (
     <View style={[style, styles.authByGoogle]}>
-      <Button onPress={signIn} theme={ButtonTheme.OUTLINED}>
+      <Button onPress={onHandlePress} theme={ButtonTheme.OUTLINED}>
         <Text>Continue with Google</Text>
       </Button>
     </View>

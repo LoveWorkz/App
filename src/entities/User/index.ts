@@ -1,3 +1,6 @@
-import {User} from './model/store/userStore';
+import {UserStore} from './model/store/userStore';
+export type {User} from './model/types/userSchema';
+export {AuthMethod} from './model/types/userSchema';
+export {userFormatter} from './lib/user/userForamtter';
 
-export const user = new User();
+export const userStore = new UserStore();

@@ -1,8 +1,9 @@
-import {action, makeAutoObservable} from 'mobx';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {makeAutoObservable} from 'mobx';
 
-export class User {
-  authUser: null | any = null;
+import {User} from '../types/userSchema';
+
+export class UserStore {
+  authUser: null | User = null;
   error: string = '';
   isLoading: boolean = false;
 
@@ -10,26 +11,7 @@ export class User {
     makeAutoObservable(this);
   }
 
-  async intiAuthUser() {
-    const getCurrentUser = async () => {
-      this.isLoading = true;
-      const currentUser = await GoogleSignin.getCurrentUser();
-      return currentUser;
-    };
-
-    getCurrentUser().then(
-      action('fetchSuccess', user => {
-        this.authUser = user;
-        this.isLoading = false;
-      }),
-      action('fetchError', () => {
-        this.error = 'error';
-        this.isLoading = false;
-      }),
-    );
-  }
-
-  setAuthUser(user: any) {
+  setAuthUser(user: User | null) {
     this.authUser = user;
   }
 }
