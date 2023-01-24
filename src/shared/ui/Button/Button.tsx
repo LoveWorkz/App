@@ -19,8 +19,8 @@ export const Button = memo((props: ButtonProps) => {
 
   const mode = useMemo(() => {
     return [
-      style,
       styles.Button,
+      style,
       styles[theme],
       disabled ? styles.disabled : '',
     ];

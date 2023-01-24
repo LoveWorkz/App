@@ -6,7 +6,7 @@ import {
   SignInData,
   SignInErrorInfo,
 } from '../../../ui/SignIn/model/types/signIn';
-import {AuthErrorCodes} from '../../types/authByEmail';
+import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 export interface ValidateFields {
   isSignUp: boolean;
@@ -21,22 +21,22 @@ export const validateFields = ({isSignUp, authData}: ValidateFields) => {
   const {email, password} = authData;
 
   if (!email) {
-    errorInfo.emailError = AuthErrorCodes.FIELD_IS_REQUIRED;
+    errorInfo.emailError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 
   if (password.length < 6) {
-    errorInfo.passwordError = AuthErrorCodes.PASSWORD_MIN_LENGHT_6;
+    errorInfo.passwordError = ValidationErrorCodes.PASSWORD_MIN_LENGHT_6;
     isError = true;
   }
 
   if (!password) {
-    errorInfo.passwordError = AuthErrorCodes.FIELD_IS_REQUIRED;
+    errorInfo.passwordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 
   if (password.length > 8) {
-    errorInfo.passwordError = AuthErrorCodes.PASSWORD_MAX_LENGHT_8;
+    errorInfo.passwordError = ValidationErrorCodes.PASSWORD_MAX_LENGHT_8;
     isError = true;
   }
 
@@ -55,12 +55,12 @@ const validateSignUp = (authData: SignUpData) => {
   let isSignUpError = false;
 
   if (!confirmPassword.length) {
-    error.confirmPasswordError = AuthErrorCodes.FIELD_IS_REQUIRED;
+    error.confirmPasswordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isSignUpError = true;
   }
 
-  if (password.length !== confirmPassword.length) {
-    error.confirmPasswordError = AuthErrorCodes.INVALID_PASSWORD;
+  if (password !== confirmPassword) {
+    error.confirmPasswordError = ValidationErrorCodes.INVALID_PASSWORD;
     isSignUpError = true;
   }
 

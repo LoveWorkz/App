@@ -34,7 +34,7 @@ export const SplashPage = () => {
   );
 };
 
-export default memo(observer(SplashPage));
+export const ComponentWrapper = memo(observer(SplashPage));
 
 const styles = StyleSheet.create({
   SplashPage: {

@@ -6,10 +6,8 @@ import {AppRouteNames} from '@src/shared/config/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {
-  AuthErrorCodes,
-  AuthorisedUserByEmail,
-} from '../../../../model/types/authByEmail';
+import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {AuthorisedUserByEmail} from '../../../../model/types/authByEmail';
 import {SignInData, SignInErrorInfo} from '../types/signIn';
 import {validateFields} from '../../../../model/services/validation/validateFields';
 
@@ -50,6 +48,12 @@ class SignInStore {
     });
   }
 
+  resetForm() {
+    this.setEmail('');
+    this.setPassword('');
+    this.clearErrors();
+  }
+
   singIn() {
     this.clearErrors();
 
@@ -82,13 +86,12 @@ class SignInStore {
           AUTH_METHOD_STORAGE_KEY,
           AuthMethod.AUTH_BY_EMAIL,
         );
-        console.log('signed in!');
       })
       .catch(error => {
         if (error.code === 'auth/invalid-email') {
           const serverError: SignInErrorInfo = {
             ...this.errorInfo,
-            emailError: AuthErrorCodes.INVALID_EMAIL,
+            emailError: ValidationErrorCodes.INVALID_EMAIL,
           };
 
           this.setServerError(serverError);
@@ -100,13 +103,11 @@ class SignInStore {
         ) {
           const serverError: SignInErrorInfo = {
             ...this.errorInfo,
-            passwordError: AuthErrorCodes.INVALID_EMAIL_OR_PASSWORD,
+            passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
           };
 
           this.setServerError(serverError);
         }
-
-        console.log(error, 'error');
       });
   }
 }

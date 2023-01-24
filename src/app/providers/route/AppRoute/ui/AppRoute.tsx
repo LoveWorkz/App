@@ -18,7 +18,7 @@ export const AppRoute = () => {
         {Object.values(appRoutesConfig).map(route => (
           <Stack.Screen
             name={route.name}
-            component={route.element}
+            component={route.Element}
             key={route.name}
           />
         ))}

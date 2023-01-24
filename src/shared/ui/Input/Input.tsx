@@ -23,7 +23,7 @@ export const Input = memo((props: InputProps) => {
 
   return (
     <TextInput
-      style={[style, styles.input, styles[theme]]}
+      style={[styles.input, style, styles[theme]]}
       onChangeText={onChangeTextHandler}
       value={value}
       placeholder={placeholder}
@@ -34,7 +34,7 @@ export const Input = memo((props: InputProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   input: {
-    padding: 4,
+    height: 40,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#9A9AA5',

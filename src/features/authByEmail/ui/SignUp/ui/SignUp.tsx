@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
@@ -8,6 +8,10 @@ import {Input} from '@src/shared/ui/Input/Input';
 import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
+  useEffect(() => {
+    return () => signUpStore.resetForm();
+  }, []);
+
   const register = useCallback(() => {
     signUpStore.register();
   }, []);
@@ -85,7 +89,7 @@ const SignUp = () => {
   );
 };
 
-export default memo(observer(SignUp));
+export const ComponentWrapper = memo(observer(SignUp));
 
 const styles = StyleSheet.create({
   SignUP: {

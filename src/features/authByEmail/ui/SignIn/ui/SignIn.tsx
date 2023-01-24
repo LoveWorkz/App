@@ -1,12 +1,18 @@
-import React, {memo, useCallback} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {memo, useCallback, useEffect} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {ButtonTheme, Button} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import signInStore from '../model/store/SignInStore';
+import {navigate} from '@src/shared/config/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/configRoute';
 
 const SignIn = () => {
+  useEffect(() => {
+    return () => signInStore.resetForm();
+  }, []);
+
   const singIn = useCallback(() => {
     signInStore.singIn();
   }, []);
@@ -17,6 +23,10 @@ const SignIn = () => {
 
   const onPasswordChangeHandler = useCallback((password: string) => {
     signInStore.setPassword(password);
+  }, []);
+
+  const onClickHandler = useCallback(() => {
+    navigate(AppRouteNames.RESET_PASSWORD);
   }, []);
 
   return (
@@ -35,7 +45,12 @@ const SignIn = () => {
         )}
       </View>
       <View style={styles.password}>
-        <Text style={styles.passwordText}>Password</Text>
+        <View style={styles.passwordTitle}>
+          <Text style={styles.passwordText}>Password</Text>
+          <Pressable onPress={onClickHandler}>
+            <Text>Forgot password ?</Text>
+          </Pressable>
+        </View>
         <Input
           value={signInStore.signInData.password}
           onChange={onPasswordChangeHandler}
@@ -57,7 +72,7 @@ const SignIn = () => {
   );
 };
 
-export default memo(observer(SignIn));
+export const ComponentWrapper = memo(observer(SignIn));
 
 const styles = StyleSheet.create({
   SignIn: {
@@ -87,5 +102,9 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+  },
+  passwordTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

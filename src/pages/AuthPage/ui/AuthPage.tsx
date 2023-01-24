@@ -42,7 +42,8 @@ export const AuthPage = memo(() => {
 
 const styles = StyleSheet.create({
   AuthPage: {
-    padding: 15,
+    flex: 1,
+    justifyContent: 'center',
   },
   logoWrapper: {
     height: 80,

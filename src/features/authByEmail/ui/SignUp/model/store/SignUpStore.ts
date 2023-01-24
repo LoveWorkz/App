@@ -5,11 +5,9 @@ import {AuthMethod, userFormatter, userStore} from '@src/entities/User';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/configRoute';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
+import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {
-  AuthErrorCodes,
-  AuthorisedUserByEmail,
-} from '../../../../model/types/authByEmail';
+import {AuthorisedUserByEmail} from '../../../../model/types/authByEmail';
 import {SignUpData, SignUpErrorInfo} from '../types/signUp';
 import {validateFields} from '../../../../model/services/validation/validateFields';
 
@@ -62,6 +60,14 @@ class SignUpStore {
     });
   }
 
+  resetForm() {
+    this.setEmail('');
+    this.setPassword('');
+    this.setConfirmPassword('');
+    this.setAgreeWithPrivacyPolicy(false);
+    this.clearErrors();
+  }
+
   register() {
     this.clearErrors();
 
@@ -100,7 +106,7 @@ class SignUpStore {
         if (error.code === 'auth/email-already-in-use') {
           const serverError: SignUpErrorInfo = {
             ...this.errorInfo,
-            emailError: AuthErrorCodes.EMAIL_ALREADY_IN_USE,
+            emailError: ValidationErrorCodes.EMAIL_ALREADY_IN_USE,
           };
 
           this.setServerError(serverError);
@@ -109,7 +115,7 @@ class SignUpStore {
         if (error.code === 'auth/invalid-email') {
           const serverError: SignUpErrorInfo = {
             ...this.errorInfo,
-            emailError: AuthErrorCodes.INVALID_EMAIL,
+            emailError: ValidationErrorCodes.INVALID_EMAIL,
           };
 
           this.setServerError(serverError);
