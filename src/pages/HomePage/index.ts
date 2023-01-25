@@ -1,1 +1,1 @@
-export {HomePage} from './ui/HomePage';
+export {ComponentWrapper as HomePage} from './ui/HomePage';

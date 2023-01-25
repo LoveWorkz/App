@@ -10,10 +10,11 @@ import {InitlUserInfo} from '@src/features/authByEmail';
 
 export const SplashPage = () => {
   useEffect(() => {
-    function onAuthStateChanged() {
-      const user = auth().currentUser;
+    const onAuthStateChanged = async () => {
+      await auth().currentUser?.reload();
 
       setTimeout(() => {
+        const user = auth().currentUser;
         if (user) {
           const formattedUser = userFormatter(user as InitlUserInfo);
           userStore.setAuthUser(formattedUser);
@@ -22,7 +23,7 @@ export const SplashPage = () => {
           navigate(AppRouteNames.AUTH);
         }
       }, 1000);
-    }
+    };
 
     onAuthStateChanged();
   }, []);

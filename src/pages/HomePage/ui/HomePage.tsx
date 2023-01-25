@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {observer} from 'mobx-react-lite';
@@ -11,50 +11,65 @@ import {navigate} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
 
-export const HomePage = memo(
-  observer(() => {
-    const signOut = async () => {
-      const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
+const HomePage = () => {
+  const signOut = async () => {
+    const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
 
-      if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
-        try {
-          await GoogleSignin.signOut();
-          await auth().signOut();
-          userStore.setAuthUser(null);
-          navigate(AppRouteNames.AUTH);
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        try {
-          await auth().signOut();
-          userStore.setAuthUser(null);
-          navigate(AppRouteNames.AUTH);
-        } catch (error) {
-          console.error(error);
-        }
+    if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
+      try {
+        await GoogleSignin.signOut();
+        await auth().signOut();
+        navigate(AppRouteNames.AUTH);
+        userStore.setAuthUser(null);
+      } catch (error) {
+        console.error(error);
       }
-    };
+    } else {
+      try {
+        await auth().signOut();
+        navigate(AppRouteNames.AUTH);
+        userStore.setAuthUser(null);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
-    const image = {uri: userStore.authUser?.photo as string};
+  const verifyEmailHandler = useCallback(async () => {
+    try {
+      await auth().currentUser?.sendEmailVerification();
+      await auth().currentUser?.reload();
+    } catch (e) {
+      // too many request error
+      console.log(e);
+    }
+  }, []);
 
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.username}>{userStore.authUser?.name}</Text>
-        </View>
-        <ImageBackground
-          source={image}
-          resizeMode="cover"
-          style={styles.image}
-        />
-        <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
-          <Text>sing out</Text>
-        </Button>
+  const image = {uri: userStore.authUser?.photo as string};
+
+  return (
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.username}>{userStore.authUser?.name}</Text>
       </View>
-    );
-  }),
-);
+      <ImageBackground source={image} resizeMode="cover" style={styles.image} />
+      <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
+        <Text>sing out</Text>
+      </Button>
+
+      {!userStore.authUser?.emailVerified && (
+        <Button
+          style={styles.confirmEmail}
+          theme={ButtonTheme.OUTLINED}
+          onPress={verifyEmailHandler}>
+          <Text>Confirm email</Text>
+        </Button>
+      )}
+    </View>
+  );
+};
+
+export const ComponentWrapper = memo(observer(HomePage));
 
 const styles = StyleSheet.create({
   container: {
@@ -77,5 +92,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     overflow: 'hidden',
     marginBottom: 20,
+  },
+  confirmEmail: {
+    marginTop: 10,
   },
 });

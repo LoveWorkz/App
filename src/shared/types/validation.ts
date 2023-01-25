@@ -7,4 +7,5 @@ export enum ValidationErrorCodes {
   INVALID_PASSWORD = 'Invalid password',
   EMAIL_ALREADY_IN_USE = 'The email address is already in use by another account',
   USER_NOT_FOUNG = 'User not found',
+  SOMETHING_WENT_WRONG = 'Something went wrong',
 }

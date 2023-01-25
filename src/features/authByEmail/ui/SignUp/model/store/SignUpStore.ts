@@ -68,60 +68,62 @@ class SignUpStore {
     this.clearErrors();
   }
 
-  register() {
-    this.clearErrors();
+  register = async () => {
+    try {
+      this.clearErrors();
 
-    const {isError, errorInfo} = validateFields({
-      isSignUp: true,
-      authData: this.signUpData,
-    });
+      const {isError, errorInfo} = validateFields({
+        isSignUp: true,
+        authData: this.signUpData,
+      });
 
-    if (isError) {
-      this.setValidationError(errorInfo as SignUpErrorInfo);
+      if (isError) {
+        this.setValidationError(errorInfo as SignUpErrorInfo);
+        return;
+      }
+      const user = await auth().createUserWithEmailAndPassword(
+        this.signUpData.email,
+        this.signUpData.password,
+      );
+      await auth().currentUser?.sendEmailVerification();
+
+      const formattedUser = userFormatter(
+        user as AuthorisedUserByEmail,
+        AuthMethod.AUTH_BY_EMAIL,
+      );
+      userStore.setAuthUser(formattedUser);
+      authStorage.setAuthData(
+        AUTH_METHOD_STORAGE_KEY,
+        AuthMethod.AUTH_BY_EMAIL,
+      );
+      navigate(AppRouteNames.MAIN);
+    } catch (error: unknown) {
+      this.errorHandler(error);
+    }
+  };
+
+  errorHandler(error: unknown) {
+    if (!(error instanceof Error)) {
       return;
     }
 
-    auth()
-      .createUserWithEmailAndPassword(
-        this.signUpData.email,
-        this.signUpData.password,
-      )
-      .then(user => {
-        const formattedUser = userFormatter(
-          user as AuthorisedUserByEmail,
-          AuthMethod.AUTH_BY_EMAIL,
-        );
+    if (error.message.includes('auth/email-already-in-use')) {
+      const serverError: SignUpErrorInfo = {
+        ...this.errorInfo,
+        emailError: ValidationErrorCodes.EMAIL_ALREADY_IN_USE,
+      };
 
-        userStore.setAuthUser(formattedUser);
+      this.setServerError(serverError);
+    }
 
-        navigate(AppRouteNames.MAIN);
+    if (error.message.includes('auth/invalid-email')) {
+      const serverError: SignUpErrorInfo = {
+        ...this.errorInfo,
+        emailError: ValidationErrorCodes.INVALID_EMAIL,
+      };
 
-        authStorage.setAuthData(
-          AUTH_METHOD_STORAGE_KEY,
-          AuthMethod.AUTH_BY_EMAIL,
-        );
-        console.log('User account created & signed in!');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          const serverError: SignUpErrorInfo = {
-            ...this.errorInfo,
-            emailError: ValidationErrorCodes.EMAIL_ALREADY_IN_USE,
-          };
-
-          this.setServerError(serverError);
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          const serverError: SignUpErrorInfo = {
-            ...this.errorInfo,
-            emailError: ValidationErrorCodes.INVALID_EMAIL,
-          };
-
-          this.setServerError(serverError);
-        }
-        console.log(error, 'erro');
-      });
+      this.setServerError(serverError);
+    }
   }
 }
 

@@ -15,6 +15,7 @@ export const userFormatter = (
       formatedUser.id = authorisedUserByGoogle.id;
       formatedUser.name = authorisedUserByGoogle.name;
       formatedUser.photo = authorisedUserByGoogle.photo;
+      formatedUser.emailVerified = true;
       break;
     case AuthMethod.AUTH_BY_EMAIL:
       const {user: authorisedUserByEmail} = param as AuthorisedUserByEmail;
@@ -23,6 +24,7 @@ export const userFormatter = (
       formatedUser.id = authorisedUserByEmail.uid;
       formatedUser.name = authorisedUserByEmail.displayName;
       formatedUser.photo = authorisedUserByEmail.photoURL;
+      formatedUser.emailVerified = authorisedUserByEmail.emailVerified;
       break;
     default:
       const initUserData = param as InitlUserInfo;
@@ -31,6 +33,7 @@ export const userFormatter = (
       formatedUser.id = initUserData.uid;
       formatedUser.name = initUserData.displayName;
       formatedUser.photo = initUserData.photoURL;
+      formatedUser.emailVerified = initUserData.emailVerified;
   }
 
   return formatedUser;

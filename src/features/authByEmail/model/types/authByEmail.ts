@@ -3,6 +3,7 @@ export interface InitlUserInfo {
   email: string;
   photoURL: null | string;
   uid: string;
+  emailVerified: boolean;
 }
 
 export interface AuthorisedUserByEmail {

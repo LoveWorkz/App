@@ -54,61 +54,65 @@ class SignInStore {
     this.clearErrors();
   }
 
-  singIn() {
-    this.clearErrors();
+  singIn = async () => {
+    try {
+      this.clearErrors();
 
-    const {isError, errorInfo} = validateFields({
-      isSignUp: false,
-      authData: this.signInData,
-    });
+      const {isError, errorInfo} = validateFields({
+        isSignUp: false,
+        authData: this.signInData,
+      });
 
-    if (isError) {
-      this.setValidationError(errorInfo);
+      if (isError) {
+        this.setValidationError(errorInfo);
+        return;
+      }
+
+      const user = await auth().signInWithEmailAndPassword(
+        this.signInData.email,
+        this.signInData.password,
+      );
+
+      const formattedUser = userFormatter(
+        user as AuthorisedUserByEmail,
+        AuthMethod.AUTH_BY_EMAIL,
+      );
+      userStore.setAuthUser(formattedUser);
+      navigate(AppRouteNames.MAIN);
+      authStorage.setAuthData(
+        AUTH_METHOD_STORAGE_KEY,
+        AuthMethod.AUTH_BY_EMAIL,
+      );
+    } catch (error: unknown) {
+      this.errorHandler(error);
+    }
+  };
+
+  errorHandler(error: unknown) {
+    if (!(error instanceof Error)) {
       return;
     }
 
-    auth()
-      .signInWithEmailAndPassword(
-        this.signInData.email,
-        this.signInData.password,
-      )
-      .then(user => {
-        const formattedUser = userFormatter(
-          user as AuthorisedUserByEmail,
-          AuthMethod.AUTH_BY_EMAIL,
-        );
+    if (error.message.includes('auth/invalid-email')) {
+      const serverError: SignInErrorInfo = {
+        ...this.errorInfo,
+        emailError: ValidationErrorCodes.INVALID_EMAIL,
+      };
 
-        userStore.setAuthUser(formattedUser);
+      this.setServerError(serverError);
+    }
 
-        navigate(AppRouteNames.MAIN);
+    if (
+      error.message.includes('auth/wrong-password') ||
+      error.message.includes('auth/user-not-found')
+    ) {
+      const serverError: SignInErrorInfo = {
+        ...this.errorInfo,
+        passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
+      };
 
-        authStorage.setAuthData(
-          AUTH_METHOD_STORAGE_KEY,
-          AuthMethod.AUTH_BY_EMAIL,
-        );
-      })
-      .catch(error => {
-        if (error.code === 'auth/invalid-email') {
-          const serverError: SignInErrorInfo = {
-            ...this.errorInfo,
-            emailError: ValidationErrorCodes.INVALID_EMAIL,
-          };
-
-          this.setServerError(serverError);
-        }
-
-        if (
-          error.code === 'auth/wrong-password' ||
-          error.code === 'auth/user-not-found'
-        ) {
-          const serverError: SignInErrorInfo = {
-            ...this.errorInfo,
-            passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
-          };
-
-          this.setServerError(serverError);
-        }
-      });
+      this.setServerError(serverError);
+    }
   }
 }
 

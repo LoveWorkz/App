@@ -6,5 +6,6 @@ export interface AuthorisedUserByGoogle {
     scopes: string[];
     photo: null | string;
     id: string;
+    emailVerified: boolean;
   };
 }

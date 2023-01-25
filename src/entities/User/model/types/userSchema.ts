@@ -3,6 +3,7 @@ export interface User {
   photo: string | null;
   email: string;
   name: string | null;
+  emailVerified: boolean;
 }
 
 export enum AuthMethod {
