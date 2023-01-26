@@ -17,8 +17,8 @@ const HomePage = () => {
 
     if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
       try {
-        await GoogleSignin.signOut();
         await auth().signOut();
+        await GoogleSignin.signOut();
         navigate(AppRouteNames.AUTH);
         userStore.setAuthUser(null);
       } catch (error) {

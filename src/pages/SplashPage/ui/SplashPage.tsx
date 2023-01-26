@@ -11,10 +11,10 @@ import {InitlUserInfo} from '@src/features/authByEmail';
 export const SplashPage = () => {
   useEffect(() => {
     const onAuthStateChanged = async () => {
-      await auth().currentUser?.reload();
-
-      setTimeout(() => {
+      try {
+        await auth().currentUser?.reload();
         const user = auth().currentUser;
+
         if (user) {
           const formattedUser = userFormatter(user as InitlUserInfo);
           userStore.setAuthUser(formattedUser);
@@ -22,7 +22,15 @@ export const SplashPage = () => {
         } else {
           navigate(AppRouteNames.AUTH);
         }
-      }, 1000);
+      } catch (e) {
+        if (!(e instanceof Error)) {
+          return;
+        }
+
+        if (e.message.includes('auth/user-not-found')) {
+          navigate(AppRouteNames.AUTH);
+        }
+      }
     };
 
     onAuthStateChanged();

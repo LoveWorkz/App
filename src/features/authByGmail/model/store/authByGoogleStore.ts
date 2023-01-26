@@ -29,13 +29,13 @@ class AuthByGoogleStore {
         AUTH_METHOD_STORAGE_KEY,
         AuthMethod.AUTH_BY_GOOGLE,
       );
-      navigate(AppRouteNames.MAIN);
 
       const googleCredential = auth.GoogleAuthProvider.credential(
         userData.idToken,
       );
 
       await auth().signInWithCredential(googleCredential);
+      navigate(AppRouteNames.MAIN);
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow

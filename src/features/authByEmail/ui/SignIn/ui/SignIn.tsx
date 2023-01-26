@@ -2,7 +2,6 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
-import {ButtonTheme, Button} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import signInStore from '../model/store/SignInStore';
 import {navigate} from '@src/shared/config/navigation/navigation';
@@ -11,10 +10,6 @@ import {AppRouteNames} from '@src/shared/config/configRoute';
 const SignIn = () => {
   useEffect(() => {
     return () => signInStore.resetForm();
-  }, []);
-
-  const singIn = useCallback(() => {
-    signInStore.singIn();
   }, []);
 
   const onEmailChangeHandler = useCallback((email: string) => {
@@ -30,7 +25,7 @@ const SignIn = () => {
   }, []);
 
   return (
-    <View style={styles.SignIn}>
+    <View>
       <View style={styles.email}>
         <Text style={styles.emailText}>Email</Text>
         <Input
@@ -62,12 +57,6 @@ const SignIn = () => {
           </Text>
         )}
       </View>
-      <Button
-        onPress={singIn}
-        style={styles.singInBtn}
-        theme={ButtonTheme.OUTLINED}>
-        <Text style={styles.singInBtnText}>Sing in</Text>
-      </Button>
     </View>
   );
 };
@@ -75,9 +64,8 @@ const SignIn = () => {
 export const ComponentWrapper = memo(observer(SignIn));
 
 const styles = StyleSheet.create({
-  SignIn: {
-    marginTop: 20,
-    height: 350,
+  email: {
+    position: 'relative',
   },
   emailText: {
     fontWeight: '600',
@@ -85,23 +73,14 @@ const styles = StyleSheet.create({
   passwordText: {
     fontWeight: '600',
   },
-  email: {},
   password: {
-    marginBottom: 10,
-    marginTop: 10,
-  },
-  singInBtn: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    backgroundColor: 'black',
-  },
-  singInBtnText: {
-    color: 'white',
+    marginBottom: 15,
+    marginTop: 15,
   },
   errorText: {
     color: 'red',
+    position: 'absolute',
+    bottom: -18,
   },
   passwordTitle: {
     flexDirection: 'row',

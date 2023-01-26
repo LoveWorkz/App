@@ -1,18 +1,32 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {memo} from 'react';
+import {StyleSheet, Pressable, View} from 'react-native';
+import {SvgXml} from 'react-native-svg';
 
-import {ButtonTheme, Button} from '../../../shared/ui/Button/Button';
+import {AppleIcon} from '@src/shared/assets/icons/Apple';
 
-export const AuthByApple = () => {
+interface AuthByAppleProps {
+  style?: Record<string, string | number>;
+}
+
+export const AuthByApple = memo((props: AuthByAppleProps) => {
+  const {style} = props;
+
   return (
-    <View style={styles.authByApple}>
-      <Button theme={ButtonTheme.OUTLINED}>
-        <Text>Continue with Apple</Text>
-      </Button>
+    <View style={[styles.authByApple, style]}>
+      <Pressable>
+        <SvgXml xml={AppleIcon} style={styles.icon} />
+      </Pressable>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
-  authByApple: {},
+  authByApple: {
+    height: 20,
+    width: 20,
+  },
+  icon: {
+    width: '100%^',
+    height: '100%',
+  },
 });

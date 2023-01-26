@@ -3,17 +3,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
 
-import {ButtonTheme, Button} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
   useEffect(() => {
     return () => signUpStore.resetForm();
-  }, []);
-
-  const register = useCallback(() => {
-    signUpStore.register();
   }, []);
 
   const onEmailChangeHandler = useCallback((email: string) => {
@@ -33,7 +28,7 @@ const SignUp = () => {
   }, []);
 
   return (
-    <View style={styles.SignUP}>
+    <View>
       <View style={styles.email}>
         <Text style={styles.emailText}>Email</Text>
         <Input
@@ -78,13 +73,6 @@ const SignUp = () => {
         onValueChange={onCheckboxChangeHandler}
         style={styles.checkbox}
       />
-      <Button
-        disabled={!signUpStore.agreeWithPrivacyPolicy}
-        onPress={register}
-        style={styles.singInBtn}
-        theme={ButtonTheme.OUTLINED}>
-        <Text style={styles.singInBtnText}>Sing up</Text>
-      </Button>
     </View>
   );
 };
@@ -92,10 +80,6 @@ const SignUp = () => {
 export const ComponentWrapper = memo(observer(SignUp));
 
 const styles = StyleSheet.create({
-  SignUP: {
-    marginTop: 20,
-    height: 350,
-  },
   emailText: {
     fontWeight: '600',
   },
@@ -103,22 +87,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   password: {
-    marginBottom: 10,
-    marginTop: 10,
+    marginBottom: 15,
+    marginTop: 15,
   },
   email: {},
-  singInBtn: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    width: '100%',
-    backgroundColor: 'black',
-  },
-  singInBtnText: {
-    color: 'white',
-  },
   errorText: {
     color: 'red',
+    position: 'absolute',
+    bottom: -18,
   },
   checkbox: {
     marginTop: 20,

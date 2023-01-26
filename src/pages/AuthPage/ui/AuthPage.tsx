@@ -1,11 +1,14 @@
 import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, Text, View, Pressable} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 import {AuthByApple} from '@src/features/authByApple';
-import {AuthByEmail} from '@src/features/authByEmail';
+import {AuthByEmail, signInStore, signUpStore} from '@src/features/authByEmail';
 import {AuthByGoogle} from '@src/features/authByGmail';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import OrLine from './OrLine/OrLine';
 
-export const AuthPage = memo(() => {
+const AuthPage = () => {
   const [isSignIn, setISignIn] = useState(true);
 
   const toggleSignIn = useCallback(() => {
@@ -16,57 +19,101 @@ export const AuthPage = memo(() => {
     setISignIn(false);
   }, []);
 
+  const auth = useCallback(() => {
+    if (isSignIn) {
+      signInStore.singIn();
+    } else {
+      signUpStore.register();
+    }
+  }, [isSignIn]);
+
   return (
     <View style={styles.AuthPage}>
-      <View style={styles.logoWrapper}>
-        <Text style={styles.logo}>LOGO</Text>
+      <View style={styles.container}>
+        <View style={styles.titleWrapper}>
+          <Text style={styles.title}>{isSignIn ? 'Log in' : 'Sign up'}</Text>
+        </View>
+        <AuthByEmail isSingIn={isSignIn} />
+        <OrLine style={styles.line} />
+        <View style={styles.btnWrapper}>
+          <AuthByGoogle style={styles.authByGoogleBtn} />
+          <AuthByApple />
+        </View>
+        <View style={styles.bottomBlock}>
+          <Button
+            disabled={!isSignIn && !signUpStore.agreeWithPrivacyPolicy}
+            onPress={auth}
+            style={styles.singInBtn}
+            theme={ButtonTheme.OUTLINED}>
+            <Text style={styles.singInBtnText}>
+              {isSignIn ? 'Log in' : 'Sign up'}
+            </Text>
+          </Button>
+          <Pressable
+            style={styles.toggleAuthMethod}
+            onPress={isSignIn ? toggleSignUp : toggleSignIn}>
+            {isSignIn ? (
+              <Text>Dont Have an acount ?</Text>
+            ) : (
+              <Text>Already have an account?</Text>
+            )}
+          </Pressable>
+        </View>
       </View>
-      <View style={styles.titleWrapper}>
-        <Text style={styles.title}>{isSignIn ? 'Sign in' : 'Sign up'}</Text>
-      </View>
-      <AuthByGoogle style={styles.authByGoogleBtn} />
-      <AuthByApple />
-      <AuthByEmail isSingIn={isSignIn} />
-      <Pressable
-        style={styles.toggleAuthMethod}
-        onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-        {isSignIn ? (
-          <Text>Dont Have an acount ?</Text>
-        ) : (
-          <Text>Already have an account?</Text>
-        )}
-      </Pressable>
     </View>
   );
-});
+};
+
+export const ComponentWrapper = memo(observer(AuthPage));
 
 const styles = StyleSheet.create({
   AuthPage: {
     flex: 1,
     justifyContent: 'center',
+    padding: 15,
   },
-  logoWrapper: {
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
+  container: {
+    marginTop: 50,
+    position: 'relative',
+    height: 550,
+    borderColor: 'red',
+    borderStyle: 'solid',
+    borderWidth: 0,
   },
-  logo: {
-    justifyContent: 'center',
-    fontSize: 24,
-    lineHeight: 30,
+  line: {
+    marginTop: 20,
+    marginBottom: 20,
   },
-  titleWrapper: {},
+  titleWrapper: {
+    marginBottom: 40,
+  },
   title: {
     fontSize: 22,
     lineHeight: 28,
+    fontFamily: 'Consolas',
+  },
+  btnWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   authByGoogleBtn: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginRight: 20,
   },
   toggleAuthMethod: {
     marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  singInBtn: {
+    backgroundColor: 'black',
+  },
+  bottomBlock: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+  },
+  singInBtnText: {
+    color: 'white',
   },
 });

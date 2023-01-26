@@ -36,9 +36,9 @@ const styles = StyleSheet.create<Record<string, any>>({
   input: {
     height: 40,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#9A9AA5',
-    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    borderBottomColor: '#9A9AA5',
+    borderBottomStyle: 'solid',
     borderRadius: 10,
   },
 });
