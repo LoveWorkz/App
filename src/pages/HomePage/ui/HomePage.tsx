@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import auth from '@react-native-firebase/auth';
 
 import {AuthMethod, userStore} from '@src/entities/User';
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';

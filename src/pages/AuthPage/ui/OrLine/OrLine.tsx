@@ -1,4 +1,5 @@
 import React, {memo} from 'react';
+import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
 
 interface OrLineProps {
@@ -8,10 +9,12 @@ interface OrLineProps {
 const OrLine = (props: OrLineProps) => {
   const {style} = props;
 
+  const {t} = useTranslation();
+
   return (
     <View style={[styles.lineWrapper, style]}>
       <View style={styles.leftPart} />
-      <Text style={styles.text}>or</Text>
+      <Text style={styles.text}>{t('auth.or')}</Text>
       <View style={styles.rightPart} />
     </View>
   );

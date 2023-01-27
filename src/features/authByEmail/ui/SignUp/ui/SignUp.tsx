@@ -2,11 +2,14 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
+import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     return () => signUpStore.resetForm();
   }, []);
@@ -30,11 +33,11 @@ const SignUp = () => {
   return (
     <View>
       <View style={styles.email}>
-        <Text style={styles.emailText}>Email</Text>
+        <Text style={styles.emailText}>{t('auth.email')}</Text>
         <Input
           value={signUpStore.signUpData.email}
           onChange={onEmailChangeHandler}
-          placeholder={'Enter Email'}
+          placeholder={t('auth.enter_email') || ''}
         />
         {signUpStore.errorInfo.emailError && (
           <Text style={styles.errorText}>
@@ -43,7 +46,7 @@ const SignUp = () => {
         )}
       </View>
       <View style={styles.password}>
-        <Text style={styles.emailText}>Password</Text>
+        <Text style={styles.emailText}>{t('auth.password')}</Text>
         <Input
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
@@ -56,11 +59,11 @@ const SignUp = () => {
         )}
       </View>
       <View>
-        <Text style={styles.passwordText}>Repeat Password</Text>
+        <Text style={styles.passwordText}>{t('auth.repeat_password')}</Text>
         <Input
           value={signUpStore.signUpData.confirmPassword}
           onChange={onConfirmPasswordChangeHandler}
-          placeholder={'Repeat Password'}
+          placeholder={t('auth.enter_password') || ''}
         />
         {signUpStore.errorInfo.confirmPasswordError && (
           <Text style={styles.errorText}>

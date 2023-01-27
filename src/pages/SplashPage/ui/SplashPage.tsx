@@ -3,7 +3,7 @@ import React, {useEffect, memo} from 'react';
 import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {userFormatter, userStore} from '@src/entities/User';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {InitlUserInfo} from '@src/features/authByEmail';

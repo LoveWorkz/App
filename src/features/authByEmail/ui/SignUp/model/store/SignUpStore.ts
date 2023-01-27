@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 
 import {AuthMethod, userFormatter, userStore} from '@src/entities/User';
 import {navigate} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';

@@ -6,7 +6,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 import {AuthMethod, userFormatter, userStore} from '@src/entities/User';
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';

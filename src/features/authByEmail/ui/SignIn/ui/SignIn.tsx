@@ -1,13 +1,16 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signInStore from '../model/store/SignInStore';
 import {navigate} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const SignIn = () => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     return () => signInStore.resetForm();
   }, []);
@@ -27,11 +30,11 @@ const SignIn = () => {
   return (
     <View>
       <View style={styles.email}>
-        <Text style={styles.emailText}>Email</Text>
+        <Text style={styles.emailText}>{t('auth.email')}</Text>
         <Input
           value={signInStore.signInData.email}
           onChange={onEmailChangeHandler}
-          placeholder={'Enter Email'}
+          placeholder={t('auth.enter_email') || ''}
         />
         {signInStore.errorInfo.emailError && (
           <Text style={styles.errorText}>
@@ -41,15 +44,15 @@ const SignIn = () => {
       </View>
       <View style={styles.password}>
         <View style={styles.passwordTitle}>
-          <Text style={styles.passwordText}>Password</Text>
+          <Text style={styles.passwordText}>{t('auth.password')}</Text>
           <Pressable onPress={onClickHandler}>
-            <Text>Forgot password ?</Text>
+            <Text>{t('auth.forgot_password')}</Text>
           </Pressable>
         </View>
         <Input
           value={signInStore.signInData.password}
           onChange={onPasswordChangeHandler}
-          placeholder={'Enter Password'}
+          placeholder={t('auth.enter_password') || ''}
         />
         {signInStore.errorInfo.passwordError && (
           <Text style={styles.errorText}>

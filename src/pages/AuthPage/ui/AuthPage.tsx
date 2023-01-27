@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {AuthByApple} from '@src/features/authByApple';
 import {AuthByEmail, signInStore, signUpStore} from '@src/features/authByEmail';
@@ -9,6 +10,8 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
+  const {t} = useTranslation();
+
   const [isSignIn, setISignIn] = useState(true);
 
   const toggleSignIn = useCallback(() => {
@@ -31,7 +34,9 @@ const AuthPage = () => {
     <View style={styles.AuthPage}>
       <View style={styles.container}>
         <View style={styles.titleWrapper}>
-          <Text style={styles.title}>{isSignIn ? 'Log in' : 'Sign up'}</Text>
+          <Text style={styles.title}>
+            {isSignIn ? t('auth.login') : t('auth.signup')}
+          </Text>
         </View>
         <AuthByEmail isSingIn={isSignIn} />
         <OrLine style={styles.line} />
@@ -46,16 +51,16 @@ const AuthPage = () => {
             style={styles.singInBtn}
             theme={ButtonTheme.OUTLINED}>
             <Text style={styles.singInBtnText}>
-              {isSignIn ? 'Log in' : 'Sign up'}
+              {isSignIn ? t('auth.login') : t('auth.signup')}
             </Text>
           </Button>
           <Pressable
             style={styles.toggleAuthMethod}
             onPress={isSignIn ? toggleSignUp : toggleSignIn}>
             {isSignIn ? (
-              <Text>Dont Have an acount ?</Text>
+              <Text>{t('auth.dont_have_an_acount')}</Text>
             ) : (
-              <Text>Already have an account?</Text>
+              <Text>{t('auth.already_have_an_account')}</Text>
             )}
           </Pressable>
         </View>

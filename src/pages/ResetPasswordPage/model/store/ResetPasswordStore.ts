@@ -3,7 +3,7 @@ import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import {navigate} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/configRoute';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 class ResetPasswordStore {

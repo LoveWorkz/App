@@ -2,7 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import {AppRouteNames, appRoutesConfig} from '@src/shared/config/configRoute';
+import {AppRouteNames, appRoutesConfig} from '@src/shared/config/route/configRoute';
 import {navigationRef} from '@src/shared/config/navigation/navigation';
 
 const Stack = createNativeStackNavigator();

@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CallbackWithResult} from '@react-native-async-storage/async-storage/lib/typescript/types';
 
 type LocalStorage = typeof AsyncStorage;
 
 export interface Storage {
-  getItem: (key: string) => Promise<string | string>;
+  getItem: (
+    key: string,
+    clb?: CallbackWithResult<string>,
+  ) => Promise<string | string>;
   setItem: (key: string, value: string) => Promise<void>;
   setStorage: (newStorage: LocalStorage) => void;
   removeItem: (key: string) => Promise<void>;
@@ -19,10 +23,13 @@ const setItem = async (key: string, value: string): Promise<void> => {
   }
 };
 
-const getItem = async (key: string): Promise<string | null> => {
+const getItem = async (
+  key: string,
+  clb?: CallbackWithResult<string>,
+): Promise<string | null> => {
   let value = null;
   try {
-    value = await storage?.getItem(key);
+    value = await storage?.getItem(key, clb);
   } catch (e) {
     console.log(e, 'getItem error');
   }
