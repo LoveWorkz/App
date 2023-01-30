@@ -1360,6 +1360,11 @@
     "@expo/config-plugins" "^5.0.4"
     plist "^3.0.5"
 
+"@react-native-firebase/firestore@^16.5.2":
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-16.5.2.tgz#df4c2255a200154f3529268bfcc61c95ab56f2f8"
+  integrity sha512-BU0OsYBUthCliJKcXQyXCShqlwYSWV2EQUI2dXodE2EVkWYUCYfPCz9fnGMHAsJCVbK4p8XmCgGzh4vlBM8upQ==
+
 "@react-native-google-signin/google-signin@^9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-9.0.2.tgz#fd9d0cbb58591265c2ea9404b2d2ea7e514b9ea9"

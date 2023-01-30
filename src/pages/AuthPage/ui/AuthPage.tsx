@@ -24,7 +24,7 @@ const AuthPage = () => {
 
   const auth = useCallback(() => {
     if (isSignIn) {
-      signInStore.singIn();
+      signInStore.signIn();
     } else {
       signUpStore.register();
     }
