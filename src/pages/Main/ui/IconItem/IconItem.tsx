@@ -1,0 +1,33 @@
+import React, {useCallback, memo} from 'react';
+import {Pressable} from 'react-native';
+import {SvgXml} from 'react-native-svg';
+
+import {navigate} from '@src/shared/config/navigation/navigation';
+
+interface IconItemProps {
+  name: string;
+  size: number;
+  focused: boolean;
+  icon: string;
+}
+
+const IconItem = (props: IconItemProps) => {
+  const {size, name, focused, icon} = props;
+
+  const onHandlePress = useCallback(() => {
+    navigate(name);
+  }, [name]);
+
+  return (
+    <Pressable onPress={onHandlePress}>
+      <SvgXml
+        xml={icon}
+        height={size}
+        width={size}
+        fill={focused ? 'black' : '#DCDCDC'}
+      />
+    </Pressable>
+  );
+};
+
+export const ComponentWrapper = memo(IconItem);

@@ -18,13 +18,11 @@ export const AppRoute = () => {
         screenOptions={{
           headerShown: false,
         }}>
-        {Object.values(appRoutesConfig).map(route => (
-          <Stack.Screen
-            name={route.name}
-            component={route.Element}
-            key={route.name}
-          />
-        ))}
+        {Object.values(appRoutesConfig)
+          .filter(item => !item.isTab)
+          .map(({name, Element}) => (
+            <Stack.Screen name={name} component={Element} key={name} />
+          ))}
       </Stack.Navigator>
     </NavigationContainer>
   );

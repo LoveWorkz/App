@@ -97,6 +97,7 @@ export const ComponentWrapper = memo(observer(HomePage));
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
