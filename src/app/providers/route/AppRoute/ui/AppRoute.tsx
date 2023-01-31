@@ -1,6 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {StatusBar} from 'react-native';
 
 import {
   AppRouteNames,
@@ -24,6 +25,7 @@ export const AppRoute = () => {
             <Stack.Screen name={name} component={Element} key={name} />
           ))}
       </Stack.Navigator>
+      <StatusBar animated={true} backgroundColor="white" />
     </NavigationContainer>
   );
 };

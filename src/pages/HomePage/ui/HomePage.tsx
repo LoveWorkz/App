@@ -1,11 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {observer} from 'mobx-react-lite';
 import auth from '@react-native-firebase/auth';
@@ -22,6 +16,7 @@ import {
 } from '@src/shared/consts/storage';
 import {Collections} from '@src/shared/types/types';
 import {profileStore} from '@src/entities/Profile';
+import {ComponentWrapper as Header} from './Header/Header';
 
 const HomePage = () => {
   useEffect(() => {
@@ -69,14 +64,15 @@ const HomePage = () => {
     );
   }
 
-  const image = {uri: profileStore.profileData.photo as string};
-
   return (
     <View style={styles.container}>
+      <Header
+        name={profileStore.profileData.name || ''}
+        imageUrl={profileStore.profileData.photo || ''}
+      />
       <View>
         <Text style={styles.username}>{profileStore.profileData.name}</Text>
       </View>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image} />
       <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
         <Text>sing out</Text>
       </Button>
@@ -106,16 +102,6 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 20,
-    marginBottom: 20,
-  },
-  image: {
-    height: 100,
-    width: 100,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderRadius: 50,
-    overflow: 'hidden',
     marginBottom: 20,
   },
   confirmEmail: {

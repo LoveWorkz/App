@@ -14,12 +14,12 @@ interface IconItemProps {
 const IconItem = (props: IconItemProps) => {
   const {size, name, focused, icon} = props;
 
-  const onHandlePress = useCallback(() => {
+  const onPressHandler = useCallback(() => {
     navigate(name);
   }, [name]);
 
   return (
-    <Pressable onPress={onHandlePress}>
+    <Pressable onPress={onPressHandler}>
       <SvgXml
         xml={icon}
         height={size}
