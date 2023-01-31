@@ -1,6 +1,8 @@
 import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 
+import {globalPadding} from '@src/app/styles';
+
 interface LayoutProps {
   children: ReactElement;
 }
@@ -13,7 +15,7 @@ export const Layout = (props: LayoutProps) => {
 
 const styles = StyleSheet.create({
   layout: {
-    padding: 10,
+    padding: globalPadding,
     paddingBottom: 0,
     flex: 1,
     justifyContent: 'center',

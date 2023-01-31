@@ -19,6 +19,7 @@ import {profileStore} from '@src/entities/Profile';
 import {ComponentWrapper as Header} from './Header/Header';
 import {HomeCategory} from '@src/widgets/HomeCategory';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
+import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 
 const HomePage = () => {
   useEffect(() => {
@@ -75,10 +76,10 @@ const HomePage = () => {
       <View style={styles.homeCategoryWrapper}>
         <HomeCategory />
       </View>
+      <CategoriesCarousel />
       <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
         <Text>sing out</Text>
       </Button>
-
       {!profileStore.profileData.emailVerified && (
         <Button
           style={styles.confirmEmail}
@@ -111,5 +112,6 @@ const styles = StyleSheet.create({
   },
   homeCategoryWrapper: {
     width: '100%',
+    marginBottom: 10,
   },
 });
