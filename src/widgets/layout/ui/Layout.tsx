@@ -1,15 +1,15 @@
-import React, {memo, ReactElement} from 'react';
+import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 interface LayoutProps {
   children: ReactElement;
 }
 
-export const Layout = memo((props: LayoutProps) => {
+export const Layout = (props: LayoutProps) => {
   const {children} = props;
 
   return <View style={styles.layout}>{children}</View>;
-});
+};
 
 const styles = StyleSheet.create({
   layout: {
@@ -17,5 +17,6 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });

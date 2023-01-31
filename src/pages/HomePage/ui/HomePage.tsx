@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {observer} from 'mobx-react-lite';
 import auth from '@react-native-firebase/auth';
@@ -17,6 +17,8 @@ import {
 import {Collections} from '@src/shared/types/types';
 import {profileStore} from '@src/entities/Profile';
 import {ComponentWrapper as Header} from './Header/Header';
+import {HomeCategory} from '@src/widgets/HomeCategory';
+import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 
 const HomePage = () => {
   useEffect(() => {
@@ -59,7 +61,7 @@ const HomePage = () => {
   if (!profileStore.profileData) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" />
+        <Loader size={LoaderSize.LARGE} />
       </View>
     );
   }
@@ -70,8 +72,8 @@ const HomePage = () => {
         name={profileStore.profileData.name || ''}
         imageUrl={profileStore.profileData.photo || ''}
       />
-      <View>
-        <Text style={styles.username}>{profileStore.profileData.name}</Text>
+      <View style={styles.homeCategoryWrapper}>
+        <HomeCategory />
       </View>
       <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
         <Text>sing out</Text>
@@ -106,5 +108,8 @@ const styles = StyleSheet.create({
   },
   confirmEmail: {
     marginTop: 10,
+  },
+  homeCategoryWrapper: {
+    width: '100%',
   },
 });

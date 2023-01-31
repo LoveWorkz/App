@@ -48,9 +48,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   image: {
     height: '100%',
     width: '100%',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 1,
     borderRadius: 50,
   },
 });
