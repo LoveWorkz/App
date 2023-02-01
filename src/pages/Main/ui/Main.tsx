@@ -1,19 +1,19 @@
 import React, {memo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {
-  AppRouteNames,
-  appRoutesConfig,
-} from '@src/shared/config/route/configRoute';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
 import {getIcon} from '../lib/getIcon';
+import {
+  tabRoutesConfig,
+  TabRoutesNames,
+} from '@src/shared/config/route/tabConfigRoutes';
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
   return (
     <Tab.Navigator
-      initialRouteName={AppRouteNames.HOME}
+      initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarShowLabel: false,
@@ -32,11 +32,9 @@ const Main = () => {
           );
         },
       })}>
-      {Object.values(appRoutesConfig)
-        .filter(item => item.isTab)
-        .map(({name, Element}) => (
-          <Tab.Screen name={name} component={Element} key={name} />
-        ))}
+      {Object.values(tabRoutesConfig).map(({name, Element}) => (
+        <Tab.Screen name={name} component={Element} key={name} />
+      ))}
     </Tab.Navigator>
   );
 };

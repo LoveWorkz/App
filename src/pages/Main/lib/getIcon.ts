@@ -3,22 +3,22 @@ import {BooksIcon} from '@src/shared/assets/icons/Books';
 import {CategoriesIcon} from '@src/shared/assets/icons/Categories';
 import {ChallengesIcon} from '@src/shared/assets/icons/Challenges';
 import {ShopIcon} from '@src/shared/assets/icons/Shop';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 
 export const getIcon = (routName: string): string => {
   let icon;
 
   switch (routName) {
-    case AppRouteNames.CATEGORIES:
+    case TabRoutesNames.CATEGORIES:
       icon = CategoriesIcon;
       break;
-    case AppRouteNames.BOOKS:
+    case TabRoutesNames.BOOKS:
       icon = BooksIcon;
       break;
-    case AppRouteNames.CHALLENGES:
+    case TabRoutesNames.CHALLENGES:
       icon = ChallengesIcon;
       break;
-    case AppRouteNames.SHOP:
+    case TabRoutesNames.SHOP:
       icon = ShopIcon;
       break;
     default:

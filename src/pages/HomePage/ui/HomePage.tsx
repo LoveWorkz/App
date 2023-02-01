@@ -20,6 +20,7 @@ import {ComponentWrapper as Header} from './Header/Header';
 import {HomeCategory} from '@src/widgets/HomeCategory';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
+import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 
 const HomePage = () => {
   useEffect(() => {
@@ -69,14 +70,19 @@ const HomePage = () => {
 
   return (
     <View style={styles.container}>
-      <Header
-        name={profileStore.profileData.name || ''}
-        imageUrl={profileStore.profileData.photo || ''}
-      />
+      <View style={styles.headerWrapper}>
+        <Header
+          name={profileStore.profileData.name || ''}
+          imageUrl={profileStore.profileData.photo || ''}
+        />
+      </View>
       <View style={styles.homeCategoryWrapper}>
         <HomeCategory />
       </View>
       <CategoriesCarousel />
+      <View style={styles.challangesWrapper}>
+        <Challanges />
+      </View>
       <Button theme={ButtonTheme.OUTLINED} onPress={signOut}>
         <Text>sing out</Text>
       </Button>
@@ -100,6 +106,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headerWrapper: {
+    marginBottom: 20,
+  },
   test: {
     color: 'red',
   },
@@ -113,5 +122,9 @@ const styles = StyleSheet.create({
   homeCategoryWrapper: {
     width: '100%',
     marginBottom: 10,
+  },
+  challangesWrapper: {
+    marginTop: 10,
+    width: '100%',
   },
 });

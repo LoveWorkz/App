@@ -19,11 +19,16 @@ export const AppRoute = () => {
         screenOptions={{
           headerShown: false,
         }}>
-        {Object.values(appRoutesConfig)
-          .filter(item => !item.isTab)
-          .map(({name, Element}) => (
-            <Stack.Screen name={name} component={Element} key={name} />
-          ))}
+        {Object.values(appRoutesConfig).map(({name, Element, headerShown}) => (
+          <Stack.Screen
+            options={{
+              headerShown: headerShown,
+            }}
+            name={name}
+            component={Element}
+            key={name}
+          />
+        ))}
       </Stack.Navigator>
       <StatusBar animated={true} backgroundColor="white" />
     </NavigationContainer>

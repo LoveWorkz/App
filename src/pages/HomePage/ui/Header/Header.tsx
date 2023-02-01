@@ -5,6 +5,8 @@ import {useTranslation} from 'react-i18next';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
+import {navigate} from '@src/shared/config/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 interface HeaderProps {
   style?: Record<string, string | number>;
@@ -16,19 +18,27 @@ const Header = (props: HeaderProps) => {
   const {style, imageUrl, name} = props;
   const {t} = useTranslation();
 
-  const onPressHandler = useCallback(() => {
-    console.log('press');
+  const onSettingsPressHandler = useCallback(() => {
+    navigate(AppRouteNames.SETTINGS);
+  }, []);
+
+  const onProfilePressHandler = useCallback(() => {
+    navigate(AppRouteNames.PROFILE);
   }, []);
 
   return (
     <View style={[styles.Header, style]}>
-      <Avatar theme={AvatarTheme.SMALL} imageUrl={imageUrl} />
-      <View style={styles.nameWrapper}>
-        <Text style={styles.title}>{t('home.welcome_back')}</Text>
-        <Text style={styles.name}>{name}</Text>
-      </View>
+      <Pressable onPress={onProfilePressHandler}>
+        <Avatar theme={AvatarTheme.SMALL} imageUrl={imageUrl} />
+      </Pressable>
+      <Pressable onPress={onProfilePressHandler}>
+        <View style={styles.nameWrapper}>
+          <Text style={styles.title}>{t('home.welcome_back')}</Text>
+          <Text style={styles.name}>{name}</Text>
+        </View>
+      </Pressable>
       <View style={styles.settingsIcon}>
-        <Pressable onPress={onPressHandler}>
+        <Pressable onPress={onSettingsPressHandler}>
           <SvgXml
             fillOpacity={''}
             xml={SettingsIcon}
