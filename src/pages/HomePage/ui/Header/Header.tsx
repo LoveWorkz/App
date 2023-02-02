@@ -1,79 +1,39 @@
-import React, {useCallback, memo} from 'react';
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import React, {memo} from 'react';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
-import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {UserCard} from '@src/shared/ui/UserCard/UserCard';
 
 interface HeaderProps {
-  style?: Record<string, string | number>;
   imageUrl: string;
   name: string;
 }
 
 const Header = (props: HeaderProps) => {
-  const {style, imageUrl, name} = props;
+  const {imageUrl, name} = props;
   const {t} = useTranslation();
 
-  const onSettingsPressHandler = useCallback(() => {
+  const onSettingsPressHandler = () => {
     navigate(AppRouteNames.SETTINGS);
-  }, []);
+  };
 
-  const onProfilePressHandler = useCallback(() => {
+  const onProfilePressHandler = () => {
     navigate(AppRouteNames.PROFILE);
-  }, []);
+  };
 
   return (
-    <View style={[styles.Header, style]}>
-      <Pressable onPress={onProfilePressHandler}>
-        <Avatar theme={AvatarTheme.SMALL} imageUrl={imageUrl} />
-      </Pressable>
-      <Pressable onPress={onProfilePressHandler}>
-        <View style={styles.nameWrapper}>
-          <Text style={styles.title}>{t('home.welcome_back')}</Text>
-          <Text style={styles.name}>{name}</Text>
-        </View>
-      </Pressable>
-      <View style={styles.settingsIcon}>
-        <Pressable onPress={onSettingsPressHandler}>
-          <SvgXml
-            fillOpacity={''}
-            xml={SettingsIcon}
-            style={styles.settingsIcon}
-            fill={'#DCDCDC'}
-          />
-        </Pressable>
-      </View>
-    </View>
+    <UserCard
+      onContentPressHandler={onProfilePressHandler}
+      onIconPressHandler={onSettingsPressHandler}
+      title={t('home.welcome_back')}
+      name={name}
+      imageUrl={imageUrl}
+      Icon={<SvgXml fillOpacity={''} xml={SettingsIcon} fill={'#DCDCDC'} />}
+    />
   );
 };
 
 export const ComponentWrapper = memo(Header);
-
-const styles = StyleSheet.create({
-  Header: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  nameWrapper: {
-    marginLeft: 10,
-  },
-  title: {
-    fontSize: 14,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  settingsIcon: {
-    marginLeft: 'auto',
-    height: 20,
-    width: 20,
-  },
-});

@@ -61,6 +61,16 @@ class UserStore {
     this.authUser = user;
   }
 
+  verifyEmail = async () => {
+    try {
+      await auth().currentUser?.sendEmailVerification();
+      await auth().currentUser?.reload();
+    } catch (e) {
+      // too many request error
+      console.log(e);
+    }
+  };
+
   deleteAuthUser = async () => {
     const value = await authStorage.getAuthData(AUTH_USER_STORAGE_KEY);
     const userFromStorage = JSON.parse(value || '');
