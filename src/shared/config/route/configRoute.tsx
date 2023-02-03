@@ -6,10 +6,11 @@ import {ResetPasswordPage} from '@src/pages/ResetPasswordPage';
 import {Layout} from '@src/widgets/layout';
 import {Main} from '@src/pages/Main';
 import {SettingsPage} from '@src/pages/SettingsPage';
-import {ProfilePage} from '@src/pages/ProfilePage';
+import {ProfileHeaderRight, ProfilePage} from '@src/pages/ProfilePage';
 import {AboutPage} from '@src/pages/About';
 import {PartnersPage} from '@src/pages/PartnersPage';
 import {PrivacyPolicyPage} from '@src/pages/PrivacyPolicyPage';
+import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -23,6 +24,7 @@ export enum AppRouteNames {
   ABOUT = 'about',
   PARTNERS = 'partners',
   PRIVACY_POLICY = 'privacyPolicy',
+  CHANGE_PASSWORD = 'changePassword',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -37,6 +39,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.ABOUT]: 'about',
   [AppRouteNames.PARTNERS]: 'partners',
   [AppRouteNames.PRIVACY_POLICY]: 'privacyPolicy',
+  [AppRouteNames.CHANGE_PASSWORD]: 'changePassword',
 };
 
 type NewRouteProps = {
@@ -45,6 +48,7 @@ type NewRouteProps = {
   Element: ComponentType;
   headerShown?: boolean;
   headerTitle?: string;
+  HeaderRight?: ComponentType;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -96,6 +100,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.profile,
     headerShown: true,
     headerTitle: 'Profile',
+    HeaderRight: ProfileHeaderRight,
     Element: props => (
       <Layout {...props}>
         <ProfilePage {...props} />
@@ -129,6 +134,16 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     Element: props => (
       <Layout {...props}>
         <PrivacyPolicyPage {...props} />
+      </Layout>
+    ),
+  },
+  [AppRouteNames.CHANGE_PASSWORD]: {
+    name: appRoutePaths.changePassword,
+    headerShown: true,
+    headerTitle: 'Change Password',
+    Element: props => (
+      <Layout {...props}>
+        <ChangePasswordPage {...props} />
       </Layout>
     ),
   },

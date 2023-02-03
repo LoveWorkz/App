@@ -2,15 +2,11 @@ import {makeAutoObservable} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-import {User, InitlUserInfo} from '../types/userSchema';
-import {
-  AUTH_METHOD_STORAGE_KEY,
-  AUTH_USER_STORAGE_KEY,
-} from '@src/shared/consts/storage';
 import {Collections} from '@src/shared/types/types';
-import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
+import {DeleteAccountStore} from '@src/features/DeleteAccount';
+import {User, InitlUserInfo} from '../types/userSchema';
 import {userFormatter} from '../../lib/userForamtter';
 
 class UserStore {
@@ -51,7 +47,7 @@ class UserStore {
     }
 
     if (e.message.includes('auth/user-not-found')) {
-      await this.deleteAuthUser();
+      await DeleteAccountStore.clearUserInfo();
 
       navigate(AppRouteNames.AUTH);
     }
@@ -69,20 +65,6 @@ class UserStore {
       // too many request error
       console.log(e);
     }
-  };
-
-  deleteAuthUser = async () => {
-    const value = await authStorage.getAuthData(AUTH_USER_STORAGE_KEY);
-    const userFromStorage = JSON.parse(value || '');
-
-    this.authUser = null;
-    await firestore()
-      .collection(Collections.USERS)
-      .doc(userFromStorage.id)
-      .delete();
-
-    await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
-    await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
   };
 }
 

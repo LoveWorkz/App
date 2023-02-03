@@ -3,16 +3,18 @@ import {StyleSheet, View, ImageBackground} from 'react-native';
 
 export enum AvatarTheme {
   SMALL = 'small',
+  LARGE = 'large',
 }
 
 interface AvatarProps {
   theme?: AvatarTheme;
   style?: Record<string, string | number>;
   imageUrl: string;
+  borderRadius?: number;
 }
 
 export const Avatar = memo((props: AvatarProps) => {
-  const {theme = AvatarTheme.SMALL, style, imageUrl} = props;
+  const {theme = AvatarTheme.SMALL, style, imageUrl, borderRadius = 50} = props;
 
   const mode = useMemo(() => {
     return [styles.Avatar, style, styles[theme]];
@@ -24,12 +26,14 @@ export const Avatar = memo((props: AvatarProps) => {
 
   return (
     <View style={mode}>
-      <ImageBackground
-        source={image}
-        resizeMode="cover"
-        borderRadius={50}
-        style={styles.image}
-      />
+      {imageUrl && (
+        <ImageBackground
+          source={image}
+          resizeMode="cover"
+          borderRadius={borderRadius}
+          style={styles.image}
+        />
+      )}
     </View>
   );
 });
@@ -48,6 +52,13 @@ const styles = StyleSheet.create<Record<string, any>>({
   image: {
     height: '100%',
     width: '100%',
-    borderRadius: 50,
+  },
+  large: {
+    height: 130,
+    width: 130,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 100,
   },
 });

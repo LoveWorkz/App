@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {StatusBar} from 'react-native';
+import {StatusBar, View} from 'react-native';
 
 import {
   AppRouteNames,
@@ -20,11 +20,18 @@ export const AppRoute = () => {
           headerShown: false,
         }}>
         {Object.values(appRoutesConfig).map(
-          ({name, Element, headerShown, headerTitle}) => (
+          ({name, Element, headerShown, headerTitle, HeaderRight}) => (
             <Stack.Screen
               options={{
                 headerShown: headerShown,
                 title: headerTitle,
+                headerRight: HeaderRight
+                  ? () => (
+                      <View>
+                        <HeaderRight />
+                      </View>
+                    )
+                  : undefined,
               }}
               name={name}
               component={Element}
