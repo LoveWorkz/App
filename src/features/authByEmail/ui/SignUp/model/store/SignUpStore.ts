@@ -80,6 +80,7 @@ class SignUpStore {
       AUTH_METHOD_STORAGE_KEY,
       AuthMethod.AUTH_BY_EMAIL,
     );
+    userStore.setAuthMethod(AuthMethod.AUTH_BY_EMAIL);
     await authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
 
     await firestore()
@@ -115,7 +116,7 @@ class SignUpStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
-      navigate(AppRouteNames.MAIN);
+      navigate(AppRouteNames.SETUP);
     } catch (error: unknown) {
       this.errorHandler(error);
     }

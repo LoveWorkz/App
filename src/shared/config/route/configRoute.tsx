@@ -11,12 +11,14 @@ import {AboutPage} from '@src/pages/About';
 import {PartnersPage} from '@src/pages/PartnersPage';
 import {PrivacyPolicyPage} from '@src/pages/PrivacyPolicyPage';
 import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
+import {SetUpPage} from '@src/pages/SetUpPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
   MAIN = 'main',
   SPLASH = 'splash',
   RESET_PASSWORD = 'reset_password',
+  SETUP = 'setup',
 
   // pages with title
   SETTINGS = 'settings',
@@ -40,6 +42,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.PARTNERS]: 'partners',
   [AppRouteNames.PRIVACY_POLICY]: 'privacyPolicy',
   [AppRouteNames.CHANGE_PASSWORD]: 'changePassword',
+  [AppRouteNames.SETUP]: 'setup',
 };
 
 type NewRouteProps = {
@@ -144,6 +147,15 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     Element: props => (
       <Layout {...props}>
         <ChangePasswordPage {...props} />
+      </Layout>
+    ),
+  },
+  [AppRouteNames.SETUP]: {
+    name: appRoutePaths.setup,
+    headerShown: false,
+    Element: props => (
+      <Layout {...props}>
+        <SetUpPage {...props} />
       </Layout>
     ),
   },

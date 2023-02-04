@@ -66,6 +66,7 @@ class SignInStore {
       AUTH_METHOD_STORAGE_KEY,
       AuthMethod.AUTH_BY_EMAIL,
     );
+    userStore.setAuthMethod(AuthMethod.AUTH_BY_EMAIL);
     await authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
 
     await firestore().collection(Collections.USERS).doc(user.id).update({

@@ -1,20 +1,25 @@
 import {makeAutoObservable} from 'mobx';
-import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
-import {Collections} from '@src/shared/types/types';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {DeleteAccountStore} from '@src/features/DeleteAccount';
-import {User, InitlUserInfo} from '../types/userSchema';
+import {User, InitlUserInfo, AuthMethod} from '../types/userSchema';
 import {userFormatter} from '../../lib/userForamtter';
+import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
+import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
 
 class UserStore {
   authUser: null | User = null;
+  authMethod: AuthMethod = AuthMethod.AUTH_BY_EMAIL;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setAuthMethod = async (authMethod: AuthMethod) => {
+    this.authMethod = authMethod;
+  };
 
   initAuthUser = async () => {
     try {
@@ -25,12 +30,10 @@ class UserStore {
         const formattedUser = userFormatter(user as InitlUserInfo);
         this.authUser = formattedUser;
 
-        await firestore()
-          .collection(Collections.USERS)
-          .doc(formattedUser.id)
-          .update({
-            ...formattedUser,
-          });
+        const value = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
+        if (value) {
+          this.setAuthMethod(value as AuthMethod);
+        }
 
         navigate(AppRouteNames.MAIN);
       } else {

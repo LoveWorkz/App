@@ -9,6 +9,9 @@ import {
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
 import {Collections} from '@src/shared/types/types';
+import {navigate} from '@src/shared/config/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {profileStore} from '@src/entities/Profile';
 
 class DeleteAccountStore {
   constructor() {
@@ -21,8 +24,9 @@ class DeleteAccountStore {
 
       if (currentUser) {
         await currentUser.delete();
+        await this.clearUserInfo();
 
-        this.clearUserInfo();
+        navigate(AppRouteNames.AUTH);
       }
     } catch (e) {
       console.log(e);
@@ -39,6 +43,7 @@ class DeleteAccountStore {
       .doc(userFromStorage.id)
       .delete();
 
+    profileStore.setProfileData(null);
     await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
     await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
   };

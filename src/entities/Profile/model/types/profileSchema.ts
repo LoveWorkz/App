@@ -1,8 +1,20 @@
 export interface Profile {
   id: string;
-  photo: string | null;
+  photo: string;
   email: string;
-  name: string | null;
+  name: string;
   emailVerified: boolean;
   isAuth: boolean;
+  age: string;
+  country: string;
+  relationshipStatus: string;
+  rubric: string;
+}
+
+export interface ProfileErrorInfo {
+  nameError: string;
+  ageError: string;
+  countryError: string;
+  relationshipStatusError: string;
+  rubricError: string;
 }

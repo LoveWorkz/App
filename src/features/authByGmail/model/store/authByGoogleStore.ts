@@ -26,6 +26,7 @@ class AuthByGoogleStore {
     userStore.setAuthUser(user);
 
     authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, AuthMethod.AUTH_BY_GOOGLE);
+    userStore.setAuthMethod(AuthMethod.AUTH_BY_GOOGLE);
     authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
 
     const authUser = await (

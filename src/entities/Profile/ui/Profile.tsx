@@ -1,0 +1,151 @@
+import {observer} from 'mobx-react-lite';
+import React, {memo, useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View, Text} from 'react-native';
+
+import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
+import {UploadPhoto} from '@src/widgets/UploadPhoto';
+import {DeleteAccountModal} from '@src/features/DeleteAccount';
+import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
+import {Wrapper as ProfileForm} from './ProfileForm/ProfileForm';
+import profileStore from '../model/store/profileStore';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {AuthMethod, userStore} from '@src/entities/User';
+
+interface ProfileProps {
+  isSetUp?: boolean;
+}
+
+const Profile = (props: ProfileProps) => {
+  const {isSetUp = false} = props;
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    return () => profileStore.resetForm();
+  }, []);
+
+  const onDeleteHandler = () => {
+    setVisible(true);
+  };
+
+  const onSaveHandler = () => {
+    profileStore.updateProfile();
+  };
+
+  if (isSetUp) {
+    return (
+      <FlatList
+        data={[1]}
+        renderItem={() => (
+          <View style={styles.profile}>
+            <View>
+              <Text style={styles.logo}>LOGO</Text>
+            </View>
+            <View style={styles.profileFormWrapper}>
+              <ProfileForm />
+            </View>
+            <Button
+              onPress={onSaveHandler}
+              theme={ButtonTheme.OUTLINED}
+              style={styles.nextButton}>
+              <Text>next</Text>
+            </Button>
+          </View>
+        )}
+        onEndReachedThreshold={50}
+      />
+    );
+  }
+
+  return (
+    <FlatList
+      data={[1]}
+      renderItem={() => (
+        <View style={styles.profile}>
+          <Avatar
+            theme={AvatarTheme.LARGE}
+            imageUrl={profileStore.profileData?.photo || ''}
+            borderRadius={100}
+          />
+          <View style={styles.uploadPhotoWrapper}>
+            <UploadPhoto />
+          </View>
+          {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
+            <View style={styles.changePasswordWrapper}>
+              <ChangePassword />
+            </View>
+          )}
+          <View style={styles.profileFormWrapper}>
+            <ProfileForm />
+          </View>
+
+          <View style={styles.btns}>
+            <Button
+              onPress={onSaveHandler}
+              theme={ButtonTheme.OUTLINED}
+              style={styles.saveBtn}>
+              <Text>save changes</Text>
+            </Button>
+            <Button
+              style={styles.deleteBtn}
+              theme={ButtonTheme.OUTLINED}
+              onPress={onDeleteHandler}>
+              <Text style={styles.deleteText}>Delete Account</Text>
+            </Button>
+          </View>
+          <DeleteAccountModal visible={visible} setVisible={setVisible} />
+        </View>
+      )}
+    />
+  );
+};
+
+export const Wrapper = memo(observer(Profile));
+
+const styles = StyleSheet.create({
+  profile: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  logo: {
+    fontSize: 30,
+    marginBottom: 30,
+  },
+  uploadPhotoWrapper: {
+    marginTop: -20,
+  },
+  changePasswordWrapper: {
+    marginTop: 30,
+    marginBottom: 30,
+    width: '100%',
+  },
+  profileFormWrapper: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  deleteUserWrapper: {
+    width: '100%',
+    marginTop: 20,
+  },
+  btns: {
+    marginTop: 20,
+    marginBottom: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  saveBtn: {
+    width: '45%',
+  },
+  nextButton: {
+    width: '100%',
+    marginBottom: 20,
+  },
+  deleteBtn: {
+    backgroundColor: 'black',
+    width: '45%',
+  },
+  deleteText: {
+    color: 'white',
+  },
+});

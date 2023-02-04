@@ -4,8 +4,6 @@ import Modal from 'react-native-modal';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {modalContentStyle} from '@src/app/styles';
-import {navigate} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import DeleteAccountStore from '../../model/store/DeleteAccountStore';
 
 interface LogOutModalProps {
@@ -16,10 +14,9 @@ interface LogOutModalProps {
 const DeleteAccountModal = (props: LogOutModalProps) => {
   const {visible, setVisible} = props;
 
-  const onlogoutHandler = useCallback(() => {
+  const onDeleteHandler = useCallback(() => {
     DeleteAccountStore.deleteUserAccount().then(() => {
       setVisible?.(false);
-      navigate(AppRouteNames.AUTH);
     });
   }, [setVisible]);
 
@@ -55,7 +52,7 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
               <Button
                 theme={ButtonTheme.OUTLINED}
                 style={styles.logOutBtn}
-                onPress={onlogoutHandler}>
+                onPress={onDeleteHandler}>
                 <Text style={styles.logOut}>delete</Text>
               </Button>
             </View>
