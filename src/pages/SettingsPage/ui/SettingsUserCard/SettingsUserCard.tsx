@@ -26,7 +26,7 @@ const SettingsUserCard = () => {
         title={profile?.email || ''}
         Icon={<SvgXml xml={LogOutIcon} />}
       />
-      <LogOutModal visible={visible} setVisible={setVisible} />
+      {visible && <LogOutModal visible={visible} setVisible={setVisible} />}
     </View>
   );
 };

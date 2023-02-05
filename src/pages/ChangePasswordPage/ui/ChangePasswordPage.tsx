@@ -35,38 +35,26 @@ const ChangePasswordPage = () => {
           value={changePasswordStore.formData.oldPassword}
           onChange={onChangeOldPasswordHandler}
           placeholder={'Enter current password'}
+          error={changePasswordStore.errorInfo.oldPasswordError}
         />
-        {changePasswordStore.errorInfo.oldPasswordError && (
-          <Text style={styles.errorText}>
-            {changePasswordStore.errorInfo.oldPasswordError}
-          </Text>
-        )}
       </View>
       <View style={styles.item}>
         <Input
           label={'New password'}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
+          error={changePasswordStore.errorInfo.newPasswordError}
           placeholder={'Enter new password'}
         />
-        {changePasswordStore.errorInfo.newPasswordError && (
-          <Text style={styles.errorText}>
-            {changePasswordStore.errorInfo.newPasswordError}
-          </Text>
-        )}
       </View>
       <View style={styles.item}>
         <Input
           label={'Repeat password'}
           value={changePasswordStore.formData.confirmPassword}
           onChange={onChangeRepeatPasswordHandler}
+          error={changePasswordStore.errorInfo.confirmPasswordError}
           placeholder={'Enter repeat password'}
         />
-        {changePasswordStore.errorInfo.confirmPasswordError && (
-          <Text style={styles.errorText}>
-            {changePasswordStore.errorInfo.confirmPasswordError}
-          </Text>
-        )}
       </View>
       <Button
         style={styles.btn}
@@ -86,7 +74,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   item: {
-    marginBottom: 10,
+    marginBottom: 15,
   },
   btn: {
     position: 'absolute',
@@ -96,8 +84,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-  },
-  errorText: {
-    color: 'red',
   },
 });

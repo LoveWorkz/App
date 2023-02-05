@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
 import {useTranslation} from 'react-i18next';
@@ -32,44 +32,32 @@ const SignUp = () => {
 
   return (
     <View>
-      <View style={styles.email}>
-        <Text style={styles.emailText}>{t('auth.email')}</Text>
+      <View>
         <Input
+          label={t('auth.email') || ''}
           value={signUpStore.signUpData.email}
           onChange={onEmailChangeHandler}
           placeholder={t('auth.enter_email') || ''}
+          error={signUpStore.errorInfo.emailError}
         />
-        {signUpStore.errorInfo.emailError && (
-          <Text style={styles.errorText}>
-            {signUpStore.errorInfo.emailError}{' '}
-          </Text>
-        )}
       </View>
       <View style={styles.password}>
-        <Text style={styles.emailText}>{t('auth.password')}</Text>
         <Input
+          label={t('auth.password') || ''}
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
           placeholder={'Enter Password'}
+          error={signUpStore.errorInfo.passwordError}
         />
-        {signUpStore.errorInfo.passwordError && (
-          <Text style={styles.errorText}>
-            {signUpStore.errorInfo.passwordError}{' '}
-          </Text>
-        )}
       </View>
       <View>
-        <Text style={styles.passwordText}>{t('auth.repeat_password')}</Text>
         <Input
+          label={t('auth.repeat_password') || ''}
           value={signUpStore.signUpData.confirmPassword}
           onChange={onConfirmPasswordChangeHandler}
           placeholder={t('auth.enter_password') || ''}
+          error={signUpStore.errorInfo.confirmPasswordError}
         />
-        {signUpStore.errorInfo.confirmPasswordError && (
-          <Text style={styles.errorText}>
-            {signUpStore.errorInfo.confirmPasswordError}
-          </Text>
-        )}
       </View>
       <CheckBox
         value={signUpStore.agreeWithPrivacyPolicy}
@@ -83,21 +71,12 @@ const SignUp = () => {
 export const ComponentWrapper = memo(observer(SignUp));
 
 const styles = StyleSheet.create({
-  emailText: {
-    fontWeight: '600',
-  },
   passwordText: {
     fontWeight: '600',
   },
   password: {
     marginBottom: 15,
     marginTop: 15,
-  },
-  email: {},
-  errorText: {
-    color: 'red',
-    position: 'absolute',
-    bottom: -18,
   },
   checkbox: {
     marginTop: 20,

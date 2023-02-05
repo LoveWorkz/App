@@ -30,35 +30,25 @@ const SignIn = () => {
   return (
     <View>
       <View style={styles.email}>
-        <Text style={styles.emailText}>{t('auth.email')}</Text>
         <Input
+          label={t('auth.email') || ''}
           value={signInStore.signInData.email}
           onChange={onEmailChangeHandler}
           placeholder={t('auth.enter_email') || ''}
+          error={signInStore.errorInfo.emailError}
         />
-        {signInStore.errorInfo.emailError && (
-          <Text style={styles.errorText}>
-            {signInStore.errorInfo.emailError}
-          </Text>
-        )}
       </View>
       <View style={styles.password}>
-        <View style={styles.passwordTitle}>
-          <Text style={styles.passwordText}>{t('auth.password')}</Text>
-          <Pressable onPress={onClickHandler}>
-            <Text>{t('auth.forgot_password')}</Text>
-          </Pressable>
-        </View>
+        <Pressable style={styles.forgotPassword} onPress={onClickHandler}>
+          <Text>{t('auth.forgot_password')}</Text>
+        </Pressable>
         <Input
           value={signInStore.signInData.password}
           onChange={onPasswordChangeHandler}
           placeholder={t('auth.enter_password') || ''}
+          label={t('auth.password') || ''}
+          error={signInStore.errorInfo.passwordError}
         />
-        {signInStore.errorInfo.passwordError && (
-          <Text style={styles.errorText}>
-            {signInStore.errorInfo.passwordError}
-          </Text>
-        )}
       </View>
     </View>
   );
@@ -70,9 +60,6 @@ const styles = StyleSheet.create({
   email: {
     position: 'relative',
   },
-  emailText: {
-    fontWeight: '600',
-  },
   passwordText: {
     fontWeight: '600',
   },
@@ -80,13 +67,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15,
   },
-  errorText: {
-    color: 'red',
+  forgotPassword: {
     position: 'absolute',
-    bottom: -18,
-  },
-  passwordTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    right: 0,
+    zIndex: 1,
   },
 });

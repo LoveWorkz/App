@@ -9,7 +9,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
 
 class ProfileStore {
-  profileData = {} as Profile | null;
+  profileData = null as Profile | null;
   profileForm = {} as Profile;
   errorInfo: ProfileErrorInfo = {
     ageError: '',

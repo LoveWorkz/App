@@ -7,11 +7,11 @@ import {Layout} from '@src/widgets/layout';
 import {Main} from '@src/pages/Main';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfileHeaderRight, ProfilePage} from '@src/pages/ProfilePage';
-import {AboutPage} from '@src/pages/About';
 import {PartnersPage} from '@src/pages/PartnersPage';
 import {PrivacyPolicyPage} from '@src/pages/PrivacyPolicyPage';
 import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
 import {SetUpPage} from '@src/pages/SetUpPage';
+import {AboutPage} from '@src/pages/AboutPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',

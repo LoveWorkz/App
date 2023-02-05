@@ -17,7 +17,7 @@ const ProfileHeaderRight = () => {
       <Pressable onPress={onPressHandler}>
         <SvgXml xml={LogOutIcon} style={styles.icon} />
       </Pressable>
-      <LogOutModal visible={visible} setVisible={setVisible} />
+      {visible && <LogOutModal visible={visible} setVisible={setVisible} />}
     </View>
   );
 };

@@ -1,11 +1,11 @@
 import React, {ComponentType} from 'react';
 
 import {HomePage} from '@src/pages/HomePage';
-import {Categories} from '@src/pages/Categories';
 import {Layout} from '@src/widgets/layout';
-import {BooksPage} from '@src/pages/Books';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {ShopPage} from '@src/pages/ShopPage';
+import {Categories} from '@src/pages/CategoriesPage';
+import {BooksPage} from '@src/pages/BooksPage';
 
 export enum TabRoutesNames {
   HOME = 'home',

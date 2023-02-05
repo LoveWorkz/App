@@ -47,11 +47,11 @@ export const Input = memo((props: InputProps) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={style}>
       <Text>{label}</Text>
       <TextInput
         keyboardType={keyboardType}
-        style={[styles.input, style, styles[theme]]}
+        style={[styles.input, styles[theme]]}
         onChangeText={onChangeTextHandler}
         value={value}
         placeholder={placeholder}
@@ -73,6 +73,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   errorText: {
     color: 'red',
     position: 'absolute',
-    bottom: -15,
+    bottom: -17,
   },
 });

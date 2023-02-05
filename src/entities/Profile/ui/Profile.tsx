@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import React, {memo, useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ScrollView} from 'react-native';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
@@ -33,69 +33,64 @@ const Profile = (props: ProfileProps) => {
 
   if (isSetUp) {
     return (
-      <FlatList
-        data={[1]}
-        renderItem={() => (
-          <View style={styles.profile}>
-            <View>
-              <Text style={styles.logo}>LOGO</Text>
-            </View>
-            <View style={styles.profileFormWrapper}>
-              <ProfileForm />
-            </View>
-            <Button
-              onPress={onSaveHandler}
-              theme={ButtonTheme.OUTLINED}
-              style={styles.nextButton}>
-              <Text>next</Text>
-            </Button>
+      <ScrollView>
+        <View style={styles.profile}>
+          <View>
+            <Text style={styles.logo}>LOGO</Text>
           </View>
-        )}
-        onEndReachedThreshold={50}
-      />
+          <View style={styles.profileFormWrapper}>
+            <ProfileForm />
+          </View>
+          <Button
+            onPress={onSaveHandler}
+            theme={ButtonTheme.OUTLINED}
+            style={styles.nextButton}>
+            <Text>next</Text>
+          </Button>
+        </View>
+      </ScrollView>
     );
   }
 
   return (
-    <FlatList
-      data={[1]}
-      renderItem={() => (
-        <View style={styles.profile}>
-          <Avatar
-            theme={AvatarTheme.LARGE}
-            imageUrl={profileStore.profileData?.photo || ''}
-            borderRadius={100}
-          />
-          <View style={styles.uploadPhotoWrapper}>
-            <UploadPhoto />
-          </View>
-          {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
-            <View style={styles.changePasswordWrapper}>
-              <ChangePassword />
-            </View>
-          )}
-          <View style={styles.profileFormWrapper}>
-            <ProfileForm />
-          </View>
-
-          <View style={styles.btns}>
-            <Button
-              onPress={onSaveHandler}
-              theme={ButtonTheme.OUTLINED}
-              style={styles.saveBtn}>
-              <Text>save changes</Text>
-            </Button>
-            <Button
-              style={styles.deleteBtn}
-              theme={ButtonTheme.OUTLINED}
-              onPress={onDeleteHandler}>
-              <Text style={styles.deleteText}>Delete Account</Text>
-            </Button>
-          </View>
-          <DeleteAccountModal visible={visible} setVisible={setVisible} />
+    <ScrollView>
+      <View style={styles.profile}>
+        <Avatar
+          theme={AvatarTheme.LARGE}
+          imageUrl={profileStore.profileData?.photo || ''}
+          borderRadius={100}
+        />
+        <View style={styles.uploadPhotoWrapper}>
+          <UploadPhoto />
         </View>
-      )}
-    />
+        {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
+          <View style={styles.changePasswordWrapper}>
+            <ChangePassword />
+          </View>
+        )}
+        <View style={styles.profileFormWrapper}>
+          <ProfileForm />
+        </View>
+
+        <View style={styles.btns}>
+          <Button
+            onPress={onSaveHandler}
+            theme={ButtonTheme.OUTLINED}
+            style={styles.saveBtn}>
+            <Text>save changes</Text>
+          </Button>
+          <Button
+            style={styles.deleteBtn}
+            theme={ButtonTheme.OUTLINED}
+            onPress={onDeleteHandler}>
+            <Text style={styles.deleteText}>Delete Account</Text>
+          </Button>
+        </View>
+        {visible && (
+          <DeleteAccountModal visible={visible} setVisible={setVisible} />
+        )}
+      </View>
+    </ScrollView>
   );
 };
 

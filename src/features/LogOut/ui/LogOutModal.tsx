@@ -27,10 +27,8 @@ const LogOutModal = (props: LogOutModalProps) => {
   return (
     <View>
       <Modal
-        backdropTransitionOutTiming={600}
-        animationInTiming={500}
+        animationInTiming={300}
         animationIn={'bounceIn'}
-        animationOut={'bounce'}
         onBackdropPress={onCancelHandler}
         isVisible={visible}>
         <View style={styles.overlay}>

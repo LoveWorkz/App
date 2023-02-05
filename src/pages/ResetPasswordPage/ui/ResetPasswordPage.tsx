@@ -27,10 +27,8 @@ const ResetPasswordPage = () => {
           placeholder={'Enter email'}
           value={resetPasswordStore.email}
           onChange={onChangeHandler}
+          error={resetPasswordStore.emailError}
         />
-        {resetPasswordStore.emailError && (
-          <Text style={styles.errorText}>{resetPasswordStore.emailError}</Text>
-        )}
       </View>
       <View style={styles.buttonWrapper}>
         <Button onPress={onClickHandler} theme={ButtonTheme.OUTLINED}>
@@ -59,8 +57,5 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     marginTop: 20,
     width: 200,
-  },
-  errorText: {
-    color: 'red',
   },
 });

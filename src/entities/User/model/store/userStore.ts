@@ -1,5 +1,6 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigate} from '@src/shared/config/navigation/navigation';
@@ -15,6 +16,10 @@ class UserStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setAuthUser(user: User | null) {
+    this.authUser = user;
   }
 
   setAuthMethod = async (authMethod: AuthMethod) => {
@@ -56,9 +61,38 @@ class UserStore {
     }
   };
 
-  setAuthUser(user: User | null) {
-    this.authUser = user;
-  }
+  reauthenticate = async ({
+    email,
+    password,
+    erorHandler,
+  }: {
+    email?: string;
+    password?: string;
+    erorHandler?: (e: unknown) => void;
+  }) => {
+    try {
+      const isAuthMethodEmail = this.authMethod === AuthMethod.AUTH_BY_EMAIL;
+      let credential;
+
+      if (isAuthMethodEmail) {
+        if (email && password) {
+          credential = auth.EmailAuthProvider.credential(email, password);
+        }
+      } else {
+        const tokens = await GoogleSignin.getTokens();
+        credential = auth.GoogleAuthProvider.credential(tokens.idToken);
+      }
+
+      const currentUser = auth().currentUser;
+      credential &&
+        (await currentUser?.reauthenticateWithCredential(credential));
+      return true;
+    } catch (e) {
+      console.log(e);
+      erorHandler?.(e);
+      return false;
+    }
+  };
 
   verifyEmail = async () => {
     try {

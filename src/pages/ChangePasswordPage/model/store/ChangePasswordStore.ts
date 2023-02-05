@@ -63,25 +63,6 @@ class ChangePasswordStore {
     this.clearErrors();
   }
 
-  reauthenticate = async () => {
-    try {
-      const email = userStore.authUser?.email;
-      if (email && this.formData.oldPassword) {
-        const user = auth.EmailAuthProvider.credential(
-          email,
-          this.formData.oldPassword,
-        );
-        const currentUser = auth().currentUser;
-        await currentUser?.reauthenticateWithCredential(user);
-        return true;
-      }
-    } catch (e) {
-      console.log(e);
-      this.errorHandler(e);
-      return false;
-    }
-  };
-
   errorHandler(error: unknown) {
     if (!(error instanceof Error)) {
       return;
@@ -109,7 +90,11 @@ class ChangePasswordStore {
 
     try {
       const currentUser = auth().currentUser;
-      const isCorrectPassword = await this.reauthenticate();
+      const isCorrectPassword = await userStore.reauthenticate({
+        email: userStore.authUser?.email || '',
+        password: this.formData.oldPassword,
+        erorHandler: e => this.errorHandler(e),
+      });
 
       if (currentUser && this.formData.newPassword && isCorrectPassword) {
         currentUser.updatePassword(this.formData.newPassword);

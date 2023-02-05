@@ -20,7 +20,7 @@ export const Select = (props: SelectProps) => {
   const {label, onSelect, options, value, initialValue, prompt} = props;
 
   useEffect(() => {
-    onSelect?.(initialValue || options[0].value);
+    onSelect?.(initialValue || options[0]?.value);
   }, [initialValue, onSelect, options]);
 
   const onSelectHandler = useCallback(

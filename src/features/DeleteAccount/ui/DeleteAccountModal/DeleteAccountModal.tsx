@@ -1,10 +1,13 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import Modal from 'react-native-modal';
+import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {modalContentStyle} from '@src/app/styles';
 import DeleteAccountStore from '../../model/store/DeleteAccountStore';
+import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
+import {AuthMethod, userStore} from '@src/entities/User';
 
 interface LogOutModalProps {
   visible: boolean;
@@ -13,13 +16,21 @@ interface LogOutModalProps {
 
 const DeleteAccountModal = (props: LogOutModalProps) => {
   const {visible, setVisible} = props;
+  const [isConfirm, setIsConfirm] = useState(false);
 
-  const onDeleteHandler = useCallback(() => {
-    DeleteAccountStore.deleteUserAccount().then(() => {
+  const deleteAuthUser = useCallback(() => {
+    DeleteAccountStore.deleteUserAccount(() => {
       setVisible?.(false);
     });
   }, [setVisible]);
 
+  const onDeleteHandler = () => {
+    if (userStore.authMethod === AuthMethod.AUTH_BY_EMAIL) {
+      setIsConfirm(true);
+      return;
+    }
+    deleteAuthUser();
+  };
   const onCancelHandler = useCallback(() => {
     setVisible?.(false);
   }, [setVisible]);
@@ -27,35 +38,40 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
   return (
     <SafeAreaView>
       <Modal
-        backdropTransitionOutTiming={600}
-        animationInTiming={500}
+        animationInTiming={300}
         animationIn={'bounceIn'}
-        animationOut={'bounce'}
         onBackdropPress={onCancelHandler}
         isVisible={visible}>
         <View style={styles.overlay}>
           <View style={styles.content}>
-            <Text style={styles.title}>Delete your account ?</Text>
-
-            <Text style={styles.text}>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit ipsum
-              dolor.
-            </Text>
-
-            <View style={styles.btnGroup}>
-              <Button
-                style={styles.cancelBtn}
-                theme={ButtonTheme.OUTLINED}
-                onPress={onCancelHandler}>
-                <Text style={styles.cancel}>cancel</Text>
-              </Button>
-              <Button
-                theme={ButtonTheme.OUTLINED}
-                style={styles.logOutBtn}
-                onPress={onDeleteHandler}>
-                <Text style={styles.logOut}>delete</Text>
-              </Button>
-            </View>
+            {isConfirm ? (
+              <ConfirmDeleting
+                onDeleteHandler={deleteAuthUser}
+                onCancelHandler={onCancelHandler}
+              />
+            ) : (
+              <>
+                <Text style={styles.title}>Delete your account ?</Text>
+                <Text style={styles.text}>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit ipsum
+                  dolor.
+                </Text>
+                <View style={styles.btnGroup}>
+                  <Button
+                    style={styles.cancelBtn}
+                    theme={ButtonTheme.OUTLINED}
+                    onPress={onCancelHandler}>
+                    <Text style={styles.cancel}>cancel</Text>
+                  </Button>
+                  <Button
+                    theme={ButtonTheme.OUTLINED}
+                    style={styles.logOutBtn}
+                    onPress={onDeleteHandler}>
+                    <Text style={styles.logOut}>delete</Text>
+                  </Button>
+                </View>
+              </>
+            )}
           </View>
         </View>
       </Modal>
@@ -63,7 +79,7 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
   );
 };
 
-export const Wrapper = memo(DeleteAccountModal);
+export const Wrapper = memo(observer(DeleteAccountModal));
 
 const fontSize = 16;
 const btnWidth = '40%';
@@ -71,6 +87,7 @@ const btnWidth = '40%';
 const styles = StyleSheet.create({
   content: {
     ...(modalContentStyle as Record<string, string | number>),
+    height: 280,
   },
   overlay: {
     flex: 1,
