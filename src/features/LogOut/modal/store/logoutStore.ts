@@ -12,6 +12,7 @@ import {
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
 import {Collections} from '@src/shared/types/types';
+import {profileStore} from '@src/entities/Profile';
 
 class LogoutStore {
   constructor() {
@@ -36,6 +37,7 @@ class LogoutStore {
       await auth().signOut();
       navigate(AppRouteNames.AUTH);
       userStore.setAuthUser(null);
+      profileStore.setProfileData(null);
     } catch (e) {
       console.error(e);
     }

@@ -1,6 +1,7 @@
 import {observer} from 'mobx-react-lite';
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
@@ -19,9 +20,11 @@ const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    return () => profileStore.resetForm();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => profileStore.resetForm();
+    }, []),
+  );
 
   const onDeleteHandler = () => {
     setVisible(true);

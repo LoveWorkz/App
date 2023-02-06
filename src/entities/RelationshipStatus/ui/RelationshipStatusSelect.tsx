@@ -4,10 +4,10 @@ import {SafeAreaView} from 'react-native';
 import {Select} from '@src/shared/ui/Select/Select';
 
 const options = [
-  {label: 'lavel 1', value: 'lavel 1'},
-  {label: 'lavel 2', value: 'lavel 2'},
-  {label: 'lavel 3', value: 'lavel 3'},
-  {label: 'lavel 4', value: 'lavel 4'},
+  {label: 'status 1', value: 'status 1'},
+  {label: 'status 2', value: 'status 2'},
+  {label: 'status 3', value: 'status 3'},
+  {label: 'status 4', value: 'status 4'},
 ];
 
 interface RelationshipStatusSelectProps {

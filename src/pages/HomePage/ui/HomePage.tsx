@@ -1,6 +1,7 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {profileStore} from '@src/entities/Profile';
@@ -12,9 +13,11 @@ import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {userStore} from '@src/entities/User';
 
 const HomePage = () => {
-  useEffect(() => {
-    profileStore.fetchProfile();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      profileStore.fetchProfile();
+    }, []),
+  );
 
   const verifyEmailHandler = useCallback(async () => {
     userStore.verifyEmail();
