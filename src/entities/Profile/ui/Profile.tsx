@@ -1,7 +1,8 @@
 import {observer} from 'mobx-react-lite';
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
+import {Asset} from 'react-native-image-picker';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
@@ -34,6 +35,15 @@ const Profile = (props: ProfileProps) => {
     profileStore.updateProfile();
   };
 
+  const onUploadPhotoHandler = useCallback((photoData: Asset) => {
+    profileStore.setPhoto(photoData.uri || '');
+    profileStore.setFileName(photoData.fileName || '');
+  }, []);
+
+  const onDeletePhotoHandler = useCallback(() => {
+    profileStore.deletePhoto();
+  }, []);
+
   if (isSetUp) {
     return (
       <ScrollView>
@@ -60,11 +70,18 @@ const Profile = (props: ProfileProps) => {
       <View style={styles.profile}>
         <Avatar
           theme={AvatarTheme.LARGE}
-          imageUrl={profileStore.profileData?.photo || ''}
+          imageUrl={
+            profileStore.profileForm?.photo ||
+            profileStore.profileData?.photo ||
+            ''
+          }
           borderRadius={100}
         />
         <View style={styles.uploadPhotoWrapper}>
-          <UploadPhoto />
+          <UploadPhoto
+            deletePhoto={onDeletePhotoHandler}
+            setPhtotData={onUploadPhotoHandler}
+          />
         </View>
         {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
           <View style={styles.changePasswordWrapper}>

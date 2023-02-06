@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 import {Collections} from '@src/shared/types/types';
 import {userStore} from '@src/entities/User';
@@ -18,6 +19,7 @@ class ProfileStore {
     relationshipStatusError: '',
     rubricError: '',
   };
+  fileName: string = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -55,6 +57,21 @@ class ProfileStore {
     this.profileData = data;
   }
 
+  setPhoto(photo: string) {
+    this.profileForm.photo = photo;
+  }
+
+  setFileName(name: string) {
+    this.fileName = name;
+  }
+
+  putFileToStorage = async () => {
+    if (this.fileName && this.profileForm.photo) {
+      const reference = storage().ref(this.fileName);
+      await reference.putFile(this.profileForm.photo);
+    }
+  };
+
   clearErrors() {
     this.setValidationError({
       ageError: '',
@@ -71,6 +88,8 @@ class ProfileStore {
     this.setCountry('');
     this.setRelationshipStatus('');
     this.setRubric('');
+    this.setPhoto('');
+    this.setFileName('');
     this.clearErrors();
   }
 
@@ -114,9 +133,31 @@ class ProfileStore {
             ...this.profileForm,
           });
 
+        await this.putFileToStorage();
+
         await this.fetchProfile();
         navigate(AppRouteNames.MAIN);
       }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  deletePhoto = async () => {
+    try {
+      this.setPhoto('');
+      this.setFileName('');
+
+      const userId = userStore.authUser?.id;
+      await firestore()
+        .collection(Collections.USERS)
+        .doc(userId)
+        .update({
+          ...this.profileForm,
+          photo: '',
+        });
+
+      await this.fetchProfile();
     } catch (e) {
       console.log(e);
     }

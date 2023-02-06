@@ -54,8 +54,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     width: '100%',
   },
   large: {
-    height: 130,
-    width: 130,
+    height: 150,
+    width: 150,
     borderColor: 'black',
     borderStyle: 'solid',
     borderWidth: 1,
