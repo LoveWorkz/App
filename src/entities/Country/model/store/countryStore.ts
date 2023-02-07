@@ -12,10 +12,13 @@ class CountryStore {
 
   fetchCountries = async () => {
     const countries = await fetchCountries();
-    const countriesNames = countries.map(country => ({
-      label: country.name.common,
-      value: country.name.common,
-    }));
+    const countriesNames = countries
+      .map(country => country.name.common)
+      .sort()
+      .map(countryName => ({
+        label: countryName,
+        value: countryName,
+      }));
     this.setCountries(countriesNames);
   };
 

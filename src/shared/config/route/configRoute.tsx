@@ -12,6 +12,8 @@ import {PrivacyPolicyPage} from '@src/pages/PrivacyPolicyPage';
 import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
 import {SetUpPage} from '@src/pages/SetUpPage';
 import {AboutPage} from '@src/pages/AboutPage';
+import {HowToUsePage} from '@src/pages/HowToUsePage';
+import {ContactUs} from '@src/pages/ContactUs';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -27,6 +29,8 @@ export enum AppRouteNames {
   PARTNERS = 'partners',
   PRIVACY_POLICY = 'privacyPolicy',
   CHANGE_PASSWORD = 'changePassword',
+  HOW_TO_USE = 'howToUse',
+  CONTACT_US = 'contactUs',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -43,6 +47,8 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.PRIVACY_POLICY]: 'privacyPolicy',
   [AppRouteNames.CHANGE_PASSWORD]: 'changePassword',
   [AppRouteNames.SETUP]: 'setup',
+  [AppRouteNames.HOW_TO_USE]: 'howToUse',
+  [AppRouteNames.CONTACT_US]: 'contactUs',
 };
 
 type NewRouteProps = {
@@ -79,6 +85,15 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     Element: props => (
       <Layout {...props}>
         <ResetPasswordPage {...props} />
+      </Layout>
+    ),
+  },
+  [AppRouteNames.SETUP]: {
+    name: appRoutePaths.setup,
+    headerShown: false,
+    Element: props => (
+      <Layout {...props}>
+        <SetUpPage {...props} />
       </Layout>
     ),
   },
@@ -150,12 +165,23 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       </Layout>
     ),
   },
-  [AppRouteNames.SETUP]: {
-    name: appRoutePaths.setup,
-    headerShown: false,
+  [AppRouteNames.HOW_TO_USE]: {
+    name: appRoutePaths.howToUse,
+    headerShown: true,
+    headerTitle: 'How to use',
     Element: props => (
       <Layout {...props}>
-        <SetUpPage {...props} />
+        <HowToUsePage {...props} />
+      </Layout>
+    ),
+  },
+  [AppRouteNames.CONTACT_US]: {
+    name: appRoutePaths.contactUs,
+    headerShown: true,
+    headerTitle: 'Contact us',
+    Element: props => (
+      <Layout {...props}>
+        <ContactUs {...props} />
       </Layout>
     ),
   },

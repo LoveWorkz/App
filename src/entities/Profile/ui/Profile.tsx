@@ -97,13 +97,13 @@ const Profile = (props: ProfileProps) => {
             onPress={onSaveHandler}
             theme={ButtonTheme.OUTLINED}
             style={styles.saveBtn}>
-            <Text>save changes</Text>
+            <Text style={styles.saveBtnText}>Save changes</Text>
           </Button>
           <Button
             style={styles.deleteBtn}
-            theme={ButtonTheme.OUTLINED}
+            theme={ButtonTheme.CLEAR}
             onPress={onDeleteHandler}>
-            <Text style={styles.deleteText}>Delete Account</Text>
+            <Text style={styles.deleteText}>Delete my account</Text>
           </Button>
         </View>
         {visible && (
@@ -144,23 +144,27 @@ const styles = StyleSheet.create({
   btns: {
     marginTop: 20,
     marginBottom: 30,
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     width: '100%',
   },
   saveBtn: {
-    width: '45%',
+    width: '100%',
+    backgroundColor: 'black',
+  },
+  saveBtnText: {
+    color: 'white',
   },
   nextButton: {
     width: '100%',
     marginBottom: 20,
   },
   deleteBtn: {
-    backgroundColor: 'black',
     width: '45%',
   },
   deleteText: {
-    color: 'white',
+    fontSize: 18,
+    borderBottomColor: 'black',
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
   },
 });

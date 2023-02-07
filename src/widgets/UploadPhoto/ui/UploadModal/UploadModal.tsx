@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, useWindowDimensions} from 'react-native';
 import Modal from 'react-native-modal';
 import {Asset} from 'react-native-image-picker';
 
@@ -17,6 +17,8 @@ interface UploadModalProps {
 
 const UploadModal = (props: UploadModalProps) => {
   const {visible, setVisible, setPhtotData, deletePhoto} = props;
+
+  const {width} = useWindowDimensions();
 
   const onPressHandler = async (type: UploadPhotoType) => {
     let result;
@@ -50,7 +52,7 @@ const UploadModal = (props: UploadModalProps) => {
         onBackdropPress={onCancelHandler}
         isVisible={visible}>
         <View style={styles.overlay}>
-          <View style={styles.content}>
+          <View style={[styles.content, {width}]}>
             <Text style={styles.title}>Change profile photo</Text>
             <Button
               onPress={() => onPressHandler(UploadPhotoType.CAMERA)}
@@ -80,8 +82,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     left: -20,
-    right: -20,
-    width: '112%',
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },

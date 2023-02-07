@@ -24,7 +24,7 @@ const itemsData: SettingItemsType[] = [
   {
     Icon: HowToUseIcon,
     text: 'How to use',
-    // path: AppRouteNames.PROFILE,
+    path: AppRouteNames.HOW_TO_USE,
   },
   {
     Icon: AboutIcon,
@@ -34,7 +34,7 @@ const itemsData: SettingItemsType[] = [
   {
     Icon: ContactUsIcon,
     text: 'Contact us',
-    // path: AppRouteNames.ABOUT,
+    path: AppRouteNames.CONTACT_US,
   },
   {
     Icon: PartnersIcon,
