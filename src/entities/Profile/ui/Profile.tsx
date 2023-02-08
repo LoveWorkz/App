@@ -1,7 +1,6 @@
 import {observer} from 'mobx-react-lite';
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
 import {Asset} from 'react-native-image-picker';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
@@ -21,11 +20,9 @@ const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
   const [visible, setVisible] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => profileStore.resetForm();
-    }, []),
-  );
+  useEffect(() => {
+    return () => profileStore.resetForm();
+  }, []);
 
   const onDeleteHandler = () => {
     setVisible(true);
@@ -99,10 +96,7 @@ const Profile = (props: ProfileProps) => {
             style={styles.saveBtn}>
             <Text style={styles.saveBtnText}>Save changes</Text>
           </Button>
-          <Button
-            style={styles.deleteBtn}
-            theme={ButtonTheme.CLEAR}
-            onPress={onDeleteHandler}>
+          <Button theme={ButtonTheme.CLEAR} onPress={onDeleteHandler}>
             <Text style={styles.deleteText}>Delete my account</Text>
           </Button>
         </View>
@@ -143,7 +137,7 @@ const styles = StyleSheet.create({
   },
   btns: {
     marginTop: 20,
-    marginBottom: 30,
+    marginBottom: 20,
     alignItems: 'center',
     width: '100%',
   },
@@ -158,11 +152,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
-  deleteBtn: {
-    width: '45%',
-  },
   deleteText: {
-    fontSize: 18,
     borderBottomColor: 'black',
     borderBottomStyle: 'solid',
     borderBottomWidth: 1,

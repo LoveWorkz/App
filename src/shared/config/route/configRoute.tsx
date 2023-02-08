@@ -138,7 +138,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.PARTNERS]: {
     name: appRoutePaths.partners,
     headerShown: true,
-    headerTitle: 'Parnters',
+    headerTitle: 'Partners',
     Element: props => (
       <Layout {...props}>
         <PartnersPage {...props} />

@@ -1,36 +1,49 @@
-import React, {memo} from 'react';
-import {StyleSheet, Text, View, Pressable} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import React, {memo, useCallback, useState} from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
+import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
+
+const options = [
+  {
+    value: 'en',
+    label: 'English',
+  },
+  {
+    value: 'por',
+    label: 'Portuguese',
+  },
+];
 
 const LanguageSwitcher = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+
+  const onSelecteLanguageHandler = useCallback((language: string) => {
+    setSelectedLanguage(language);
+  }, []);
+
   return (
-    <View style={styles.languageSwitcher}>
-      <View>
-        <Text style={styles.text}>Language</Text>
-      </View>
-      <View>
-        <Pressable>
-          <SvgXml xml={ArrowDownIcon} style={styles.arrowIcon} />
-        </Pressable>
-      </View>
-    </View>
+    <SafeAreaView>
+      <Select
+        Theme={SelectTheme.CLEAR}
+        options={options}
+        value={selectedLanguage}
+        onSelect={onSelecteLanguageHandler}
+        itemStyles={styles.itemStyle}
+        mode={'dropdown'}
+        style={styles.select}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  languageSwitcher: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  select: {
+    position: 'relative',
+    left: -15,
+    width: '108%',
   },
-  text: {
+  itemStyle: {
     fontSize: 20,
-  },
-  arrowIcon: {
-    width: 15,
-    height: 15,
   },
 });
 

@@ -33,5 +33,8 @@ const styles = StyleSheet.create({
   privacyPolicyText: {
     fontSize: 18,
     color: '#009EF6',
+    borderBottomColor: '#009EF6',
+    borderBottomStyle: 'solid',
+    borderBottomWidth: 1,
   },
 });

@@ -21,17 +21,21 @@ const UploadModal = (props: UploadModalProps) => {
   const {width} = useWindowDimensions();
 
   const onPressHandler = async (type: UploadPhotoType) => {
-    let result;
-    onCancelHandler?.();
+    try {
+      let result;
+      onCancelHandler?.();
 
-    if (type === UploadPhotoType.CAMERA) {
-      result = await uploadPhotoStore.uploadPhoto(UploadPhotoType.CAMERA);
-    } else {
-      result = await uploadPhotoStore.uploadPhoto(UploadPhotoType.GALLERY);
-    }
+      if (type === UploadPhotoType.CAMERA) {
+        result = await uploadPhotoStore.uploadPhoto(UploadPhotoType.CAMERA);
+      } else {
+        result = await uploadPhotoStore.uploadPhoto(UploadPhotoType.GALLERY);
+      }
 
-    if (result) {
-      setPhtotData(result.assets?.[0] as Asset);
+      if (result) {
+        setPhtotData(result.assets?.[0] as Asset);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 

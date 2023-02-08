@@ -32,8 +32,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   languageSwitcherWrapper: {
-    marginTop: 25,
-    marginBottom: 25,
+    marginBottom: 20,
   },
   themeSwitcherWrapper: {
     marginBottom: 40,
