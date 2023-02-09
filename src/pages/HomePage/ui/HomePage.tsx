@@ -1,16 +1,14 @@
-import React, {memo, useCallback} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {profileStore} from '@src/entities/Profile';
 import {ComponentWrapper as Header} from './Header/Header';
 import {HomeCategory} from '@src/widgets/HomeCategory';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
-import {userStore} from '@src/entities/User';
 
 const HomePage = () => {
   useFocusEffect(
@@ -18,10 +16,6 @@ const HomePage = () => {
       profileStore.fetchProfile();
     }, []),
   );
-
-  const verifyEmailHandler = useCallback(async () => {
-    userStore.verifyEmail();
-  }, []);
 
   if (!profileStore.profileData) {
     return (
@@ -46,14 +40,6 @@ const HomePage = () => {
       <View style={styles.challangesWrapper}>
         <Challanges />
       </View>
-      {!profileStore.profileData.emailVerified && (
-        <Button
-          style={styles.confirmEmail}
-          theme={ButtonTheme.OUTLINED}
-          onPress={verifyEmailHandler}>
-          <Text>Confirm email</Text>
-        </Button>
-      )}
     </View>
   );
 };
