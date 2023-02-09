@@ -1,5 +1,12 @@
 import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, Text, View, Pressable, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
@@ -11,6 +18,8 @@ import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
   const {t} = useTranslation();
+
+  const {height} = useWindowDimensions();
 
   const [isSignIn, setISignIn] = useState(true);
 
@@ -32,8 +41,11 @@ const AuthPage = () => {
 
   return (
     <ScrollView>
-      <View style={styles.AuthPage}>
+      <View style={[styles.AuthPage, {height}]}>
         <View style={styles.container}>
+          <View style={styles.logo}>
+            <Text style={styles.logoText}>LOGO</Text>
+          </View>
           <View style={styles.titleWrapper}>
             <Text style={styles.title}>
               {isSignIn ? t('auth.login') : t('auth.signup')}
@@ -76,15 +88,24 @@ export const ComponentWrapper = memo(observer(AuthPage));
 const styles = StyleSheet.create({
   AuthPage: {
     flex: 1,
-    padding: 15,
-  },
-  container: {
-    marginTop: 50,
-    position: 'relative',
-    height: 550,
     borderColor: 'red',
     borderStyle: 'solid',
     borderWidth: 0,
+  },
+  container: {
+    position: 'relative',
+    borderColor: 'red',
+    borderStyle: 'solid',
+    borderWidth: 0,
+    height: '100%',
+  },
+  logo: {
+    marginTop: 50,
+    alignItems: 'center',
+    marginBottom: 35,
+  },
+  logoText: {
+    fontSize: 25,
   },
   line: {
     marginTop: 20,
@@ -96,7 +117,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: 'Consolas, Helvetica',
   },
   btnWrapper: {
     justifyContent: 'center',
@@ -116,7 +136,7 @@ const styles = StyleSheet.create({
   },
   bottomBlock: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 50,
     width: '100%',
   },
   singInBtnText: {

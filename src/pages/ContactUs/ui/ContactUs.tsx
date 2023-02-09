@@ -28,12 +28,11 @@ const itemsData = [
 const ContactUs = () => {
   return (
     <SafeAreaView style={styles.contactUs}>
-      <View>
+      <View style={styles.itemWrapper}>
         {itemsData.map(item => {
           return <ContactUsItem key={item.text} {...item} />;
         })}
       </View>
-
       <Button style={styles.btn} theme={ButtonTheme.OUTLINED}>
         <View style={styles.btnTextWrapper}>
           <SvgXml xml={ShareIcon} style={styles.icon} />
@@ -50,6 +49,7 @@ const styles = StyleSheet.create({
   contactUs: {
     flex: 1,
   },
+  itemWrapper: {},
   icon: {
     height: 20,
     width: 20,

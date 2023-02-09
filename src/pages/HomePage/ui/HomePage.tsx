@@ -53,9 +53,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    flex: 1,
+    flexx: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    borderColor: 'black',
+    borderStyle: 'solid',
+    borderWidth: 0,
+    height: '100%',
+    paddingTop: 30,
   },
   headerWrapper: {
     marginBottom: 20,

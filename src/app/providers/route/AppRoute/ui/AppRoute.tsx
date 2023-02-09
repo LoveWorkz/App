@@ -40,7 +40,7 @@ export const AppRoute = () => {
           ),
         )}
       </Stack.Navigator>
-      {/* <StatusBar animated={true} backgroundColor="white" /> */}
+      <StatusBar animated={true} backgroundColor="white" />
     </NavigationContainer>
   );
 };
