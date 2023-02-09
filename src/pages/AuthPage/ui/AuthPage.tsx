@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: 'Consolas',
+    fontFamily: 'Consolas, Helvetica',
   },
   btnWrapper: {
     justifyContent: 'center',
