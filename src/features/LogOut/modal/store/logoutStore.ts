@@ -32,7 +32,7 @@ class LogoutStore {
       await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
 
       if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
-        await GoogleSignin.signOut();
+        await GoogleSignin.revokeAccess();
       }
       await auth().signOut();
       navigate(AppRouteNames.AUTH);

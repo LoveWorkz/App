@@ -91,7 +91,7 @@ class ChangePasswordStore {
     try {
       const currentUser = auth().currentUser;
       const isCorrectPassword = await userStore.reauthenticate({
-        email: userStore.authUser?.email || '',
+        email: auth().currentUser?.email || '',
         password: this.formData.oldPassword,
         erorHandler: e => this.errorHandler(e),
       });

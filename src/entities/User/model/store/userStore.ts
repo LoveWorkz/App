@@ -79,7 +79,12 @@ class UserStore {
           credential = auth.EmailAuthProvider.credential(email, password);
         }
       } else {
+        // using sign in and sign out for refresh id token
+        // without it reauthenticateWithCredential not working
+        await GoogleSignin.signInSilently();
         const tokens = await GoogleSignin.getTokens();
+        await GoogleSignin.signOut();
+
         credential = auth.GoogleAuthProvider.credential(tokens.idToken);
       }
 
