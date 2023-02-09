@@ -6,9 +6,20 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'Bline2' do
   config = use_native_modules!
+  use_frameworks! :linkage => :static
 
   # Flags change depending on the env values.
   flags = get_default_flags()
+  
+#  pod 'Firebase', :modular_headers => true
+#  pod 'FirebaseCore', :modular_headers => true
+#  pod 'FirebaseStorage', :modular_headers => true
+#  pod 'FirebaseAppCheckInterop', :modular_headers => true
+#  pod 'FirebaseAuthInterop', :modular_headers => true
+#  pod 'FirebaseCoreExtension', :modular_headers => true
+#  pod 'GTMSessionFetcher', :modular_headers => true
+#  pod 'GoogleUtilities', :modular_headers => true
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -21,7 +32,7 @@ target 'Bline2' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => FlipperConfiguration.enabled,
+    # :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
