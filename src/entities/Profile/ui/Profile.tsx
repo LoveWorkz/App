@@ -33,8 +33,8 @@ const Profile = (props: ProfileProps) => {
   };
 
   const onUploadPhotoHandler = useCallback((photoData: Asset) => {
-    profileStore.setPhoto(photoData.uri || '');
-    profileStore.setFileName(photoData.fileName || '');
+    photoData.uri && profileStore.setPhoto(photoData.uri || '');
+    photoData.fileName && profileStore.setFileName(photoData.fileName || '');
   }, []);
 
   const onDeletePhotoHandler = useCallback(() => {

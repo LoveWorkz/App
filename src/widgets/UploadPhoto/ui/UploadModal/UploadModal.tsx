@@ -23,7 +23,7 @@ const UploadModal = (props: UploadModalProps) => {
   const onPressHandler = async (type: UploadPhotoType) => {
     try {
       let result;
-      onCancelHandler?.();
+      // onCancelHandler?.();
 
       if (type === UploadPhotoType.CAMERA) {
         result = await uploadPhotoStore.uploadPhoto(UploadPhotoType.CAMERA);
@@ -34,6 +34,7 @@ const UploadModal = (props: UploadModalProps) => {
       if (result) {
         setPhtotData(result.assets?.[0] as Asset);
       }
+      onCancelHandler?.();
     } catch (e) {
       console.log(e);
     }

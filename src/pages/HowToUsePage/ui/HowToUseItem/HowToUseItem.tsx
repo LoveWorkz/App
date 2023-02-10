@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
   howToUseItem: {
     paddingTop: 100,
     height: 350,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 24,

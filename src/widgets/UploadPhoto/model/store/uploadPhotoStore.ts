@@ -20,10 +20,8 @@ class UploadPhotoStore {
     try {
       const options: CameraOptions | ImageLibraryOptions = {
         mediaType: 'photo',
-        saveToPhotos: true,
         includeBase64: true,
         cameraType: 'front',
-        quality: 1,
       };
 
       let result: ImagePickerResponse;
@@ -36,7 +34,7 @@ class UploadPhotoStore {
 
       return result;
     } catch (e) {
-      console.log(e);
+      console.log(e, '????');
       return;
     }
   };
