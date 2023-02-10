@@ -1,7 +1,10 @@
 import React, {memo, useCallback} from 'react';
 import {SafeAreaView} from 'react-native';
 
-import {Select} from '@src/shared/ui/Select/Select';
+import {
+  CustomSelect,
+  SelectTheme,
+} from '@src/shared/ui/CustomSelect/CustomSelect';
 
 const options = [
   {label: 'status 1', value: 'status 1'},
@@ -28,7 +31,8 @@ const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
 
   return (
     <SafeAreaView>
-      <Select
+      <CustomSelect
+        Theme={SelectTheme.UNDERLINE}
         initialValue={initialValue}
         prompt={'Status'}
         label={'Relationship status'}

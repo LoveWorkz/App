@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ScrollView, Platform} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -26,21 +26,23 @@ const HomePage = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerWrapper}>
-        <Header
-          name={profileStore.profileData.name || ''}
-          imageUrl={profileStore.profileData.photo || ''}
-        />
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.headerWrapper}>
+          <Header
+            name={profileStore.profileData.name || ''}
+            imageUrl={profileStore.profileData.photo || ''}
+          />
+        </View>
+        <View style={styles.homeCategoryWrapper}>
+          <HomeCategory />
+        </View>
+        <CategoriesCarousel />
+        <View style={styles.challangesWrapper}>
+          <Challanges />
+        </View>
       </View>
-      <View style={styles.homeCategoryWrapper}>
-        <HomeCategory />
-      </View>
-      <CategoriesCarousel />
-      <View style={styles.challangesWrapper}>
-        <Challanges />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -56,11 +58,8 @@ const styles = StyleSheet.create({
     flexx: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 0,
     height: '100%',
-    paddingTop: 30,
+    paddingTop: Platform.OS === 'android' ? 0 : 40,
   },
   headerWrapper: {
     marginBottom: 20,

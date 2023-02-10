@@ -1,15 +1,18 @@
 import React, {memo, useCallback, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
+import {
+  CustomSelect,
+  SelectTheme,
+} from '@src/shared/ui/CustomSelect/CustomSelect';
 
 const options = [
   {
-    value: 'en',
+    value: 'English',
     label: 'English',
   },
   {
-    value: 'por',
+    value: 'Portuguese',
     label: 'Portuguese',
   },
 ];
@@ -23,12 +26,12 @@ const LanguageSwitcher = () => {
 
   return (
     <SafeAreaView>
-      <Select
+      <CustomSelect
         Theme={SelectTheme.CLEAR}
         options={options}
         value={selectedLanguage}
         onSelect={onSelecteLanguageHandler}
-        itemStyles={styles.itemStyle}
+        selectedValueStyle={styles.itemStyle}
         mode={'dropdown'}
         style={styles.select}
       />

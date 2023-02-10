@@ -6,6 +6,7 @@ import {
   Pressable,
   ScrollView,
   useWindowDimensions,
+  Platform,
 } from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   logo: {
-    marginTop: 50,
+    marginTop: Platform.OS === 'ios' ? 50 : 20,
     alignItems: 'center',
     marginBottom: 35,
   },
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   },
   bottomBlock: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 60,
     width: '100%',
   },
   singInBtnText: {

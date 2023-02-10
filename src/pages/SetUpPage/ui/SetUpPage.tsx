@@ -6,7 +6,7 @@ import {Profile} from '@src/entities/Profile';
 const SetUpPage = () => {
   return (
     <View style={styles.setUp}>
-      <Profile isSetUp={true} />;
+      <Profile isSetUp={true} />
     </View>
   );
 };

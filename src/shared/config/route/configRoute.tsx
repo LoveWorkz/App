@@ -19,10 +19,10 @@ export enum AppRouteNames {
   AUTH = 'auth',
   MAIN = 'main',
   SPLASH = 'splash',
-  RESET_PASSWORD = 'reset_password',
   SETUP = 'setup',
 
   // pages with title
+  RESET_PASSWORD = 'reset_password',
   SETTINGS = 'settings',
   PROFILE = 'profile',
   ABOUT = 'about',
@@ -37,9 +37,9 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.AUTH]: 'auth',
   [AppRouteNames.MAIN]: 'main',
   [AppRouteNames.SPLASH]: 'splash',
-  [AppRouteNames.RESET_PASSWORD]: 'reset_password',
 
   // pages with title
+  [AppRouteNames.RESET_PASSWORD]: 'reset_password',
   [AppRouteNames.SETTINGS]: 'settings',
   [AppRouteNames.PROFILE]: 'profile',
   [AppRouteNames.ABOUT]: 'about',
@@ -79,15 +79,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       </Layout>
     ),
   },
-  [AppRouteNames.RESET_PASSWORD]: {
-    name: appRoutePaths.reset_password,
-    headerShown: false,
-    Element: props => (
-      <Layout {...props}>
-        <ResetPasswordPage {...props} />
-      </Layout>
-    ),
-  },
   [AppRouteNames.SETUP]: {
     name: appRoutePaths.setup,
     headerShown: false,
@@ -104,6 +95,16 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
 
   // pages with title
+  [AppRouteNames.RESET_PASSWORD]: {
+    name: appRoutePaths.reset_password,
+    headerShown: true,
+    headerTitle: 'Reset Password',
+    Element: props => (
+      <Layout {...props}>
+        <ResetPasswordPage {...props} />
+      </Layout>
+    ),
+  },
   [AppRouteNames.SETTINGS]: {
     name: appRoutePaths.settings,
     headerShown: true,
