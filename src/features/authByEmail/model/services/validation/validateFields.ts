@@ -6,6 +6,9 @@ import {
   SignInData,
   SignInErrorInfo,
 } from '../../../ui/SignIn/model/types/signIn';
+import {validatePassword} from '@src/shared/lib/validation/passwordValidation';
+import {validateEmail} from '@src/shared/lib/validation/emailValidation';
+import {validateSignUp} from './signupValidation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 export interface ValidateFields {
@@ -20,49 +23,24 @@ export const validateFields = ({isSignUp, authData}: ValidateFields) => {
 
   const {email, password} = authData;
 
-  if (!email) {
-    errorInfo.emailError = ValidationErrorCodes.FIELD_IS_REQUIRED;
-    isError = true;
-  }
-
-  if (password.length < 6) {
-    errorInfo.passwordError = ValidationErrorCodes.PASSWORD_MIN_LENGHT_6;
-    isError = true;
-  }
+  const {isEmailError, emailError} = validateEmail(email);
+  isError = isError || isEmailError;
+  errorInfo = {...errorInfo, ...emailError};
 
   if (!password) {
     errorInfo.passwordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 
-  if (password.length > 8) {
-    errorInfo.passwordError = ValidationErrorCodes.PASSWORD_MAX_LENGHT_8;
-    isError = true;
-  }
-
   if (isSignUp) {
+    const {isPasswordError, passwordError} = validatePassword(password);
+    isError = isError || isPasswordError;
+    errorInfo = {...errorInfo, ...passwordError};
+
     const {isSignUpError, error} = validateSignUp(authData as SignUpData);
     isError = isError || isSignUpError;
     errorInfo = {...errorInfo, ...error};
   }
 
   return {isError, errorInfo};
-};
-
-const validateSignUp = (authData: SignUpData) => {
-  const error = {} as SignUpErrorInfo;
-  const {password, confirmPassword} = authData;
-  let isSignUpError = false;
-
-  if (!confirmPassword.length) {
-    error.confirmPasswordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
-    isSignUpError = true;
-  }
-
-  if (password !== confirmPassword) {
-    error.confirmPasswordError = ValidationErrorCodes.INVALID_PASSWORD;
-    isSignUpError = true;
-  }
-
-  return {isSignUpError, error};
 };

@@ -7,5 +7,5 @@ export interface ChangePasswordFormData {
 export interface ChangePasswordErrorInfo {
   confirmPasswordError: string;
   oldPasswordError: string;
-  newPasswordError: string;
+  passwordError: string;
 }

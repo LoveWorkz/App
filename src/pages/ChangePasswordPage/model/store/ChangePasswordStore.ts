@@ -20,7 +20,7 @@ class ChangePasswordStore {
 
   errorInfo: ChangePasswordErrorInfo = {
     oldPasswordError: '',
-    newPasswordError: '',
+    passwordError: '',
     confirmPasswordError: '',
   };
 
@@ -50,7 +50,7 @@ class ChangePasswordStore {
 
   clearErrors() {
     this.setValidationError({
-      newPasswordError: '',
+      passwordError: '',
       oldPasswordError: '',
       confirmPasswordError: '',
     });
@@ -98,8 +98,8 @@ class ChangePasswordStore {
 
       if (currentUser && this.formData.newPassword && isCorrectPassword) {
         currentUser.updatePassword(this.formData.newPassword);
+        navigate(AppRouteNames.PROFILE);
       }
-      navigate(AppRouteNames.PROFILE);
     } catch (e) {
       console.log(e);
     }

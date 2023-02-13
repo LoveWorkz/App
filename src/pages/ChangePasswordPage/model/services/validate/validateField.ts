@@ -1,3 +1,4 @@
+import {validatePassword} from '@src/shared/lib/validation/passwordValidation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {
   ChangePasswordErrorInfo,
@@ -11,16 +12,6 @@ export const validateFields = (formData: ChangePasswordFormData) => {
 
   const {oldPassword, newPassword, confirmPassword} = formData;
 
-  if (newPassword.length < 6) {
-    errorInfo.newPasswordError = ValidationErrorCodes.PASSWORD_MIN_LENGHT_6;
-    isError = true;
-  }
-
-  if (!newPassword) {
-    errorInfo.newPasswordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
-    isError = true;
-  }
-
   if (!oldPassword) {
     errorInfo.oldPasswordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
@@ -31,15 +22,14 @@ export const validateFields = (formData: ChangePasswordFormData) => {
     isError = true;
   }
 
-  if (newPassword.length > 8) {
-    errorInfo.newPasswordError = ValidationErrorCodes.PASSWORD_MAX_LENGHT_8;
-    isError = true;
-  }
-
   if (newPassword !== confirmPassword) {
     errorInfo.confirmPasswordError = ValidationErrorCodes.INVALID_PASSWORD;
     isError = true;
   }
+
+  const {isPasswordError, passwordError} = validatePassword(newPassword);
+  isError = isError || isPasswordError;
+  errorInfo = {...errorInfo, ...passwordError};
 
   return {isError, errorInfo};
 };

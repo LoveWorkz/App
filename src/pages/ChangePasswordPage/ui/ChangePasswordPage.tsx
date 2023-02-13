@@ -45,7 +45,7 @@ const ChangePasswordPage = () => {
           label={'New password'}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
-          error={changePasswordStore.errorInfo.newPasswordError}
+          error={changePasswordStore.errorInfo.passwordError}
           placeholder={'Enter new password'}
         />
       </View>

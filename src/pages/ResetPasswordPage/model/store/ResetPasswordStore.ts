@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth';
 import {navigate} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {validateEmail} from '@src/shared/lib/validation/emailValidation';
 
 class ResetPasswordStore {
   email: string = '';
@@ -27,20 +28,17 @@ class ResetPasswordStore {
     this.emailError = emailError;
   }
 
-  validateEmail(email: string) {
-    let error = '';
-    if (!email) {
-      error = ValidationErrorCodes.FIELD_IS_REQUIRED;
-    }
+  validateResetPasswordEmail(email: string) {
+    const {emailError} = validateEmail(email);
 
-    return error;
+    return emailError;
   }
 
   sendPasswordResetEmail() {
     this.setEmailError('');
-    const errorInfo = this.validateEmail(this.email);
-    if (errorInfo) {
-      this.setEmailError(errorInfo);
+    const {emailError} = this.validateResetPasswordEmail(this.email);
+    if (emailError) {
+      this.setEmailError(emailError);
       return;
     }
 

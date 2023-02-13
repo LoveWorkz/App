@@ -2,6 +2,7 @@ import {
   DeleteAccountForm,
   DeleteAccountFormError,
 } from '@src/features/DeleteAccount/deleteAccount';
+import {validateEmail} from '@src/shared/lib/validation/emailValidation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 export const validateFields = (formData: DeleteAccountForm) => {
@@ -11,10 +12,9 @@ export const validateFields = (formData: DeleteAccountForm) => {
 
   const {email, password} = formData;
 
-  if (!email) {
-    errorInfo.emailError = ValidationErrorCodes.FIELD_IS_REQUIRED;
-    isError = true;
-  }
+  const {isEmailError, emailError} = validateEmail(email);
+  isError = isError || isEmailError;
+  errorInfo = {...errorInfo, ...emailError};
 
   if (!password) {
     errorInfo.passwordError = ValidationErrorCodes.FIELD_IS_REQUIRED;
