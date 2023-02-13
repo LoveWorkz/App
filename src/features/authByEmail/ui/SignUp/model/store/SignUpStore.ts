@@ -92,7 +92,7 @@ class SignUpStore {
       });
   };
 
-  register = async () => {
+  register = async (actionAfterRegistration: () => void) => {
     try {
       this.clearErrors();
 
@@ -115,6 +115,7 @@ class SignUpStore {
       const currentUser = auth().currentUser;
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
+      actionAfterRegistration?.();
 
       navigate(AppRouteNames.SETUP);
     } catch (error: unknown) {

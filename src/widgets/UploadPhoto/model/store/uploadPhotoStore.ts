@@ -22,6 +22,7 @@ class UploadPhotoStore {
         mediaType: 'photo',
         includeBase64: true,
         cameraType: 'front',
+        saveToPhotos: true,
         quality: 1,
       };
 

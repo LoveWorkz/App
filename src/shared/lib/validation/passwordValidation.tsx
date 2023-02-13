@@ -1,5 +1,7 @@
 import {
   LovercaseRegexp,
+  passwordMax,
+  passwordMin,
   specSymbolsRegexp,
   uppercaseRegexp,
 } from '@src/shared/consts/validation';
@@ -19,12 +21,12 @@ export const validatePassword = (password: string) => {
     isPasswordError = true;
   }
 
-  if (password.length < 8) {
+  if (password.length < passwordMin) {
     passwordError.passwordError = ValidationErrorCodes.PASSWORD_MIN_LENGHT_8;
     isPasswordError = true;
   }
 
-  if (password.length > 30) {
+  if (password.length > passwordMax) {
     passwordError.passwordError = ValidationErrorCodes.PASSWORD_MAX_LENGHT_30;
     isPasswordError = true;
   }

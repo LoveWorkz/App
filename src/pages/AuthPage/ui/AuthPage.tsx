@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -24,21 +24,25 @@ const AuthPage = () => {
 
   const [isSignIn, setISignIn] = useState(true);
 
-  const toggleSignIn = useCallback(() => {
+  const toggleSignIn = () => {
     setISignIn(true);
-  }, []);
+  };
 
-  const toggleSignUp = useCallback(() => {
+  const toggleSignUp = () => {
     setISignIn(false);
-  }, []);
+  };
 
-  const auth = useCallback(() => {
+  const actionAfterRegistration = () => {
+    setISignIn(true);
+  };
+
+  const auth = () => {
     if (isSignIn) {
       signInStore.signIn();
     } else {
-      signUpStore.register();
+      signUpStore.register(actionAfterRegistration);
     }
-  }, [isSignIn]);
+  };
 
   return (
     <ScrollView>
