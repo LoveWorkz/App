@@ -1,6 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {
-  Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -10,14 +9,11 @@ import {
   View,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
-import {globalPadding} from '@src/app/styles';
-import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 
-interface PikerItem {
-  label: string;
-  value: string;
-}
+import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
+import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
+import {SelectOption} from '@src/shared/types/types';
+import {Animation, Modal} from '../Modal/Modal';
 
 export enum SelectTheme {
   CLEAR = 'clear',
@@ -25,7 +21,7 @@ export enum SelectTheme {
 }
 
 interface SelectProps {
-  options: PikerItem[];
+  options: SelectOption[];
   value: string;
   label?: string;
   onSelect: (value: string) => void;
@@ -37,7 +33,7 @@ interface SelectProps {
   style?: Record<string, string | number>;
 }
 
-export const CustomSelect = (props: SelectProps) => {
+export const CustomSelect = memo((props: SelectProps) => {
   const {
     label,
     onSelect,
@@ -71,16 +67,18 @@ export const CustomSelect = (props: SelectProps) => {
     setIsVisible(false);
   };
 
-  const items = options.map(item => {
-    return (
-      <TouchableOpacity
-        onPress={() => onSelectHandler(item.label)}
-        style={styles.item}
-        key={item.label}>
-        <Text style={styles.itemText}>{item.label}</Text>
-      </TouchableOpacity>
-    );
-  });
+  const items = useMemo(() => {
+    return options.map(item => {
+      return (
+        <TouchableOpacity
+          onPress={() => onSelectHandler(item.label)}
+          style={styles.item}
+          key={item.label}>
+          <Text style={styles.itemText}>{item.label}</Text>
+        </TouchableOpacity>
+      );
+    });
+  }, [options, onSelectHandler]);
 
   return (
     <SafeAreaView style={[styles.select, styles[Theme]]}>
@@ -91,30 +89,30 @@ export const CustomSelect = (props: SelectProps) => {
         </View>
         <SvgXml xml={ArrowDownIcon} style={styles.icon} />
       </Pressable>
-      <Modal animationType="fade" transparent={true} visible={visible}>
-        <Pressable onPress={onSelectCloseHandler} style={styles.overlay}>
-          <View style={styles.content}>
-            {prompt && (
-              <View style={styles.header}>
-                <SvgXml
-                  onPress={onSelectCloseHandler}
-                  xml={ArrowLeftIcon}
-                  style={styles.arrowLeft}
-                />
-                <Text style={styles.title}>{prompt}</Text>
-              </View>
-            )}
-            <View>
-              <ScrollView>
-                <View style={styles.body}>{items}</View>
-              </ScrollView>
+      {visible && (
+        <Modal
+          contentStyle={styles.content}
+          animationIn={Animation.SLIDEIN_UP}
+          visible={visible}
+          setVisible={setIsVisible}>
+          {prompt ? (
+            <View style={styles.header}>
+              <SvgXml
+                onPress={onSelectCloseHandler}
+                xml={ArrowLeftIcon}
+                style={styles.arrowLeft}
+              />
+              <Text style={styles.title}>{prompt}</Text>
             </View>
-          </View>
-        </Pressable>
-      </Modal>
+          ) : (
+            <></>
+          )}
+          <ScrollView style={styles.body}>{items}</ScrollView>
+        </Modal>
+      )}
     </SafeAreaView>
   );
-};
+});
 
 const styles = StyleSheet.create<Record<string, any>>({
   underline: {
@@ -143,44 +141,33 @@ const styles = StyleSheet.create<Record<string, any>>({
     position: 'absolute',
     left: 15,
   },
-  overlay: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000000AA',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: globalPadding,
-  },
   content: {
-    width: '100%',
+    padding: 0,
+    height: 'auto',
     maxHeight: '80%',
-    backgroundColor: 'white',
-    overflow: 'hidden',
-  },
-  body: {
-    width: '100%',
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 0,
+    alignItems: 'flex-start',
   },
   header: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#9A9AA5',
+    borderBottomColor: '#D0D2D3',
     borderBottomStyle: 'solid',
+  },
+  body: {
+    width: '100%',
   },
   title: {
     fontSize: 25,
     fontWeight: '600',
   },
   item: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D0D2D3',
-    borderBottomStyle: 'solid',
+    paddingVertical: 15,
+    position: 'relative',
+    left: 15,
   },
   itemText: {
     fontSize: 18,

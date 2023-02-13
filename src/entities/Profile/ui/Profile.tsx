@@ -1,11 +1,11 @@
 import {observer} from 'mobx-react-lite';
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
-import {DeleteAccountModal} from '@src/features/DeleteAccount';
+import {DeleteAccount} from '@src/features/DeleteAccount';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import {Wrapper as ProfileForm} from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
@@ -18,15 +18,10 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     return () => profileStore.resetForm();
   }, []);
-
-  const onDeleteHandler = () => {
-    setVisible(true);
-  };
 
   const onSaveHandler = () => {
     profileStore.updateProfile();
@@ -96,13 +91,8 @@ const Profile = (props: ProfileProps) => {
             style={styles.saveBtn}>
             <Text style={styles.saveBtnText}>Save changes</Text>
           </Button>
-          <Button theme={ButtonTheme.CLEAR} onPress={onDeleteHandler}>
-            <Text style={styles.deleteText}>Delete my account</Text>
-          </Button>
+          <DeleteAccount />
         </View>
-        {visible && (
-          <DeleteAccountModal visible={visible} setVisible={setVisible} />
-        )}
       </View>
     </ScrollView>
   );
@@ -151,10 +141,5 @@ const styles = StyleSheet.create({
   nextButton: {
     width: '100%',
     marginBottom: 20,
-  },
-  deleteText: {
-    borderBottomColor: 'black',
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
   },
 });
