@@ -39,6 +39,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           onChange={onEmailChangeHandler}
         />
         <Input
+          secureTextEntry
           error={deleteAccountStore.errorInfo.passwordError}
           value={deleteAccountStore.formData.password}
           label={'Password'}

@@ -1,0 +1,6 @@
+export const EyeIcon = `
+<svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8334 5.41663C12.8334 7.48746 10.2217 9.16663 7.00002 9.16663C3.77835 9.16663 1.16669 7.48746 1.16669 5.41663C1.16669 3.34579 3.77835 1.66663 7.00002 1.66663C10.2217 1.66663 12.8334 3.34579 12.8334 5.41663Z" stroke="#B6B6BD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.45834 5.41668C8.47635 5.94945 8.2024 6.44964 7.74378 6.72136C7.28515 6.99308 6.71485 6.99308 6.25623 6.72136C5.79761 6.44964 5.52366 5.94945 5.54167 5.41668C5.52366 4.88391 5.79761 4.38371 6.25623 4.11199C6.71485 3.84027 7.28515 3.84027 7.74378 4.11199C8.2024 4.38371 8.47635 4.88391 8.45834 5.41668V5.41668Z" stroke="#B6B6BD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;

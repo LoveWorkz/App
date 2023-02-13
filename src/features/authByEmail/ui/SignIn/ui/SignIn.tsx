@@ -43,6 +43,7 @@ const SignIn = () => {
           <Text>{t('auth.forgot_password')}</Text>
         </Pressable>
         <Input
+          secureTextEntry
           value={signInStore.signInData.password}
           onChange={onPasswordChangeHandler}
           placeholder={t('auth.enter_password') || ''}

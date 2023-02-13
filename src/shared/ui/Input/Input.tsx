@@ -1,11 +1,14 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import {EyeIcon} from '@src/shared/assets/icons/Eye';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   KeyboardType,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
 } from 'react-native';
+import {SvgXml} from 'react-native-svg';
 
 export enum Inputheme {}
 
@@ -19,6 +22,7 @@ interface InputProps {
   error?: string;
   initialValue?: string;
   keyboardType?: KeyboardType;
+  secureTextEntry?: boolean;
 }
 
 export const Input = memo((props: InputProps) => {
@@ -32,12 +36,19 @@ export const Input = memo((props: InputProps) => {
     error = '',
     initialValue,
     keyboardType = 'default',
+    secureTextEntry,
     ...rest
   } = props;
+
+  const [isPasswordHidden, setIsPasswordHidden] = useState(false);
 
   useEffect(() => {
     onChange?.(initialValue || '');
   }, [initialValue, onChange]);
+
+  useEffect(() => {
+    secureTextEntry && setIsPasswordHidden(secureTextEntry);
+  }, [secureTextEntry]);
 
   const onChangeTextHandler = useCallback(
     (text: string) => {
@@ -46,10 +57,15 @@ export const Input = memo((props: InputProps) => {
     [onChange],
   );
 
+  const togglePasswordHiddenHandler = () => {
+    setIsPasswordHidden(prev => !prev);
+  };
+
   return (
     <SafeAreaView style={style}>
       <Text>{label}</Text>
       <TextInput
+        secureTextEntry={isPasswordHidden}
         keyboardType={keyboardType}
         style={[styles.input, styles[theme]]}
         onChangeText={onChangeTextHandler}
@@ -57,6 +73,11 @@ export const Input = memo((props: InputProps) => {
         placeholder={placeholder}
         {...rest}
       />
+      <Pressable
+        onPress={togglePasswordHiddenHandler}
+        style={styles.eyeIconWrapper}>
+        {secureTextEntry && <SvgXml xml={EyeIcon} style={styles.eyeIcon} />}
+      </Pressable>
       {error && <Text style={styles.errorText}>{error}</Text>}
     </SafeAreaView>
   );
@@ -74,5 +95,14 @@ const styles = StyleSheet.create<Record<string, any>>({
     color: 'red',
     position: 'absolute',
     bottom: -17,
+  },
+  eyeIconWrapper: {
+    position: 'absolute',
+    right: 10,
+    bottom: 15,
+  },
+  eyeIcon: {
+    width: 13,
+    height: 10,
   },
 });

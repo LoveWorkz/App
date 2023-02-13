@@ -49,6 +49,7 @@ const SignUp = () => {
       </View>
       <View style={styles.password}>
         <Input
+          secureTextEntry
           label={t('auth.password') || ''}
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
@@ -58,6 +59,7 @@ const SignUp = () => {
       </View>
       <View>
         <Input
+          secureTextEntry
           label={t('auth.repeat_password') || ''}
           value={signUpStore.signUpData.confirmPassword}
           onChange={onConfirmPasswordChangeHandler}

@@ -31,6 +31,7 @@ const ChangePasswordPage = () => {
     <View style={styles.container}>
       <View style={styles.item}>
         <Input
+          secureTextEntry
           label={'Current password'}
           value={changePasswordStore.formData.oldPassword}
           onChange={onChangeOldPasswordHandler}
@@ -40,6 +41,7 @@ const ChangePasswordPage = () => {
       </View>
       <View style={styles.item}>
         <Input
+          secureTextEntry
           label={'New password'}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
@@ -49,6 +51,7 @@ const ChangePasswordPage = () => {
       </View>
       <View style={styles.item}>
         <Input
+          secureTextEntry
           label={'Repeat password'}
           value={changePasswordStore.formData.confirmPassword}
           onChange={onChangeRepeatPasswordHandler}
