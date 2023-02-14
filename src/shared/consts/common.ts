@@ -1,0 +1,1 @@
+export const SPLASH_PAGE_DURATION = 2000;

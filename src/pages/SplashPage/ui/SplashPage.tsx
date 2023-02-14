@@ -3,10 +3,15 @@ import React, {useEffect, memo} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 import {userStore} from '@src/entities/User';
+import {SPLASH_PAGE_DURATION} from '@src/shared/consts/common';
 
 export const SplashPage = () => {
   useEffect(() => {
-    userStore.initAuthUser();
+    const timerId = setTimeout(() => {
+      userStore.initAuthUser();
+    }, SPLASH_PAGE_DURATION);
+
+    return () => clearTimeout(timerId);
   }, []);
 
   return (
