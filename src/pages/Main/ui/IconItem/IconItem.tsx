@@ -2,7 +2,7 @@ import React, {useCallback, memo} from 'react';
 import {Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 
 interface IconItemProps {
   name: string;
@@ -15,7 +15,7 @@ const IconItem = (props: IconItemProps) => {
   const {size, name, focused, icon} = props;
 
   const onPressHandler = useCallback(() => {
-    navigate(name);
+    navigation.navigate(name);
   }, [name]);
 
   return (

@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
@@ -97,7 +97,7 @@ class SignInStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
-      navigate(AppRouteNames.MAIN);
+      navigation.replace(AppRouteNames.MAIN);
     } catch (error: unknown) {
       this.errorHandler(error);
     }

@@ -7,7 +7,7 @@ import {userStore} from '@src/entities/User';
 import {Profile, ProfileErrorInfo} from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -136,7 +136,7 @@ class ProfileStore {
         await this.putFileToStorage();
 
         await this.fetchProfile();
-        navigate(AppRouteNames.MAIN);
+        navigation.replace(AppRouteNames.MAIN);
       }
     } catch (e) {
       console.log(e);

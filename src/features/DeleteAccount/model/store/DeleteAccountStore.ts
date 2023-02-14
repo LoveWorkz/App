@@ -13,7 +13,7 @@ import {Collections} from '@src/shared/types/types';
 import {profileStore} from '@src/entities/Profile';
 import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
 import {validateFields} from '../services/validation/validateFields';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 
@@ -96,7 +96,7 @@ class DeleteAccountStore {
         await currentUser.delete();
         await this.clearUserInfo();
         actionAfterDeleting();
-        navigate(AppRouteNames.AUTH);
+        navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
       }
     } catch (e) {
       console.log(e);

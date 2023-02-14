@@ -3,12 +3,12 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {DeleteAccountStore} from '@src/features/DeleteAccount';
-import {User, InitlUserInfo, AuthMethod} from '../types/userSchema';
-import {userFormatter} from '../../lib/userForamtter';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
+import {User, InitlUserInfo, AuthMethod} from '../types/userSchema';
+import {userFormatter} from '../../lib/userForamtter';
 
 class UserStore {
   authUser: null | User = null;
@@ -40,9 +40,9 @@ class UserStore {
           this.setAuthMethod(value as AuthMethod);
         }
 
-        navigate(AppRouteNames.MAIN);
+        navigation.replace(AppRouteNames.MAIN);
       } else {
-        navigate(AppRouteNames.AUTH);
+        navigation.replace(AppRouteNames.AUTH);
       }
     } catch (e: unknown) {
       this.errorHandler(e);
@@ -57,7 +57,7 @@ class UserStore {
     if (e.message.includes('auth/user-not-found')) {
       await DeleteAccountStore.clearUserInfo();
 
-      navigate(AppRouteNames.AUTH);
+      navigation.navigate(AppRouteNames.AUTH);
     }
   };
 

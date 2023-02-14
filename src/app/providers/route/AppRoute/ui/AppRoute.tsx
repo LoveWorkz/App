@@ -7,13 +7,13 @@ import {
   AppRouteNames,
   appRoutesConfig,
 } from '@src/shared/config/route/configRoute';
-import {navigationRef} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 
 const Stack = createNativeStackNavigator();
 
 export const AppRoute = () => {
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer ref={navigation.navigationRef}>
       <Stack.Navigator
         initialRouteName={AppRouteNames.SPLASH}
         screenOptions={{

@@ -93,15 +93,9 @@ export const ComponentWrapper = memo(observer(AuthPage));
 const styles = StyleSheet.create({
   AuthPage: {
     flex: 1,
-    borderColor: 'red',
-    borderStyle: 'solid',
-    borderWidth: 0,
   },
   container: {
     position: 'relative',
-    borderColor: 'red',
-    borderStyle: 'solid',
-    borderWidth: 0,
     height: '100%',
   },
   logo: {

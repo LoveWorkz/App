@@ -7,14 +7,14 @@ import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {fullWidthPlusPadding, globalPadding} from '@src/app/styles';
 import {Category, categoryData} from '@src/entities/Category';
 import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 
 const CategoriesCarousel = () => {
   const {t} = useTranslation();
 
   const onPressHandler = () => {
-    navigate(TabRoutesNames.CATEGORIES);
+    navigation.navigate(TabRoutesNames.CATEGORIES);
   };
 
   return (

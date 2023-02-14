@@ -3,12 +3,12 @@ import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const ChangePassword = () => {
   const onPressHandler = useCallback(() => {
-    navigate(AppRouteNames.CHANGE_PASSWORD);
+    navigation.navigate(AppRouteNames.CHANGE_PASSWORD);
   }, []);
 
   return (

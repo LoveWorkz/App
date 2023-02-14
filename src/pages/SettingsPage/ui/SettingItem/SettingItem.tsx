@@ -2,7 +2,7 @@ import React, {memo, useCallback} from 'react';
 import {StyleSheet, View, Pressable, Text} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 interface SettingItem {
@@ -15,7 +15,7 @@ const SettingItem = (props: SettingItem) => {
   const {Icon, text, path} = props;
 
   const onPressHandler = useCallback(() => {
-    path && navigate(path);
+    path && navigation.navigate(path);
   }, [path]);
 
   return (

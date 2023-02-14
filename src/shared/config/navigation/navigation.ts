@@ -1,4 +1,10 @@
-import {createNavigationContainerRef} from '@react-navigation/native';
+import {
+  createNavigationContainerRef,
+  StackActions,
+  CommonActions,
+  NavigationContainerRefWithCurrent,
+  ParamListBase,
+} from '@react-navigation/native';
 
 type RootStackParamList = {
   Home: undefined;
@@ -6,9 +12,45 @@ type RootStackParamList = {
   Feed: {sort: 'latest' | 'top'} | undefined;
 };
 
-export const navigationRef = createNavigationContainerRef<any>();
-export const navigate = (name: string, params?: RootStackParamList) => {
+export interface Navigation {
+  navigate: (name: string, params?: RootStackParamList) => void;
+  replace: (name: string, params?: RootStackParamList) => void;
+  resetHistoryAndNavigate: (name: string) => void;
+  navigationRef: NavigationContainerRefWithCurrent<ParamListBase>;
+}
+
+const navigationRef = createNavigationContainerRef<ParamListBase>();
+
+const navigate = (name: string, params?: RootStackParamList) => {
   if (navigationRef.isReady()) {
     navigationRef.navigate(name, params);
   }
+};
+
+const replace = (name: string, params?: RootStackParamList) => {
+  if (navigationRef.isReady()) {
+    navigationRef.current?.dispatch(StackActions.replace(name, params));
+  }
+};
+
+const resetHistoryAndNavigate = (name: string) => {
+  if (navigationRef.isReady()) {
+    navigationRef.current?.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name,
+          },
+        ],
+      }),
+    );
+  }
+};
+
+export const navigation: Navigation = {
+  navigate,
+  replace,
+  resetHistoryAndNavigate,
+  navigationRef,
 };

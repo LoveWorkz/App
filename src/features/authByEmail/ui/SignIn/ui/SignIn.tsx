@@ -6,7 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signInStore from '../model/store/SignInStore';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const SignIn = () => {
@@ -27,7 +27,7 @@ const SignIn = () => {
   }, []);
 
   const onClickHandler = useCallback(() => {
-    navigate(AppRouteNames.RESET_PASSWORD);
+    navigation.navigate(AppRouteNames.RESET_PASSWORD);
   }, []);
 
   return (

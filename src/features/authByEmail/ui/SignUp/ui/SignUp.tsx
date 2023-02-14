@@ -7,7 +7,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signUpStore from '../model/store/SignUpStore';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const SignUp = () => {
@@ -36,7 +36,7 @@ const SignUp = () => {
   }, []);
 
   const onPrivacyPolicyPressHandler = useCallback(() => {
-    navigate(AppRouteNames.PRIVACY_POLICY);
+    navigation.navigate(AppRouteNames.PRIVACY_POLICY);
   }, []);
 
   return (

@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
@@ -35,7 +35,8 @@ class LogoutStore {
         await GoogleSignin.revokeAccess();
       }
       await auth().signOut();
-      navigate(AppRouteNames.AUTH);
+      navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
+
       userStore.setAuthUser(null);
       profileStore.setProfileData(null);
     } catch (e) {

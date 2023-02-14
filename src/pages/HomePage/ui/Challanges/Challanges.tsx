@@ -4,7 +4,7 @@ import {SvgXml} from 'react-native-svg';
 
 import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {Challange} from '@src/entities/Challange';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 
 const data = [
@@ -24,7 +24,7 @@ const data = [
 
 const Challanges = () => {
   const onPressHandler = () => {
-    navigate(TabRoutesNames.CHALLENGES);
+    navigation.navigate(TabRoutesNames.CHALLENGES);
   };
 
   return (

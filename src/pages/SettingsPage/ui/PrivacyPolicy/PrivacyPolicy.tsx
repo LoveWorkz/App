@@ -2,14 +2,14 @@ import React, {memo, useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, Pressable} from 'react-native';
 
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const PrivacyPolicy = () => {
   const {t} = useTranslation();
 
   const onPressHandler = useCallback(() => {
-    navigate(AppRouteNames.PRIVACY_POLICY);
+    navigation.navigate(AppRouteNames.PRIVACY_POLICY);
   }, []);
 
   return (

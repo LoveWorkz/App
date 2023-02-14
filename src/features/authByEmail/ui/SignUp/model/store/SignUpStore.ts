@@ -3,7 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
@@ -117,7 +117,7 @@ class SignUpStore {
       await this.setUser(formattedUser);
       actionAfterRegistration?.();
 
-      navigate(AppRouteNames.SETUP);
+      navigation.replace(AppRouteNames.SETUP);
     } catch (error: unknown) {
       this.errorHandler(error);
     }

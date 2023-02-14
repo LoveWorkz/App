@@ -8,7 +8,7 @@ import {
 } from '../types/changePassword';
 import {validateFields} from '../services/validate/validateField';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 class ChangePasswordStore {
@@ -98,7 +98,7 @@ class ChangePasswordStore {
 
       if (currentUser && this.formData.newPassword && isCorrectPassword) {
         currentUser.updatePassword(this.formData.newPassword);
-        navigate(AppRouteNames.PROFILE);
+        navigation.navigate(AppRouteNames.PROFILE);
       }
     } catch (e) {
       console.log(e);

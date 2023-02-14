@@ -2,7 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import {Alert} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {validateEmail} from '@src/shared/lib/validation/emailValidation';
@@ -45,7 +45,7 @@ class ResetPasswordStore {
     auth()
       .sendPasswordResetEmail(this.email)
       .then(() => {
-        navigate(AppRouteNames.AUTH);
+        navigation.navigate(AppRouteNames.AUTH);
         Alert.alert('check your email');
       })
       .catch(error => {

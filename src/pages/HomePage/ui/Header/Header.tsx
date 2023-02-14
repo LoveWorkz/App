@@ -3,7 +3,7 @@ import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
-import {navigate} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {UserCard} from '@src/shared/ui/UserCard/UserCard';
 
@@ -17,11 +17,11 @@ const Header = (props: HeaderProps) => {
   const {t} = useTranslation();
 
   const onSettingsPressHandler = () => {
-    navigate(AppRouteNames.SETTINGS);
+    navigation.navigate(AppRouteNames.SETTINGS);
   };
 
   const onProfilePressHandler = () => {
-    navigate(AppRouteNames.PROFILE);
+    navigation.navigate(AppRouteNames.PROFILE);
   };
 
   return (
