@@ -3,7 +3,7 @@ import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import DeleteAccountStore from '../../model/store/DeleteAccountStore';
+import deleteAccountStore from '../../model/store/DeleteAccountStore';
 import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {Modal} from '@src/shared/ui/Modal/Modal';
@@ -18,7 +18,7 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
   const [isConfirm, setIsConfirm] = useState(false);
 
   const deleteAuthUser = useCallback(() => {
-    DeleteAccountStore.deleteUserAccount(() => {
+    deleteAccountStore.deleteUserAccount(() => {
       setVisible?.(false);
     });
   }, [setVisible]);
@@ -54,12 +54,14 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
             </Text>
             <View style={styles.btnGroup}>
               <Button
+                disabled={deleteAccountStore.isLoading}
                 style={styles.cancelBtn}
                 theme={ButtonTheme.OUTLINED}
                 onPress={onCancelHandler}>
                 <Text style={styles.cancel}>cancel</Text>
               </Button>
               <Button
+                disabled={deleteAccountStore.isLoading}
                 theme={ButtonTheme.OUTLINED}
                 style={styles.logOutBtn}
                 onPress={onDeleteHandler}>

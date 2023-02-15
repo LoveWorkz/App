@@ -20,6 +20,7 @@ class ProfileStore {
     rubricError: '',
   };
   fileName: string = '';
+  isLoading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -63,6 +64,10 @@ class ProfileStore {
 
   setFileName(name: string) {
     this.fileName = name;
+  }
+
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   putFileToStorage = async () => {
@@ -123,6 +128,8 @@ class ProfileStore {
         return;
       }
 
+      this.setIsLoading(true);
+
       const userId = userStore.authUser?.id;
 
       if (userId) {
@@ -138,7 +145,9 @@ class ProfileStore {
         await this.fetchProfile();
         navigation.replace(AppRouteNames.MAIN);
       }
+      this.setIsLoading(false);
     } catch (e) {
+      this.setIsLoading(false);
       console.log(e);
     }
   };

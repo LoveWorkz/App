@@ -28,6 +28,7 @@ class SignUpStore {
     passwordError: '',
   };
   agreeWithPrivacyPolicy: boolean = false;
+  isLoading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -63,6 +64,10 @@ class SignUpStore {
       passwordError: '',
       confirmPasswordError: '',
     });
+  }
+
+  setIsloading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   resetForm() {
@@ -106,6 +111,8 @@ class SignUpStore {
         return;
       }
 
+      this.setIsloading(true);
+
       await auth().createUserWithEmailAndPassword(
         this.signUpData.email,
         this.signUpData.password,
@@ -117,8 +124,10 @@ class SignUpStore {
       await this.setUser(formattedUser);
       actionAfterRegistration?.();
 
+      this.setIsloading(false);
       navigation.replace(AppRouteNames.SETUP);
     } catch (error: unknown) {
+      this.setIsloading(false);
       this.errorHandler(error);
     }
   };

@@ -25,6 +25,7 @@ class SignInStore {
     emailError: '',
     passwordError: '',
   };
+  isLoading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -44,6 +45,10 @@ class SignInStore {
 
   setServerError(errorInfo: SignInErrorInfo) {
     this.errorInfo = errorInfo;
+  }
+
+  setIsloading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   clearErrors() {
@@ -88,6 +93,8 @@ class SignInStore {
         return;
       }
 
+      this.setIsloading(true);
+
       await auth().signInWithEmailAndPassword(
         this.signInData.email,
         this.signInData.password,
@@ -97,8 +104,10 @@ class SignInStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
+      this.setIsloading(false);
       navigation.replace(AppRouteNames.MAIN);
     } catch (error: unknown) {
+      this.setIsloading(false);
       this.errorHandler(error);
     }
   };

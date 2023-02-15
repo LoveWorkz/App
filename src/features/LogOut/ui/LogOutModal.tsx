@@ -1,5 +1,6 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import logoutStore from '../modal/store/logoutStore';
@@ -28,12 +29,14 @@ const LogOutModal = (props: LogOutModalProps) => {
       <Text style={styles.title}>Log out ?</Text>
       <View style={styles.btnGroup}>
         <Button
+          disabled={logoutStore.isLoading}
           style={styles.cancelBtn}
           theme={ButtonTheme.OUTLINED}
           onPress={onCancelHandler}>
           <Text style={styles.cancel}>cancel</Text>
         </Button>
         <Button
+          disabled={logoutStore.isLoading}
           theme={ButtonTheme.OUTLINED}
           style={styles.logOutBtn}
           onPress={onlogoutHandler}>
@@ -44,7 +47,7 @@ const LogOutModal = (props: LogOutModalProps) => {
   );
 };
 
-export const Wrapper = memo(LogOutModal);
+export const Wrapper = memo(observer(LogOutModal));
 
 const fontSize = 16;
 const btnWidth = '40%';

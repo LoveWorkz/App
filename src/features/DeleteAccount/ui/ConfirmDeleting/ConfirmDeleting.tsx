@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
-import deleteAccountStore from '@src/features/DeleteAccount/model/store/DeleteAccountStore';
+import deleteAccountStore from '../../model/store/DeleteAccountStore';
 
 interface ConfirmDeletingProps {
   onDeleteHandler: () => void;
@@ -49,12 +49,14 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
       </View>
       <View style={styles.btns}>
         <Button
+          disabled={deleteAccountStore.isLoading}
           style={styles.cancelBtn}
           theme={ButtonTheme.OUTLINED}
           onPress={onCancelHandler}>
           <Text>cancel</Text>
         </Button>
         <Button
+          disabled={deleteAccountStore.isLoading}
           onPress={onDeleteHandler}
           style={styles.confirmBtn}
           theme={ButtonTheme.OUTLINED}>

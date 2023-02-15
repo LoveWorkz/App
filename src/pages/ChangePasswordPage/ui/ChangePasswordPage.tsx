@@ -60,6 +60,7 @@ const ChangePasswordPage = () => {
         />
       </View>
       <Button
+        disabled={changePasswordStore.isLoading}
         style={styles.btn}
         theme={ButtonTheme.OUTLINED}
         onPress={onPressHandler}>

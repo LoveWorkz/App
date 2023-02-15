@@ -44,6 +44,22 @@ const AuthPage = () => {
     }
   };
 
+  const disabled = () => {
+    let isDisabled = false;
+    const isSignUp = !isSignIn;
+    const isLoading = signInStore.isLoading || signUpStore.isLoading;
+
+    if (isSignUp && !signUpStore.agreeWithPrivacyPolicy) {
+      isDisabled = true;
+    }
+
+    if (isLoading) {
+      isDisabled = true;
+    }
+
+    return isDisabled;
+  };
+
   return (
     <ScrollView>
       <View style={[styles.AuthPage, {height}]}>
@@ -64,7 +80,7 @@ const AuthPage = () => {
           </View>
           <View style={styles.bottomBlock}>
             <Button
-              disabled={!isSignIn && !signUpStore.agreeWithPrivacyPolicy}
+              disabled={disabled()}
               onPress={auth}
               style={styles.singInBtn}
               theme={ButtonTheme.OUTLINED}>

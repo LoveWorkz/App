@@ -17,12 +17,12 @@ class ChangePasswordStore {
     newPassword: '',
     confirmPassword: '',
   };
-
   errorInfo: ChangePasswordErrorInfo = {
     oldPasswordError: '',
     passwordError: '',
     confirmPasswordError: '',
   };
+  isLoading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -46,6 +46,10 @@ class ChangePasswordStore {
 
   setServerError(errorInfo: ChangePasswordErrorInfo) {
     this.errorInfo = errorInfo;
+  }
+
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
   }
 
   clearErrors() {
@@ -79,16 +83,18 @@ class ChangePasswordStore {
   }
 
   changePassword = async () => {
-    this.clearErrors();
-
-    const {isError, errorInfo} = validateFields(this.formData);
-
-    if (isError) {
-      this.setValidationError(errorInfo);
-      return;
-    }
-
     try {
+      this.clearErrors();
+
+      const {isError, errorInfo} = validateFields(this.formData);
+
+      if (isError) {
+        this.setValidationError(errorInfo);
+        return;
+      }
+
+      this.setIsLoading(true);
+
       const currentUser = auth().currentUser;
       const isCorrectPassword = await userStore.reauthenticate({
         email: auth().currentUser?.email || '',
@@ -100,7 +106,9 @@ class ChangePasswordStore {
         currentUser.updatePassword(this.formData.newPassword);
         navigation.navigate(AppRouteNames.PROFILE);
       }
+      this.setIsLoading(false);
     } catch (e) {
+      this.setIsLoading(false);
       console.log(e);
     }
   };

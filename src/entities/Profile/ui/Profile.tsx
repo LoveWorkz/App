@@ -47,6 +47,7 @@ const Profile = (props: ProfileProps) => {
             <ProfileForm />
           </View>
           <Button
+            disabled={profileStore.isLoading}
             onPress={onSaveHandler}
             theme={ButtonTheme.OUTLINED}
             style={styles.nextButton}>
@@ -86,6 +87,7 @@ const Profile = (props: ProfileProps) => {
 
         <View style={styles.btns}>
           <Button
+            disabled={profileStore.isLoading}
             onPress={onSaveHandler}
             theme={ButtonTheme.OUTLINED}
             style={styles.saveBtn}>

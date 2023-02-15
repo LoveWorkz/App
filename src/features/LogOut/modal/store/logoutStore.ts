@@ -15,14 +15,21 @@ import {Collections} from '@src/shared/types/types';
 import {profileStore} from '@src/entities/Profile';
 
 class LogoutStore {
+  isLoading: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  logout = async () => {
-    const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
+  }
 
+  logout = async () => {
     try {
+      this.setIsLoading(true);
+
+      const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
       await firestore()
         .collection(Collections.USERS)
         .doc(userStore.authUser?.id)
@@ -35,11 +42,13 @@ class LogoutStore {
         await GoogleSignin.revokeAccess();
       }
       await auth().signOut();
+      this.setIsLoading(false);
       navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
 
       userStore.setAuthUser(null);
       profileStore.setProfileData(null);
     } catch (e) {
+      this.setIsLoading(false);
       console.error(e);
     }
   };

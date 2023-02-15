@@ -22,11 +22,11 @@ class DeleteAccountStore {
     password: '',
     email: '',
   };
-
   errorInfo: DeleteAccountFormError = {
     emailError: '',
     passwordError: '',
   };
+  isLoading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -55,6 +55,10 @@ class DeleteAccountStore {
     });
   }
 
+  setIsLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
+  }
+
   resetForm() {
     this.setEmail('');
     this.setEmail('');
@@ -62,16 +66,18 @@ class DeleteAccountStore {
   }
 
   deleteUserAccount = async (actionAfterDeleting: () => void) => {
-    const isAuthMethodEmail = userStore.authMethod === AuthMethod.AUTH_BY_EMAIL;
-
-    this.clearErrors();
-    const {errorInfo, isError} = validateFields(this.formData);
-    if (isError && isAuthMethodEmail) {
-      this.setValidationError(errorInfo);
-      return;
-    }
-
     try {
+      const isAuthMethodEmail =
+        userStore.authMethod === AuthMethod.AUTH_BY_EMAIL;
+
+      this.clearErrors();
+      const {errorInfo, isError} = validateFields(this.formData);
+      if (isError && isAuthMethodEmail) {
+        this.setValidationError(errorInfo);
+        return;
+      }
+
+      this.setIsLoading(true);
       let isCorrectUserData;
 
       if (isAuthMethodEmail) {
@@ -98,7 +104,9 @@ class DeleteAccountStore {
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
       }
+      this.setIsLoading(false);
     } catch (e) {
+      this.setIsLoading(false);
       console.log(e);
     }
   };
