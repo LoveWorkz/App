@@ -14,11 +14,13 @@ interface LogOutModalProps {
 const LogOutModal = (props: LogOutModalProps) => {
   const {visible, setVisible} = props;
 
-  const onlogoutHandler = useCallback(() => {
-    logoutStore.logout().then(() => {
-      setVisible?.(false);
-    });
-  }, [setVisible]);
+  const actionAfterLogout = () => {
+    setVisible(false);
+  };
+
+  const onlogoutHandler = () => {
+    logoutStore.logout(actionAfterLogout);
+  };
 
   const onCancelHandler = useCallback(() => {
     setVisible?.(false);

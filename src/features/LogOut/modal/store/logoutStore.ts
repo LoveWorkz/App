@@ -25,7 +25,7 @@ class LogoutStore {
     this.isLoading = isLoading;
   }
 
-  logout = async () => {
+  logout = async (actionAfterLogout: () => void) => {
     try {
       this.setIsLoading(true);
 
@@ -43,6 +43,8 @@ class LogoutStore {
       }
       await auth().signOut();
       this.setIsLoading(false);
+      actionAfterLogout();
+
       navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
 
       userStore.setAuthUser(null);

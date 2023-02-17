@@ -13,7 +13,7 @@ const ThemeSwitcher = () => {
       </View>
       <View>
         <Switch
-          style={{transform: [{scaleX: 1.5}, {scaleY: 1.5}]}}
+          style={{transform: [{scaleX: 1.2}, {scaleY: 1.2}]}}
           trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
           ios_backgroundColor="#3e3e3e"

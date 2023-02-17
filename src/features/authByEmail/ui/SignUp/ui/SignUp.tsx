@@ -108,7 +108,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  checkbox: {},
+  checkbox: {
+    transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+  },
   privacyPolicyTextWrapper: {
     flexDirection: 'row',
   },
