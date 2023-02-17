@@ -116,6 +116,8 @@ class DeleteAccountStore {
       return;
     }
 
+    this.setIsLoading(false);
+
     if (error.message.includes('auth/invalid-email')) {
       const serverError: DeleteAccountFormError = {
         ...this.errorInfo,

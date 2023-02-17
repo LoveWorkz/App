@@ -57,8 +57,12 @@ const SignUp = () => {
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
           placeholder={'Enter Password'}
-          error={signUpStore.errorInfo.passwordError}
         />
+        {signUpStore.errorInfo.passwordError && (
+          <Text style={styles.passwordErrorText}>
+            {signUpStore.errorInfo.passwordError}
+          </Text>
+        )}
       </View>
       <View>
         <Input
@@ -114,5 +118,8 @@ const styles = StyleSheet.create({
   },
   privacyPolicyLink: {
     color: 'black',
+  },
+  passwordErrorText: {
+    color: 'red',
   },
 });

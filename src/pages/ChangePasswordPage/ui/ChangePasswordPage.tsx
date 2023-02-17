@@ -45,9 +45,13 @@ const ChangePasswordPage = () => {
           label={'New password'}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
-          error={changePasswordStore.errorInfo.passwordError}
           placeholder={'Enter new password'}
         />
+        {changePasswordStore.errorInfo.passwordError && (
+          <Text style={styles.passwordErrorText}>
+            {changePasswordStore.errorInfo.passwordError}
+          </Text>
+        )}
       </View>
       <View style={styles.item}>
         <Input
@@ -88,5 +92,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+  },
+  passwordErrorText: {
+    color: 'red',
   },
 });

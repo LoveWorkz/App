@@ -9,6 +9,5 @@ export enum ValidationErrorCodes {
   USER_NOT_FOUNG = 'User not found',
   SOMETHING_WENT_WRONG = 'Something went wrong',
   INVALID_AGE = 'invalid age',
-  WEAK_PASSWORD = 'Please use uppercase and lowercase characters',
-  SPEC_SYMBOLS = 'Special symbols are prohibited',
+  WEAK_PASSWORD = 'Password must contain lowercase, uppercase, number, special character (#,$,@,!,_,%,&,*,?) and at least 8 characters in length',
 }

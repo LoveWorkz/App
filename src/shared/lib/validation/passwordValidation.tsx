@@ -1,33 +1,12 @@
-import {
-  LovercaseRegexp,
-  passwordMax,
-  passwordMin,
-  specSymbolsRegexp,
-  uppercaseRegexp,
-} from '@src/shared/consts/validation';
+import {weakPasswordRegexp} from '@src/shared/consts/validation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 export const validatePassword = (password: string) => {
   let isPasswordError = false;
   let passwordError = {} as Record<string, ValidationErrorCodes>;
 
-  if (!uppercaseRegexp.test(password) || !LovercaseRegexp.test(password)) {
+  if (!weakPasswordRegexp.test(password)) {
     passwordError.passwordError = ValidationErrorCodes.WEAK_PASSWORD;
-    isPasswordError = true;
-  }
-
-  if (specSymbolsRegexp.test(password)) {
-    passwordError.passwordError = ValidationErrorCodes.SPEC_SYMBOLS;
-    isPasswordError = true;
-  }
-
-  if (password.length < passwordMin) {
-    passwordError.passwordError = ValidationErrorCodes.PASSWORD_MIN_LENGHT_8;
-    isPasswordError = true;
-  }
-
-  if (password.length > passwordMax) {
-    passwordError.passwordError = ValidationErrorCodes.PASSWORD_MAX_LENGHT_30;
     isPasswordError = true;
   }
 

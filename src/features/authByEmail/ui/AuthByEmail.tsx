@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 
 import {ComponentWrapper as SignIn} from './SignIn/ui/SignIn';
 import {ComponentWrapper as SignUp} from './SignUp/ui/SignUp';
@@ -11,11 +11,5 @@ interface AuthByEmailProps {
 export const AuthByEmail = memo((props: AuthByEmailProps) => {
   const {isSingIn} = props;
 
-  return (
-    <View style={styles.authByEmail}>{isSingIn ? <SignIn /> : <SignUp />}</View>
-  );
-});
-
-const styles = StyleSheet.create({
-  authByEmail: {},
+  return <View>{isSingIn ? <SignIn /> : <SignUp />}</View>;
 });
