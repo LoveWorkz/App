@@ -1,7 +1,7 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {View} from 'react-native';
+import {View, StatusBar} from 'react-native';
 
 import {
   AppRouteNames,
@@ -14,6 +14,7 @@ const Stack = createNativeStackNavigator();
 export const AppRoute = () => {
   return (
     <NavigationContainer ref={navigation.navigationRef}>
+      <StatusBar animated={true} barStyle="dark-content" />
       <Stack.Navigator
         initialRouteName={AppRouteNames.SPLASH}
         screenOptions={{

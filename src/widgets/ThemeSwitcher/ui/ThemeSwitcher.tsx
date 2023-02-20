@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   switcher: {
-    transform: [{scaleX: 1.2}, {scaleY: 1.2}],
+    transform: [{scaleX: 0.8}, {scaleY: 0.8}],
   },
 });
 
