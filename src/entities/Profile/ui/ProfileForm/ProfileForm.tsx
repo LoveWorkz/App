@@ -33,6 +33,7 @@ const ProfileForm = () => {
     <SafeAreaView style={styles.profileForm}>
       <View style={styles.item}>
         <Input
+          isSpaceAllowed
           initialValue={profileStore.profileData?.name}
           label={'Name'}
           value={profileStore.profileForm.name}

@@ -30,7 +30,7 @@ const Challanges = () => {
   return (
     <View>
       <View style={styles.topBlock}>
-        <Text style={styles.title}>Chalanges</Text>
+        <Text style={styles.title}>Challenges</Text>
         <Pressable onPress={onPressHandler}>
           <View style={styles.seeAllWrapper}>
             <Text style={styles.seeAll}>See all</Text>

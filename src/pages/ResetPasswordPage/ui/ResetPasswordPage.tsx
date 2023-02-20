@@ -1,12 +1,15 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import resetPasswordStore from '../model/store/ResetPasswordStore';
 
 const ResetPasswordPage = () => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     return () => resetPasswordStore.resetForm();
   }, []);
@@ -24,7 +27,7 @@ const ResetPasswordPage = () => {
       <Text style={styles.title}>Reset Password</Text>
       <View style={styles.inputWrapper}>
         <Input
-          placeholder={'Enter email'}
+          placeholder={t('auth.enter_email') || ''}
           value={resetPasswordStore.email}
           onChange={onChangeHandler}
           error={resetPasswordStore.emailError}

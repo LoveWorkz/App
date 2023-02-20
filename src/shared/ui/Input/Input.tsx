@@ -1,4 +1,3 @@
-import {EyeIcon} from '@src/shared/assets/icons/Eye';
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   KeyboardType,
@@ -9,6 +8,9 @@ import {
   TextInput,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
+
+import {EyeIcon} from '@src/shared/assets/icons/Eye';
+import {whitespaceRegexp} from '@src/shared/consts/validation';
 
 export enum Inputheme {}
 
@@ -23,6 +25,7 @@ interface InputProps {
   initialValue?: string;
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
+  isSpaceAllowed?: boolean;
 }
 
 export const Input = memo((props: InputProps) => {
@@ -37,6 +40,7 @@ export const Input = memo((props: InputProps) => {
     initialValue,
     keyboardType = 'default',
     secureTextEntry,
+    isSpaceAllowed = false,
     ...rest
   } = props;
 
@@ -52,9 +56,14 @@ export const Input = memo((props: InputProps) => {
 
   const onChangeTextHandler = useCallback(
     (text: string) => {
-      onChange?.(text);
+      let newValue = text.replace(whitespaceRegexp, '');
+
+      if (isSpaceAllowed) {
+        newValue = text;
+      }
+      onChange?.(newValue);
     },
-    [onChange],
+    [onChange, isSpaceAllowed],
   );
 
   const togglePasswordHiddenHandler = () => {
@@ -71,6 +80,7 @@ export const Input = memo((props: InputProps) => {
         onChangeText={onChangeTextHandler}
         value={value}
         placeholder={placeholder}
+        placeholderTextColor={'#9A9AA5'}
         {...rest}
       />
       <Pressable
