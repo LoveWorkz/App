@@ -1,9 +1,9 @@
 import React, {ComponentType} from 'react';
 
+import {Layout} from '@src/app/ui/layout';
 import {AuthPage} from '@src/pages/AuthPage';
 import {SplashPage} from '@src/pages/SplashPage';
 import {ResetPasswordPage} from '@src/pages/ResetPasswordPage';
-import {Layout} from '@src/widgets/layout';
 import {Main} from '@src/pages/Main';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfileHeaderRight, ProfilePage} from '@src/pages/ProfilePage';

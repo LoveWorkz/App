@@ -1,8 +1,7 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
-import {useFocusEffect} from '@react-navigation/native';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signInStore from '../model/store/SignInStore';
@@ -12,11 +11,9 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 const SignIn = () => {
   const {t} = useTranslation();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => signInStore.resetForm();
-    }, []),
-  );
+  useEffect(() => {
+    return () => signInStore.resetForm();
+  }, []);
 
   const onEmailChangeHandler = useCallback((email: string) => {
     signInStore.setEmail(email);

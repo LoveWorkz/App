@@ -1,7 +1,7 @@
 import React, {ComponentType} from 'react';
 
+import {Layout} from '@src/app/ui/layout';
 import {HomePage} from '@src/pages/HomePage';
-import {Layout} from '@src/widgets/layout';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {ShopPage} from '@src/pages/ShopPage';
 import {Categories} from '@src/pages/CategoriesPage';

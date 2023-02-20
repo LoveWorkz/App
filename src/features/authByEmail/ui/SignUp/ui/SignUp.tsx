@@ -1,9 +1,8 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
 import {useTranslation} from 'react-i18next';
-import {useFocusEffect} from '@react-navigation/native';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import signUpStore from '../model/store/SignUpStore';
@@ -13,11 +12,9 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 const SignUp = () => {
   const {t} = useTranslation();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => signUpStore.resetForm();
-    }, []),
-  );
+  useEffect(() => {
+    return () => signUpStore.resetForm();
+  }, []);
 
   const onEmailChangeHandler = useCallback((email: string) => {
     signUpStore.setEmail(email);

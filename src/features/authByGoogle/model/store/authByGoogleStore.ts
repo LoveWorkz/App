@@ -59,7 +59,7 @@ class AuthByGoogleStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
-      navigation.navigate(AppRouteNames.MAIN);
+      navigation.replace(AppRouteNames.MAIN);
     } catch (error) {
       console.log(error);
     }

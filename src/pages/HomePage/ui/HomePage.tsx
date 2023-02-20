@@ -5,10 +5,10 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {profileStore} from '@src/entities/Profile';
 import {ComponentWrapper as Header} from './Header/Header';
-import {HomeCategory} from '@src/widgets/HomeCategory';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
+import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
 
 const HomePage = () => {
   useFocusEffect(

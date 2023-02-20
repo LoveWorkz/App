@@ -58,6 +58,10 @@ class ProfileStore {
     this.profileData = data;
   }
 
+  setProfileForm(data: Profile) {
+    this.profileForm = data;
+  }
+
   setPhoto(photo: string) {
     this.profileForm.photo = photo;
   }
@@ -70,12 +74,10 @@ class ProfileStore {
     this.isLoading = isLoading;
   }
 
-  putFileToStorage = async () => {
-    if (this.fileName && this.profileForm.photo) {
-      const reference = storage().ref(this.fileName);
-      await reference.putFile(this.profileForm.photo);
-    }
-  };
+  clearProfileData() {
+    this.setProfileData(null);
+    this.setProfileForm({} as Profile);
+  }
 
   clearErrors() {
     this.setValidationError({
@@ -86,6 +88,13 @@ class ProfileStore {
       rubricError: '',
     });
   }
+
+  putFileToStorage = async () => {
+    if (this.fileName && this.profileForm.photo) {
+      const reference = storage().ref(this.fileName);
+      await reference.putFile(this.profileForm.photo);
+    }
+  };
 
   resetForm() {
     this.setName('');
@@ -108,8 +117,8 @@ class ProfileStore {
           .get();
 
         runInAction(() => {
-          this.profileData = authUser.data() as Profile;
-          this.profileForm = authUser.data() as Profile;
+          this.setProfileData(authUser.data() as Profile);
+          this.setProfileForm(authUser.data() as Profile);
         });
       }
     } catch (e) {

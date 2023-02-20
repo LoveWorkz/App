@@ -11,16 +11,14 @@ const ThemeSwitcher = () => {
           isEnabled ? 'Light' : 'Dark'
         } mode`}</Text>
       </View>
-      <View>
-        <Switch
-          style={{transform: [{scaleX: 1.2}, {scaleY: 1.2}]}}
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={setIsEnabled}
-          value={isEnabled}
-        />
-      </View>
+      <Switch
+        style={styles.switcher}
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={setIsEnabled}
+        value={isEnabled}
+      />
     </View>
   );
 };
@@ -33,6 +31,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+  },
+  switcher: {
+    transform: [{scaleX: 1.2}, {scaleY: 1.2}],
   },
 });
 

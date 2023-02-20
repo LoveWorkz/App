@@ -36,11 +36,13 @@ class LogoutStore {
         .update({
           isAuth: false,
         });
-      await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
 
       if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
         await GoogleSignin.revokeAccess();
       }
+      await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
+      await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
+
       await auth().signOut();
       this.setIsLoading(false);
       actionAfterLogout();
@@ -48,7 +50,7 @@ class LogoutStore {
       navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
 
       userStore.setAuthUser(null);
-      profileStore.setProfileData(null);
+      profileStore.clearProfileData();
     } catch (e) {
       this.setIsLoading(false);
       console.error(e);

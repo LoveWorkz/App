@@ -101,10 +101,11 @@ class DeleteAccountStore {
         !isAuthMethodEmail && (await GoogleSignin.signOut());
         await currentUser.delete();
         await this.clearUserInfo();
+
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
+        this.setIsLoading(false);
       }
-      this.setIsLoading(false);
     } catch (e) {
       this.setIsLoading(false);
       console.log(e);
@@ -151,7 +152,7 @@ class DeleteAccountStore {
         .doc(userFromStorage.id)
         .delete();
 
-      profileStore.setProfileData(null);
+      profileStore.clearProfileData();
       await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
     } catch (e) {
