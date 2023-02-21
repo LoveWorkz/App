@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react';
-import {StyleSheet, Text, View, Switch} from 'react-native';
+import {StyleSheet, Text, View, Switch, Platform} from 'react-native';
 
 const ThemeSwitcher = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -33,7 +33,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   switcher: {
-    transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+    transform: [
+      {scaleX: Platform.OS === 'ios' ? 0.8 : 1.2},
+      {scaleY: Platform.OS === 'ios' ? 0.8 : 1.2},
+    ],
   },
 });
 
