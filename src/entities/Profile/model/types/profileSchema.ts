@@ -18,3 +18,9 @@ export interface ProfileErrorInfo {
   relationshipStatusError: string;
   rubricError: string;
 }
+
+export enum ProfilePhotoActionType {
+  DELETE = 'delete',
+  UPLOAD = 'upload',
+  DOWNLOAD = 'download',
+}

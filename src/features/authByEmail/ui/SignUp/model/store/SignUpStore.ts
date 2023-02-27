@@ -11,7 +11,7 @@ import {
   AUTH_METHOD_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
-import {Collections} from '@src/shared/types/types';
+import {Collections} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignUpData, SignUpErrorInfo} from '../types/signUp';
 import {validateFields} from '../../../../model/services/validation/validateFields';

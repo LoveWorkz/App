@@ -11,8 +11,9 @@ import {
   AUTH_METHOD_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
-import {Collections} from '@src/shared/types/types';
+import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
+import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
 
 class AuthByGoogleStore {
   constructor() {
@@ -45,6 +46,15 @@ class AuthByGoogleStore {
     }
   };
 
+  uploadUserPhoto = async (user: InitlUserInfo) => {
+    const cloudStorage = new StorageServices({
+      folderName: CloudStoragePaths.AVATARS,
+      fileName: user.uid,
+    });
+
+    user.photoURL && cloudStorage.upload(user.photoURL);
+  };
+
   signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -56,6 +66,9 @@ class AuthByGoogleStore {
       await auth().signInWithCredential(googleCredential);
 
       const currentUser = auth().currentUser;
+
+      this.uploadUserPhoto(currentUser as InitlUserInfo);
+
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 

@@ -1,13 +1,17 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
 
-import {Collections} from '@src/shared/types/types';
+import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
-import {Profile, ProfileErrorInfo} from '../types/profileSchema';
+import {
+  Profile,
+  ProfileErrorInfo,
+  ProfilePhotoActionType,
+} from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/config/navigation/navigation';
+import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -19,8 +23,10 @@ class ProfileStore {
     relationshipStatusError: '',
     rubricError: '',
   };
-  fileName: string = '';
+  initialAvatar: string = '';
+  chosenAvatar: string = '';
   isLoading: boolean = false;
+  initialFetching: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -62,21 +68,15 @@ class ProfileStore {
     this.profileForm = data;
   }
 
-  setPhoto(photo: string) {
-    this.profileForm.photo = photo;
-  }
-
-  setFileName(name: string) {
-    this.fileName = name;
-  }
-
-  setIsLoading(isLoading: boolean) {
-    this.isLoading = isLoading;
+  setPhoto(avatar: string) {
+    this.chosenAvatar = avatar;
   }
 
   clearProfileData() {
     this.setProfileData(null);
     this.setProfileForm({} as Profile);
+    this.setPhoto('');
+    this.initialAvatar = '';
   }
 
   clearErrors() {
@@ -89,10 +89,44 @@ class ProfileStore {
     });
   }
 
-  putFileToStorage = async () => {
-    if (this.fileName && this.profileForm.photo) {
-      const reference = storage().ref(this.fileName);
-      await reference.putFile(this.profileForm.photo);
+  profilePhotoAction = async (type: ProfilePhotoActionType) => {
+    try {
+      if (!this.profileData?.id) {
+        return;
+      }
+
+      const cloudStorage = new StorageServices({
+        folderName: CloudStoragePaths.AVATARS,
+        fileName: this.profileData?.id,
+      });
+
+      switch (type) {
+        case ProfilePhotoActionType.UPLOAD:
+          if (!this.chosenAvatar) {
+            return;
+          }
+
+          const isSelectedNewPhoto = this.chosenAvatar !== this.initialAvatar;
+          if (!isSelectedNewPhoto) {
+            return;
+          }
+
+          await cloudStorage.upload(this.chosenAvatar);
+          break;
+        case ProfilePhotoActionType.DOWNLOAD:
+          const avatar = await cloudStorage.download();
+
+          runInAction(() => {
+            this.chosenAvatar = avatar;
+            this.initialAvatar = avatar;
+          });
+          break;
+        case ProfilePhotoActionType.DELETE:
+          await cloudStorage.detete();
+          break;
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -103,7 +137,6 @@ class ProfileStore {
     this.setRelationshipStatus('');
     this.setRubric('');
     this.setPhoto('');
-    this.setFileName('');
     this.clearErrors();
   }
 
@@ -120,9 +153,15 @@ class ProfileStore {
           this.setProfileData(authUser.data() as Profile);
           this.setProfileForm(authUser.data() as Profile);
         });
+
+        await this.profilePhotoAction(ProfilePhotoActionType.DOWNLOAD);
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      runInAction(() => {
+        this.initialFetching = false;
+      });
     }
   };
 
@@ -137,7 +176,7 @@ class ProfileStore {
         return;
       }
 
-      this.setIsLoading(true);
+      this.isLoading = true;
 
       const userId = userStore.authUser?.id;
 
@@ -149,31 +188,23 @@ class ProfileStore {
             ...this.profileForm,
           });
 
-        await this.putFileToStorage();
+        await this.profilePhotoAction(ProfilePhotoActionType.UPLOAD);
 
-        await this.fetchProfile();
         navigation.replace(AppRouteNames.MAIN);
       }
-      this.setIsLoading(false);
     } catch (e) {
-      this.setIsLoading(false);
       console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
   };
 
   deletePhoto = async () => {
     try {
       this.setPhoto('');
-      this.setFileName('');
-
-      const userId = userStore.authUser?.id;
-      await firestore()
-        .collection(Collections.USERS)
-        .doc(userId)
-        .update({
-          ...this.profileForm,
-          photo: '',
-        });
+      await this.profilePhotoAction(ProfilePhotoActionType.DELETE);
 
       await this.fetchProfile();
     } catch (e) {

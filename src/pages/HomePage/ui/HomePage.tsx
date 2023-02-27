@@ -17,7 +17,7 @@ const HomePage = () => {
     }, []),
   );
 
-  if (!profileStore.profileData) {
+  if (profileStore.initialFetching) {
     return (
       <View style={styles.loader}>
         <Loader size={LoaderSize.LARGE} />
@@ -30,8 +30,8 @@ const HomePage = () => {
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
           <Header
-            name={profileStore.profileData.name || ''}
-            imageUrl={profileStore.profileData.photo || ''}
+            name={profileStore.profileData?.name || ''}
+            imageUrl={profileStore.initialAvatar || ''}
           />
         </View>
         <View style={styles.homeCategoryWrapper}>

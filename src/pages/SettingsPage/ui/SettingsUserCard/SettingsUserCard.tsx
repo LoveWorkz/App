@@ -21,7 +21,7 @@ const SettingsUserCard = () => {
     <View>
       <UserCard
         onIconPressHandler={onLogoutHandler}
-        imageUrl={profile?.photo || ''}
+        imageUrl={profileStore.initialAvatar || ''}
         name={profile?.name || ''}
         title={profile?.email || ''}
         Icon={<SvgXml xml={LogOutIcon} />}

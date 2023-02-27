@@ -29,7 +29,6 @@ const Profile = (props: ProfileProps) => {
 
   const onUploadPhotoHandler = useCallback((photoData: Asset) => {
     photoData.uri && profileStore.setPhoto(photoData.uri || '');
-    photoData.fileName && profileStore.setFileName(photoData.fileName || '');
   }, []);
 
   const onDeletePhotoHandler = useCallback(() => {
@@ -63,11 +62,7 @@ const Profile = (props: ProfileProps) => {
       <View style={styles.profile}>
         <Avatar
           theme={AvatarTheme.LARGE}
-          imageUrl={
-            profileStore.profileForm?.photo ||
-            profileStore.profileData?.photo ||
-            ''
-          }
+          imageUrl={profileStore.chosenAvatar || ''}
           borderRadius={100}
         />
         <View style={styles.uploadPhotoWrapper}>

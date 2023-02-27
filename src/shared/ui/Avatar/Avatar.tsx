@@ -1,5 +1,7 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View, ImageBackground} from 'react-native';
+
+import {Loader} from '../Loader/Loader';
 
 export enum AvatarTheme {
   SMALL = 'small',
@@ -16,6 +18,8 @@ interface AvatarProps {
 export const Avatar = memo((props: AvatarProps) => {
   const {theme = AvatarTheme.SMALL, style, imageUrl, borderRadius = 50} = props;
 
+  const [isLoading, setIsloading] = useState(false);
+
   const mode = useMemo(() => {
     return [styles.Avatar, style, styles[theme]];
   }, [theme, style]);
@@ -24,10 +28,25 @@ export const Avatar = memo((props: AvatarProps) => {
     return {uri: imageUrl};
   }, [imageUrl]);
 
+  const onLoadStartHandler = useCallback(() => {
+    setIsloading(true);
+  }, []);
+
+  const onLoadEndHandler = useCallback(() => {
+    setIsloading(false);
+  }, []);
+
   return (
     <View style={mode}>
+      {isLoading && (
+        <View style={styles.loader}>
+          <Loader />
+        </View>
+      )}
       {imageUrl && (
         <ImageBackground
+          onLoadStart={onLoadStartHandler}
+          onLoadEnd={onLoadEndHandler}
           source={image}
           resizeMode="cover"
           borderRadius={borderRadius}
@@ -41,6 +60,8 @@ export const Avatar = memo((props: AvatarProps) => {
 const styles = StyleSheet.create<Record<string, any>>({
   Avatar: {
     borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   small: {
     height: 40,
@@ -60,5 +81,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: 100,
+  },
+  loader: {
+    position: 'absolute',
   },
 });
