@@ -6,6 +6,7 @@ import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {validateEmail} from '@src/shared/lib/validation/emailValidation';
+import { FirebaseErrorCodes } from '@src/shared/types/firebase';
 
 class ResetPasswordStore {
   email: string = '';
@@ -49,11 +50,11 @@ class ResetPasswordStore {
         Alert.alert('check your email');
       })
       .catch(error => {
-        if (error.code === 'auth/invalid-email') {
+        if (error.code === FirebaseErrorCodes.AUTH_INVALID_EMAIL) {
           this.setEmailError(ValidationErrorCodes.INVALID_EMAIL);
         }
 
-        if (error.code === 'auth/user-not-found') {
+        if (error.code === FirebaseErrorCodes.AUTH_USER_NOT_FOUND) {
           this.setEmailError(ValidationErrorCodes.USER_NOT_FOUNG);
         }
       });

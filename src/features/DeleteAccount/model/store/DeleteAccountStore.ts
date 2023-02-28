@@ -4,18 +4,12 @@ import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {AuthMethod, userStore} from '@src/entities/User';
-import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
-import {
-  AUTH_METHOD_STORAGE_KEY,
-  AUTH_USER_STORAGE_KEY,
-} from '@src/shared/consts/storage';
-import {Collections} from '@src/shared/types/firebase';
-import {profileStore} from '@src/entities/Profile';
-import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
-import {validateFields} from '../services/validation/validateFields';
+import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {navigation} from '@src/shared/config/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
+import {validateFields} from '../services/validation/validateFields';
 
 class DeleteAccountStore {
   formData: DeleteAccountForm = {
@@ -99,8 +93,13 @@ class DeleteAccountStore {
       const currentUser = auth().currentUser;
       if (currentUser) {
         !isAuthMethodEmail && (await GoogleSignin.signOut());
+
+        await firestore()
+        .collection(Collections.USERS)
+        .doc(currentUser.uid)
+        .delete();
         await currentUser.delete();
-        await this.clearUserInfo();
+        await userStore.clearUserInfo();
 
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
@@ -119,7 +118,7 @@ class DeleteAccountStore {
 
     this.setIsLoading(false);
 
-    if (error.message.includes('auth/invalid-email')) {
+    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
       const serverError: DeleteAccountFormError = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.INVALID_EMAIL,
@@ -129,8 +128,8 @@ class DeleteAccountStore {
     }
 
     if (
-      error.message.includes('auth/wrong-password') ||
-      error.message.includes('auth/user-not-found')
+      error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD) ||
+      error.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)
     ) {
       const serverError: DeleteAccountFormError = {
         ...this.errorInfo,
@@ -140,25 +139,6 @@ class DeleteAccountStore {
       this.setServerError(serverError);
     }
   }
-
-  clearUserInfo = async () => {
-    try {
-      const value = await authStorage.getAuthData(AUTH_USER_STORAGE_KEY);
-      const userFromStorage = JSON.parse(value || '');
-
-      userStore.setAuthUser(null);
-      await firestore()
-        .collection(Collections.USERS)
-        .doc(userFromStorage.id)
-        .delete();
-
-      profileStore.clearProfileData();
-      await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
-      await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 }
 
 export default new DeleteAccountStore();

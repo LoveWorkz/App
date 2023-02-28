@@ -1,12 +1,14 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { Alert } from 'react-native';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/config/navigation/navigation';
-import {DeleteAccountStore} from '@src/features/DeleteAccount';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
-import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
+import {AUTH_METHOD_STORAGE_KEY, AUTH_USER_STORAGE_KEY} from '@src/shared/consts/storage';
+import {profileStore} from '@src/entities/Profile';
+import { FirebaseErrorCodes } from '@src/shared/types/firebase';
 import {User, InitlUserInfo, AuthMethod} from '../types/userSchema';
 import {userFormatter} from '../../lib/userForamtter';
 
@@ -45,6 +47,7 @@ class UserStore {
         navigation.replace(AppRouteNames.AUTH);
       }
     } catch (e: unknown) {
+      console.log(e);
       this.errorHandler(e);
     }
   };
@@ -54,9 +57,14 @@ class UserStore {
       return;
     }
 
-    if (e.message.includes('auth/user-not-found')) {
-      await DeleteAccountStore.clearUserInfo();
+    if (e.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)) {
+      await this.clearUserInfo();
+      navigation.navigate(AppRouteNames.AUTH);
+    }
 
+    if (e.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
+      await this.clearUserInfo();
+      Alert.alert('Your account is disabled');
       navigation.navigate(AppRouteNames.AUTH);
     }
   };
@@ -105,6 +113,18 @@ class UserStore {
       await auth().currentUser?.reload();
     } catch (e) {
       // too many request error
+      console.log(e);
+    }
+  };
+
+  clearUserInfo = async () => {
+    try {
+      this.setAuthUser(null);
+      profileStore.clearProfileData();
+      
+      await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
+      await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
+    } catch (e) {
       console.log(e);
     }
   };

@@ -47,12 +47,16 @@ class AuthByGoogleStore {
   };
 
   uploadUserPhoto = async (user: InitlUserInfo) => {
-    const cloudStorage = new StorageServices({
-      folderName: CloudStoragePaths.AVATARS,
-      fileName: user.uid,
-    });
-
-    user.photoURL && cloudStorage.upload(user.photoURL);
+    try{
+      const cloudStorage = new StorageServices({
+        folderName: CloudStoragePaths.AVATARS,
+        fileName: user.uid,
+      });
+  
+      user.photoURL && cloudStorage.upload(user.photoURL);
+    } catch(e) {
+      console.log(e);
+    }
   };
 
   signIn = async () => {

@@ -11,7 +11,7 @@ import {
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignInData, SignInErrorInfo} from '../types/signIn';
 import {validateFields} from '../../../../model/services/validation/validateFields';
@@ -117,7 +117,7 @@ class SignInStore {
       return;
     }
 
-    if (error.message.includes('auth/invalid-email')) {
+    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.INVALID_EMAIL,
@@ -127,8 +127,8 @@ class SignInStore {
     }
 
     if (
-      error.message.includes('auth/wrong-password') ||
-      error.message.includes('auth/user-not-found')
+      error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD) ||
+      error.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)
     ) {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,

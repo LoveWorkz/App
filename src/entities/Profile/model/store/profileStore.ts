@@ -189,6 +189,7 @@ class ProfileStore {
           });
 
         await this.profilePhotoAction(ProfilePhotoActionType.UPLOAD);
+        await this.fetchProfile();
 
         navigation.replace(AppRouteNames.MAIN);
       }

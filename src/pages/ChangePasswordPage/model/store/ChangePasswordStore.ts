@@ -2,14 +2,15 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 
 import {userStore} from '@src/entities/User';
+import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {navigation} from '@src/shared/config/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import { FirebaseErrorCodes } from '@src/shared/types/firebase';
 import {
   ChangePasswordErrorInfo,
   ChangePasswordFormData,
 } from '../types/changePassword';
 import {validateFields} from '../services/validate/validateField';
-import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {navigation} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 class ChangePasswordStore {
   formData: ChangePasswordFormData = {
@@ -72,7 +73,7 @@ class ChangePasswordStore {
       return;
     }
 
-    if (error.message.includes('auth/wrong-password')) {
+    if (error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD)) {
       const serverError: ChangePasswordErrorInfo = {
         ...this.errorInfo,
         oldPasswordError: ValidationErrorCodes.INVALID_PASSWORD,

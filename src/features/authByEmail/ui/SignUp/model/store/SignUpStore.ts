@@ -11,7 +11,7 @@ import {
   AUTH_METHOD_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
 } from '@src/shared/consts/storage';
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignUpData, SignUpErrorInfo} from '../types/signUp';
 import {validateFields} from '../../../../model/services/validation/validateFields';
@@ -137,7 +137,7 @@ class SignUpStore {
       return;
     }
 
-    if (error.message.includes('auth/email-already-in-use')) {
+    if (error.message.includes(FirebaseErrorCodes.AUTH_EMAIL_ALREADY_IN_USE)) {
       const serverError: SignUpErrorInfo = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.EMAIL_ALREADY_IN_USE,
@@ -146,7 +146,7 @@ class SignUpStore {
       this.setServerError(serverError);
     }
 
-    if (error.message.includes('auth/invalid-email')) {
+    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
       const serverError: SignUpErrorInfo = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.INVALID_EMAIL,
