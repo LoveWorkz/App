@@ -16,12 +16,10 @@ const DeleteAccount = () => {
       <Button theme={ButtonTheme.CLEAR} onPress={onDeleteHandler}>
         <Text style={styles.deleteText}>Delete my account</Text>
       </Button>
-      {isDeleteModalVisible && (
-        <DeleteAccountModal
-          visible={isDeleteModalVisible}
-          setVisible={setIsDeleteModalVisible}
-        />
-      )}
+      <DeleteAccountModal
+        visible={isDeleteModalVisible}
+        setVisible={setIsDeleteModalVisible}
+      />
     </ScrollView>
   );
 };

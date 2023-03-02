@@ -7,7 +7,7 @@ import {
   AppRouteNames,
   appRoutesConfig,
 } from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 
 const Stack = createNativeStackNavigator();
 

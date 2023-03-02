@@ -19,3 +19,8 @@ export interface InitlUserInfo {
   uid: string;
   emailVerified: boolean;
 }
+
+export interface AuthUserInfo {
+  user: User | null;
+  authMethod: AuthMethod | string;
+}

@@ -3,14 +3,9 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {
-  AUTH_METHOD_STORAGE_KEY,
-  AUTH_USER_STORAGE_KEY,
-} from '@src/shared/consts/storage';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignUpData, SignUpErrorInfo} from '../types/signUp';
@@ -79,14 +74,10 @@ class SignUpStore {
   }
 
   setUser = async (user: User) => {
-    userStore.setAuthUser(user);
-
-    await authStorage.setAuthData(
-      AUTH_METHOD_STORAGE_KEY,
-      AuthMethod.AUTH_BY_EMAIL,
-    );
-    userStore.setAuthMethod(AuthMethod.AUTH_BY_EMAIL);
-    await authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+    userStore.setAuthUserInfo({
+      user,
+      authMethod: AuthMethod.AUTH_BY_EMAIL,
+    });
 
     await firestore()
       .collection(Collections.USERS)

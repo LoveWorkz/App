@@ -10,4 +10,5 @@ export enum ValidationErrorCodes {
   SOMETHING_WENT_WRONG = 'Something went wrong',
   INVALID_AGE = 'invalid age',
   WEAK_PASSWORD = 'Password must contain lowercase, uppercase, number, special character (#,$,@,!,_,%,&,*,?) and at least 8 characters in length',
+  USER_IS_DISABLED = 'Your account has been disabled, please try again later',
 }

@@ -3,9 +3,9 @@ import auth from '@react-native-firebase/auth';
 
 import {userStore} from '@src/entities/User';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import { FirebaseErrorCodes } from '@src/shared/types/firebase';
+import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {
   ChangePasswordErrorInfo,
   ChangePasswordFormData,

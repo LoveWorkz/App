@@ -1,11 +1,10 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {AuthMethod, userStore} from '@src/entities/User';
-import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
@@ -94,10 +93,7 @@ class DeleteAccountStore {
       if (currentUser) {
         !isAuthMethodEmail && (await GoogleSignin.signOut());
 
-        await firestore()
-        .collection(Collections.USERS)
-        .doc(currentUser.uid)
-        .delete();
+        await userStore.clearFirebaseUserInfo(currentUser.uid);
         await currentUser.delete();
         await userStore.clearUserInfo();
 

@@ -3,17 +3,17 @@ import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import deleteAccountStore from '../../model/store/DeleteAccountStore';
-import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import deleteAccountStore from '../../model/store/DeleteAccountStore';
+import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
 
-interface LogOutModalProps {
+interface DeleteAccountModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }
 
-const DeleteAccountModal = (props: LogOutModalProps) => {
+const DeleteAccountModal = (props: DeleteAccountModalProps) => {
   const {visible, setVisible} = props;
   const [isConfirm, setIsConfirm] = useState(false);
 
@@ -39,7 +39,7 @@ const DeleteAccountModal = (props: LogOutModalProps) => {
       <Modal
         contentStyle={styles.content}
         visible={visible}
-        setVisible={setVisible}>
+        onClose={onCancelHandler}>
         {isConfirm ? (
           <ConfirmDeleting
             onDeleteHandler={deleteAuthUser}

@@ -1,10 +1,10 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import logoutStore from '../modal/store/logoutStore';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import logoutStore from '../modal/store/logoutStore';
 
 interface LogOutModalProps {
   visible: boolean;
@@ -22,12 +22,12 @@ const LogOutModal = (props: LogOutModalProps) => {
     logoutStore.logout(actionAfterLogout);
   };
 
-  const onCancelHandler = useCallback(() => {
+  const onCancelHandler = () => {
     setVisible?.(false);
-  }, [setVisible]);
+  };
 
   return (
-    <Modal visible={visible} setVisible={setVisible}>
+    <Modal visible={visible} onClose={onCancelHandler}>
       <Text style={styles.title}>Log out ?</Text>
       <View style={styles.btnGroup}>
         <Button

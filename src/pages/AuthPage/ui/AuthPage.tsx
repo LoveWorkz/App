@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,8 @@ import {AuthByApple} from '@src/features/authByApple';
 import {AuthByEmail, signInStore, signUpStore} from '@src/features/authByEmail';
 import {AuthByGoogle} from '@src/features/authByGoogle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {Dialog} from '@src/shared/ui/Dialog/Dialog';
+import {userStore} from '@src/entities/User';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
@@ -60,6 +62,10 @@ const AuthPage = () => {
     return isDisabled;
   };
 
+  const onConfirmHandler = useCallback(() => {
+    userStore.toggleDisabledDialog(false);
+  }, []);
+
   return (
     <ScrollView>
       <View style={[styles.AuthPage, {height}]}>
@@ -99,6 +105,14 @@ const AuthPage = () => {
             </Pressable>
           </View>
         </View>
+        {userStore.isDisabledDialogOpen && (
+          <Dialog
+            visible={userStore.isDisabledDialogOpen}
+            confirmText={'OK'}
+            onConfirmHandler={onConfirmHandler}
+            title={'Your account has been disabled, please try again later'}
+          />
+        )}
       </View>
     </ScrollView>
   );

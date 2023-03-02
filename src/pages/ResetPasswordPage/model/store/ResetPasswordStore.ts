@@ -1,16 +1,15 @@
-import {makeAutoObservable} from 'mobx';
-import {Alert} from 'react-native';
+import {makeAutoObservable, runInAction} from 'mobx';
 import auth from '@react-native-firebase/auth';
 
-import {navigation} from '@src/shared/config/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {validateEmail} from '@src/shared/lib/validation/emailValidation';
-import { FirebaseErrorCodes } from '@src/shared/types/firebase';
+import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 
 class ResetPasswordStore {
   email: string = '';
   emailError: string = '';
+  isCheckEmailDialogOpen: boolean = false;
+  isloading: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,6 +17,10 @@ class ResetPasswordStore {
 
   setEmail(email: string) {
     this.email = email;
+  }
+
+  toggleCheckEmailDialog(isOpen: boolean) {
+    this.isCheckEmailDialogOpen = isOpen;
   }
 
   resetForm() {
@@ -43,11 +46,12 @@ class ResetPasswordStore {
       return;
     }
 
+    this.isloading = true;
+
     auth()
       .sendPasswordResetEmail(this.email)
       .then(() => {
-        navigation.navigate(AppRouteNames.AUTH);
-        Alert.alert('check your email');
+        this.toggleCheckEmailDialog(true);
       })
       .catch(error => {
         if (error.code === FirebaseErrorCodes.AUTH_INVALID_EMAIL) {
@@ -57,6 +61,12 @@ class ResetPasswordStore {
         if (error.code === FirebaseErrorCodes.AUTH_USER_NOT_FOUND) {
           this.setEmailError(ValidationErrorCodes.USER_NOT_FOUNG);
         }
+        console.log(error);
+      })
+      .finally(() => {
+        runInAction(() => {
+          this.isloading = false;
+        });
       });
   }
 }

@@ -2,7 +2,7 @@ import React, {useCallback, memo} from 'react';
 import {Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 
 interface IconItemProps {
   name: string;

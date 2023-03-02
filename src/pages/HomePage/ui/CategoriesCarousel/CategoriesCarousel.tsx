@@ -7,7 +7,7 @@ import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {fullWidthPlusPadding, globalPadding} from '@src/app/styles';
 import {Category, categoryData} from '@src/entities/Category';
 import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 
 const CategoriesCarousel = () => {

@@ -7,6 +7,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.id = userInfo.uid;
   formatedUser.name = userInfo.displayName;
   formatedUser.emailVerified = userInfo.emailVerified;
+  formatedUser.photo = userInfo.photoURL;
 
   return formatedUser;
 };

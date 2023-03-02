@@ -4,7 +4,8 @@ export class StorageServices {
   storageRef = storage().ref();
 
   constructor({folderName, fileName}: {folderName: string; fileName: string}) {
-    this.storageRef = storage().ref(`${folderName}/${fileName}`);
+    const ref = storage().ref();
+    this.storageRef = ref.child(folderName).child(fileName);
   }
 
   async upload(file: string) {

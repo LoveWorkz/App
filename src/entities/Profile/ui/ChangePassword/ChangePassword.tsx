@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const ChangePassword = () => {

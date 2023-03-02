@@ -1,7 +1,6 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, View, ScrollView, Platform} from 'react-native';
 import {observer} from 'mobx-react-lite';
-import {useFocusEffect} from '@react-navigation/native';
 
 import {profileStore} from '@src/entities/Profile';
 import {ComponentWrapper as Header} from './Header/Header';
@@ -11,11 +10,9 @@ import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
 
 const HomePage = () => {
-  useFocusEffect(
-    React.useCallback(() => {
-      profileStore.fetchProfile();
-    }, []),
-  );
+  useEffect(() => {
+    profileStore.fetchProfile();
+  }, []);
 
   if (profileStore.initialFetching) {
     return (
@@ -31,7 +28,7 @@ const HomePage = () => {
         <View style={styles.headerWrapper}>
           <Header
             name={profileStore.profileData?.name || ''}
-            imageUrl={profileStore.initialAvatar || ''}
+            imageUrl={profileStore.avatar || ''}
           />
         </View>
         <View style={styles.homeCategoryWrapper}>

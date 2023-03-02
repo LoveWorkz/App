@@ -10,7 +10,7 @@ import {
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
 
 class ProfileStore {
@@ -23,8 +23,9 @@ class ProfileStore {
     relationshipStatusError: '',
     rubricError: '',
   };
-  initialAvatar: string = '';
-  chosenAvatar: string = '';
+  avatar: string = '';
+  tempAvatar: string = '';
+
   isLoading: boolean = false;
   initialFetching: boolean = true;
 
@@ -68,15 +69,19 @@ class ProfileStore {
     this.profileForm = data;
   }
 
-  setPhoto(avatar: string) {
-    this.chosenAvatar = avatar;
+  setAvatar(avatar: string) {
+    this.avatar = avatar;
+    this.setTempAvatar(avatar);
+  }
+
+  setTempAvatar(avatar: string) {
+    this.tempAvatar = avatar;
   }
 
   clearProfileData() {
     this.setProfileData(null);
     this.setProfileForm({} as Profile);
-    this.setPhoto('');
-    this.initialAvatar = '';
+    this.setAvatar('');
   }
 
   clearErrors() {
@@ -102,27 +107,24 @@ class ProfileStore {
 
       switch (type) {
         case ProfilePhotoActionType.UPLOAD:
-          if (!this.chosenAvatar) {
-            return;
+          if (!this.tempAvatar) {
+            return '';
           }
 
-          const isSelectedNewPhoto = this.chosenAvatar !== this.initialAvatar;
-          if (!isSelectedNewPhoto) {
-            return;
+          const isFileFromDevice = this.tempAvatar.startsWith('file://');
+
+          if (isFileFromDevice) {
+            await cloudStorage.upload(this.tempAvatar);
+            const url = await cloudStorage.download();
+            return url;
+          } else {
+            return this.avatar;
           }
 
-          await cloudStorage.upload(this.chosenAvatar);
-          break;
-        case ProfilePhotoActionType.DOWNLOAD:
-          const avatar = await cloudStorage.download();
-
-          runInAction(() => {
-            this.chosenAvatar = avatar;
-            this.initialAvatar = avatar;
-          });
-          break;
         case ProfilePhotoActionType.DELETE:
           await cloudStorage.detete();
+          break;
+        default:
           break;
       }
     } catch (e) {
@@ -136,7 +138,7 @@ class ProfileStore {
     this.setCountry('');
     this.setRelationshipStatus('');
     this.setRubric('');
-    this.setPhoto('');
+    this.setTempAvatar(this.avatar);
     this.clearErrors();
   }
 
@@ -150,11 +152,14 @@ class ProfileStore {
           .get();
 
         runInAction(() => {
-          this.setProfileData(authUser.data() as Profile);
-          this.setProfileForm(authUser.data() as Profile);
+          const data = authUser.data() as Profile;
+          if (!data) {
+            return;
+          }
+          this.setProfileData(data);
+          this.setProfileForm(data);
+          this.setAvatar(data.photo);
         });
-
-        await this.profilePhotoAction(ProfilePhotoActionType.DOWNLOAD);
       }
     } catch (e) {
       console.log(e);
@@ -179,16 +184,19 @@ class ProfileStore {
       this.isLoading = true;
 
       const userId = userStore.authUser?.id;
-
       if (userId) {
+        const photoUrl = await this.profilePhotoAction(
+          ProfilePhotoActionType.UPLOAD,
+        );
+
         await firestore()
           .collection(Collections.USERS)
           .doc(userId)
           .update({
             ...this.profileForm,
+            photo: photoUrl ?? null,
           });
 
-        await this.profilePhotoAction(ProfilePhotoActionType.UPLOAD);
         await this.fetchProfile();
 
         navigation.replace(AppRouteNames.MAIN);
@@ -204,7 +212,17 @@ class ProfileStore {
 
   deletePhoto = async () => {
     try {
-      this.setPhoto('');
+      const userId = this.profileData?.id;
+
+      if (!userId) {
+        return;
+      }
+
+      this.setAvatar('');
+
+      await firestore().collection(Collections.USERS).doc(userId).update({
+        photo: null,
+      });
       await this.profilePhotoAction(ProfilePhotoActionType.DELETE);
 
       await this.fetchProfile();

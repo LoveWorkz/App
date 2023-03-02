@@ -21,12 +21,12 @@ const SettingsUserCard = () => {
     <View>
       <UserCard
         onIconPressHandler={onLogoutHandler}
-        imageUrl={profileStore.initialAvatar || ''}
+        imageUrl={profileStore.avatar || ''}
         name={profile?.name || ''}
         title={profile?.email || ''}
         Icon={<SvgXml xml={LogOutIcon} />}
       />
-      {visible && <LogOutModal visible={visible} setVisible={setVisible} />}
+      <LogOutModal visible={visible} setVisible={setVisible} />
     </View>
   );
 };

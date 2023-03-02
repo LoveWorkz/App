@@ -1,32 +1,46 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import { Alert } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/config/navigation/navigation';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
-import {AUTH_METHOD_STORAGE_KEY, AUTH_USER_STORAGE_KEY} from '@src/shared/consts/storage';
+import {
+  AUTH_METHOD_STORAGE_KEY,
+  AUTH_USER_STORAGE_KEY,
+} from '@src/shared/consts/storage';
 import {profileStore} from '@src/entities/Profile';
-import { FirebaseErrorCodes } from '@src/shared/types/firebase';
-import {User, InitlUserInfo, AuthMethod} from '../types/userSchema';
+import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {ProfilePhotoActionType} from '@src/entities/Profile/model/types/profileSchema';
+import {
+  User,
+  InitlUserInfo,
+  AuthMethod,
+  AuthUserInfo,
+} from '../types/userSchema';
 import {userFormatter} from '../../lib/userForamtter';
 
 class UserStore {
   authUser: null | User = null;
-  authMethod: AuthMethod = AuthMethod.AUTH_BY_EMAIL;
+  authMethod: AuthMethod | string = '';
+  isDisabledDialogOpen: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setAuthUser(user: User | null) {
+  setAuthUserInfo({user, authMethod}: AuthUserInfo) {
     this.authUser = user;
+    this.authMethod = authMethod;
+
+    authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+    authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
   }
 
-  setAuthMethod = async (authMethod: AuthMethod) => {
-    this.authMethod = authMethod;
-  };
+  toggleDisabledDialog(isOpen: boolean) {
+    this.isDisabledDialogOpen = isOpen;
+  }
 
   initAuthUser = async () => {
     try {
@@ -35,12 +49,14 @@ class UserStore {
 
       if (user) {
         const formattedUser = userFormatter(user as InitlUserInfo);
-        this.authUser = formattedUser;
+        const authMethod = (await authStorage.getAuthData(
+          AUTH_METHOD_STORAGE_KEY,
+        )) as AuthMethod;
 
-        const value = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
-        if (value) {
-          this.setAuthMethod(value as AuthMethod);
-        }
+        this.setAuthUserInfo({
+          user: formattedUser,
+          authMethod,
+        });
 
         navigation.replace(AppRouteNames.MAIN);
       } else {
@@ -64,8 +80,8 @@ class UserStore {
 
     if (e.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       await this.clearUserInfo();
-      Alert.alert('Your account is disabled');
       navigation.navigate(AppRouteNames.AUTH);
+      this.toggleDisabledDialog(true);
     }
   };
 
@@ -107,26 +123,24 @@ class UserStore {
     }
   };
 
-  verifyEmail = async () => {
-    try {
-      await auth().currentUser?.sendEmailVerification();
-      await auth().currentUser?.reload();
-    } catch (e) {
-      // too many request error
-      console.log(e);
-    }
-  };
-
   clearUserInfo = async () => {
     try {
-      this.setAuthUser(null);
+      this.setAuthUserInfo({
+        user: null,
+        authMethod: '',
+      });
       profileStore.clearProfileData();
-      
+
       await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
     } catch (e) {
       console.log(e);
     }
+  };
+
+  clearFirebaseUserInfo = async (id: string) => {
+    await firestore().collection(Collections.USERS).doc(id).delete();
+    await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
   };
 }
 

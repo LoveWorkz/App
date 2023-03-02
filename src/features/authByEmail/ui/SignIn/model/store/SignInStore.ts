@@ -4,12 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/config/navigation/navigation';
-import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
-import {
-  AUTH_METHOD_STORAGE_KEY,
-  AUTH_USER_STORAGE_KEY,
-} from '@src/shared/consts/storage';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
@@ -65,14 +60,10 @@ class SignInStore {
   }
 
   setUser = async (user: User) => {
-    userStore.setAuthUser(user);
-
-    await authStorage.setAuthData(
-      AUTH_METHOD_STORAGE_KEY,
-      AuthMethod.AUTH_BY_EMAIL,
-    );
-    userStore.setAuthMethod(AuthMethod.AUTH_BY_EMAIL);
-    await authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+    userStore.setAuthUserInfo({
+      user,
+      authMethod: AuthMethod.AUTH_BY_EMAIL,
+    });
 
     await firestore().collection(Collections.USERS).doc(user.id).update({
       isAuth: true,
@@ -133,6 +124,15 @@ class SignInStore {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,
         passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
+      };
+
+      this.setServerError(serverError);
+    }
+
+    if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
+      const serverError: SignInErrorInfo = {
+        ...this.errorInfo,
+        emailError: ValidationErrorCodes.USER_IS_DISABLED,
       };
 
       this.setServerError(serverError);

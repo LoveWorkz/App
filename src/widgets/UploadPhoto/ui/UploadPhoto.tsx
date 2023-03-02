@@ -30,14 +30,12 @@ const UploadPhoto = (props: UploadPhotoProps) => {
           <Text style={styles.text}>Change photo</Text>
         </View>
       </Button>
-      {visible && (
-        <UploadModal
-          visible={visible}
-          setVisible={setVisible}
-          setPhtotData={setPhtotData}
-          deletePhoto={deletePhoto}
-        />
-      )}
+      <UploadModal
+        visible={visible}
+        setVisible={setVisible}
+        setPhtotData={setPhtotData}
+        deletePhoto={deletePhoto}
+      />
     </SafeAreaView>
   );
 };

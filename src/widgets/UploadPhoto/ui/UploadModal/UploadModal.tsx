@@ -1,11 +1,11 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, Text, useWindowDimensions} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {Animation, Modal} from '@src/shared/ui/Modal/Modal';
 import {UploadPhotoType} from '../../model/types/uploadPhoto';
 import uploadPhotoStore from '../../model/store/uploadPhotoStore';
-import {Animation, Modal} from '@src/shared/ui/Modal/Modal';
 
 interface UploadModalProps {
   visible: boolean;
@@ -38,9 +38,9 @@ const UploadModal = (props: UploadModalProps) => {
     }
   };
 
-  const onCancelHandler = useCallback(() => {
+  const onCancelHandler = () => {
     setVisible?.(false);
-  }, [setVisible]);
+  };
 
   const onDeleteHandler = () => {
     deletePhoto?.();
@@ -49,8 +49,8 @@ const UploadModal = (props: UploadModalProps) => {
 
   return (
     <Modal
+      onClose={onCancelHandler}
       animationIn={Animation.SLIDEIN_UP}
-      setVisible={setVisible}
       visible={visible}
       contentStyle={[styles.content, {width}]}>
       <Text style={styles.title}>Change profile photo</Text>

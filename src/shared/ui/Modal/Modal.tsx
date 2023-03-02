@@ -9,38 +9,40 @@ export enum Animation {
 
 interface ModalProps {
   visible: boolean;
-  setVisible: (visible: boolean) => void;
   children: ReactElement | ReactElement[];
   contentStyle?:
     | Record<string, string | number>[]
     | Record<string, string | number>;
   animationIn?: Animation;
+  onClose?: () => void;
 }
 
 export const Modal = (props: ModalProps) => {
   const {
     visible,
-    setVisible,
     children,
     contentStyle,
     animationIn = Animation.BOUNCEIN,
+    onClose,
   } = props;
 
   const onCancelHandler = useCallback(() => {
-    setVisible?.(false);
-  }, [setVisible]);
+    onClose?.();
+  }, [onClose]);
 
   return (
-    <Popup
-      statusBarTranslucent
-      animationInTiming={300}
-      animationIn={animationIn}
-      onBackdropPress={onCancelHandler}
-      isVisible={visible}>
-      <View style={styles.overlay}>
-        <View style={[styles.content, contentStyle]}>{children}</View>
-      </View>
-    </Popup>
+    <>
+      {visible && (
+        <Popup
+          onBackdropPress={onCancelHandler}
+          statusBarTranslucent
+          animationInTiming={300}
+          animationIn={animationIn}
+          isVisible={visible}>
+          <View style={[styles.content, contentStyle]}>{children}</View>
+        </Popup>
+      )}
+    </>
   );
 };
 
@@ -52,9 +54,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 240,
     padding: 30,
-  },
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
   },
 });
