@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 
 class AuthByGoogleStore {
@@ -56,8 +56,14 @@ class AuthByGoogleStore {
 
       navigation.replace(AppRouteNames.MAIN);
     } catch (error) {
+      if (!(error instanceof Error)) {
+        return;
+      }
+
+      if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
+        userStore.toggleDisabledDialog(true);
+      }
       console.log(error);
-      userStore.toggleDisabledDialog(true);
     }
   };
 }

@@ -3,10 +3,8 @@ import {SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import countryStore from '../model/store/countryStore';
-import {
-  CustomSelect,
-  SelectTheme,
-} from '@src/shared/ui/CustomSelect/CustomSelect';
+import {Select} from '@src/shared/ui/Select/Select';
+import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
 
 interface CountrySelectProps {
   country: string;
@@ -30,7 +28,7 @@ const CountrySelect = (props: CountrySelectProps) => {
 
   return (
     <SafeAreaView>
-      <CustomSelect
+      <Select
         Theme={SelectTheme.UNDERLINE}
         prompt={'Country'}
         initialValue={initialValue}

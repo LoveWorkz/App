@@ -11,15 +11,19 @@ class CountryStore {
   }
 
   fetchCountries = async () => {
-    const countries = await fetchCountries();
-    const countriesNames = countries
-      .map(country => country.name.common)
-      .sort()
-      .map(countryName => ({
-        label: countryName,
-        value: countryName,
-      }));
-    this.setCountries(countriesNames);
+    try {
+      const countries = await fetchCountries();
+      const countriesNames = countries
+        .map(country => country.name.common)
+        .sort()
+        .map(countryName => ({
+          label: countryName,
+          value: countryName,
+        }));
+      this.setCountries(countriesNames);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   setCountries(countriesNames: CountrySelectOptions[]) {

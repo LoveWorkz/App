@@ -1,10 +1,8 @@
 import React, {memo, useCallback, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {
-  CustomSelect,
-  SelectTheme,
-} from '@src/shared/ui/CustomSelect/CustomSelect';
+import {Select, SelectMode} from '@src/shared/ui/Select/Select';
+import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
 
 const options = [
   {
@@ -26,13 +24,13 @@ const LanguageSwitcher = () => {
 
   return (
     <SafeAreaView>
-      <CustomSelect
+      <Select
         Theme={SelectTheme.CLEAR}
         options={options}
         value={selectedLanguage}
         onSelect={onSelecteLanguageHandler}
         selectedValueStyle={styles.itemStyle}
-        mode={'dropdown'}
+        mode={SelectMode.DIALOG}
         style={styles.select}
       />
     </SafeAreaView>
