@@ -96,7 +96,7 @@ class SignInStore {
       await this.setUser(formattedUser);
 
       this.setIsloading(false);
-      navigation.replace(AppRouteNames.MAIN);
+      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (error: unknown) {
       this.setIsloading(false);
       this.errorHandler(error);

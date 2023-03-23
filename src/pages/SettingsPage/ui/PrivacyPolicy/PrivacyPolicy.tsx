@@ -1,9 +1,10 @@
 import React, {memo, useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, Text, Pressable} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const PrivacyPolicy = () => {
   const {t} = useTranslation();
@@ -14,9 +15,11 @@ const PrivacyPolicy = () => {
 
   return (
     <Pressable onPress={onPressHandler} style={styles.privacyPolicy}>
-      <Text style={styles.privacyPolicyText}>
-        {t('settings.privacy_policy')}
-      </Text>
+      <AppText
+        style={styles.privacyPolicyText}
+        size={TextSize.LEVEL_4}
+        text={t('settings.privacy_policy')}
+      />
     </Pressable>
   );
 };
@@ -26,15 +29,12 @@ export const Wrapper = memo(PrivacyPolicy);
 const styles = StyleSheet.create({
   privacyPolicy: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 60,
     alignItems: 'center',
     width: '100%',
   },
   privacyPolicyText: {
-    fontSize: 18,
     color: '#009EF6',
-    borderBottomColor: '#009EF6',
-    borderBottomStyle: 'solid',
-    borderBottomWidth: 1,
+    textDecorationLine: 'underline',
   },
 });

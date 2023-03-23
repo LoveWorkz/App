@@ -17,6 +17,7 @@ export interface Navigation {
   replace: (name: string, params?: RootStackParamList) => void;
   resetHistoryAndNavigate: (name: string) => void;
   navigationRef: NavigationContainerRefWithCurrent<ParamListBase>;
+  goBack: () => void;
 }
 
 const navigationRef = createNavigationContainerRef<ParamListBase>();
@@ -30,6 +31,12 @@ const navigate = (name: string, params?: RootStackParamList) => {
 const replace = (name: string, params?: RootStackParamList) => {
   if (navigationRef.isReady()) {
     navigationRef.current?.dispatch(StackActions.replace(name, params));
+  }
+};
+
+const goBack = () => {
+  if (navigationRef.isReady()) {
+    navigationRef.goBack();
   }
 };
 
@@ -53,4 +60,5 @@ export const navigation: Navigation = {
   replace,
   resetHistoryAndNavigate,
   navigationRef,
+  goBack,
 };

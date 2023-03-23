@@ -1,16 +1,18 @@
 import {observer} from 'mobx-react-lite';
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {Asset} from 'react-native-image-picker';
+import {useTranslation} from 'react-i18next';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
 import {DeleteAccount} from '@src/features/DeleteAccount';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {AuthMethod, userStore} from '@src/entities/User';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import {Wrapper as ProfileForm} from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
-import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {AuthMethod, userStore} from '@src/entities/User';
 
 interface ProfileProps {
   isSetUp?: boolean;
@@ -18,6 +20,7 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
+  const {t} = useTranslation();
 
   useEffect(() => {
     return () => profileStore.resetForm();
@@ -40,7 +43,11 @@ const Profile = (props: ProfileProps) => {
       <ScrollView>
         <View style={styles.profile}>
           <View>
-            <Text style={styles.logo}>LOGO</Text>
+            <AppText
+              style={styles.logo}
+              size={TextSize.LEVEL_4}
+              text={'LOGO'}
+            />
           </View>
           <View style={styles.profileFormWrapper}>
             <ProfileForm />
@@ -50,7 +57,7 @@ const Profile = (props: ProfileProps) => {
             onPress={onSaveHandler}
             theme={ButtonTheme.OUTLINED}
             style={styles.nextButton}>
-            <Text>next</Text>
+            <AppText text={t('next')} />
           </Button>
         </View>
       </ScrollView>
@@ -67,6 +74,7 @@ const Profile = (props: ProfileProps) => {
         />
         <View style={styles.uploadPhotoWrapper}>
           <UploadPhoto
+            style={styles.uploadPhoto}
             deletePhoto={onDeletePhotoHandler}
             setPhtotData={onUploadPhotoHandler}
           />
@@ -86,7 +94,11 @@ const Profile = (props: ProfileProps) => {
             onPress={onSaveHandler}
             theme={ButtonTheme.OUTLINED}
             style={styles.saveBtn}>
-            <Text style={styles.saveBtnText}>Save changes</Text>
+            <AppText
+              style={styles.saveBtnText}
+              size={TextSize.LEVEL_4}
+              text={t('profile.save_changes')}
+            />
           </Button>
           <DeleteAccount />
         </View>
@@ -103,7 +115,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    fontSize: 30,
     marginBottom: 30,
   },
   uploadPhotoWrapper: {
@@ -138,5 +149,8 @@ const styles = StyleSheet.create({
   nextButton: {
     width: '100%',
     marginBottom: 20,
+  },
+  uploadPhoto: {
+    width: 180,
   },
 });

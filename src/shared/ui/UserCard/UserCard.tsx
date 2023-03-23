@@ -1,7 +1,8 @@
 import React, {useCallback, ReactElement} from 'react';
-import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface HeaderProps {
   style?: Record<string, string | number>;
@@ -39,8 +40,8 @@ export const UserCard = (props: HeaderProps) => {
       </Pressable>
       <Pressable onPress={onProfilePressHandler}>
         <View style={styles.nameWrapper}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.name}>{name}</Text>
+          <AppText text={title} weight={'300'} />
+          <AppText text={name} size={TextSize.LEVEL_5} weight={'600'} />
         </View>
       </Pressable>
       <View style={styles.icon}>
@@ -60,13 +61,6 @@ const styles = StyleSheet.create({
   },
   nameWrapper: {
     marginLeft: 10,
-  },
-  title: {
-    fontSize: 14,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: '600',
   },
   icon: {
     marginLeft: 'auto',

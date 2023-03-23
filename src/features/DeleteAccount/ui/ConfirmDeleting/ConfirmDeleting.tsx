@@ -1,9 +1,11 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 
 interface ConfirmDeletingProps {
@@ -13,6 +15,7 @@ interface ConfirmDeletingProps {
 
 const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   const {onDeleteHandler, onCancelHandler} = props;
+  const {t} = useTranslation();
 
   useEffect(() => {
     return () => deleteAccountStore.resetForm();
@@ -28,22 +31,26 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
 
   return (
     <SafeAreaView style={styles.confirm}>
-      <Text style={styles.title}>Enter your data</Text>
+      <AppText
+        style={styles.title}
+        size={TextSize.LEVEL_6}
+        text={t('enter_your_data')}
+      />
       <View style={styles.inputs}>
         <Input
           error={deleteAccountStore.errorInfo.emailError}
           value={deleteAccountStore.formData.email}
           style={styles.emailInput}
-          label={'Email'}
-          placeholder={'Enter email'}
+          label={t('auth.email') || ''}
+          placeholder={t('auth.enter_email') || ''}
           onChange={onEmailChangeHandler}
         />
         <Input
           secureTextEntry
           error={deleteAccountStore.errorInfo.passwordError}
           value={deleteAccountStore.formData.password}
-          label={'Password'}
-          placeholder={'Enter password'}
+          label={t('auth.password') || ''}
+          placeholder={t('auth.enter_password') || ''}
           onChange={onPasswordChangeHandler}
         />
       </View>
@@ -53,14 +60,18 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           style={styles.cancelBtn}
           theme={ButtonTheme.OUTLINED}
           onPress={onCancelHandler}>
-          <Text>cancel</Text>
+          <AppText size={TextSize.LEVEL_4} text={t('cancel')} />
         </Button>
         <Button
           disabled={deleteAccountStore.isLoading}
           onPress={onDeleteHandler}
           style={styles.confirmBtn}
           theme={ButtonTheme.OUTLINED}>
-          <Text style={styles.confirmText}>confirm</Text>
+          <AppText
+            style={styles.confirmText}
+            size={TextSize.LEVEL_4}
+            text={t('confirm')}
+          />
         </Button>
       </View>
     </SafeAreaView>
@@ -77,8 +88,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 22,
-    fontWeight: '600',
     marginBottom: 10,
   },
   btns: {

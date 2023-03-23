@@ -1,9 +1,11 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text, useWindowDimensions} from 'react-native';
+import {StyleSheet, useWindowDimensions} from 'react-native';
 import {Asset} from 'react-native-image-picker';
+import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Animation, Modal} from '@src/shared/ui/Modal/Modal';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {UploadPhotoType} from '../../model/types/uploadPhoto';
 import uploadPhotoStore from '../../model/store/uploadPhotoStore';
 
@@ -16,6 +18,7 @@ interface UploadModalProps {
 
 const UploadModal = (props: UploadModalProps) => {
   const {visible, setVisible, setPhtotData, deletePhoto} = props;
+  const {t} = useTranslation();
 
   const {width} = useWindowDimensions();
 
@@ -53,19 +56,23 @@ const UploadModal = (props: UploadModalProps) => {
       animationIn={Animation.SLIDEIN_UP}
       visible={visible}
       contentStyle={[styles.content, {width}]}>
-      <Text style={styles.title}>Change profile photo</Text>
+      <AppText
+        size={TextSize.LEVEL_6}
+        weight={'600'}
+        text={t('upload.change_profile_photo')}
+      />
       <Button
         onPress={() => onPressHandler(UploadPhotoType.CAMERA)}
         theme={ButtonTheme.CLEAR}>
-        <Text style={styles.text}>Take photo</Text>
+        <AppText size={TextSize.LEVEL_4} text={t('upload.take_photo')} />
       </Button>
       <Button
         onPress={() => onPressHandler(UploadPhotoType.GALLERY)}
         theme={ButtonTheme.CLEAR}>
-        <Text style={styles.text}>Open gallery</Text>
+        <AppText size={TextSize.LEVEL_4} text={t('upload.open_gallery')} />
       </Button>
       <Button onPress={onDeleteHandler} theme={ButtonTheme.CLEAR}>
-        <Text style={styles.text}>Delete photo</Text>
+        <AppText size={TextSize.LEVEL_4} text={t('upload.delete_photo')} />
       </Button>
     </Modal>
   );
@@ -80,12 +87,5 @@ const styles = StyleSheet.create({
     left: -20,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: '600',
-  },
-  text: {
-    fontSize: 16,
   },
 });

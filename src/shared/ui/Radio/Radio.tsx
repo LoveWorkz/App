@@ -1,5 +1,7 @@
 import React, {memo, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, View, Text, Pressable} from 'react-native';
+import {StyleSheet, SafeAreaView, View, Pressable} from 'react-native';
+
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 
 interface RadioProps {
   data: string[];
@@ -27,11 +29,13 @@ export const Radio = memo((props: RadioProps) => {
             <View style={styles.round}>
               {value === item ? <View style={styles.checked} /> : null}
             </View>
-            <Text style={styles.text}>{item}</Text>
+            <AppText style={styles.text} size={TextSize.LEVEL_4} text={item} />
           </Pressable>
         );
       })}
-      <Text style={styles.errorText}>{error}</Text>
+      {error && (
+        <AppText style={styles.errorText} type={TextType.ERROR} text={error} />
+      )}
     </SafeAreaView>
   );
 });
@@ -59,10 +63,8 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 10,
-    fontSize: 16,
   },
   errorText: {
-    color: 'red',
     position: 'absolute',
     bottom: -10,
   },

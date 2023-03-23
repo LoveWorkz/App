@@ -1,12 +1,13 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
-import signInStore from '../model/store/SignInStore';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import signInStore from '../model/store/SignInStore';
 
 const SignIn = () => {
   const {t} = useTranslation();
@@ -40,7 +41,11 @@ const SignIn = () => {
       </View>
       <View style={styles.password}>
         <Pressable style={styles.forgotPassword} onPress={onClickHandler}>
-          <Text>{t('auth.forgot_password')}</Text>
+          <AppText
+            size={TextSize.LEVEL_3}
+            weight={'600'}
+            text={t('auth.forgot_password')}
+          />
         </Pressable>
         <Input
           secureTextEntry

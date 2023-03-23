@@ -1,6 +1,5 @@
-import React, {ComponentType} from 'react';
+import {ComponentType} from 'react';
 
-import {Layout} from '@src/app/ui/layout';
 import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {ShopPage} from '@src/pages/ShopPage';
@@ -32,42 +31,22 @@ type NewRouteProps = {
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
-    Element: props => (
-      <Layout {...props}>
-        <HomePage {...props} />
-      </Layout>
-    ),
+    Element: HomePage,
   },
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
-    Element: props => (
-      <Layout {...props}>
-        <Categories {...props} />
-      </Layout>
-    ),
+    Element: Categories,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
-    Element: props => (
-      <Layout {...props}>
-        <BooksPage {...props} />
-      </Layout>
-    ),
+    Element: BooksPage,
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
-    Element: props => (
-      <Layout {...props}>
-        <ChallengesPage {...props} />
-      </Layout>
-    ),
+    Element: ChallengesPage,
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
-    Element: props => (
-      <Layout {...props}>
-        <ShopPage {...props} />
-      </Layout>
-    ),
+    Element: ShopPage,
   },
 };

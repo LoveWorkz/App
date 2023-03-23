@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {ParamListBase} from '@react-navigation/native';
 
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
 import {getIcon} from '../lib/getIcon';
@@ -7,10 +8,11 @@ import {
   tabRoutesConfig,
   TabRoutesNames,
 } from '@src/shared/config/route/tabConfigRoutes';
+import {Layout} from '@src/app/providers/layout';
 
 const Tab = createBottomTabNavigator();
 
-const Main = () => {
+const TabRoute = () => {
   return (
     <Tab.Navigator
       initialRouteName={TabRoutesNames.HOME}
@@ -32,11 +34,19 @@ const Main = () => {
           );
         },
       })}>
-      {Object.values(tabRoutesConfig).map(({name, Element}) => (
-        <Tab.Screen name={name} component={Element} key={name} />
-      ))}
+      {Object.values(tabRoutesConfig).map(({name, Element}) => {
+        const Wrapper = (props: ParamListBase) => {
+          return (
+            <Layout>
+              <Element {...props} />
+            </Layout>
+          );
+        };
+
+        return <Tab.Screen name={name} component={Wrapper} key={name} />;
+      })}
     </Tab.Navigator>
   );
 };
 
-export const ComponentWrapper = memo(Main);
+export const ComponentWrapper = memo(TabRoute);

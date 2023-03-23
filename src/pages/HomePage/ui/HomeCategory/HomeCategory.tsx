@@ -1,21 +1,24 @@
-import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
-import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {t} from 'i18next';
 import React, {memo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+
+import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const HomeCategory = () => {
   return (
     <View style={styles.contaier}>
       <View style={styles.textWrapper}>
-        <Text style={styles.title}>
-          {t('home.continue_where_you_left_off')}
-        </Text>
-        <Text style={styles.count}>0/40</Text>
+        <AppText
+          size={TextSize.LEVEL_2}
+          text={t('home.continue_where_you_left_off')}
+        />
+        <AppText weight={'700'} text={'0/40'} />
       </View>
       <View style={styles.bottomBlock}>
-        <Text style={styles.status}>BASIC</Text>
+        <AppText weight={'700'} size={TextSize.LEVEL_5} text={'BASIC'} />
         <Button squar style={styles.btn} theme={ButtonTheme.OUTLINED}>
           <SvgXml
             xml={ArrowRightIcon}
@@ -42,14 +45,6 @@ const styles = StyleSheet.create({
   textWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  count: {
-    fontSize: 18,
-    fontWeight: '700',
   },
   bottomBlock: {
     flexDirection: 'row',

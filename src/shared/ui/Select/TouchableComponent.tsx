@@ -1,8 +1,9 @@
 import React, {memo} from 'react';
-import {Pressable, Text, View, StyleSheet, SafeAreaView} from 'react-native';
+import {Pressable, View, StyleSheet, SafeAreaView} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 export enum SelectTheme {
   CLEAR = 'clear',
@@ -32,10 +33,17 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 
   return (
     <SafeAreaView style={[styles[theme]]}>
-      <Text>{label}</Text>
+      {label && (
+        <AppText
+          style={selectedValueStyle}
+          size={TextSize.LEVEL_2}
+          weight={'600'}
+          text={label}
+        />
+      )}
       <Pressable onPress={onSelectOpenHandler} style={styles.wrapper}>
         <View>
-          <Text style={selectedValueStyle}>{value}</Text>
+          <AppText style={selectedValueStyle} text={value} />
         </View>
         <SvgXml xml={ArrowDownIcon} style={styles.icon} />
       </Pressable>

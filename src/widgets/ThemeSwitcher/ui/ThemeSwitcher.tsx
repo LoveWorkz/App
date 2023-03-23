@@ -1,5 +1,7 @@
 import React, {memo, useState} from 'react';
-import {StyleSheet, Text, View, Switch, Platform} from 'react-native';
+import {StyleSheet, View, Switch, Platform} from 'react-native';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const ThemeSwitcher = () => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -7,9 +9,10 @@ const ThemeSwitcher = () => {
   return (
     <View style={styles.languageSwitcher}>
       <View>
-        <Text style={styles.text}>{`${
-          isEnabled ? 'Light' : 'Dark'
-        } mode`}</Text>
+        <AppText
+          size={TextSize.LEVEL_5}
+          text={`${isEnabled ? 'Light' : 'Dark'} mode`}
+        />
       </View>
       <Switch
         style={styles.switcher}

@@ -1,3 +1,8 @@
 {
-    
+   "cancel": "cancel",
+   "next": "next",
+   "change_photo": "Change photo",
+   "delete": "delete",
+   "confirm": "confirm",
+   "enter_your_data": "Enter your data"
 }

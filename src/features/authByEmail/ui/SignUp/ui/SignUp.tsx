@@ -1,13 +1,14 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import CheckBox from '@react-native-community/checkbox';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
-import signUpStore from '../model/store/SignUpStore';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import signUpStore from '../model/store/SignUpStore';
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 
 const SignUp = () => {
   const {t} = useTranslation();
@@ -53,12 +54,15 @@ const SignUp = () => {
           label={t('auth.password') || ''}
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
-          placeholder={'Enter Password'}
+          placeholder={t('auth.enter_password') || ''}
         />
         {signUpStore.errorInfo.passwordError && (
-          <Text style={styles.passwordErrorText}>
-            {signUpStore.errorInfo.passwordError}
-          </Text>
+          <AppText
+            size={TextSize.LEVEL_1}
+            weight={'500'}
+            type={TextType.ERROR}
+            text={signUpStore.errorInfo.passwordError}
+          />
         )}
       </View>
       <View>
@@ -78,11 +82,17 @@ const SignUp = () => {
           style={styles.checkbox}
         />
         <View style={styles.privacyPolicyTextWrapper}>
-          <Text style={styles.privacyPolicyText}>I agree with the</Text>
+          <AppText
+            size={TextSize.LEVEL_3}
+            style={styles.privacyPolicyText}
+            text={'I agree with the'}
+          />
           <Pressable onPress={onPrivacyPolicyPressHandler}>
-            <Text style={styles.privacyPolicyLink}>
-              Terms of Use & Privacy Policy
-            </Text>
+            <AppText
+              size={TextSize.LEVEL_3}
+              style={styles.privacyPolicyLink}
+              text={'Terms of Use & Privacy Policy'}
+            />
           </Pressable>
         </View>
       </View>
@@ -117,8 +127,5 @@ const styles = StyleSheet.create({
   },
   privacyPolicyLink: {
     color: 'black',
-  },
-  passwordErrorText: {
-    color: 'red',
   },
 });

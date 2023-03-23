@@ -199,7 +199,7 @@ class ProfileStore {
 
         await this.fetchProfile();
 
-        navigation.replace(AppRouteNames.MAIN);
+        navigation.replace(AppRouteNames.TAB_ROUTE);
       }
     } catch (e) {
       console.log(e);

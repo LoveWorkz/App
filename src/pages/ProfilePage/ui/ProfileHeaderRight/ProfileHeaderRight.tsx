@@ -26,7 +26,6 @@ export const Wrapper = memo(ProfileHeaderRight);
 
 const styles = StyleSheet.create({
   headerRight: {
-    flex: 1,
     alignItems: 'center',
   },
   icon: {

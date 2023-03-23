@@ -47,6 +47,7 @@ const Pagination = (props: PaginationProps) => {
 const styles = StyleSheet.create({
   pegination: {
     flexDirection: 'row',
+    marginTop: 20,
   },
   dot: {
     height: 8,

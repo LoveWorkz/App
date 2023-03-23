@@ -1,11 +1,13 @@
 import React, {memo} from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {Challange} from '@src/entities/Challange';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const data = [
   {
@@ -23,6 +25,8 @@ const data = [
 ];
 
 const Challanges = () => {
+  const {t} = useTranslation();
+
   const onPressHandler = () => {
     navigation.navigate(TabRoutesNames.CHALLENGES);
   };
@@ -30,10 +34,19 @@ const Challanges = () => {
   return (
     <View>
       <View style={styles.topBlock}>
-        <Text style={styles.title}>Challenges</Text>
+        <AppText
+          weight={'500'}
+          size={TextSize.LEVEL_5}
+          text={t('challenge.title')}
+        />
         <Pressable onPress={onPressHandler}>
           <View style={styles.seeAllWrapper}>
-            <Text style={styles.seeAll}>See all</Text>
+            <AppText
+              style={styles.seeAll}
+              weight={'700'}
+              size={TextSize.LEVEL_4}
+              text={t('home.see_all')}
+            />
             <SvgXml xml={ArrowRightIcon} style={styles.arrowIcon} />
           </View>
         </Pressable>
@@ -53,8 +66,6 @@ export const ComponentWrapper = memo(Challanges);
 
 const styles = StyleSheet.create({
   seeAll: {
-    fontSize: 16,
-    fontWeight: '700',
     marginRight: 5,
   },
   arrowIcon: {
@@ -64,9 +75,6 @@ const styles = StyleSheet.create({
   seeAllWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 18,
   },
   topBlock: {
     flexDirection: 'row',

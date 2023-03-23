@@ -1,5 +1,7 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 export const categoryData = [
   {
@@ -35,10 +37,9 @@ const Category = (props: CategoryProps) => {
   return (
     <View style={styles.category}>
       <View style={styles.topBlock}>
-        <Text style={styles.status}>{status}</Text>
-        <Text style={styles.status}>{`${count}/40`}</Text>
+        <AppText weight={'700'} size={TextSize.LEVEL_4} text={status} />
+        <AppText weight={'700'} size={TextSize.LEVEL_4} text={`${count}/40`} />
       </View>
-      <Text style={styles.text}>To get to know each other better</Text>
     </View>
   );
 };
@@ -58,10 +59,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 5,
-  },
-  status: {
-    fontSize: 18,
-    fontWeight: '700',
   },
   text: {
     fontSize: 16,

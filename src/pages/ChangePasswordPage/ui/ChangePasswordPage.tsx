@@ -4,6 +4,7 @@ import {observer} from 'mobx-react-lite';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import changePasswordStore from '../model/store/ChangePasswordStore';
 
 const ChangePasswordPage = () => {
@@ -48,9 +49,12 @@ const ChangePasswordPage = () => {
           placeholder={'Enter new password'}
         />
         {changePasswordStore.errorInfo.passwordError && (
-          <Text style={styles.passwordErrorText}>
-            {changePasswordStore.errorInfo.passwordError}
-          </Text>
+          <AppText
+            type={TextType.ERROR}
+            size={TextSize.LEVEL_1}
+            weight={'500'}
+            text={changePasswordStore.errorInfo.passwordError}
+          />
         )}
       </View>
       <View style={styles.item}>
@@ -92,8 +96,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-  },
-  passwordErrorText: {
-    color: 'red',
   },
 });

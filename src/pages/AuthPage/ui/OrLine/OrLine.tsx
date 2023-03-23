@@ -1,6 +1,7 @@
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import React, {memo} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 interface OrLineProps {
   style?: Record<string, string | number>;
@@ -14,7 +15,7 @@ const OrLine = (props: OrLineProps) => {
   return (
     <View style={[styles.lineWrapper, style]}>
       <View style={styles.leftPart} />
-      <Text style={styles.text}>{t('auth.or')}</Text>
+      <AppText size={TextSize.LEVEL_3} text={t('auth.or')} />
       <View style={styles.rightPart} />
     </View>
   );
@@ -47,8 +48,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     bottom: '50%',
-  },
-  text: {
-    fontSize: 20,
   },
 });

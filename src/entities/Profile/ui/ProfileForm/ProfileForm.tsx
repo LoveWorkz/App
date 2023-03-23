@@ -1,6 +1,7 @@
 import React, {memo, useCallback} from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
@@ -9,6 +10,8 @@ import profileStore from '../../model/store/profileStore';
 import {Wrapper as Rubrics} from '../Rubrics/Rubrics';
 
 const ProfileForm = () => {
+  const {t} = useTranslation();
+
   const onNameChangeHandler = useCallback((value: string) => {
     profileStore.setName(value);
   }, []);
@@ -35,10 +38,10 @@ const ProfileForm = () => {
         <Input
           isSpaceAllowed
           initialValue={profileStore.profileData?.name}
-          label={'Name'}
+          label={t('profile.name') || ''}
           value={profileStore.profileForm.name}
           onChange={onNameChangeHandler}
-          placeholder={'Enter Name'}
+          placeholder={t('profile.enter_name') || ''}
           error={profileStore.errorInfo.nameError}
         />
       </View>
@@ -46,10 +49,10 @@ const ProfileForm = () => {
         <Input
           keyboardType={'numeric'}
           initialValue={profileStore.profileData?.age}
-          label={'Age'}
+          label={t('profile.age') || ''}
           value={profileStore.profileForm.age}
           onChange={onAgeChangeHandler}
-          placeholder={'Enter Age'}
+          placeholder={t('profile.enter_age') || ''}
           error={profileStore.errorInfo.ageError}
         />
       </View>

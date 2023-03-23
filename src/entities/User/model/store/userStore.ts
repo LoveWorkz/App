@@ -58,7 +58,7 @@ class UserStore {
           authMethod,
         });
 
-        navigation.replace(AppRouteNames.MAIN);
+        navigation.replace(AppRouteNames.TAB_ROUTE);
       } else {
         navigation.replace(AppRouteNames.AUTH);
       }

@@ -1,12 +1,16 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, Text, View, Pressable} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const ChangePassword = () => {
+  const {t} = useTranslation();
+
   const onPressHandler = useCallback(() => {
     navigation.navigate(AppRouteNames.CHANGE_PASSWORD);
   }, []);
@@ -14,7 +18,7 @@ const ChangePassword = () => {
   return (
     <Pressable onPress={onPressHandler} style={styles.changePassword}>
       <View>
-        <Text style={styles.text}>Change password</Text>
+        <AppText size={TextSize.LEVEL_5} text={t('settings.change_password')} />
       </View>
       <View>
         <SvgXml xml={SmallArrowRightIcon} style={styles.icon} />
@@ -32,9 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-  },
-  text: {
-    fontSize: 18,
   },
   icon: {
     height: 16,

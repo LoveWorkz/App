@@ -1,6 +1,8 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface ContactUsItemProps {
   Icon: string;
@@ -14,7 +16,7 @@ const ContactUsItem = (props: ContactUsItemProps) => {
     <View style={styles.contactUsItem}>
       <SvgXml xml={Icon} style={styles.icon} />
       <View style={styles.textWrapper}>
-        <Text style={styles.text}>{text}</Text>
+        <AppText weight={'500'} size={TextSize.LEVEL_4} text={text} />
       </View>
     </View>
   );
@@ -36,8 +38,5 @@ const styles = StyleSheet.create({
   icon: {
     width: 20,
     height: 20,
-  },
-  text: {
-    fontSize: 16,
   },
 });

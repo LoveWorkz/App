@@ -1,9 +1,11 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import logoutStore from '../modal/store/logoutStore';
 
 interface LogOutModalProps {
@@ -13,6 +15,7 @@ interface LogOutModalProps {
 
 const LogOutModal = (props: LogOutModalProps) => {
   const {visible, setVisible} = props;
+  const {t} = useTranslation();
 
   const actionAfterLogout = () => {
     setVisible(false);
@@ -28,21 +31,26 @@ const LogOutModal = (props: LogOutModalProps) => {
 
   return (
     <Modal visible={visible} onClose={onCancelHandler}>
-      <Text style={styles.title}>Log out ?</Text>
+      <AppText size={TextSize.LEVEL_6} weight={'600'} text={t('auth.logout')} />
       <View style={styles.btnGroup}>
         <Button
           disabled={logoutStore.isLoading}
           style={styles.cancelBtn}
           theme={ButtonTheme.OUTLINED}
           onPress={onCancelHandler}>
-          <Text style={styles.cancel}>cancel</Text>
+          <AppText size={TextSize.LEVEL_4} weight={'700'} text={t('cancel')} />
         </Button>
         <Button
           disabled={logoutStore.isLoading}
           theme={ButtonTheme.OUTLINED}
           style={styles.logOutBtn}
           onPress={onlogoutHandler}>
-          <Text style={styles.logOut}>log out</Text>
+          <AppText
+            style={styles.logOut}
+            size={TextSize.LEVEL_4}
+            weight={'700'}
+            text={t('auth.logout')}
+          />
         </Button>
       </View>
     </Modal>
@@ -51,14 +59,9 @@ const LogOutModal = (props: LogOutModalProps) => {
 
 export const Wrapper = memo(observer(LogOutModal));
 
-const fontSize = 16;
 const btnWidth = '40%';
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 22,
-    fontWeight: '600',
-  },
   btnGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -73,9 +76,5 @@ const styles = StyleSheet.create({
   },
   logOut: {
     color: 'white',
-    fontSize,
-  },
-  cancel: {
-    fontSize,
   },
 });

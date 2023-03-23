@@ -10,7 +10,9 @@ interface ButtonProps {
   onPress?: () => void;
   children: ReactElement;
   theme?: ButtonTheme;
-  style?: Record<string, string | number>;
+  style?:
+    | Record<string, string | number | object>
+    | Record<string, string | number | object>[];
   disabled?: boolean;
   squar?: boolean;
 }

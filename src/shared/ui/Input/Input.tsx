@@ -4,13 +4,13 @@ import {
   Pressable,
   SafeAreaView,
   StyleSheet,
-  Text,
   TextInput,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {EyeIcon} from '@src/shared/assets/icons/Eye';
 import {whitespaceRegexp} from '@src/shared/consts/validation';
+import {AppText, TextSize, TextType} from '../AppText/AppText';
 
 export enum Inputheme {}
 
@@ -72,7 +72,7 @@ export const Input = memo((props: InputProps) => {
 
   return (
     <SafeAreaView style={style}>
-      <Text>{label}</Text>
+      {label && <AppText size={TextSize.LEVEL_2} weight={'600'} text={label} />}
       <TextInput
         secureTextEntry={isPasswordHidden}
         keyboardType={keyboardType}
@@ -88,7 +88,15 @@ export const Input = memo((props: InputProps) => {
         style={styles.eyeIconWrapper}>
         {secureTextEntry && <SvgXml xml={EyeIcon} style={styles.eyeIcon} />}
       </Pressable>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && (
+        <AppText
+          size={TextSize.LEVEL_1}
+          weight={'500'}
+          type={TextType.ERROR}
+          style={styles.errorText}
+          text={error}
+        />
+      )}
     </SafeAreaView>
   );
 });
@@ -104,7 +112,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   errorText: {
     color: 'red',
     position: 'absolute',
-    bottom: -17,
+    bottom: -14,
   },
   eyeIconWrapper: {
     position: 'absolute',

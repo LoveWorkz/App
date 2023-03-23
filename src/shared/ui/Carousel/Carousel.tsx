@@ -13,7 +13,7 @@ import {
   Animated,
 } from 'react-native';
 
-import {globalPadding} from '@src/app/styles';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {Wrapper as Pagination} from './Pagination';
 
 interface CarouselItemProps {

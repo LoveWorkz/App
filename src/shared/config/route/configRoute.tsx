@@ -1,10 +1,9 @@
-import React, {ComponentType} from 'react';
+import {ComponentType} from 'react';
 
-import {Layout} from '@src/app/ui/layout';
 import {AuthPage} from '@src/pages/AuthPage';
 import {SplashPage} from '@src/pages/SplashPage';
 import {ResetPasswordPage} from '@src/pages/ResetPasswordPage';
-import {Main} from '@src/pages/Main';
+import {TabRoute} from '@src/app/providers/route/TabRoute';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfileHeaderRight, ProfilePage} from '@src/pages/ProfilePage';
 import {PartnersPage} from '@src/pages/PartnersPage';
@@ -17,7 +16,7 @@ import {ContactUs} from '@src/pages/ContactUs';
 
 export enum AppRouteNames {
   AUTH = 'auth',
-  MAIN = 'main',
+  TAB_ROUTE = 'tab_route',
   SPLASH = 'splash',
   SETUP = 'setup',
 
@@ -35,7 +34,7 @@ export enum AppRouteNames {
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.AUTH]: 'auth',
-  [AppRouteNames.MAIN]: 'main',
+  [AppRouteNames.TAB_ROUTE]: 'tab_route',
   [AppRouteNames.SPLASH]: 'splash',
 
   // pages with title
@@ -64,34 +63,24 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.AUTH]: {
     name: appRoutePaths.auth,
     headerShown: false,
-    Element: props => (
-      <Layout {...props}>
-        <AuthPage {...props} />
-      </Layout>
-    ),
+    Element: AuthPage,
   },
   [AppRouteNames.SPLASH]: {
     name: appRoutePaths.splash,
     headerShown: false,
-    Element: props => (
-      <Layout {...props}>
-        <SplashPage {...props} />
-      </Layout>
-    ),
+    Element: SplashPage,
   },
   [AppRouteNames.SETUP]: {
     name: appRoutePaths.setup,
     headerShown: false,
-    Element: props => (
-      <Layout {...props}>
-        <SetUpPage {...props} />
-      </Layout>
-    ),
+    Element: SetUpPage,
   },
-  [AppRouteNames.MAIN]: {
-    name: appRoutePaths.main,
+
+  // tab routes
+  [AppRouteNames.TAB_ROUTE]: {
+    name: appRoutePaths.tab_route,
     headerShown: false,
-    Element: props => <Main {...props} />,
+    Element: TabRoute,
   },
 
   // pages with title
@@ -99,91 +88,55 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.reset_password,
     headerShown: true,
     headerTitle: 'Reset Password',
-    Element: props => (
-      <Layout {...props}>
-        <ResetPasswordPage {...props} />
-      </Layout>
-    ),
+    Element: ResetPasswordPage,
   },
   [AppRouteNames.SETTINGS]: {
     name: appRoutePaths.settings,
     headerShown: true,
     headerTitle: 'Settings',
-    Element: props => (
-      <Layout {...props}>
-        <SettingsPage {...props} />
-      </Layout>
-    ),
+    Element: SettingsPage,
   },
   [AppRouteNames.PROFILE]: {
     name: appRoutePaths.profile,
     headerShown: true,
     headerTitle: 'Profile',
     HeaderRight: ProfileHeaderRight,
-    Element: props => (
-      <Layout {...props}>
-        <ProfilePage {...props} />
-      </Layout>
-    ),
+    Element: ProfilePage,
   },
   [AppRouteNames.ABOUT]: {
     name: appRoutePaths.about,
     headerShown: true,
     headerTitle: 'About',
-    Element: props => (
-      <Layout {...props}>
-        <AboutPage {...props} />
-      </Layout>
-    ),
+    Element: AboutPage,
   },
   [AppRouteNames.PARTNERS]: {
     name: appRoutePaths.partners,
     headerShown: true,
     headerTitle: 'Partners',
-    Element: props => (
-      <Layout {...props}>
-        <PartnersPage {...props} />
-      </Layout>
-    ),
+    Element: PartnersPage,
   },
   [AppRouteNames.PRIVACY_POLICY]: {
     name: appRoutePaths.privacyPolicy,
     headerShown: true,
     headerTitle: 'Terms of Use & Privacy Policy',
-    Element: props => (
-      <Layout {...props}>
-        <PrivacyPolicyPage {...props} />
-      </Layout>
-    ),
+    Element: PrivacyPolicyPage,
   },
   [AppRouteNames.CHANGE_PASSWORD]: {
     name: appRoutePaths.changePassword,
     headerShown: true,
     headerTitle: 'Change Password',
-    Element: props => (
-      <Layout {...props}>
-        <ChangePasswordPage {...props} />
-      </Layout>
-    ),
+    Element: ChangePasswordPage,
   },
   [AppRouteNames.HOW_TO_USE]: {
     name: appRoutePaths.howToUse,
     headerShown: true,
     headerTitle: 'How to use',
-    Element: props => (
-      <Layout {...props}>
-        <HowToUsePage {...props} />
-      </Layout>
-    ),
+    Element: HowToUsePage,
   },
   [AppRouteNames.CONTACT_US]: {
     name: appRoutePaths.contactUs,
     headerShown: true,
     headerTitle: 'Contact us',
-    Element: props => (
-      <Layout {...props}>
-        <ContactUs {...props} />
-      </Layout>
-    ),
+    Element: ContactUs,
   },
 };

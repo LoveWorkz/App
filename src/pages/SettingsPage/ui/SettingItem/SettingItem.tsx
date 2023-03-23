@@ -1,9 +1,10 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, View, Pressable, Text} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface SettingItem {
   Icon: string;
@@ -24,7 +25,7 @@ const SettingItem = (props: SettingItem) => {
         <SvgXml xml={Icon} style={styles.icon} />
       </View>
       <View style={styles.textWrapper}>
-        <Text style={styles.text}>{text}</Text>
+        <AppText size={TextSize.LEVEL_4} text={text} />
       </View>
     </Pressable>
   );
@@ -48,8 +49,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     left: 30,
-  },
-  text: {
-    fontSize: 19,
   },
 });

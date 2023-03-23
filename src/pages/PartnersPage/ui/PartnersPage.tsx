@@ -1,19 +1,24 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const PartnersPage = () => {
   return (
     <View style={styles.partners}>
       <View style={styles.block} />
-      <Text style={styles.title}>Lorem ipsum dolor sit</Text>
-      <Text style={styles.text}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem
-        ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt
-      </Text>
+      <AppText
+        style={styles.title}
+        size={TextSize.LEVEL_7}
+        text={'Lorem ipsum dolor sit'}
+      />
+      <AppText
+        style={styles.title}
+        size={TextSize.LEVEL_4}
+        text={
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporincididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'
+        }
+      />
     </View>
   );
 };
@@ -36,10 +41,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    fontSize: 24,
     marginBottom: 40,
-  },
-  text: {
-    fontSize: 16,
   },
 });

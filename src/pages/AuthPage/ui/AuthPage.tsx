@@ -1,12 +1,10 @@
 import React, {memo, useCallback, useState} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   Pressable,
   ScrollView,
   useWindowDimensions,
-  Platform,
 } from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
@@ -17,11 +15,11 @@ import {AuthByGoogle} from '@src/features/authByGoogle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Dialog} from '@src/shared/ui/Dialog/Dialog';
 import {userStore} from '@src/entities/User';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
   const {t} = useTranslation();
-
   const {height} = useWindowDimensions();
 
   const [isSignIn, setISignIn] = useState(true);
@@ -68,41 +66,57 @@ const AuthPage = () => {
 
   return (
     <ScrollView>
-      <View style={[styles.AuthPage, {height}]}>
-        <View style={styles.container}>
-          <View style={styles.logo}>
-            <Text style={styles.logoText}>LOGO</Text>
-          </View>
-          <View style={styles.titleWrapper}>
-            <Text style={styles.title}>
-              {isSignIn ? t('auth.login') : t('auth.signup')}
-            </Text>
-          </View>
-          <AuthByEmail isSingIn={isSignIn} />
-          <OrLine style={styles.line} />
-          <View style={styles.btnWrapper}>
-            <AuthByGoogle style={styles.authByGoogleBtn} />
-            <AuthByApple />
-          </View>
-          <View style={styles.bottomBlock}>
-            <Button
-              disabled={disabled()}
-              onPress={auth}
-              style={styles.singInBtn}
-              theme={ButtonTheme.OUTLINED}>
-              <Text style={styles.singInBtnText}>
-                {isSignIn ? t('auth.login') : t('auth.signup')}
-              </Text>
-            </Button>
-            <Pressable
-              style={styles.toggleAuthMethod}
-              onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-              {isSignIn ? (
-                <Text>{t('auth.dont_have_an_acount')}</Text>
-              ) : (
-                <Text>{t('auth.already_have_an_account')}</Text>
-              )}
-            </Pressable>
+      <View style={[styles.container, {height}]}>
+        <View style={styles.titleWrapper}>
+          <AppText
+            size={TextSize.LEVEL_6}
+            weight={'600'}
+            text={isSignIn ? t('auth.login') : t('auth.signup')}
+          />
+        </View>
+        <AuthByEmail isSingIn={isSignIn} />
+        <OrLine style={styles.line} />
+        <View style={styles.btnWrapper}>
+          <AuthByGoogle style={styles.authByGoogleBtn} />
+          <AuthByApple />
+        </View>
+        <View style={styles.bottomBlock}>
+          <Button
+            disabled={disabled()}
+            onPress={auth}
+            style={styles.singInBtn}
+            theme={ButtonTheme.OUTLINED}>
+            <AppText
+              style={styles.singInBtnText}
+              size={TextSize.LEVEL_4}
+              weight={'700'}
+              text={isSignIn ? t('auth.login') : t('auth.signup')}
+            />
+          </Button>
+          <View style={styles.toggleAuthMethod}>
+            {isSignIn ? (
+              <View style={styles.haveEnAccountWrapper}>
+                <AppText
+                  style={styles.haveEnAccount}
+                  size={TextSize.LEVEL_4}
+                  text={t('auth.dont_have_an_acount')}
+                />
+                <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
+                  <AppText size={TextSize.LEVEL_4} text={t('auth.signup')} />
+                </Pressable>
+              </View>
+            ) : (
+              <View style={styles.haveEnAccountWrapper}>
+                <AppText
+                  style={styles.haveEnAccount}
+                  size={TextSize.LEVEL_4}
+                  text={t('auth.already_have_an_account')}
+                />
+                <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
+                  <AppText size={TextSize.LEVEL_4} text={t('auth.login')} />
+                </Pressable>
+              </View>
+            )}
           </View>
         </View>
         {userStore.isDisabledDialogOpen && (
@@ -110,7 +124,7 @@ const AuthPage = () => {
             visible={userStore.isDisabledDialogOpen}
             confirmText={'OK'}
             onConfirmHandler={onConfirmHandler}
-            title={'Your account has been disabled, please try again later'}
+            title={t('auth.disabled_account') || ''}
           />
         )}
       </View>
@@ -121,31 +135,14 @@ const AuthPage = () => {
 export const ComponentWrapper = memo(observer(AuthPage));
 
 const styles = StyleSheet.create({
-  AuthPage: {
-    flex: 1,
-  },
-  container: {
-    position: 'relative',
-    height: '100%',
-  },
-  logo: {
-    marginTop: Platform.OS === 'ios' ? 50 : 20,
-    alignItems: 'center',
-    marginBottom: 35,
-  },
-  logoText: {
-    fontSize: 25,
-  },
+  container: {},
   line: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 30,
   },
   titleWrapper: {
+    marginTop: 120,
     marginBottom: 40,
-  },
-  title: {
-    fontSize: 22,
-    lineHeight: 28,
   },
   btnWrapper: {
     justifyContent: 'center',
@@ -170,5 +167,11 @@ const styles = StyleSheet.create({
   },
   singInBtnText: {
     color: 'white',
+  },
+  haveEnAccountWrapper: {
+    flexDirection: 'row',
+  },
+  haveEnAccount: {
+    marginRight: 5,
   },
 });

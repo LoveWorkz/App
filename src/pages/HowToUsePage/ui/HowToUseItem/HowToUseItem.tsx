@@ -1,6 +1,8 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface HowToUseItemProps {
   id: number;
@@ -13,8 +15,8 @@ export const HowToUseItem = (props: HowToUseItemProps) => {
 
   return (
     <SafeAreaView style={styles.howToUseItem}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.text}>{text}</Text>
+      <AppText size={TextSize.LEVEL_7} style={styles.title} text={title} />
+      <AppText size={TextSize.LEVEL_4} text={text} />
     </SafeAreaView>
   );
 };
@@ -26,12 +28,8 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   title: {
-    fontSize: 24,
     alignItems: 'center',
     marginBottom: 20,
-  },
-  text: {
-    fontSize: 16,
   },
 });
 

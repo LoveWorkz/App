@@ -1,7 +1,9 @@
 import React, {memo} from 'react';
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {Radio} from '@src/shared/ui/Radio/Radio';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const rubrics = [
   'I am here just for fun',
@@ -20,11 +22,18 @@ interface RubricsPropss {
 }
 
 const Rubrics = (props: RubricsPropss) => {
+  const {t} = useTranslation();
+
   const {changeRubric, rubric, error, initialValue} = props;
 
   return (
     <SafeAreaView style={styles.rubrics}>
-      <Text style={styles.title}>Rubrics</Text>
+      <AppText
+        style={styles.title}
+        weight={'600'}
+        size={TextSize.LEVEL_2}
+        text={t('rubrics.title')}
+      />
       <Radio
         initialValue={initialValue}
         error={error}
@@ -43,7 +52,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   title: {
-    fontSize: 18,
     marginBottom: 20,
   },
 });

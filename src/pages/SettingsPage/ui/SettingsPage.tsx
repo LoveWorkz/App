@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   },
   languageSwitcherWrapper: {
     marginBottom: 20,
+    marginTop: 20,
   },
   themeSwitcherWrapper: {
     marginBottom: 40,
