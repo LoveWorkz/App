@@ -1,7 +1,7 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, Text} from 'react-native';
 
-import GlobalStyles from '@src/app/styles/GlobalStyle';
+import GlobalStyles, {FontSizes} from '@src/app/styles/GlobalStyle';
 
 export enum TextSize {
   LEVEL_1 = 'size_1',
@@ -64,25 +64,25 @@ export const AppText = memo((props: AppTextProps) => {
 const styles = StyleSheet.create<Record<string, any>>({
   primary: {},
   size_1: {
-    fontSize: 10,
+    fontSize: FontSizes.SIZE_1,
   },
   size_2: {
-    fontSize: 12,
+    fontSize: FontSizes.SIZE_2,
   },
   size_3: {
-    fontSize: 14,
+    fontSize: FontSizes.SIZE_3,
   },
   size_4: {
-    fontSize: 16,
+    fontSize: FontSizes.SIZE_4,
   },
   size_5: {
-    fontSize: 18,
+    fontSize: FontSizes.SIZE_5,
   },
   size_6: {
-    fontSize: 22,
+    fontSize: FontSizes.SIZE_6,
   },
   size_7: {
-    fontSize: 24,
+    fontSize: FontSizes.SIZE_7,
   },
   error: {
     color: 'red',

@@ -55,11 +55,12 @@ class UserStore {
 
         this.setAuthUserInfo({
           user: formattedUser,
-          authMethod,
+          authMethod: authMethod || '',
         });
 
         navigation.replace(AppRouteNames.TAB_ROUTE);
       } else {
+        this.authUser && (await this.clearUserInfo());
         navigation.replace(AppRouteNames.AUTH);
       }
     } catch (e: unknown) {

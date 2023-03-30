@@ -7,6 +7,7 @@ import {Input} from '@src/shared/ui/Input/Input';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {forgotPasswordZIndex} from '@src/app/styles/GlobalStyle';
 import signInStore from '../model/store/SignInStore';
 
 const SignIn = () => {
@@ -76,6 +77,6 @@ const styles = StyleSheet.create({
   forgotPassword: {
     position: 'absolute',
     right: 0,
-    zIndex: 1,
+    zIndex: forgotPasswordZIndex,
   },
 });
