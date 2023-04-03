@@ -20,7 +20,7 @@ class AuthByGoogleStore {
       authMethod: AuthMethod.AUTH_BY_GOOGLE,
     });
 
-    const authUser = await await firestore()
+    const authUser = await firestore()
       .collection(Collections.USERS)
       .doc(user.id)
       .get();

@@ -2,6 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
+import NetInfo from '@react-native-community/netinfo';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -44,7 +45,8 @@ class UserStore {
 
   initAuthUser = async () => {
     try {
-      await auth().currentUser?.reload();
+      const network = await NetInfo.fetch();
+      network.isConnected && (await auth().currentUser?.reload());
       const user = auth().currentUser;
 
       if (user) {
@@ -58,9 +60,8 @@ class UserStore {
           authMethod: authMethod || '',
         });
 
-        navigation.replace(AppRouteNames.TAB_ROUTE);
+        navigation.navigate(AppRouteNames.TAB_ROUTE);
       } else {
-        this.authUser && (await this.clearUserInfo());
         navigation.replace(AppRouteNames.AUTH);
       }
     } catch (e: unknown) {

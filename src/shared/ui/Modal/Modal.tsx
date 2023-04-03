@@ -34,6 +34,7 @@ export const Modal = (props: ModalProps) => {
     <>
       {visible && (
         <Popup
+          backdropOpacity={0.6}
           onBackdropPress={onCancelHandler}
           statusBarTranslucent
           animationInTiming={300}
