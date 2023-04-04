@@ -9,6 +9,7 @@ import {PhoneIcon} from '@src/shared/assets/icons/Phone';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import shareUsStore from '@src/features/ShareUs/model/store/ShareUsStore';
 import {Wrapper as ContactUsItem} from './ContactUsItem/ContactUsItem';
 
 const itemsData = [
@@ -26,8 +27,16 @@ const itemsData = [
   },
 ];
 
-const ContactUs = () => {
+const options = {
+  message: 'App link',
+};
+
+const ContactUsPage = () => {
   const {t} = useTranslation();
+
+  const onPressHandler = async () => {
+    shareUsStore.share(options);
+  };
 
   return (
     <View style={styles.contactUs}>
@@ -36,7 +45,10 @@ const ContactUs = () => {
           return <ContactUsItem key={item.text} {...item} />;
         })}
       </View>
-      <Button style={styles.btn} theme={ButtonTheme.OUTLINED}>
+      <Button
+        style={styles.btn}
+        theme={ButtonTheme.OUTLINED}
+        onPress={onPressHandler}>
         <View style={styles.btnTextWrapper}>
           <SvgXml xml={ShareIcon} style={styles.icon} />
           <AppText
@@ -51,7 +63,7 @@ const ContactUs = () => {
   );
 };
 
-export const Wrapper = memo(ContactUs);
+export const Wrapper = memo(ContactUsPage);
 
 const styles = StyleSheet.create({
   contactUs: {

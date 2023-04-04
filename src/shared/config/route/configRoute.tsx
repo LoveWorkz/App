@@ -12,7 +12,7 @@ import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
 import {SetUpPage} from '@src/pages/SetUpPage';
 import {AboutPage} from '@src/pages/AboutPage';
 import {HowToUsePage} from '@src/pages/HowToUsePage';
-import {ContactUs} from '@src/pages/ContactUs';
+import {ContactUsPage} from '@src/pages/ContactUsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -137,6 +137,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.contactUs,
     headerShown: true,
     headerTitle: 'Contact us',
-    Element: ContactUs,
+    Element: ContactUsPage,
   },
 };
