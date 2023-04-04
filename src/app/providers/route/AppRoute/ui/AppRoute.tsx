@@ -1,7 +1,7 @@
 import {NavigationContainer, ParamListBase} from '@react-navigation/native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {StatusBar, Platform} from 'react-native';
+import {StatusBar} from 'react-native';
 
 import {
   AppRouteNames,
@@ -9,6 +9,7 @@ import {
 } from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Layout} from '@src/app/providers/layout';
+import {isPlatformIos} from '@src/shared/consts/common';
 import HeaderLeft from './HeaderLeft/HeaderLeft';
 
 const Stack = createNativeStackNavigator();
@@ -16,7 +17,7 @@ const Stack = createNativeStackNavigator();
 export const AppRoute = () => {
   return (
     <NavigationContainer ref={navigation.navigationRef}>
-      {Platform.OS === 'ios' ? (
+      {isPlatformIos ? (
         <StatusBar animated={true} barStyle="dark-content" />
       ) : (
         <StatusBar

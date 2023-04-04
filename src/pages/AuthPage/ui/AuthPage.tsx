@@ -16,6 +16,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Dialog} from '@src/shared/ui/Dialog/Dialog';
 import {userStore} from '@src/entities/User';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {isPlatformIos} from '@src/shared/consts/common';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
@@ -78,7 +79,7 @@ const AuthPage = () => {
         <OrLine style={styles.line} />
         <View style={styles.btnWrapper}>
           <AuthByGoogle style={styles.authByGoogleBtn} />
-          <AuthByApple />
+          {isPlatformIos && <AuthByApple />}
         </View>
         <View style={styles.bottomBlock}>
           <Button

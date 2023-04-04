@@ -1,9 +1,10 @@
 import React, {memo, useEffect} from 'react';
-import {StyleSheet, View, ScrollView, Platform} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {profileStore} from '@src/entities/Profile';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     height: '100%',
-    paddingTop: Platform.OS === 'android' ? 0 : 40,
+    paddingTop: !isPlatformIos ? 0 : 40,
   },
   headerWrapper: {
     marginBottom: 20,

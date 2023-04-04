@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import NetInfo from '@react-native-community/netinfo';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -87,7 +88,7 @@ class UserStore {
     }
   };
 
-  reauthenticate = async ({
+  reauthenticateWithCredential = async ({
     email,
     password,
     erorHandler,
@@ -97,21 +98,30 @@ class UserStore {
     erorHandler?: (e: unknown) => void;
   }) => {
     try {
-      const isAuthMethodEmail = this.authMethod === AuthMethod.AUTH_BY_EMAIL;
       let credential;
 
-      if (isAuthMethodEmail) {
-        if (email && password) {
-          credential = auth.EmailAuthProvider.credential(email, password);
-        }
-      } else {
-        // using sign in and sign out for refresh id token
-        // without it reauthenticateWithCredential not working
-        await GoogleSignin.signInSilently();
-        const tokens = await GoogleSignin.getTokens();
-        await GoogleSignin.signOut();
+      switch (this.authMethod) {
+        case AuthMethod.AUTH_BY_EMAIL:
+          if (email && password) {
+            credential = auth.EmailAuthProvider.credential(email, password);
+          }
+          break;
+        case AuthMethod.AUTH_BY_GOOGLE:
+          // using sign in and sign out for refresh id token
+          // without it reauthenticateWithCredential not working
+          await GoogleSignin.signInSilently();
+          const tokens = await GoogleSignin.getTokens();
+          await GoogleSignin.signOut();
 
-        credential = auth.GoogleAuthProvider.credential(tokens.idToken);
+          credential = auth.GoogleAuthProvider.credential(tokens.idToken);
+          break;
+        default:
+          const appleAuthRequestResponse = await appleAuth.performRequest({
+            requestedOperation: appleAuth.Operation.LOGIN,
+            requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+          });
+          const {identityToken, nonce} = appleAuthRequestResponse;
+          credential = auth.AppleAuthProvider.credential(identityToken, nonce);
       }
 
       const currentUser = auth().currentUser;
@@ -119,7 +129,6 @@ class UserStore {
         (await currentUser?.reauthenticateWithCredential(credential));
       return true;
     } catch (e) {
-      console.log(e);
       erorHandler?.(e);
       return false;
     }

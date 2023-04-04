@@ -10,6 +10,7 @@ export interface User {
 export enum AuthMethod {
   AUTH_BY_GOOGLE = 'google',
   AUTH_BY_EMAIL = 'email',
+  AUTH_BY_APPLE = 'apple',
 }
 
 export interface InitlUserInfo {

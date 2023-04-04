@@ -97,7 +97,7 @@ class ChangePasswordStore {
       this.setIsLoading(true);
 
       const currentUser = auth().currentUser;
-      const isCorrectPassword = await userStore.reauthenticate({
+      const isCorrectPassword = await userStore.reauthenticateWithCredential({
         email: auth().currentUser?.email || '',
         password: this.formData.oldPassword,
         erorHandler: e => this.errorHandler(e),

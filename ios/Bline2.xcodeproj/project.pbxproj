@@ -231,7 +231,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -496,6 +496,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7DA6F593464F7A29D4E04783 /* Pods-Bline2-Bline2Tests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = S58H8S7LD9;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -524,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7D544E6C05941A5A35A73C3 /* Pods-Bline2-Bline2Tests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = S58H8S7LD9;
@@ -559,7 +561,7 @@
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -587,10 +589,10 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = S58H8S7LD9;
+				DEVELOPMENT_TEAM = DTWRZD523F;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

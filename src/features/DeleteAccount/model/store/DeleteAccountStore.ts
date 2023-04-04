@@ -1,6 +1,5 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -74,13 +73,13 @@ class DeleteAccountStore {
       let isCorrectUserData;
 
       if (isAuthMethodEmail) {
-        isCorrectUserData = await userStore.reauthenticate({
+        isCorrectUserData = await userStore.reauthenticateWithCredential({
           email: this.formData.email,
           password: this.formData.password,
           erorHandler: e => this.erorHandler(e),
         });
       } else {
-        isCorrectUserData = await userStore.reauthenticate({
+        isCorrectUserData = await userStore.reauthenticateWithCredential({
           erorHandler: e => this.erorHandler(e),
         });
       }
@@ -91,10 +90,8 @@ class DeleteAccountStore {
 
       const currentUser = auth().currentUser;
       if (currentUser) {
-        !isAuthMethodEmail && (await GoogleSignin.signOut());
-
-        await userStore.clearFirebaseUserInfo(currentUser.uid);
         await currentUser.delete();
+        await userStore.clearFirebaseUserInfo(currentUser.uid);
         await userStore.clearUserInfo();
 
         actionAfterDeleting();
@@ -102,8 +99,9 @@ class DeleteAccountStore {
         this.setIsLoading(false);
       }
     } catch (e) {
-      this.setIsLoading(false);
       console.log(e);
+    } finally {
+      this.setIsLoading(false);
     }
   };
 
@@ -111,8 +109,6 @@ class DeleteAccountStore {
     if (!(error instanceof Error)) {
       return;
     }
-
-    this.setIsLoading(false);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
       const serverError: DeleteAccountFormError = {

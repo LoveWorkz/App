@@ -1,8 +1,9 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Switch, Platform} from 'react-native';
+import {StyleSheet, View, Switch} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {isPlatformIos} from '@src/shared/consts/common';
 
 const ThemeSwitcher = () => {
   const {theme, toggleTheme} = useTheme();
@@ -39,8 +40,8 @@ const styles = StyleSheet.create({
   },
   switcher: {
     transform: [
-      {scaleX: Platform.OS === 'ios' ? 0.8 : 1.2},
-      {scaleY: Platform.OS === 'ios' ? 0.8 : 1.2},
+      {scaleX: isPlatformIos ? 0.8 : 1.2},
+      {scaleY: isPlatformIos ? 0.8 : 1.2},
     ],
   },
 });

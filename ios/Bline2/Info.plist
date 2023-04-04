@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.bline</string>
+				<string>com.blineapp.bline</string>
 			</array>
 		</dict>
 		<dict>
@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.470642156929-b5k56jppq3nqjtaavb2h4a34n2qdchmn</string>
+				<string>com.googleusercontent.apps.470642156929-46cmlfrrark01l9tvga62os0ppp6762h</string>
 			</array>
 		</dict>
 	</array>
