@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface ContactUsItemProps {
   Icon: string;
@@ -11,12 +12,18 @@ interface ContactUsItemProps {
 
 const ContactUsItem = (props: ContactUsItemProps) => {
   const {Icon, text} = props;
+  const colors = useColors();
 
   return (
     <View style={styles.contactUsItem}>
       <SvgXml xml={Icon} style={styles.icon} />
       <View style={styles.textWrapper}>
-        <AppText weight={'500'} size={TextSize.LEVEL_4} text={text} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          weight={'500'}
+          size={TextSize.LEVEL_4}
+          text={text}
+        />
       </View>
     </View>
   );

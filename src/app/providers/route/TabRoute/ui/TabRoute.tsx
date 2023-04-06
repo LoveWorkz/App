@@ -2,13 +2,14 @@ import React, {memo} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ParamListBase} from '@react-navigation/native';
 
-import {ComponentWrapper as IconItem} from './IconItem/IconItem';
-import {getIcon} from '../lib/getIcon';
 import {
   tabRoutesConfig,
   TabRoutesNames,
 } from '@src/shared/config/route/tabConfigRoutes';
 import {Layout} from '@src/app/providers/layout';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {ComponentWrapper as IconItem} from './IconItem/IconItem';
+import {getTabIcon} from '../lib/getIcon';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,17 +19,23 @@ const TabRoute = () => {
       initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
+        tabBarStyle: {
+          ...globalStyles.strongShadowOpacity,
+          borderRadius: 20,
+          height: 80,
+          paddingTop: 10,
+        },
         tabBarShowLabel: false,
-        tabBarIcon: ({focused, size}) => {
+        tabBarIcon: ({focused}) => {
           const routeName = route.name;
 
-          const icon = getIcon(routeName);
+          const getIcon = getTabIcon(routeName);
 
           return (
             <IconItem
-              icon={icon}
-              size={size}
+              icon={getIcon}
               focused={focused}
+              size={routeName === TabRoutesNames.HOME ? 25 : 0}
               name={routeName}
             />
           );

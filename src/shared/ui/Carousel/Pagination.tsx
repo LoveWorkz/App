@@ -6,6 +6,8 @@ import {
   Animated,
 } from 'react-native';
 
+import {useColors} from '@src/app/providers/colorsProvider';
+
 interface PaginationProps {
   data: Record<string, string | number>[];
   scrollX: Animated.Value;
@@ -13,7 +15,7 @@ interface PaginationProps {
 
 const Pagination = (props: PaginationProps) => {
   const {data, scrollX} = props;
-
+  const colors = useColors();
   const {width} = useWindowDimensions();
 
   return (
@@ -36,7 +38,14 @@ const Pagination = (props: PaginationProps) => {
         return (
           <Animated.View
             key={i.toString()}
-            style={[styles.dot, {width: dotWidth, opacity}]}
+            style={[
+              styles.dot,
+              {
+                width: dotWidth,
+                backgroundColor: colors.primaryTextColor,
+                opacity,
+              },
+            ]}
           />
         );
       })}

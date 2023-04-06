@@ -2,6 +2,7 @@ import React, {memo, useEffect} from 'react';
 import {StyleSheet, SafeAreaView, View, Pressable} from 'react-native';
 
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
+import {StyleType} from '@src/shared/types/types';
 
 interface RadioProps {
   data: string[];
@@ -9,10 +10,24 @@ interface RadioProps {
   onChange: (value: string) => void;
   error?: string;
   initialValue?: string;
+  style?: StyleType;
+  nameStyle?: StyleType;
+  roundStyle?: StyleType;
+  activeItemStyle?: StyleType;
 }
 
 export const Radio = memo((props: RadioProps) => {
-  const {data, onChange, value, error, initialValue} = props;
+  const {
+    data,
+    onChange,
+    value,
+    error,
+    initialValue,
+    style,
+    nameStyle,
+    roundStyle,
+    activeItemStyle,
+  } = props;
 
   useEffect(() => {
     onChange?.(initialValue || data[0]);
@@ -24,12 +39,14 @@ export const Radio = memo((props: RadioProps) => {
         return (
           <Pressable
             key={item}
-            style={styles.radio}
+            style={[styles.radio, style]}
             onPress={() => onChange(item)}>
-            <View style={styles.round}>
-              {value === item ? <View style={styles.checked} /> : null}
+            <View style={[styles.round, roundStyle]}>
+              {value === item ? (
+                <View style={[styles.checked, activeItemStyle]} />
+              ) : null}
             </View>
-            <AppText style={styles.text} size={TextSize.LEVEL_4} text={item} />
+            <AppText style={nameStyle} size={TextSize.LEVEL_4} text={item} />
           </Pressable>
         );
       })}
@@ -46,6 +63,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   round: {
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: 20,
@@ -60,9 +78,6 @@ const styles = StyleSheet.create({
     height: 13,
     width: 13,
     borderRadius: 50,
-  },
-  text: {
-    marginLeft: 10,
   },
   errorText: {
     position: 'absolute',

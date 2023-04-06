@@ -1,7 +1,8 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, Text} from 'react-native';
 
-import GlobalStyles, {FontSizes} from '@src/app/styles/GlobalStyle';
+import {FontSizes, globalStyles} from '@src/app/styles/GlobalStyle';
+import {StyleType} from '@src/shared/types/types';
 
 export enum TextSize {
   LEVEL_1 = 'size_1',
@@ -34,7 +35,7 @@ interface AppTextProps {
   size?: TextSize;
   weight?: TextWeight;
   type?: TextType;
-  style?: Record<string, string | number | object>;
+  style?: StyleType;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -48,7 +49,7 @@ export const AppText = memo((props: AppTextProps) => {
 
   const mode = useMemo(() => {
     return [
-      GlobalStyles.textFont,
+      globalStyles.textFont,
       {
         fontWeight: weight,
       },

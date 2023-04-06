@@ -1,7 +1,9 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ImageBackground, StyleSheet} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 export const categoryData = [
   {
@@ -33,14 +35,30 @@ interface CategoryProps {
 
 const Category = (props: CategoryProps) => {
   const {count = 0, status} = props;
+  const colors = useColors();
 
   return (
-    <View style={styles.category}>
-      <View style={styles.topBlock}>
-        <AppText weight={'700'} size={TextSize.LEVEL_4} text={status} />
-        <AppText weight={'700'} size={TextSize.LEVEL_4} text={`${count}/40`} />
-      </View>
-    </View>
+    <ImageBackground
+      resizeMode="cover"
+      style={[styles.category]}
+      source={{
+        uri: 'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2F2%205.png?alt=media&token=ddd61be9-125a-4184-983e-f332430255f2',
+      }}>
+      <Gradient style={styles.questions}>
+        <AppText
+          style={styles.questionsText}
+          weight={'700'}
+          size={TextSize.LEVEL_2}
+          text={`${count} questions`}
+        />
+      </Gradient>
+      <AppText
+        style={[styles.status, {color: colors.primaryTextColor}]}
+        weight={'700'}
+        size={TextSize.LEVEL_4}
+        text={status}
+      />
+    </ImageBackground>
   );
 };
 
@@ -49,19 +67,24 @@ export const ComponentWrapper = memo(Category);
 const styles = StyleSheet.create({
   category: {
     padding: 10,
-    height: 220,
-    width: 190,
+    height: 145,
     backgroundColor: '#ECEFF1',
     borderRadius: 20,
   },
-  topBlock: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
+  questions: {
+    width: 89,
+    height: 23,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginLeft: 10,
   },
-  text: {
-    fontSize: 16,
-    color: '#9A9AA5',
+  questionsText: {
+    color: 'white',
+  },
+  status: {
+    marginTop: 8,
+    marginLeft: 10,
   },
 });

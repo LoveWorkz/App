@@ -1,4 +1,10 @@
-export type Colors = 'commonWhite' | 'commonBlack' | 'themeColor' | 'white';
+export type Colors =
+  | 'commonWhite'
+  | 'commonBlack'
+  | 'themeColor'
+  | 'white'
+  | 'bgColor'
+  | 'primaryTextColor';
 export type ColorType = Record<Colors, string>;
 
 const commonColor = {
@@ -9,12 +15,16 @@ const commonColor = {
 const light: ColorType = {
   themeColor: '#FFFFFF',
   white: '#000000',
+  bgColor: '#F4F6FA',
+  primaryTextColor: '#395180',
   ...commonColor,
 };
 
 const dark: ColorType = {
-  themeColor: 'red',
+  themeColor: 'black',
   white: '#FFFFFF',
+  bgColor: '',
+  primaryTextColor: 'black',
   ...commonColor,
 };
 

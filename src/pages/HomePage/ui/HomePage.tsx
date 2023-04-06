@@ -35,7 +35,9 @@ const HomePage = () => {
         <View style={styles.homeCategoryWrapper}>
           <HomeCategory />
         </View>
-        <CategoriesCarousel />
+        <View style={styles.categoriesCarouselWrappeer}>
+          <CategoriesCarousel />
+        </View>
         <View style={styles.challangesWrapper}>
           <Challanges />
         </View>
@@ -67,10 +69,14 @@ const styles = StyleSheet.create({
   },
   homeCategoryWrapper: {
     width: '100%',
+    alignItems: 'center',
     marginBottom: 10,
   },
+  categoriesCarouselWrappeer: {
+    marginTop: 25,
+  },
   challangesWrapper: {
-    marginTop: 10,
+    marginTop: 20,
     width: '100%',
   },
 });

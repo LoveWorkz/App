@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 import logoutStore from '../modal/store/logoutStore';
 
 interface LogOutModalProps {
@@ -15,6 +16,7 @@ interface LogOutModalProps {
 
 const LogOutModal = (props: LogOutModalProps) => {
   const {visible, setVisible} = props;
+  const colors = useColors();
   const {t} = useTranslation();
 
   const actionAfterLogout = () => {
@@ -31,7 +33,12 @@ const LogOutModal = (props: LogOutModalProps) => {
 
   return (
     <Modal visible={visible} onClose={onCancelHandler}>
-      <AppText size={TextSize.LEVEL_6} weight={'600'} text={t('auth.logout')} />
+      <AppText
+        style={{color: colors.primaryTextColor}}
+        size={TextSize.LEVEL_6}
+        weight={'600'}
+        text={`${t('auth.logout')}?`}
+      />
       <View style={styles.btnGroup}>
         <Button
           disabled={logoutStore.isLoading}

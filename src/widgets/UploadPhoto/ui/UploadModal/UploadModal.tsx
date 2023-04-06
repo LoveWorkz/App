@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Animation, Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {UploadPhotoType} from '../../model/types/uploadPhoto';
 import uploadPhotoStore from '../../model/store/uploadPhotoStore';
 
@@ -19,6 +20,7 @@ interface UploadModalProps {
 const UploadModal = (props: UploadModalProps) => {
   const {visible, setVisible, setPhtotData, deletePhoto} = props;
   const {t} = useTranslation();
+  const colors = useColors();
 
   const {width} = useWindowDimensions();
 
@@ -57,6 +59,7 @@ const UploadModal = (props: UploadModalProps) => {
       visible={visible}
       contentStyle={[styles.content, {width}]}>
       <AppText
+        style={{color: colors.primaryTextColor}}
         size={TextSize.LEVEL_6}
         weight={'600'}
         text={t('upload.change_profile_photo')}
@@ -64,15 +67,27 @@ const UploadModal = (props: UploadModalProps) => {
       <Button
         onPress={() => onPressHandler(UploadPhotoType.CAMERA)}
         theme={ButtonTheme.CLEAR}>
-        <AppText size={TextSize.LEVEL_4} text={t('upload.take_photo')} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          size={TextSize.LEVEL_4}
+          text={t('upload.take_photo')}
+        />
       </Button>
       <Button
         onPress={() => onPressHandler(UploadPhotoType.GALLERY)}
         theme={ButtonTheme.CLEAR}>
-        <AppText size={TextSize.LEVEL_4} text={t('upload.open_gallery')} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          size={TextSize.LEVEL_4}
+          text={t('upload.open_gallery')}
+        />
       </Button>
       <Button onPress={onDeleteHandler} theme={ButtonTheme.CLEAR}>
-        <AppText size={TextSize.LEVEL_4} text={t('upload.delete_photo')} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          size={TextSize.LEVEL_4}
+          text={t('upload.delete_photo')}
+        />
       </Button>
     </Modal>
   );

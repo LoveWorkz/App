@@ -3,12 +3,15 @@ import {View, StyleSheet, Pressable} from 'react-native';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {StyleType} from '@src/shared/types/types';
 
 interface HeaderProps {
   style?: Record<string, string | number>;
   imageUrl: string;
   name: string;
   title: string;
+  titleStyle?: StyleType;
+  nameStyle?: StyleType;
   onIconPressHandler?: () => void;
   onContentPressHandler?: () => void;
   Icon?: ReactElement;
@@ -19,7 +22,9 @@ export const UserCard = (props: HeaderProps) => {
     style,
     imageUrl,
     name,
+    nameStyle,
     title,
+    titleStyle,
     onContentPressHandler,
     onIconPressHandler,
     Icon,
@@ -40,8 +45,13 @@ export const UserCard = (props: HeaderProps) => {
       </Pressable>
       <Pressable onPress={onProfilePressHandler}>
         <View style={styles.nameWrapper}>
-          <AppText text={title} weight={'300'} />
-          <AppText text={name} size={TextSize.LEVEL_5} weight={'600'} />
+          <AppText style={titleStyle} text={title} weight={'300'} />
+          <AppText
+            style={nameStyle}
+            text={name}
+            size={TextSize.LEVEL_5}
+            weight={'600'}
+          />
         </View>
       </Pressable>
       <View style={styles.icon}>

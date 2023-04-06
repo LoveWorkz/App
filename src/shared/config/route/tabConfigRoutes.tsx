@@ -29,21 +29,21 @@ type NewRouteProps = {
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
-  [TabRoutesNames.HOME]: {
-    name: tabRoutePaths.home,
-    Element: HomePage,
-  },
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
     Element: Categories,
   },
-  [TabRoutesNames.BOOKS]: {
-    name: tabRoutePaths.books,
-    Element: BooksPage,
-  },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
     Element: ChallengesPage,
+  },
+  [TabRoutesNames.HOME]: {
+    name: tabRoutePaths.home,
+    Element: HomePage,
+  },
+  [TabRoutesNames.BOOKS]: {
+    name: tabRoutePaths.books,
+    Element: BooksPage,
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,

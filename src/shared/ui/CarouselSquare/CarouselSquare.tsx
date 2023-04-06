@@ -28,7 +28,7 @@ export const CarouselSquare = (props: CarousalSquareProps) => {
     {key: 'spacer-right', end: true},
   ]);
   const {width} = useWindowDimensions();
-  const SIZE = width * 0.48;
+  const SIZE = width * 0.6;
   const SPACER = (width - SIZE) / 2;
   const x = useSharedValue(0);
   const offSet = useSharedValue(0);

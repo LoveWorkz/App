@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 
-import {SelectOption} from '@src/shared/types/types';
+import {SelectOption, StyleType} from '@src/shared/types/types';
 import {SelectTheme, Wrapper as TouchableComponent} from './TouchableComponent';
 import {DialogSelect} from './DialogSelect';
 import {PageSelect} from './PageSelect';
@@ -20,9 +20,9 @@ interface SelectProps {
   initialValue?: string;
   prompt?: string;
   Theme?: SelectTheme;
-  selectedValueStyle?: Record<string, string | number>;
+  selectedValueStyle?: StyleType;
   mode?: SelectMode;
-  style?: Record<string, string | number>;
+  style?: StyleType;
 }
 
 const itemHeight = 40;

@@ -10,7 +10,10 @@ import {SvgXml} from 'react-native-svg';
 
 import {EyeIcon} from '@src/shared/assets/icons/Eye';
 import {whitespaceRegexp} from '@src/shared/consts/validation';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize, TextType} from '../AppText/AppText';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {StyleType} from '@src/shared/types/types';
 
 export enum Inputheme {}
 
@@ -18,7 +21,7 @@ interface InputProps {
   onChange?: (value: string) => void;
   value?: string;
   theme?: Inputheme;
-  style?: Record<string, string | number>;
+  style?: StyleType;
   placeholder?: string;
   label?: string;
   error?: string;
@@ -43,6 +46,7 @@ export const Input = memo((props: InputProps) => {
     isSpaceAllowed = false,
     ...rest
   } = props;
+  const colors = useColors();
 
   const [isPasswordHidden, setIsPasswordHidden] = useState(false);
 
@@ -71,12 +75,19 @@ export const Input = memo((props: InputProps) => {
   };
 
   return (
-    <SafeAreaView style={style}>
-      {label && <AppText size={TextSize.LEVEL_2} weight={'600'} text={label} />}
+    <SafeAreaView style={[style, {...globalStyles.simpleShadowOpacity}]}>
+      {label && (
+        <AppText
+          style={[styles.inputText, {color: colors.primaryTextColor}]}
+          size={TextSize.LEVEL_2}
+          weight={'600'}
+          text={label}
+        />
+      )}
       <TextInput
         secureTextEntry={isPasswordHidden}
         keyboardType={keyboardType}
-        style={[styles.input, styles[theme]]}
+        style={[styles.input, styles[theme], {color: colors.primaryTextColor}]}
         onChangeText={onChangeTextHandler}
         value={value}
         placeholder={placeholder}
@@ -105,9 +116,13 @@ const styles = StyleSheet.create<Record<string, any>>({
   input: {
     height: 40,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#9A9AA5',
-    borderBottomStyle: 'solid',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  inputText: {
+    marginBottom: 5,
   },
   errorText: {
     color: 'red',

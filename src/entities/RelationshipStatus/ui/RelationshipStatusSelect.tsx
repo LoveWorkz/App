@@ -3,6 +3,7 @@ import {SafeAreaView} from 'react-native';
 
 import {Select, SelectMode} from '@src/shared/ui/Select/Select';
 import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const options = [
   {label: 'status 1', value: 'status 1'},
@@ -19,6 +20,7 @@ interface RelationshipStatusSelectProps {
 
 const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
   const {changeStatus, status, initialValue} = props;
+  const colors = useColors();
 
   const onChangeHandler = useCallback(
     (value: string) => {
@@ -30,7 +32,8 @@ const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
   return (
     <SafeAreaView>
       <Select
-        Theme={SelectTheme.UNDERLINE}
+        selectedValueStyle={{color: colors.primaryTextColor}}
+        Theme={SelectTheme.OUTLINE}
         initialValue={initialValue}
         prompt={'Status'}
         label={'Relationship status'}

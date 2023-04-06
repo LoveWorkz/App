@@ -1,25 +1,31 @@
-import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {memo, useCallback} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 
 interface ChallangeProps {
-  text: string;
-  active: boolean;
+  image: string;
 }
 
 const Challange = (props: ChallangeProps) => {
-  const {text, active} = props;
+  const {image} = props;
 
   const onPressHandler = useCallback(() => {
     console.log('press');
   }, []);
 
-  const mode = useMemo(() => {
-    return [styles.button, active ? styles.active : ''];
-  }, [active]);
-
   return (
-    <TouchableOpacity disabled={!active} style={mode} onPress={onPressHandler}>
-      <Text style={[styles.text, active ? styles.activeText : '']}>{text}</Text>
+    <TouchableOpacity
+      style={[styles.challange, {...globalStyles.shadowOpacity}]}
+      onPress={onPressHandler}>
+      <View style={[styles.content]}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: image,
+          }}
+        />
+      </View>
     </TouchableOpacity>
   );
 };
@@ -27,14 +33,23 @@ const Challange = (props: ChallangeProps) => {
 export const ComponentWrapper = memo(Challange);
 
 const styles = StyleSheet.create<Record<string, any>>({
-  button: {
+  challange: {
     padding: 10,
-    height: 55,
-    width: 100,
-    backgroundColor: '#EAEAEA',
-    borderRadius: 20,
+    height: 60,
+    width: 60,
+    backgroundColor: 'white',
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  content: {
+    backgroundColor: '#F1F3FF',
+    height: 50,
+    width: 50,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 2,
   },
   text: {
     color: 'black',
@@ -44,5 +59,10 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   activeText: {
     color: 'white',
+  },
+  image: {
+    height: '100%',
+    width: '100%',
+    resizeMode: 'contain',
   },
 });

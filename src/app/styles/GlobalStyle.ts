@@ -6,6 +6,8 @@ export const globalPadding = 15;
 // window sizes
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
+export const windowWidthMinusPaddings =
+  Dimensions.get('window').width - globalPadding - globalPadding - 10;
 
 //fontSizes
 export enum FontSizes {
@@ -21,18 +23,41 @@ export enum FontSizes {
 // z-index
 export const forgotPasswordZIndex = 1;
 
-export default StyleSheet.create({
+export const globalStyles = StyleSheet.create({
   textFont: {
     fontFamily: 'Quicksand-Bold',
   },
   shadowOpacity: {
     shadowColor: '#000',
     shadowOffset: {
-      width: 0,
-      height: 7,
+      width: 2,
+      height: 3,
     },
-    shadowOpacity: 0.41,
-    shadowRadius: 9.11,
-    elevation: 14,
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  strongShadowOpacity: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+
+    elevation: 17,
+  },
+  simpleShadowOpacity: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });

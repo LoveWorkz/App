@@ -49,6 +49,7 @@ export const Modal = (props: ModalProps) => {
 
 const styles = StyleSheet.create({
   content: {
+    borderRadius: 20,
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',

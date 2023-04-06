@@ -7,9 +7,11 @@ import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const ChangePassword = () => {
   const {t} = useTranslation();
+  const colors = useColors();
 
   const onPressHandler = useCallback(() => {
     navigation.navigate(AppRouteNames.CHANGE_PASSWORD);
@@ -18,10 +20,18 @@ const ChangePassword = () => {
   return (
     <Pressable onPress={onPressHandler} style={styles.changePassword}>
       <View>
-        <AppText size={TextSize.LEVEL_5} text={t('settings.change_password')} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          size={TextSize.LEVEL_5}
+          text={t('settings.change_password')}
+        />
       </View>
       <View>
-        <SvgXml xml={SmallArrowRightIcon} style={styles.icon} />
+        <SvgXml
+          stroke={colors.primaryTextColor}
+          xml={SmallArrowRightIcon}
+          style={styles.icon}
+        />
         <View />
       </View>
     </Pressable>

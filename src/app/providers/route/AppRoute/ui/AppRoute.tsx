@@ -10,11 +10,14 @@ import {
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Layout} from '@src/app/providers/layout';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {useColors} from '@src/app/providers/colorsProvider';
 import HeaderLeft from './HeaderLeft/HeaderLeft';
 
 const Stack = createNativeStackNavigator();
 
 export const AppRoute = () => {
+  const colors = useColors();
+
   return (
     <NavigationContainer ref={navigation.navigationRef}>
       {isPlatformIos ? (
@@ -48,6 +51,7 @@ export const AppRoute = () => {
               <Stack.Screen
                 options={{
                   headerShown: headerShown,
+                  headerStyle: {backgroundColor: colors.bgColor},
                   title: '',
                   headerRight: HeaderRight ? () => <HeaderRight /> : undefined,
                   headerLeft: headerTitle

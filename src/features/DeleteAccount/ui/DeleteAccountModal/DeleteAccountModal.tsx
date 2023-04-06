@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
@@ -18,6 +19,8 @@ interface DeleteAccountModalProps {
 const DeleteAccountModal = (props: DeleteAccountModalProps) => {
   const {visible, setVisible} = props;
   const {t} = useTranslation();
+  const colors = useColors();
+
   const [isConfirm, setIsConfirm] = useState(false);
 
   const deleteAuthUser = useCallback(() => {
@@ -52,12 +55,13 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
         ) : (
           <>
             <AppText
+              style={{color: colors.primaryTextColor}}
               weight={'600'}
               size={TextSize.LEVEL_6}
-              text={`${t('auth.delete_your_account')} ?`}
+              text={`${t('auth.delete_your_account')}?`}
             />
             <AppText
-              style={styles.text}
+              style={[styles.text, {color: colors.primaryTextColor}]}
               size={TextSize.LEVEL_4}
               text={
                 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit ipsum dolor'
@@ -100,7 +104,7 @@ const btnWidth = '40%';
 
 const styles = StyleSheet.create({
   content: {
-    height: 280,
+    height: 290,
   },
   text: {
     fontSize: 16,

@@ -4,15 +4,17 @@ import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {Category, categoryData} from '@src/entities/Category';
-import {ArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
+import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const CategoriesCarousel = () => {
   const {t} = useTranslation();
+  const colors = useColors();
 
   const onPressHandler = () => {
     navigation.navigate(TabRoutesNames.CATEGORIES);
@@ -22,19 +24,23 @@ const CategoriesCarousel = () => {
     <View style={styles.carousel}>
       <View style={styles.carouseTopBlock}>
         <AppText
+          style={{color: colors.primaryTextColor}}
           weight={'500'}
           size={TextSize.LEVEL_5}
           text={t('home.categories')}
         />
         <Pressable onPress={onPressHandler}>
           <View style={styles.seeAllWrapper}>
-            <AppText
+            <GradientText
               style={styles.seeAll}
               weight={'700'}
               size={TextSize.LEVEL_4}
               text={t('home.see_all')}
             />
-            <SvgXml xml={ArrowRightIcon} style={styles.arrowIcon} />
+            <SvgXml
+              xml={getArrowRightIcon({isGradient: true})}
+              style={styles.arrowIcon}
+            />
           </View>
         </Pressable>
       </View>
@@ -47,18 +53,18 @@ export const ComponentWrapper = memo(CategoriesCarousel);
 
 const styles = StyleSheet.create({
   carousel: {
-    height: 280,
+    height: 200,
   },
   carouseTopBlock: {
-    padding: globalPadding,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 15,
   },
   seeAll: {
-    marginRight: 5,
+    textDecorationLine: 'underline',
   },
   arrowIcon: {
+    marginLeft: 5,
     height: 15,
     width: 15,
   },

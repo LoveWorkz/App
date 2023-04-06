@@ -5,6 +5,7 @@ import {SvgXml} from 'react-native-svg';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface SettingItem {
   Icon: string;
@@ -14,6 +15,7 @@ interface SettingItem {
 
 const SettingItem = (props: SettingItem) => {
   const {Icon, text, path} = props;
+  const colors = useColors();
 
   const onPressHandler = useCallback(() => {
     path && navigation.navigate(path);
@@ -22,10 +24,19 @@ const SettingItem = (props: SettingItem) => {
   return (
     <Pressable style={styles.settingItem} onPress={onPressHandler}>
       <View>
-        <SvgXml xml={Icon} style={styles.icon} />
+        <SvgXml
+          strokeOpacity={18}
+          xml={Icon}
+          style={[styles.icon]}
+          stroke={colors.primaryTextColor}
+        />
       </View>
       <View style={styles.textWrapper}>
-        <AppText size={TextSize.LEVEL_4} text={text} />
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          size={TextSize.LEVEL_4}
+          text={text}
+        />
       </View>
     </Pressable>
   );

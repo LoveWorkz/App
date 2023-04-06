@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 
 interface ConfirmDeletingProps {
@@ -16,6 +17,7 @@ interface ConfirmDeletingProps {
 const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   const {onDeleteHandler, onCancelHandler} = props;
   const {t} = useTranslation();
+  const colors = useColors();
 
   useEffect(() => {
     return () => deleteAccountStore.resetForm();
@@ -32,7 +34,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   return (
     <SafeAreaView style={styles.confirm}>
       <AppText
-        style={styles.title}
+        style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
         text={t('enter_your_data')}
       />
