@@ -26,27 +26,33 @@ type NewRouteProps = {
   authOnly?: boolean;
   name: string;
   Element: ComponentType;
+  headerTitle?: string;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
     Element: Categories,
+    headerTitle: 'Questions library',
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
     Element: ChallengesPage,
+    headerTitle: 'Challenges',
   },
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
     Element: HomePage,
+    headerTitle: '',
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
     Element: BooksPage,
+    headerTitle: 'Literature',
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
     Element: ShopPage,
+    headerTitle: 'Shop',
   },
 };

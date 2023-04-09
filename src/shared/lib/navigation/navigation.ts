@@ -7,9 +7,10 @@ import {
 } from '@react-navigation/native';
 
 type RootStackParamList = {
-  Home: undefined;
-  Profile: {userId: string};
-  Feed: {sort: 'latest' | 'top'} | undefined;
+  Home?: undefined;
+  Profile?: {userId: string};
+  Feed?: {sort: 'latest' | 'top'} | undefined;
+  id?: string;
 };
 
 export interface Navigation {

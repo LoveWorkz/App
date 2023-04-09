@@ -1,27 +1,26 @@
 import React, {memo} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  useWindowDimensions,
-  Animated,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Animated} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface PaginationProps {
   data: Record<string, string | number>[];
   scrollX: Animated.Value;
+  itemWidth: number;
 }
 
 const Pagination = (props: PaginationProps) => {
-  const {data, scrollX} = props;
+  const {data, scrollX, itemWidth} = props;
   const colors = useColors();
-  const {width} = useWindowDimensions();
 
   return (
     <SafeAreaView style={styles.pegination}>
       {data.map((_, i) => {
-        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
+        const inputRange = [
+          (i - 1) * itemWidth,
+          i * itemWidth,
+          (i + 1) * itemWidth,
+        ];
 
         const dotWidth = scrollX.interpolate({
           inputRange,
@@ -56,7 +55,6 @@ const Pagination = (props: PaginationProps) => {
 const styles = StyleSheet.create({
   pegination: {
     flexDirection: 'row',
-    marginTop: 20,
   },
   dot: {
     height: 8,

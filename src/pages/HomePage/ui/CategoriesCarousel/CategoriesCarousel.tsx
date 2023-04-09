@@ -44,7 +44,7 @@ const CategoriesCarousel = () => {
           </View>
         </Pressable>
       </View>
-      <CarouselSquare Component={Category} data={categoryData} />
+      <CarouselSquare isLandscape Component={Category} data={categoryData} />
     </View>
   );
 };

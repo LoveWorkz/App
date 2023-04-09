@@ -13,15 +13,16 @@ import {SetUpPage} from '@src/pages/SetUpPage';
 import {AboutPage} from '@src/pages/AboutPage';
 import {HowToUsePage} from '@src/pages/HowToUsePage';
 import {ContactUsPage} from '@src/pages/ContactUsPage';
+import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
-  TAB_ROUTE = 'tab_route',
+  TAB_ROUTE = 'tabRoute',
   SPLASH = 'splash',
   SETUP = 'setup',
 
   // pages with title
-  RESET_PASSWORD = 'reset_password',
+  RESET_PASSWORD = 'resetPassword',
   SETTINGS = 'settings',
   PROFILE = 'profile',
   ABOUT = 'about',
@@ -30,15 +31,16 @@ export enum AppRouteNames {
   CHANGE_PASSWORD = 'changePassword',
   HOW_TO_USE = 'howToUse',
   CONTACT_US = 'contactUs',
+  BOOK_DETAILS = 'bookDetails',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.AUTH]: 'auth',
-  [AppRouteNames.TAB_ROUTE]: 'tab_route',
+  [AppRouteNames.TAB_ROUTE]: 'tabRoute',
   [AppRouteNames.SPLASH]: 'splash',
 
   // pages with title
-  [AppRouteNames.RESET_PASSWORD]: 'reset_password',
+  [AppRouteNames.RESET_PASSWORD]: 'resetPassword',
   [AppRouteNames.SETTINGS]: 'settings',
   [AppRouteNames.PROFILE]: 'profile',
   [AppRouteNames.ABOUT]: 'about',
@@ -48,6 +50,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.SETUP]: 'setup',
   [AppRouteNames.HOW_TO_USE]: 'howToUse',
   [AppRouteNames.CONTACT_US]: 'contactUs',
+  [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
 };
 
 type NewRouteProps = {
@@ -78,14 +81,14 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
 
   // tab routes
   [AppRouteNames.TAB_ROUTE]: {
-    name: appRoutePaths.tab_route,
+    name: appRoutePaths.tabRoute,
     headerShown: false,
     Element: TabRoute,
   },
 
   // pages with title
   [AppRouteNames.RESET_PASSWORD]: {
-    name: appRoutePaths.reset_password,
+    name: appRoutePaths.resetPassword,
     headerShown: true,
     headerTitle: 'Reset Password',
     Element: ResetPasswordPage,
@@ -138,5 +141,11 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: 'Contact us',
     Element: ContactUsPage,
+  },
+  [AppRouteNames.BOOK_DETAILS]: {
+    name: appRoutePaths.bookDetails,
+    headerShown: true,
+    headerTitle: '',
+    Element: BookDetailsPage,
   },
 };

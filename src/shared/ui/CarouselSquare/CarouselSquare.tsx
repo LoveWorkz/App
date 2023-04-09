@@ -14,12 +14,13 @@ import Animated, {
 } from 'react-native-reanimated';
 
 interface CarousalSquareProps {
-  data: Array<Record<string, string | number>>;
-  Component: ComponentType | MemoExoticComponent<any>;
+  data: Array<Record<string, any>>;
+  Component: ComponentType<any> | MemoExoticComponent<any>;
+  isLandscape?: boolean;
 }
 
 export const CarouselSquare = (props: CarousalSquareProps) => {
-  const {data, Component} = props;
+  const {data, Component, isLandscape = true} = props;
 
   const scrollViewRef = useAnimatedRef() as RefObject<any>;
   const [newData] = useState([
@@ -28,8 +29,9 @@ export const CarouselSquare = (props: CarousalSquareProps) => {
     {key: 'spacer-right', end: true},
   ]);
   const {width} = useWindowDimensions();
-  const SIZE = width * 0.6;
-  const SPACER = (width - SIZE) / 2;
+  const SIZE = width * (isLandscape ? 0.6 : 0.3);
+  const SPACER = (width - SIZE) / (isLandscape ? 2 : 4);
+
   const x = useSharedValue(0);
   const offSet = useSharedValue(0);
 
@@ -41,7 +43,9 @@ export const CarouselSquare = (props: CarousalSquareProps) => {
 
   return (
     <View>
+      {/* <Pagination scrollX={scrollX} data={data} /> */}
       <Animated.ScrollView
+        snapToAlignment="center"
         ref={scrollViewRef}
         onScroll={onScroll}
         onMomentumScrollEnd={e => {
@@ -58,8 +62,13 @@ export const CarouselSquare = (props: CarousalSquareProps) => {
           const style = useAnimatedStyle(() => {
             const scale = interpolate(
               x.value,
-              [(index - 2) * SIZE, (index - 1) * SIZE, index * SIZE],
-              [0.8, 1, 0.8],
+              [
+                (index - 3) * SPACER,
+                (index - 2) * SIZE,
+                (index - 1) * SIZE,
+                index * SIZE,
+              ],
+              [0.8, 0.8, 1, 0.8],
             );
             return {
               transform: [{scale}],
@@ -84,7 +93,6 @@ export const CarouselSquare = (props: CarousalSquareProps) => {
 
 const styles = StyleSheet.create({
   componentWrapper: {
-    borderRadius: 20,
     overflow: 'hidden',
   },
 });

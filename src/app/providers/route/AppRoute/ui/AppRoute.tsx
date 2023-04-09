@@ -54,7 +54,7 @@ export const AppRoute = () => {
                   headerStyle: {backgroundColor: colors.bgColor},
                   title: '',
                   headerRight: HeaderRight ? () => <HeaderRight /> : undefined,
-                  headerLeft: headerTitle
+                  headerLeft: headerShown
                     ? () => <HeaderLeft title={headerTitle} />
                     : undefined,
                 }}

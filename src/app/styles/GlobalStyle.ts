@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 // paddings
-export const globalPadding = 15;
+export const globalPadding = 20;
 
 // window sizes
 export const windowWidth = Dimensions.get('window').width;

@@ -6,6 +6,7 @@ import challenges from './challenges.json';
 import profile from './profile.json';
 import rubrics from './rubrics.json';
 import uploadPhoto from './uploadPhoto.json';
+import books from './books.json';
 
 export const en = {
   ...common,
@@ -16,4 +17,5 @@ export const en = {
   ...profile,
   ...rubrics,
   ...uploadPhoto,
+  ...books,
 };

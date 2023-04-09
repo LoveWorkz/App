@@ -1,46 +1,35 @@
 import React, {
   ComponentType,
   MemoExoticComponent,
-  ReactElement,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  useWindowDimensions,
-  Animated,
-} from 'react-native';
+import {FlatList, SafeAreaView, Animated, View} from 'react-native';
 
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {StyleType} from '@src/shared/types/types';
 import {Wrapper as Pagination} from './Pagination';
 
-interface CarouselItemProps {
-  children: ReactElement;
-}
-
-const CarouselItem = (props: CarouselItemProps) => {
-  const {children} = props;
-
-  const {width} = useWindowDimensions();
-
-  const paddings = globalPadding + globalPadding;
-
-  return (
-    <SafeAreaView style={[{width: width - paddings}]}>{children}</SafeAreaView>
-  );
-};
-
 interface CarouselProps {
-  Component: ComponentType | MemoExoticComponent<any>;
+  Component: ComponentType<any> | MemoExoticComponent<any>;
   data: Record<string, string | number>[];
   getCurrentPage?: (currentPage: number) => void;
-  isPagination?: boolean;
+  isBottomPagination?: boolean;
+  isTopPagination?: boolean;
+  itemStyle?: StyleType;
+  itemWidth?: number;
 }
 
 export const Carousel = (props: CarouselProps) => {
-  const {Component, data, getCurrentPage, isPagination = true} = props;
+  const {
+    Component,
+    data,
+    getCurrentPage,
+    isBottomPagination = false,
+    isTopPagination = false,
+    itemStyle,
+    itemWidth,
+  } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -59,15 +48,20 @@ export const Carousel = (props: CarouselProps) => {
 
   return (
     <SafeAreaView>
+      <View>
+        {isTopPagination && itemWidth && (
+          <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+        )}
+      </View>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         data={data}
         pagingEnabled
         renderItem={({item}) => (
-          <CarouselItem>
+          <SafeAreaView style={[itemStyle, {width: itemWidth}]}>
             <Component {...item} />
-          </CarouselItem>
+          </SafeAreaView>
         )}
         bounces={false}
         onScroll={Animated.event(
@@ -81,7 +75,9 @@ export const Carousel = (props: CarouselProps) => {
         viewabilityConfig={viewConfig}
         ref={slidesRef}
       />
-      {isPagination && <Pagination scrollX={scrollX} data={data} />}
+      {isBottomPagination && itemWidth && (
+        <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+      )}
     </SafeAreaView>
   );
 };

@@ -5,11 +5,19 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {data} from '../lib/howToUse';
 import {Wrapper as HowToUseItem} from './HowToUseItem/HowToUseItem';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 
 const HowToUsePage = () => {
+  const paddings = globalPadding + globalPadding;
+
   return (
     <SafeAreaView style={styles.howToUse}>
-      <Carousel data={data} Component={HowToUseItem} />
+      <Carousel
+        itemWidth={windowWidth - paddings}
+        isBottomPagination
+        data={data}
+        Component={HowToUseItem}
+      />
     </SafeAreaView>
   );
 };

@@ -9,11 +9,16 @@ import {
 import {Layout} from '@src/app/providers/layout';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {getTabIcon} from '../lib/getIcon';
+import {Wrapper as TabHeaderLeft} from './TabHeaderLeft/TabHeaderLeft';
+import {Wrapper as TabHeaderRight} from './TabHeaderRight/TabHeaderRight';
 
 const Tab = createBottomTabNavigator();
 
 const TabRoute = () => {
+  const colors = useColors();
+
   return (
     <Tab.Navigator
       initialRouteName={TabRoutesNames.HOME}
@@ -41,7 +46,7 @@ const TabRoute = () => {
           );
         },
       })}>
-      {Object.values(tabRoutesConfig).map(({name, Element}) => {
+      {Object.values(tabRoutesConfig).map(({name, Element, headerTitle}) => {
         const Wrapper = (props: ParamListBase) => {
           return (
             <Layout>
@@ -50,7 +55,23 @@ const TabRoute = () => {
           );
         };
 
-        return <Tab.Screen name={name} component={Wrapper} key={name} />;
+        return (
+          <Tab.Screen
+            name={name}
+            component={Wrapper}
+            key={name}
+            options={{
+              title: '',
+              headerStyle: {backgroundColor: colors.bgColor},
+              headerShown: !!headerTitle,
+              headerLeft: () =>
+                headerTitle ? (
+                  <TabHeaderLeft title={headerTitle || ''} />
+                ) : null,
+              headerRight: () => (headerTitle ? <TabHeaderRight /> : null),
+            }}
+          />
+        );
       })}
     </Tab.Navigator>
   );
