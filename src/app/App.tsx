@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import {StyleSheet} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {initAdmob} from './config/admobConfig';
 import {configureGoogleSignin} from './config/firebaseConfig';
@@ -13,12 +15,20 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <ColorsProvider>
-        <AppRoute />
-      </ColorsProvider>
-    </ThemeProvider>
+    <GestureHandlerRootView style={styles.App}>
+      <ThemeProvider>
+        <ColorsProvider>
+          <AppRoute />
+        </ColorsProvider>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 };
+
+const styles = StyleSheet.create({
+  App: {
+    flex: 1,
+  },
+});
 
 export default App;

@@ -9,17 +9,27 @@ import {
   globalStyles,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
+import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
 import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
 
 interface BookPreview {
   image: string;
-  onModalOpenHandler: () => void;
 }
 
 const BookPreview = memo((props: BookPreview) => {
-  const {image, onModalOpenHandler} = props;
+  const {image} = props;
+
+  const [isBookModalVisible, setIsBookModalVisible] = useState(false);
+
+  const onModalCloseHandler = useCallback(() => {
+    return setIsBookModalVisible(false);
+  }, []);
+
+  const onModalOpenHandler = () => {
+    setIsBookModalVisible(true);
+  };
 
   const uri = useMemo(() => {
     return {
@@ -28,8 +38,20 @@ const BookPreview = memo((props: BookPreview) => {
   }, [image]);
 
   return (
-    <Pressable onPress={onModalOpenHandler} style={styles.imageWrapper}>
+    <Pressable
+      onPress={onModalOpenHandler}
+      style={[
+        styles.imageWrapper,
+        {
+          ...globalStyles.shadowOpacity,
+        },
+      ]}>
       <Image style={styles.image} source={uri} />
+      <BookPreviewModal
+        image={image}
+        visible={isBookModalVisible}
+        onClose={onModalCloseHandler}
+      />
     </Pressable>
   );
 });
@@ -40,18 +62,9 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo} = props;
-  const {image, name, description, author, Categories} = bookInfo;
+  const {image, name, description, author, Categories, rate} = bookInfo;
 
   const colors = useColors();
-  const [isBookModalVisible, setIsBookModalVisible] = useState(false);
-
-  const onModalCloseHandler = useCallback(() => {
-    return setIsBookModalVisible(false);
-  }, []);
-
-  const onModalOpenHandler = () => {
-    setIsBookModalVisible(true);
-  };
 
   const bookCarouselData = [
     {
@@ -68,30 +81,13 @@ export const Book = (props: BookProps) => {
         <View style={[{width: windowWidthMinusPaddings * 0.5}]}>
           <Carousel
             itemWidth={windowWidthMinusPaddings * 0.5}
-            itemStyle={[
-              {
-                ...globalStyles.shadowOpacity,
-              },
-            ]}
             isTopPagination
             data={bookCarouselData}
             Component={({bookImage}: {bookImage: string}) => {
-              return (
-                <BookPreview
-                  onModalOpenHandler={onModalOpenHandler}
-                  image={bookImage}
-                />
-              );
+              return <BookPreview image={bookImage} />;
             }}
           />
         </View>
-
-        <BookPreviewModal
-          image={image.front}
-          visible={isBookModalVisible}
-          onClose={onModalCloseHandler}
-        />
-
         <View style={styles.bookInfo}>
           <AppText
             style={{color: colors.primaryTextColor}}
@@ -100,11 +96,14 @@ export const Book = (props: BookProps) => {
             text={name}
           />
           <AppText
-            style={{color: colors.primaryTextColor}}
+            style={[styles.author, {color: colors.primaryTextColor}]}
             weight={'500'}
             size={TextSize.LEVEL_4}
             text={author}
           />
+          <View style={styles.rateWrapper}>
+            <StarRatings size={5} count={rate} />
+          </View>
           <View style={styles.categories}>
             {Categories.map(category => {
               return (
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
     height: 210,
     width: 150,
     borderRadius: 5,
-    marginTop: 15,
+    marginTop: 10,
   },
   bookInfo: {
     width: '50%',
@@ -151,11 +150,20 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
     borderRadius: 5,
   },
+  author: {
+    marginTop: 5,
+  },
   categories: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginLeft: -4,
   },
   category: {
     padding: 4,
+  },
+  rateWrapper: {
+    marginTop: 15,
+    marginBottom: 25,
+    marginLeft: -4,
   },
 });

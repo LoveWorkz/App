@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dot: {
-    height: 8,
+    height: 5,
     borderRadius: 5,
     backgroundColor: 'black',
     marginHorizontal: 3,

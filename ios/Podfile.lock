@@ -1128,6 +1128,8 @@ PODS:
     - Firebase/Storage (= 10.3.0)
     - React-Core
     - RNFBApp
+  - RNGestureHandler (2.9.0):
+    - React-Core
   - RNGoogleMobileAds (10.0.1):
     - Google-Mobile-Ads-SDK (= 10.2.0)
     - GoogleUserMessagingPlatform (= 2.0.1)
@@ -1224,6 +1226,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -1363,6 +1366,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBStorage:
     :path: "../node_modules/@react-native-firebase/storage"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNGoogleMobileAds:
     :path: "../node_modules/react-native-google-mobile-ads"
   RNGoogleSignin:
@@ -1459,6 +1464,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 0d480b9223fd9832e8a7ed314fa8c223b7ec8dfd
   RNFBFirestore: 9cd3d02bf57c184ad1ac0b6fdf1e320f126db33c
   RNFBStorage: 4f69283aa9273d8fa5bc2484b9facaabec7cb0df
+  RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleMobileAds: d19cad1a07bf49793c8b83a7e6d7c692dd258bb0
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
   RNLocalize: 0df7970cfc60389f00eb62fd7c097dc75af3fb4f

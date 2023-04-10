@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   image: {
+    borderRadius: 5,
     idth: '100%',
     height: '100%',
   },

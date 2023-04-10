@@ -5,5 +5,6 @@
     "books.romance": "Romance",
     "books.conflict": "Conflict",
     "books.see_more": "See more",
-    "books.description": "Description"
+    "books.description": "Description",
+    "books.noResults": "No Results"
 }

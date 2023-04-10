@@ -13,6 +13,7 @@ const Books = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const booksList = booksStore.booksFilteredList;
+  const booksCategories = booksStore.booksCategories;
 
   const onFiltreHandler = (key: string) => {
     booksStore.filterBooks(key);
@@ -27,27 +28,21 @@ const Books = () => {
         size={TextSize.LEVEL_5}
       />
       <View style={styles.booksCategories}>
-        <BookCategory
-          action={true}
-          category={'Bestseller'}
-          onPress={onFiltreHandler}
-          text={t('books.bestseller')}
-        />
-        <BookCategory
-          action={true}
-          category={'Romance'}
-          onPress={onFiltreHandler}
-          text={t('books.romance')}
-        />
-        <BookCategory
-          action={true}
-          category={'Conflict'}
-          onPress={onFiltreHandler}
-          text={t('books.conflict')}
-        />
+        {booksCategories.map(category => {
+          return (
+            <BookCategory
+              key={category.key}
+              active={category.active}
+              category={category.key}
+              onPress={onFiltreHandler}
+              text={category.key}
+              action
+            />
+          );
+        })}
       </View>
       <View style={styles.books}>
-        {!!booksList.length &&
+        {booksList.length ? (
           booksList.map(book => {
             return (
               <View style={styles.book} key={book.id}>
@@ -59,7 +54,16 @@ const Books = () => {
                 />
               </View>
             );
-          })}
+          })
+        ) : (
+          <View style={styles.noResults}>
+            <AppText
+              style={[styles.booksTitle, {color: colors.primaryTextColor}]}
+              text={t('books.noResults')}
+              size={TextSize.LEVEL_7}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -80,5 +84,10 @@ const styles = StyleSheet.create({
   booksCategories: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  noResults: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
   },
 });

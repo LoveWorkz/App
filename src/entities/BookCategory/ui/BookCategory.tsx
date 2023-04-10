@@ -15,6 +15,7 @@ interface bookCategoryProps {
   size?: BookCategorySize;
   onPress?: (key: string) => void;
   action?: boolean;
+  active?: boolean;
 }
 
 const BookCategory = (props: bookCategoryProps) => {
@@ -24,6 +25,7 @@ const BookCategory = (props: bookCategoryProps) => {
     onPress,
     action = false,
     size = BookCategorySize.NORMAL,
+    active = false,
   } = props;
 
   const onPressHandler = () => {
@@ -34,7 +36,10 @@ const BookCategory = (props: bookCategoryProps) => {
     <Gradient
       style={[
         styles.BookCategory,
-        {height: size === BookCategorySize.SMALL ? 28 : 40},
+        {
+          height: size === BookCategorySize.SMALL ? 28 : 40,
+          opacity: active ? 1 : 0.6,
+        },
       ]}>
       <TouchableOpacity
         disabled={!action}
@@ -47,7 +52,7 @@ const BookCategory = (props: bookCategoryProps) => {
           size={
             size === BookCategorySize.SMALL
               ? TextSize.LEVEL_2
-              : TextSize.LEVEL_5
+              : TextSize.LEVEL_4
           }
         />
       </TouchableOpacity>

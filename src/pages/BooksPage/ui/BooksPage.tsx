@@ -10,6 +10,10 @@ import booksStore from '../model/store/BooksStore';
 const BooksPage = () => {
   useEffect(() => {
     booksStore.getBooks();
+
+    return () => {
+      booksStore.clearBooksInfo();
+    };
   }, []);
 
   if (!booksStore.booksSize) {

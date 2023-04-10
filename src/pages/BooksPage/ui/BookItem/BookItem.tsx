@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   imageWrapper: {
     height: 100,
     width: 70,
+    borderRadius: 5,
   },
   textContent: {
     width: '80%',
