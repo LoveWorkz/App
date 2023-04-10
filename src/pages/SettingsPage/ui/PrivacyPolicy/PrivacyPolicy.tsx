@@ -30,8 +30,6 @@ export const Wrapper = memo(PrivacyPolicy);
 
 const styles = StyleSheet.create({
   privacyPolicy: {
-    position: 'absolute',
-    bottom: 60,
     alignItems: 'center',
     width: '100%',
   },

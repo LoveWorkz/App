@@ -2,10 +2,11 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {LanguageSwitcher} from '@src/widgets/LanguageSwitcher';
-import {Wrapper as SettingsUserCard} from './SettingsUserCard/SettingsUserCard';
 import {ThemeSwitcher} from '@src/widgets/ThemeSwitcher';
 import {Wrapper as SettingItems} from './SettingItems/SettingItems';
 import {Wrapper as PrivacyPolicy} from './PrivacyPolicy/PrivacyPolicy';
+import {Wrapper as SettingsUserCard} from './SettingsUserCard/SettingsUserCard';
+import ShareUs from './ShareUs/ShareUs';
 
 const SettingsPage = () => {
   return (
@@ -20,7 +21,12 @@ const SettingsPage = () => {
       <View>
         <SettingItems />
       </View>
-      <PrivacyPolicy />
+      <View style={styles.bottomBlock}>
+        <View style={styles.shareUs}>
+          <ShareUs />
+        </View>
+        <PrivacyPolicy />
+      </View>
     </View>
   );
 };
@@ -37,5 +43,13 @@ const styles = StyleSheet.create({
   },
   themeSwitcherWrapper: {
     marginBottom: 40,
+  },
+  bottomBlock: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 60,
+  },
+  shareUs: {
+    marginBottom: 20,
   },
 });
