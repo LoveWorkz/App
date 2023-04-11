@@ -7,7 +7,7 @@ export const globalPadding = 20;
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const windowWidthMinusPaddings =
-  Dimensions.get('window').width - globalPadding - globalPadding - 10;
+  Dimensions.get('window').width - globalPadding - globalPadding;
 
 //fontSizes
 export enum FontSizes {

@@ -35,10 +35,17 @@ export const AppRoute = () => {
           headerShown: false,
         }}>
         {Object.values(appRoutesConfig).map(
-          ({name, Element, headerShown, headerTitle, HeaderRight}) => {
+          ({
+            name,
+            Element,
+            headerShown,
+            headerTitle,
+            HeaderRight,
+            isPageScrolling,
+          }) => {
             const Wrapper = (props: ParamListBase) => {
               return (
-                <Layout>
+                <Layout isPageScrolling={isPageScrolling}>
                   <Element {...props} />
                 </Layout>
               );

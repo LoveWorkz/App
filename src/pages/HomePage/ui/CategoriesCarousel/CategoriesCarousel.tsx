@@ -11,6 +11,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 
 const CategoriesCarousel = () => {
   const {t} = useTranslation();
@@ -22,7 +23,8 @@ const CategoriesCarousel = () => {
 
   return (
     <View style={styles.carousel}>
-      <View style={styles.carouseTopBlock}>
+      <View
+        style={[styles.carouseTopBlock, {paddingHorizontal: globalPadding}]}>
         <AppText
           style={{color: colors.primaryTextColor}}
           weight={'500'}
@@ -44,7 +46,12 @@ const CategoriesCarousel = () => {
           </View>
         </Pressable>
       </View>
-      <CarouselSquare isLandscape Component={Category} data={categoryData} />
+      <CarouselSquare
+        isLandscape
+        Component={Category}
+        // itemStyle={styles.itemStyle}
+        data={categoryData}
+      />
     </View>
   );
 };
@@ -55,10 +62,13 @@ const styles = StyleSheet.create({
   carousel: {
     height: 200,
   },
+  itemStyle: {
+    borderRadius: 20,
+  },
   carouseTopBlock: {
+    marginBottom: -10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
   },
   seeAll: {
     textDecorationLine: 'underline',

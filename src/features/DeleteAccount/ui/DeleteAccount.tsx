@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -18,7 +18,7 @@ const DeleteAccount = () => {
   };
 
   return (
-    <ScrollView>
+    <View>
       <Button theme={ButtonTheme.CLEAR} onPress={onDeleteHandler}>
         <AppText
           style={[styles.deleteText, {color: colors.primaryTextColor}]}
@@ -30,7 +30,7 @@ const DeleteAccount = () => {
         visible={isDeleteModalVisible}
         setVisible={setIsDeleteModalVisible}
       />
-    </ScrollView>
+    </View>
   );
 };
 

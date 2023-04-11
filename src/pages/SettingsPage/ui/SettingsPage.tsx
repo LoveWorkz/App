@@ -1,19 +1,19 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {LanguageSwitcher} from '@src/widgets/LanguageSwitcher';
 import {ThemeSwitcher} from '@src/widgets/ThemeSwitcher';
 import {Wrapper as SettingItems} from './SettingItems/SettingItems';
 import {Wrapper as PrivacyPolicy} from './PrivacyPolicy/PrivacyPolicy';
 import {Wrapper as SettingsUserCard} from './SettingsUserCard/SettingsUserCard';
 import ShareUs from './ShareUs/ShareUs';
+import Language from './Language/Language';
 
 const SettingsPage = () => {
   return (
     <View style={styles.settings}>
       <SettingsUserCard />
       <View style={styles.languageSwitcherWrapper}>
-        <LanguageSwitcher />
+        <Language />
       </View>
       <View style={styles.themeSwitcherWrapper}>
         <ThemeSwitcher />
@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   languageSwitcherWrapper: {
-    marginBottom: 20,
-    marginTop: 20,
+    marginBottom: 30,
+    marginTop: 40,
   },
   themeSwitcherWrapper: {
-    marginBottom: 40,
+    marginBottom: 60,
   },
   bottomBlock: {
     width: '100%',

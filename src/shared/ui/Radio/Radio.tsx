@@ -1,8 +1,9 @@
 import React, {memo, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, View, Pressable} from 'react-native';
+import {StyleSheet, SafeAreaView, Pressable, View} from 'react-native';
 
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
+import {Gradient} from '../Gradient/Gradient';
 
 interface RadioProps {
   data: string[];
@@ -41,10 +42,12 @@ export const Radio = memo((props: RadioProps) => {
             key={item}
             style={[styles.radio, style]}
             onPress={() => onChange(item)}>
-            <View style={[styles.round, roundStyle]}>
+            <View style={[styles.round, {...roundStyle}]}>
               {value === item ? (
-                <View style={[styles.checked, activeItemStyle]} />
-              ) : null}
+                <Gradient style={[styles.checked, {...activeItemStyle}]} />
+              ) : (
+                <></>
+              )}
             </View>
             <AppText style={nameStyle} size={TextSize.LEVEL_4} text={item} />
           </Pressable>

@@ -1,55 +1,38 @@
 import React, {memo, useCallback, useState} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import {Select, SelectMode} from '@src/shared/ui/Select/Select';
-import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {Radio} from '@src/shared/ui/Radio/Radio';
+import {LanguageType} from '../model/types/types';
 
-const options = [
-  {
-    value: 'English',
-    label: 'English',
-  },
-  {
-    value: 'Portuguese',
-    label: 'Portuguese',
-  },
-];
+const data = [LanguageType.ENGLISH, LanguageType.PORTUGUESE];
 
 const LanguageSwitcher = () => {
   const colors = useColors();
-  const [selectedLanguage, setSelectedLanguage] = useState('');
 
-  const onSelecteLanguageHandler = useCallback((language: string) => {
-    setSelectedLanguage(language);
+  const [language, setLanguage] = useState(LanguageType.ENGLISH);
+
+  const onLanguageChangeHandler = useCallback((value: string) => {
+    setLanguage(value as LanguageType);
   }, []);
 
   return (
-    <SafeAreaView>
-      <Select
-        Theme={SelectTheme.CLEAR}
-        options={options}
-        value={selectedLanguage}
-        onSelect={onSelecteLanguageHandler}
-        selectedValueStyle={[
-          styles.itemStyle,
-          {color: colors.primaryTextColor},
-        ]}
-        mode={SelectMode.DIALOG}
-        style={styles.select}
+    <View>
+      <Radio
+        roundStyle={{borderColor: colors.primaryTextColor}}
+        nameStyle={{color: colors.primaryTextColor}}
+        style={[styles.language, {color: colors.primaryTextColor}]}
+        value={language}
+        data={data}
+        onChange={onLanguageChangeHandler}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  select: {
-    position: 'relative',
-    left: -15,
-    width: '108%',
-  },
-  itemStyle: {
-    fontSize: 20,
+  language: {
+    marginBottom: 24,
   },
 });
 

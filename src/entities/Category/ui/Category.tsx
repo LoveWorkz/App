@@ -40,6 +40,7 @@ const Category = (props: CategoryProps) => {
   return (
     <ImageBackground
       resizeMode="cover"
+      imageStyle={(styles.image, {borderRadius: 20})}
       style={[styles.category]}
       source={{
         uri: 'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2F2%205.png?alt=media&token=ddd61be9-125a-4184-983e-f332430255f2',
@@ -67,8 +68,9 @@ export const ComponentWrapper = memo(Category);
 const styles = StyleSheet.create({
   category: {
     padding: 10,
-    height: 145,
-    backgroundColor: '#ECEFF1',
+    height: 200,
+  },
+  image: {
     borderRadius: 20,
   },
   questions: {

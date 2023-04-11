@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'relative',
-    marginBottom: 22,
+    marginBottom: 24,
   },
   icon: {
     height: 22,

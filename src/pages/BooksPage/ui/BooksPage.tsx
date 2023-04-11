@@ -1,5 +1,5 @@
 import React, {memo, useEffect} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
@@ -25,14 +25,12 @@ const BooksPage = () => {
   }
 
   return (
-    <ScrollView>
-      <View style={styles.booksPage}>
-        <RecommendedBooks />
-        <View style={styles.booksWrapper}>
-          <Books />
-        </View>
+    <View style={styles.booksPage}>
+      <RecommendedBooks />
+      <View style={styles.booksWrapper}>
+        <Books />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

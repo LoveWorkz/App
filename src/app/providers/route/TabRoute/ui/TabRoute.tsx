@@ -46,33 +46,35 @@ const TabRoute = () => {
           );
         },
       })}>
-      {Object.values(tabRoutesConfig).map(({name, Element, headerTitle}) => {
-        const Wrapper = (props: ParamListBase) => {
-          return (
-            <Layout>
-              <Element {...props} />
-            </Layout>
-          );
-        };
+      {Object.values(tabRoutesConfig).map(
+        ({name, Element, headerTitle, isPageScrolling}) => {
+          const Wrapper = (props: ParamListBase) => {
+            return (
+              <Layout isPageScrolling={isPageScrolling}>
+                <Element {...props} />
+              </Layout>
+            );
+          };
 
-        return (
-          <Tab.Screen
-            name={name}
-            component={Wrapper}
-            key={name}
-            options={{
-              title: '',
-              headerStyle: {backgroundColor: colors.bgColor},
-              headerShown: !!headerTitle,
-              headerLeft: () =>
-                headerTitle ? (
-                  <TabHeaderLeft title={headerTitle || ''} />
-                ) : null,
-              headerRight: () => (headerTitle ? <TabHeaderRight /> : null),
-            }}
-          />
-        );
-      })}
+          return (
+            <Tab.Screen
+              name={name}
+              component={Wrapper}
+              key={name}
+              options={{
+                title: '',
+                headerStyle: {backgroundColor: colors.bgColor},
+                headerShown: !!headerTitle,
+                headerLeft: () =>
+                  headerTitle ? (
+                    <TabHeaderLeft title={headerTitle || ''} />
+                  ) : null,
+                headerRight: () => (headerTitle ? <TabHeaderRight /> : null),
+              }}
+            />
+          );
+        },
+      )}
     </Tab.Navigator>
   );
 };

@@ -14,6 +14,7 @@ import {AboutPage} from '@src/pages/AboutPage';
 import {HowToUsePage} from '@src/pages/HowToUsePage';
 import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
+import {LanguagePage} from '@src/pages/LanguagePage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -32,6 +33,7 @@ export enum AppRouteNames {
   HOW_TO_USE = 'howToUse',
   CONTACT_US = 'contactUs',
   BOOK_DETAILS = 'bookDetails',
+  LANGUAGE = 'language',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -51,6 +53,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.HOW_TO_USE]: 'howToUse',
   [AppRouteNames.CONTACT_US]: 'contactUs',
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
+  [AppRouteNames.LANGUAGE]: 'language',
 };
 
 type NewRouteProps = {
@@ -60,6 +63,7 @@ type NewRouteProps = {
   headerShown?: boolean;
   headerTitle?: string;
   HeaderRight?: ComponentType;
+  isPageScrolling?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -67,6 +71,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.auth,
     headerShown: false,
     Element: AuthPage,
+    isPageScrolling: true,
   },
   [AppRouteNames.SPLASH]: {
     name: appRoutePaths.splash,
@@ -105,6 +110,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'Profile',
     HeaderRight: ProfileHeaderRight,
     Element: ProfilePage,
+    isPageScrolling: true,
   },
   [AppRouteNames.ABOUT]: {
     name: appRoutePaths.about,
@@ -147,5 +153,11 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: '',
     Element: BookDetailsPage,
+  },
+  [AppRouteNames.LANGUAGE]: {
+    name: appRoutePaths.language,
+    headerShown: true,
+    headerTitle: 'Language',
+    Element: LanguagePage,
   },
 };

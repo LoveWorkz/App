@@ -1,11 +1,11 @@
 import React, {ReactElement} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 
+import {StyleType} from '@src/shared/types/types';
+
 interface GradientProps {
   children?: ReactElement;
-  style?:
-    | Record<string, string | number | object>
-    | Record<string, string | number | object>[];
+  style?: StyleType;
 }
 
 export const Gradient = (props: GradientProps) => {

@@ -96,3 +96,100 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
+
+// import {View, StyleSheet} from 'react-native';
+// import React, {ComponentType, memo, MemoExoticComponent} from 'react';
+// import Animated, {
+//   Extrapolate,
+//   interpolate,
+//   useAnimatedStyle,
+//   useSharedValue,
+// } from 'react-native-reanimated';
+// import Carousel from 'react-native-reanimated-carousel';
+
+// import {
+//   windowWidth,
+//   windowWidthMinusPaddings,
+// } from '@src/app/styles/GlobalStyle';
+// import {StyleType} from '@src/shared/types/types';
+
+// const PAGE_WIDTH = windowWidth;
+
+// interface CarousalSquareProps {
+//   data: Array<Record<string, any>>;
+//   Component: ComponentType<any> | MemoExoticComponent<any>;
+//   isLandscape?: boolean;
+//   itemStyle?: StyleType;
+// }
+
+// export const CarouselSquare = memo((props: CarousalSquareProps) => {
+//   const {data, Component, isLandscape, itemStyle} = props;
+
+//   const progressValue = useSharedValue<number>(0);
+//   const baseOptions = {
+//     vertical: false,
+//     width: isLandscape ? PAGE_WIDTH : windowWidthMinusPaddings * 0.6,
+//     height: windowWidthMinusPaddings * 0.6,
+//     style: {
+//       width: PAGE_WIDTH,
+//     },
+//   };
+
+//   return (
+//     <View style={[styles.container]}>
+//       <Carousel
+//         {...baseOptions}
+//         loop
+//         pagingEnabled={true}
+//         snapEnabled={true}
+//         autoPlay={false}
+//         autoPlayInterval={1500}
+//         onProgressChange={(_, absoluteProgress) =>
+//           (progressValue.value = absoluteProgress)
+//         }
+//         mode="parallax"
+//         modeConfig={{
+//           parallaxScrollingScale: isLandscape ? 0.7 : 0.9,
+//           parallaxScrollingOffset: isLandscape ? 120 : 170,
+//           parallaxAdjacentItemScale: isLandscape ? 0.6 : 0.7,
+//         }}
+//         data={data}
+//         renderItem={({item}) => {
+//           return (
+//             <View style={{...itemStyle}}>
+//               <Component {...item} />
+//             </View>
+//           );
+//         }}
+//       />
+//       {/* {!!progressValue && (
+//         <View style={styles.paginationItems}>
+//           {data.map((_, index) => {
+//             return (
+//               <PaginationItem
+//                 animValue={progressValue}
+//                 index={index}
+//                 key={index}
+//                 isRotate={false}
+//                 length={colors.length}
+//               />
+//             );
+//           })}
+//         </View>
+//       )} */}
+//     </View>
+//   );
+// });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     // alignItems: 'center',
+//     backgroundColor: 'green',
+//   },
+//   paginationItems: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     width: 100,
+//     alignSelf: 'center',
+//   },
+// });

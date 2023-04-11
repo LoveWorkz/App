@@ -1,5 +1,5 @@
 import React, {memo, useEffect} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {profileStore} from '@src/entities/Profile';
@@ -24,7 +24,7 @@ const HomePage = () => {
   }
 
   return (
-    <ScrollView>
+    <View>
       <View style={styles.container}>
         <View style={styles.headerWrapper}>
           <Header
@@ -42,7 +42,7 @@ const HomePage = () => {
           <Challanges />
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

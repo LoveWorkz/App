@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {useTranslation} from 'react-i18next';
 
@@ -40,70 +40,62 @@ const Profile = (props: ProfileProps) => {
 
   if (isSetUp) {
     return (
-      <ScrollView>
-        <View style={styles.profile}>
-          <View>
-            <AppText
-              style={styles.logo}
-              size={TextSize.LEVEL_4}
-              text={'LOGO'}
-            />
-          </View>
-          <View style={styles.profileFormWrapper}>
-            <ProfileForm />
-          </View>
-          <Button
-            disabled={profileStore.isLoading}
-            onPress={onSaveHandler}
-            theme={ButtonTheme.OUTLINED}
-            style={styles.nextButton}>
-            <AppText text={t('next')} />
-          </Button>
+      <View style={styles.profile}>
+        <View>
+          <AppText style={styles.logo} size={TextSize.LEVEL_4} text={'LOGO'} />
         </View>
-      </ScrollView>
+        <View style={styles.profileFormWrapper}>
+          <ProfileForm />
+        </View>
+        <Button
+          disabled={profileStore.isLoading}
+          onPress={onSaveHandler}
+          theme={ButtonTheme.OUTLINED}
+          style={styles.nextButton}>
+          <AppText text={t('next')} />
+        </Button>
+      </View>
     );
   }
 
   return (
-    <ScrollView>
-      <View style={styles.profile}>
-        <Avatar
-          theme={AvatarTheme.LARGE}
-          imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
-          borderRadius={100}
+    <View style={styles.profile}>
+      <Avatar
+        theme={AvatarTheme.LARGE}
+        imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
+        borderRadius={100}
+      />
+      <View style={styles.uploadPhotoWrapper}>
+        <UploadPhoto
+          style={styles.uploadPhoto}
+          deletePhoto={onDeletePhotoHandler}
+          setPhtotData={onUploadPhotoHandler}
         />
-        <View style={styles.uploadPhotoWrapper}>
-          <UploadPhoto
-            style={styles.uploadPhoto}
-            deletePhoto={onDeletePhotoHandler}
-            setPhtotData={onUploadPhotoHandler}
-          />
-        </View>
-        {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
-          <View style={styles.changePasswordWrapper}>
-            <ChangePassword />
-          </View>
-        )}
-        <View style={styles.profileFormWrapper}>
-          <ProfileForm />
-        </View>
-
-        <View style={styles.btns}>
-          <Button
-            disabled={profileStore.isLoading}
-            onPress={onSaveHandler}
-            theme={ButtonTheme.OUTLINED}
-            style={styles.saveBtn}>
-            <AppText
-              style={styles.saveBtnText}
-              size={TextSize.LEVEL_4}
-              text={t('profile.save_changes')}
-            />
-          </Button>
-          <DeleteAccount />
-        </View>
       </View>
-    </ScrollView>
+      {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
+        <View style={styles.changePasswordWrapper}>
+          <ChangePassword />
+        </View>
+      )}
+      <View style={styles.profileFormWrapper}>
+        <ProfileForm />
+      </View>
+
+      <View style={styles.btns}>
+        <Button
+          disabled={profileStore.isLoading}
+          onPress={onSaveHandler}
+          theme={ButtonTheme.OUTLINED}
+          style={styles.saveBtn}>
+          <AppText
+            style={styles.saveBtnText}
+            size={TextSize.LEVEL_4}
+            text={t('profile.save_changes')}
+          />
+        </Button>
+        <DeleteAccount />
+      </View>
+    </View>
   );
 };
 

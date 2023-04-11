@@ -27,6 +27,7 @@ type NewRouteProps = {
   name: string;
   Element: ComponentType;
   headerTitle?: string;
+  isPageScrolling?: boolean;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
@@ -34,25 +35,30 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     name: tabRoutePaths.categories,
     Element: Categories,
     headerTitle: 'Questions library',
+    isPageScrolling: true,
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
     Element: ChallengesPage,
     headerTitle: 'Challenges',
+    isPageScrolling: true,
   },
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
     Element: HomePage,
     headerTitle: '',
+    isPageScrolling: true,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
     Element: BooksPage,
     headerTitle: 'Literature',
+    isPageScrolling: true,
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
     Element: ShopPage,
     headerTitle: 'Shop',
+    isPageScrolling: true,
   },
 };
