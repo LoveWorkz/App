@@ -1,22 +1,33 @@
 import React, {ReactElement} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowHeight} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface LayoutProps {
   children: ReactElement;
   isPageScrolling?: boolean;
+  deleteBottomPadding?: boolean;
+  deleteTopPadding?: boolean;
 }
 
 export const Layout = (props: LayoutProps) => {
-  const {children, isPageScrolling} = props;
+  const {children, isPageScrolling, deleteBottomPadding, deleteTopPadding} =
+    props;
   const colors = useColors();
 
   if (isPageScrolling) {
     return (
-      <ScrollView>
-        <View style={[styles.layout, {backgroundColor: colors.bgColor}]}>
+      <ScrollView
+        style={{height: windowHeight, backgroundColor: colors.bgColor}}>
+        <View
+          style={[
+            styles.layout,
+            {
+              paddingBottom: deleteBottomPadding ? 0 : 40,
+              marginTop: deleteTopPadding ? 0 : 20,
+            },
+          ]}>
           {children}
         </View>
       </ScrollView>
@@ -24,7 +35,14 @@ export const Layout = (props: LayoutProps) => {
   }
 
   return (
-    <View style={[styles.layout, {backgroundColor: colors.bgColor}]}>
+    <View
+      style={[
+        styles.layout,
+        {
+          paddingBottom: deleteBottomPadding ? 0 : 40,
+          marginTop: deleteTopPadding ? 0 : 20,
+        },
+      ]}>
       {children}
     </View>
   );
@@ -33,7 +51,6 @@ export const Layout = (props: LayoutProps) => {
 const styles = StyleSheet.create({
   layout: {
     padding: globalPadding,
-    paddingBottom: 0,
     flex: 1,
     justifyContent: 'center',
   },

@@ -3,7 +3,7 @@ import {ComponentType} from 'react';
 import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {ShopPage} from '@src/pages/ShopPage';
-import {Categories} from '@src/pages/CategoriesPage';
+import {CategoriesPage} from '@src/pages/CategoriesPage';
 import {BooksPage} from '@src/pages/BooksPage';
 
 export enum TabRoutesNames {
@@ -28,12 +28,14 @@ type NewRouteProps = {
   Element: ComponentType;
   headerTitle?: string;
   isPageScrolling?: boolean;
+  deleteBottomPadding?: boolean;
+  deleteTopPadding?: boolean;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
-    Element: Categories,
+    Element: CategoriesPage,
     headerTitle: 'Questions library',
     isPageScrolling: true,
   },
@@ -48,6 +50,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: HomePage,
     headerTitle: '',
     isPageScrolling: true,
+    deleteTopPadding: true,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,

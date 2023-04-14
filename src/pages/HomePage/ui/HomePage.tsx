@@ -5,6 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {profileStore} from '@src/entities/Profile';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {categoriesStore} from '@src/pages/CategoriesPage';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -13,6 +14,7 @@ import {ComponentWrapper as Header} from './Header/Header';
 const HomePage = () => {
   useEffect(() => {
     profileStore.fetchProfile();
+    categoriesStore.fetchCategories();
   }, []);
 
   if (profileStore.initialFetching) {

@@ -11,6 +11,7 @@ type RootStackParamList = {
   Profile?: {userId: string};
   Feed?: {sort: 'latest' | 'top'} | undefined;
   id?: string;
+  title?: string;
 };
 
 export interface Navigation {

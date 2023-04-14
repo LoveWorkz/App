@@ -21,7 +21,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.HOME}
+      initialRouteName={TabRoutesNames.CATEGORIES}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
@@ -47,10 +47,20 @@ const TabRoute = () => {
         },
       })}>
       {Object.values(tabRoutesConfig).map(
-        ({name, Element, headerTitle, isPageScrolling}) => {
+        ({
+          name,
+          Element,
+          headerTitle,
+          isPageScrolling,
+          deleteBottomPadding,
+          deleteTopPadding,
+        }) => {
           const Wrapper = (props: ParamListBase) => {
             return (
-              <Layout isPageScrolling={isPageScrolling}>
+              <Layout
+                isPageScrolling={isPageScrolling}
+                deleteBottomPadding={deleteBottomPadding}
+                deleteTopPadding={deleteTopPadding}>
                 <Element {...props} />
               </Layout>
             );

@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface TabHeaderProps {
@@ -13,7 +13,11 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
   const {title} = props;
   const colors = useColors();
   return (
-    <View style={[styles.TabHeaderRight, {paddingRight: globalPadding}]}>
+    <View
+      style={[
+        styles.TabHeaderRight,
+        {paddingRight: globalPadding, width: windowWidth * 0.7},
+      ]}>
       <AppText
         weight={'500'}
         size={TextSize.LEVEL_6}

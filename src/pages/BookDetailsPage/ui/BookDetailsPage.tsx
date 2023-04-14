@@ -6,14 +6,16 @@ import {Book} from '@src/entities/Book';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import bookDetailsStore from '../model/store/BookDetailsStore';
 
-interface BookDetailsPageProps {}
+interface BookDetailsPageProps {
+  route?: {params: {id: string}};
+}
 
-export const BookDetailsPage = (props: BookDetailsPageProps | any) => {
+export const BookDetailsPage = (props: BookDetailsPageProps) => {
   const {route} = props;
   const currentBook = bookDetailsStore.currentBook;
 
   useEffect(() => {
-    if (route.params && route.params.id) {
+    if (route?.params && route.params.id) {
       bookDetailsStore.getCurrentBook(route.params.id);
     }
   }, [route]);

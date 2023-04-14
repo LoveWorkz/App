@@ -5,7 +5,7 @@ import {SplashPage} from '@src/pages/SplashPage';
 import {ResetPasswordPage} from '@src/pages/ResetPasswordPage';
 import {TabRoute} from '@src/app/providers/route/TabRoute';
 import {SettingsPage} from '@src/pages/SettingsPage';
-import {ProfileHeaderRight, ProfilePage} from '@src/pages/ProfilePage';
+import {ProfilePage} from '@src/pages/ProfilePage';
 import {PartnersPage} from '@src/pages/PartnersPage';
 import {PrivacyPolicyPage} from '@src/pages/PrivacyPolicyPage';
 import {ChangePasswordPage} from '@src/pages/ChangePasswordPage';
@@ -15,6 +15,9 @@ import {HowToUsePage} from '@src/pages/HowToUsePage';
 import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 import {LanguagePage} from '@src/pages/LanguagePage';
+import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
+import {ProfileHeaderRight} from '@src/widgets/ProfileHeaderRight';
+import {CategoryDetailsHeaderRight} from '@src/widgets/CategoryDetailsHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -34,6 +37,7 @@ export enum AppRouteNames {
   CONTACT_US = 'contactUs',
   BOOK_DETAILS = 'bookDetails',
   LANGUAGE = 'language',
+  CATEGORY_DETAILS = 'categoryDetails',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -54,6 +58,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.CONTACT_US]: 'contactUs',
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
   [AppRouteNames.LANGUAGE]: 'language',
+  [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
 };
 
 type NewRouteProps = {
@@ -64,6 +69,8 @@ type NewRouteProps = {
   headerTitle?: string;
   HeaderRight?: ComponentType;
   isPageScrolling?: boolean;
+  deleteBottomPadding?: boolean;
+  deleteTopPadding?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -103,6 +110,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: 'Settings',
     Element: SettingsPage,
+    deleteBottomPadding: true,
   },
   [AppRouteNames.PROFILE]: {
     name: appRoutePaths.profile,
@@ -159,5 +167,13 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: 'Language',
     Element: LanguagePage,
+  },
+  [AppRouteNames.CATEGORY_DETAILS]: {
+    name: appRoutePaths.categoryDetails,
+    headerShown: true,
+    headerTitle: '',
+    Element: CategoryDetailsPage,
+    isPageScrolling: true,
+    HeaderRight: CategoryDetailsHeaderRight,
   },
 };

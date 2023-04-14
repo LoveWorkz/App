@@ -29,7 +29,7 @@ const HomeCategory = () => {
       <ImageBackground
         style={[styles.contaier, {...globalStyles.shadowOpacity}]}
         source={{
-          uri: 'http://localhost:8081/src/shared/assets/images/Mask.png',
+          uri: 'http://localhost:8081/src/shared/assets/images/homeCategoryImage.png',
         }}>
         <View style={styles.content}>
           <View style={styles.textWrapper}>

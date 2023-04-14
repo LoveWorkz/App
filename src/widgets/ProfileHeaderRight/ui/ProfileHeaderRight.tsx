@@ -22,7 +22,7 @@ const ProfileHeaderRight = () => {
   );
 };
 
-export const Wrapper = memo(ProfileHeaderRight);
+export default memo(ProfileHeaderRight);
 
 const styles = StyleSheet.create({
   headerRight: {

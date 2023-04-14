@@ -1,1 +1,2 @@
-export {ComponentWrapper as Categories} from './ui/Categories';
+export {default as CategoriesPage} from './ui/CategoriesPage';
+export {default as categoriesStore} from './model/store/categoriesStore';

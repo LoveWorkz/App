@@ -9,11 +9,12 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface HeaderLeftProps {
+  headerTitle?: string;
   title?: string;
 }
 
 const HeaderLeft = (props: HeaderLeftProps) => {
-  const {title} = props;
+  const {headerTitle, title} = props;
   const colors = useColors();
 
   const onPressHandler = () => {
@@ -29,12 +30,12 @@ const HeaderLeft = (props: HeaderLeftProps) => {
           xml={ArrowLeftIcon}
         />
       </Button>
-      {title && (
+      {(headerTitle || title) && (
         <AppText
           style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_6}
           weight={'500'}
-          text={title}
+          text={title || headerTitle || ''}
         />
       )}
     </View>

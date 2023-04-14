@@ -25,7 +25,7 @@ const ShareUs = () => {
       theme={ButtonTheme.OUTLINED}
       onPress={onPressHandler}>
       <View style={styles.btnTextWrapper}>
-        <SvgXml xml={ShareIcon} style={styles.icon} />
+        <SvgXml xml={ShareIcon} stroke={'white'} style={styles.icon} />
         <AppText
           weight={'500'}
           size={TextSize.LEVEL_4}

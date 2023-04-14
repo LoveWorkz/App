@@ -1,6 +1,7 @@
 export enum Collections {
   USERS = 'Users',
   BOOKS = 'Books',
+  CATEGORIES = 'Categories',
 }
 
 export enum CloudStoragePaths {

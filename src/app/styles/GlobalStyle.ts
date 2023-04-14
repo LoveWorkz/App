@@ -8,6 +8,8 @@ export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const windowWidthMinusPaddings =
   Dimensions.get('window').width - globalPadding - globalPadding;
+export const windowWidthHalf = windowWidth / 2;
+export const windowHeightHalf = windowHeight / 2;
 
 //fontSizes
 export enum FontSizes {
@@ -22,6 +24,8 @@ export enum FontSizes {
 
 // z-index
 export const forgotPasswordZIndex = 1;
+export const categoryLayoutZIndex = 1;
+export const categoryLayoutIconZIndex = 2;
 
 export const globalStyles = StyleSheet.create({
   textFont: {

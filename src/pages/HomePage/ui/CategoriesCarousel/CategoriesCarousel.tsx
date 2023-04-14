@@ -1,10 +1,10 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
-import {Category, categoryData} from '@src/entities/Category';
+import {Category, CateorySize} from '@src/entities/Category';
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
@@ -12,14 +12,22 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {categoriesStore} from '@src/pages/CategoriesPage';
 
 const CategoriesCarousel = () => {
   const {t} = useTranslation();
   const colors = useColors();
+  const categories = categoriesStore.categories;
 
   const onPressHandler = () => {
     navigation.navigate(TabRoutesNames.CATEGORIES);
   };
+
+  const formatedCategories = useMemo(() => {
+    return categories.map(category => {
+      return {...category, image: category.image.small, size: CateorySize.M};
+    });
+  }, [categories]);
 
   return (
     <View style={styles.carousel}>
@@ -49,8 +57,7 @@ const CategoriesCarousel = () => {
       <CarouselSquare
         isLandscape
         Component={Category}
-        // itemStyle={styles.itemStyle}
-        data={categoryData}
+        data={formatedCategories}
       />
     </View>
   );
@@ -66,7 +73,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   carouseTopBlock: {
-    marginBottom: -10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

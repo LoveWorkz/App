@@ -1,92 +1,152 @@
 import React, {memo} from 'react';
-import {ImageBackground, StyleSheet} from 'react-native';
+import {ImageBackground, Pressable, StyleSheet, View} from 'react-native';
+import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
-
-export const categoryData = [
-  {
-    status: 'DEEP',
-    count: 5,
-  },
-  {
-    status: 'BASIC',
-    count: 6,
-  },
-  {
-    status: 'DEEP',
-    count: 4,
-  },
-  {
-    status: 'BASIC',
-    count: 2,
-  },
-  {
-    status: 'BASIC',
-    count: 1,
-  },
-];
+import {StyleType} from '@src/shared/types/types';
+import {
+  categoryLayoutIconZIndex,
+  categoryLayoutZIndex,
+  globalStyles,
+} from '@src/app/styles/GlobalStyle';
+import {LockIcon} from '@src/shared/assets/icons/Lock';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {CateorySize} from '../model/types/categoryTypes';
 
 interface CategoryProps {
-  status: string;
-  count: number;
+  style?: StyleType;
+  questions: number;
+  name: string;
+  image: string;
+  size?: CateorySize;
+  isBlocked: boolean;
+  id: string;
+  isCategoryDetailsVisible: boolean;
 }
 
 const Category = (props: CategoryProps) => {
-  const {count = 0, status} = props;
+  const {
+    questions = 0,
+    name,
+    image,
+    size = CateorySize.L,
+    isBlocked = false,
+    id,
+    isCategoryDetailsVisible,
+    style,
+  } = props;
   const colors = useColors();
 
+  const onCategoryPressHandler = () => {
+    if (isCategoryDetailsVisible) {
+      navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {title: name, id});
+    } else {
+    }
+  };
+
   return (
-    <ImageBackground
-      resizeMode="cover"
-      imageStyle={(styles.image, {borderRadius: 20})}
-      style={[styles.category]}
-      source={{
-        uri: 'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2F2%205.png?alt=media&token=ddd61be9-125a-4184-983e-f332430255f2',
-      }}>
-      <Gradient style={styles.questions}>
+    <Pressable onPress={onCategoryPressHandler}>
+      {isBlocked && (
+        <>
+          <View
+            style={[
+              styles.layout,
+              styles[size],
+              {
+                zIndex: categoryLayoutZIndex,
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.lockIconWrapper,
+              {zIndex: categoryLayoutIconZIndex},
+            ]}>
+            <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
+          </View>
+        </>
+      )}
+      <ImageBackground
+        resizeMode="cover"
+        imageStyle={[styles.image]}
+        style={[
+          styles.category,
+          styles[size],
+          style,
+          {...globalStyles.shadowOpacity},
+        ]}
+        source={{
+          uri: image,
+        }}>
+        <Gradient size={GradientSize.SMALL}>
+          <AppText
+            style={styles.questionsText}
+            weight={'500'}
+            size={TextSize.LEVEL_3}
+            text={`${questions} questions`}
+          />
+        </Gradient>
         <AppText
-          style={styles.questionsText}
+          style={[styles.status, {color: colors.primaryTextColor}]}
           weight={'700'}
-          size={TextSize.LEVEL_2}
-          text={`${count} questions`}
+          size={TextSize.LEVEL_4}
+          text={name}
         />
-      </Gradient>
-      <AppText
-        style={[styles.status, {color: colors.primaryTextColor}]}
-        weight={'700'}
-        size={TextSize.LEVEL_4}
-        text={status}
-      />
-    </ImageBackground>
+      </ImageBackground>
+    </Pressable>
   );
 };
 
-export const ComponentWrapper = memo(Category);
+export default memo(Category);
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Record<string, any>>({
   category: {
     padding: 10,
-    height: 200,
+    borderRadius: 20,
+    borderColor: 'silver',
+    borderStyle: 'solid',
+    borderWidth: 1,
   },
   image: {
     borderRadius: 20,
-  },
-  questions: {
-    width: 89,
-    height: 23,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-    marginLeft: 10,
+    aspectRatio: 1 / 2,
   },
   questionsText: {
     color: 'white',
   },
   status: {
     marginTop: 8,
-    marginLeft: 10,
+    textTransform: 'uppercase',
+  },
+  layout: {
+    backgroundColor: 'black',
+    position: 'absolute',
+    opacity: 0.4,
+    width: '100%',
+    borderRadius: 20,
+  },
+  lockIconWrapper: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+  },
+  lockIcon: {
+    height: 35,
+    width: 27,
+  },
+
+  size_m: {
+    height: 120,
+  },
+  size_l: {
+    height: 145,
+  },
+  size_xl: {
+    height: 200,
   },
 });

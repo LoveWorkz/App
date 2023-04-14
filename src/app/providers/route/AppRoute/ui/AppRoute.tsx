@@ -42,10 +42,15 @@ export const AppRoute = () => {
             headerTitle,
             HeaderRight,
             isPageScrolling,
+            deleteBottomPadding,
+            deleteTopPadding,
           }) => {
             const Wrapper = (props: ParamListBase) => {
               return (
-                <Layout isPageScrolling={isPageScrolling}>
+                <Layout
+                  isPageScrolling={isPageScrolling}
+                  deleteBottomPadding={deleteBottomPadding}
+                  deleteTopPadding={deleteTopPadding}>
                   <Element {...props} />
                 </Layout>
               );
@@ -56,15 +61,22 @@ export const AppRoute = () => {
 
             return (
               <Stack.Screen
-                options={{
+                options={({route}) => ({
                   headerShown: headerShown,
-                  headerStyle: {backgroundColor: colors.bgColor},
+                  headerStyle: {
+                    backgroundColor: colors.bgColor,
+                  },
                   title: '',
                   headerRight: HeaderRight ? () => <HeaderRight /> : undefined,
                   headerLeft: headerShown
-                    ? () => <HeaderLeft title={headerTitle} />
+                    ? () => (
+                        <HeaderLeft
+                          {...route.params}
+                          headerTitle={headerTitle}
+                        />
+                      )
                     : undefined,
-                }}
+                })}
                 name={name}
                 component={Component}
                 key={name}
