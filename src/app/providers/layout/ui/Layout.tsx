@@ -39,6 +39,7 @@ export const Layout = (props: LayoutProps) => {
       style={[
         styles.layout,
         {
+          backgroundColor: colors.bgColor,
           paddingBottom: deleteBottomPadding ? 0 : 40,
           marginTop: deleteTopPadding ? 0 : 20,
         },

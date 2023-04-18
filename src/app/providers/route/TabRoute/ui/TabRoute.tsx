@@ -8,8 +8,8 @@ import {
 } from '@src/shared/config/route/tabConfigRoutes';
 import {Layout} from '@src/app/providers/layout';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
-import {ComponentWrapper as IconItem} from './IconItem/IconItem';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {ComponentWrapper as IconItem} from './IconItem/IconItem';
 import {getTabIcon} from '../lib/getIcon';
 import {Wrapper as TabHeaderLeft} from './TabHeaderLeft/TabHeaderLeft';
 import {Wrapper as TabHeaderRight} from './TabHeaderRight/TabHeaderRight';
@@ -21,7 +21,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CATEGORIES}
+      initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
@@ -71,16 +71,20 @@ const TabRoute = () => {
               name={name}
               component={Wrapper}
               key={name}
-              options={{
+              options={({route}) => ({
                 title: '',
                 headerStyle: {backgroundColor: colors.bgColor},
                 headerShown: !!headerTitle,
                 headerLeft: () =>
                   headerTitle ? (
-                    <TabHeaderLeft title={headerTitle || ''} />
+                    <TabHeaderLeft
+                      {...route.params}
+                      title={headerTitle || ''}
+                    />
                   ) : null,
-                headerRight: () => (headerTitle ? <TabHeaderRight /> : null),
-              }}
+                headerRight: () =>
+                  headerTitle ? <TabHeaderRight {...route.params} /> : null,
+              })}
             />
           );
         },

@@ -1,3 +1,5 @@
+import {FavoriteType} from '@src/entities/Favorite';
+
 export interface Profile {
   id: string;
   photo: string;
@@ -9,6 +11,7 @@ export interface Profile {
   country: string;
   relationshipStatus: string;
   rubric: string;
+  favorites: FavoriteType;
 }
 
 export interface ProfileErrorInfo {

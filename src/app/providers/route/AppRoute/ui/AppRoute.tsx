@@ -67,7 +67,9 @@ export const AppRoute = () => {
                     backgroundColor: colors.bgColor,
                   },
                   title: '',
-                  headerRight: HeaderRight ? () => <HeaderRight /> : undefined,
+                  headerRight: HeaderRight
+                    ? () => <HeaderRight {...route.params} />
+                    : undefined,
                   headerLeft: headerShown
                     ? () => (
                         <HeaderLeft

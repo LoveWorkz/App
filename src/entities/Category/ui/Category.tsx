@@ -18,7 +18,7 @@ import {CateorySize} from '../model/types/categoryTypes';
 
 interface CategoryProps {
   style?: StyleType;
-  questions: number;
+  questions: string[];
   name: string;
   image: string;
   size?: CateorySize;
@@ -29,7 +29,7 @@ interface CategoryProps {
 
 const Category = (props: CategoryProps) => {
   const {
-    questions = 0,
+    questions,
     name,
     image,
     size = CateorySize.L,
@@ -44,6 +44,7 @@ const Category = (props: CategoryProps) => {
     if (isCategoryDetailsVisible) {
       navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {title: name, id});
     } else {
+      navigation.navigate(AppRouteNames.QUESTIONS, {type: 'category', id});
     }
   };
 
@@ -86,7 +87,7 @@ const Category = (props: CategoryProps) => {
             style={styles.questionsText}
             weight={'500'}
             size={TextSize.LEVEL_3}
-            text={`${questions} questions`}
+            text={`${questions.length} questions`}
           />
         </Gradient>
         <AppText

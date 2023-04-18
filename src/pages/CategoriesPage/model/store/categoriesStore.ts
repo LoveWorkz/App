@@ -3,9 +3,13 @@ import firestore from '@react-native-firebase/firestore';
 
 import {CategoryType, CateorySize} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
+import {RubricType} from '@src/entities/Rubric';
+import {FavoriteType} from '@src/entities/Favorite';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
+  rubrics: RubricType[] = [];
+  favorites: FavoriteType | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,6 +22,22 @@ class CategoriesStore {
 
       runInAction(() => {
         this.categories = this.editCategories(categories as CategoryType[]);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchRubrics = async () => {
+    try {
+      const data = await firestore().collection(Collections.RUBRICS).get();
+      const rubrics = data.docs.map(rubric => ({
+        ...rubric.data(),
+        id: rubric.id,
+      }));
+
+      runInAction(() => {
+        this.rubrics = rubrics as RubricType[];
       });
     } catch (e) {
       console.log(e);

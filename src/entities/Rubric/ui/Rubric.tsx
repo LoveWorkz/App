@@ -17,7 +17,7 @@ export const Rubric = (props: RubricProps) => {
 
   return (
     <View style={[styles.Rubric, {...globalStyles.simpleShadowOpacity}]}>
-      <View style={styles.leftSide}>
+      <View>
         <AppText
           style={[styles.name, {color: colors.primaryTextColor}]}
           weight={'600'}
@@ -27,15 +27,15 @@ export const Rubric = (props: RubricProps) => {
         <AppText
           style={[styles.text]}
           size={TextSize.LEVEL_2}
-          text={rubric.text}
+          text={rubric.description}
         />
       </View>
-      <View style={styles.rightSide}>
+      <View>
         <GradientText
           style={{color: colors.primaryTextColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={`${rubric.count}/100`}
+          text={`${0}/${rubric.questions.length}`}
         />
       </View>
     </View>
@@ -53,8 +53,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
   },
-  leftSide: {},
-  rightSide: {},
   name: {
     textTransform: 'uppercase',
   },

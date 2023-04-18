@@ -1,6 +1,8 @@
 export interface RubricType {
+  description: string;
+  questions: string;
   name: string;
-  text: string;
+  startQuestionDate: string;
   id: string;
-  count: number;
+  currentQuestion: string;
 }

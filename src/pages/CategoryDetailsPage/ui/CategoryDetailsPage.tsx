@@ -20,6 +20,8 @@ import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {categoryStore} from '@src/entities/Category';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -28,10 +30,10 @@ interface CategoryDetailsPageProps {
 
 export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
-  const category = categoryDetailsStore.category;
+  const category = categoryStore.category;
 
   useEffect(() => {
-    route?.params.id && categoryDetailsStore.fetchCategory(route.params.id);
+    route?.params.id && categoryStore.fetchCategory(route.params.id);
   }, [route?.params.id]);
 
   const uri = useMemo(() => {
@@ -44,6 +46,11 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
     if (category?.isBlocked) {
       navigation.navigate(TabRoutesNames.SHOP);
     } else {
+      category?.id &&
+        navigation.replace(AppRouteNames.QUESTIONS, {
+          type: 'category',
+          id: category.id,
+        });
     }
   };
 

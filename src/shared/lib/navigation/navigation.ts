@@ -12,6 +12,7 @@ type RootStackParamList = {
   Feed?: {sort: 'latest' | 'top'} | undefined;
   id?: string;
   title?: string;
+  type?: 'category' | 'rubric' | 'favorite';
 };
 
 export interface Navigation {

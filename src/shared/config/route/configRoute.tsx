@@ -18,6 +18,8 @@ import {LanguagePage} from '@src/pages/LanguagePage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {ProfileHeaderRight} from '@src/widgets/ProfileHeaderRight';
 import {CategoryDetailsHeaderRight} from '@src/widgets/CategoryDetailsHeaderRight';
+import {QuestionsPage} from '@src/pages/QuestionsPage';
+import {QuestionsHeaderRight} from '@src/widgets/QuestionsHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -38,6 +40,7 @@ export enum AppRouteNames {
   BOOK_DETAILS = 'bookDetails',
   LANGUAGE = 'language',
   CATEGORY_DETAILS = 'categoryDetails',
+  QUESTIONS = 'questions',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -59,6 +62,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
   [AppRouteNames.LANGUAGE]: 'language',
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
+  [AppRouteNames.QUESTIONS]: 'questions',
 };
 
 type NewRouteProps = {
@@ -175,5 +179,13 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     Element: CategoryDetailsPage,
     isPageScrolling: true,
     HeaderRight: CategoryDetailsHeaderRight,
+  },
+  [AppRouteNames.QUESTIONS]: {
+    name: appRoutePaths.questions,
+    headerShown: true,
+    headerTitle: '',
+    Element: QuestionsPage,
+    HeaderRight: QuestionsHeaderRight,
+    deleteTopPadding: true,
   },
 };

@@ -1,39 +1,21 @@
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Pressable} from 'react-native';
 import React, {memo} from 'react';
+import {observer} from 'mobx-react-lite';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Rubric} from '@src/entities/Rubric';
-
-export const rubrics = [
-  {
-    name: 'Conflict',
-    text: 'To get to know each other better',
-    id: '1',
-    count: 16,
-  },
-  {
-    name: 'FUN',
-    text: 'To get to know each other better',
-    id: '2',
-    count: 24,
-  },
-  {
-    name: 'respect',
-    id: '3',
-    text: 'To get to know each other better',
-    count: 48,
-  },
-  {
-    name: 'Appreciation',
-    id: '4',
-    text: 'To get to know each other better',
-    count: 59,
-  },
-];
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import categoriesStore from '../../model/store/categoriesStore';
 
 const Rubrics = () => {
   const colors = useColors();
+  const rubrics = categoriesStore.rubrics;
+
+  const onRubricPressHandler = (id: string) => {
+    navigation.navigate(AppRouteNames.QUESTIONS, {type: 'rubric', id});
+  };
 
   return (
     <View>
@@ -44,17 +26,20 @@ const Rubrics = () => {
         text={'Rubrics'}
       />
       {rubrics.map(rubric => {
-        return (
-          <View key={rubric.id} style={styles.rubricWrapper}>
+        return rubric.questions.length ? (
+          <Pressable
+            onPress={() => onRubricPressHandler(rubric.id)}
+            key={rubric.id}
+            style={styles.rubricWrapper}>
             <Rubric rubric={rubric} />
-          </View>
-        );
+          </Pressable>
+        ) : null;
       })}
     </View>
   );
 };
 
-export default memo(Rubrics);
+export default memo(observer(Rubrics));
 
 const styles = StyleSheet.create({
   rubricWrapper: {

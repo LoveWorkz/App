@@ -15,9 +15,10 @@ export interface CategoryType {
   image: CategoryImageType;
   isBlocked: boolean;
   description: string;
-  questions: number;
+  questions: string[];
   categorySize: 'large' | 'small';
   leftSide?: boolean;
   size?: CateorySize;
   isCategoryDetailsVisible: boolean;
+  currentQuestion: string;
 }

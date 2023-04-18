@@ -1,20 +1,26 @@
 import {View, StyleSheet} from 'react-native';
-import React, {memo, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
+import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Favourites} from '@src/widgets/Favourites';
-import {profileStore} from '@src/entities/Profile';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
+import {profileStore} from '@src/entities/Profile';
 import Categories from './Categories/Categories';
 import Rubrics from './Rubrics/Rubrics';
 import categoriesStore from '../model/store/categoriesStore';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 const CategoriesPage = () => {
-  useEffect(() => {
-    profileStore.fetchProfile();
-    categoriesStore.fetchCategories();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      categoriesStore.fetchRubrics();
+      categoriesStore.fetchCategories();
+      profileStore.fetchProfile();
+    }, []),
+  );
 
-  if (!categoriesStore.categories) {
+  if (!categoriesStore.categories || profileStore.initialFetching) {
     return (
       <View style={styles.container}>
         <View style={styles.loader}>
@@ -27,7 +33,7 @@ const CategoriesPage = () => {
   return (
     <View style={styles.container}>
       <Favourites />
-      <View style={styles.categoryWrapper}>
+      <View style={styles.categoriesWrapper}>
         <Categories />
       </View>
       <View style={styles.rubricsWrapper}>
@@ -37,17 +43,17 @@ const CategoriesPage = () => {
   );
 };
 
-export default memo(CategoriesPage);
+export default memo(observer(CategoriesPage));
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  categoryWrapper: {
-    marginTop: 37,
+  categoriesWrapper: {
+    marginTop: verticalScale(37),
   },
   rubricsWrapper: {
-    marginTop: 40,
+    marginTop: verticalScale(40),
   },
 
   loader: {
