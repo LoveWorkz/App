@@ -9,8 +9,10 @@ export interface CategoryImageType {
   large: string;
 }
 
+export type CategoryName = 'Starter' | 'Basic' | 'Deep' | 'Intimate' | 'Hot';
+
 export interface CategoryType {
-  name: string;
+  name: CategoryName;
   id: string;
   image: CategoryImageType;
   isBlocked: boolean;
@@ -21,4 +23,8 @@ export interface CategoryType {
   size?: CateorySize;
   isCategoryDetailsVisible: boolean;
   currentQuestion: string;
+  swipedQuestionsPercentage: number;
+  questionSwipeStartDate: string;
+  checkTime: number;
+  isAllQuestionsSwiped: boolean;
 }

@@ -153,6 +153,20 @@ class UserStore {
     await firestore().collection(Collections.USERS).doc(id).delete();
     await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
   };
+
+  updateUser = async ({data, field}: {data: any; field: string}) => {
+    const userId = this.authUser?.id;
+    if (!userId) {
+      return;
+    }
+
+    await firestore()
+      .collection(Collections.USERS)
+      .doc(userId)
+      .update({
+        [field]: data,
+      });
+  };
 }
 
 export default new UserStore();

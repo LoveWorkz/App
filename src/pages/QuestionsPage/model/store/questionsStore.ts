@@ -2,20 +2,39 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 
 import {Collections} from '@src/shared/types/firebase';
-import {categoryStore} from '@src/entities/Category';
-import {rubricStore} from '@src/entities/Rubric';
+import {
+  CategoryName,
+  categoryStore,
+  CategoryType,
+  getNextCategoryName,
+} from '@src/entities/Category';
+import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
+import {minutesDiff} from '@src/shared/lib/date';
+import {profileStore} from '@src/entities/Profile';
+import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {QuestionsPageInfo} from '../types/questionTypes';
+import {breakPoint, minute} from '../lib/questions';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
   questionsPageInfo: QuestionsPageInfo = {} as QuestionsPageInfo;
+  thatWasFastModalVisible: boolean = false;
+  congratsModalVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setThatWasFastModalVisible = (isVisible: boolean) => {
+    this.thatWasFastModalVisible = isVisible;
+  };
+
+  setCongratsModalVisible = (isVisible: boolean) => {
+    this.congratsModalVisible = isVisible;
+  };
 
   getQuestionsPageInfo = async ({
     id,
@@ -219,7 +238,7 @@ class QuestionsStore {
           return;
         }
 
-        const category = categoryStore.getCategory(categoryId);
+        const category = await categoryStore.getCategory(categoryId);
         currentquestionId = category?.currentQuestion;
         categoryName = category?.name;
       }
@@ -315,6 +334,221 @@ class QuestionsStore {
       this.questions = [];
       this.questionsPageInfo = {} as QuestionsPageInfo;
     });
+  };
+
+  // wow that was fast logic
+
+  setQuestionsSwipedInfo = async ({
+    questionId,
+    id,
+    type,
+  }: {
+    questionId: string;
+    id: string;
+    type: 'rubric' | 'category' | 'favorite';
+  }) => {
+    const isCategory = type === 'category';
+
+    const questionInfo = questionStore.getQuestionInfo({
+      questionId: questionId,
+      questions: this.questions,
+    });
+    if (!questionInfo) {
+      return;
+    }
+
+    let document: RubricType | CategoryType | undefined =
+      await rubricStore.fetchRubric(id);
+
+    if (isCategory) {
+      document = await categoryStore.fetchCategory(id);
+    }
+
+    if (!document) {
+      return;
+    }
+
+    // set swipe start date
+    if (!document.questionSwipeStartDate) {
+      this.setSwipedQuestionsStartDate({id, isCategory});
+    }
+
+    // set swiped questions percentage
+    await this.setSwipedQuestionsPercentage({
+      id,
+      currentQuestionIndex: questionInfo.currentQuestionIndex + 1,
+      isCategory,
+    });
+
+    this.checkIfUserSwipedFast({id, isCategory});
+  };
+
+  checkIfUserSwipedFast = async ({
+    id,
+    isCategory,
+  }: {
+    id: string;
+    isCategory: boolean;
+  }) => {
+    let document: RubricType | CategoryType | undefined =
+      await rubricStore.fetchRubric(id);
+
+    if (isCategory) {
+      document = await categoryStore.fetchCategory(id);
+    }
+    if (!document) {
+      return;
+    }
+
+    const newCheckTime = document.checkTime + breakPoint;
+
+    if (
+      document.swipedQuestionsPercentage >= document.checkTime &&
+      newCheckTime < 100
+    ) {
+      const currentDate = new Date();
+      const diff = minutesDiff(
+        currentDate,
+        new Date(document.questionSwipeStartDate),
+      );
+
+      // show modal if user swiped fast
+      if (diff <= minute) {
+        this.setThatWasFastModalVisible(true);
+      }
+
+      if (isCategory) {
+        await categoryStore.updateCategory({
+          id,
+          field: 'checkTime',
+          data: newCheckTime,
+        });
+      } else {
+        await rubricStore.updateRubric({
+          id,
+          field: 'checkTime',
+          data: newCheckTime,
+        });
+      }
+
+      // set new Date for next checking
+      this.setSwipedQuestionsStartDate({id, isCategory});
+    }
+  };
+
+  setSwipedQuestionsStartDate = async ({
+    id,
+    isCategory,
+  }: {
+    id: string;
+    isCategory: boolean;
+  }) => {
+    const startDate = new Date().toJSON();
+
+    if (isCategory) {
+      await categoryStore.updateCategory({
+        id,
+        field: 'questionSwipeStartDate',
+        data: startDate,
+      });
+    } else {
+      await rubricStore.updateRubric({
+        id,
+        field: 'questionSwipeStartDate',
+        data: startDate,
+      });
+    }
+  };
+
+  setSwipedQuestionsPercentage = async ({
+    id,
+    currentQuestionIndex,
+    isCategory,
+  }: {
+    id: string;
+    currentQuestionIndex: number;
+    isCategory: boolean;
+  }) => {
+    const swipedQuestionsPercentage = Math.floor(
+      getPercentageFromNumber(currentQuestionIndex, this.questions.length),
+    );
+
+    if (!swipedQuestionsPercentage) {
+      return;
+    }
+
+    if (isCategory) {
+      await categoryStore.updateCategory({
+        id,
+        field: 'swipedQuestionsPercentage',
+        data: swipedQuestionsPercentage,
+      });
+    } else {
+      await rubricStore.updateRubric({
+        id,
+        field: 'swipedQuestionsPercentage',
+        data: swipedQuestionsPercentage,
+      });
+    }
+  };
+
+  checkIfAllQuestionsSwiped = async ({
+    questionId,
+    categoryId,
+    type,
+  }: {
+    questionId: string;
+    categoryId: string;
+    type: 'rubric' | 'category' | 'favorite';
+  }) => {
+    const isCategory = type === 'category';
+
+    if (!isCategory) {
+      return;
+    }
+
+    const questionInfo = questionStore.getQuestionInfo({
+      questionId,
+      questions: this.questions,
+    });
+    if (!questionInfo) {
+      return;
+    }
+
+    const swipedQuestionsCount = questionInfo.currentQuestionIndex + 1;
+    const lastQueston = this.questions.length;
+    const isLastQuestion = swipedQuestionsCount === lastQueston;
+
+    if (isLastQuestion) {
+      const category = categoryStore.category;
+      if (!category) {
+        return;
+      }
+
+      // the modal will be opened only one time
+      if (category.isAllQuestionsSwiped) {
+        return;
+      }
+
+      const nextCategory = getNextCategoryName({
+        currentCategory: category.name as CategoryName,
+      });
+
+      profileStore.setCurrentCategory(nextCategory);
+
+      await categoryStore.updateCategory({
+        id: categoryId,
+        field: 'isAllQuestionsSwiped',
+        data: true,
+      });
+
+      await userStore.updateUser({
+        field: 'category',
+        data: {currentCategory: nextCategory},
+      });
+
+      this.setCongratsModalVisible(true);
+    }
   };
 }
 

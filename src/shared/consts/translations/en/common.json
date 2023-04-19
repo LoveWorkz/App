@@ -4,5 +4,7 @@
    "change_photo": "Change photo",
    "delete": "delete",
    "confirm": "confirm",
-   "enter_your_data": "Enter your data"
+   "enter_your_data": "Enter your data",
+   "continue": "Continue",
+   "dont_show_again": "Dont Show again"
 }

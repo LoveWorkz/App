@@ -17,6 +17,9 @@ import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
 import questionsStore from '../model/store/questionsStore';
+import WowThatWasFastModal from './WowThatWasFastModal/WowThatWasFastModal';
+import {getFormattedQuestionsWrapper} from '../model/lib/questions';
+import {CongratsModal} from './CongratsModal/CongratsModal';
 
 interface QuestionsPageProps {
   route?: {params: {type: 'rubric' | 'category' | 'favorite'; id: string}};
@@ -28,6 +31,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const id = route?.params.id;
   const colors = useColors();
   const questions = questionsStore.questions;
+  const questionsPageInfo = questionsStore.questionsPageInfo;
+
+  const getFormattedQuestions = getFormattedQuestionsWrapper(questions);
 
   useFocusEffect(
     useCallback(() => {
@@ -53,8 +59,22 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       }
 
       questionsStore.swipe({question: param, key});
+
+      if (id) {
+        questionsStore.setQuestionsSwipedInfo({
+          questionId: param.id,
+          id: id,
+          type: key,
+        });
+
+        questionsStore.checkIfAllQuestionsSwiped({
+          questionId: param.id,
+          categoryId: id,
+          type: key,
+        });
+      }
     },
-    [key],
+    [key, id],
   );
 
   if (!questions.length) {
@@ -74,7 +94,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           style={styles.categoryText}
           weight={'700'}
           size={TextSize.LEVEL_5}
-          text={questionsStore.questionsPageInfo.categoryName}
+          text={questionsPageInfo.categoryName}
         />
       </Gradient>
       <View style={styles.rubricAndQuestionsCountBlock}>
@@ -83,7 +103,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
             style={styles.rubricText}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={questionsStore.questionsPageInfo.rubricName}
+            text={questionsPageInfo.rubricName}
           />
         </View>
         <View>
@@ -91,20 +111,28 @@ const QuestionsPage = (props: QuestionsPageProps) => {
             style={{color: colors.primaryTextColor}}
             weight={'500'}
             size={TextSize.LEVEL_5}
-            text={`${questionsStore.questionsPageInfo.swipedQuestionsCount}/${questionsStore.questionsPageInfo.questionsCount}`}
+            text={`${questionsPageInfo.swipedQuestionsCount}/${questionsPageInfo.questionsCount}`}
           />
         </View>
       </View>
       <View style={styles.question}>
         <HorizontalSlide
           onSwipeHandler={onSwipeHandler}
-          data={questions}
+          data={getFormattedQuestions()}
           itemStyle={styles.slideItemStyle}
           Component={QuestionCard}
-          defaultElement={questionsStore.questionsPageInfo.swipedQuestionsCount}
+          defaultElement={questionsPageInfo.swipedQuestionsCount}
         />
         <View style={[styles.questionsCard, styles.questionsCardBack]} />
       </View>
+      <WowThatWasFastModal
+        visible={questionsStore.thatWasFastModalVisible}
+        setVisible={questionsStore.setThatWasFastModalVisible}
+      />
+      <CongratsModal
+        visible={questionsStore.congratsModalVisible}
+        setVisible={questionsStore.setCongratsModalVisible}
+      />
     </View>
   );
 };

@@ -26,6 +26,7 @@ class ProfileStore {
   };
   avatar: string = '';
   tempAvatar: string = '';
+  currentCategory: string = '';
 
   isLoading: boolean = false;
   initialFetching: boolean = true;
@@ -73,6 +74,10 @@ class ProfileStore {
   setAvatar(avatar: string) {
     this.avatar = avatar;
     this.setTempAvatar(avatar);
+  }
+
+  setCurrentCategory(category: string) {
+    this.currentCategory = category;
   }
 
   setTempAvatar(avatar: string) {
@@ -160,6 +165,7 @@ class ProfileStore {
           this.setProfileData(data);
           this.setProfileForm(data);
           this.setAvatar(data.photo);
+          this.setCurrentCategory(data.category.currentCategory);
         });
         favoriteStore.setFavorites();
       }

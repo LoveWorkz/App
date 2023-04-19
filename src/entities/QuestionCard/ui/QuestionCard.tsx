@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ImageBackground, StyleSheet} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
@@ -12,22 +12,33 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface QuestionCardProps {
   question: string;
+  image: string;
+  type: string;
 }
 
 const QuestionCard = (props: QuestionCardProps) => {
-  const {question} = props;
+  const {question, image, type} = props;
+  const isTypeOrdinary = type === 'ORDINARY';
 
   const colors = useColors();
 
   return (
-    <View style={styles.questionsCard}>
+    <ImageBackground
+      resizeMode="cover"
+      source={{
+        uri: image,
+      }}
+      style={styles.questionsCard}>
       <AppText
-        style={[styles.questionText, {color: colors.primaryTextColor}]}
+        style={[
+          styles.questionText,
+          {color: isTypeOrdinary ? colors.primaryTextColor : 'white'},
+        ]}
         weight={'600'}
         size={TextSize.LEVEL_7}
         text={question}
       />
-    </View>
+    </ImageBackground>
   );
 };
 

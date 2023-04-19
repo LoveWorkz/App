@@ -12,6 +12,9 @@ export interface Profile {
   relationshipStatus: string;
   rubric: string;
   favorites: FavoriteType;
+  category: {
+    currentCategory: string;
+  };
 }
 
 export interface ProfileErrorInfo {

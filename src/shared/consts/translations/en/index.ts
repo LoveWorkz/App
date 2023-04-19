@@ -7,6 +7,7 @@ import profile from './profile.json';
 import rubrics from './rubrics.json';
 import uploadPhoto from './uploadPhoto.json';
 import books from './books.json';
+import questions from './questions.json';
 
 export const en = {
   ...common,
@@ -18,4 +19,5 @@ export const en = {
   ...rubrics,
   ...uploadPhoto,
   ...books,
+  ...questions,
 };
