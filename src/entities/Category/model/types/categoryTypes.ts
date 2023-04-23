@@ -25,6 +25,6 @@ export interface CategoryType {
   currentQuestion: string;
   swipedQuestionsPercentage: number;
   questionSwipeStartDate: string;
-  checkTime: number;
+  breakPointForCheckingDate: number;
   isAllQuestionsSwiped: boolean;
 }

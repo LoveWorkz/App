@@ -3,7 +3,10 @@ import {StyleSheet, View, Image, Pressable} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {BookCategory, BookCategorySize} from '@src/entities/BookCategory';
+import {
+  RubricFilterItem,
+  BookCategorySize,
+} from '@src/entities/RubricFilterItem';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {
   globalStyles,
@@ -62,7 +65,7 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo} = props;
-  const {image, name, description, author, Categories, rate} = bookInfo;
+  const {image, name, description, author, rubrics, rate} = bookInfo;
 
   const colors = useColors();
 
@@ -105,11 +108,11 @@ export const Book = (props: BookProps) => {
             <StarRatings size={5} count={rate} />
           </View>
           <View style={styles.categories}>
-            {Categories.map(category => {
+            {rubrics.map(category => {
               return (
                 <View style={styles.category} key={category}>
-                  <BookCategory
-                    category={category}
+                  <RubricFilterItem
+                    rubric={category}
                     size={BookCategorySize.SMALL}
                     text={category}
                   />

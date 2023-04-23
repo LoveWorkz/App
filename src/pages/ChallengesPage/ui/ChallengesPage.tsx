@@ -1,20 +1,55 @@
-import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {memo, useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {observer} from 'mobx-react-lite';
+
+import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
+import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
+import Challenges from './Challenges/Challenges';
+import challengesStore from '../model/store/challengesStore';
 
 const ChallengesPage = () => {
+  useEffect(() => {
+    challengesStore.init();
+
+    return () => {
+      challengesStore.clearChallengesInfo();
+    };
+  }, []);
+
+  if (
+    challengesStore.isChallengeCategoriesLoading &&
+    challengesStore.isChallengesLoading
+  ) {
+    return (
+      <View style={styles.container}>
+        <View>
+          <Loader size={LoaderSize.LARGE} />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Challenges Page</Text>
+      <ChallengeCategories />
+      <View style={styles.FilterItemsWrapper}>
+        <ChallengesFilterItems />
+      </View>
+      <Challenges />
     </View>
   );
 };
 
-export const ComponentWrapper = memo(ChallengesPage);
+export const ComponentWrapper = memo(observer(ChallengesPage));
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  FilterItemsWrapper: {
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(20),
   },
 });

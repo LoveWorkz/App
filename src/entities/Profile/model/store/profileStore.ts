@@ -3,16 +3,18 @@ import firestore from '@react-native-firebase/firestore';
 
 import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
+
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
+import {favoriteStore} from '@src/entities/Favorite';
 import {
   Profile,
   ProfileErrorInfo,
   ProfilePhotoActionType,
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
-import {favoriteStore} from '@src/entities/Favorite';
+import {challengesStore} from '@src/pages/ChallengesPage';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -166,8 +168,9 @@ class ProfileStore {
           this.setProfileForm(data);
           this.setAvatar(data.photo);
           this.setCurrentCategory(data.category.currentCategory);
+          challengesStore.setChallengeCategory(data.challengeCategory);
+          favoriteStore.setFavorites(data.favorites);
         });
-        favoriteStore.setFavorites();
       }
     } catch (e) {
       console.log(e);

@@ -3,6 +3,9 @@ import firestore from '@react-native-firebase/firestore';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
+import {questionStore} from '@src/entities/QuestionCard';
+import {questionsStore} from '@src/pages/QuestionsPage';
+import {categoryStore} from '@src/entities/Category';
 import {RubricType} from '../types/rubricTypes';
 
 class RubricStore {
@@ -56,6 +59,58 @@ class RubricStore {
         .update({
           [field]: data,
         });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  rubricSwipeLogic = async ({
+    rubricId,
+    questionId,
+  }: {
+    rubricId?: string;
+    questionId?: string;
+  }) => {
+    try {
+      let currentquestionId = questionId;
+      let rubricName: string | undefined;
+
+      if (!questionId) {
+        if (!rubricId) {
+          return;
+        }
+
+        const rubric = this.getRubric(rubricId);
+        currentquestionId = rubric?.currentQuestion;
+        rubricName = rubric?.name;
+      }
+      if (!currentquestionId) {
+        return;
+      }
+
+      const questionInfo = questionStore.getQuestionInfo({
+        questionId: currentquestionId,
+        questions: questionsStore.questions,
+      });
+      if (!questionInfo) {
+        return;
+      }
+      const {currentQuestion, currentQuestionIndex} = questionInfo;
+
+      const currentCategory = categoryStore.getCategory(
+        currentQuestion?.categoryId,
+      );
+      if (!currentCategory) {
+        return;
+      }
+
+      questionsStore.setQuestionsPageInfo({
+        questionsCount: questionsStore.questions.length,
+        categoryName: currentCategory.name,
+        rubricName: rubricName || questionsStore.questionsPageInfo.rubricName,
+        swipedQuestionsCount: currentQuestionIndex + 1,
+        currentQuestion,
+      });
     } catch (e) {
       console.log(e);
     }

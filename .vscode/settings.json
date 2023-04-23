@@ -44,14 +44,14 @@
           "  );",
           "}",
           "",
-          "export const Wrapper = memo([FTName]);",
+          "export default memo([FTName]);",
           "",
           "const styles = StyleSheet.create({",
           "  [FTName]: {},",
           "});",
         ],
         "index": [
-            "export {Wrapper as [FTName]} from './ui/[FTName]';"
+            "export {default as [FTName]} from './ui/[FTName]';"
         ]
       },
 }

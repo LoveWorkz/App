@@ -1,9 +1,18 @@
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import React, {ReactElement, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+
+import {Gradient} from '../Gradient/Gradient';
 
 export enum ButtonTheme {
   CLEAR = 'clear',
   OUTLINED = 'outlined',
+  GRADIENT = 'gradient',
+  OUTLINED_GRADIENT = 'outlinedGradient',
 }
 
 interface ButtonProps {
@@ -37,6 +46,24 @@ export const Button = (props: ButtonProps) => {
     ];
   }, [disabled, theme, style, squar]);
 
+  if (theme === ButtonTheme.GRADIENT) {
+    return (
+      <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
+        <Gradient style={mode}>{children}</Gradient>
+      </TouchableOpacity>
+    );
+  }
+
+  if (theme === ButtonTheme.OUTLINED_GRADIENT) {
+    return (
+      <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
+        <Gradient style={mode}>
+          <View style={[styles.container]}>{children}</View>
+        </Gradient>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <TouchableOpacity disabled={disabled} style={mode} onPress={onPress}>
       {children}
@@ -46,7 +73,8 @@ export const Button = (props: ButtonProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   Button: {
-    padding: 7,
+    height: verticalScale(40),
+    paddingHorizontal: horizontalScale(1),
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -54,14 +82,23 @@ const styles = StyleSheet.create<Record<string, any>>({
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
   },
   disabled: {
     opacity: 0.4,
   },
   squar: {
     padding: 1,
-    height: 30,
-    width: 30,
+    height: verticalScale(30),
+    width: horizontalScale(30),
+  },
+  container: {
+    flex: 1,
+    margin: 1,
+    backgroundColor: 'white',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: moderateScale(10),
   },
 });

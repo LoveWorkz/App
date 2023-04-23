@@ -53,7 +53,7 @@ class QuestionsStore {
             id,
             key: 'rubricId',
           });
-          this.rubricLogic({rubricId: id});
+          rubricStore.rubricSwipeLogic({rubricId: id});
           break;
         case 'category':
           if (!id) {
@@ -63,11 +63,11 @@ class QuestionsStore {
             id,
             key: 'categoryId',
           });
-          this.categoryLogic({categoryId: id});
+          categoryStore.categorySwipeLogic({categoryId: id});
           break;
         default:
           await this.fetchFavoritesQuestions();
-          this.favoriteLogic();
+          favoriteStore.favoritesSwipeLogic();
       }
     } catch (e) {
       console.log(e);
@@ -93,7 +93,7 @@ class QuestionsStore {
           .update({
             currentQuestion: question.id,
           });
-        this.categoryLogic({questionId: question.id});
+        categoryStore.categorySwipeLogic({questionId: question.id});
         break;
       case 'rubric':
         await firestore()
@@ -102,7 +102,7 @@ class QuestionsStore {
           .update({
             currentQuestion: question.id,
           });
-        this.rubricLogic({questionId: question.id});
+        rubricStore.rubricSwipeLogic({questionId: question.id});
         break;
       case 'favorite':
         const userId = userStore.authUser?.id;
@@ -119,156 +119,9 @@ class QuestionsStore {
               currentQuestion: question.id,
             },
           });
-        this.favoriteLogic(question.id);
+        favoriteStore.favoritesSwipeLogic(question.id);
         break;
       default:
-    }
-  };
-
-  favoriteLogic = async (id?: string) => {
-    try {
-      let questionId = id;
-
-      if (!id && favoriteStore.favorite) {
-        questionId = favoriteStore.favorite.currentQuestion;
-      }
-
-      if (!questionId) {
-        return;
-      }
-
-      const questionInfo = questionStore.getQuestionInfo({
-        questionId: questionId,
-        questions: this.questions,
-      });
-      if (!questionInfo) {
-        return;
-      }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
-
-      const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-      if (!currentRubric) {
-        return;
-      }
-
-      const currentCategory = categoryStore.getCategory(
-        currentQuestion.categoryId,
-      );
-      if (!currentCategory) {
-        return;
-      }
-
-      this.setQuestionsPageInfo({
-        questionsCount: this.questions.length,
-        categoryName: currentCategory.name,
-        rubricName: currentRubric.name,
-        swipedQuestionsCount: currentQuestionIndex + 1,
-        currentQuestion,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  rubricLogic = async ({
-    rubricId,
-    questionId,
-  }: {
-    rubricId?: string;
-    questionId?: string;
-  }) => {
-    try {
-      let currentquestionId = questionId;
-      let rubricName: string | undefined;
-
-      if (!questionId) {
-        if (!rubricId) {
-          return;
-        }
-
-        const rubric = rubricStore.getRubric(rubricId);
-        currentquestionId = rubric?.currentQuestion;
-        rubricName = rubric?.name;
-      }
-      if (!currentquestionId) {
-        return;
-      }
-
-      const questionInfo = questionStore.getQuestionInfo({
-        questionId: currentquestionId,
-        questions: this.questions,
-      });
-      if (!questionInfo) {
-        return;
-      }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
-
-      const currentCategory = categoryStore.getCategory(
-        currentQuestion?.categoryId,
-      );
-      if (!currentCategory) {
-        return;
-      }
-
-      this.setQuestionsPageInfo({
-        questionsCount: this.questions.length,
-        categoryName: currentCategory.name,
-        rubricName: rubricName || this.questionsPageInfo.rubricName,
-        swipedQuestionsCount: currentQuestionIndex + 1,
-        currentQuestion,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  categoryLogic = async ({
-    categoryId,
-    questionId,
-  }: {
-    categoryId?: string;
-    questionId?: string;
-  }) => {
-    try {
-      let currentquestionId = questionId;
-      let categoryName: string | undefined;
-
-      if (!questionId) {
-        if (!categoryId) {
-          return;
-        }
-
-        const category = await categoryStore.getCategory(categoryId);
-        currentquestionId = category?.currentQuestion;
-        categoryName = category?.name;
-      }
-      if (!currentquestionId) {
-        return;
-      }
-
-      const questionInfo = questionStore.getQuestionInfo({
-        questionId: currentquestionId,
-        questions: this.questions,
-      });
-      if (!questionInfo) {
-        return;
-      }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
-
-      const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-      if (!currentRubric) {
-        return;
-      }
-
-      this.setQuestionsPageInfo({
-        questionsCount: this.questions.length,
-        categoryName: categoryName || this.questionsPageInfo.categoryName,
-        rubricName: currentRubric.name,
-        swipedQuestionsCount: currentQuestionIndex + 1,
-        currentQuestion,
-      });
-    } catch (e) {
-      console.log(e);
     }
   };
 
@@ -400,10 +253,11 @@ class QuestionsStore {
       return;
     }
 
-    const newCheckTime = document.checkTime + breakPoint;
+    const newCheckTime = document.breakPointForCheckingDate + breakPoint;
 
     if (
-      document.swipedQuestionsPercentage >= document.checkTime &&
+      document.swipedQuestionsPercentage >=
+        document.breakPointForCheckingDate &&
       newCheckTime < 100
     ) {
       const currentDate = new Date();
@@ -420,13 +274,13 @@ class QuestionsStore {
       if (isCategory) {
         await categoryStore.updateCategory({
           id,
-          field: 'checkTime',
+          field: 'breakPointForCheckingDate',
           data: newCheckTime,
         });
       } else {
         await rubricStore.updateRubric({
           id,
-          field: 'checkTime',
+          field: 'breakPointForCheckingDate',
           data: newCheckTime,
         });
       }

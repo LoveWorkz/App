@@ -6,6 +6,6 @@ export interface RubricType {
   id: string;
   currentQuestion: string;
   questionSwipeStartDate: string;
-  checkTime: number;
+  breakPointForCheckingDate: number;
   swipedQuestionsPercentage: number;
 }

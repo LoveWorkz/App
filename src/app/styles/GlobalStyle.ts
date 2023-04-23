@@ -26,6 +26,8 @@ export enum FontSizes {
 export const forgotPasswordZIndex = 1;
 export const categoryLayoutZIndex = 1;
 export const categoryLayoutIconZIndex = 2;
+export const challengeLayoutZIndex = 1;
+export const challengeLayoutIconZIndex = 2;
 
 export const globalStyles = StyleSheet.create({
   textFont: {

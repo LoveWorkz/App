@@ -1,3 +1,4 @@
+import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {FavoriteType} from '@src/entities/Favorite';
 
 export interface Profile {
@@ -15,6 +16,7 @@ export interface Profile {
   category: {
     currentCategory: string;
   };
+  challengeCategory: CurrentChallengeCategoryType;
 }
 
 export interface ProfileErrorInfo {

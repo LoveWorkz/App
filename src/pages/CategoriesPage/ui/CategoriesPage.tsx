@@ -6,12 +6,15 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Favourites} from '@src/widgets/Favourites';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {profileStore} from '@src/entities/Profile';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {favoriteStore} from '@src/entities/Favorite';
 import Categories from './Categories/Categories';
 import Rubrics from './Rubrics/Rubrics';
 import categoriesStore from '../model/store/categoriesStore';
-import {verticalScale} from '@src/shared/lib/Metrics';
 
 const CategoriesPage = () => {
+  const favorites = favoriteStore.favorite;
+
   useFocusEffect(
     useCallback(() => {
       categoriesStore.fetchRubrics();
@@ -32,10 +35,12 @@ const CategoriesPage = () => {
 
   return (
     <View style={styles.container}>
-      <Favourites />
-      <View style={styles.categoriesWrapper}>
-        <Categories />
-      </View>
+      {!!(favorites && favorites.questions.length) && (
+        <View style={styles.favouritesWrapper}>
+          <Favourites />
+        </View>
+      )}
+      <Categories />
       <View style={styles.rubricsWrapper}>
         <Rubrics />
       </View>
@@ -49,8 +54,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  categoriesWrapper: {
-    marginTop: verticalScale(37),
+  favouritesWrapper: {
+    marginBottom: verticalScale(37),
   },
   rubricsWrapper: {
     marginTop: verticalScale(40),

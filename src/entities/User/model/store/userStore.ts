@@ -25,6 +25,7 @@ import {userFormatter} from '../../lib/userForamtter';
 
 class UserStore {
   authUser: null | User = null;
+  authUserId: string = '';
   authMethod: AuthMethod | string = '';
   isDisabledDialogOpen: boolean = false;
 
@@ -34,6 +35,9 @@ class UserStore {
 
   setAuthUserInfo({user, authMethod}: AuthUserInfo) {
     this.authUser = user;
+    if (user?.id) {
+      this.authUserId = user.id;
+    }
     this.authMethod = authMethod;
 
     authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
@@ -155,7 +159,7 @@ class UserStore {
   };
 
   updateUser = async ({data, field}: {data: any; field: string}) => {
-    const userId = this.authUser?.id;
+    const userId = this.authUserId;
     if (!userId) {
       return;
     }

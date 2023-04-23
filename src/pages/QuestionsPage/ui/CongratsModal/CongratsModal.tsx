@@ -6,7 +6,6 @@ import {observer} from 'mobx-react-lite';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {profileStore} from '@src/entities/Profile';
@@ -23,6 +22,7 @@ export const CongratsModal = (props: CongratsModalProps) => {
   const colors = useColors();
   const {t} = useTranslation();
   const currentCategory = profileStore.currentCategory;
+  const content = getCongratsModalContent(t)[currentCategory as CategoryName];
 
   const onCancelHandler = () => {
     setVisible?.(false);
@@ -30,16 +30,16 @@ export const CongratsModal = (props: CongratsModalProps) => {
 
   const uri = useMemo(() => {
     return {
-      uri: 'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%201.png?alt=media&token=e83e70f1-0fff-47ab-8a0e-ba419fc726aa',
+      uri: content.image,
     };
-  }, []);
+  }, [content.image]);
 
   return (
     <Modal
       contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>
-      <View style={styles.imageWrapper}>
+      <View style={[{height: content.height, width: content.width}]}>
         <Image style={styles.image} source={uri} />
       </View>
 
@@ -47,24 +47,24 @@ export const CongratsModal = (props: CongratsModalProps) => {
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
         weight={'600'}
-        text={getCongratsModalContent(t)[currentCategory as CategoryName].title}
+        text={content.title}
       />
 
       <AppText
         style={[styles.description, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={getCongratsModalContent(t).Basic.description}
+        text={content.description}
       />
-
-      <Gradient style={styles.btn}>
-        <Button onPress={onCancelHandler} theme={ButtonTheme.CLEAR}>
-          <AppText
-            style={styles.btnText}
-            size={TextSize.LEVEL_4}
-            text={t('continue')}
-          />
-        </Button>
-      </Gradient>
+      <Button
+        style={styles.btn}
+        onPress={onCancelHandler}
+        theme={ButtonTheme.GRADIENT}>
+        <AppText
+          style={styles.btnText}
+          size={TextSize.LEVEL_4}
+          text={t('continue')}
+        />
+      </Button>
     </Modal>
   );
 };
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
+    marginTop: verticalScale(25),
   },
   description: {
     marginBottom: verticalScale(40),
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: '100%',
-    paddingVertical: verticalScale(8),
+    height: verticalScale(40),
   },
   btnText: {
     color: 'white',
@@ -94,12 +95,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginTop: verticalScale(10),
   },
-  imageWrapper: {
-    height: verticalScale(150),
-    width: verticalScale(158),
-  },
   image: {
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     width: '100%',
     height: '100%',
   },

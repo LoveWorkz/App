@@ -5,6 +5,9 @@ import {profileStore} from '@src/entities/Profile';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {questionStore} from '@src/entities/QuestionCard';
+import {questionsStore} from '@src/pages/QuestionsPage';
+import {rubricStore} from '@src/entities/Rubric';
+import {categoryStore} from '@src/entities/Category';
 import {FavoriteType} from '../types/favoriteType';
 
 class FavoriteStore {
@@ -53,13 +56,10 @@ class FavoriteStore {
     }
   };
 
-  setFavorites = () => {
+  setFavorites = (favorites: FavoriteType) => {
     try {
       runInAction(() => {
-        const profile = profileStore.profileData;
-        if (profile) {
-          this.favorite = profile.favorites;
-        }
+        this.favorite = favorites;
       });
     } catch (e) {
       console.log(e);
@@ -134,6 +134,59 @@ class FavoriteStore {
     runInAction(() => {
       this.isQuestionFavorite = false;
     });
+  };
+
+  favoritesSwipeLogic = async (id?: string) => {
+    try {
+      let questionId = id;
+
+      // initial logic
+      if (!id && this.favorite) {
+        const lastSwipedQuestionId = this.favorite.currentQuestion;
+        const isQuestionInFavorite =
+          this.favorite.questions.includes(lastSwipedQuestionId);
+
+        // when we removing chosen question from favorites we should reset swipe history
+        questionId = isQuestionInFavorite
+          ? this.favorite.currentQuestion
+          : this.favorite.questions[0];
+      }
+
+      if (!questionId) {
+        return;
+      }
+
+      const questionInfo = questionStore.getQuestionInfo({
+        questionId: questionId,
+        questions: questionsStore.questions,
+      });
+      if (!questionInfo) {
+        return;
+      }
+      const {currentQuestion, currentQuestionIndex} = questionInfo;
+
+      const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
+      if (!currentRubric) {
+        return;
+      }
+
+      const currentCategory = categoryStore.getCategory(
+        currentQuestion.categoryId,
+      );
+      if (!currentCategory) {
+        return;
+      }
+
+      questionsStore.setQuestionsPageInfo({
+        questionsCount: questionsStore.questions.length,
+        categoryName: currentCategory.name,
+        rubricName: currentRubric.name,
+        swipedQuestionsCount: currentQuestionIndex + 1,
+        currentQuestion,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 }
 

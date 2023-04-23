@@ -11,17 +11,17 @@ export enum BookCategorySize {
 
 interface bookCategoryProps {
   text: string;
-  category: string;
+  rubric: string;
   size?: BookCategorySize;
   onPress?: (key: string) => void;
   action?: boolean;
   active?: boolean;
 }
 
-const BookCategory = (props: bookCategoryProps) => {
+const RubricFilterItem = (props: bookCategoryProps) => {
   const {
     text,
-    category,
+    rubric,
     onPress,
     action = false,
     size = BookCategorySize.NORMAL,
@@ -29,13 +29,13 @@ const BookCategory = (props: bookCategoryProps) => {
   } = props;
 
   const onPressHandler = () => {
-    onPress?.(category);
+    onPress?.(rubric);
   };
 
   return (
     <Gradient
       style={[
-        styles.BookCategory,
+        styles.RubricFilterItem,
         {
           height: size === BookCategorySize.SMALL ? 28 : 40,
           opacity: active ? 1 : 0.6,
@@ -60,10 +60,10 @@ const BookCategory = (props: bookCategoryProps) => {
   );
 };
 
-export const Wrapper = memo(BookCategory);
+export default memo(RubricFilterItem);
 
 const styles = StyleSheet.create({
-  BookCategory: {
+  RubricFilterItem: {
     borderRadius: 10,
     alignSelf: 'flex-start',
   },

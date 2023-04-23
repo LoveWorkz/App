@@ -1,23 +1,42 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {BookCategory} from '@src/entities/BookCategory';
+import {
+  RubricFilterItem,
+  rubricFilterItemStore,
+} from '@src/entities/RubricFilterItem';
+import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 import booksStore from '../../model/store/BooksStore';
 import {Wrapper as BookItem} from '../BookItem/BookItem';
+
+const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
+  const onFiltreHandler = useCallback((key: string) => {
+    booksStore.filterBooks(key);
+  }, []);
+
+  return (
+    <View style={styles.rubricCategory}>
+      <RubricFilterItem
+        action
+        onPress={onFiltreHandler}
+        active={active}
+        rubric={name}
+        text={name}
+      />
+    </View>
+  );
+});
 
 const Books = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const booksList = booksStore.booksFilteredList;
-  const booksCategories = booksStore.booksCategories;
-
-  const onFiltreHandler = (key: string) => {
-    booksStore.filterBooks(key);
-  };
+  const booksCategories = rubricFilterItemStore.rubricFilterItems;
 
   return (
     <View>
@@ -28,18 +47,7 @@ const Books = () => {
         size={TextSize.LEVEL_5}
       />
       <View style={styles.booksCategories}>
-        {booksCategories.map(category => {
-          return (
-            <BookCategory
-              key={category.key}
-              active={category.active}
-              category={category.key}
-              onPress={onFiltreHandler}
-              text={category.key}
-              action
-            />
-          );
-        })}
+        <HorizontalCarousel data={booksCategories} Component={FilterItem} />
       </View>
       <View style={styles.books}>
         {booksList.length ? (
@@ -59,7 +67,7 @@ const Books = () => {
           <View style={styles.noResults}>
             <AppText
               style={[styles.booksTitle, {color: colors.primaryTextColor}]}
-              text={t('books.noResults')}
+              text={t('noResults')}
               size={TextSize.LEVEL_7}
             />
           </View>
@@ -89,5 +97,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+  },
+  rubricCategory: {
+    marginRight: horizontalScale(10),
   },
 });

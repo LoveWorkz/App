@@ -21,7 +21,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CATEGORIES}
+      initialRouteName={TabRoutesNames.CHALLENGES}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {

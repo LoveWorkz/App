@@ -4,7 +4,7 @@ import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
-import {Challange} from '@src/entities/Challange';
+import {ChallengeCategory} from '@src/entities/ChallengeCategory';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -70,7 +70,7 @@ const Challanges = () => {
       <View style={styles.challangesWrapper}>
         <View style={[styles.challanges, {width: windowWidthMinusPaddings}]}>
           {data.map(item => {
-            return <Challange key={item.image} image={item.image} />;
+            return <ChallengeCategory key={item.image} image={item.image} />;
           })}
         </View>
       </View>

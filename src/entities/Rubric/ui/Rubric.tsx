@@ -5,6 +5,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {getNumberFromPercentage} from '@src/shared/lib/common';
 import {RubricType} from '../model/types/rubricTypes';
 
 interface RubricProps {
@@ -14,6 +15,10 @@ interface RubricProps {
 export const Rubric = (props: RubricProps) => {
   const {rubric} = props;
   const colors = useColors();
+  const swipedQuestionCount = getNumberFromPercentage(
+    rubric.swipedQuestionsPercentage,
+    rubric.questions.length,
+  );
 
   return (
     <View style={[styles.Rubric, {...globalStyles.simpleShadowOpacity}]}>
@@ -35,7 +40,7 @@ export const Rubric = (props: RubricProps) => {
           style={{color: colors.primaryTextColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={`${0}/${rubric.questions.length}`}
+          text={`${Math.ceil(swipedQuestionCount)}/${rubric.questions.length}`}
         />
       </View>
     </View>

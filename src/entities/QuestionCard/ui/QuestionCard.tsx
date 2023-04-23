@@ -25,6 +25,7 @@ const QuestionCard = (props: QuestionCardProps) => {
   return (
     <ImageBackground
       resizeMode="cover"
+      imageStyle={styles.imageStyle}
       source={{
         uri: image,
       }}
@@ -60,6 +61,9 @@ const styles = StyleSheet.create({
   questionText: {
     textAlign: 'center',
     position: 'relative',
+  },
+  imageStyle: {
+    borderRadius: moderateScale(20),
   },
 });
 

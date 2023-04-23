@@ -31,11 +31,6 @@ const RecommendedBooks = () => {
       />
       {!!recommendedBooksList.length && (
         <CarouselSquare
-          // itemStyle={{
-          //   height: 180,
-          //   width: 120,
-          //   backgroundColor: 'green',
-          // }}
           isLandscape={false}
           Component={(props: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(props.id)}>

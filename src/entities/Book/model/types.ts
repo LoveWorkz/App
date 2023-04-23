@@ -5,7 +5,7 @@ export interface BookImage {
 
 export interface BookType {
   author: string;
-  Categories: string[];
+  rubrics: string[];
   description: string;
   id: string;
   image: BookImage;
