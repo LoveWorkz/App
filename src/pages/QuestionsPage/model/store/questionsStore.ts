@@ -3,9 +3,9 @@ import firestore from '@react-native-firebase/firestore';
 
 import {Collections} from '@src/shared/types/firebase';
 import {
-  CategoryName,
   categoryStore,
   CategoryType,
+  CategoryName,
   getNextCategoryName,
 } from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
@@ -23,6 +23,7 @@ class QuestionsStore {
   questionsPageInfo: QuestionsPageInfo = {} as QuestionsPageInfo;
   thatWasFastModalVisible: boolean = false;
   congratsModalVisible: boolean = false;
+  questionsPageloading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -44,26 +45,44 @@ class QuestionsStore {
     key: 'rubric' | 'category' | 'favorite';
   }) => {
     try {
+      runInAction(() => {
+        this.questionsPageloading = true;
+      });
       switch (key) {
         case 'rubric':
           if (!id) {
             return;
           }
+          await rubricStore.fetchRubric(id);
           await this.fetchQuestionsById({
             id,
             key: 'rubricId',
           });
-          rubricStore.rubricSwipeLogic({rubricId: id});
+          // init current question id for the first time
+          await rubricStore.initUserRubricQuestionId({
+            id,
+            questions: this.questions,
+          });
+          // init questions page info
+          rubricStore.rubricSwipeLogic({});
           break;
         case 'category':
           if (!id) {
             return;
           }
+          await categoryStore.fetchCategory(id);
           await this.fetchQuestionsById({
             id,
             key: 'categoryId',
           });
-          categoryStore.categorySwipeLogic({categoryId: id});
+          // init current question id for the first time
+          await categoryStore.initUserCategoryQuestionId({
+            id,
+            questions: this.questions,
+          });
+          // init questions page info
+          categoryStore.categorySwipeLogic({});
+
           break;
         default:
           await this.fetchFavoritesQuestions();
@@ -71,6 +90,10 @@ class QuestionsStore {
       }
     } catch (e) {
       console.log(e);
+    } finally {
+      runInAction(() => {
+        this.questionsPageloading = false;
+      });
     }
   };
 
@@ -81,35 +104,31 @@ class QuestionsStore {
     question: QuestionType;
     key: 'rubric' | 'category' | 'favorite';
   }) => {
-    if (!question) {
+    const userId = userStore.authUserId;
+    if (!question && !userId) {
       return;
     }
 
     switch (key) {
       case 'category':
         await firestore()
-          .collection(Collections.CATEGORIES)
-          .doc(question.categoryId)
+          .collection(Collections.USER_CATEGORIES)
+          .doc(userId)
           .update({
-            currentQuestion: question.id,
+            [`categories.${question.categoryId}.currentQuestion`]: question.id,
           });
         categoryStore.categorySwipeLogic({questionId: question.id});
         break;
       case 'rubric':
         await firestore()
-          .collection(Collections.RUBRICS)
-          .doc(question.rubricId)
+          .collection(Collections.USER_RUBRICS)
+          .doc(userId)
           .update({
-            currentQuestion: question.id,
+            [`rubrics.${question.rubricId}.currentQuestion`]: question.id,
           });
         rubricStore.rubricSwipeLogic({questionId: question.id});
         break;
       case 'favorite':
-        const userId = userStore.authUser?.id;
-        if (!userId) {
-          return;
-        }
-
         await firestore()
           .collection(Collections.USERS)
           .doc(userId)
@@ -212,7 +231,6 @@ class QuestionsStore {
 
     let document: RubricType | CategoryType | undefined =
       await rubricStore.fetchRubric(id);
-
     if (isCategory) {
       document = await categoryStore.fetchCategory(id);
     }
@@ -272,13 +290,13 @@ class QuestionsStore {
       }
 
       if (isCategory) {
-        await categoryStore.updateCategory({
+        await categoryStore.updateUserCategory({
           id,
           field: 'breakPointForCheckingDate',
           data: newCheckTime,
         });
       } else {
-        await rubricStore.updateRubric({
+        await rubricStore.updateUserRubric({
           id,
           field: 'breakPointForCheckingDate',
           data: newCheckTime,
@@ -300,13 +318,13 @@ class QuestionsStore {
     const startDate = new Date().toJSON();
 
     if (isCategory) {
-      await categoryStore.updateCategory({
+      await categoryStore.updateUserCategory({
         id,
         field: 'questionSwipeStartDate',
         data: startDate,
       });
     } else {
-      await rubricStore.updateRubric({
+      await rubricStore.updateUserRubric({
         id,
         field: 'questionSwipeStartDate',
         data: startDate,
@@ -332,13 +350,13 @@ class QuestionsStore {
     }
 
     if (isCategory) {
-      await categoryStore.updateCategory({
+      await categoryStore.updateUserCategory({
         id,
         field: 'swipedQuestionsPercentage',
         data: swipedQuestionsPercentage,
       });
     } else {
-      await rubricStore.updateRubric({
+      await rubricStore.updateUserRubric({
         id,
         field: 'swipedQuestionsPercentage',
         data: swipedQuestionsPercentage,
@@ -388,12 +406,21 @@ class QuestionsStore {
         currentCategory: category.name as CategoryName,
       });
 
-      profileStore.setCurrentCategory(nextCategory);
+      profileStore.setCurrentCategory({
+        currentCategory: category.name,
+        currentCategoryId: category.id,
+      });
 
-      await categoryStore.updateCategory({
+      await categoryStore.updateUserCategory({
         id: categoryId,
         field: 'isAllQuestionsSwiped',
         data: true,
+      });
+
+      await categoryStore.updateUserCategory({
+        id: categoryId,
+        field: 'isBlocked',
+        data: false,
       });
 
       await userStore.updateUser({

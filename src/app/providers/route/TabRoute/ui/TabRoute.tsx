@@ -9,10 +9,9 @@ import {
 import {Layout} from '@src/app/providers/layout';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
 import {getTabIcon} from '../lib/getIcon';
-import {Wrapper as TabHeaderLeft} from './TabHeaderLeft/TabHeaderLeft';
-import {Wrapper as TabHeaderRight} from './TabHeaderRight/TabHeaderRight';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +20,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CHALLENGES}
+      initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
@@ -54,6 +53,8 @@ const TabRoute = () => {
           isPageScrolling,
           deleteBottomPadding,
           deleteTopPadding,
+          headerShown,
+          HeaderLeft,
         }) => {
           const Wrapper = (props: ParamListBase) => {
             return (
@@ -74,16 +75,13 @@ const TabRoute = () => {
               options={({route}) => ({
                 title: '',
                 headerStyle: {backgroundColor: colors.bgColor},
-                headerShown: !!headerTitle,
+                headerShown: headerShown,
                 headerLeft: () =>
-                  headerTitle ? (
-                    <TabHeaderLeft
-                      {...route.params}
-                      title={headerTitle || ''}
-                    />
+                  HeaderLeft ? (
+                    <HeaderLeft {...route.params} title={headerTitle || ''} />
                   ) : null,
                 headerRight: () =>
-                  headerTitle ? <TabHeaderRight {...route.params} /> : null,
+                  headerShown ? <TabHeaderRight {...route.params} /> : null,
               })}
             />
           );

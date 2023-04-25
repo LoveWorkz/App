@@ -7,6 +7,8 @@ export enum Collections {
   CHALLENGE_CATEGORIES = 'Challenge_Categories',
   CHALLENGES = 'Challenges',
   USER_CHALLENGE_CATEGORIES = 'User_Challenge_Categories',
+  USER_CATEGORIES = 'User_Categories',
+  USER_RUBRICS = 'User_Rubrics',
 }
 
 export enum CloudStoragePaths {

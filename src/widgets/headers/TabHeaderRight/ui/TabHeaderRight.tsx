@@ -18,7 +18,7 @@ const TabHeaderRight = () => {
   );
 };
 
-export const Wrapper = memo(TabHeaderRight);
+export default memo(TabHeaderRight);
 
 const styles = StyleSheet.create({
   TabHeaderRight: {

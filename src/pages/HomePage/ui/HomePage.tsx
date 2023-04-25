@@ -9,7 +9,6 @@ import {categoriesStore} from '@src/pages/CategoriesPage';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
-import {ComponentWrapper as Header} from './Header/Header';
 
 const HomePage = () => {
   useEffect(() => {
@@ -28,12 +27,6 @@ const HomePage = () => {
   return (
     <View>
       <View style={styles.container}>
-        <View style={styles.headerWrapper}>
-          <Header
-            name={profileStore.profileData?.name || ''}
-            imageUrl={profileStore.avatar || ''}
-          />
-        </View>
         <View style={styles.homeCategoryWrapper}>
           <HomeCategory />
         </View>
@@ -62,9 +55,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     paddingTop: !isPlatformIos ? 0 : 40,
-  },
-  headerWrapper: {
-    marginBottom: 20,
   },
   confirmEmail: {
     marginTop: 10,

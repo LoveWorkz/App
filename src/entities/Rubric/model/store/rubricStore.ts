@@ -1,11 +1,12 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
-import {questionStore} from '@src/entities/QuestionCard';
+import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {categoryStore} from '@src/entities/Category';
+import {userStore} from '@src/entities/User';
 import {RubricType} from '../types/rubricTypes';
 
 class RubricStore {
@@ -13,6 +14,36 @@ class RubricStore {
   constructor() {
     makeAutoObservable(this);
   }
+
+  initUserRubricQuestionId = async ({
+    questions,
+    id,
+  }: {
+    questions: QuestionType[];
+    id: string;
+  }) => {
+    try {
+      if (this.rubric?.currentQuestion) {
+        return;
+      }
+
+      const firstQuestion = questions[0];
+
+      await this.updateUserRubric({
+        id,
+        field: 'currentQuestion',
+        data: firstQuestion.id,
+      });
+      runInAction(() => {
+        this.rubric = {
+          ...this.rubric,
+          currentQuestion: firstQuestion.id,
+        } as RubricType;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   getRubric = (id: string) => {
     try {
@@ -29,12 +60,31 @@ class RubricStore {
 
   fetchRubric = async (id: string) => {
     try {
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+      // default rubric
       const data = await firestore()
         .collection(Collections.RUBRICS)
         .doc(id)
         .get();
+      // user custom rubric
+      const userRubricData = await firestore()
+        .collection(Collections.USER_RUBRICS)
+        .doc(userId)
+        .get();
 
-      const rubric = {...data.data(), id: data.id} as RubricType;
+      const userRubric = userRubricData.data();
+      if (!userRubric) {
+        return;
+      }
+      // merge default rubric with user custom rubric
+      const rubric = {
+        ...data.data(),
+        id: data.id,
+        ...userRubric.rubrics[id],
+      } as RubricType;
 
       this.rubric = rubric;
       return rubric;
@@ -43,7 +93,7 @@ class RubricStore {
     }
   };
 
-  updateRubric = async ({
+  updateUserRubric = async ({
     id,
     field,
     data,
@@ -52,37 +102,34 @@ class RubricStore {
     field: string;
     data: number | string;
   }) => {
+    const userId = userStore.authUserId;
+    if (!userId) {
+      return;
+    }
     try {
       await firestore()
-        .collection(Collections.RUBRICS)
-        .doc(id)
+        .collection(Collections.USER_RUBRICS)
+        .doc(userId)
         .update({
-          [field]: data,
+          [`rubrics.${id}.${field}`]: data,
         });
     } catch (e) {
       console.log(e);
     }
   };
 
-  rubricSwipeLogic = async ({
-    rubricId,
-    questionId,
-  }: {
-    rubricId?: string;
-    questionId?: string;
-  }) => {
+  rubricSwipeLogic = async ({questionId}: {questionId?: string}) => {
     try {
       let currentquestionId = questionId;
       let rubricName: string | undefined;
 
       if (!questionId) {
-        if (!rubricId) {
+        const rubric = this.rubric;
+        if (!rubric) {
           return;
         }
-
-        const rubric = this.getRubric(rubricId);
-        currentquestionId = rubric?.currentQuestion;
-        rubricName = rubric?.name;
+        currentquestionId = rubric.currentQuestion;
+        rubricName = rubric.name;
       }
       if (!currentquestionId) {
         return;

@@ -16,7 +16,10 @@ export interface ChallengeCategoryType {
 
 export interface UserChallengeCategoryType {
   userId: string;
-  challengeCategory: any;
+  challengeCategory: Record<
+    ChallengeCategoriesNames,
+    {isBlocked: boolean; selectedChallengesIds: string[]}
+  >;
 }
 
 export interface CurrentChallengeCategoryType {

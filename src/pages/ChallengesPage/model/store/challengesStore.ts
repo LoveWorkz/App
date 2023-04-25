@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {
+  ChallengeCategoriesNames,
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
   UserChallengeCategoryType,
@@ -65,7 +66,7 @@ class ChallengesStore {
         // keeping selected Challenges Ids separately for updating challenges
         this.setSelectedChallengesIds(
           userChallengeCategory.challengeCategory[
-            currentChallengeCategory.currentChallengeCategory
+            currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames
           ].selectedChallengesIds,
         );
       });

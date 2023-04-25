@@ -27,4 +27,15 @@ export interface CategoryType {
   questionSwipeStartDate: string;
   breakPointForCheckingDate: number;
   isAllQuestionsSwiped: boolean;
+  createdDate: string;
+}
+
+export interface CurrentCategory {
+  currentCategory: string;
+  currentCategoryId: string;
+}
+
+export interface UserCategory {
+  categories: Record<string, Partial<CategoryType>>;
+  userId: string;
 }

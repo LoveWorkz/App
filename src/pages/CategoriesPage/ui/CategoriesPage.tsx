@@ -17,9 +17,7 @@ const CategoriesPage = () => {
 
   useFocusEffect(
     useCallback(() => {
-      categoriesStore.fetchRubrics();
-      categoriesStore.fetchCategories();
-      profileStore.fetchProfile();
+      categoriesStore.init();
     }, []),
   );
 

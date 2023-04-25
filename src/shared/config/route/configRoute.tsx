@@ -16,10 +16,10 @@ import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 import {LanguagePage} from '@src/pages/LanguagePage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
-import {ProfileHeaderRight} from '@src/widgets/ProfileHeaderRight';
-import {CategoryDetailsHeaderRight} from '@src/widgets/CategoryDetailsHeaderRight';
+import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
+import {CategoryDetailsHeaderRight} from '@src/widgets/headers/CategoryDetailsHeaderRight';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
-import {QuestionsHeaderRight} from '@src/widgets/QuestionsHeaderRight';
+import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',

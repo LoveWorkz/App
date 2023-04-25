@@ -9,3 +9,8 @@ export interface RubricType {
   breakPointForCheckingDate: number;
   swipedQuestionsPercentage: number;
 }
+
+export interface UserRubric {
+  rubrics: Record<string, Partial<RubricType>>;
+  userId: string;
+}

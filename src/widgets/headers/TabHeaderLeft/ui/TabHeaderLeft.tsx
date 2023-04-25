@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Wrapper = memo(TabHeaderLeft);
+export default memo(TabHeaderLeft);

@@ -3,9 +3,10 @@ import firestore from '@react-native-firebase/firestore';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
-import {questionStore} from '@src/entities/QuestionCard';
+import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
+import {userStore} from '@src/entities/User';
 import {CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
@@ -15,14 +16,65 @@ class CategoryStore {
     makeAutoObservable(this);
   }
 
+  initUserCategoryQuestionId = async ({
+    questions,
+    id,
+  }: {
+    questions: QuestionType[];
+    id: string;
+  }) => {
+    try {
+      if (this.category?.currentQuestion) {
+        return;
+      }
+
+      const firstQuestion = questions[0];
+
+      await this.updateUserCategory({
+        id,
+        field: 'currentQuestion',
+        data: firstQuestion.id,
+      });
+      runInAction(() => {
+        this.category = {
+          ...this.category,
+          currentQuestion: firstQuestion.id,
+        } as CategoryType;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   fetchCategory = async (id: string) => {
     try {
-      const data = await firestore()
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+
+      // default category
+      const categoryData = await firestore()
         .collection(Collections.CATEGORIES)
         .doc(id)
         .get();
+      // user custom category
+      const userCategoryData = await firestore()
+        .collection(Collections.USER_CATEGORIES)
+        .doc(userId)
+        .get();
 
-      const category = {...data.data(), id: data.id} as CategoryType;
+      const userCategory = userCategoryData.data();
+      if (!userCategory) {
+        return;
+      }
+
+      // merge default category with user custom category
+      const category = {
+        ...categoryData.data(),
+        id: categoryData.id,
+        ...userCategory.categories[id],
+      } as CategoryType;
 
       runInAction(() => {
         this.category = category;
@@ -33,9 +85,9 @@ class CategoryStore {
     }
   };
 
-  updateCategory = async ({
-    id,
+  updateUserCategory = async ({
     field,
+    id,
     data,
   }: {
     id: string;
@@ -43,11 +95,16 @@ class CategoryStore {
     data: number | string | boolean;
   }) => {
     try {
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+
       await firestore()
-        .collection(Collections.CATEGORIES)
-        .doc(id)
+        .collection(Collections.USER_CATEGORIES)
+        .doc(userId)
         .update({
-          [field]: data,
+          [`categories.${id}.${field}`]: data,
         });
     } catch (e) {
       console.log(e);
@@ -65,7 +122,6 @@ class CategoryStore {
   };
 
   categorySwipeLogic = async ({
-    categoryId,
     questionId,
   }: {
     categoryId?: string;
@@ -76,14 +132,12 @@ class CategoryStore {
       let categoryName: string | undefined;
 
       if (!questionId) {
-        if (!categoryId) {
-          return;
-        }
+        const category = this.category;
 
-        const category = await this.getCategory(categoryId);
         currentquestionId = category?.currentQuestion;
         categoryName = category?.name;
       }
+
       if (!currentquestionId) {
         return;
       }

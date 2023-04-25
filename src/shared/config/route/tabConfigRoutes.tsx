@@ -5,6 +5,8 @@ import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {ShopPage} from '@src/pages/ShopPage';
 import {CategoriesPage} from '@src/pages/CategoriesPage';
 import {BooksPage} from '@src/pages/BooksPage';
+import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
+import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -30,6 +32,8 @@ type NewRouteProps = {
   isPageScrolling?: boolean;
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
+  headerShown?: boolean;
+  HeaderLeft?: ComponentType<any>;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
@@ -38,12 +42,16 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: CategoriesPage,
     headerTitle: 'Questions library',
     isPageScrolling: true,
+    headerShown: true,
+    HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
     Element: ChallengesPage,
     headerTitle: 'Challenges',
     isPageScrolling: true,
+    headerShown: true,
+    HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
@@ -51,17 +59,23 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     headerTitle: '',
     isPageScrolling: true,
     deleteTopPadding: true,
+    headerShown: true,
+    HeaderLeft: HomePageHeaderLeft,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
     Element: BooksPage,
     headerTitle: 'Literature',
     isPageScrolling: true,
+    headerShown: true,
+    HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
     Element: ShopPage,
     headerTitle: 'Shop',
     isPageScrolling: true,
+    headerShown: true,
+    HeaderLeft: TabHeaderLeft,
   },
 };

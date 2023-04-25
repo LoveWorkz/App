@@ -1,3 +1,4 @@
+import {CurrentCategory} from '@src/entities/Category';
 import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {FavoriteType} from '@src/entities/Favorite';
 
@@ -13,9 +14,7 @@ export interface Profile {
   relationshipStatus: string;
   rubric: string;
   favorites: FavoriteType;
-  category: {
-    currentCategory: string;
-  };
+  category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
 }
 

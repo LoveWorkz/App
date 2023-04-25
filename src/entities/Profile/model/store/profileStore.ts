@@ -15,6 +15,7 @@ import {
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import {CurrentCategory} from '@src/entities/Category';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -28,7 +29,7 @@ class ProfileStore {
   };
   avatar: string = '';
   tempAvatar: string = '';
-  currentCategory: string = '';
+  currentCategory: CurrentCategory | null = null;
 
   isLoading: boolean = false;
   initialFetching: boolean = true;
@@ -78,7 +79,7 @@ class ProfileStore {
     this.setTempAvatar(avatar);
   }
 
-  setCurrentCategory(category: string) {
+  setCurrentCategory(category: CurrentCategory) {
     this.currentCategory = category;
   }
 
@@ -167,7 +168,7 @@ class ProfileStore {
           this.setProfileData(data);
           this.setProfileForm(data);
           this.setAvatar(data.photo);
-          this.setCurrentCategory(data.category.currentCategory);
+          this.setCurrentCategory(data.category);
           challengesStore.setChallengeCategory(data.challengeCategory);
           favoriteStore.setFavorites(data.favorites);
         });

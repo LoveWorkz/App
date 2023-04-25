@@ -77,7 +77,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     [key, id],
   );
 
-  if (!questions.length) {
+  if (questionsStore.questionsPageloading) {
     return (
       <View style={styles.QuestionsPage}>
         <View style={styles.loader}>

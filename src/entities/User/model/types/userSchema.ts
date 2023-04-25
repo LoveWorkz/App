@@ -1,3 +1,7 @@
+import {CurrentCategory} from '@src/entities/Category';
+import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
+import {FavoriteType} from '@src/entities/Favorite';
+
 export interface User {
   id: string;
   photo: string | null;
@@ -5,6 +9,13 @@ export interface User {
   name: string | null;
   emailVerified: boolean;
   isAuth: boolean;
+  age: number;
+  country: string;
+  relationshipStatus: string;
+  rubric: string;
+  category: CurrentCategory;
+  challengeCategory: CurrentChallengeCategoryType;
+  favorites: FavoriteType;
 }
 
 export enum AuthMethod {

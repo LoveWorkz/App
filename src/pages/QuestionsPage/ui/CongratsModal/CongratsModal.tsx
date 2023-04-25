@@ -21,7 +21,7 @@ export const CongratsModal = (props: CongratsModalProps) => {
   const {visible, setVisible} = props;
   const colors = useColors();
   const {t} = useTranslation();
-  const currentCategory = profileStore.currentCategory;
+  const currentCategory = profileStore.currentCategory?.currentCategory;
   const content = getCongratsModalContent(t)[currentCategory as CategoryName];
 
   const onCancelHandler = () => {
