@@ -2,6 +2,7 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {
   horizontalScale,
@@ -16,10 +17,13 @@ import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
+import {CategoryName} from '@src/entities/Category';
+import {profileStore} from '@src/entities/Profile';
+import {getCongratsModalContent} from '@src/pages/CategoriesPage';
+import {CongratsModal} from '@src/widgets/CongratsModal';
 import questionsStore from '../model/store/questionsStore';
 import WowThatWasFastModal from './WowThatWasFastModal/WowThatWasFastModal';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
-import {CongratsModal} from './CongratsModal/CongratsModal';
 
 interface QuestionsPageProps {
   route?: {params: {type: 'rubric' | 'category' | 'favorite'; id: string}};
@@ -27,13 +31,17 @@ interface QuestionsPageProps {
 
 const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
+  const colors = useColors();
+  const {t} = useTranslation();
+
   const key = route?.params.type;
   const id = route?.params.id;
-  const colors = useColors();
   const questions = questionsStore.questions;
   const questionsPageInfo = questionsStore.questionsPageInfo;
+  const currentCategory = profileStore.currentCategory?.currentCategory;
 
   const getFormattedQuestions = getFormattedQuestionsWrapper(questions);
+  const content = getCongratsModalContent(t)[currentCategory as CategoryName];
 
   useFocusEffect(
     useCallback(() => {
@@ -130,6 +138,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         setVisible={questionsStore.setThatWasFastModalVisible}
       />
       <CongratsModal
+        content={content}
         visible={questionsStore.congratsModalVisible}
         setVisible={questionsStore.setCongratsModalVisible}
       />

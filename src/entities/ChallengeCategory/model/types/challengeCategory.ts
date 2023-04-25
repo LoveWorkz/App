@@ -18,7 +18,11 @@ export interface UserChallengeCategoryType {
   userId: string;
   challengeCategory: Record<
     ChallengeCategoriesNames,
-    {isBlocked: boolean; selectedChallengesIds: string[]}
+    {
+      isBlocked: boolean;
+      selectedChallengesIds: string[];
+      isAllChallengesSelected: boolean;
+    }
   >;
 }
 

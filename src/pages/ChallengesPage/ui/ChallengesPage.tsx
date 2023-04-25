@@ -4,12 +4,20 @@ import {observer} from 'mobx-react-lite';
 
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {CongratsModal} from '@src/widgets/CongratsModal';
 import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
 import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
 import Challenges from './Challenges/Challenges';
 import challengesStore from '../model/store/challengesStore';
+import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
 const ChallengesPage = () => {
+  const challengeCategory = challengesStore.challengeCategory;
+  const congratsModalContent =
+    getCongratsModalContentForChallenges()[
+      challengeCategory?.currentChallengeCategory || ''
+    ];
+
   useEffect(() => {
     challengesStore.init();
 
@@ -38,6 +46,11 @@ const ChallengesPage = () => {
         <ChallengesFilterItems />
       </View>
       <Challenges />
+      <CongratsModal
+        visible={challengesStore.isCongratsModalVisible}
+        setVisible={challengesStore.setIsCongratsModalVisible}
+        content={congratsModalContent}
+      />
     </View>
   );
 };

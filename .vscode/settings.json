@@ -34,7 +34,7 @@
           "",
           "interface [FTName]Props {}",
           "",
-          "export const [FTName] = (props: [FTName]Props) => {",
+          "const [FTName] = (props: [FTName]Props) => {",
           "  const {} = props;",
           "",
           "  return (",

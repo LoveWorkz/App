@@ -7,6 +7,7 @@ import {
   ChallengeCategoriesNames,
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
+  getNextChallengeCategory,
   UserChallengeCategoryType,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType} from '@src/entities/Challenge';
@@ -20,8 +21,10 @@ class ChallengesStore {
   isChallengeCategoriesLoading: boolean = true;
   isChallengesLoading: boolean = true;
   selectedChallengesIds: string[] = [];
+  isAllChallengesSelected: boolean = false;
   userChallengeCategory: null | UserChallengeCategoryType = null;
   challengeCategory: null | CurrentChallengeCategoryType = null;
+  isCongratsModalVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -37,6 +40,14 @@ class ChallengesStore {
 
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {
     this.selectedChallengesIds = selectedChallengesIds;
+  };
+
+  setIsAllChallengesSelected = (isAllChallengesSelected: boolean) => {
+    this.isAllChallengesSelected = isAllChallengesSelected;
+  };
+
+  setIsCongratsModalVisible = (isCongratsModalVisible: boolean) => {
+    this.isCongratsModalVisible = isCongratsModalVisible;
   };
 
   fetchUserChallengeCategory = async () => {
@@ -61,15 +72,54 @@ class ChallengesStore {
         return;
       }
 
+      const currenetChallengeCategory =
+        userChallengeCategory.challengeCategory[
+          currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames
+        ];
+
       runInAction(() => {
         this.userChallengeCategory = userChallengeCategory;
+        this.setIsAllChallengesSelected(
+          currenetChallengeCategory.isAllChallengesSelected,
+        );
         // keeping selected Challenges Ids separately for updating challenges
         this.setSelectedChallengesIds(
-          userChallengeCategory.challengeCategory[
-            currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames
-          ].selectedChallengesIds,
+          currenetChallengeCategory.selectedChallengesIds,
         );
       });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  updateUserChallengeCategory = async ({
+    field,
+    data,
+    challengeCategoryName,
+  }: {
+    field: string;
+    data: any;
+    challengeCategoryName?: ChallengeCategoriesNames;
+  }) => {
+    try {
+      const currentChallengeCategory = this.challengeCategory;
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+      if (!currentChallengeCategory) {
+        return;
+      }
+
+      await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .update({
+          [`challengeCategory.${
+            challengeCategoryName ||
+            currentChallengeCategory.currentChallengeCategory
+          }.${field}`]: data,
+        });
     } catch (e) {
       console.log(e);
     }
@@ -135,6 +185,7 @@ class ChallengesStore {
         .collection(Collections.CHALLENGE_CATEGORIES)
         .doc(currentChallengeCategory.currentChallengeCategoryId)
         .collection(Collections.CHALLENGES)
+        .orderBy('createdDate')
         .get();
 
       const userChallengeCategory = this.userChallengeCategory;
@@ -250,8 +301,55 @@ class ChallengesStore {
   };
 
   clearChallengesInfo = () => {
-    rubricFilterItemStore.clearInfo();
-    this.filteredChallengesList = this.challenges;
+    try {
+      rubricFilterItemStore.clearInfo();
+      this.filteredChallengesList = this.challenges;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  checkIfAllChallengesSelected = async () => {
+    try {
+      const isAllChallengesSelected =
+        this.challenges.length === this.selectedChallengesIds.length;
+
+      if (isAllChallengesSelected) {
+        const currentChallengeCategory = this.challengeCategory;
+        if (!currentChallengeCategory) {
+          return;
+        }
+
+        const nextChallengeCategoryName = getNextChallengeCategory(
+          currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames,
+        );
+
+        if (this.isAllChallengesSelected) {
+          return;
+        }
+
+        // update data after selecting all challenges
+        await this.updateUserChallengeCategory({
+          field: 'isAllChallengesSelected',
+          data: true,
+        });
+        this.setIsAllChallengesSelected(true);
+        // open next challenge category
+        await this.updateUserChallengeCategory({
+          field: 'isBlocked',
+          challengeCategoryName: nextChallengeCategoryName,
+          data: false,
+        });
+
+        this.setIsCongratsModalVisible(true);
+
+        // fetching actual data after selecting all challenges
+        await this.fetchUserChallengeCategory();
+        await this.fetchChallengeCategories();
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 }
 

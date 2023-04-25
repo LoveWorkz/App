@@ -8,21 +8,19 @@ import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {profileStore} from '@src/entities/Profile';
-import {CategoryName} from '@src/entities/Category';
-import {getCongratsModalContent} from '../../model/lib/questions';
+import {CongratsModalContentType} from '../model/types/congratsModalType';
 
 interface CongratsModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  content: CongratsModalContentType;
 }
 
-export const CongratsModal = (props: CongratsModalProps) => {
-  const {visible, setVisible} = props;
+const CongratsModal = (props: CongratsModalProps) => {
+  const {visible, setVisible, content} = props;
+  const {height, width, title, description, image} = content;
   const colors = useColors();
   const {t} = useTranslation();
-  const currentCategory = profileStore.currentCategory?.currentCategory;
-  const content = getCongratsModalContent(t)[currentCategory as CategoryName];
 
   const onCancelHandler = () => {
     setVisible?.(false);
@@ -30,16 +28,16 @@ export const CongratsModal = (props: CongratsModalProps) => {
 
   const uri = useMemo(() => {
     return {
-      uri: content.image,
+      uri: image,
     };
-  }, [content.image]);
+  }, [image]);
 
   return (
     <Modal
       contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>
-      <View style={[{height: content.height, width: content.width}]}>
+      <View style={[{height, width}]}>
         <Image style={styles.image} source={uri} />
       </View>
 
@@ -47,14 +45,18 @@ export const CongratsModal = (props: CongratsModalProps) => {
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
         weight={'600'}
-        text={content.title}
+        text={title}
       />
 
-      <AppText
-        style={[styles.description, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={content.description}
-      />
+      {description ? (
+        <AppText
+          style={[styles.description, {color: colors.primaryTextColor}]}
+          size={TextSize.LEVEL_4}
+          text={description}
+        />
+      ) : (
+        <></>
+      )}
       <Button
         style={styles.btn}
         onPress={onCancelHandler}
