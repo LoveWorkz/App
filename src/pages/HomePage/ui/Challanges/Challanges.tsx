@@ -11,29 +11,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
-
-const data = [
-  {
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%201.png?alt=media&token=e83e70f1-0fff-47ab-8a0e-ba419fc726aa',
-  },
-  {
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%202.png?alt=media&token=e3abbcc0-ea2d-4cf9-90e3-42627ae525c4',
-  },
-  {
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%203.png?alt=media&token=0a43e761-998f-41bd-bfda-54b1c03187b7',
-  },
-  {
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%204.png?alt=media&token=ea807b46-312a-4973-862c-d7181f33ccd7',
-  },
-  {
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FScreenshot%202023-02-14%20at%2013.20%205.png?alt=media&token=e76db783-c16d-4b9b-991e-b29da3b75c3e',
-  },
-];
+import {challengesStore} from '@src/pages/ChallengesPage';
 
 const Challanges = () => {
   const {t} = useTranslation();
@@ -69,8 +47,16 @@ const Challanges = () => {
       </View>
       <View style={styles.challangesWrapper}>
         <View style={[styles.challanges, {width: windowWidthMinusPaddings}]}>
-          {data.map(item => {
-            return <ChallengeCategory key={item.image} image={item.image} />;
+          {challengesStore.challengeCategories.map(challange => {
+            return (
+              <ChallengeCategory
+                key={challange.id}
+                image={challange.image}
+                name={challange.name}
+                isBlocked={challange.isBlocked}
+                id={challange.id}
+              />
+            );
           })}
         </View>
       </View>

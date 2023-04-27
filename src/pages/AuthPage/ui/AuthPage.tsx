@@ -12,6 +12,7 @@ import {userStore} from '@src/entities/User';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {isPlatformIos} from '@src/shared/consts/common';
 import OrLine from './OrLine/OrLine';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 
 const AuthPage = () => {
   const {t} = useTranslation();
@@ -96,7 +97,11 @@ const AuthPage = () => {
                 text={t('auth.dont_have_an_acount')}
               />
               <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-                <AppText size={TextSize.LEVEL_4} text={t('auth.signup')} />
+                <GradientText
+                  style={styles.changeFormBtn}
+                  size={TextSize.LEVEL_4}
+                  text={t('auth.signup')}
+                />
               </Pressable>
             </View>
           ) : (
@@ -107,7 +112,11 @@ const AuthPage = () => {
                 text={t('auth.already_have_an_account')}
               />
               <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-                <AppText size={TextSize.LEVEL_4} text={t('auth.login')} />
+                <GradientText
+                  style={styles.changeFormBtn}
+                  size={TextSize.LEVEL_4}
+                  text={t('auth.login')}
+                />
               </Pressable>
             </View>
           )}
@@ -166,5 +175,8 @@ const styles = StyleSheet.create({
   },
   haveEnAccount: {
     marginRight: 5,
+  },
+  changeFormBtn: {
+    textDecorationLine: 'underline',
   },
 });

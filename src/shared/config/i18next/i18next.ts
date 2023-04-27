@@ -2,6 +2,7 @@ import i18n, {Module} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {USER_LANGUAGE_STORAGE_KEY} from '../../consts/storage';
 import {lngStorage} from '../../lib/storage/adapters/lngAdapter';
 import {locals} from './locals';
@@ -18,16 +19,30 @@ const LANGUAGE_DETECTOR = {
         } else {
           console.log('No language is set, choosing English as fallback');
         }
-        const findBestAvailableLanguage =
-          RNLocalize.findBestAvailableLanguage(LANG_CODES);
-        callback(findBestAvailableLanguage?.languageTag || 'en');
+        const deviceLanguageInfo = RNLocalize.getLocales()?.[0];
+
+        if (!deviceLanguageInfo) {
+          callback('en');
+
+          return;
+        }
+
+        if (LANG_CODES.includes(deviceLanguageInfo.languageCode)) {
+          // set default language from device
+          callback(deviceLanguageInfo.languageCode);
+        } else {
+          // default language
+          callback('en');
+        }
+
         return;
       }
+
       callback(language);
     });
   },
   init: () => {},
-  cacheUserLanguage: (language: string) => {
+  cacheUserLanguage: (language: LanguageValueType) => {
     lngStorage.setLanguage(USER_LANGUAGE_STORAGE_KEY, language);
   },
 };

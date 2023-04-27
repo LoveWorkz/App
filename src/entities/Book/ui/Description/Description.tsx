@@ -51,7 +51,7 @@ const Description = (props: BookProps) => {
           <AppText
             weight={'700'}
             style={[styles.btnText]}
-            text={'buy now'}
+            text={t('buy_now')}
             size={TextSize.LEVEL_4}
           />
         </Button>

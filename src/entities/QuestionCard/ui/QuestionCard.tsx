@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {ImageBackground, StyleSheet} from 'react-native';
+import {ImageBackground, ImageSourcePropType, StyleSheet} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
@@ -12,7 +12,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 interface QuestionCardProps {
   question: string;
-  image: string;
+  image: ImageSourcePropType;
   type: string;
 }
 
@@ -26,9 +26,7 @@ const QuestionCard = (props: QuestionCardProps) => {
     <ImageBackground
       resizeMode="cover"
       imageStyle={styles.imageStyle}
-      source={{
-        uri: image,
-      }}
+      source={image}
       style={styles.questionsCard}>
       <AppText
         style={[

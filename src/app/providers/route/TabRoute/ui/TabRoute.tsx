@@ -20,7 +20,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CHALLENGES}
+      initialRouteName={TabRoutesNames.CATEGORIES}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
@@ -78,7 +78,7 @@ const TabRoute = () => {
                 headerShown: headerShown,
                 headerLeft: () =>
                   HeaderLeft ? (
-                    <HeaderLeft {...route.params} title={headerTitle || ''} />
+                    <HeaderLeft {...route.params} title={headerTitle} />
                   ) : null,
                 headerRight: () =>
                   headerShown ? <TabHeaderRight {...route.params} /> : null,

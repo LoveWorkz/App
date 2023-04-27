@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import {TFunction} from 'i18next';
 
 import {Collections} from '@src/shared/types/firebase';
 import {
@@ -40,9 +41,11 @@ class QuestionsStore {
   getQuestionsPageInfo = async ({
     id,
     key,
+    t,
   }: {
     id?: string;
     key: 'rubric' | 'category' | 'favorite';
+    t: TFunction;
   }) => {
     try {
       runInAction(() => {
@@ -70,7 +73,7 @@ class QuestionsStore {
           if (!id) {
             return;
           }
-          await categoryStore.fetchCategory(id);
+          await categoryStore.fetchCategory({id, t});
           await this.fetchQuestionsById({
             id,
             key: 'categoryId',
@@ -214,10 +217,12 @@ class QuestionsStore {
     questionId,
     id,
     type,
+    t,
   }: {
     questionId: string;
     id: string;
     type: 'rubric' | 'category' | 'favorite';
+    t: TFunction;
   }) => {
     const isCategory = type === 'category';
 
@@ -232,7 +237,7 @@ class QuestionsStore {
     let document: RubricType | CategoryType | undefined =
       await rubricStore.fetchRubric(id);
     if (isCategory) {
-      document = await categoryStore.fetchCategory(id);
+      document = await categoryStore.fetchCategory({id, t});
     }
 
     if (!document) {
@@ -251,21 +256,23 @@ class QuestionsStore {
       isCategory,
     });
 
-    this.checkIfUserSwipedFast({id, isCategory});
+    this.checkIfUserSwipedFast({id, isCategory, t});
   };
 
   checkIfUserSwipedFast = async ({
     id,
     isCategory,
+    t,
   }: {
     id: string;
     isCategory: boolean;
+    t: TFunction;
   }) => {
     let document: RubricType | CategoryType | undefined =
       await rubricStore.fetchRubric(id);
 
     if (isCategory) {
-      document = await categoryStore.fetchCategory(id);
+      document = await categoryStore.fetchCategory({id, t});
     }
     if (!document) {
       return;

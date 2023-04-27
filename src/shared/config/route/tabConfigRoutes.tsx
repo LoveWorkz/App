@@ -40,7 +40,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
     Element: CategoriesPage,
-    headerTitle: 'Questions library',
+    headerTitle: 'questions.title',
     isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
@@ -48,7 +48,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
     Element: ChallengesPage,
-    headerTitle: 'Challenges',
+    headerTitle: 'challenge.title',
     isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
@@ -65,7 +65,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
     Element: BooksPage,
-    headerTitle: 'Literature',
+    headerTitle: 'books.title',
     isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
@@ -73,7 +73,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
     Element: ShopPage,
-    headerTitle: 'Shop',
+    headerTitle: 'shop.title',
     isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,

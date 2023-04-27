@@ -2,6 +2,7 @@ import {View, StyleSheet} from 'react-native';
 import React, {memo, useCallback} from 'react';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 import {Favourites} from '@src/widgets/Favourites';
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
@@ -13,12 +14,13 @@ import Rubrics from './Rubrics/Rubrics';
 import categoriesStore from '../model/store/categoriesStore';
 
 const CategoriesPage = () => {
+  const {t} = useTranslation();
   const favorites = favoriteStore.favorite;
 
   useFocusEffect(
     useCallback(() => {
-      categoriesStore.init();
-    }, []),
+      categoriesStore.init(t);
+    }, [t]),
   );
 
   if (!categoriesStore.categories || profileStore.initialFetching) {

@@ -41,7 +41,7 @@ export const Layout = (props: LayoutProps) => {
         {
           backgroundColor: colors.bgColor,
           paddingBottom: deleteBottomPadding ? 0 : 40,
-          marginTop: deleteTopPadding ? 0 : 20,
+          paddingTop: deleteTopPadding ? 0 : 40,
         },
       ]}>
       {children}

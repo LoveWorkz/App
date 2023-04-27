@@ -1,1 +1,1 @@
-export {Wrapper as LanguagePage} from './ui/LanguagePage';
+export {default as LanguagePage} from './ui/LanguagePage';

@@ -1,7 +1,7 @@
 {
-   "upload.change_photo": "Change photo",
-   "upload.change_profile_photo": "Change profile photo",
+   "upload.change_photo": "Change Photo",
+   "upload.change_profile_photo": "Change profil photo",
    "upload.take_photo": "Take photo",
    "upload.open_gallery": "Open gallery",
-   "upload.delete_photo": "Delete photo"
+   "upload.delete_photo": "Delete Photo"
 }

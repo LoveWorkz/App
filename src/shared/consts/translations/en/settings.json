@@ -1,6 +1,18 @@
 {
-    "settings.privacy_policy": "Terms of Use & Privacy Policy",
+    "settings.title": "Settings",
+   
     "settings.change_password": "Change password",
-    "settings.share_us": "Share us with your friends",
-    "settings.language": "Language"
+    "settings.language": "Language",
+    "settings.dark_mode": "Dark mode",
+    "settings.light_mode": "Light mode",
+    "settings.profile": "Profile",
+    "settings.how_to_use": "How to use",
+    "settings.about": "About",
+    "settings.contact_us": "Contact us",
+    "settings.partners": "Partners",
+    "settings.share_us": "Share us with ur friends",
+    "settings.privacy_policy": "Terms of use & Privacy Policy",
+    "settings.german": "German",
+    "settings.english": "English",
+    "settings.portuguese": "Portuguese"
 }

@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import {TFunction} from 'i18next';
 
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
@@ -8,6 +9,7 @@ import {
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
+  translateChallenge,
   UserChallengeCategoryType,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType} from '@src/entities/Challenge';
@@ -30,11 +32,11 @@ class ChallengesStore {
     makeAutoObservable(this);
   }
 
-  init = async () => {
+  init = async (t: TFunction) => {
     // the order is important
     await profileStore.fetchProfile();
     await this.fetchUserChallengeCategory();
-    await this.fetchChallengeCategories();
+    await this.fetchChallengeCategories(t);
     await this.fetchChallenges();
   };
 
@@ -125,7 +127,7 @@ class ChallengesStore {
     }
   };
 
-  fetchChallengeCategories = async () => {
+  fetchChallengeCategories = async (t: TFunction) => {
     try {
       const currentChallengeCategory = this.challengeCategory;
       const userId = userStore.authUserId;
@@ -158,8 +160,18 @@ class ChallengesStore {
         };
       });
 
+      const translatedCategories = challengeCategories.map(challenge => {
+        return {
+          ...challenge,
+          name: translateChallenge({
+            t,
+            name: challenge.name,
+          }) as ChallengeCategoriesNames,
+        };
+      });
+
       runInAction(() => {
-        this.challengeCategories = challengeCategories;
+        this.challengeCategories = translatedCategories;
       });
     } catch (e) {
       console.log(e);
@@ -185,7 +197,6 @@ class ChallengesStore {
         .collection(Collections.CHALLENGE_CATEGORIES)
         .doc(currentChallengeCategory.currentChallengeCategoryId)
         .collection(Collections.CHALLENGES)
-        .orderBy('createdDate')
         .get();
 
       const userChallengeCategory = this.userChallengeCategory;
@@ -309,7 +320,7 @@ class ChallengesStore {
     }
   };
 
-  checkIfAllChallengesSelected = async () => {
+  checkIfAllChallengesSelected = async (t: TFunction) => {
     try {
       const isAllChallengesSelected =
         this.challenges.length === this.selectedChallengesIds.length;
@@ -345,7 +356,7 @@ class ChallengesStore {
 
         // fetching actual data after selecting all challenges
         await this.fetchUserChallengeCategory();
-        await this.fetchChallengeCategories();
+        await this.fetchChallengeCategories(t);
       }
     } catch (e) {
       console.log(e);

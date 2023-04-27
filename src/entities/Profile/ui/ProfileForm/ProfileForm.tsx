@@ -7,7 +7,7 @@ import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
 import {RelationshipStatusSelect} from '@src/entities/RelationshipStatus';
 import profileStore from '../../model/store/profileStore';
-import {Wrapper as Rubrics} from '../Rubrics/Rubrics';
+import Preferences from '../Preferences/Preferences';
 
 const ProfileForm = () => {
   const {t} = useTranslation();
@@ -71,7 +71,7 @@ const ProfileForm = () => {
         />
       </View>
       <View style={styles.rubrics}>
-        <Rubrics
+        <Preferences
           initialValue={profileStore.profileData?.rubric}
           error={profileStore.errorInfo.rubricError}
           changeRubric={onRubricChangeHandler}
@@ -82,7 +82,7 @@ const ProfileForm = () => {
   );
 };
 
-export const Wrapper = memo(observer(ProfileForm));
+export default memo(observer(ProfileForm));
 
 const styles = StyleSheet.create({
   profileForm: {

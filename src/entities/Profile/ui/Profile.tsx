@@ -11,7 +11,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
-import {Wrapper as ProfileForm} from './ProfileForm/ProfileForm';
+import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
 
 interface ProfileProps {

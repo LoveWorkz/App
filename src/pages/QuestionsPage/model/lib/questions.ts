@@ -1,16 +1,26 @@
 import {QuestionType} from '@src/entities/QuestionCard';
+import {
+  Action_CARD,
+  questionImage1,
+  questionImage2,
+  questionImage3,
+  questionImage4,
+  questionImage5,
+  questionImage6,
+  WILD_CARD,
+} from '@src/shared/assets/images';
 
 export const counts = [3, 6];
 export const minute = 1;
 export const breakPoint = 30;
 
 export const questionsImages = [
-  'http://localhost:8081/src/shared/assets/images/questionImage1.png',
-  'http://localhost:8081/src/shared/assets/images/questionImage2.png',
-  'http://localhost:8081/src/shared/assets/images/questionImage3.png',
-  'http://localhost:8081/src/shared/assets/images/questionImage4.png',
-  'http://localhost:8081/src/shared/assets/images/questionImage5.png',
-  'http://localhost:8081/src/shared/assets/images/questionImage6.png',
+  questionImage1,
+  questionImage2,
+  questionImage3,
+  questionImage4,
+  questionImage5,
+  questionImage6,
 ];
 
 export const getFormattedQuestionsWrapper = (questions: QuestionType[]) => {
@@ -21,15 +31,14 @@ export const getFormattedQuestionsWrapper = (questions: QuestionType[]) => {
       if (question.type === 'WILD_CARD') {
         return {
           ...question,
-          image: 'http://localhost:8081/src/shared/assets/images/WILD_CARD.png',
+          image: WILD_CARD,
         };
       }
 
       if (question.type === 'Action_CARD') {
         return {
           ...question,
-          image:
-            'http://localhost:8081/src/shared/assets/images/Action_CARD.png',
+          image: Action_CARD,
         };
       }
 

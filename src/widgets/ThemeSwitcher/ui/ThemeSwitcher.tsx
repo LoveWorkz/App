@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, View, Switch} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
@@ -9,6 +10,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 const ThemeSwitcher = () => {
   const {theme, toggleTheme} = useTheme();
   const colors = useColors();
+  const {t} = useTranslation();
   const isLightMode = theme === Theme.LIGHT;
 
   return (
@@ -17,7 +19,9 @@ const ThemeSwitcher = () => {
         <AppText
           style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_5}
-          text={`${isLightMode ? 'Light' : 'Dark'} mode`}
+          text={
+            isLightMode ? t('settings.light_mode') : t('settings.dark_mode')
+          }
         />
       </View>
       <Switch

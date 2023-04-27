@@ -1,3 +1,9 @@
 {
-    "challenge.title": "Challenges"
+    "challenge.title": "Challenges",
+
+    "challenge.Bronze": "Bronze",
+    "challenge.Silver": "Silver",
+    "challenge.Gold": "Gold",
+    "challenge.Platinum": "Platinum",
+    "challenge.Diamond": "Diamond"
 }

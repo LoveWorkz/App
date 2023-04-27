@@ -1,6 +1,6 @@
 import common from './common.json';
 import auth from './auth.json';
-import homePage from './homePage.json';
+import home from './home.json';
 import settings from './settings.json';
 import challenges from './challenges.json';
 import profile from './profile.json';
@@ -8,11 +8,13 @@ import rubrics from './rubrics.json';
 import uploadPhoto from './uploadPhoto.json';
 import books from './books.json';
 import questions from './questions.json';
+import categories from './categories.json';
+import shop from './shop.json';
 
 export const en = {
   ...common,
   ...auth,
-  ...homePage,
+  ...home,
   ...settings,
   ...challenges,
   ...profile,
@@ -20,4 +22,6 @@ export const en = {
   ...uploadPhoto,
   ...books,
   ...questions,
+  ...categories,
+  ...shop,
 };

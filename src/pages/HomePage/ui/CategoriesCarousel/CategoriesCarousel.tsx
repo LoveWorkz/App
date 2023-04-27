@@ -2,6 +2,7 @@ import React, {memo, useMemo} from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import {observer} from 'mobx-react-lite';
 
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {Category, CateorySize} from '@src/entities/Category';
@@ -25,7 +26,7 @@ const CategoriesCarousel = () => {
 
   const formatedCategories = useMemo(() => {
     return categories.map(category => {
-      return {...category, image: category.image.small, size: CateorySize.M};
+      return {...category, image: category.image.middle, size: CateorySize.M};
     });
   }, [categories]);
 
@@ -37,7 +38,7 @@ const CategoriesCarousel = () => {
           style={{color: colors.primaryTextColor}}
           weight={'500'}
           size={TextSize.LEVEL_5}
-          text={t('home.categories')}
+          text={t('categories.categories')}
         />
         <Pressable onPress={onPressHandler}>
           <View style={styles.seeAllWrapper}>
@@ -63,7 +64,7 @@ const CategoriesCarousel = () => {
   );
 };
 
-export const ComponentWrapper = memo(CategoriesCarousel);
+export const ComponentWrapper = memo(observer(CategoriesCarousel));
 
 const styles = StyleSheet.create({
   carousel: {

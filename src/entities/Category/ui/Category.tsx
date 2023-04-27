@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {ImageBackground, Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
@@ -39,6 +40,7 @@ const Category = (props: CategoryProps) => {
     style,
   } = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const onCategoryPressHandler = () => {
     if (isCategoryDetailsVisible) {
@@ -87,7 +89,7 @@ const Category = (props: CategoryProps) => {
             style={styles.questionsText}
             weight={'500'}
             size={TextSize.LEVEL_3}
-            text={`${questions.length} questions`}
+            text={`${questions.length} ${t('questions.questions')}`}
           />
         </Gradient>
         <AppText

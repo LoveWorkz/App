@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -8,6 +9,8 @@ import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import changePasswordStore from '../model/store/ChangePasswordStore';
 
 const ChangePasswordPage = () => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     return () => changePasswordStore.resetForm();
   }, []);
@@ -33,20 +36,20 @@ const ChangePasswordPage = () => {
       <View style={styles.item}>
         <Input
           secureTextEntry
-          label={'Current password'}
+          label={t('auth.current_password') || ''}
           value={changePasswordStore.formData.oldPassword}
           onChange={onChangeOldPasswordHandler}
-          placeholder={'Enter current password'}
+          placeholder={t('auth.enter_current_password') || ''}
           error={changePasswordStore.errorInfo.oldPasswordError}
         />
       </View>
       <View style={styles.item}>
         <Input
           secureTextEntry
-          label={'New password'}
+          label={t('auth.new_assword') || ''}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
-          placeholder={'Enter new password'}
+          placeholder={t('auth.enter_new_password') || ''}
         />
         {changePasswordStore.errorInfo.passwordError && (
           <AppText
@@ -60,11 +63,11 @@ const ChangePasswordPage = () => {
       <View style={styles.item}>
         <Input
           secureTextEntry
-          label={'Repeat password'}
+          label={t('auth.repeat_password') || ''}
           value={changePasswordStore.formData.confirmPassword}
           onChange={onChangeRepeatPasswordHandler}
           error={changePasswordStore.errorInfo.confirmPasswordError}
-          placeholder={'Enter repeat password'}
+          placeholder={t('auth.repeat_new_password') || ''}
         />
       </View>
       <Button
@@ -72,7 +75,7 @@ const ChangePasswordPage = () => {
         style={styles.btn}
         theme={ButtonTheme.OUTLINED}
         onPress={onPressHandler}>
-        <Text style={styles.text}>Save</Text>
+        <AppText style={styles.text} size={TextSize.LEVEL_4} text={t('save')} />
       </Button>
     </View>
   );

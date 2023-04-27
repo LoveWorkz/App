@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
@@ -16,6 +17,7 @@ interface HeaderLeftProps {
 const HeaderLeft = (props: HeaderLeftProps) => {
   const {headerTitle, title} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const onPressHandler = () => {
     navigation.goBack();
@@ -35,7 +37,7 @@ const HeaderLeft = (props: HeaderLeftProps) => {
           style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_6}
           weight={'500'}
-          text={title || headerTitle || ''}
+          text={t(title || headerTitle || '')}
         />
       )}
     </View>

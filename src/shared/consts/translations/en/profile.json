@@ -3,5 +3,15 @@
    "profile.name": "Name",
    "profile.enter_name": "Enter Name",
    "profile.age": "Age",
-   "profile.enter_age": "Enter Age"
+   "profile.enter_age": "Enter Age",
+   "profile.country": "Country",
+   "profile.relationship_status": "Relationship status",
+   "profile.preferences": "Preferences",
+   "profile.i_am_here_just_for_fun": "I am here just for fun",
+   "profile.conlfict_management": "Conlfict management",
+   "profile.communication": "Communication",
+   "profile.self_reflection": "Self-reflection",
+   "profile.create_safe_attachment": "Create safe attachment",
+   "profile.increase_intimacy_level": "Increase our intimacy level",
+   "profile.increase_appreciation_and_respect": "Increase appreciation and respect"
 }

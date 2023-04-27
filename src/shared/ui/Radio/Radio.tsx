@@ -6,7 +6,7 @@ import {StyleType} from '@src/shared/types/types';
 import {Gradient} from '../Gradient/Gradient';
 
 interface RadioProps {
-  data: string[];
+  data: {label: string; value: string}[];
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -31,25 +31,29 @@ export const Radio = memo((props: RadioProps) => {
   } = props;
 
   useEffect(() => {
-    onChange?.(initialValue || data[0]);
-  }, [initialValue, onChange, data]);
+    initialValue && onChange?.(initialValue);
+  }, [onChange, initialValue]);
 
   return (
     <SafeAreaView>
       {data.map(item => {
         return (
           <Pressable
-            key={item}
+            key={item.value}
             style={[styles.radio, style]}
-            onPress={() => onChange(item)}>
+            onPress={() => onChange(item.value)}>
             <View style={[styles.round, {...roundStyle}]}>
-              {value === item ? (
+              {value === item.value ? (
                 <Gradient style={[styles.checked, {...activeItemStyle}]} />
               ) : (
                 <></>
               )}
             </View>
-            <AppText style={nameStyle} size={TextSize.LEVEL_4} text={item} />
+            <AppText
+              style={[styles.radioText, {...nameStyle}]}
+              size={TextSize.LEVEL_4}
+              text={item.label}
+            />
           </Pressable>
         );
       })}
@@ -75,6 +79,9 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: 50,
+  },
+  radioText: {
+    flexShrink: 1,
   },
   checked: {
     backgroundColor: 'black',

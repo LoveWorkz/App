@@ -5,15 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Radio} from '@src/shared/ui/Radio/Radio';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-
-const rubrics = [
-  'I am here just for fun',
-  'Increase our intimacy level',
-  'Increase appreciation and respect',
-  'Conflict management',
-  'Communication',
-  'Self - reflection',
-];
+import {getPreferences} from '../../model/lib/profile';
 
 interface RubricsPropss {
   changeRubric: (rubric: string) => void;
@@ -22,9 +14,10 @@ interface RubricsPropss {
   initialValue?: string;
 }
 
-const Rubrics = (props: RubricsPropss) => {
+const Preferences = (props: RubricsPropss) => {
   const {t} = useTranslation();
   const colors = useColors();
+  const preferences = getPreferences(t);
 
   const {changeRubric, rubric, error, initialValue} = props;
 
@@ -34,7 +27,7 @@ const Rubrics = (props: RubricsPropss) => {
         style={[styles.title, {color: colors.primaryTextColor}]}
         weight={'600'}
         size={TextSize.LEVEL_2}
-        text={t('rubrics.title')}
+        text={t('profile.preferences')}
       />
       <Radio
         activeItemStyle={{backgroundColor: colors.primaryTextColor}}
@@ -44,14 +37,14 @@ const Rubrics = (props: RubricsPropss) => {
         initialValue={initialValue}
         error={error}
         value={rubric}
-        data={rubrics}
+        data={preferences}
         onChange={changeRubric}
       />
     </SafeAreaView>
   );
 };
 
-export const Wrapper = memo(Rubrics);
+export default memo(Preferences);
 
 const styles = StyleSheet.create({
   rubrics: {

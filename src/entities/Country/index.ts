@@ -1,1 +1,1 @@
-export {Wrapper as CountrySelect} from './ui/CountrySelect';
+export {default as CountrySelect} from './ui/CountrySelect';

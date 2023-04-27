@@ -1,11 +1,15 @@
 import {en} from '../../consts/translations/en';
-import {ru} from '../../consts/translations/ru';
+import {de} from '../../consts/translations/de';
+import {pt} from '../../consts/translations/pt';
 
 export const locals = {
   en: {
     translation: en,
   },
-  ru: {
-    translation: ru,
+  pt: {
+    translation: pt,
+  },
+  de: {
+    translation: de,
   },
 };

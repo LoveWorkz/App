@@ -1,4 +1,5 @@
 import {ChallengeCategoriesNames} from '../types/challengeCategory';
+import {TFunction} from 'i18next';
 
 export const getNextChallengeCategory = (
   currentChallengeCategory: ChallengeCategoriesNames,
@@ -15,4 +16,14 @@ export const getNextChallengeCategory = (
     default:
       return 'Platinum';
   }
+};
+
+export const translateChallenge = ({
+  t,
+  name,
+}: {
+  t: TFunction;
+  name: ChallengeCategoriesNames;
+}) => {
+  return t(`challenge.${name}`);
 };

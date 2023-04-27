@@ -2,6 +2,7 @@ import React, {memo, useEffect, useMemo} from 'react';
 import {Image, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {
   horizontalScale,
@@ -31,10 +32,11 @@ interface CategoryDetailsPageProps {
 export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
   const category = categoryStore.category;
+  const {t} = useTranslation();
 
   useEffect(() => {
-    route?.params.id && categoryStore.fetchCategory(route.params.id);
-  }, [route?.params.id]);
+    route?.params.id && categoryStore.fetchCategory({id: route.params.id, t});
+  }, [route?.params.id, t]);
 
   const uri = useMemo(() => {
     return {
@@ -109,7 +111,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
             style={styles.btnText}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={category.isBlocked ? 'Buy now' : 'Start'}
+            text={category.isBlocked ? t('buy_now') : 'Start'}
           />
         </Button>
       </Gradient>
@@ -119,7 +121,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
             style={styles.dontShowAgain}
             weight={'600'}
             size={TextSize.LEVEL_4}
-            text={'Dont Show again'}
+            text={t('dont_show_again')}
           />
         </Pressable>
       )}

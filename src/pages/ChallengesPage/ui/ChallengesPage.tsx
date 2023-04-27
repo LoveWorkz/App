@@ -1,6 +1,7 @@
 import React, {memo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -12,6 +13,8 @@ import challengesStore from '../model/store/challengesStore';
 import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
 const ChallengesPage = () => {
+  const {t} = useTranslation();
+
   const challengeCategory = challengesStore.challengeCategory;
   const congratsModalContent =
     getCongratsModalContentForChallenges()[
@@ -19,12 +22,12 @@ const ChallengesPage = () => {
     ];
 
   useEffect(() => {
-    challengesStore.init();
+    challengesStore.init(t);
 
     return () => {
       challengesStore.clearChallengesInfo();
     };
-  }, []);
+  }, [t]);
 
   if (
     challengesStore.isChallengeCategoriesLoading &&

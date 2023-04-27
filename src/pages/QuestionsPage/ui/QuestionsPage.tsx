@@ -57,8 +57,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     questionsStore.getQuestionsPageInfo({
       id,
       key: key,
+      t,
     });
-  }, [key, id]);
+  }, [key, id, t]);
 
   const onSwipeHandler = useCallback(
     (param: QuestionType) => {
@@ -73,6 +74,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           questionId: param.id,
           id: id,
           type: key,
+          t,
         });
 
         questionsStore.checkIfAllQuestionsSwiped({
@@ -82,7 +84,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         });
       }
     },
-    [key, id],
+    [key, id, t],
   );
 
   if (questionsStore.questionsPageloading) {

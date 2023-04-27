@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import {TFunction} from 'i18next';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
@@ -8,6 +9,7 @@ import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 import {CategoryType} from '../types/categoryTypes';
+import {translateCategory} from '../lib/category';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -46,7 +48,7 @@ class CategoryStore {
     }
   };
 
-  fetchCategory = async (id: string) => {
+  fetchCategory = async ({id, t}: {id: string; t: TFunction}) => {
     try {
       const userId = userStore.authUserId;
       if (!userId) {
@@ -69,10 +71,13 @@ class CategoryStore {
         return;
       }
 
+      const currentCategory = categoryData.data() as CategoryType;
+
       // merge default category with user custom category
       const category = {
-        ...categoryData.data(),
+        ...currentCategory,
         id: categoryData.id,
+        name: translateCategory({t, name: currentCategory.name}),
         ...userCategory.categories[id],
       } as CategoryType;
 

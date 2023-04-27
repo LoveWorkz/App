@@ -11,7 +11,7 @@ export const LanguagePage = () => {
   );
 };
 
-export const Wrapper = memo(LanguagePage);
+export default memo(LanguagePage);
 
 const styles = StyleSheet.create({
   LanguagePage: {

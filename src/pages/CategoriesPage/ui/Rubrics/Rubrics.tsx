@@ -1,6 +1,7 @@
 import {View, StyleSheet, Pressable} from 'react-native';
 import React, {memo} from 'react';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -11,6 +12,7 @@ import categoriesStore from '../../model/store/categoriesStore';
 
 const Rubrics = () => {
   const colors = useColors();
+  const {t} = useTranslation();
   const rubrics = categoriesStore.rubrics;
 
   const onRubricPressHandler = (id: string) => {
@@ -23,7 +25,7 @@ const Rubrics = () => {
         style={[{color: colors.primaryTextColor}]}
         weight={'500'}
         size={TextSize.LEVEL_5}
-        text={'Rubrics'}
+        text={t('rubrics.title')}
       />
       {rubrics.map(rubric => {
         return rubric.questions.length ? (

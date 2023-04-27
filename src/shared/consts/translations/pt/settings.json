@@ -1,0 +1,18 @@
+{
+    "settings.title": "Settings",
+   
+    "settings.change_password": "Alterar a senha",
+    "settings.language": "Idioma",
+    "settings.dark_mode": "Modo escuro",
+    "settings.light_mode": "Light mode",
+    "settings.profile": "Perfil",
+    "settings.how_to_use": "Como utilizar",
+    "settings.about": "Sobre",
+    "settings.contact_us": "Contacte-nos",
+    "settings.partners": "Parceiros",
+    "settings.share_us": "Compartilhe com seus amigos",
+    "settings.privacy_policy": "Termos de utilização & Política de Privacidade",
+    "settings.german": "Deutsch",
+    "settings.english": "English",
+    "settings.portuguese": "Português"
+}

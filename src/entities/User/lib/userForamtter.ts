@@ -25,5 +25,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     questions: [],
   };
 
+  formatedUser.language = 'en';
+
   return formatedUser;
 };

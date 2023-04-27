@@ -1,9 +1,10 @@
 import React, {memo, useCallback} from 'react';
 import {SafeAreaView} from 'react-native';
 
-import {Select, SelectMode} from '@src/shared/ui/Select/Select';
+import {Select} from '@src/shared/ui/Select/Select';
 import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {useTranslation} from 'react-i18next';
 
 const options = [
   {label: 'status 1', value: 'status 1'},
@@ -21,6 +22,7 @@ interface RelationshipStatusSelectProps {
 const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
   const {changeStatus, status, initialValue} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const onChangeHandler = useCallback(
     (value: string) => {
@@ -36,14 +38,13 @@ const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
         Theme={SelectTheme.OUTLINE}
         initialValue={initialValue}
         prompt={'Status'}
-        label={'Relationship status'}
+        label={t('profile.relationship_status') || ''}
         options={options}
         value={status}
-        mode={SelectMode.DIALOG}
         onSelect={onChangeHandler}
       />
     </SafeAreaView>
   );
 };
 
-export const Wrapper = memo(RelationshipStatusSelect);
+export default memo(RelationshipStatusSelect);

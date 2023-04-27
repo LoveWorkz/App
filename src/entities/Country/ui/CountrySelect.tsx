@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {Select} from '@src/shared/ui/Select/Select';
 import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
@@ -16,6 +17,7 @@ interface CountrySelectProps {
 const CountrySelect = (props: CountrySelectProps) => {
   const {changeCountry, country, initialValue} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   useEffect(() => {
     countryStore.fetchCountries();
@@ -35,7 +37,7 @@ const CountrySelect = (props: CountrySelectProps) => {
         Theme={SelectTheme.OUTLINE}
         prompt={'Country'}
         initialValue={initialValue}
-        label={'Country'}
+        label={t('profile.country') || ''}
         options={countryStore.countrySelectOptions}
         value={country}
         onSelect={onChangeHandler}
@@ -44,4 +46,4 @@ const CountrySelect = (props: CountrySelectProps) => {
   );
 };
 
-export const Wrapper = memo(observer(CountrySelect));
+export default memo(observer(CountrySelect));

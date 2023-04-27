@@ -1,6 +1,7 @@
 import {View, StyleSheet} from 'react-native';
 import React, {memo} from 'react';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -10,6 +11,7 @@ import CategoriesStore from '../../model/store/categoriesStore';
 
 const Categories = () => {
   const colors = useColors();
+  const {t} = useTranslation();
   const categories = CategoriesStore.categories;
 
   return (
@@ -18,7 +20,7 @@ const Categories = () => {
         style={{color: colors.primaryTextColor}}
         weight={'500'}
         size={TextSize.LEVEL_5}
-        text={'Categories'}
+        text={t('categories.categories')}
       />
       <View style={styles.categories}>
         <View style={[styles.leftSide, {marginRight: globalPadding}]}>

@@ -12,7 +12,8 @@ import {
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {homeCategoryImage} from '@src/shared/assets/images';
 
 const HomeCategory = () => {
   const {t} = useTranslation();
@@ -28,9 +29,7 @@ const HomeCategory = () => {
       />
       <ImageBackground
         style={[styles.contaier, {...globalStyles.shadowOpacity}]}
-        source={{
-          uri: 'http://localhost:8081/src/shared/assets/images/homeCategoryImage.png',
-        }}>
+        source={homeCategoryImage}>
         <View style={styles.content}>
           <View style={styles.textWrapper}>
             <AppText
@@ -47,11 +46,9 @@ const HomeCategory = () => {
               size={TextSize.LEVEL_5}
               text={'BASIC'}
             />
-            <Gradient style={styles.btn}>
-              <Button theme={ButtonTheme.CLEAR}>
-                <SvgXml xml={getArrowRightIcon({})} style={styles.arrowIcon} />
-              </Button>
-            </Gradient>
+            <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
+              <SvgXml xml={getArrowRightIcon({})} style={styles.arrowIcon} />
+            </Button>
           </View>
         </View>
       </ImageBackground>
@@ -87,6 +84,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     borderRadius: 10,
+    height: verticalScale(30),
+    width: horizontalScale(30),
   },
   btnText: {
     color: 'white',

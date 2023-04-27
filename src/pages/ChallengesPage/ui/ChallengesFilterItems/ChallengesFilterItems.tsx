@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -31,10 +31,17 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
 });
 
 export const ChallengesFilterItems = () => {
+  const rubricFilterItems = rubricFilterItemStore.rubricFilterItems;
+
+  // adding an empty object for a space at the beginning
+  const rubricFilterItemsWithSpace = useMemo(() => {
+    return [{}, ...rubricFilterItems];
+  }, [rubricFilterItems]);
+
   return (
     <View style={[styles.FilterItems]}>
       <HorizontalCarousel
-        data={rubricFilterItemStore.rubricFilterItems}
+        data={rubricFilterItemsWithSpace}
         Component={FilterItem}
       />
     </View>

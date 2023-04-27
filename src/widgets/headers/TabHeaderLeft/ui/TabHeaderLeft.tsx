@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {View, StyleSheet} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
@@ -12,6 +13,8 @@ interface TabHeaderProps {
 const TabHeaderLeft = (props: TabHeaderProps) => {
   const {title} = props;
   const colors = useColors();
+  const {t} = useTranslation();
+
   return (
     <View
       style={[
@@ -22,7 +25,7 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
         weight={'500'}
         size={TextSize.LEVEL_6}
         style={{paddingLeft: globalPadding, color: colors.primaryTextColor}}
-        text={title}
+        text={t(title)}
       />
     </View>
   );

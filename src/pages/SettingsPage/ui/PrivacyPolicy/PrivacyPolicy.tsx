@@ -36,5 +36,6 @@ const styles = StyleSheet.create({
   privacyPolicyText: {
     color: '#009EF6',
     textDecorationLine: 'underline',
+    textAlign: 'center',
   },
 });

@@ -1,16 +1,19 @@
 import React, {memo} from 'react';
 import {ImageBackground, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
+import {favorites} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import favoriteStore from '../model/store/favoriteStore';
 
 export const Favorite = () => {
   const colors = useColors();
+  const {t} = useTranslation();
   const favorite = favoriteStore.favorite;
 
   if (!favorite) {
@@ -24,20 +27,18 @@ export const Favorite = () => {
           style={{color: colors.primaryTextColor}}
           weight={'500'}
           size={TextSize.LEVEL_5}
-          text={'Favourites'}
+          text={t('categories.favourites')}
         />
       </View>
       <ImageBackground
         style={[styles.favoritesFolder, {width: windowWidthMinusPaddings}]}
         imageStyle={styles.imageStyle}
         resizeMode={'stretch'}
-        source={{
-          uri: 'http://localhost:8081/src/shared/assets/images/favorites.png',
-        }}>
+        source={favorites}>
         <Gradient style={styles.titleWrapper} size={GradientSize.SMALL}>
           <AppText
             style={styles.title}
-            text={`${favorite.questions.length} quetions`}
+            text={`${favorite.questions.length} ${t('questions.questions')}`}
           />
         </Gradient>
         <View>
@@ -45,7 +46,7 @@ export const Favorite = () => {
             style={[styles.text, {color: colors.primaryTextColor}]}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={'My questions'}
+            text={t('questions.my_questions')}
           />
         </View>
       </ImageBackground>

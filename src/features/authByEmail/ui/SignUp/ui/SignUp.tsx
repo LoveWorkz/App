@@ -85,13 +85,13 @@ const SignUp = () => {
           <AppText
             size={TextSize.LEVEL_3}
             style={styles.privacyPolicyText}
-            text={'I agree with the'}
+            text={t('auth.agree_with')}
           />
           <Pressable onPress={onPrivacyPolicyPressHandler}>
             <AppText
               size={TextSize.LEVEL_3}
               style={styles.privacyPolicyLink}
-              text={'Terms of Use & Privacy Policy'}
+              text={t('auth.terms_of_policy')}
             />
           </Pressable>
         </View>
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   },
   privacyPolicyTextWrapper: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   privacyPolicyText: {
     color: '#9A9AA5',

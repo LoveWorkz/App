@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
@@ -21,13 +21,15 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
 
   return (
     <View style={styles.rubricCategory}>
-      <RubricFilterItem
-        action
-        onPress={onFiltreHandler}
-        active={active}
-        rubric={name}
-        text={name}
-      />
+      {name && (
+        <RubricFilterItem
+          action
+          onPress={onFiltreHandler}
+          active={active}
+          rubric={name}
+          text={name}
+        />
+      )}
     </View>
   );
 });
@@ -38,6 +40,11 @@ const Books = () => {
   const booksList = booksStore.booksFilteredList;
   const booksCategories = rubricFilterItemStore.rubricFilterItems;
 
+  // adding an empty object for a space at the beginning
+  const booksCategoriesWithSpace = useMemo(() => {
+    return [{}, ...booksCategories];
+  }, [booksCategories]);
+
   return (
     <View>
       <AppText
@@ -47,7 +54,10 @@ const Books = () => {
         size={TextSize.LEVEL_5}
       />
       <View style={styles.booksCategories}>
-        <HorizontalCarousel data={booksCategories} Component={FilterItem} />
+        <HorizontalCarousel
+          data={booksCategoriesWithSpace}
+          Component={FilterItem}
+        />
       </View>
       <View style={styles.books}>
         {booksList.length ? (
@@ -99,6 +109,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   rubricCategory: {
-    marginRight: horizontalScale(10),
+    marginLeft: horizontalScale(10),
   },
 });

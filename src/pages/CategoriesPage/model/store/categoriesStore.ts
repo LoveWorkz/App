@@ -1,7 +1,13 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import {TFunction} from 'i18next';
 
-import {CategoryType, CateorySize, UserCategory} from '@src/entities/Category';
+import {
+  CategoryType,
+  CateorySize,
+  translateCategory,
+  UserCategory,
+} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
 import {RubricType, UserRubric} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
@@ -19,12 +25,12 @@ class CategoriesStore {
     makeAutoObservable(this);
   }
 
-  init = async () => {
+  init = async (t: TFunction) => {
     try {
       await this.fetchUserCategories();
       await this.fetchUserRubrics();
       await this.fetchRubrics();
-      await this.fetchCategories();
+      await this.fetchCategories(t);
       await profileStore.fetchProfile();
       // init user current category for the first time
       await this.initCurrentUserCategory();
@@ -97,7 +103,7 @@ class CategoriesStore {
     }
   };
 
-  fetchCategories = async () => {
+  fetchCategories = async (t: TFunction) => {
     try {
       if (!this.userCategory) {
         return;
@@ -117,8 +123,17 @@ class CategoriesStore {
         };
       });
 
+      const translatedCategories = categories.map(category => {
+        return {
+          ...category,
+          name: translateCategory({t, name: category.name}),
+        };
+      });
+
       runInAction(() => {
-        this.categories = this.editCategories(categories as CategoryType[]);
+        this.categories = this.editCategories(
+          translatedCategories as CategoryType[],
+        );
       });
     } catch (e) {
       console.log(e);

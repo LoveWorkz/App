@@ -42,7 +42,7 @@ const SettingItem = (props: SettingItem) => {
   );
 };
 
-export const Wrapper = memo(SettingItem);
+export default memo(SettingItem);
 
 const styles = StyleSheet.create({
   settingItem: {

@@ -41,8 +41,8 @@ export const SubChallenge = (props: SubChallengeProps) => {
   };
 
   const onChangeHandler = useCallback(() => {
-    challengeStore.selectChallenge(id);
-  }, [id]);
+    challengeStore.selectChallenge({id, t});
+  }, [id, t]);
 
   return (
     <View style={styles.SubChallenge}>

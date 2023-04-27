@@ -5,4 +5,7 @@ export type {
   UserChallengeCategoryType,
   CurrentChallengeCategoryType,
 } from './model/types/challengeCategory';
-export {getNextChallengeCategory} from './model/lib/challengeCategory';
+export {
+  getNextChallengeCategory,
+  translateChallenge,
+} from './model/lib/challengeCategory';

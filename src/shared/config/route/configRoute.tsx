@@ -112,14 +112,14 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.SETTINGS]: {
     name: appRoutePaths.settings,
     headerShown: true,
-    headerTitle: 'Settings',
+    headerTitle: 'settings.title',
     Element: SettingsPage,
     deleteBottomPadding: true,
   },
   [AppRouteNames.PROFILE]: {
     name: appRoutePaths.profile,
     headerShown: true,
-    headerTitle: 'Profile',
+    headerTitle: 'settings.profile',
     HeaderRight: ProfileHeaderRight,
     Element: ProfilePage,
     isPageScrolling: true,
@@ -127,37 +127,37 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.ABOUT]: {
     name: appRoutePaths.about,
     headerShown: true,
-    headerTitle: 'About',
+    headerTitle: 'settings.about',
     Element: AboutPage,
   },
   [AppRouteNames.PARTNERS]: {
     name: appRoutePaths.partners,
     headerShown: true,
-    headerTitle: 'Partners',
+    headerTitle: 'settings.partners',
     Element: PartnersPage,
   },
   [AppRouteNames.PRIVACY_POLICY]: {
     name: appRoutePaths.privacyPolicy,
     headerShown: true,
-    headerTitle: 'Terms of Use & Privacy Policy',
+    headerTitle: 'settings.privacy_policy',
     Element: PrivacyPolicyPage,
   },
   [AppRouteNames.CHANGE_PASSWORD]: {
     name: appRoutePaths.changePassword,
     headerShown: true,
-    headerTitle: 'Change Password',
+    headerTitle: 'settings.change_password',
     Element: ChangePasswordPage,
   },
   [AppRouteNames.HOW_TO_USE]: {
     name: appRoutePaths.howToUse,
     headerShown: true,
-    headerTitle: 'How to use',
+    headerTitle: 'settings.how_to_use',
     Element: HowToUsePage,
   },
   [AppRouteNames.CONTACT_US]: {
     name: appRoutePaths.contactUs,
     headerShown: true,
-    headerTitle: 'Contact us',
+    headerTitle: 'settings.contact_us',
     Element: ContactUsPage,
   },
   [AppRouteNames.BOOK_DETAILS]: {
@@ -169,7 +169,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.LANGUAGE]: {
     name: appRoutePaths.language,
     headerShown: true,
-    headerTitle: 'Language',
+    headerTitle: 'settings.language',
     Element: LanguagePage,
   },
   [AppRouteNames.CATEGORY_DETAILS]: {

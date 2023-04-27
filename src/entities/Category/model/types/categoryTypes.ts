@@ -7,9 +7,16 @@ export enum CateorySize {
 export interface CategoryImageType {
   small: string;
   large: string;
+  middle: string;
 }
 
-export type CategoryName = 'Starter' | 'Basic' | 'Deep' | 'Intimate' | 'Hot';
+export type CategoryName =
+  | 'Starter'
+  | 'Basic'
+  | 'Deep'
+  | 'Intimate'
+  | 'Hot'
+  | 'All In One';
 
 export interface CategoryType {
   name: CategoryName;
