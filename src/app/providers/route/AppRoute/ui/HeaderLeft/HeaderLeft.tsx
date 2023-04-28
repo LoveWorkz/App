@@ -12,12 +12,15 @@ import {useColors} from '@src/app/providers/colorsProvider';
 interface HeaderLeftProps {
   headerTitle?: string;
   title?: string;
+  isTitleSmall?: Boolean;
 }
 
 const HeaderLeft = (props: HeaderLeftProps) => {
-  const {headerTitle, title} = props;
+  const {headerTitle, title, isTitleSmall} = props;
   const colors = useColors();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+
+  const isLngEn = i18n.language === 'en';
 
   const onPressHandler = () => {
     navigation.goBack();
@@ -34,8 +37,8 @@ const HeaderLeft = (props: HeaderLeftProps) => {
       </Button>
       {(headerTitle || title) && (
         <AppText
-          style={{color: colors.primaryTextColor}}
-          size={TextSize.LEVEL_6}
+          style={[styles.title, {color: colors.primaryTextColor}]}
+          size={isTitleSmall && !isLngEn ? TextSize.LEVEL_4 : TextSize.LEVEL_6}
           weight={'500'}
           text={t(title || headerTitle || '')}
         />
@@ -51,10 +54,15 @@ const styles = StyleSheet.create<Record<string, any>>({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    height: '100%',
   },
   icon: {
     height: 15,
     width: 18,
     marginRight: 15,
+  },
+  title: {
+    width: '90%',
   },
 });

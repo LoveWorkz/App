@@ -8,6 +8,13 @@ export interface RubricType {
   questionSwipeStartDate: string;
   breakPointForCheckingDate: number;
   swipedQuestionsPercentage: number;
+  displayName: RubricLanguageType;
+}
+
+export interface RubricLanguageType {
+  en: string;
+  pt: string;
+  de: string;
 }
 
 export interface UserRubric {

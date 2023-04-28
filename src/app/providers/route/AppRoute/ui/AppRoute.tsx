@@ -44,6 +44,7 @@ export const AppRoute = () => {
             isPageScrolling,
             deleteBottomPadding,
             deleteTopPadding,
+            isTitleSmall,
           }) => {
             const Wrapper = (props: ParamListBase) => {
               return (
@@ -75,6 +76,7 @@ export const AppRoute = () => {
                         <HeaderLeft
                           {...route.params}
                           headerTitle={headerTitle}
+                          isTitleSmall={isTitleSmall}
                         />
                       )
                     : undefined,

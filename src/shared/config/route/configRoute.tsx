@@ -75,6 +75,7 @@ type NewRouteProps = {
   isPageScrolling?: boolean;
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
+  isTitleSmall?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -141,6 +142,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: 'settings.privacy_policy',
     Element: PrivacyPolicyPage,
+    isTitleSmall: true,
   },
   [AppRouteNames.CHANGE_PASSWORD]: {
     name: appRoutePaths.changePassword,
