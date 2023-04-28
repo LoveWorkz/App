@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -18,6 +18,8 @@ const RecommendedBooks = () => {
   const recommendedBooksList = BooksStore.recommendedBooksList;
 
   const onBookPreviewPressHandler = (id: string) => {
+    // unfocus search input
+    Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id});
   };
 

@@ -1,6 +1,7 @@
-import React, {memo, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useCallback, useEffect} from 'react';
+import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {Wrapper as RecommendedBooks} from './RecommendedBooks/RecommendedBooks';
@@ -16,6 +17,18 @@ const BooksPage = () => {
     };
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      // unfocus search input
+      return () => Keyboard.dismiss();
+    }, []),
+  );
+
+  const onBookPagePressHandler = () => {
+    // unfocus search input
+    Keyboard.dismiss();
+  };
+
   if (!booksStore.booksSize) {
     return (
       <View style={styles.loader}>
@@ -25,12 +38,12 @@ const BooksPage = () => {
   }
 
   return (
-    <View style={styles.booksPage}>
+    <Pressable onPress={onBookPagePressHandler} style={styles.booksPage}>
       <RecommendedBooks />
       <View style={styles.booksWrapper}>
         <Books />
       </View>
-    </View>
+    </Pressable>
   );
 };
 

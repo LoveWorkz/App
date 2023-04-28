@@ -5,6 +5,7 @@ import {SvgXml} from 'react-native-svg';
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 
 const TabHeaderRight = () => {
   const onSettingsPressHandler = () => {
@@ -23,10 +24,10 @@ export default memo(TabHeaderRight);
 const styles = StyleSheet.create({
   TabHeaderRight: {
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: horizontalScale(20),
   },
   icon: {
-    height: 24,
-    width: 24,
+    height: verticalScale(24),
+    width: verticalScale(24),
   },
 });

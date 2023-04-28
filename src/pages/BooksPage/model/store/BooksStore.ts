@@ -50,6 +50,25 @@ class BooksStore {
     }
   };
 
+  searchBooks = (bookInfo: string) => {
+    try {
+      this.booksFilteredList = this.booksList.filter(book => {
+        const lowercaseBookInfo = bookInfo.toLocaleLowerCase();
+        const bookName = book.name.toLocaleLowerCase();
+        const bookAuthor = book.author.toLocaleLowerCase();
+        const bookDescription = book.description.toLocaleLowerCase();
+
+        return (
+          bookName.includes(lowercaseBookInfo) ||
+          bookAuthor.includes(lowercaseBookInfo) ||
+          bookDescription.includes(lowercaseBookInfo)
+        );
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   clearBooksInfo = () => {
     rubricFilterItemStore.clearInfo();
     this.booksFilteredList = this.booksList;

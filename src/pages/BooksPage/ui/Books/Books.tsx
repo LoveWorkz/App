@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Keyboard, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 
@@ -10,13 +10,15 @@ import {
   rubricFilterItemStore,
 } from '@src/entities/RubricFilterItem';
 import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
-import {horizontalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import booksStore from '../../model/store/BooksStore';
 import {Wrapper as BookItem} from '../BookItem/BookItem';
+import BooksSearchBar from '../BooksSearchBar/BooksSearchBar';
 
 const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
   const onFiltreHandler = useCallback((key: string) => {
     booksStore.filterBooks(key);
+    Keyboard.dismiss();
   }, []);
 
   return (
@@ -53,6 +55,7 @@ const Books = () => {
         weight={'500'}
         size={TextSize.LEVEL_5}
       />
+      <BooksSearchBar />
       <View style={styles.booksCategories}>
         <HorizontalCarousel
           data={booksCategoriesWithSpace}
@@ -91,22 +94,23 @@ export const Wrapper = memo(observer(Books));
 
 const styles = StyleSheet.create({
   booksTitle: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   books: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   book: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   booksCategories: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: verticalScale(20),
   },
   noResults: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   rubricCategory: {
     marginLeft: horizontalScale(10),

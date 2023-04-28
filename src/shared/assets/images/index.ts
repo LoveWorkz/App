@@ -8,3 +8,5 @@ export {default as questionImage5} from './questionImage5.png';
 export {default as questionImage6} from './questionImage6.png';
 export {default as Action_CARD} from './Action_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';
+
+export {default as HomepageBackground} from './HomepageBackground.png';

@@ -34,6 +34,7 @@ type NewRouteProps = {
   deleteTopPadding?: boolean;
   headerShown?: boolean;
   HeaderLeft?: ComponentType<any>;
+  isHomePage?: boolean;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
@@ -61,6 +62,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     deleteTopPadding: true,
     headerShown: true,
     HeaderLeft: HomePageHeaderLeft,
+    isHomePage: true,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,

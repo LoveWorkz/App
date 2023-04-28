@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Pressable,
+  Keyboard,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 
@@ -32,6 +33,8 @@ const BookItem = (props: BookProps) => {
   const ISDescriptionLarge = description.length > StandardTextLength;
 
   const onBookPreviewPressHandler = (bookId: string) => {
+    // unfocus search input
+    Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
   };
 

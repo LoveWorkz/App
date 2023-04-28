@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
   TextInput,
+  View,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
@@ -14,6 +15,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize, TextType} from '../AppText/AppText';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 
 export enum Inputheme {}
 
@@ -29,6 +31,7 @@ interface InputProps {
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
   isSpaceAllowed?: boolean;
+  StartIcon?: React.ComponentType<any>;
 }
 
 export const Input = memo((props: InputProps) => {
@@ -44,6 +47,7 @@ export const Input = memo((props: InputProps) => {
     keyboardType = 'default',
     secureTextEntry,
     isSpaceAllowed = false,
+    StartIcon,
     ...rest
   } = props;
   const colors = useColors();
@@ -84,10 +88,21 @@ export const Input = memo((props: InputProps) => {
           text={label}
         />
       )}
+      <View style={styles.startIconWrapper}>
+        {StartIcon ? <StartIcon /> : <></>}
+      </View>
       <TextInput
+        autoCapitalize="none"
         secureTextEntry={isPasswordHidden}
         keyboardType={keyboardType}
-        style={[styles.input, styles[theme], {color: colors.primaryTextColor}]}
+        style={[
+          styles.input,
+          styles[theme],
+          {
+            color: colors.primaryTextColor,
+            paddingLeft: StartIcon ? horizontalScale(50) : horizontalScale(20),
+          },
+        ]}
         onChangeText={onChangeTextHandler}
         value={value}
         placeholder={placeholder}
@@ -118,7 +133,6 @@ const styles = StyleSheet.create<Record<string, any>>({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
-    paddingLeft: 20,
     paddingRight: 20,
   },
   inputText: {
@@ -133,6 +147,12 @@ const styles = StyleSheet.create<Record<string, any>>({
     position: 'absolute',
     right: 10,
     bottom: 15,
+  },
+  startIconWrapper: {
+    position: 'absolute',
+    left: 25,
+    bottom: 15,
+    zIndex: 10,
   },
   eyeIcon: {
     width: 13,

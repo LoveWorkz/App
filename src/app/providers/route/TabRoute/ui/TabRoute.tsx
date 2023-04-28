@@ -7,7 +7,7 @@ import {
   TabRoutesNames,
 } from '@src/shared/config/route/tabConfigRoutes';
 import {Layout} from '@src/app/providers/layout';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {globalStyles, headerHeight} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
@@ -20,7 +20,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CATEGORIES}
+      initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
@@ -55,6 +55,7 @@ const TabRoute = () => {
           deleteTopPadding,
           headerShown,
           HeaderLeft,
+          isHomePage,
         }) => {
           const Wrapper = (props: ParamListBase) => {
             return (
@@ -74,7 +75,10 @@ const TabRoute = () => {
               key={name}
               options={({route}) => ({
                 title: '',
-                headerStyle: {backgroundColor: colors.bgColor},
+                headerStyle: {
+                  backgroundColor: isHomePage ? '#EEF4FF' : colors.bgColor,
+                  height: headerHeight,
+                },
                 headerShown: headerShown,
                 headerLeft: () =>
                   HeaderLeft ? (
