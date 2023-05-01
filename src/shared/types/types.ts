@@ -6,3 +6,9 @@ export interface SelectOption {
 export type StyleType =
   | Record<string, string | number | object | undefined>
   | Record<string, string | number | object | undefined>[];
+
+export interface DisplayText {
+  en: string;
+  de: string;
+  pt: string;
+}

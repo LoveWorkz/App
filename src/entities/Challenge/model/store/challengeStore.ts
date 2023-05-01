@@ -1,5 +1,4 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {TFunction} from 'i18next';
 
 import challengesStore from '@src/pages/ChallengesPage/model/store/challengesStore';
 
@@ -58,10 +57,10 @@ class ChallengeStore {
     });
   };
 
-  selectChallenge = async ({id, t}: {id: string; t: TFunction}) => {
+  selectChallenge = async ({id}: {id: string}) => {
     try {
       await this.updateChallenge(id);
-      await challengesStore.checkIfAllChallengesSelected(t);
+      await challengesStore.checkIfAllChallengesSelected();
     } catch (e) {
       console.log(e);
     }

@@ -1,3 +1,5 @@
+import {DisplayText} from '@src/shared/types/types';
+
 export type ChallengeCategoriesNames =
   | 'Bronze'
   | 'Silver'
@@ -12,6 +14,7 @@ export interface ChallengeCategoryType {
   isBlocked: boolean;
   isActive: Boolean;
   nomer: number;
+  displayName: DisplayText;
 }
 
 export interface UserChallengeCategoryType {

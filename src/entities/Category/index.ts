@@ -8,4 +8,4 @@ export type {
   UserCategory,
 } from './model/types/categoryTypes';
 export {default as categoryStore} from './model/store/categoryStore';
-export {getNextCategoryName, translateCategory} from './model/lib/category';
+export {getNextCategoryName} from './model/lib/category';

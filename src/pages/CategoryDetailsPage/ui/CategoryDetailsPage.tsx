@@ -37,8 +37,8 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const colors = useColors();
 
   useEffect(() => {
-    route?.params.id && categoryStore.fetchCategory({id: route.params.id, t});
-  }, [route?.params.id, t]);
+    route?.params.id && categoryStore.fetchCategory({id: route.params.id});
+  }, [route?.params.id]);
 
   const uri = useMemo(() => {
     return {

@@ -8,6 +8,7 @@ import {questionStore} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {categoryStore} from '@src/entities/Category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {FavoriteType} from '../types/favoriteType';
 
 class FavoriteStore {
@@ -136,7 +137,13 @@ class FavoriteStore {
     });
   };
 
-  favoritesSwipeLogic = async (id?: string) => {
+  favoritesSwipeLogic = async ({
+    id,
+    language,
+  }: {
+    language: LanguageValueType;
+    id?: string;
+  }) => {
     try {
       let questionId = id;
 
@@ -179,8 +186,8 @@ class FavoriteStore {
 
       questionsStore.setQuestionsPageInfo({
         questionsCount: questionsStore.questions.length,
-        categoryName: currentCategory.name,
-        rubricName: currentRubric.name,
+        categoryName: currentCategory.displayName[language],
+        rubricName: currentRubric.displayName[language],
         swipedQuestionsCount: currentQuestionIndex + 1,
         currentQuestion,
       });

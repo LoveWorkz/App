@@ -20,7 +20,7 @@ class HomePageStore {
       await categoriesStore.fetchUserCategories();
       await categoriesStore.fetchCategories(t);
       await challengesStore.fetchUserChallengeCategory();
-      await challengesStore.fetchChallengeCategories(t);
+      await challengesStore.fetchChallengeCategories();
     } catch (e) {
       console.log(e);
     } finally {

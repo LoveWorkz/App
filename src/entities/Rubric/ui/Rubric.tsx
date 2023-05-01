@@ -16,20 +16,15 @@ interface RubricProps {
 
 export const Rubric = (props: RubricProps) => {
   const {rubric} = props;
+  const {displayName, questions, swipedQuestionsPercentage, description} =
+    rubric;
   const colors = useColors();
   const {i18n} = useTranslation();
-  const displayName = rubric.displayName;
-  let rubricDisplayName: string;
-
-  if (displayName) {
-    rubricDisplayName = displayName[i18n.language as LanguageValueType];
-  } else {
-    rubricDisplayName = rubric.name;
-  }
+  const language = i18n.language as LanguageValueType;
 
   const swipedQuestionCount = getNumberFromPercentage(
-    rubric.swipedQuestionsPercentage,
-    rubric.questions.length,
+    swipedQuestionsPercentage,
+    questions.length,
   );
 
   return (
@@ -46,12 +41,12 @@ export const Rubric = (props: RubricProps) => {
           style={[styles.name, {color: colors.primaryTextColor}]}
           weight={'600'}
           size={TextSize.LEVEL_4}
-          text={rubricDisplayName}
+          text={displayName[language]}
         />
         <AppText
           style={[styles.text]}
           size={TextSize.LEVEL_2}
-          text={rubric.description}
+          text={description[language]}
         />
       </View>
       <View>
@@ -59,7 +54,7 @@ export const Rubric = (props: RubricProps) => {
           style={{color: colors.primaryTextColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={`${Math.ceil(swipedQuestionCount)}/${rubric.questions.length}`}
+          text={`${Math.ceil(swipedQuestionCount)}/${questions.length}`}
         />
       </View>
     </View>

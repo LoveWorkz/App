@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {StyleType} from '@src/shared/types/types';
+import {DisplayText, StyleType} from '@src/shared/types/types';
 import {
   categoryLayoutIconZIndex,
   categoryLayoutZIndex,
@@ -15,6 +15,7 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {CateorySize} from '../model/types/categoryTypes';
 
@@ -27,25 +28,30 @@ interface CategoryProps {
   isBlocked: boolean;
   id: string;
   isCategoryDetailsVisible: boolean;
+  displayName: DisplayText;
 }
 
 const Category = (props: CategoryProps) => {
   const {
     questions,
-    name,
     image,
     size = CateorySize.L,
     isBlocked = false,
     id,
     isCategoryDetailsVisible,
     style,
+    displayName,
   } = props;
   const colors = useColors();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
 
   const onCategoryPressHandler = () => {
     if (isCategoryDetailsVisible) {
-      navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {title: name, id});
+      navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
+        title: displayName[language],
+        id,
+      });
     } else {
       navigation.navigate(AppRouteNames.QUESTIONS, {type: 'category', id});
     }
@@ -101,7 +107,7 @@ const Category = (props: CategoryProps) => {
           style={[styles.status, {color: colors.categoryAndFavoritesTextColor}]}
           weight={'700'}
           size={TextSize.LEVEL_4}
-          text={name}
+          text={displayName[language]}
         />
       </FastImage>
     </Pressable>

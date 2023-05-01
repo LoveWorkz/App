@@ -1,5 +1,7 @@
+import {DisplayText} from '@src/shared/types/types';
+
 export interface RubricType {
-  description: string;
+  description: DisplayText;
   questions: string;
   name: string;
   startQuestionDate: string;
@@ -8,13 +10,8 @@ export interface RubricType {
   questionSwipeStartDate: string;
   breakPointForCheckingDate: number;
   swipedQuestionsPercentage: number;
-  displayName: RubricLanguageType;
-}
-
-export interface RubricLanguageType {
-  en: string;
-  pt: string;
-  de: string;
+  displayName: DisplayText;
+  createdDate: string;
 }
 
 export interface UserRubric {

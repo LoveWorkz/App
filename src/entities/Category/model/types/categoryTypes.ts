@@ -1,3 +1,5 @@
+import {DisplayText} from '@src/shared/types/types';
+
 export enum CateorySize {
   M = 'size_m',
   L = 'size_l',
@@ -35,6 +37,7 @@ export interface CategoryType {
   breakPointForCheckingDate: number;
   isAllQuestionsSwiped: boolean;
   createdDate: string;
+  displayName: DisplayText;
 }
 
 export interface CurrentCategory {

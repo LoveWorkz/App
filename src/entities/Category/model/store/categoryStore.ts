@@ -1,6 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import {TFunction} from 'i18next';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
@@ -9,7 +8,7 @@ import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 import {CategoryType} from '../types/categoryTypes';
-import {translateCategory} from '../lib/category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -48,7 +47,7 @@ class CategoryStore {
     }
   };
 
-  fetchCategory = async ({id, t}: {id: string; t: TFunction}) => {
+  fetchCategory = async ({id}: {id: string}) => {
     try {
       const userId = userStore.authUserId;
       if (!userId) {
@@ -77,7 +76,7 @@ class CategoryStore {
       const category = {
         ...currentCategory,
         id: categoryData.id,
-        name: translateCategory({t, name: currentCategory.name}),
+        name: currentCategory.name,
         ...userCategory.categories[id],
       } as CategoryType;
 
@@ -128,9 +127,11 @@ class CategoryStore {
 
   categorySwipeLogic = async ({
     questionId,
+    language,
   }: {
     categoryId?: string;
     questionId?: string;
+    language: LanguageValueType;
   }) => {
     try {
       let currentquestionId = questionId;
@@ -139,8 +140,12 @@ class CategoryStore {
       if (!questionId) {
         const category = this.category;
 
-        currentquestionId = category?.currentQuestion;
-        categoryName = category?.name;
+        if (!category) {
+          return;
+        }
+
+        currentquestionId = category.currentQuestion;
+        categoryName = category.displayName[language as LanguageValueType];
       }
 
       if (!currentquestionId) {
@@ -165,7 +170,7 @@ class CategoryStore {
         questionsCount: questionsStore.questions.length,
         categoryName:
           categoryName || questionsStore.questionsPageInfo.categoryName,
-        rubricName: currentRubric.name,
+        rubricName: currentRubric.displayName[language],
         swipedQuestionsCount: currentQuestionIndex + 1,
         currentQuestion,
       });

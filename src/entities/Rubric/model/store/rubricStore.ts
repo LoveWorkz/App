@@ -6,6 +6,7 @@ import {Collections} from '@src/shared/types/firebase';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {categoryStore} from '@src/entities/Category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
 import {RubricType} from '../types/rubricTypes';
 
@@ -118,7 +119,13 @@ class RubricStore {
     }
   };
 
-  rubricSwipeLogic = async ({questionId}: {questionId?: string}) => {
+  rubricSwipeLogic = async ({
+    questionId,
+    language,
+  }: {
+    language: LanguageValueType;
+    questionId?: string;
+  }) => {
     try {
       let currentquestionId = questionId;
       let rubricName: string | undefined;
@@ -129,7 +136,7 @@ class RubricStore {
           return;
         }
         currentquestionId = rubric.currentQuestion;
-        rubricName = rubric.name;
+        rubricName = rubric.displayName[language];
       }
       if (!currentquestionId) {
         return;
@@ -153,7 +160,7 @@ class RubricStore {
 
       questionsStore.setQuestionsPageInfo({
         questionsCount: questionsStore.questions.length,
-        categoryName: currentCategory.name,
+        categoryName: currentCategory.displayName[language],
         rubricName: rubricName || questionsStore.questionsPageInfo.rubricName,
         swipedQuestionsCount: currentQuestionIndex + 1,
         currentQuestion,

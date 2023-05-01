@@ -16,6 +16,7 @@ import {cutText} from '@src/shared/lib/common';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {ChallengeType} from '../model/types/ChallengeTypes';
 import challengeStore from '../model/store/challengeStore';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 interface SubChallengeProps {
   challenge: ChallengeType;
@@ -25,12 +26,13 @@ export const SubChallenge = (props: SubChallengeProps) => {
   const {challenge} = props;
   const {title, description, isChecked, nomer, id} = challenge;
   const colors = useColors();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   const [visible, setVisible] = useState(false);
 
   const StandardTextLength = 50;
-  const ISDescriptionLarge = description.length > StandardTextLength;
+  const language = i18n.language as LanguageValueType;
+  const ISDescriptionLarge = description[language].length > StandardTextLength;
 
   const onShowHandler = () => {
     setVisible(true);
@@ -41,8 +43,8 @@ export const SubChallenge = (props: SubChallengeProps) => {
   };
 
   const onChangeHandler = useCallback(() => {
-    challengeStore.selectChallenge({id, t});
-  }, [id, t]);
+    challengeStore.selectChallenge({id});
+  }, [id]);
 
   return (
     <View
@@ -55,14 +57,14 @@ export const SubChallenge = (props: SubChallengeProps) => {
           style={[styles.title, {color: colors.primaryTextColor}]}
           weight={'500'}
           size={TextSize.LEVEL_4}
-          text={title}
+          text={title[language]}
         />
         {visible ? (
           <>
             <AppText
               style={styles.description}
               size={TextSize.LEVEL_4}
-              text={description}
+              text={description[language]}
             />
             <TouchableOpacity onPress={onHideHandler}>
               <GradientText
@@ -80,8 +82,11 @@ export const SubChallenge = (props: SubChallengeProps) => {
               size={TextSize.LEVEL_4}
               text={
                 ISDescriptionLarge
-                  ? cutText({text: description, textSize: StandardTextLength})
-                  : description
+                  ? cutText({
+                      text: description[language],
+                      textSize: StandardTextLength,
+                    })
+                  : description[language]
               }
             />
             <TouchableOpacity onPress={onShowHandler}>

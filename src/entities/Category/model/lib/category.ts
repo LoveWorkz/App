@@ -1,4 +1,3 @@
-import {TFunction} from 'i18next';
 import {CategoryName} from '../types/categoryTypes';
 
 export const getNextCategoryName = ({
@@ -18,17 +17,4 @@ export const getNextCategoryName = ({
     default:
       return 'AllInOne';
   }
-};
-
-export const translateCategory = ({
-  t,
-  name,
-}: {
-  t: TFunction;
-  name: CategoryName;
-}) => {
-  if (name.toLocaleLowerCase() === 'all in one') {
-    return t('categories.All_in_one');
-  }
-  return t(`categories.${name}`);
 };

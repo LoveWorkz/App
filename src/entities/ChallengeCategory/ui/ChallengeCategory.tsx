@@ -2,6 +2,7 @@ import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
+import {useTranslation} from 'react-i18next';
 
 import {
   challengeLayoutIconZIndex,
@@ -18,6 +19,8 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {DisplayText} from '@src/shared/types/types';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {ChallengeCategoriesNames} from '../model/types/challengeCategory';
 
 interface ChallangeProps {
@@ -28,6 +31,7 @@ interface ChallangeProps {
   isBlocked?: boolean;
   number?: string;
   id?: string;
+  displayName?: DisplayText;
 }
 
 const ChallengeCategory = (props: ChallangeProps) => {
@@ -39,8 +43,12 @@ const ChallengeCategory = (props: ChallangeProps) => {
     isBlocked = true,
     number,
     id,
+    displayName,
   } = props;
   const colors = useColors();
+  const {i18n} = useTranslation();
+
+  const language = i18n.language as LanguageValueType;
 
   const onPressHandler = useCallback(() => {
     if (id && name && onPressHanlder) {
@@ -95,7 +103,11 @@ const ChallengeCategory = (props: ChallangeProps) => {
       {isActive ? (
         <Gradient style={[styles.challange, {...globalStyles.shadowOpacity}]}>
           <TouchableOpacity onPress={onPressHandler}>
-            <View style={[styles.content]}>
+            <View
+              style={[
+                styles.content,
+                {backgroundColor: colors.bgChallengeContentColor},
+              ]}>
               <FastImage style={styles.image} source={uri} />
             </View>
           </TouchableOpacity>
@@ -141,12 +153,12 @@ const ChallengeCategory = (props: ChallangeProps) => {
           )}
         </View>
       )}
-      {name && (
+      {displayName && (
         <AppText
           style={[styles.name, {color: colors.challengeCategoryNameColor}]}
           weight={'500'}
           size={TextSize.LEVEL_1}
-          text={name}
+          text={displayName[language]}
         />
       )}
     </View>

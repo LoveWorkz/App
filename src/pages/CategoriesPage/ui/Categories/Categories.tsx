@@ -37,6 +37,7 @@ const Categories = () => {
                   ]}
                   key={category.id}>
                   <Category
+                    displayName={category.displayName}
                     id={category.id}
                     isBlocked={category.isBlocked}
                     image={category.image.small}
@@ -63,6 +64,7 @@ const Categories = () => {
                   ]}
                   key={category.id}>
                   <Category
+                    displayName={category.displayName}
                     id={category.id}
                     isBlocked={category.isBlocked}
                     image={category.image.small}

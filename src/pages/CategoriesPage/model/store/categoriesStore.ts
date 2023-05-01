@@ -1,13 +1,7 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import {TFunction} from 'i18next';
 
-import {
-  CategoryType,
-  CateorySize,
-  translateCategory,
-  UserCategory,
-} from '@src/entities/Category';
+import {CategoryType, CateorySize, UserCategory} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
 import {RubricType, UserRubric} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
@@ -25,12 +19,12 @@ class CategoriesStore {
     makeAutoObservable(this);
   }
 
-  init = async (t: TFunction) => {
+  init = async () => {
     try {
       await this.fetchUserCategories();
       await this.fetchUserRubrics();
       await this.fetchRubrics();
-      await this.fetchCategories(t);
+      await this.fetchCategories();
       await profileStore.fetchProfile();
       // init user current category for the first time
       await this.initCurrentUserCategory();
@@ -103,13 +97,16 @@ class CategoriesStore {
     }
   };
 
-  fetchCategories = async (t: TFunction) => {
+  fetchCategories = async () => {
     try {
       if (!this.userCategory) {
         return;
       }
 
-      const data = await firestore().collection(Collections.CATEGORIES).get();
+      const data = await firestore()
+        .collection(Collections.CATEGORIES)
+        .orderBy('createdDate')
+        .get();
 
       // merge default categories with user custom categories
       const categories = data.docs.map(category => {
@@ -123,17 +120,8 @@ class CategoriesStore {
         };
       });
 
-      const translatedCategories = categories.map(category => {
-        return {
-          ...category,
-          name: translateCategory({t, name: category.name}),
-        };
-      });
-
       runInAction(() => {
-        this.categories = this.editCategories(
-          translatedCategories as CategoryType[],
-        );
+        this.categories = this.editCategories(categories as CategoryType[]);
       });
     } catch (e) {
       console.log(e);

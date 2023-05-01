@@ -27,6 +27,7 @@ export const ChallengeCategories = () => {
             isBlocked={challange.isBlocked}
             onPressHanlder={onChallengeCategoryPressHandler}
             id={challange.id}
+            displayName={challange.displayName}
           />
         );
       })}

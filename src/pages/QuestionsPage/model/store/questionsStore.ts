@@ -1,6 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import {TFunction} from 'i18next';
 
 import {Collections} from '@src/shared/types/firebase';
 import {
@@ -15,6 +14,7 @@ import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {minutesDiff} from '@src/shared/lib/date';
 import {profileStore} from '@src/entities/Profile';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {QuestionsPageInfo} from '../types/questionTypes';
 import {breakPoint, minute} from '../lib/questions';
@@ -41,11 +41,11 @@ class QuestionsStore {
   getQuestionsPageInfo = async ({
     id,
     key,
-    t,
+    language,
   }: {
     id?: string;
     key: 'rubric' | 'category' | 'favorite';
-    t: TFunction;
+    language: LanguageValueType;
   }) => {
     try {
       runInAction(() => {
@@ -67,13 +67,13 @@ class QuestionsStore {
             questions: this.questions,
           });
           // init questions page info
-          rubricStore.rubricSwipeLogic({});
+          rubricStore.rubricSwipeLogic({language});
           break;
         case 'category':
           if (!id) {
             return;
           }
-          await categoryStore.fetchCategory({id, t});
+          await categoryStore.fetchCategory({id});
           await this.fetchQuestionsById({
             id,
             key: 'categoryId',
@@ -84,12 +84,12 @@ class QuestionsStore {
             questions: this.questions,
           });
           // init questions page info
-          categoryStore.categorySwipeLogic({});
+          categoryStore.categorySwipeLogic({language});
 
           break;
         default:
           await this.fetchFavoritesQuestions();
-          favoriteStore.favoritesSwipeLogic();
+          favoriteStore.favoritesSwipeLogic({language});
       }
     } catch (e) {
       console.log(e);
@@ -103,9 +103,11 @@ class QuestionsStore {
   swipe = async ({
     question,
     key,
+    language,
   }: {
     question: QuestionType;
     key: 'rubric' | 'category' | 'favorite';
+    language: LanguageValueType;
   }) => {
     const userId = userStore.authUserId;
     if (!question && !userId) {
@@ -120,7 +122,7 @@ class QuestionsStore {
           .update({
             [`categories.${question.categoryId}.currentQuestion`]: question.id,
           });
-        categoryStore.categorySwipeLogic({questionId: question.id});
+        categoryStore.categorySwipeLogic({questionId: question.id, language});
         break;
       case 'rubric':
         await firestore()
@@ -129,7 +131,7 @@ class QuestionsStore {
           .update({
             [`rubrics.${question.rubricId}.currentQuestion`]: question.id,
           });
-        rubricStore.rubricSwipeLogic({questionId: question.id});
+        rubricStore.rubricSwipeLogic({questionId: question.id, language});
         break;
       case 'favorite':
         await firestore()
@@ -141,7 +143,7 @@ class QuestionsStore {
               currentQuestion: question.id,
             },
           });
-        favoriteStore.favoritesSwipeLogic(question.id);
+        favoriteStore.favoritesSwipeLogic({id: question.id, language});
         break;
       default:
     }
@@ -217,12 +219,10 @@ class QuestionsStore {
     questionId,
     id,
     type,
-    t,
   }: {
     questionId: string;
     id: string;
     type: 'rubric' | 'category' | 'favorite';
-    t: TFunction;
   }) => {
     const isCategory = type === 'category';
 
@@ -237,7 +237,7 @@ class QuestionsStore {
     let document: RubricType | CategoryType | undefined =
       await rubricStore.fetchRubric(id);
     if (isCategory) {
-      document = await categoryStore.fetchCategory({id, t});
+      document = await categoryStore.fetchCategory({id});
     }
 
     if (!document) {
@@ -256,23 +256,21 @@ class QuestionsStore {
       isCategory,
     });
 
-    this.checkIfUserSwipedFast({id, isCategory, t});
+    this.checkIfUserSwipedFast({id, isCategory});
   };
 
   checkIfUserSwipedFast = async ({
     id,
     isCategory,
-    t,
   }: {
     id: string;
     isCategory: boolean;
-    t: TFunction;
   }) => {
     let document: RubricType | CategoryType | undefined =
       await rubricStore.fetchRubric(id);
 
     if (isCategory) {
-      document = await categoryStore.fetchCategory({id, t});
+      document = await categoryStore.fetchCategory({id});
     }
     if (!document) {
       return;

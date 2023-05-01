@@ -1,9 +1,12 @@
+import {DisplayText} from '@src/shared/types/types';
+
 export type QuestionCardTypes = 'WILD_CARD' | 'Action_CARD' | 'ORDINARY';
 
 export interface QuestionType {
   categoryId: string;
-  question: string;
+  question: DisplayText;
   rubricId: string;
   type: QuestionCardTypes;
   id: string;
+  createdDate: string;
 }
