@@ -101,12 +101,13 @@ export const Input = memo((props: InputProps) => {
           {
             color: colors.primaryTextColor,
             paddingLeft: StartIcon ? horizontalScale(50) : horizontalScale(20),
+            backgroundColor: colors.bgTertiaryColor,
           },
         ]}
         onChangeText={onChangeTextHandler}
         value={value}
         placeholder={placeholder}
-        placeholderTextColor={'#9A9AA5'}
+        placeholderTextColor={colors.secondaryTextColor}
         {...rest}
       />
       <Pressable

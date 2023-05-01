@@ -1,7 +1,5 @@
 import {useContext} from 'react';
 
-import {THEME_STORAGE_KEY} from '@src/shared/consts/storage';
-import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {Theme, ThemeContext} from './ThemeContext';
 
 interface UseThemeResult {
@@ -20,9 +18,7 @@ export const useTheme = (): UseThemeResult => {
     } else {
       newTheme = Theme.Dark;
     }
-
     setTheme?.(newTheme);
-    themeStorage.setTheme(THEME_STORAGE_KEY, newTheme);
   };
 
   return {

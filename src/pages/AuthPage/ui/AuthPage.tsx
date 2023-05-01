@@ -11,8 +11,8 @@ import {Dialog} from '@src/shared/ui/Dialog/Dialog';
 import {userStore} from '@src/entities/User';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {isPlatformIos} from '@src/shared/consts/common';
-import OrLine from './OrLine/OrLine';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
   const {t} = useTranslation();
@@ -80,7 +80,7 @@ const AuthPage = () => {
           disabled={disabled()}
           onPress={auth}
           style={styles.singInBtn}
-          theme={ButtonTheme.OUTLINED}>
+          theme={ButtonTheme.GRADIENT}>
           <AppText
             style={styles.singInBtnText}
             size={TextSize.LEVEL_4}
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   singInBtn: {
-    backgroundColor: 'black',
+    width: '100%',
   },
   bottomBlock: {
     position: 'absolute',

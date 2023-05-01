@@ -65,7 +65,7 @@ const SettingItems = () => {
   );
 };
 
-export const Wrapper = memo(SettingItems);
+export default memo(SettingItems);
 
 const styles = StyleSheet.create({
   settingItems: {

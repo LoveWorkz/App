@@ -47,7 +47,11 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
         />
       )}
       <Pressable
-        style={[styles.wrapper, styles[theme]]}
+        style={[
+          styles.wrapper,
+          styles[theme],
+          {backgroundColor: colors.bgTertiaryColor},
+        ]}
         onPress={onSelectOpenHandler}>
         <View>
           <AppText style={selectedValueStyle} text={value} />

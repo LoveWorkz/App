@@ -1,7 +1,9 @@
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import React, {memo} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface OrLineProps {
   style?: Record<string, string | number>;
@@ -9,14 +11,22 @@ interface OrLineProps {
 
 const OrLine = (props: OrLineProps) => {
   const {style} = props;
-
   const {t} = useTranslation();
+  const colors = useColors();
 
   return (
     <View style={[styles.lineWrapper, style]}>
-      <View style={styles.leftPart} />
-      <AppText size={TextSize.LEVEL_3} text={t('auth.or')} />
-      <View style={styles.rightPart} />
+      <View
+        style={[styles.leftPart, {borderColor: colors.secondaryTextColor}]}
+      />
+      <AppText
+        size={TextSize.LEVEL_3}
+        text={t('auth.or')}
+        style={{color: colors.secondaryTextColor}}
+      />
+      <View
+        style={[styles.rightPart, {borderColor: colors.secondaryTextColor}]}
+      />
     </View>
   );
 };
@@ -30,9 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   leftPart: {
-    borderColor: '#B6B6BD',
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 0.6,
     width: '40%',
     height: 0,
     position: 'absolute',
@@ -40,9 +49,8 @@ const styles = StyleSheet.create({
     bottom: '50%',
   },
   rightPart: {
-    borderColor: '#B6B6BD',
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 0.6,
     width: '40%',
     height: 0,
     position: 'absolute',

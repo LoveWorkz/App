@@ -1,11 +1,19 @@
 import React, {memo, useEffect} from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
+import {useHeaderHeight} from '@react-navigation/elements';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
-import {HomepageBackground} from '@src/shared/assets/images';
+import {
+  HomepageBackground,
+  HomepageBackgroundDark,
+} from '@src/shared/assets/images';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -14,6 +22,9 @@ import ProgressBar from './ProgressBar/ProgressBar';
 
 const HomePage = () => {
   const {t} = useTranslation();
+  const {theme} = useTheme();
+  const navbarHeaderHeight = useHeaderHeight();
+  const statusBarHeight = getStatusBarHeight();
 
   useEffect(() => {
     homePageStore.init(t);
@@ -30,12 +41,23 @@ const HomePage = () => {
   return (
     <View>
       <View style={styles.container}>
-        <ImageBackground
-          resizeMode="cover"
-          style={styles.homepageBackground}
-          source={HomepageBackground}>
+        <FastImage
+          style={[
+            styles.homepageBackground,
+            {
+              marginTop: isPlatformIos
+                ? -(navbarHeaderHeight - statusBarHeight)
+                : -navbarHeaderHeight,
+              paddingTop: isPlatformIos
+                ? navbarHeaderHeight - statusBarHeight
+                : navbarHeaderHeight,
+            },
+          ]}
+          source={
+            theme === Theme.Dark ? HomepageBackgroundDark : HomepageBackground
+          }>
           <ProgressBar />
-        </ImageBackground>
+        </FastImage>
         <View style={styles.homeCategoryWrapper}>
           <HomeCategory />
         </View>
@@ -59,7 +81,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   homepageBackground: {
-    marginTop: -globalPadding,
     marginLeft: -globalPadding,
     width: windowWidth,
     height: 310,

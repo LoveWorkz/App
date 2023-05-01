@@ -7,6 +7,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 
 interface ConfirmDeletingProps {
@@ -60,17 +61,17 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
         <Button
           disabled={deleteAccountStore.isLoading}
           style={styles.cancelBtn}
-          theme={ButtonTheme.OUTLINED}
+          theme={ButtonTheme.OUTLINED_GRADIENT}
           onPress={onCancelHandler}>
-          <AppText size={TextSize.LEVEL_4} text={t('cancel')} />
+          <GradientText size={TextSize.LEVEL_4} text={t('cancel')} />
         </Button>
         <Button
           disabled={deleteAccountStore.isLoading}
           onPress={onDeleteHandler}
           style={styles.confirmBtn}
-          theme={ButtonTheme.OUTLINED}>
+          theme={ButtonTheme.GRADIENT}>
           <AppText
-            style={styles.confirmText}
+            style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             text={t('confirm')}
           />
@@ -82,7 +83,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
 
 export const Wrapper = memo(observer(ConfirmDeleting));
 
-const btnWidth = '40%';
+const btnWidth = '45%';
 
 const styles = StyleSheet.create({
   confirm: {
@@ -100,15 +101,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   confirmBtn: {
-    backgroundColor: 'black',
     marginLeft: 'auto',
     width: btnWidth,
   },
   cancelBtn: {
     width: btnWidth,
-  },
-  confirmText: {
-    color: 'white',
   },
   inputs: {
     width: '100%',

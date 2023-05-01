@@ -1,3 +1,4 @@
+import {useColors} from '@src/app/providers/colorsProvider';
 import {
   horizontalScale,
   moderateScale,
@@ -35,6 +36,7 @@ export const Button = (props: ButtonProps) => {
     disabled,
     squar,
   } = props;
+  const colors = useColors();
 
   const mode = useMemo(() => {
     return [
@@ -49,7 +51,7 @@ export const Button = (props: ButtonProps) => {
   if (theme === ButtonTheme.GRADIENT) {
     return (
       <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
-        <Gradient style={mode}>{children}</Gradient>
+        <Gradient style={[...mode, styles.contentWrapper]}>{children}</Gradient>
       </TouchableOpacity>
     );
   }
@@ -57,8 +59,11 @@ export const Button = (props: ButtonProps) => {
   if (theme === ButtonTheme.OUTLINED_GRADIENT) {
     return (
       <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
-        <Gradient style={mode}>
-          <View style={[styles.container]}>{children}</View>
+        <Gradient style={[...mode, styles.contentWrapper]}>
+          <View
+            style={[styles.content, {backgroundColor: colors.bgQuinaryColor}]}>
+            {children}
+          </View>
         </Gradient>
       </TouchableOpacity>
     );
@@ -92,13 +97,15 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: verticalScale(30),
     width: horizontalScale(30),
   },
-  container: {
+  content: {
     flex: 1,
     margin: 1,
-    backgroundColor: 'white',
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: moderateScale(10),
+  },
+  contentWrapper: {
+    width: '100%',
   },
 });

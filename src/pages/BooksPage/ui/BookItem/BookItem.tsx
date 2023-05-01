@@ -2,13 +2,13 @@ import React, {memo} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   Text,
   TouchableOpacity,
   Pressable,
   Keyboard,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -43,10 +43,11 @@ const BookItem = (props: BookProps) => {
       <Pressable
         onPress={() => onBookPreviewPressHandler(id)}
         style={styles.imageWrapper}>
-        <Image
+        <FastImage
           style={styles.image}
           source={{
             uri: image,
+            priority: FastImage.priority.normal,
           }}
         />
       </Pressable>
@@ -63,7 +64,7 @@ const BookItem = (props: BookProps) => {
         <View>
           <Text style={styles.descriptionWrapper}>
             <AppText
-              style={[styles.description]}
+              style={{color: colors.secondaryTextColor}}
               text={
                 ISDescriptionLarge
                   ? cutText({text: description, textSize: StandardTextLength})
@@ -116,9 +117,6 @@ const styles = StyleSheet.create({
   },
   descriptionWrapper: {
     paddingRight: 20,
-  },
-  description: {
-    color: '#B6B6BD',
   },
   seeMore: {
     position: 'relative',

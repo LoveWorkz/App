@@ -11,11 +11,13 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {profileStore} from '@src/entities/Profile';
 import {CategoryName} from '@src/entities/Category';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {getProgressBarIcon} from '../../model/lib/homePage';
 
 const ProgressBar = () => {
   const {t} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
 
   const firstCategory: CategoryName = 'Starter';
   let currentCategoryName: CategoryName = firstCategory;
@@ -25,7 +27,10 @@ const ProgressBar = () => {
     currentCategoryName = currentCategory.currentCategory as CategoryName;
   }
 
-  const progressBarImage = getProgressBarIcon(currentCategoryName);
+  const progressBarImage = getProgressBarIcon({
+    category: currentCategoryName,
+    isDarkMode: theme === Theme.Dark,
+  });
 
   return (
     <View>
@@ -41,7 +46,10 @@ const ProgressBar = () => {
       )}
       {currentCategoryName !== 'Starter' && (
         <AppText
-          style={styles[currentCategoryName]}
+          style={[
+            styles[currentCategoryName],
+            {color: colors.homePageCategoryTextColor},
+          ]}
           weight={'700'}
           size={TextSize.LEVEL_4}
           text={t(`categories.${currentCategoryName}`)}
@@ -55,6 +63,7 @@ export default memo(observer(ProgressBar));
 const styles = StyleSheet.create<Record<string, any>>({
   ProgressBar: {},
   currentLevelText: {
+    marginTop: verticalScale(25),
     marginBottom: verticalScale(20),
     marginLeft: horizontalScale(globalPadding),
   },

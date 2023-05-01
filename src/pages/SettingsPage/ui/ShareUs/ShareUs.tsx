@@ -7,6 +7,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {shareUsStore} from '@src/features/ShareUs';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const options = {
   message: 'App link',
@@ -14,6 +15,7 @@ const options = {
 
 const ShareUs = () => {
   const {t} = useTranslation();
+  const colors = useColors();
 
   const onPressHandler = async () => {
     shareUsStore.share(options);
@@ -22,14 +24,18 @@ const ShareUs = () => {
   return (
     <Button
       style={styles.btn}
-      theme={ButtonTheme.OUTLINED}
+      theme={ButtonTheme.GRADIENT}
       onPress={onPressHandler}>
       <View style={styles.btnTextWrapper}>
-        <SvgXml xml={ShareIcon} stroke={'white'} style={styles.icon} />
+        <SvgXml
+          xml={ShareIcon}
+          stroke={colors.bgQuinaryColor}
+          style={styles.icon}
+        />
         <AppText
           weight={'500'}
           size={TextSize.LEVEL_4}
-          style={styles.btnText}
+          style={[styles.btnText, {color: colors.bgQuinaryColor}]}
           text={t('settings.share_us')}
         />
       </View>
@@ -42,14 +48,12 @@ export default memo(ShareUs);
 const styles = StyleSheet.create({
   btn: {
     marginTop: 10,
-    backgroundColor: 'black',
     height: 44,
   },
   btnTextWrapper: {
     flexDirection: 'row',
   },
   btnText: {
-    color: 'white',
     marginLeft: 10,
   },
   icon: {

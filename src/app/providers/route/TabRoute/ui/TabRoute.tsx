@@ -7,7 +7,7 @@ import {
   TabRoutesNames,
 } from '@src/shared/config/route/tabConfigRoutes';
 import {Layout} from '@src/app/providers/layout';
-import {globalStyles, headerHeight} from '@src/app/styles/GlobalStyle';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
@@ -20,14 +20,19 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.HOME}
+      initialRouteName={TabRoutesNames.CHALLENGES}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
           ...globalStyles.strongShadowOpacity,
-          borderRadius: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           height: 80,
           paddingTop: 10,
+          backgroundColor: colors.bgQuaternaryColor,
+          position: 'absolute',
+          bottom: 0,
+          borderTopColor: colors.bgQuaternaryColor,
         },
         tabBarShowLabel: false,
         tabBarIcon: ({focused}) => {
@@ -76,8 +81,12 @@ const TabRoute = () => {
               options={({route}) => ({
                 title: '',
                 headerStyle: {
-                  backgroundColor: isHomePage ? '#EEF4FF' : colors.bgColor,
-                  height: headerHeight,
+                  backgroundColor: isHomePage
+                    ? colors.bgHomePageHeaderColor
+                    : colors.bgColor,
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
                 },
                 headerShown: headerShown,
                 headerLeft: () =>

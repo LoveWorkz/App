@@ -23,6 +23,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {categoryStore} from '@src/entities/Category';
+import {useColors} from '@src/app/providers/colorsProvider';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -33,6 +34,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
   const category = categoryStore.category;
   const {t} = useTranslation();
+  const colors = useColors();
 
   useEffect(() => {
     route?.params.id && categoryStore.fetchCategory({id: route.params.id, t});
@@ -72,7 +74,11 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
 
   return (
     <View style={styles.CategoryDetailsPage}>
-      <View style={styles.CategoryDetails}>
+      <View
+        style={[
+          styles.CategoryDetails,
+          {backgroundColor: colors.bgTertiaryColor},
+        ]}>
         <View>
           {category.isBlocked && (
             <>
@@ -150,7 +156,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   CategoryDetails: {
-    backgroundColor: 'white',
     height: 525,
     borderRadius: moderateScale(20),
     paddingVertical: verticalScale(10),

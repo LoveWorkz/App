@@ -4,10 +4,10 @@ import {
   View,
   useWindowDimensions,
   Modal,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
@@ -32,6 +32,7 @@ const BookPreviewModal = (props: BookProps) => {
   const uri = useMemo(() => {
     return {
       uri: image,
+      priority: FastImage.priority.normal,
     };
   }, [image]);
 
@@ -40,7 +41,11 @@ const BookPreviewModal = (props: BookProps) => {
       animationType="slide"
       visible={visible}
       onRequestClose={onCloseHandler}>
-      <View style={[styles.content, {height, padding: globalPadding}]}>
+      <View
+        style={[
+          styles.content,
+          {height, padding: globalPadding, backgroundColor: colors.bgColor},
+        ]}>
         <TouchableOpacity
           style={styles.closeIconWrapper}
           onPress={onCloseHandler}>
@@ -53,7 +58,7 @@ const BookPreviewModal = (props: BookProps) => {
         </TouchableOpacity>
 
         <View />
-        <ImageBackground
+        <FastImage
           resizeMode={'stretch'}
           style={[styles.image, {height: height * 0.6}]}
           source={uri}

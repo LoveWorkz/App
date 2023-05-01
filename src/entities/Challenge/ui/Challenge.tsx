@@ -45,7 +45,8 @@ export const SubChallenge = (props: SubChallengeProps) => {
   }, [id, t]);
 
   return (
-    <View style={styles.SubChallenge}>
+    <View
+      style={[styles.SubChallenge, {backgroundColor: colors.bgSecondaryColor}]}>
       <View style={styles.nomerWrapper}>
         <ChallengeCategory number={nomer} isActive={isChecked} />
       </View>
@@ -107,7 +108,6 @@ const styles = StyleSheet.create({
   SubChallenge: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#F1F3FF',
     paddingHorizontal: horizontalScale(10),
     paddingVertical: verticalScale(10),
     borderRadius: moderateScale(20),

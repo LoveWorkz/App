@@ -1,12 +1,24 @@
-export {default as homeCategoryImage} from './homeCategoryImage.png';
-export {default as favorites} from './favorites.png';
-export {default as questionImage1} from './questionImage1.png';
-export {default as questionImage2} from './questionImage2.png';
-export {default as questionImage3} from './questionImage3.png';
-export {default as questionImage4} from './questionImage4.png';
-export {default as questionImage5} from './questionImage5.png';
-export {default as questionImage6} from './questionImage6.png';
+// questions light
+export {default as questionImage1} from './light/questions/questionImage1.png';
+export {default as questionImage2} from './light/questions/questionImage2.png';
+export {default as questionImage3} from './light/questions/questionImage3.png';
+export {default as questionImage4} from './light/questions/questionImage4.png';
+export {default as questionImage5} from './light/questions/questionImage5.png';
+export {default as questionImage6} from './light/questions/questionImage6.png';
+
+// questions dark
+export {default as questionImageDark1} from './dark/questions/questionImageDark1.png';
+export {default as questionImageDark2} from './dark/questions/questionImageDark2.png';
+export {default as questionImageDark3} from './dark/questions/questionImageDark3.png';
+export {default as questionImageDark4} from './dark/questions/questionImageDark4.png';
+export {default as questionImageDark5} from './dark/questions/questionImageDark5.png';
+export {default as questionImageDark6} from './dark/questions/questionImageDark6.png';
+
 export {default as Action_CARD} from './Action_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';
 
-export {default as HomepageBackground} from './HomepageBackground.png';
+export {default as favorites} from './favorites.png';
+export {default as homeCategoryImage} from './light/homeCategoryImage.png';
+export {default as HomepageBackground} from './light/HomepageBackground.png';
+export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
+export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';

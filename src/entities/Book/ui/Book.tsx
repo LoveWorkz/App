@@ -1,5 +1,6 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View, Image, Pressable} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -37,6 +38,7 @@ const BookPreview = memo((props: BookPreview) => {
   const uri = useMemo(() => {
     return {
       uri: image,
+      priority: FastImage.priority.normal,
     };
   }, [image]);
 
@@ -49,7 +51,7 @@ const BookPreview = memo((props: BookPreview) => {
           ...globalStyles.shadowOpacity,
         },
       ]}>
-      <Image style={styles.image} source={uri} />
+      <FastImage style={styles.image} source={uri} />
       <BookPreviewModal
         image={image}
         visible={isBookModalVisible}

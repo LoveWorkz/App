@@ -7,11 +7,13 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import signUpStore from '../model/store/SignUpStore';
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
+import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
   const {t} = useTranslation();
+  const colors = useColors();
 
   useEffect(() => {
     return () => signUpStore.resetForm();
@@ -84,13 +86,16 @@ const SignUp = () => {
         <View style={styles.privacyPolicyTextWrapper}>
           <AppText
             size={TextSize.LEVEL_3}
-            style={styles.privacyPolicyText}
+            style={[
+              styles.privacyPolicyText,
+              {color: colors.authPageAgreementText},
+            ]}
             text={t('auth.agree_with')}
           />
           <Pressable onPress={onPrivacyPolicyPressHandler}>
             <AppText
               size={TextSize.LEVEL_3}
-              style={styles.privacyPolicyLink}
+              style={{color: colors.primaryTextColor}}
               text={t('auth.terms_of_policy')}
             />
           </Pressable>
@@ -123,10 +128,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   privacyPolicyText: {
-    color: '#9A9AA5',
     marginRight: 5,
-  },
-  privacyPolicyLink: {
-    color: 'black',
   },
 });

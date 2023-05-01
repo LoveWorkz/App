@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
   );
 };
 
-export const Wrapper = memo(PrivacyPolicy);
+export default memo(PrivacyPolicy);
 
 const styles = StyleSheet.create({
   privacyPolicy: {

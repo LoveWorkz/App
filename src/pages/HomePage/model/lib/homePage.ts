@@ -1,21 +1,32 @@
 import {CategoryName} from '@src/entities/Category';
-import {BasicIcon} from '@src/shared/assets/icons/categories/Basic';
-import {DeepIcon} from '@src/shared/assets/icons/categories/Deep';
-import {HotIcon} from '@src/shared/assets/icons/categories/Hot';
-import {IntimateIcon} from '@src/shared/assets/icons/categories/Intimate';
-import {StarterIcon} from '@src/shared/assets/icons/categories/Starter';
+import {BasicDarkIcon} from '@src/shared/assets/icons/categories/dark/BasicDark';
+import {DeepDarkIcon} from '@src/shared/assets/icons/categories/dark/DeepDark';
+import {HotDarkIcon} from '@src/shared/assets/icons/categories/dark/HotDark';
+import {IntimateDarkIcon} from '@src/shared/assets/icons/categories/dark/IntimateDark';
+import {StarterDarkIcon} from '@src/shared/assets/icons/categories/dark/StarterDark';
+import {BasicIcon} from '@src/shared/assets/icons/categories/light/Basic';
+import {DeepIcon} from '@src/shared/assets/icons/categories/light/Deep';
+import {HotIcon} from '@src/shared/assets/icons/categories/light/Hot';
+import {IntimateIcon} from '@src/shared/assets/icons/categories/light/Intimate';
+import {StarterIcon} from '@src/shared/assets/icons/categories/light/Starter';
 
-export const getProgressBarIcon = (category: CategoryName) => {
+export const getProgressBarIcon = ({
+  category,
+  isDarkMode,
+}: {
+  category: CategoryName;
+  isDarkMode: boolean;
+}) => {
   switch (category) {
     case 'Starter':
-      return StarterIcon;
+      return isDarkMode ? StarterDarkIcon : StarterIcon;
     case 'Basic':
-      return BasicIcon;
+      return isDarkMode ? BasicDarkIcon : BasicIcon;
     case 'Deep':
-      return DeepIcon;
+      return isDarkMode ? DeepDarkIcon : DeepIcon;
     case 'Intimate':
-      return IntimateIcon;
+      return isDarkMode ? IntimateDarkIcon : IntimateIcon;
     default:
-      return HotIcon;
+      return isDarkMode ? HotDarkIcon : HotIcon;
   }
 };

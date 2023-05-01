@@ -9,7 +9,9 @@ const PartnersPage = () => {
 
   return (
     <View style={styles.partners}>
-      <View style={styles.block} />
+      <View
+        style={[styles.block, {backgroundColor: colors.secondaryTextColor}]}
+      />
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_7}
@@ -37,10 +39,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 200,
     height: 200,
-    borderColor: '#ECEFF1',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    backgroundColor: '#ECEFF1',
     borderRadius: 20,
   },
   title: {

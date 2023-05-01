@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
-import {ImageBackground, ImageSourcePropType, StyleSheet} from 'react-native';
+import {ImageSourcePropType, StyleSheet} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
@@ -23,10 +24,9 @@ const QuestionCard = (props: QuestionCardProps) => {
   const colors = useColors();
 
   return (
-    <ImageBackground
+    <FastImage
       resizeMode="cover"
-      imageStyle={styles.imageStyle}
-      source={image}
+      source={image as number}
       style={styles.questionsCard}>
       <AppText
         style={[
@@ -37,7 +37,7 @@ const QuestionCard = (props: QuestionCardProps) => {
         size={TextSize.LEVEL_7}
         text={question}
       />
-    </ImageBackground>
+    </FastImage>
   );
 };
 
@@ -59,9 +59,6 @@ const styles = StyleSheet.create({
   questionText: {
     textAlign: 'center',
     position: 'relative',
-  },
-  imageStyle: {
-    borderRadius: moderateScale(20),
   },
 });
 

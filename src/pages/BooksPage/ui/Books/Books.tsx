@@ -10,12 +10,16 @@ import {
   rubricFilterItemStore,
 } from '@src/entities/RubricFilterItem';
 import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import booksStore from '../../model/store/BooksStore';
 import {Wrapper as BookItem} from '../BookItem/BookItem';
 import BooksSearchBar from '../BooksSearchBar/BooksSearchBar';
 
 const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
+  const {theme} = useTheme();
+  const isDarkMode = theme === Theme.Dark;
+
   const onFiltreHandler = useCallback((key: string) => {
     booksStore.filterBooks(key);
     Keyboard.dismiss();
@@ -25,6 +29,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
     <View style={styles.rubricCategory}>
       {name && (
         <RubricFilterItem
+          isOutline={isDarkMode}
           action
           onPress={onFiltreHandler}
           active={active}

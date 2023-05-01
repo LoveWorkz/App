@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
 
 import {
   challengeLayoutIconZIndex,
@@ -50,13 +51,26 @@ const ChallengeCategory = (props: ChallangeProps) => {
   const uri = useMemo(() => {
     return {
       uri: image,
+      priority: FastImage.priority.normal,
+      resizeMode: FastImage.resizeMode.contain,
     };
   }, [image]);
 
   if (number) {
     return (
-      <View style={[styles.challange, {...globalStyles.shadowOpacity}]}>
-        <View style={[styles.content]}>
+      <View
+        style={[
+          styles.challange,
+          {
+            ...globalStyles.shadowOpacity,
+            backgroundColor: colors.bgQuinaryColor,
+          },
+        ]}>
+        <View
+          style={[
+            styles.content,
+            {backgroundColor: colors.bgChallengeContentColor},
+          ]}>
           {isActive ? (
             <AppText
               style={[{color: colors.primaryTextColor}]}
@@ -82,16 +96,27 @@ const ChallengeCategory = (props: ChallangeProps) => {
         <Gradient style={[styles.challange, {...globalStyles.shadowOpacity}]}>
           <TouchableOpacity onPress={onPressHandler}>
             <View style={[styles.content]}>
-              <Image style={styles.image} source={uri} />
+              <FastImage style={styles.image} source={uri} />
             </View>
           </TouchableOpacity>
         </Gradient>
       ) : (
         <View>
-          <View style={[styles.challange, {...globalStyles.shadowOpacity}]}>
+          <View
+            style={[
+              styles.challange,
+              {
+                ...globalStyles.shadowOpacity,
+                backgroundColor: colors.bgTertiaryColor,
+              },
+            ]}>
             <TouchableOpacity onPress={onPressHandler}>
-              <View style={[styles.content]}>
-                <Image style={styles.image} source={uri} />
+              <View
+                style={[
+                  styles.content,
+                  {backgroundColor: colors.bgChallengeContentColor},
+                ]}>
+                <FastImage style={styles.image} source={uri} />
               </View>
             </TouchableOpacity>
           </View>
@@ -118,10 +143,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
       )}
       {name && (
         <AppText
-          style={[
-            styles.name,
-            {color: isActive ? colors.primaryTextColor : '#B6B6BD'},
-          ]}
+          style={[styles.name, {color: colors.challengeCategoryNameColor}]}
           weight={'500'}
           size={TextSize.LEVEL_1}
           text={name}
@@ -167,9 +189,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     color: 'white',
   },
   image: {
-    height: '100%',
-    width: '100%',
-    resizeMode: 'contain',
+    height: '90%',
+    width: '90%',
   },
   name: {
     marginVertical: verticalScale(5),

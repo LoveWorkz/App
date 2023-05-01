@@ -7,6 +7,8 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import logoutStore from '../modal/store/logoutStore';
 
 interface LogOutModalProps {
@@ -32,7 +34,10 @@ const LogOutModal = (props: LogOutModalProps) => {
   };
 
   return (
-    <Modal visible={visible} onClose={onCancelHandler}>
+    <Modal
+      contentStyle={styles.content}
+      visible={visible}
+      onClose={onCancelHandler}>
       <AppText
         style={{color: colors.primaryTextColor}}
         size={TextSize.LEVEL_6}
@@ -43,17 +48,21 @@ const LogOutModal = (props: LogOutModalProps) => {
         <Button
           disabled={logoutStore.isLoading}
           style={styles.cancelBtn}
-          theme={ButtonTheme.OUTLINED}
+          theme={ButtonTheme.OUTLINED_GRADIENT}
           onPress={onCancelHandler}>
-          <AppText size={TextSize.LEVEL_4} weight={'700'} text={t('cancel')} />
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'700'}
+            text={t('cancel')}
+          />
         </Button>
         <Button
           disabled={logoutStore.isLoading}
-          theme={ButtonTheme.OUTLINED}
+          theme={ButtonTheme.GRADIENT}
           style={styles.logOutBtn}
           onPress={onlogoutHandler}>
           <AppText
-            style={styles.logOut}
+            style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             weight={'700'}
             text={t('auth.logout')}
@@ -66,22 +75,21 @@ const LogOutModal = (props: LogOutModalProps) => {
 
 export const Wrapper = memo(observer(LogOutModal));
 
-const btnWidth = '40%';
+const btnWidth = '45%';
 
 const styles = StyleSheet.create({
+  content: {
+    height: verticalScale(188),
+  },
   btnGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
   },
   logOutBtn: {
-    backgroundColor: 'black',
     width: btnWidth,
   },
   cancelBtn: {
     width: btnWidth,
-  },
-  logOut: {
-    color: 'white',
   },
 });

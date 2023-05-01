@@ -19,6 +19,8 @@ export const Layout = (props: LayoutProps) => {
   if (isPageScrolling) {
     return (
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         style={{height: windowHeight, backgroundColor: colors.bgColor}}>
         <View
           style={[
@@ -54,5 +56,6 @@ const styles = StyleSheet.create({
     padding: globalPadding,
     flex: 1,
     justifyContent: 'center',
+    width: '100%',
   },
 });

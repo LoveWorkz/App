@@ -33,7 +33,14 @@ export const Rubric = (props: RubricProps) => {
   );
 
   return (
-    <View style={[styles.Rubric, {...globalStyles.simpleShadowOpacity}]}>
+    <View
+      style={[
+        styles.Rubric,
+        {
+          ...globalStyles.simpleShadowOpacity,
+          backgroundColor: colors.bgSecondaryColor,
+        },
+      ]}>
       <View>
         <AppText
           style={[styles.name, {color: colors.primaryTextColor}]}

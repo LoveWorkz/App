@@ -1,5 +1,6 @@
 import React, {memo, useMemo} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {BookImage} from '@src/entities/Book';
 
@@ -12,12 +13,12 @@ const BookPreview = (props: BookPreviewProps) => {
   const imageFront = image.front;
 
   const uri = useMemo(() => {
-    return {uri: imageFront};
+    return {uri: imageFront, priority: FastImage.priority.normal};
   }, [imageFront]);
 
   return (
     <View style={styles.BookPreview}>
-      <Image style={styles.image} source={uri} />
+      <FastImage style={styles.image} source={uri} />
     </View>
   );
 };

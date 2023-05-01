@@ -1,7 +1,8 @@
 import React, {memo} from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -13,11 +14,16 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {homeCategoryImage} from '@src/shared/assets/images';
+import {
+  homeCategoryImage,
+  homeCategoryImageDark,
+} from '@src/shared/assets/images';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const HomeCategory = () => {
   const {t} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
 
   return (
     <View style={{width: windowWidthMinusPaddings}}>
@@ -27,13 +33,21 @@ const HomeCategory = () => {
         text={t('home.quick_start')}
         weight={'500'}
       />
-      <ImageBackground
-        style={[styles.contaier, {...globalStyles.shadowOpacity}]}
-        source={homeCategoryImage}>
+      <FastImage
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.bgSecondaryColor,
+            ...globalStyles.shadowOpacity,
+          },
+        ]}
+        source={
+          theme === Theme.Dark ? homeCategoryImageDark : homeCategoryImage
+        }>
         <View style={styles.content}>
           <View style={styles.textWrapper}>
             <AppText
-              style={{color: colors.primaryTextColor}}
+              style={{color: colors.homePageCategoryTitleColor}}
               size={TextSize.LEVEL_2}
               text={t('home.continue_where_you_left_off')}
             />
@@ -47,19 +61,22 @@ const HomeCategory = () => {
               text={'BASIC'}
             />
             <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
-              <SvgXml xml={getArrowRightIcon({})} style={styles.arrowIcon} />
+              <SvgXml
+                xml={getArrowRightIcon({})}
+                style={styles.arrowIcon}
+                fill={colors.bgQuinaryColor}
+              />
             </Button>
           </View>
         </View>
-      </ImageBackground>
+      </FastImage>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  contaier: {
+  container: {
     height: 92,
-    backgroundColor: 'white',
     borderRadius: 20,
     justifyContent: 'center',
   },
@@ -87,13 +104,9 @@ const styles = StyleSheet.create({
     height: verticalScale(30),
     width: horizontalScale(30),
   },
-  btnText: {
-    color: 'white',
-  },
   arrowIcon: {
     height: 15,
     width: 15,
-    fill: 'white',
   },
 });
 

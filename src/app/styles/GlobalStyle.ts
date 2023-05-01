@@ -29,8 +29,6 @@ export const categoryLayoutIconZIndex = 2;
 export const challengeLayoutZIndex = 1;
 export const challengeLayoutIconZIndex = 2;
 
-export const headerHeight = 100;
-
 export const globalStyles = StyleSheet.create({
   textFont: {
     fontFamily: 'Quicksand-Bold',

@@ -2,9 +2,9 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {ThemeSwitcher} from '@src/widgets/ThemeSwitcher';
-import {Wrapper as SettingItems} from './SettingItems/SettingItems';
-import {Wrapper as PrivacyPolicy} from './PrivacyPolicy/PrivacyPolicy';
-import {Wrapper as SettingsUserCard} from './SettingsUserCard/SettingsUserCard';
+import SettingItems from './SettingItems/SettingItems';
+import PrivacyPolicy from './PrivacyPolicy/PrivacyPolicy';
+import SettingsUserCard from './SettingsUserCard/SettingsUserCard';
 import ShareUs from './ShareUs/ShareUs';
 import Language from './Language/Language';
 

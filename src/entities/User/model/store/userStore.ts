@@ -34,19 +34,23 @@ class UserStore {
   }
 
   setAuthUserInfo({user, authMethod}: AuthUserInfo) {
-    this.authUser = user;
-    if (user?.id) {
-      this.authUserId = user.id;
+    try {
+      this.authUser = user;
+      if (user?.id) {
+        this.authUserId = user.id;
+      }
+      this.authMethod = authMethod;
+
+      authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+      authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
+    } catch (e) {
+      console.log(e);
     }
-    this.authMethod = authMethod;
-
-    authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
-    authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
   }
 
-  toggleDisabledDialog(isOpen: boolean) {
+  toggleDisabledDialog = (isOpen: boolean) => {
     this.isDisabledDialogOpen = isOpen;
-  }
+  };
 
   initAuthUser = async () => {
     try {

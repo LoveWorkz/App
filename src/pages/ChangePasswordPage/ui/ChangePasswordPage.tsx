@@ -35,7 +35,6 @@ const ChangePasswordPage = () => {
     <View style={styles.container}>
       <View style={styles.item}>
         <Input
-          secureTextEntry
           label={t('auth.current_password') || ''}
           value={changePasswordStore.formData.oldPassword}
           onChange={onChangeOldPasswordHandler}

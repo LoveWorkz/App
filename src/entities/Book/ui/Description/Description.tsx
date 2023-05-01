@@ -31,6 +31,7 @@ const Description = (props: BookProps) => {
           height: windowHeight * 0.57,
           width: windowWidth,
           left: -globalPadding,
+          backgroundColor: colors.bgTertiaryColor,
         },
       ]}>
       <View>

@@ -1,7 +1,8 @@
 import React, {memo} from 'react';
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -30,26 +31,25 @@ export const Favorite = () => {
           text={t('categories.favourites')}
         />
       </View>
-      <ImageBackground
+      <FastImage
         style={[styles.favoritesFolder, {width: windowWidthMinusPaddings}]}
-        imageStyle={styles.imageStyle}
         resizeMode={'stretch'}
         source={favorites}>
         <Gradient style={styles.titleWrapper} size={GradientSize.SMALL}>
           <AppText
-            style={styles.title}
+            style={{color: colors.white}}
             text={`${favorite.questions.length} ${t('questions.questions')}`}
           />
         </Gradient>
         <View>
           <AppText
-            style={[styles.text, {color: colors.primaryTextColor}]}
+            style={[styles.text, {color: colors.categoryAndFavoritesTextColor}]}
             weight={'700'}
             size={TextSize.LEVEL_4}
             text={t('questions.my_questions')}
           />
         </View>
-      </ImageBackground>
+      </FastImage>
     </View>
   );
 };
@@ -66,15 +66,8 @@ const styles = StyleSheet.create({
   titleWrapper: {
     paddingVertical: verticalScale(4),
   },
-  title: {
-    color: 'white',
-  },
   text: {
     marginTop: 13,
     textTransform: 'uppercase',
-  },
-  imageStyle: {
-    borderRadius: 20,
-    aspectRatio: 1 / 2,
   },
 });

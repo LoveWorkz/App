@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -21,6 +21,7 @@ import {CategoryName} from '@src/entities/Category';
 import {profileStore} from '@src/entities/Profile';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
 import {CongratsModal} from '@src/widgets/CongratsModal';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import questionsStore from '../model/store/questionsStore';
 import WowThatWasFastModal from './WowThatWasFastModal/WowThatWasFastModal';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
@@ -33,6 +34,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {theme} = useTheme();
 
   const key = route?.params.type;
   const id = route?.params.id;
@@ -40,8 +42,18 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const questionsPageInfo = questionsStore.questionsPageInfo;
   const currentCategory = profileStore.currentCategory?.currentCategory;
 
-  const getFormattedQuestions = getFormattedQuestionsWrapper(questions);
+  const getFormattedQuestions = useMemo(() => {
+    return getFormattedQuestionsWrapper({
+      questions,
+      isDarkMode: theme === Theme.Dark,
+    });
+  }, [questions, theme]);
+
   const content = getCongratsModalContent(t)[currentCategory as CategoryName];
+
+  const formattedQuestions = useMemo(() => {
+    return getFormattedQuestions();
+  }, [getFormattedQuestions]);
 
   useFocusEffect(
     useCallback(() => {
@@ -128,12 +140,18 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       <View style={styles.question}>
         <HorizontalSlide
           onSwipeHandler={onSwipeHandler}
-          data={getFormattedQuestions()}
+          data={formattedQuestions}
           itemStyle={styles.slideItemStyle}
           Component={QuestionCard}
           defaultElement={questionsPageInfo.swipedQuestionsCount}
         />
-        <View style={[styles.questionsCard, styles.questionsCardBack]} />
+        <View
+          style={[
+            styles.questionsCard,
+            styles.questionsCardBack,
+            {backgroundColor: colors.questionCardBackColor},
+          ]}
+        />
       </View>
       <WowThatWasFastModal
         visible={questionsStore.thatWasFastModalVisible}
@@ -175,7 +193,6 @@ const styles = StyleSheet.create({
   questionsCard: {
     height: verticalScale(450),
     width: windowWidth * 0.88,
-    backgroundColor: 'white',
     borderRadius: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',
@@ -184,7 +201,6 @@ const styles = StyleSheet.create({
   },
 
   questionsCardBack: {
-    backgroundColor: '#F8F5FF',
     position: 'absolute',
     right: 0,
     top: 8,

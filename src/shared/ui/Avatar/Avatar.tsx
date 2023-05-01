@@ -1,5 +1,6 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View, ImageBackground} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import {Loader} from '../Loader/Loader';
 
@@ -44,13 +45,11 @@ export const Avatar = memo((props: AvatarProps) => {
         </View>
       )}
       {imageUrl && (
-        <ImageBackground
+        <FastImage
           onLoadStart={onLoadStartHandler}
           onLoadEnd={onLoadEndHandler}
           source={image}
-          resizeMode="cover"
-          borderRadius={borderRadius}
-          style={styles.image}
+          style={[styles.image, {borderRadius}]}
         />
       )}
     </View>

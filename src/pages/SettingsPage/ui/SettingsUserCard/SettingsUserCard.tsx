@@ -36,4 +36,4 @@ const SettingsUserCard = () => {
   );
 };
 
-export const Wrapper = memo(observer(SettingsUserCard));
+export default memo(observer(SettingsUserCard));

@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
@@ -71,9 +72,9 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
               <Button
                 disabled={deleteAccountStore.isLoading}
                 style={styles.cancelBtn}
-                theme={ButtonTheme.OUTLINED}
+                theme={ButtonTheme.OUTLINED_GRADIENT}
                 onPress={onCancelHandler}>
-                <AppText
+                <GradientText
                   weight={'700'}
                   size={TextSize.LEVEL_4}
                   text={t('cancel')}
@@ -81,11 +82,11 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
               </Button>
               <Button
                 disabled={deleteAccountStore.isLoading}
-                theme={ButtonTheme.OUTLINED}
+                theme={ButtonTheme.GRADIENT}
                 style={styles.logOutBtn}
                 onPress={onDeleteHandler}>
                 <AppText
-                  style={styles.logOut}
+                  style={{color: colors.bgQuinaryColor}}
                   size={TextSize.LEVEL_4}
                   text={t('delete')}
                 />
@@ -100,7 +101,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
 
 export const Wrapper = memo(observer(DeleteAccountModal));
 
-const btnWidth = '40%';
+const btnWidth = '45%';
 
 const styles = StyleSheet.create({
   content: {
@@ -116,13 +117,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logOutBtn: {
-    backgroundColor: 'black',
     width: btnWidth,
   },
   cancelBtn: {
     width: btnWidth,
-  },
-  logOut: {
-    color: 'white',
   },
 });

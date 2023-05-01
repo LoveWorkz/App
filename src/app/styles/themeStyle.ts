@@ -1,30 +1,78 @@
 export type Colors =
-  | 'commonWhite'
-  | 'commonBlack'
-  | 'themeColor'
   | 'white'
   | 'bgColor'
-  | 'primaryTextColor';
+  | 'primaryTextColor'
+  | 'bgSecondaryColor'
+  | 'bgTertiaryColor'
+  | 'bgQuaternaryColor'
+  | 'secondaryTextColor'
+  | 'homePageCategoryTextColor'
+  | 'homePageCategoryTitleColor'
+  | 'challengeCategoryNameColor'
+  | 'appleIconColor'
+  | 'authPageAgreementText'
+  | 'categoryAndFavoritesTextColor'
+  | 'black'
+  | 'questionCardBackColor'
+  | 'bgChallengeContentColor'
+  | 'bgHomePageHeaderColor'
+  | 'bgQuinaryColor';
+
 export type ColorType = Record<Colors, string>;
 
 const commonColor = {
-  commonWhite: '#FFFFFF',
-  commonBlack: '#000000',
+  white: '#FFFFFF',
+  black: '#000000',
+  authPageAgreementText: '#9A9AA5',
 };
 
 const light: ColorType = {
-  themeColor: '#FFFFFF',
-  white: '#000000',
+  // bg colors
   bgColor: '#F4F6FA',
+  bgSecondaryColor: '#F1F3FF',
+  bgTertiaryColor: '#FFFFFF',
+  bgQuaternaryColor: '#FFFFFF',
+  bgQuinaryColor: '#FFFFFF',
+  bgHomePageHeaderColor: '#EEF4FF',
+  questionCardBackColor: '#F8F5FF',
+  bgChallengeContentColor: '#F1F3FF',
+
+  // text colors
   primaryTextColor: '#395180',
+  secondaryTextColor: '#B6B6BD',
+  homePageCategoryTextColor: '#885FFF',
+  homePageCategoryTitleColor: '#395180',
+  challengeCategoryNameColor: '#B6B6BD',
+  categoryAndFavoritesTextColor: '#395180',
+
+  // icons colors
+  appleIconColor: '#1B1B1B',
+
   ...commonColor,
 };
 
 const dark: ColorType = {
-  themeColor: 'black',
-  white: '#FFFFFF',
-  bgColor: '',
-  primaryTextColor: 'black',
+  // bg colors
+  bgColor: '#1F232C',
+  bgSecondaryColor: '#2E3440',
+  bgTertiaryColor: '#2E3440',
+  bgQuaternaryColor: '#242832',
+  bgQuinaryColor: '#1F232C',
+  bgHomePageHeaderColor: '#242832',
+  questionCardBackColor: '#242832',
+  bgChallengeContentColor: '#242832',
+
+  // text colors
+  primaryTextColor: '#C0C3CF',
+  secondaryTextColor: '#4C5465',
+  homePageCategoryTextColor: '#FFFFFF',
+  homePageCategoryTitleColor: '#FFFFFF',
+  challengeCategoryNameColor: '#C0C3CF',
+  categoryAndFavoritesTextColor: '#1F232C',
+
+  // icons colors
+  appleIconColor: '#FFFFFF',
+
   ...commonColor,
 };
 

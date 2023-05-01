@@ -8,9 +8,13 @@ import {
   RubricFilterItem,
   rubricFilterItemStore,
 } from '@src/entities/RubricFilterItem';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import challengesStore from '../../model/store/challengesStore';
 
 const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
+  const {theme} = useTheme();
+  const isDarkMode = theme === Theme.Dark;
+
   const onFiltreHandler = useCallback((key: string) => {
     challengesStore.filterChallenges(key);
   }, []);
@@ -19,6 +23,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
     <View style={styles.rubricCategory}>
       {name && (
         <RubricFilterItem
+          isOutline={isDarkMode}
           action
           onPress={onFiltreHandler}
           active={active}

@@ -1,7 +1,8 @@
 import React, {memo} from 'react';
-import {ImageBackground, Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
@@ -60,6 +61,7 @@ const Category = (props: CategoryProps) => {
               styles[size],
               {
                 zIndex: categoryLayoutZIndex,
+                backgroundColor: colors.black,
               },
             ]}
           />
@@ -68,13 +70,16 @@ const Category = (props: CategoryProps) => {
               styles.lockIconWrapper,
               {zIndex: categoryLayoutIconZIndex},
             ]}>
-            <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
+            <SvgXml
+              xml={LockIcon}
+              fill={colors.white}
+              style={styles.lockIcon}
+            />
           </View>
         </>
       )}
-      <ImageBackground
+      <FastImage
         resizeMode="cover"
-        imageStyle={[styles.image]}
         style={[
           styles.category,
           styles[size],
@@ -86,19 +91,19 @@ const Category = (props: CategoryProps) => {
         }}>
         <Gradient size={GradientSize.SMALL}>
           <AppText
-            style={styles.questionsText}
+            style={{color: colors.white}}
             weight={'500'}
             size={TextSize.LEVEL_3}
             text={`${questions.length} ${t('questions.questions')}`}
           />
         </Gradient>
         <AppText
-          style={[styles.status, {color: colors.primaryTextColor}]}
+          style={[styles.status, {color: colors.categoryAndFavoritesTextColor}]}
           weight={'700'}
           size={TextSize.LEVEL_4}
           text={name}
         />
-      </ImageBackground>
+      </FastImage>
     </Pressable>
   );
 };
@@ -117,15 +122,11 @@ const styles = StyleSheet.create<Record<string, any>>({
     borderRadius: 20,
     aspectRatio: 1 / 2,
   },
-  questionsText: {
-    color: 'white',
-  },
   status: {
     marginTop: 8,
     textTransform: 'uppercase',
   },
   layout: {
-    backgroundColor: 'black',
     position: 'absolute',
     opacity: 0.4,
     width: '100%',
