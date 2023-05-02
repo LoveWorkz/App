@@ -11,6 +11,9 @@ export const windowWidthMinusPaddings =
 export const windowWidthHalf = windowWidth / 2;
 export const windowHeightHalf = windowHeight / 2;
 
+// heights
+export const tabBarHeight = 80;
+
 //fontSizes
 export enum FontSizes {
   SIZE_1 = 10,

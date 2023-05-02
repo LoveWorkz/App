@@ -3,10 +3,10 @@ import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {Wrapper as RecommendedBooks} from './RecommendedBooks/RecommendedBooks';
 import {Wrapper as Books} from './Books/Books';
 import booksStore from '../model/store/BooksStore';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 
 const BooksPage = () => {
   useEffect(() => {
@@ -29,21 +29,15 @@ const BooksPage = () => {
     Keyboard.dismiss();
   };
 
-  if (!booksStore.booksSize) {
-    return (
-      <View style={styles.loader}>
-        <Loader size={LoaderSize.LARGE} />
-      </View>
-    );
-  }
-
   return (
-    <Pressable onPress={onBookPagePressHandler} style={styles.booksPage}>
-      <RecommendedBooks />
-      <View style={styles.booksWrapper}>
-        <Books />
-      </View>
-    </Pressable>
+    <LoaderWrapper isLoading={booksStore.isBooksPageLoading}>
+      <Pressable onPress={onBookPagePressHandler} style={styles.booksPage}>
+        <RecommendedBooks />
+        <View style={styles.booksWrapper}>
+          <Books />
+        </View>
+      </Pressable>
+    </LoaderWrapper>
   );
 };
 
@@ -55,9 +49,5 @@ const styles = StyleSheet.create({
   },
   booksWrapper: {
     marginTop: 30,
-  },
-  loader: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

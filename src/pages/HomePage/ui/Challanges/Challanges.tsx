@@ -55,6 +55,7 @@ const Challanges = () => {
                 name={challange.name}
                 isBlocked={challange.isBlocked}
                 id={challange.id}
+                displayName={challange.displayName}
               />
             );
           })}
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   topBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginBottom: 20,
   },
   challangesWrapper: {
     alignItems: 'center',

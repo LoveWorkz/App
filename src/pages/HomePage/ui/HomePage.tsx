@@ -6,7 +6,6 @@ import FastImage from 'react-native-fast-image';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 
-import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {
   HomepageBackground,
   HomepageBackgroundDark,
@@ -14,6 +13,8 @@ import {
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -30,16 +31,8 @@ const HomePage = () => {
     homePageStore.init(t);
   }, [t]);
 
-  if (homePageStore.isHomePageLoading) {
-    return (
-      <View style={styles.loader}>
-        <Loader size={LoaderSize.LARGE} />
-      </View>
-    );
-  }
-
   return (
-    <View>
+    <LoaderWrapper isLoading={homePageStore.isHomePageLoading}>
       <View style={styles.container}>
         <FastImage
           style={[
@@ -68,18 +61,13 @@ const HomePage = () => {
           <Challanges />
         </View>
       </View>
-    </View>
+    </LoaderWrapper>
   );
 };
 
 export const ComponentWrapper = memo(observer(HomePage));
 
 const styles = StyleSheet.create({
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   homepageBackground: {
     marginLeft: -globalPadding,
     width: windowWidth,
@@ -94,12 +82,13 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginBottom: 10,
+    marginTop: verticalScale(6),
   },
   categoriesCarouselWrappeer: {
     marginTop: 25,
   },
   challangesWrapper: {
-    marginTop: 20,
+    marginTop: 40,
     width: '100%',
   },
 });

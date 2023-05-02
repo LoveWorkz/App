@@ -53,7 +53,7 @@ class RubricFilterItemStore {
   };
 
   filterByKey = ({key, list}: {key: string; list: any[]}) => {
-    this.rubricskeys.push(key);
+    this.rubricskeys = Array.from(new Set([...this.rubricskeys, key]));
 
     return list.filter(item => {
       return item.rubrics.includes(key);

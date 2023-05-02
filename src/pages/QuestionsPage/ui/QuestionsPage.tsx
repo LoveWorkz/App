@@ -15,13 +15,13 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
-import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
 import {CategoryName} from '@src/entities/Category';
 import {profileStore} from '@src/entities/Profile';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
 import {CongratsModal} from '@src/widgets/CongratsModal';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import questionsStore from '../model/store/questionsStore';
 import WowThatWasFastModal from './WowThatWasFastModal/WowThatWasFastModal';
@@ -100,70 +100,62 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     [key, id, language],
   );
 
-  if (questionsStore.questionsPageloading) {
-    return (
-      <View style={styles.QuestionsPage}>
-        <View style={styles.loader}>
-          <Loader size={LoaderSize.LARGE} />
-        </View>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.QuestionsPage}>
-      <Gradient style={styles.category} size={GradientSize.SMALL}>
-        <AppText
-          style={styles.categoryText}
-          weight={'700'}
-          size={TextSize.LEVEL_5}
-          text={questionsPageInfo.categoryName}
-        />
-      </Gradient>
-      <View style={styles.rubricAndQuestionsCountBlock}>
-        <View>
-          <GradientText
-            style={styles.rubricText}
-            weight={'700'}
-            size={TextSize.LEVEL_4}
-            text={questionsPageInfo.rubricName}
-          />
-        </View>
-        <View>
+    <LoaderWrapper isLoading={questionsStore.questionsPageloading}>
+      <View style={styles.QuestionsPage}>
+        <Gradient style={styles.category} size={GradientSize.SMALL}>
           <AppText
-            style={{color: colors.primaryTextColor}}
-            weight={'500'}
+            style={styles.categoryText}
+            weight={'700'}
             size={TextSize.LEVEL_5}
-            text={`${questionsPageInfo.swipedQuestionsCount}/${questionsPageInfo.questionsCount}`}
+            text={questionsPageInfo.categoryName}
+          />
+        </Gradient>
+        <View style={styles.rubricAndQuestionsCountBlock}>
+          <View>
+            <GradientText
+              style={styles.rubricText}
+              weight={'700'}
+              size={TextSize.LEVEL_4}
+              text={questionsPageInfo.rubricName}
+            />
+          </View>
+          <View>
+            <AppText
+              style={{color: colors.primaryTextColor}}
+              weight={'500'}
+              size={TextSize.LEVEL_5}
+              text={`${questionsPageInfo.swipedQuestionsCount}/${questionsPageInfo.questionsCount}`}
+            />
+          </View>
+        </View>
+        <View style={styles.question}>
+          <HorizontalSlide
+            onSwipeHandler={onSwipeHandler}
+            data={formattedQuestions}
+            itemStyle={styles.slideItemStyle}
+            Component={QuestionCard}
+            defaultElement={questionsPageInfo.swipedQuestionsCount}
+          />
+          <View
+            style={[
+              styles.questionsCard,
+              styles.questionsCardBack,
+              {backgroundColor: colors.questionCardBackColor},
+            ]}
           />
         </View>
-      </View>
-      <View style={styles.question}>
-        <HorizontalSlide
-          onSwipeHandler={onSwipeHandler}
-          data={formattedQuestions}
-          itemStyle={styles.slideItemStyle}
-          Component={QuestionCard}
-          defaultElement={questionsPageInfo.swipedQuestionsCount}
+        <WowThatWasFastModal
+          visible={questionsStore.thatWasFastModalVisible}
+          setVisible={questionsStore.setThatWasFastModalVisible}
         />
-        <View
-          style={[
-            styles.questionsCard,
-            styles.questionsCardBack,
-            {backgroundColor: colors.questionCardBackColor},
-          ]}
+        <CongratsModal
+          content={content}
+          visible={questionsStore.congratsModalVisible}
+          setVisible={questionsStore.setCongratsModalVisible}
         />
       </View>
-      <WowThatWasFastModal
-        visible={questionsStore.thatWasFastModalVisible}
-        setVisible={questionsStore.setThatWasFastModalVisible}
-      />
-      <CongratsModal
-        content={content}
-        visible={questionsStore.congratsModalVisible}
-        setVisible={questionsStore.setCongratsModalVisible}
-      />
-    </View>
+    </LoaderWrapper>
   );
 };
 
@@ -209,9 +201,5 @@ const styles = StyleSheet.create({
   },
   slideItemStyle: {
     zIndex: 1,
-  },
-  loader: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

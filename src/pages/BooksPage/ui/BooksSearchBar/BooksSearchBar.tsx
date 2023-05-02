@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
@@ -12,17 +12,15 @@ import booksStore from '../../model/store/BooksStore';
 const BooksSearchBar = () => {
   const {t} = useTranslation();
 
-  const [value, setValue] = useState('');
-
-  const onSearchHandler = useCallback((bookInfo: string) => {
-    setValue(bookInfo);
-    booksStore.searchBooks(bookInfo);
+  const onSearchHandler = useCallback((searchBooksText: string) => {
+    booksStore.setSearchBooksText(searchBooksText);
+    booksStore.searchBooks({searchBooksText});
   }, []);
 
   return (
     <View style={styles.BooksSearchBar}>
       <Input
-        value={value}
+        value={booksStore.searchBooksText}
         onChange={onSearchHandler}
         placeholder={t('auth.enter_email') || ''}
         StartIcon={() => (

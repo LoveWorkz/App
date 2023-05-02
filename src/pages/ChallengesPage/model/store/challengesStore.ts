@@ -18,26 +18,35 @@ class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
   challenges: ChallengeType[] = [];
   filteredChallengesList: ChallengeType[] = [];
-  isChallengeCategoriesLoading: boolean = true;
-  isChallengesLoading: boolean = true;
   selectedChallengesIds: string[] = [];
   isAllChallengesSelected: boolean = false;
   userChallengeCategory: null | UserChallengeCategoryType = null;
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isCongratsModalVisible: boolean = false;
+  isChallengeCategoriesLoading: boolean = true;
+  isChallengesLoading: boolean = true;
+  isChallengePageLoading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   init = async () => {
-    // the order is important
-    await profileStore.fetchProfile();
-    await this.fetchUserChallengeCategory();
-    await this.fetchChallengeCategories();
-    await this.fetchChallenges();
+    try {
+      this.isChallengePageLoading = true;
+      // the order is important
+      await profileStore.fetchProfile();
+      await this.fetchUserChallengeCategory();
+      await this.fetchChallengeCategories();
+      await this.fetchChallenges();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isChallengePageLoading = false;
+      });
+    }
   };
-
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {
     this.selectedChallengesIds = selectedChallengesIds;
   };

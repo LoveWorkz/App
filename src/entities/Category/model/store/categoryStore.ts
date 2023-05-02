@@ -12,6 +12,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 class CategoryStore {
   category: CategoryType | null = null;
+  isCategoryDetailsPageLoading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -54,6 +55,10 @@ class CategoryStore {
         return;
       }
 
+      runInAction(() => {
+        this.isCategoryDetailsPageLoading = true;
+      });
+
       // default category
       const categoryData = await firestore()
         .collection(Collections.CATEGORIES)
@@ -86,6 +91,10 @@ class CategoryStore {
       return category;
     } catch (e) {
       console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isCategoryDetailsPageLoading = false;
+      });
     }
   };
 

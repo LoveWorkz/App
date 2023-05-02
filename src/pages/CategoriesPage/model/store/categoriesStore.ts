@@ -14,6 +14,7 @@ class CategoriesStore {
   favorites: FavoriteType | null = null;
   userCategory: null | UserCategory = null;
   userRubric: null | UserRubric = null;
+  isCategoriesPageLoading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -21,6 +22,8 @@ class CategoriesStore {
 
   init = async () => {
     try {
+      this.isCategoriesPageLoading = true;
+      // the order is important
       await this.fetchUserCategories();
       await this.fetchUserRubrics();
       await this.fetchRubrics();
@@ -30,6 +33,10 @@ class CategoriesStore {
       await this.initCurrentUserCategory();
     } catch (e) {
       console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isCategoriesPageLoading = false;
+      });
     }
   };
 

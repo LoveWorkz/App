@@ -84,32 +84,32 @@ const Category = (props: CategoryProps) => {
           </View>
         </>
       )}
-      <FastImage
-        resizeMode="cover"
-        style={[
-          styles.category,
-          styles[size],
-          style,
-          {...globalStyles.shadowOpacity},
-        ]}
-        source={{
-          uri: image,
-        }}>
-        <Gradient size={GradientSize.SMALL}>
+      <View style={{...globalStyles.shadowOpacity}}>
+        <FastImage
+          resizeMode="cover"
+          style={[styles.category, styles[size], style]}
+          source={{
+            uri: image,
+          }}>
+          <Gradient size={GradientSize.SMALL}>
+            <AppText
+              style={{color: colors.white}}
+              weight={'500'}
+              size={TextSize.LEVEL_3}
+              text={`${questions.length} ${t('questions.questions')}`}
+            />
+          </Gradient>
           <AppText
-            style={{color: colors.white}}
-            weight={'500'}
-            size={TextSize.LEVEL_3}
-            text={`${questions.length} ${t('questions.questions')}`}
+            style={[
+              styles.status,
+              {color: colors.categoryAndFavoritesTextColor},
+            ]}
+            weight={'700'}
+            size={TextSize.LEVEL_4}
+            text={displayName[language]}
           />
-        </Gradient>
-        <AppText
-          style={[styles.status, {color: colors.categoryAndFavoritesTextColor}]}
-          weight={'700'}
-          size={TextSize.LEVEL_4}
-          text={displayName[language]}
-        />
-      </FastImage>
+        </FastImage>
+      </View>
     </Pressable>
   );
 };
@@ -154,7 +154,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: 120,
   },
   size_l: {
-    height: 145,
+    height: 210,
   },
   size_xl: {
     height: 200,

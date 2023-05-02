@@ -33,43 +33,44 @@ const HomeCategory = () => {
         text={t('home.quick_start')}
         weight={'500'}
       />
-      <FastImage
-        style={[
-          styles.container,
-          {
-            backgroundColor: colors.bgSecondaryColor,
-            ...globalStyles.shadowOpacity,
-          },
-        ]}
-        source={
-          theme === Theme.Dark ? homeCategoryImageDark : homeCategoryImage
-        }>
-        <View style={styles.content}>
-          <View style={styles.textWrapper}>
-            <AppText
-              style={{color: colors.homePageCategoryTitleColor}}
-              size={TextSize.LEVEL_2}
-              text={t('home.continue_where_you_left_off')}
-            />
-            <GradientText weight={'700'} text={'0/40'} />
-          </View>
-          <View style={styles.bottomBlock}>
-            <AppText
-              style={{color: colors.primaryTextColor}}
-              weight={'700'}
-              size={TextSize.LEVEL_5}
-              text={'BASIC'}
-            />
-            <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
-              <SvgXml
-                xml={getArrowRightIcon({})}
-                style={styles.arrowIcon}
-                fill={colors.bgQuinaryColor}
+      <View style={{...globalStyles.shadowOpacity}}>
+        <FastImage
+          style={[
+            styles.container,
+            {
+              backgroundColor: colors.bgTertiaryColor,
+            },
+          ]}
+          source={
+            theme === Theme.Dark ? homeCategoryImageDark : homeCategoryImage
+          }>
+          <View style={styles.content}>
+            <View style={styles.textWrapper}>
+              <AppText
+                style={{color: colors.homePageCategoryTitleColor}}
+                size={TextSize.LEVEL_2}
+                text={t('home.continue_where_you_left_off')}
               />
-            </Button>
+              <GradientText weight={'700'} text={'0/40'} />
+            </View>
+            <View style={styles.bottomBlock}>
+              <AppText
+                style={{color: colors.primaryTextColor}}
+                weight={'700'}
+                size={TextSize.LEVEL_5}
+                text={'BASIC'}
+              />
+              <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
+                <SvgXml
+                  xml={getArrowRightIcon({})}
+                  style={styles.arrowIcon}
+                  fill={colors.bgQuinaryColor}
+                />
+              </Button>
+            </View>
           </View>
-        </View>
-      </FastImage>
+        </FastImage>
+      </View>
     </View>
   );
 };
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   quickStart: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   textWrapper: {
     flexDirection: 'row',

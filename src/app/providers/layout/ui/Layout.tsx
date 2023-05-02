@@ -1,20 +1,32 @@
 import React, {ReactElement} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 
-import {globalPadding, windowHeight} from '@src/app/styles/GlobalStyle';
+import {
+  globalPadding,
+  tabBarHeight,
+  windowHeight,
+} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 interface LayoutProps {
   children: ReactElement;
   isPageScrolling?: boolean;
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
+  isTabBar?: boolean;
 }
 
 export const Layout = (props: LayoutProps) => {
-  const {children, isPageScrolling, deleteBottomPadding, deleteTopPadding} =
-    props;
+  const {
+    children,
+    isPageScrolling,
+    deleteBottomPadding,
+    deleteTopPadding,
+    isTabBar = false,
+  } = props;
   const colors = useColors();
+  const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
 
   if (isPageScrolling) {
     return (
@@ -26,7 +38,7 @@ export const Layout = (props: LayoutProps) => {
           style={[
             styles.layout,
             {
-              paddingBottom: deleteBottomPadding ? 0 : 40,
+              paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
               marginTop: deleteTopPadding ? 0 : 20,
             },
           ]}>

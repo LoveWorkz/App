@@ -12,7 +12,6 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 
 const CategoriesCarousel = () => {
@@ -26,14 +25,13 @@ const CategoriesCarousel = () => {
 
   const formatedCategories = useMemo(() => {
     return categories.map(category => {
-      return {...category, image: category.image.middle, size: CateorySize.M};
+      return {...category, image: category.image.middle, size: CateorySize.L};
     });
   }, [categories]);
 
   return (
     <View style={styles.carousel}>
-      <View
-        style={[styles.carouseTopBlock, {paddingHorizontal: globalPadding}]}>
+      <View style={[styles.carouseTopBlock]}>
         <AppText
           style={{color: colors.primaryTextColor}}
           weight={'500'}
@@ -56,9 +54,10 @@ const CategoriesCarousel = () => {
         </Pressable>
       </View>
       <CarouselSquare
-        isLandscape
+        isLandscape={true}
         Component={Category}
         data={formatedCategories}
+        itemStyle={styles.itemStyle}
       />
     </View>
   );
@@ -74,6 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   carouseTopBlock: {
+    marginBottom: -5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

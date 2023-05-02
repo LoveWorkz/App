@@ -7,7 +7,7 @@ import {
   TabRoutesNames,
 } from '@src/shared/config/route/tabConfigRoutes';
 import {Layout} from '@src/app/providers/layout';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {globalStyles, tabBarHeight} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import {ComponentWrapper as IconItem} from './IconItem/IconItem';
@@ -20,14 +20,14 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={TabRoutesNames.CHALLENGES}
+      initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
           ...globalStyles.strongShadowOpacity,
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
-          height: 80,
+          height: tabBarHeight,
           paddingTop: 10,
           backgroundColor: colors.bgQuaternaryColor,
           position: 'absolute',
@@ -67,7 +67,8 @@ const TabRoute = () => {
               <Layout
                 isPageScrolling={isPageScrolling}
                 deleteBottomPadding={deleteBottomPadding}
-                deleteTopPadding={deleteTopPadding}>
+                deleteTopPadding={deleteTopPadding}
+                isTabBar>
                 <Element {...props} />
               </Layout>
             );

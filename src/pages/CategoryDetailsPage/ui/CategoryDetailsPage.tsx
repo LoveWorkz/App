@@ -17,13 +17,13 @@ import {
   globalStyles,
 } from '@src/app/styles/GlobalStyle';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
-import {Loader, LoaderSize} from '@src/shared/ui/Loader/Loader';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -63,75 +63,75 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   };
 
   if (!category) {
-    return (
-      <View style={styles.CategoryDetailsPage}>
-        <View style={styles.loader}>
-          <Loader size={LoaderSize.LARGE} />
-        </View>
-      </View>
-    );
+    return <></>;
   }
 
   return (
-    <View style={styles.CategoryDetailsPage}>
-      <View
-        style={[
-          styles.CategoryDetails,
-          {backgroundColor: colors.bgTertiaryColor},
-        ]}>
-        <View>
-          {category.isBlocked && (
-            <>
-              <View
-                style={[
-                  styles.layout,
-                  {
-                    zIndex: categoryLayoutZIndex,
-                  },
-                ]}
-              />
-              <View
-                style={[
-                  styles.lockIconWrapper,
-                  {zIndex: categoryLayoutIconZIndex},
-                ]}>
-                <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
-              </View>
-            </>
-          )}
-          <Image style={styles.image} source={uri} />
+    <LoaderWrapper isLoading={categoryStore.isCategoryDetailsPageLoading}>
+      <View style={styles.CategoryDetailsPage}>
+        <View
+          style={[
+            styles.CategoryDetails,
+            {backgroundColor: colors.bgTertiaryColor},
+          ]}>
+          <View>
+            {category.isBlocked && (
+              <>
+                <View
+                  style={[
+                    styles.layout,
+                    {
+                      zIndex: categoryLayoutZIndex,
+                    },
+                  ]}
+                />
+                <View
+                  style={[
+                    styles.lockIconWrapper,
+                    {zIndex: categoryLayoutIconZIndex},
+                  ]}>
+                  <SvgXml
+                    xml={LockIcon}
+                    fill={'white'}
+                    style={styles.lockIcon}
+                  />
+                </View>
+              </>
+            )}
+            <Image style={styles.image} source={uri} />
+          </View>
+          <View>
+            <AppText
+              style={styles.title}
+              weight={'500'}
+              size={TextSize.LEVEL_7}
+              text={`${category.name} package`}
+            />
+            <AppText size={TextSize.LEVEL_4} text={category.description} />
+          </View>
         </View>
-        <View>
-          <AppText
-            style={styles.title}
-            weight={'500'}
-            size={TextSize.LEVEL_7}
-            text={`${category.name} package`}
-          />
-          <AppText size={TextSize.LEVEL_4} text={category.description} />
-        </View>
+        <Gradient style={styles.btn}>
+          <Button onPress={onPressHandler} theme={ButtonTheme.CLEAR}>
+            <AppText
+              style={styles.btnText}
+              weight={'700'}
+              size={TextSize.LEVEL_4}
+              text={category.isBlocked ? t('buy_now') : 'Start'}
+            />
+          </Button>
+        </Gradient>
+        {!category.isBlocked && (
+          <Pressable onPress={dontShowAgainHandler}>
+            <AppText
+              style={styles.dontShowAgain}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={t('dont_show_again')}
+            />
+          </Pressable>
+        )}
       </View>
-      <Gradient style={styles.btn}>
-        <Button onPress={onPressHandler} theme={ButtonTheme.CLEAR}>
-          <AppText
-            style={styles.btnText}
-            weight={'700'}
-            size={TextSize.LEVEL_4}
-            text={category.isBlocked ? t('buy_now') : 'Start'}
-          />
-        </Button>
-      </Gradient>
-      {!category.isBlocked && (
-        <Pressable onPress={dontShowAgainHandler}>
-          <AppText
-            style={styles.dontShowAgain}
-            weight={'600'}
-            size={TextSize.LEVEL_4}
-            text={t('dont_show_again')}
-          />
-        </Pressable>
-      )}
-    </View>
+    </LoaderWrapper>
   );
 };
 
@@ -169,10 +169,6 @@ const styles = StyleSheet.create({
   title: {
     marginTop: verticalScale(20),
     marginBottom: verticalScale(20),
-  },
-  loader: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 
   layout: {
