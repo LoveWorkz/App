@@ -1,6 +1,7 @@
 import {CurrentCategory} from '@src/entities/Category';
 import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {FavoriteType} from '@src/entities/Favorite';
+import {QuoeType} from '@src/entities/User';
 
 export interface Profile {
   id: string;
@@ -16,6 +17,7 @@ export interface Profile {
   favorites: FavoriteType;
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
+  quote: QuoeType;
 }
 
 export interface ProfileErrorInfo {

@@ -1,9 +1,9 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {TFunction} from 'i18next';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {profileStore} from '@src/entities/Profile';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import {booksStore} from '@src/pages/BooksPage';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -11,16 +11,17 @@ class HomePageStore {
     makeAutoObservable(this);
   }
 
-  init = async (t: TFunction) => {
+  init = async () => {
     try {
       runInAction(() => {
         this.isHomePageLoading = true;
       });
       await profileStore.fetchProfile();
       await categoriesStore.fetchUserCategories();
-      await categoriesStore.fetchCategories(t);
+      await categoriesStore.fetchCategories();
       await challengesStore.fetchUserChallengeCategory();
       await challengesStore.fetchChallengeCategories();
+      await booksStore.getBooks();
     } catch (e) {
       console.log(e);
     } finally {

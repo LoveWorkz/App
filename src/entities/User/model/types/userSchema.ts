@@ -16,6 +16,7 @@ export interface User {
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
   favorites: FavoriteType;
+  quote: QuoeType;
 }
 
 export enum AuthMethod {
@@ -35,4 +36,10 @@ export interface InitlUserInfo {
 export interface AuthUserInfo {
   user: User | null;
   authMethod: AuthMethod | string;
+}
+
+export interface QuoeType {
+  isQuoteVisible: boolean;
+  quoteCheckingDate: string;
+  bookId: string;
 }

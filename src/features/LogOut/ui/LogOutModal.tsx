@@ -73,7 +73,7 @@ const LogOutModal = (props: LogOutModalProps) => {
   );
 };
 
-export const Wrapper = memo(observer(LogOutModal));
+export default memo(observer(LogOutModal));
 
 const btnWidth = '45%';
 

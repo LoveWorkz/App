@@ -1,5 +1,6 @@
-export function datediff(first: any, second: any) {
-  return Math.round((second - first) / (1000 * 60 * 60 * 24));
+export function datediff(first: Date, second: Date) {
+  const diffTime = Math.abs(first.getTime() - second.getTime());
+  return Math.round(diffTime / (1000 * 60 * 60 * 24));
 }
 
 export function hoursDiff(first: number, second: number) {

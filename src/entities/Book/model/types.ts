@@ -11,4 +11,5 @@ export interface BookType {
   image: BookImage;
   name: string;
   rate: number;
+  quote: string;
 }

@@ -16,6 +16,7 @@ import {
 import {validateFields} from '../services/validation/validateFields';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CurrentCategory} from '@src/entities/Category';
+import {quotesStore} from '@src/widgets/Quotes';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -171,6 +172,7 @@ class ProfileStore {
           this.setCurrentCategory(data.category);
           challengesStore.setChallengeCategory(data.challengeCategory);
           favoriteStore.setFavorites(data.favorites);
+          quotesStore.setIsQuoteInfo(data.quote);
         });
       }
     } catch (e) {

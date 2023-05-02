@@ -17,9 +17,21 @@ class BooksStore {
     makeAutoObservable(this);
   }
 
-  getBooks = async () => {
+  init = async () => {
     try {
       this.isBooksPageLoading = true;
+      await this.getBooks();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isBooksPageLoading = false;
+      });
+    }
+  };
+
+  getBooks = async () => {
+    try {
       const data = await firestore().collection(Collections.BOOKS).get();
       const booksList = data.docs.map(book => book.data());
       runInAction(() => {
@@ -30,10 +42,6 @@ class BooksStore {
       });
     } catch (e) {
       console.log(e);
-    } finally {
-      runInAction(() => {
-        this.isBooksPageLoading = false;
-      });
     }
   };
 

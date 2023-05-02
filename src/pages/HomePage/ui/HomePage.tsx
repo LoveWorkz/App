@@ -1,7 +1,6 @@
 import React, {memo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
-import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -14,7 +13,9 @@ import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {booksStore} from '@src/pages/BooksPage';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -22,14 +23,13 @@ import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
 const HomePage = () => {
-  const {t} = useTranslation();
   const {theme} = useTheme();
   const navbarHeaderHeight = useHeaderHeight();
   const statusBarHeight = getStatusBarHeight();
 
   useEffect(() => {
-    homePageStore.init(t);
-  }, [t]);
+    homePageStore.init();
+  }, []);
 
   return (
     <LoaderWrapper isLoading={homePageStore.isHomePageLoading}>
@@ -60,6 +60,7 @@ const HomePage = () => {
         <View style={styles.challangesWrapper}>
           <Challanges />
         </View>
+        <Quotes books={booksStore.booksList} />
       </View>
     </LoaderWrapper>
   );

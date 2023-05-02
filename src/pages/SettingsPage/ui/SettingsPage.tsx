@@ -2,6 +2,8 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {ThemeSwitcher} from '@src/widgets/ThemeSwitcher';
+import {QuotesSwitcher} from '@src/widgets/Quotes';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import SettingItems from './SettingItems/SettingItems';
 import PrivacyPolicy from './PrivacyPolicy/PrivacyPolicy';
 import SettingsUserCard from './SettingsUserCard/SettingsUserCard';
@@ -15,8 +17,11 @@ const SettingsPage = () => {
       <View style={styles.languageSwitcherWrapper}>
         <Language />
       </View>
-      <View style={styles.themeSwitcherWrapper}>
-        <ThemeSwitcher />
+      <View style={styles.switchers}>
+        <View style={styles.themeSwitcherWrapper}>
+          <ThemeSwitcher />
+        </View>
+        <QuotesSwitcher />
       </View>
       <View>
         <SettingItems />
@@ -38,18 +43,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   languageSwitcherWrapper: {
-    marginBottom: 30,
-    marginTop: 40,
+    marginBottom: verticalScale(30),
+    marginTop: verticalScale(40),
+  },
+  switchers: {
+    marginBottom: verticalScale(60),
   },
   themeSwitcherWrapper: {
-    marginBottom: 60,
+    marginBottom: verticalScale(30),
   },
+
   bottomBlock: {
     width: '100%',
     position: 'absolute',
-    bottom: 60,
+    bottom: verticalScale(60),
   },
   shareUs: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
 });

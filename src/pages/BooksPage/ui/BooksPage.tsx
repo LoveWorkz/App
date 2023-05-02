@@ -10,7 +10,7 @@ import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 
 const BooksPage = () => {
   useEffect(() => {
-    booksStore.getBooks();
+    booksStore.init();
 
     return () => {
       booksStore.clearBooksInfo();

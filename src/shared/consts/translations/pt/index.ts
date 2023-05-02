@@ -10,6 +10,7 @@ import books from './books.json';
 import questions from './questions.json';
 import categories from './categories.json';
 import shop from './shop.json';
+import quotes from './quotes.json';
 
 export const pt = {
   ...common,
@@ -24,4 +25,5 @@ export const pt = {
   ...questions,
   ...categories,
   ...shop,
+  ...quotes,
 };
