@@ -6,15 +6,22 @@ import {SettingsIcon} from '@src/shared/assets/icons/Settings';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const TabHeaderRight = () => {
+  const colors = useColors();
+
   const onSettingsPressHandler = () => {
     navigation.navigate(AppRouteNames.SETTINGS);
   };
 
   return (
     <Pressable onPress={onSettingsPressHandler} style={styles.TabHeaderRight}>
-      <SvgXml xml={SettingsIcon} style={styles.icon} />
+      <SvgXml
+        xml={SettingsIcon}
+        style={styles.icon}
+        stroke={colors.primaryTextColor}
+      />
     </Pressable>
   );
 };

@@ -75,7 +75,7 @@ type NewRouteProps = {
   isPageScrolling?: boolean;
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
-  isTitleSmall?: boolean;
+  isTitleLarge?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -84,6 +84,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: false,
     Element: AuthPage,
     isPageScrolling: true,
+    deleteTopPadding: true,
   },
   [AppRouteNames.SPLASH]: {
     name: appRoutePaths.splash,
@@ -142,7 +143,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: 'settings.privacy_policy',
     Element: PrivacyPolicyPage,
-    isTitleSmall: true,
+    isTitleLarge: true,
   },
   [AppRouteNames.CHANGE_PASSWORD]: {
     name: appRoutePaths.changePassword,
@@ -167,6 +168,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: '',
     Element: BookDetailsPage,
+    deleteTopPadding: true,
   },
   [AppRouteNames.LANGUAGE]: {
     name: appRoutePaths.language,

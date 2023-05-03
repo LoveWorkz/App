@@ -36,8 +36,8 @@ const QuotesModal = (props: QuotesModalProps) => {
   };
 
   const onShowBookPressHanlder = () => {
-    navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
     quotesStore.setIsQuoteModalVisible(false);
+    navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
   };
 
   return (

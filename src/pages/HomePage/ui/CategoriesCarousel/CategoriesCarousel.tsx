@@ -58,6 +58,7 @@ const CategoriesCarousel = () => {
         Component={Category}
         data={formatedCategories}
         itemStyle={styles.itemStyle}
+        carouselHeight={190}
       />
     </View>
   );

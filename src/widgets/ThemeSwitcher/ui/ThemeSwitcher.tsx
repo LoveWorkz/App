@@ -27,7 +27,7 @@ const ThemeSwitcher = () => {
       <Switch
         style={styles.switcher}
         trackColor={{false: '#767577', true: '#ECB7FF'}}
-        thumbColor={isLightMode ? 'white' : '#ECB7FF'}
+        thumbColor={'white'}
         ios_backgroundColor="#3e3e3e"
         onValueChange={toggleTheme}
         value={isLightMode}

@@ -5,6 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {Book} from '@src/entities/Book';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import bookDetailsStore from '../model/store/BookDetailsStore';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 interface BookDetailsPageProps {
   route?: {params: {id: string}};
@@ -34,5 +35,6 @@ export const Wrapper = memo(observer(BookDetailsPage));
 const styles = StyleSheet.create({
   BookDetailsPage: {
     flex: 1,
+    marginTop: verticalScale(10),
   },
 });

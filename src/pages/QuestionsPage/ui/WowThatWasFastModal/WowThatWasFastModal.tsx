@@ -44,7 +44,7 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
         style={styles.btn}
         theme={ButtonTheme.GRADIENT}>
         <AppText
-          style={styles.btnText}
+          style={{color: colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
           text={t('continue')}
         />
@@ -73,9 +73,6 @@ const styles = StyleSheet.create({
   btn: {
     width: '100%',
     height: verticalScale(40),
-  },
-  btnText: {
-    color: 'white',
   },
   dontShowAgain: {
     textDecorationLine: 'underline',

@@ -47,6 +47,17 @@ class ChallengesStore {
       });
     }
   };
+
+  setChallengeCategory = (challengeCategory: CurrentChallengeCategoryType) => {
+    try {
+      runInAction(() => {
+        this.challengeCategory = challengeCategory;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {
     this.selectedChallengesIds = selectedChallengesIds;
   };
@@ -224,16 +235,6 @@ class ChallengesStore {
       runInAction(() => {
         this.isChallengesLoading = false;
       });
-    }
-  };
-
-  setChallengeCategory = (challengeCategory: CurrentChallengeCategoryType) => {
-    try {
-      runInAction(() => {
-        this.challengeCategory = challengeCategory;
-      });
-    } catch (e) {
-      console.log(e);
     }
   };
 

@@ -4,9 +4,11 @@ import {SvgXml} from 'react-native-svg';
 
 import {LogOutIcon} from '@src/shared/assets/icons/LogOut';
 import {LogOutModal} from '@src/features/LogOut';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const ProfileHeaderRight = () => {
   const [visible, setVisible] = useState(false);
+  const colors = useColors();
 
   const onPressHandler = useCallback(() => {
     setVisible(true);
@@ -15,7 +17,11 @@ const ProfileHeaderRight = () => {
   return (
     <View style={styles.headerRight}>
       <Pressable onPress={onPressHandler}>
-        <SvgXml xml={LogOutIcon} style={styles.icon} />
+        <SvgXml
+          xml={LogOutIcon}
+          style={styles.icon}
+          stroke={colors.primaryTextColor}
+        />
       </Pressable>
       <LogOutModal visible={visible} setVisible={setVisible} />
     </View>

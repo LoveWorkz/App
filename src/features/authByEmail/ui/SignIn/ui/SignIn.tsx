@@ -6,7 +6,8 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {TextSize} from '@src/shared/ui/AppText/AppText';
 import {forgotPasswordZIndex} from '@src/app/styles/GlobalStyle';
 import signInStore from '../model/store/SignInStore';
 
@@ -42,7 +43,7 @@ const SignIn = () => {
       </View>
       <View style={styles.password}>
         <Pressable style={styles.forgotPassword} onPress={onClickHandler}>
-          <AppText
+          <GradientText
             size={TextSize.LEVEL_3}
             weight={'600'}
             text={t('auth.forgot_password')}

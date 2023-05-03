@@ -26,17 +26,12 @@ class AuthByGoogleStore {
       .get();
 
     if (authUser.exists) {
-      await firestore().collection(Collections.USERS).doc(user.id).update({
-        isAuth: true,
+      userStore.updateUser({
+        field: 'isAuth',
+        data: true,
       });
     } else {
-      await firestore()
-        .collection(Collections.USERS)
-        .doc(user.id)
-        .set({
-          ...user,
-          isAuth: true,
-        });
+      await userStore.addUserToFirestore(user);
     }
   };
   signIn = async () => {

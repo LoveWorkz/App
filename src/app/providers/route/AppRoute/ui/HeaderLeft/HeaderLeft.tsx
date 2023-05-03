@@ -8,15 +8,16 @@ import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Button} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 
 interface HeaderLeftProps {
   headerTitle?: string;
   title?: string;
-  isTitleSmall?: Boolean;
+  isTitleLarge?: Boolean;
 }
 
 const HeaderLeft = (props: HeaderLeftProps) => {
-  const {headerTitle, title, isTitleSmall} = props;
+  const {headerTitle, title, isTitleLarge} = props;
   const colors = useColors();
   const {t, i18n} = useTranslation();
 
@@ -30,15 +31,20 @@ const HeaderLeft = (props: HeaderLeftProps) => {
     <View style={styles.headerLeft}>
       <Button onPress={onPressHandler}>
         <SvgXml
-          stroke={colors.primaryTextColor}
+          fill={colors.primaryTextColor}
           style={styles.icon}
           xml={ArrowLeftIcon}
         />
       </Button>
       {(headerTitle || title) && (
         <AppText
-          style={[styles.title, {color: colors.primaryTextColor}]}
-          size={isTitleSmall && !isLngEn ? TextSize.LEVEL_4 : TextSize.LEVEL_6}
+          style={[
+            {
+              color: colors.primaryTextColor,
+              width: isTitleLarge ? '90%' : 'auto',
+            },
+          ]}
+          size={isTitleLarge && !isLngEn ? TextSize.LEVEL_4 : TextSize.LEVEL_6}
           weight={'500'}
           text={t(title || headerTitle || '')}
         />
@@ -58,11 +64,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: '100%',
   },
   icon: {
-    height: 15,
-    width: 18,
-    marginRight: 15,
-  },
-  title: {
-    width: '90%',
+    height: verticalScale(15),
+    width: horizontalScale(18),
+    marginRight: horizontalScale(15),
   },
 });

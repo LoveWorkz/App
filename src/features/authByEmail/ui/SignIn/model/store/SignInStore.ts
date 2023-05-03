@@ -1,12 +1,11 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignInData, SignInErrorInfo} from '../types/signIn';
 import {validateFields} from '../../../../model/services/validation/validateFields';
@@ -65,8 +64,9 @@ class SignInStore {
       authMethod: AuthMethod.AUTH_BY_EMAIL,
     });
 
-    await firestore().collection(Collections.USERS).doc(user.id).update({
-      isAuth: true,
+    userStore.updateUser({
+      field: 'isAuth',
+      data: true,
     });
   };
 

@@ -6,6 +6,12 @@ import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
+import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
+import {
+  THEME_STORAGE_KEY,
+  USER_LANGUAGE_STORAGE_KEY,
+} from '@src/shared/consts/storage';
 import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
 import {validateFields} from '../services/validation/validateFields';
 
@@ -93,6 +99,9 @@ class DeleteAccountStore {
         await currentUser.delete();
         await userStore.clearFirebaseUserInfo(currentUser.uid);
         await userStore.clearUserInfo();
+
+        await themeStorage.removeTheme(THEME_STORAGE_KEY);
+        await lngStorage.removeLanguage(USER_LANGUAGE_STORAGE_KEY);
 
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);

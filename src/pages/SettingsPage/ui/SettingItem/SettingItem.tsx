@@ -24,12 +24,7 @@ const SettingItem = (props: SettingItem) => {
   return (
     <Pressable style={styles.settingItem} onPress={onPressHandler}>
       <View>
-        <SvgXml
-          strokeOpacity={18}
-          xml={Icon}
-          style={[styles.icon]}
-          stroke={colors.primaryTextColor}
-        />
+        <SvgXml xml={Icon} style={[styles.icon]} />
       </View>
       <View style={styles.textWrapper}>
         <AppText

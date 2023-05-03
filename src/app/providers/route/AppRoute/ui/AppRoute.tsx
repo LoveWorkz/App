@@ -17,6 +17,7 @@ import {Layout} from '@src/app/providers/layout';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {Theme} from '@src/app/providers/themeProvider';
+import {isPlatformIos} from '@src/shared/consts/common';
 import HeaderLeft from './HeaderLeft/HeaderLeft';
 
 const Stack = createNativeStackNavigator();
@@ -48,10 +49,18 @@ export const AppRoute = () => {
     <NavigationContainer
       ref={navigation.navigationRef}
       theme={isDarkMode ? Dark : Light}>
-      <StatusBar
-        animated={true}
-        barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
-      />
+      {isPlatformIos ? (
+        <StatusBar
+          animated={true}
+          barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+        />
+      ) : (
+        <StatusBar
+          animated={true}
+          backgroundColor={colors.bgColor}
+          barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+        />
+      )}
       <Routes />
     </NavigationContainer>
   );
@@ -74,7 +83,7 @@ const Routes = memo(() => {
           isPageScrolling,
           deleteBottomPadding,
           deleteTopPadding,
-          isTitleSmall,
+          isTitleLarge,
         }) => {
           const Wrapper = (props: ParamListBase) => {
             return (
@@ -103,7 +112,7 @@ const Routes = memo(() => {
                       <HeaderLeft
                         {...route.params}
                         headerTitle={headerTitle}
-                        isTitleSmall={isTitleSmall}
+                        isTitleLarge={isTitleLarge}
                       />
                     )
                   : undefined,

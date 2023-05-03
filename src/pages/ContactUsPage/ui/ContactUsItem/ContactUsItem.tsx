@@ -1,12 +1,11 @@
-import React, {memo} from 'react';
+import React, {ComponentType, memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface ContactUsItemProps {
-  Icon: string;
+  Icon: ComponentType;
   text: string;
 }
 
@@ -16,7 +15,7 @@ const ContactUsItem = (props: ContactUsItemProps) => {
 
   return (
     <View style={styles.contactUsItem}>
-      <SvgXml xml={Icon} style={styles.icon} />
+      <Icon />
       <View style={styles.textWrapper}>
         <AppText
           style={{color: colors.primaryTextColor}}
@@ -41,9 +40,5 @@ const styles = StyleSheet.create({
   textWrapper: {
     position: 'absolute',
     left: 30,
-  },
-  icon: {
-    width: 20,
-    height: 20,
   },
 });

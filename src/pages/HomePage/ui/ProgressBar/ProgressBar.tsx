@@ -75,7 +75,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   Basic: {
     position: 'absolute',
     bottom: 45,
-    left: isPlatformIos ? 55 : 75,
+    left: isPlatformIos ? 60 : 75,
     color: '#885FFF',
   },
   Deep: {

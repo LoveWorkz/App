@@ -13,16 +13,21 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.relationshipStatus = '';
   formatedUser.rubric = '';
   formatedUser.category = {
-    currentCategory: '',
+    currentCategory: 'Starter',
     currentCategoryId: '',
   };
   formatedUser.challengeCategory = {
-    currentChallengeCategory: '',
-    currentChallengeCategoryId: '',
+    currentChallengeCategory: 'Bronze',
+    currentChallengeCategoryId: 'challenge_category_1',
   };
   formatedUser.favorites = {
     currentQuestion: '',
     questions: [],
+  };
+  formatedUser.quote = {
+    bookId: '',
+    isQuoteVisible: true,
+    quoteCheckingDate: '',
   };
 
   return formatedUser;

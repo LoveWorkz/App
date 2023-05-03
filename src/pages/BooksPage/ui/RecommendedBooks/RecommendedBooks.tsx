@@ -34,6 +34,7 @@ const RecommendedBooks = () => {
       {!!recommendedBooksList.length && (
         <CarouselSquare
           isLandscape={false}
+          carouselHeight={220}
           Component={(props: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(props.id)}>
               <BookPreview {...props} />
@@ -49,7 +50,5 @@ const RecommendedBooks = () => {
 export const Wrapper = memo(observer(RecommendedBooks));
 
 const styles = StyleSheet.create({
-  recommended: {
-    marginBottom: 20,
-  },
+  recommended: {},
 });

@@ -13,6 +13,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface ProfileProps {
   isSetUp?: boolean;
@@ -20,6 +21,7 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
+  const colors = useColors();
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -41,18 +43,19 @@ const Profile = (props: ProfileProps) => {
   if (isSetUp) {
     return (
       <View style={styles.profile}>
-        <View>
-          <AppText style={styles.logo} size={TextSize.LEVEL_4} text={'LOGO'} />
-        </View>
         <View style={styles.profileFormWrapper}>
           <ProfileForm />
         </View>
         <Button
           disabled={profileStore.isLoading}
           onPress={onSaveHandler}
-          theme={ButtonTheme.OUTLINED}
+          theme={ButtonTheme.GRADIENT}
           style={styles.nextButton}>
-          <AppText text={t('next')} />
+          <AppText
+            text={t('next')}
+            size={TextSize.LEVEL_4}
+            style={{color: colors.bgQuinaryColor}}
+          />
         </Button>
       </View>
     );
@@ -88,7 +91,7 @@ const Profile = (props: ProfileProps) => {
           theme={ButtonTheme.OUTLINED}
           style={styles.saveBtn}>
           <AppText
-            style={styles.saveBtnText}
+            style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             text={t('profile.save_changes')}
           />
@@ -103,11 +106,7 @@ export const Wrapper = memo(observer(Profile));
 
 const styles = StyleSheet.create({
   profile: {
-    flex: 1,
     alignItems: 'center',
-  },
-  logo: {
-    marginBottom: 30,
   },
   uploadPhotoWrapper: {
     marginTop: -20,
@@ -133,10 +132,6 @@ const styles = StyleSheet.create({
   },
   saveBtn: {
     width: '100%',
-    backgroundColor: 'black',
-  },
-  saveBtnText: {
-    color: 'white',
   },
   nextButton: {
     width: '100%',

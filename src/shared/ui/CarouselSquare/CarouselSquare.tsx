@@ -112,10 +112,11 @@ interface CarousalSquareProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
   isLandscape?: boolean;
   itemStyle?: StyleType;
+  carouselHeight?: number;
 }
 
 export const CarouselSquare = memo((props: CarousalSquareProps) => {
-  const {data, Component, isLandscape, itemStyle} = props;
+  const {data, Component, isLandscape, itemStyle, carouselHeight} = props;
 
   const progressValue = useSharedValue<number>(0);
   const baseOptions = {
@@ -131,6 +132,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
         loop
         style={{
           width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
+          height: carouselHeight,
         }}
         pagingEnabled={true}
         snapEnabled={true}
@@ -142,7 +144,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
         mode="parallax"
         modeConfig={{
           parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
-          parallaxScrollingOffset: isLandscape ? 120 : 100,
+          parallaxScrollingOffset: isLandscape ? 120 : 110,
           parallaxAdjacentItemScale: isLandscape ? 0.55 : 0.38,
         }}
         data={data}

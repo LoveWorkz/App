@@ -15,6 +15,9 @@ import {
 import {profileStore} from '@src/entities/Profile';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {ProfilePhotoActionType} from '@src/entities/Profile/model/types/profileSchema';
+import {userRubricStore} from '@src/entities/UserRubric';
+import {userCategoryStore} from '@src/entities/UserCategory';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {
   User,
   InitlUserInfo,
@@ -142,6 +145,26 @@ class UserStore {
     }
   };
 
+  addUserToFirestore = async (user: User) => {
+    try {
+      const userId = user.id;
+
+      await firestore()
+        .collection(Collections.USERS)
+        .doc(userId)
+        .set({
+          ...user,
+          isAuth: true,
+        });
+
+      await userRubricStore.setUserRubric(userId);
+      await userCategoryStore.setUserCategory(userId);
+      await userChallengeCategoryStore.setUserChallengeCategory(userId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   clearUserInfo = async () => {
     try {
       this.setAuthUserInfo({
@@ -159,6 +182,11 @@ class UserStore {
 
   clearFirebaseUserInfo = async (id: string) => {
     await firestore().collection(Collections.USERS).doc(id).delete();
+
+    await userRubricStore.deleteUserRubric(id);
+    await userCategoryStore.deleteUserCategory(id);
+    await userChallengeCategoryStore.deleteUserChallengeCategory(id);
+
     await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
   };
 

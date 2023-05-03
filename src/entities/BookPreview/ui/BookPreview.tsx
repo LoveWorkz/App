@@ -25,9 +25,9 @@ const BookPreview = (props: BookPreviewProps) => {
 
 const styles = StyleSheet.create({
   BookPreview: {
-    height: 380,
+    height: 350,
     borderRadius: 5,
-    width: 250,
+    width: 220,
   },
   image: {
     borderRadius: 5,

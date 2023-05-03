@@ -156,14 +156,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   CategoryDetails: {
-    height: 525,
+    height: verticalScale(525),
     borderRadius: moderateScale(20),
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(10),
     ...globalStyles.shadowOpacity,
   },
   image: {
-    height: 225,
+    height: verticalScale(225),
     borderRadius: moderateScale(20),
   },
   title: {
