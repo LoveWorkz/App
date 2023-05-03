@@ -90,6 +90,8 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.splash,
     headerShown: false,
     Element: SplashPage,
+    deleteBottomPadding: true,
+    deleteTopPadding: true,
   },
   [AppRouteNames.SETUP]: {
     name: appRoutePaths.setup,

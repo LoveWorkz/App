@@ -22,3 +22,4 @@ export {default as homeCategoryImage} from './light/homeCategoryImage.png';
 export {default as HomepageBackground} from './light/HomepageBackground.png';
 export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
 export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
+export {default as splashScreenImage} from './splashScreenImage.png';
