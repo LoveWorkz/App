@@ -2,7 +2,6 @@ import {ComponentType} from 'react';
 
 import {AuthPage} from '@src/pages/AuthPage';
 import {SplashPage} from '@src/pages/SplashPage';
-import {ResetPasswordPage} from '@src/pages/ResetPasswordPage';
 import {TabRoute} from '@src/app/providers/route/TabRoute';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfilePage} from '@src/pages/ProfilePage';
@@ -28,7 +27,6 @@ export enum AppRouteNames {
   SETUP = 'setup',
 
   // pages with title
-  RESET_PASSWORD = 'resetPassword',
   SETTINGS = 'settings',
   PROFILE = 'profile',
   ABOUT = 'about',
@@ -49,7 +47,6 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.SPLASH]: 'splash',
 
   // pages with title
-  [AppRouteNames.RESET_PASSWORD]: 'resetPassword',
   [AppRouteNames.SETTINGS]: 'settings',
   [AppRouteNames.PROFILE]: 'profile',
   [AppRouteNames.ABOUT]: 'about',
@@ -107,12 +104,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
 
   // pages with title
-  [AppRouteNames.RESET_PASSWORD]: {
-    name: appRoutePaths.resetPassword,
-    headerShown: true,
-    headerTitle: 'Reset Password',
-    Element: ResetPasswordPage,
-  },
   [AppRouteNames.SETTINGS]: {
     name: appRoutePaths.settings,
     headerShown: true,

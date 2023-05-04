@@ -1,15 +1,13 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {TextSize} from '@src/shared/ui/AppText/AppText';
 import {forgotPasswordZIndex} from '@src/app/styles/GlobalStyle';
+import {ResetPassword} from '@src/features/ResetPassword';
 import signInStore from '../model/store/SignInStore';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 const SignIn = () => {
   const {t} = useTranslation();
@@ -26,10 +24,6 @@ const SignIn = () => {
     signInStore.setPassword(password);
   }, []);
 
-  const onClickHandler = () => {
-    navigation.navigate(AppRouteNames.RESET_PASSWORD);
-  };
-
   return (
     <View>
       <View style={styles.email}>
@@ -42,13 +36,9 @@ const SignIn = () => {
         />
       </View>
       <View style={styles.password}>
-        <Pressable style={styles.forgotPassword} onPress={onClickHandler}>
-          <GradientText
-            size={TextSize.LEVEL_3}
-            weight={'600'}
-            text={t('auth.forgot_password')}
-          />
-        </Pressable>
+        <View style={styles.forgotPasswordWrapper}>
+          <ResetPassword />
+        </View>
         <Input
           secureTextEntry
           value={signInStore.signInData.password}
@@ -72,11 +62,11 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   password: {
-    marginBottom: 15,
-    marginTop: 15,
+    marginVertical: verticalScale(15),
   },
-  forgotPassword: {
+  forgotPasswordWrapper: {
     position: 'absolute',
+    top: verticalScale(-10),
     right: 0,
     zIndex: forgotPasswordZIndex,
   },

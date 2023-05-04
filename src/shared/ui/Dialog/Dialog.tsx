@@ -1,6 +1,9 @@
 import React, {memo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
+import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {AppText, TextSize} from '../AppText/AppText';
 import {Button, ButtonTheme} from '../Button/Button';
 import {Modal} from '../Modal/Modal';
 
@@ -14,20 +17,40 @@ interface DialogProps {
 
 export const Dialog = memo((props: DialogProps) => {
   const {confirmText, onConfirmHandler, text, title, visible} = props;
+  const colors = useColors();
 
   return (
     <Modal contentStyle={styles.contentStyle} visible={visible}>
       <>
         <View style={styles.topBlock}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.text}>{text}</Text>
+          {title && (
+            <AppText
+              style={[styles.title, {color: colors.primaryTextColor}]}
+              size={TextSize.LEVEL_5}
+              weight={'600'}
+              text={title}
+            />
+          )}
+          {text && (
+            <AppText
+              style={[styles.text, {color: colors.primaryTextColor}]}
+              size={TextSize.LEVEL_3}
+              weight={'600'}
+              text={text}
+            />
+          )}
         </View>
         {confirmText && (
           <Button
             style={styles.btn}
-            theme={ButtonTheme.OUTLINED}
+            theme={ButtonTheme.GRADIENT}
             onPress={onConfirmHandler}>
-            <Text style={styles.confirmText}>{confirmText}</Text>
+            <AppText
+              style={{color: colors.bgQuinaryColor}}
+              size={TextSize.LEVEL_4}
+              weight={'700'}
+              text={confirmText}
+            />
           </Button>
         )}
       </>
@@ -40,14 +63,13 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: 'auto',
   },
   btn: {
-    width: 100,
+    width: horizontalScale(100),
     marginLeft: 'auto',
   },
   topBlock: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   title: {
-    fontSize: 20,
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
   },
 });
