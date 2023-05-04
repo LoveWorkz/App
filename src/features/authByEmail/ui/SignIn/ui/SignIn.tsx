@@ -26,9 +26,9 @@ const SignIn = () => {
     signInStore.setPassword(password);
   }, []);
 
-  const onClickHandler = useCallback(() => {
+  const onClickHandler = () => {
     navigation.navigate(AppRouteNames.RESET_PASSWORD);
-  }, []);
+  };
 
   return (
     <View>

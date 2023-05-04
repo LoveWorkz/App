@@ -1,5 +1,6 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -72,6 +73,7 @@ class SignInStore {
 
   signIn = async () => {
     try {
+      crashlytics().log('User tried to sign in.');
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields({
@@ -95,7 +97,9 @@ class SignInStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
-      this.setIsloading(false);
+      crashlytics().log('User signed in.');
+      currentUser && crashlytics().setUserId(currentUser.uid),
+        this.setIsloading(false);
       navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (error: unknown) {
       this.setIsloading(false);
@@ -107,6 +111,7 @@ class SignInStore {
     if (!(error instanceof Error)) {
       return;
     }
+    crashlytics().recordError(error);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
       const serverError: SignInErrorInfo = {

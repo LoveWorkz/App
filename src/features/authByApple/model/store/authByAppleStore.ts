@@ -2,6 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import appleAuth from '@invertase/react-native-apple-authentication';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -36,6 +37,8 @@ class AuthByAppleStore {
   };
   appleSignIn = async () => {
     try {
+      crashlytics().log('User tried to sign in with Apple.');
+
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -53,6 +56,8 @@ class AuthByAppleStore {
 
       await auth().signInWithCredential(appleCredential);
 
+      crashlytics().log('User signed in with Apple.');
+
       const currentUser = auth().currentUser;
 
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
@@ -68,6 +73,8 @@ class AuthByAppleStore {
     if (!(error instanceof Error)) {
       return;
     }
+
+    crashlytics().recordError(error);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       userStore.toggleDisabledDialog(true);

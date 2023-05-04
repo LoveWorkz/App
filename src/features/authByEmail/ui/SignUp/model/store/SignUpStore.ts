@@ -1,5 +1,6 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -83,6 +84,8 @@ class SignUpStore {
 
   register = async (actionAfterRegistration: () => void) => {
     try {
+      crashlytics().log('User tried to sign up.');
+
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields({
@@ -103,6 +106,8 @@ class SignUpStore {
       );
       await auth().currentUser?.sendEmailVerification();
 
+      crashlytics().log('User signed up.');
+
       const currentUser = auth().currentUser;
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
@@ -120,6 +125,8 @@ class SignUpStore {
     if (!(error instanceof Error)) {
       return;
     }
+
+    crashlytics().recordError(error);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_EMAIL_ALREADY_IN_USE)) {
       const serverError: SignUpErrorInfo = {

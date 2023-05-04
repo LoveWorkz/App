@@ -2,6 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -36,6 +37,8 @@ class AuthByGoogleStore {
   };
   signIn = async () => {
     try {
+      crashlytics().log('User tried to sign in with Google.');
+
       await GoogleSignin.hasPlayServices();
       const result = await GoogleSignin.signIn();
 
@@ -43,6 +46,8 @@ class AuthByGoogleStore {
         result.idToken,
       );
       await auth().signInWithCredential(googleCredential);
+
+      crashlytics().log('User signed in with Google.');
 
       const currentUser = auth().currentUser;
 
@@ -54,6 +59,8 @@ class AuthByGoogleStore {
       if (!(error instanceof Error)) {
         return;
       }
+
+      crashlytics().recordError(error);
 
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
         userStore.toggleDisabledDialog(true);
