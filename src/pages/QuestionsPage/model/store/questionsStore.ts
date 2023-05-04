@@ -2,12 +2,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 
 import {Collections} from '@src/shared/types/firebase';
-import {
-  categoryStore,
-  CategoryType,
-  CategoryName,
-  getNextCategoryName,
-} from '@src/entities/Category';
+import {categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
@@ -15,6 +10,7 @@ import {userStore} from '@src/entities/User';
 import {minutesDiff} from '@src/shared/lib/date';
 import {profileStore} from '@src/entities/Profile';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {categoriesStore} from '@src/pages/CategoriesPage';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {QuestionsPageInfo} from '../types/questionTypes';
 import {breakPoint, minute} from '../lib/questions';
@@ -70,14 +66,25 @@ class QuestionsStore {
           rubricStore.rubricSwipeLogic({language});
           break;
         case 'category':
-          if (!id) {
+          const currentCategory = categoryStore.category;
+          if (!id || !currentCategory) {
             return;
           }
+
+          const currentCategoryName = currentCategory.name === 'All_In_One';
+
           await categoryStore.fetchCategory({id});
-          await this.fetchQuestionsById({
-            id,
-            key: 'categoryId',
-          });
+
+          // if it's the last category get all questions
+          if (currentCategoryName) {
+            await this.fetchAllQuestions();
+          } else {
+            await this.fetchQuestionsById({
+              id,
+              key: 'categoryId',
+            });
+          }
+
           // init current question id for the first time
           await categoryStore.initUserCategoryQuestionId({
             id,
@@ -168,6 +175,22 @@ class QuestionsStore {
         .collection(Collections.QUESTIONS)
         .where(key, '==', id)
         .get();
+      const questions = data.docs.map(question => ({
+        ...question.data(),
+        id: question.id,
+      }));
+
+      runInAction(() => {
+        this.questions = questions as QuestionType[];
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchAllQuestions = async () => {
+    try {
+      const data = await firestore().collection(Collections.QUESTIONS).get();
       const questions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
@@ -346,94 +369,106 @@ class QuestionsStore {
     currentQuestionIndex: number;
     isCategory: boolean;
   }) => {
-    const swipedQuestionsPercentage = Math.floor(
-      getPercentageFromNumber(currentQuestionIndex, this.questions.length),
-    );
+    try {
+      const swipedQuestionsPercentage = Math.floor(
+        getPercentageFromNumber(currentQuestionIndex, this.questions.length),
+      );
 
-    if (!swipedQuestionsPercentage) {
-      return;
-    }
+      if (!swipedQuestionsPercentage) {
+        return;
+      }
 
-    if (isCategory) {
-      await categoryStore.updateUserCategory({
-        id,
-        field: 'swipedQuestionsPercentage',
-        data: swipedQuestionsPercentage,
-      });
-    } else {
-      await rubricStore.updateUserRubric({
-        id,
-        field: 'swipedQuestionsPercentage',
-        data: swipedQuestionsPercentage,
-      });
+      if (isCategory) {
+        await categoryStore.updateUserCategory({
+          id,
+          field: 'swipedQuestionsPercentage',
+          data: swipedQuestionsPercentage,
+        });
+      } else {
+        await rubricStore.updateUserRubric({
+          id,
+          field: 'swipedQuestionsPercentage',
+          data: swipedQuestionsPercentage,
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   checkIfAllQuestionsSwiped = async ({
     questionId,
-    categoryId,
     type,
   }: {
     questionId: string;
-    categoryId: string;
     type: 'rubric' | 'category' | 'favorite';
   }) => {
-    const isCategory = type === 'category';
+    try {
+      const isCategory = type === 'category';
 
-    if (!isCategory) {
-      return;
-    }
-
-    const questionInfo = questionStore.getQuestionInfo({
-      questionId,
-      questions: this.questions,
-    });
-    if (!questionInfo) {
-      return;
-    }
-
-    const swipedQuestionsCount = questionInfo.currentQuestionIndex + 1;
-    const lastQueston = this.questions.length;
-    const isLastQuestion = swipedQuestionsCount === lastQueston;
-
-    if (isLastQuestion) {
-      const category = categoryStore.category;
-      if (!category) {
+      if (!isCategory) {
         return;
       }
 
-      // the modal will be opened only one time
-      if (category.isAllQuestionsSwiped) {
+      const questionInfo = questionStore.getQuestionInfo({
+        questionId,
+        questions: this.questions,
+      });
+      if (!questionInfo) {
         return;
       }
 
-      const nextCategory = getNextCategoryName({
-        currentCategory: category.name as CategoryName,
-      });
+      const swipedQuestionsCount = questionInfo.currentQuestionIndex + 1;
+      const lastQueston = this.questions.length;
+      const isLastQuestion = swipedQuestionsCount === lastQueston;
 
-      profileStore.setCurrentCategory({
-        currentCategory: category.name,
-        currentCategoryId: category.id,
-      });
+      if (isLastQuestion) {
+        const category = categoryStore.category;
+        if (!category) {
+          return;
+        }
 
-      await categoryStore.updateUserCategory({
-        id: categoryId,
-        field: 'isAllQuestionsSwiped',
-        data: true,
-      });
+        // the modal will be opened only one time
+        if (category.isAllQuestionsSwiped) {
+          return;
+        }
 
-      await categoryStore.updateUserCategory({
-        id: categoryId,
-        field: 'isBlocked',
-        data: false,
-      });
+        const nextCategory = categoriesStore.getNextCategory({
+          currentCategoryId: category.id,
+        });
 
-      await userStore.updateUser({
-        field: 'category',
-        data: {currentCategory: nextCategory},
-      });
+        if (!nextCategory) {
+          return;
+        }
 
-      this.setCongratsModalVisible(true);
+        profileStore.setCurrentCategory({
+          currentCategory: nextCategory.name,
+          currentCategoryId: nextCategory.id,
+        });
+
+        // after swiped all questions update user data
+
+        await categoryStore.updateUserCategory({
+          id: category.id,
+          field: 'isAllQuestionsSwiped',
+          data: true,
+        });
+
+        await categoryStore.updateUserCategory({
+          id: nextCategory.id,
+          field: 'isBlocked',
+          data: false,
+        });
+
+        await userStore.updateUser({
+          field: 'category',
+          data: {currentCategory: nextCategory.name},
+        });
+
+        this.setCongratsModalVisible(true);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 }

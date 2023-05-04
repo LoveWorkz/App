@@ -24,7 +24,8 @@ const ProgressBar = () => {
   const currentCategory = profileStore.currentCategory;
 
   if (currentCategory) {
-    currentCategoryName = currentCategory.currentCategory as CategoryName;
+    const category = currentCategory.currentCategory as CategoryName;
+    currentCategoryName = category === 'All_In_One' ? 'Hot' : category;
   }
 
   const progressBarImage = getProgressBarIcon({

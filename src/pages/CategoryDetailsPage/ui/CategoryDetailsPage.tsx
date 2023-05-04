@@ -23,6 +23,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
@@ -33,8 +34,9 @@ interface CategoryDetailsPageProps {
 export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
   const category = categoryStore.category;
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const colors = useColors();
+  const language = i18n.language as LanguageValueType;
 
   useEffect(() => {
     route?.params.id && categoryStore.fetchCategory({id: route.params.id});
@@ -105,7 +107,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
               style={styles.title}
               weight={'500'}
               size={TextSize.LEVEL_7}
-              text={`${category.name} package`}
+              text={`${category.displayName[language]} package`}
             />
             <AppText size={TextSize.LEVEL_4} text={category.description} />
           </View>

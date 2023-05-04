@@ -18,7 +18,7 @@ export type CategoryName =
   | 'Deep'
   | 'Intimate'
   | 'Hot'
-  | 'All In One';
+  | 'All_In_One';
 
 export interface CategoryType {
   name: CategoryName;

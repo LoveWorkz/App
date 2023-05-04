@@ -43,10 +43,10 @@ export const getCongratsModalContent = (t: TFunction) => {
       image:
         'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fplatinum.png?alt=media&token=fed91f9c-81ba-447e-910d-dd8b948575cb',
     },
-    'All In One': {
+    All_In_One: {
       height: 151,
       width: 121,
-      title: `${title} Hot:`,
+      title: `${title} All In One:`,
       description: `${t('questions.reward_challanges')} Platinum`,
       image:
         'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fplatinum.png?alt=media&token=fed91f9c-81ba-447e-910d-dd8b948575cb',

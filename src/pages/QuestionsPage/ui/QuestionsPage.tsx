@@ -92,7 +92,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
         questionsStore.checkIfAllQuestionsSwiped({
           questionId: param.id,
-          categoryId: id,
           type: key,
         });
       }

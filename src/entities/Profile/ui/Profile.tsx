@@ -9,11 +9,11 @@ import {UploadPhoto} from '@src/widgets/UploadPhoto';
 import {DeleteAccount} from '@src/features/DeleteAccount';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
-import {useColors} from '@src/app/providers/colorsProvider';
 
 interface ProfileProps {
   isSetUp?: boolean;
@@ -54,7 +54,7 @@ const Profile = (props: ProfileProps) => {
           <AppText
             text={t('next')}
             size={TextSize.LEVEL_4}
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: colors.primaryTextColor}}
           />
         </Button>
       </View>
@@ -88,7 +88,7 @@ const Profile = (props: ProfileProps) => {
         <Button
           disabled={profileStore.isLoading}
           onPress={onSaveHandler}
-          theme={ButtonTheme.OUTLINED}
+          theme={ButtonTheme.GRADIENT}
           style={styles.saveBtn}>
           <AppText
             style={{color: colors.bgQuinaryColor}}
