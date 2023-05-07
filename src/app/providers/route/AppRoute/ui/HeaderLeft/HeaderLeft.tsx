@@ -42,6 +42,7 @@ const HeaderLeft = (props: HeaderLeftProps) => {
             {
               color: colors.primaryTextColor,
               width: isTitleLarge ? '90%' : 'auto',
+              paddingRight: isTitleLarge ? horizontalScale(20) : 0,
             },
           ]}
           size={isTitleLarge && !isLngEn ? TextSize.LEVEL_4 : TextSize.LEVEL_6}

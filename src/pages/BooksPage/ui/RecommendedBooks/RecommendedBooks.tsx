@@ -10,6 +10,7 @@ import {BookPreview} from '@src/entities/BookPreview';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {BookType} from '@src/entities/Book';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import BooksStore from '../../model/store/BooksStore';
 
 const RecommendedBooks = () => {
@@ -34,7 +35,7 @@ const RecommendedBooks = () => {
       {!!recommendedBooksList.length && (
         <CarouselSquare
           isLandscape={false}
-          carouselHeight={220}
+          carouselHeight={240}
           Component={(props: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(props.id)}>
               <BookPreview {...props} />
@@ -50,5 +51,7 @@ const RecommendedBooks = () => {
 export const Wrapper = memo(observer(RecommendedBooks));
 
 const styles = StyleSheet.create({
-  recommended: {},
+  recommended: {
+    marginBottom: verticalScale(-20),
+  },
 });

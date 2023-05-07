@@ -134,6 +134,16 @@ class CategoryStore {
     }
   };
 
+  getCategoryByName = (name: string) => {
+    try {
+      return categoriesStore.categories.find(category => {
+        return category.name === name;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   categorySwipeLogic = async ({
     questionId,
     language,

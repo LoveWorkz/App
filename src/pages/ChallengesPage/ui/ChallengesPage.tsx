@@ -4,12 +4,12 @@ import {observer} from 'mobx-react-lite';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {CongratsModal} from '@src/widgets/CongratsModal';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
 import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
 import Challenges from './Challenges/Challenges';
 import challengesStore from '../model/store/challengesStore';
 import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 
 const ChallengesPage = () => {
   const challengeCategory = challengesStore.challengeCategory;
@@ -17,10 +17,7 @@ const ChallengesPage = () => {
     getCongratsModalContentForChallenges()[
       challengeCategory?.currentChallengeCategory || ''
     ];
-  const isLoading =
-    challengesStore.isChallengePageLoading ||
-    (challengesStore.isChallengeCategoriesLoading &&
-      challengesStore.isChallengesLoading);
+  const isLoading = challengesStore.isChallengePageLoading;
 
   useEffect(() => {
     challengesStore.init();

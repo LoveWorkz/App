@@ -18,6 +18,7 @@ export interface Profile {
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
   quote: QuoeType;
+  isWowThatWasFastModalForbidden: boolean;
 }
 
 export interface ProfileErrorInfo {

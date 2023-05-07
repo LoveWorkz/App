@@ -46,6 +46,8 @@ const Category = (props: CategoryProps) => {
   const {t, i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
 
+  const isSizeL = size === CateorySize.L;
+
   const onCategoryPressHandler = () => {
     if (isCategoryDetailsVisible) {
       navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
@@ -87,7 +89,12 @@ const Category = (props: CategoryProps) => {
       <View style={{...globalStyles.shadowOpacity}}>
         <FastImage
           resizeMode="cover"
-          style={[styles.category, styles[size], style]}
+          style={[
+            styles.category,
+            styles[size],
+            style,
+            {padding: isSizeL ? 20 : 10},
+          ]}
           source={{
             uri: image,
           }}>
@@ -95,7 +102,7 @@ const Category = (props: CategoryProps) => {
             <AppText
               style={{color: colors.white}}
               weight={'500'}
-              size={TextSize.LEVEL_3}
+              size={isSizeL ? TextSize.LEVEL_6 : TextSize.LEVEL_3}
               text={`${questions.length} ${t('questions.questions')}`}
             />
           </Gradient>
@@ -105,7 +112,7 @@ const Category = (props: CategoryProps) => {
               {color: colors.categoryAndFavoritesTextColor},
             ]}
             weight={'700'}
-            size={TextSize.LEVEL_4}
+            size={isSizeL ? TextSize.LEVEL_7 : TextSize.LEVEL_4}
             text={displayName[language]}
           />
         </FastImage>
@@ -118,7 +125,6 @@ export default memo(Category);
 
 const styles = StyleSheet.create<Record<string, any>>({
   category: {
-    padding: 10,
     borderRadius: 20,
     borderColor: 'silver',
     borderStyle: 'solid',

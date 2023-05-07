@@ -54,7 +54,7 @@ const Profile = (props: ProfileProps) => {
           <AppText
             text={t('next')}
             size={TextSize.LEVEL_4}
-            style={{color: colors.primaryTextColor}}
+            style={{color: colors.bgQuinaryColor}}
           />
         </Button>
       </View>

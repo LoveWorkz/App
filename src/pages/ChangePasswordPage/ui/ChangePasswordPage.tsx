@@ -4,12 +4,14 @@ import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import changePasswordStore from '../model/store/ChangePasswordStore';
 
 const ChangePasswordPage = () => {
   const {t} = useTranslation();
+  const colors = useColors();
 
   useEffect(() => {
     return () => changePasswordStore.resetForm();
@@ -72,9 +74,13 @@ const ChangePasswordPage = () => {
       <Button
         disabled={changePasswordStore.isLoading}
         style={styles.btn}
-        theme={ButtonTheme.OUTLINED}
+        theme={ButtonTheme.GRADIENT}
         onPress={onPressHandler}>
-        <AppText style={styles.text} size={TextSize.LEVEL_4} text={t('save')} />
+        <AppText
+          style={{color: colors.bgQuinaryColor}}
+          size={TextSize.LEVEL_4}
+          text={t('save')}
+        />
       </Button>
     </View>
   );
@@ -94,9 +100,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     width: '100%',
-    backgroundColor: 'black',
-  },
-  text: {
-    color: 'white',
   },
 });

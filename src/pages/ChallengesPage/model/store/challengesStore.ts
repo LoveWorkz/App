@@ -8,11 +8,11 @@ import {
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
-  UserChallengeCategoryType,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType} from '@src/entities/Challenge';
 import {profileStore} from '@src/entities/Profile';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -20,11 +20,9 @@ class ChallengesStore {
   filteredChallengesList: ChallengeType[] = [];
   selectedChallengesIds: string[] = [];
   isAllChallengesSelected: boolean = false;
-  userChallengeCategory: null | UserChallengeCategoryType = null;
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isCongratsModalVisible: boolean = false;
-  isChallengeCategoriesLoading: boolean = true;
-  isChallengesLoading: boolean = true;
+  isChallengesLoading: boolean = false;
   isChallengePageLoading: boolean = true;
 
   constructor() {
@@ -36,7 +34,7 @@ class ChallengesStore {
       this.isChallengePageLoading = true;
       // the order is important
       await profileStore.fetchProfile();
-      await this.fetchUserChallengeCategory();
+      await userChallengeCategoryStore.fetchUserChallengeCategory();
       await this.fetchChallengeCategories();
       await this.fetchChallenges();
     } catch (e) {
@@ -70,81 +68,6 @@ class ChallengesStore {
     this.isCongratsModalVisible = isCongratsModalVisible;
   };
 
-  fetchUserChallengeCategory = async () => {
-    try {
-      const currentChallengeCategory = this.challengeCategory;
-      const userId = userStore.authUserId;
-      if (!userId) {
-        return;
-      }
-      if (!currentChallengeCategory) {
-        return;
-      }
-
-      const userChallengeCategoryData = await firestore()
-        .collection(Collections.USER_CHALLENGE_CATEGORIES)
-        .doc(userId)
-        .get();
-      const userChallengeCategory =
-        userChallengeCategoryData.data() as UserChallengeCategoryType;
-
-      if (!userChallengeCategory) {
-        return;
-      }
-
-      const currenetChallengeCategory =
-        userChallengeCategory.challengeCategory[
-          currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames
-        ];
-
-      runInAction(() => {
-        this.userChallengeCategory = userChallengeCategory;
-        this.setIsAllChallengesSelected(
-          currenetChallengeCategory.isAllChallengesSelected,
-        );
-        // keeping selected Challenges Ids separately for updating challenges
-        this.setSelectedChallengesIds(
-          currenetChallengeCategory.selectedChallengesIds,
-        );
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  updateUserChallengeCategory = async ({
-    field,
-    data,
-    challengeCategoryName,
-  }: {
-    field: string;
-    data: any;
-    challengeCategoryName?: ChallengeCategoriesNames;
-  }) => {
-    try {
-      const currentChallengeCategory = this.challengeCategory;
-      const userId = userStore.authUserId;
-      if (!userId) {
-        return;
-      }
-      if (!currentChallengeCategory) {
-        return;
-      }
-
-      await firestore()
-        .collection(Collections.USER_CHALLENGE_CATEGORIES)
-        .doc(userId)
-        .update({
-          [`challengeCategory.${
-            challengeCategoryName ||
-            currentChallengeCategory.currentChallengeCategory
-          }.${field}`]: data,
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   fetchChallengeCategories = async () => {
     try {
       const currentChallengeCategory = this.challengeCategory;
@@ -160,7 +83,8 @@ class ChallengesStore {
         .collection(Collections.CHALLENGE_CATEGORIES)
         .get();
 
-      const userChallengeCategory = this.userChallengeCategory;
+      const userChallengeCategory =
+        userChallengeCategoryStore.userChallengeCategory;
 
       if (!userChallengeCategory) {
         return;
@@ -183,10 +107,6 @@ class ChallengesStore {
       });
     } catch (e) {
       console.log(e);
-    } finally {
-      runInAction(() => {
-        this.isChallengeCategoriesLoading = false;
-      });
     }
   };
 
@@ -208,7 +128,8 @@ class ChallengesStore {
         .orderBy('createdDate')
         .get();
 
-      const userChallengeCategory = this.userChallengeCategory;
+      const userChallengeCategory =
+        userChallengeCategoryStore.userChallengeCategory;
 
       if (!userChallengeCategory) {
         return;
@@ -231,17 +152,12 @@ class ChallengesStore {
       });
     } catch (e) {
       console.log(e);
-    } finally {
-      runInAction(() => {
-        this.isChallengesLoading = false;
-      });
     }
   };
 
   updateChallengeCategory = async ({id, name}: {id: string; name: string}) => {
     try {
       this.isChallengesLoading = true;
-      this.isChallengeCategoriesLoading = true;
 
       const newChallengeCategory = {
         currentChallengeCategory: name,
@@ -261,7 +177,7 @@ class ChallengesStore {
         this.updateLocalChallengeCategory({id});
       });
       // calling fetchUserChallengeCategory for refresing selectedChallengesIds
-      await this.fetchUserChallengeCategory();
+      await userChallengeCategoryStore.fetchUserChallengeCategory();
       // fetchig challenges for new challengeCategory
       await this.fetchChallenges();
     } catch (e) {
@@ -269,7 +185,6 @@ class ChallengesStore {
     } finally {
       runInAction(() => {
         this.isChallengesLoading = false;
-        this.isChallengeCategoriesLoading = false;
       });
     }
   };
@@ -339,13 +254,13 @@ class ChallengesStore {
         }
 
         // update data after selecting all challenges
-        await this.updateUserChallengeCategory({
+        await userChallengeCategoryStore.updateUserChallengeCategory({
           field: 'isAllChallengesSelected',
           data: true,
         });
         this.setIsAllChallengesSelected(true);
         // open next challenge category
-        await this.updateUserChallengeCategory({
+        await userChallengeCategoryStore.updateUserChallengeCategory({
           field: 'isBlocked',
           challengeCategoryName: nextChallengeCategoryName,
           data: false,
@@ -354,7 +269,7 @@ class ChallengesStore {
         this.setIsCongratsModalVisible(true);
 
         // fetching actual data after selecting all challenges
-        await this.fetchUserChallengeCategory();
+        await userChallengeCategoryStore.fetchUserChallengeCategory();
         await this.fetchChallengeCategories();
       }
     } catch (e) {

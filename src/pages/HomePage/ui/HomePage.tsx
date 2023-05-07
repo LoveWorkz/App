@@ -4,6 +4,7 @@ import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {useTranslation} from 'react-i18next';
 
 import {
   HomepageBackground,
@@ -15,6 +16,7 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {booksStore} from '@src/pages/BooksPage';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
@@ -26,10 +28,12 @@ const HomePage = () => {
   const {theme} = useTheme();
   const navbarHeaderHeight = useHeaderHeight();
   const statusBarHeight = getStatusBarHeight();
+  const {i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
 
   useEffect(() => {
-    homePageStore.init();
-  }, []);
+    homePageStore.init(language);
+  }, [language]);
 
   return (
     <LoaderWrapper isLoading={homePageStore.isHomePageLoading}>

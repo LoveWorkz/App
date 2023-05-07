@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
+import {observer} from 'mobx-react-lite';
 
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -19,6 +20,7 @@ import {
   homeCategoryImageDark,
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import HomePageStore from '../../model/store/HomePageStore';
 
 const HomeCategory = () => {
   const {t} = useTranslation();
@@ -58,7 +60,7 @@ const HomeCategory = () => {
                 style={{color: colors.primaryTextColor}}
                 weight={'700'}
                 size={TextSize.LEVEL_5}
-                text={'BASIC'}
+                text={HomePageStore.homePageCategoryName}
               />
               <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
                 <SvgXml
@@ -111,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ComponentWrapper = memo(HomeCategory);
+export const ComponentWrapper = memo(observer(HomeCategory));

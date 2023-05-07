@@ -11,7 +11,7 @@ const ThemeSwitcher = () => {
   const {theme, toggleTheme} = useTheme();
   const colors = useColors();
   const {t} = useTranslation();
-  const isLightMode = theme === Theme.LIGHT;
+  const isLightMode = theme === Theme.Dark;
 
   return (
     <View style={styles.languageSwitcher}>
@@ -19,9 +19,7 @@ const ThemeSwitcher = () => {
         <AppText
           style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_5}
-          text={
-            isLightMode ? t('settings.light_mode') : t('settings.dark_mode')
-          }
+          text={t('settings.dark_mode')}
         />
       </View>
       <Switch

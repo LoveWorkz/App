@@ -17,6 +17,7 @@ export interface User {
   challengeCategory: CurrentChallengeCategoryType;
   favorites: FavoriteType;
   quote: QuoeType;
+  isWowThatWasFastModalForbidden: boolean;
 }
 
 export enum AuthMethod {

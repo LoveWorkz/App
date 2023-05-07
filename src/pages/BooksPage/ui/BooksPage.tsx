@@ -3,10 +3,10 @@ import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Wrapper as RecommendedBooks} from './RecommendedBooks/RecommendedBooks';
 import {Wrapper as Books} from './Books/Books';
 import booksStore from '../model/store/BooksStore';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 
 const BooksPage = () => {
   useEffect(() => {

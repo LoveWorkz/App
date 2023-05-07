@@ -21,6 +21,7 @@ class QuestionsStore {
   thatWasFastModalVisible: boolean = false;
   congratsModalVisible: boolean = false;
   questionsPageloading: boolean = true;
+  isWowThatWasFastModalForbidden: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -28,6 +29,10 @@ class QuestionsStore {
 
   setThatWasFastModalVisible = (isVisible: boolean) => {
     this.thatWasFastModalVisible = isVisible;
+  };
+
+  setIsWowThatWasFastModalForbidden = (isVisible: boolean) => {
+    this.isWowThatWasFastModalForbidden = isVisible;
   };
 
   setCongratsModalVisible = (isVisible: boolean) => {
@@ -70,7 +75,6 @@ class QuestionsStore {
           if (!id || !currentCategory) {
             return;
           }
-
           const currentCategoryName = currentCategory.name === 'All_In_One';
 
           await categoryStore.fetchCategory({id});
@@ -123,24 +127,31 @@ class QuestionsStore {
 
     switch (key) {
       case 'category':
+        const currentCategory = categoryStore.category;
+        let categoryId = question.categoryId;
+
+        if (currentCategory && currentCategory.name === 'All_In_One') {
+          categoryId = currentCategory.id;
+        }
+        categoryStore.categorySwipeLogic({questionId: question.id, language});
         await firestore()
           .collection(Collections.USER_CATEGORIES)
           .doc(userId)
           .update({
-            [`categories.${question.categoryId}.currentQuestion`]: question.id,
+            [`categories.${categoryId}.currentQuestion`]: question.id,
           });
-        categoryStore.categorySwipeLogic({questionId: question.id, language});
         break;
       case 'rubric':
+        rubricStore.rubricSwipeLogic({questionId: question.id, language});
         await firestore()
           .collection(Collections.USER_RUBRICS)
           .doc(userId)
           .update({
             [`rubrics.${question.rubricId}.currentQuestion`]: question.id,
           });
-        rubricStore.rubricSwipeLogic({questionId: question.id, language});
         break;
       case 'favorite':
+        favoriteStore.favoritesSwipeLogic({id: question.id, language});
         await firestore()
           .collection(Collections.USERS)
           .doc(userId)
@@ -150,7 +161,6 @@ class QuestionsStore {
               currentQuestion: question.id,
             },
           });
-        favoriteStore.favoritesSwipeLogic({id: question.id, language});
         break;
       default:
     }
@@ -313,7 +323,7 @@ class QuestionsStore {
       );
 
       // show modal if user swiped fast
-      if (diff <= minute) {
+      if (diff <= minute && !this.isWowThatWasFastModalForbidden) {
         this.setThatWasFastModalVisible(true);
       }
 
@@ -467,6 +477,19 @@ class QuestionsStore {
 
         this.setCongratsModalVisible(true);
       }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  forbidThatWasFastModalVisible = async () => {
+    try {
+      await userStore.updateUser({
+        field: 'isWowThatWasFastModalForbidden',
+        data: true,
+      });
+      this.setIsWowThatWasFastModalForbidden(true);
+      this.setThatWasFastModalVisible(false);
     } catch (e) {
       console.log(e);
     }

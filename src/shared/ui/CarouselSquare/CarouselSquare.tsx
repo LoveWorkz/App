@@ -1,102 +1,3 @@
-// import {StyleSheet, View, useWindowDimensions} from 'react-native';
-// import React, {
-//   ComponentType,
-//   MemoExoticComponent,
-//   RefObject,
-//   useState,
-// } from 'react';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedScrollHandler,
-//   useAnimatedStyle,
-//   interpolate,
-//   useAnimatedRef,
-// } from 'react-native-reanimated';
-
-// interface CarousalSquareProps {
-//   data: Array<Record<string, any>>;
-//   Component: ComponentType<any> | MemoExoticComponent<any>;
-//   isLandscape?: boolean;
-// }
-
-// export const CarouselSquare = (props: CarousalSquareProps) => {
-//   const {data, Component, isLandscape = true} = props;
-
-//   const scrollViewRef = useAnimatedRef() as RefObject<any>;
-//   const [newData] = useState([
-//     {key: 'spacer-left', start: true},
-//     ...data,
-//     {key: 'spacer-right', end: true},
-//   ]);
-//   const {width} = useWindowDimensions();
-//   const SIZE = width * (isLandscape ? 0.6 : 0.3);
-//   const SPACER = (width - SIZE) / (isLandscape ? 2 : 4);
-
-//   const x = useSharedValue(0);
-//   const offSet = useSharedValue(0);
-
-//   const onScroll = useAnimatedScrollHandler({
-//     onScroll: event => {
-//       x.value = event.contentOffset.x;
-//     },
-//   });
-
-//   return (
-//     <View>
-//       {/* <Pagination scrollX={scrollX} data={data} /> */}
-//       <Animated.ScrollView
-//         snapToAlignment="center"
-//         ref={scrollViewRef}
-//         onScroll={onScroll}
-//         onMomentumScrollEnd={e => {
-//           offSet.value = e.nativeEvent.contentOffset.x;
-//         }}
-//         scrollEventThrottle={16}
-//         decelerationRate="fast"
-//         snapToInterval={SIZE}
-//         horizontal
-//         bounces={false}
-//         showsHorizontalScrollIndicator={false}>
-//         {newData.map((item, index) => {
-//           // eslint-disable-next-line react-hooks/rules-of-hooks
-//           const style = useAnimatedStyle(() => {
-//             const scale = interpolate(
-//               x.value,
-//               [
-//                 (index - 3) * SPACER,
-//                 (index - 2) * SIZE,
-//                 (index - 1) * SIZE,
-//                 index * SIZE,
-//               ],
-//               [0.8, 0.8, 1, 0.8],
-//             );
-//             return {
-//               transform: [{scale}],
-//             };
-//           });
-
-//           if (item.start || item.end) {
-//             return <View style={{width: SPACER}} key={index} />;
-//           }
-//           return (
-//             <View style={{width: SIZE}} key={index}>
-//               <Animated.View style={[styles.componentWrapper, style]}>
-//                 <Component {...item} />
-//               </Animated.View>
-//             </View>
-//           );
-//         })}
-//       </Animated.ScrollView>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   componentWrapper: {
-//     overflow: 'hidden',
-//   },
-// });
-
 import {View, StyleSheet} from 'react-native';
 import React, {ComponentType, memo, MemoExoticComponent} from 'react';
 import {useSharedValue} from 'react-native-reanimated';
@@ -104,6 +5,9 @@ import Carousel from 'react-native-reanimated-carousel';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const PAGE_WIDTH = windowWidth;
 
@@ -122,62 +26,49 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
   const baseOptions = {
     vertical: false,
     width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH * 0.6,
-    height: PAGE_WIDTH * 0.5,
+    height: PAGE_WIDTH * 0.6,
   };
-
   return (
-    <View style={[styles.container]}>
-      <Carousel
-        {...baseOptions}
-        loop
-        style={{
-          width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
-          height: carouselHeight,
-        }}
-        pagingEnabled={true}
-        snapEnabled={true}
-        autoPlay={false}
-        autoPlayInterval={1500}
-        onProgressChange={(_, absoluteProgress) =>
-          (progressValue.value = absoluteProgress)
-        }
-        mode="parallax"
-        modeConfig={{
-          parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
-          parallaxScrollingOffset: isLandscape ? 120 : 110,
-          parallaxAdjacentItemScale: isLandscape ? 0.55 : 0.38,
-        }}
-        data={data}
-        renderItem={({item}) => {
-          return (
-            <View style={{...itemStyle}}>
-              <Component {...item} />
-            </View>
-          );
-        }}
-      />
-      {/* {!!progressValue && (
-        <View style={styles.paginationItems}>
-          {data.map((_, index) => {
+    <GestureHandlerRootView>
+      <View style={[styles.container]}>
+        <Carousel
+          {...baseOptions}
+          loop
+          style={{
+            width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
+            height: carouselHeight ? verticalScale(carouselHeight) : undefined,
+          }}
+          pagingEnabled={true}
+          snapEnabled={true}
+          autoPlay={false}
+          autoPlayInterval={1500}
+          onProgressChange={(_, absoluteProgress) =>
+            (progressValue.value = absoluteProgress)
+          }
+          mode="parallax"
+          modeConfig={{
+            parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
+            parallaxScrollingOffset: isLandscape ? 120 : horizontalScale(115),
+            parallaxAdjacentItemScale: isLandscape ? 0.55 : 0.38,
+          }}
+          data={data}
+          renderItem={({item}) => {
             return (
-              <PaginationItem
-                animValue={progressValue}
-                index={index}
-                key={index}
-                isRotate={false}
-                length={colors.length}
-              />
+              <View style={{...itemStyle}}>
+                <Component {...item} />
+              </View>
             );
-          })}
-        </View>
-      )} */}
-    </View>
+          }}
+        />
+      </View>
+    </GestureHandlerRootView>
   );
 });
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   paginationItems: {
     flexDirection: 'row',

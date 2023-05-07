@@ -5,6 +5,5 @@ export type {
   CategoryImageType,
   CategoryName,
   CurrentCategory,
-  UserCategory,
 } from './model/types/categoryTypes';
 export {default as categoryStore} from './model/store/categoryStore';

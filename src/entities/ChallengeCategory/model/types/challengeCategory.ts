@@ -17,18 +17,6 @@ export interface ChallengeCategoryType {
   displayName: DisplayText;
 }
 
-export interface UserChallengeCategoryType {
-  userId: string;
-  challengeCategory: Record<
-    ChallengeCategoriesNames,
-    {
-      isBlocked: boolean;
-      selectedChallengesIds: string[];
-      isAllChallengesSelected: boolean;
-    }
-  >;
-}
-
 export interface CurrentChallengeCategoryType {
   currentChallengeCategory: string;
   currentChallengeCategoryId: string;

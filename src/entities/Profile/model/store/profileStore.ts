@@ -8,15 +8,16 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
 import {favoriteStore} from '@src/entities/Favorite';
+import {challengesStore} from '@src/pages/ChallengesPage';
+import {CurrentCategory} from '@src/entities/Category';
+import {quotesStore} from '@src/widgets/Quotes';
+import {questionsStore} from '@src/pages/QuestionsPage';
 import {
   Profile,
   ProfileErrorInfo,
   ProfilePhotoActionType,
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
-import {challengesStore} from '@src/pages/ChallengesPage';
-import {CurrentCategory} from '@src/entities/Category';
-import {quotesStore} from '@src/widgets/Quotes';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -173,6 +174,9 @@ class ProfileStore {
           challengesStore.setChallengeCategory(data.challengeCategory);
           favoriteStore.setFavorites(data.favorites);
           quotesStore.setIsQuoteInfo(data.quote);
+          questionsStore.setIsWowThatWasFastModalForbidden(
+            data.isWowThatWasFastModalForbidden,
+          );
         });
       }
     } catch (e) {

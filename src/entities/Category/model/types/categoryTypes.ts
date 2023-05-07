@@ -44,8 +44,3 @@ export interface CurrentCategory {
   currentCategory: string;
   currentCategoryId: string;
 }
-
-export interface UserCategory {
-  categories: Record<string, Partial<CategoryType>>;
-  userId: string;
-}

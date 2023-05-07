@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {Wrapper as UploadModal} from './UploadModal/UploadModal';
 
 interface UploadPhotoProps {
@@ -16,6 +17,7 @@ interface UploadPhotoProps {
 const UploadPhoto = (props: UploadPhotoProps) => {
   const {setPhtotData, deletePhoto, style} = props;
   const {t} = useTranslation();
+  const colors = useColors();
 
   const [visible, setVisible] = useState(false);
 
@@ -27,12 +29,16 @@ const UploadPhoto = (props: UploadPhotoProps) => {
     <View style={styles.uploadPhoto}>
       <Button
         onPress={onPressHandler}
-        style={[styles.btn, style || {}]}
-        theme={ButtonTheme.OUTLINED}>
+        style={[style || {}]}
+        theme={ButtonTheme.GRADIENT}>
         <View style={styles.uploadTextWrapper}>
-          <AppText style={styles.plus} size={TextSize.LEVEL_4} text={'+'} />
           <AppText
-            style={styles.text}
+            style={[styles.plus, {color: colors.bgQuinaryColor}]}
+            size={TextSize.LEVEL_4}
+            text={'+'}
+          />
+          <AppText
+            style={{color: colors.bgQuinaryColor}}
             weight={'500'}
             size={TextSize.LEVEL_4}
             text={t('upload.change_photo')}
@@ -53,17 +59,10 @@ const styles = StyleSheet.create({
   uploadPhoto: {
     flexDirection: 'row',
   },
-  btn: {
-    backgroundColor: 'black',
-  },
   uploadTextWrapper: {
     flexDirection: 'row',
   },
-  text: {
-    color: 'white',
-  },
   plus: {
-    color: 'white',
     marginRight: 10,
   },
 });

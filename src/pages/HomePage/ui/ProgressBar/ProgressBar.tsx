@@ -8,28 +8,19 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {profileStore} from '@src/entities/Profile';
-import {CategoryName} from '@src/entities/Category';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {getProgressBarIcon} from '../../model/lib/homePage';
+import homePageStore from '../../model/store/HomePageStore';
 
 const ProgressBar = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-
-  const firstCategory: CategoryName = 'Starter';
-  let currentCategoryName: CategoryName = firstCategory;
-  const currentCategory = profileStore.currentCategory;
-
-  if (currentCategory) {
-    const category = currentCategory.currentCategory as CategoryName;
-    currentCategoryName = category === 'All_In_One' ? 'Hot' : category;
-  }
+  const {homePageCategoryKey, homePageCategoryName} = homePageStore;
 
   const progressBarImage = getProgressBarIcon({
-    category: currentCategoryName,
+    category: homePageCategoryKey,
     isDarkMode: theme === Theme.Dark,
   });
 
@@ -45,15 +36,15 @@ const ProgressBar = () => {
       {progressBarImage && (
         <SvgXml xml={progressBarImage} style={styles.icon} />
       )}
-      {currentCategoryName !== 'Starter' && (
+      {homePageCategoryKey !== 'Starter' && (
         <AppText
           style={[
-            styles[currentCategoryName],
+            styles[homePageCategoryKey],
             {color: colors.homePageCategoryTextColor},
           ]}
           weight={'700'}
           size={TextSize.LEVEL_4}
-          text={t(`categories.${currentCategoryName}`)}
+          text={homePageCategoryName}
         />
       )}
     </View>

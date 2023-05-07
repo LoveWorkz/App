@@ -7,6 +7,7 @@ import {Challenge} from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import challengesStore from '../../model/store/challengesStore';
 
 export const Challenges = () => {
@@ -15,25 +16,27 @@ export const Challenges = () => {
   const {t} = useTranslation();
 
   return (
-    <View>
-      {challenges.length ? (
-        challenges.map(challange => {
-          return (
-            <View style={styles.subChallengeWrappper} key={challange.id}>
-              <Challenge challenge={challange} />
-            </View>
-          );
-        })
-      ) : (
-        <View style={styles.noResults}>
-          <AppText
-            style={{color: colors.primaryTextColor}}
-            text={t('noResults')}
-            size={TextSize.LEVEL_7}
-          />
-        </View>
-      )}
-    </View>
+    <LoaderWrapper isLoading={challengesStore.isChallengesLoading}>
+      <View>
+        {challenges.length ? (
+          challenges.map(challange => {
+            return (
+              <View style={styles.subChallengeWrappper} key={challange.id}>
+                <Challenge challenge={challange} />
+              </View>
+            );
+          })
+        ) : (
+          <View style={styles.noResults}>
+            <AppText
+              style={{color: colors.primaryTextColor}}
+              text={t('noResults')}
+              size={TextSize.LEVEL_7}
+            />
+          </View>
+        )}
+      </View>
+    </LoaderWrapper>
   );
 };
 

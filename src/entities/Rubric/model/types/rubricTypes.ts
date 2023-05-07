@@ -13,8 +13,3 @@ export interface RubricType {
   displayName: DisplayText;
   createdDate: string;
 }
-
-export interface UserRubric {
-  rubrics: Record<string, Partial<RubricType>>;
-  userId: string;
-}

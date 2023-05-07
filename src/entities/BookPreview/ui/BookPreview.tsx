@@ -3,6 +3,11 @@ import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {BookImage} from '@src/entities/Book';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 
 interface BookPreviewProps {
   image: BookImage;
@@ -18,19 +23,19 @@ const BookPreview = (props: BookPreviewProps) => {
 
   return (
     <View style={styles.BookPreview}>
-      <FastImage style={styles.image} source={uri} />
+      <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   BookPreview: {
-    height: 350,
-    borderRadius: 5,
-    width: 220,
+    height: verticalScale(340),
+    borderRadius: moderateScale(10),
+    width: horizontalScale(230),
   },
   image: {
-    borderRadius: 5,
+    borderRadius: moderateScale(10),
     idth: '100%',
     height: '100%',
   },

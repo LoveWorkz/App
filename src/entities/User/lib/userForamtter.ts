@@ -29,6 +29,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     isQuoteVisible: true,
     quoteCheckingDate: '',
   };
+  formatedUser.isWowThatWasFastModalForbidden = false;
 
   return formatedUser;
 };

@@ -7,6 +7,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import questionsStore from '../../model/store/questionsStore';
 
 interface WowThatWasFastModalProps {
   visible: boolean;
@@ -20,6 +21,10 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
 
   const onCancelHandler = () => {
     setVisible?.(false);
+  };
+
+  const onDontShowAgainHandler = () => {
+    questionsStore.forbidThatWasFastModalVisible();
   };
 
   return (
@@ -49,12 +54,14 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
           text={t('continue')}
         />
       </Button>
-      <AppText
-        style={[styles.dontShowAgain, {color: colors.primaryTextColor}]}
-        weight={'600'}
-        size={TextSize.LEVEL_4}
-        text={t('dont_show_again')}
-      />
+      <Button onPress={onDontShowAgainHandler} theme={ButtonTheme.CLEAR}>
+        <AppText
+          style={[styles.dontShowAgain, {color: colors.primaryTextColor}]}
+          weight={'600'}
+          size={TextSize.LEVEL_4}
+          text={t('dont_show_again')}
+        />
+      </Button>
     </Modal>
   );
 };
