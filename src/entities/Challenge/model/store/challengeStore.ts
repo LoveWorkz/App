@@ -1,6 +1,7 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 
-import challengesStore from '@src/pages/ChallengesPage/model/store/challengesStore';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {challengesStore} from '@src/pages/ChallengesPage';
 
 class ChallengeStore {
   constructor() {
@@ -22,7 +23,7 @@ class ChallengeStore {
 
       challengesStore.setSelectedChallengesIds(newSelectedChallengesIds);
 
-      await challengesStore.updateUserChallengeCategory({
+      await userChallengeCategoryStore.updateUserChallengeCategory({
         field: 'selectedChallengesIds',
         data: newSelectedChallengesIds,
       });

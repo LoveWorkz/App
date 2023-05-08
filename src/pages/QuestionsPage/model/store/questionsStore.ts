@@ -39,6 +39,31 @@ class QuestionsStore {
     this.congratsModalVisible = isVisible;
   };
 
+  init = async (param: {
+    id?: string;
+    key: 'rubric' | 'category' | 'favorite';
+    language: LanguageValueType;
+  }) => {
+    try {
+      this.questionsPageloading = true;
+      const categoryId = param.id;
+      const currentCategory = categoryStore.category;
+
+      // if category details is forbidden (user pressed don't show again), fetching category here
+      if (!currentCategory && categoryId) {
+        await categoryStore.fetchCategory({id: categoryId});
+      }
+
+      await this.getQuestionsPageInfo(param);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      runInAction(() => {
+        this.questionsPageloading = false;
+      });
+    }
+  };
+
   getQuestionsPageInfo = async ({
     id,
     key,
@@ -49,9 +74,6 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
-      runInAction(() => {
-        this.questionsPageloading = true;
-      });
       switch (key) {
         case 'rubric':
           if (!id) {
@@ -104,10 +126,6 @@ class QuestionsStore {
       }
     } catch (e) {
       console.log(e);
-    } finally {
-      runInAction(() => {
-        this.questionsPageloading = false;
-      });
     }
   };
 

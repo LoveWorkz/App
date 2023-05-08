@@ -5,7 +5,6 @@ import {CategoryType, CateorySize} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
 import {RubricType} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
-import {userStore} from '@src/entities/User';
 import {profileStore} from '@src/entities/Profile';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userRubricStore} from '@src/entities/UserRubric';
@@ -23,14 +22,9 @@ class CategoriesStore {
   init = async () => {
     try {
       this.isCategoriesPageLoading = true;
-      // the order is important
-      await userCategoryStore.fetchUserCategories();
-      await userRubricStore.fetchUserRubrics();
       await this.fetchRubrics();
       await this.fetchCategories();
       await profileStore.fetchProfile();
-      // init user current category for the first time
-      await this.initCurrentUserCategory();
     } catch (e) {
       console.log(e);
     } finally {
@@ -40,33 +34,28 @@ class CategoriesStore {
     }
   };
 
-  initCurrentUserCategory = async () => {
+  fetchCategories = async () => {
     try {
-      const firstCategory = this.categories[0];
-      const currentUserCategory = profileStore.currentCategory;
-
-      if (currentUserCategory?.currentCategory) {
-        return;
-      }
-
-      const currentUserCategoryData = {
-        currentCategory: firstCategory.name,
-        currentCategoryId: firstCategory.id,
-      };
-
-      profileStore.setCurrentCategory(currentUserCategoryData);
-      userStore.updateUser({
-        field: 'category',
-        data: currentUserCategoryData,
-      });
+      await userCategoryStore.fetchUserCategories();
+      await this.fetchDefaultCategories();
     } catch (e) {
       console.log(e);
     }
   };
 
-  fetchCategories = async () => {
+  fetchRubrics = async () => {
     try {
-      if (!userCategoryStore.userCategory) {
+      await userRubricStore.fetchUserRubrics();
+      await this.fetchDefaultRubrics();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchDefaultCategories = async () => {
+    try {
+      const userCategories = userCategoryStore.userCategory;
+      if (!userCategories) {
         return;
       }
 
@@ -80,10 +69,7 @@ class CategoriesStore {
         const currentCategory = category.data() as CategoryType;
         return {
           ...currentCategory,
-          id: category.id,
-          ...(userCategoryStore.userCategory
-            ? userCategoryStore.userCategory.categories[category.id]
-            : {}),
+          ...(userCategories ? userCategories.categories[category.id] : {}),
         };
       });
 
@@ -95,7 +81,7 @@ class CategoriesStore {
     }
   };
 
-  fetchRubrics = async () => {
+  fetchDefaultRubrics = async () => {
     try {
       const data = await firestore()
         .collection(Collections.RUBRICS)

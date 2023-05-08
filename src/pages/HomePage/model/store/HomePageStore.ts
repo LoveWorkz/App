@@ -6,9 +6,6 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {booksStore} from '@src/pages/BooksPage';
 import {CategoryName, categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
-import {userCategoryStore} from '@src/entities/UserCategory';
-import {userRubricStore} from '@src/entities/UserRubric';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -25,14 +22,10 @@ class HomePageStore {
         this.isHomePageLoading = true;
       });
       await profileStore.fetchProfile();
-      await userCategoryStore.fetchUserCategories();
       await categoriesStore.fetchCategories();
-
-      await userRubricStore.fetchUserRubrics();
       await categoriesStore.fetchRubrics();
-
-      await userChallengeCategoryStore.fetchUserChallengeCategory();
       await challengesStore.fetchChallengeCategories();
+      // fetching books for quotes modal
       await booksStore.getBooks();
       this.getHomePageCategory(language);
     } catch (e) {

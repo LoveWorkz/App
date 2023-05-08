@@ -7,8 +7,8 @@ import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
-import {CategoryType} from '../types/categoryTypes';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;

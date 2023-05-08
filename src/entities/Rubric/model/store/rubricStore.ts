@@ -87,7 +87,9 @@ class RubricStore {
         ...userRubric.rubrics[id],
       } as RubricType;
 
-      this.rubric = rubric;
+      runInAction(() => {
+        this.rubric = rubric;
+      });
       return rubric;
     } catch (e) {
       console.log(e);

@@ -34,7 +34,6 @@ class ChallengesStore {
       this.isChallengePageLoading = true;
       // the order is important
       await profileStore.fetchProfile();
-      await userChallengeCategoryStore.fetchUserChallengeCategory();
       await this.fetchChallengeCategories();
       await this.fetchChallenges();
     } catch (e) {
@@ -69,6 +68,15 @@ class ChallengesStore {
   };
 
   fetchChallengeCategories = async () => {
+    try {
+      await userChallengeCategoryStore.fetchUserChallengeCategory();
+      await this.fetchDefaultChallengeCategories();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  fetchDefaultChallengeCategories = async () => {
     try {
       const currentChallengeCategory = this.challengeCategory;
       const userId = userStore.authUserId;
@@ -157,6 +165,11 @@ class ChallengesStore {
 
   updateChallengeCategory = async ({id, name}: {id: string; name: string}) => {
     try {
+      // return if user pressed already chosen challenge category
+      if (this.challengeCategory?.currentChallengeCategoryId === id) {
+        return;
+      }
+
       this.isChallengesLoading = true;
 
       const newChallengeCategory = {

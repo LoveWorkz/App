@@ -68,7 +68,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       return;
     }
 
-    questionsStore.getQuestionsPageInfo({
+    questionsStore.init({
       id,
       key: key,
       language,
