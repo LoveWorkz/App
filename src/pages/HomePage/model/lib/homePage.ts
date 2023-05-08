@@ -1,16 +1,18 @@
 import {CategoryName} from '@src/entities/Category';
-import {BasicDarkIcon} from '@src/shared/assets/icons/categories/dark/BasicDark';
-import {DeepDarkIcon} from '@src/shared/assets/icons/categories/dark/DeepDark';
-import {HotDarkIcon} from '@src/shared/assets/icons/categories/dark/HotDark';
-import {IntimateDarkIcon} from '@src/shared/assets/icons/categories/dark/IntimateDark';
-import {StarterDarkIcon} from '@src/shared/assets/icons/categories/dark/StarterDark';
-import {BasicIcon} from '@src/shared/assets/icons/categories/light/Basic';
-import {DeepIcon} from '@src/shared/assets/icons/categories/light/Deep';
-import {HotIcon} from '@src/shared/assets/icons/categories/light/Hot';
-import {IntimateIcon} from '@src/shared/assets/icons/categories/light/Intimate';
-import {StarterIcon} from '@src/shared/assets/icons/categories/light/Starter';
+import {
+  BasicDarkImage,
+  BasicImage,
+  DeepDarkImage,
+  DeepImage,
+  HotDarkImage,
+  HotImage,
+  IntimateDarkImage,
+  IntimateImage,
+  StarterDarkImage,
+  StarterImage,
+} from '@src/shared/assets/images';
 
-export const getProgressBarIcon = ({
+export const getProgressBarImage = ({
   category,
   isDarkMode,
 }: {
@@ -19,14 +21,14 @@ export const getProgressBarIcon = ({
 }) => {
   switch (category) {
     case 'Starter':
-      return isDarkMode ? StarterDarkIcon : StarterIcon;
+      return isDarkMode ? StarterDarkImage : StarterImage;
     case 'Basic':
-      return isDarkMode ? BasicDarkIcon : BasicIcon;
+      return isDarkMode ? BasicDarkImage : BasicImage;
     case 'Deep':
-      return isDarkMode ? DeepDarkIcon : DeepIcon;
+      return isDarkMode ? DeepDarkImage : DeepImage;
     case 'Intimate':
-      return isDarkMode ? IntimateDarkIcon : IntimateIcon;
+      return isDarkMode ? IntimateDarkImage : IntimateImage;
     default:
-      return isDarkMode ? HotDarkIcon : HotIcon;
+      return isDarkMode ? HotDarkImage : HotImage;
   }
 };

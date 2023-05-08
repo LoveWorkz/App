@@ -72,6 +72,7 @@ const Routes = memo(() => {
       initialRouteName={AppRouteNames.SPLASH}
       screenOptions={{
         headerShown: false,
+        headerShadowVisible: false,
       }}>
       {Object.values(appRoutesConfig).map(
         ({

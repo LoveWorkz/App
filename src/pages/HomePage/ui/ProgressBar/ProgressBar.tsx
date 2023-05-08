@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
-import {SvgXml} from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -10,16 +10,16 @@ import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {getProgressBarIcon} from '../../model/lib/homePage';
+import {getProgressBarImage} from '../../model/lib/homePage';
 import homePageStore from '../../model/store/HomePageStore';
 
 const ProgressBar = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-  const {homePageCategoryKey, homePageCategoryName} = homePageStore;
+  const {homePageCategoryName, homePageCategoryKey} = homePageStore;
 
-  const progressBarImage = getProgressBarIcon({
+  const progressBarImage = getProgressBarImage({
     category: homePageCategoryKey,
     isDarkMode: theme === Theme.Dark,
   });
@@ -34,7 +34,11 @@ const ProgressBar = () => {
       />
 
       {progressBarImage && (
-        <SvgXml xml={progressBarImage} style={styles.icon} />
+        <FastImage
+          resizeMode={'contain'}
+          source={progressBarImage}
+          style={styles.progressImage}
+        />
       )}
       {homePageCategoryKey !== 'Starter' && (
         <AppText
@@ -55,37 +59,37 @@ export default memo(observer(ProgressBar));
 const styles = StyleSheet.create<Record<string, any>>({
   ProgressBar: {},
   currentLevelText: {
-    marginTop: verticalScale(25),
-    marginBottom: verticalScale(20),
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(10),
     marginLeft: horizontalScale(globalPadding),
   },
-  icon: {
+  progressImage: {
     width: windowWidth,
-    height: 166,
+    height: verticalScale(190),
   },
 
   Basic: {
     position: 'absolute',
-    bottom: 45,
-    left: isPlatformIos ? 60 : 75,
+    bottom: 55,
+    left: isPlatformIos ? 62 : 65,
     color: '#885FFF',
   },
   Deep: {
     position: 'absolute',
-    bottom: 72,
-    left: isPlatformIos ? 175 : 192,
+    bottom: 80,
+    left: isPlatformIos ? 180 : 192,
     color: '#885FFF',
   },
   Intimate: {
     position: 'absolute',
-    bottom: 125,
+    bottom: 140,
     left: isPlatformIos ? 178 : 190,
     color: '#885FFF',
   },
   Hot: {
     position: 'absolute',
-    bottom: 135,
-    left: isPlatformIos ? 285 : 310,
+    bottom: 145,
+    left: isPlatformIos ? 298 : 315,
     color: '#885FFF',
   },
 });

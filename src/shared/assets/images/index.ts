@@ -23,3 +23,17 @@ export {default as HomepageBackground} from './light/HomepageBackground.png';
 export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
 export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
 export {default as splashScreenImage} from './splashScreenImage.png';
+
+// progress bar light
+export {default as StarterImage} from './light/progressBar/Starter.png';
+export {default as BasicImage} from './light/progressBar/Basic.png';
+export {default as DeepImage} from './light/progressBar/Deep.png';
+export {default as IntimateImage} from './light/progressBar/Intimate.png';
+export {default as HotImage} from './light/progressBar/Hot.png';
+
+// progress bar dark
+export {default as StarterDarkImage} from './dark/progressBar/Starter.png';
+export {default as BasicDarkImage} from './dark/progressBar/Basic.png';
+export {default as DeepDarkImage} from './dark/progressBar/Deep.png';
+export {default as IntimateDarkImage} from './dark/progressBar/Intimate.png';
+export {default as HotDarkImage} from './dark/progressBar/Hot.png';
