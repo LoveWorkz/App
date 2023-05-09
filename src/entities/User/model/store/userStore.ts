@@ -58,7 +58,9 @@ class UserStore {
   initAuthUser = async () => {
     try {
       const isOfline = await this.isUserOfline();
-      isOfline && (await auth().currentUser?.reload());
+      if (!isOfline) {
+        await auth().currentUser?.reload();
+      }
 
       const user = auth().currentUser;
       if (!user) {
@@ -66,9 +68,7 @@ class UserStore {
       }
 
       const formattedUser = userFormatter(user as InitlUserInfo);
-      const authMethod = await this.action(
-        authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY),
-      );
+      const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
 
       this.setAuthUserInfo({
         user: formattedUser,
@@ -85,27 +85,7 @@ class UserStore {
   isUserOfline = async () => {
     try {
       const network = await NetInfo.fetch();
-      return network.isConnected;
-    } catch (e: unknown) {
-      console.log(e);
-      this.errorHandler(e);
-    }
-  };
-
-  action = async (promise: Promise<any>) => {
-    try {
-      let res;
-      const isOfline = await this.isUserOfline();
-
-      if (isOfline) {
-        res = await promise;
-      } else {
-        promise.then(ress => {
-          res = ress;
-        });
-      }
-
-      return res;
+      return !network.isConnected;
     } catch (e: unknown) {
       console.log(e);
       this.errorHandler(e);

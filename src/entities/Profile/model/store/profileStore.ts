@@ -155,12 +155,13 @@ class ProfileStore {
 
   fetchProfile = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
       const userId = userStore.authUser?.id;
       if (userId) {
         const authUser = await firestore()
           .collection(Collections.USERS)
           .doc(userId)
-          .get();
+          .get({source: isOfline ? 'cache' : 'server'});
 
         runInAction(() => {
           const data = authUser.data() as Profile;
@@ -190,6 +191,7 @@ class ProfileStore {
 
   updateProfile = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields(this.profileForm);
@@ -199,10 +201,24 @@ class ProfileStore {
         return;
       }
 
-      this.isLoading = true;
+      runInAction(() => {
+        this.isLoading = true;
+      });
 
       const userId = userStore.authUser?.id;
-      if (userId) {
+      if (!userId) {
+        return;
+      }
+
+      if (isOfline) {
+        firestore()
+          .collection(Collections.USERS)
+          .doc(userId)
+          .update({
+            ...this.profileForm,
+            photo: '',
+          });
+      } else {
         const photoUrl = await this.profilePhotoAction(
           ProfilePhotoActionType.UPLOAD,
         );
@@ -212,13 +228,12 @@ class ProfileStore {
           .doc(userId)
           .update({
             ...this.profileForm,
-            photo: photoUrl ?? null,
+            photo: photoUrl ?? '',
           });
-
-        await this.fetchProfile();
-
-        navigation.replace(AppRouteNames.TAB_ROUTE);
       }
+
+      await this.fetchProfile();
+      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e) {
       console.log(e);
     } finally {

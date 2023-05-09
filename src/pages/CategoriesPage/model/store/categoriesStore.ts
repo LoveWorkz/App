@@ -8,6 +8,7 @@ import {FavoriteType} from '@src/entities/Favorite';
 import {profileStore} from '@src/entities/Profile';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userRubricStore} from '@src/entities/UserRubric';
+import {userStore} from '@src/entities/User';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
@@ -54,6 +55,8 @@ class CategoriesStore {
 
   fetchDefaultCategories = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const userCategories = userCategoryStore.userCategory;
       if (!userCategories) {
         return;
@@ -62,7 +65,7 @@ class CategoriesStore {
       const data = await firestore()
         .collection(Collections.CATEGORIES)
         .orderBy('categoryNumber')
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
 
       // merge default categories with user custom categories
       const categories = data.docs.map(category => {
@@ -83,10 +86,12 @@ class CategoriesStore {
 
   fetchDefaultRubrics = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const data = await firestore()
         .collection(Collections.RUBRICS)
         .orderBy('rubricNumber')
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
 
       // merge default rubrics with user custom rubrics
       const rubrics = data.docs.map(rubric => ({

@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {BookType} from '@src/entities/Book';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
+import {userStore} from '@src/entities/User';
 
 class BooksStore {
   booksList: BookType[] = [];
@@ -32,7 +33,11 @@ class BooksStore {
 
   getBooks = async () => {
     try {
-      const data = await firestore().collection(Collections.BOOKS).get();
+      const isOfline = await userStore.isUserOfline();
+
+      const data = await firestore()
+        .collection(Collections.BOOKS)
+        .get({source: isOfline ? 'cache' : 'server'});
       const booksList = data.docs.map(book => book.data());
       runInAction(() => {
         this.booksSize = data.size;

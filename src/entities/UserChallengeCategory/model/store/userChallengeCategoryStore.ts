@@ -17,6 +17,8 @@ class UserChallengeCategoryStore {
 
   fetchUserChallengeCategory = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const currentChallengeCategory = challengesStore.challengeCategory;
       const userId = userStore.authUserId;
       if (!userId) {
@@ -29,7 +31,7 @@ class UserChallengeCategoryStore {
       const userChallengeCategoryData = await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
       const userChallengeCategory =
         userChallengeCategoryData.data() as UserChallengeCategoryType;
 

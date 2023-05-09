@@ -78,6 +78,8 @@ class ChallengesStore {
 
   fetchDefaultChallengeCategories = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const currentChallengeCategory = this.challengeCategory;
       const userId = userStore.authUserId;
       if (!userId) {
@@ -89,7 +91,7 @@ class ChallengesStore {
 
       const challengeCategoryData = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
 
       const userChallengeCategory =
         userChallengeCategoryStore.userChallengeCategory;

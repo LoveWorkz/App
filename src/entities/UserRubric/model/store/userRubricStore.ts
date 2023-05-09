@@ -15,6 +15,8 @@ class UserRubricStore {
 
   fetchUserRubrics = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const userId = userStore.authUserId;
       if (!userId) {
         return;
@@ -23,7 +25,7 @@ class UserRubricStore {
       const data = await firestore()
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
 
       runInAction(() => {
         this.userRubric = data.data() as UserRubric;

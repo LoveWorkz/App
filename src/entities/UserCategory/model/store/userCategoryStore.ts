@@ -15,6 +15,8 @@ class UserCategoryStore {
 
   fetchUserCategories = async () => {
     try {
+      const isOfline = await userStore.isUserOfline();
+
       const userId = userStore.authUserId;
       if (!userId) {
         return;
@@ -23,7 +25,7 @@ class UserCategoryStore {
       const data = await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
-        .get();
+        .get({source: isOfline ? 'cache' : 'server'});
 
       runInAction(() => {
         this.userCategory = data.data() as UserCategory;
