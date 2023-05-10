@@ -6,8 +6,8 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {forgotPasswordZIndex} from '@src/app/styles/GlobalStyle';
 import {ResetPassword} from '@src/features/ResetPassword';
-import signInStore from '../model/store/SignInStore';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import signInStore from '../model/store/SignInStore';
 
 const SignIn = () => {
   const {t} = useTranslation();

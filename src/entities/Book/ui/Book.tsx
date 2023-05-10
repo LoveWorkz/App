@@ -51,7 +51,7 @@ const BookPreview = memo((props: BookPreview) => {
           ...globalStyles.shadowOpacity,
         },
       ]}>
-      <FastImage style={styles.image} source={uri} />
+      <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
       <BookPreviewModal
         image={image}
         visible={isBookModalVisible}
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'stretch',
     borderRadius: 5,
   },
   author: {

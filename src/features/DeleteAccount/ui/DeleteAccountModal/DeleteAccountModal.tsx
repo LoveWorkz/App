@@ -24,11 +24,16 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
 
   const [isConfirm, setIsConfirm] = useState(false);
 
+  const onCancelHandler = useCallback(() => {
+    setVisible?.(false);
+    setIsConfirm(false);
+  }, [setVisible]);
+
   const deleteAuthUser = useCallback(() => {
     deleteAccountStore.deleteUserAccount(() => {
-      setVisible?.(false);
+      onCancelHandler();
     });
-  }, [setVisible]);
+  }, [onCancelHandler]);
 
   const onDeleteHandler = () => {
     if (userStore.authMethod === AuthMethod.AUTH_BY_EMAIL) {
@@ -37,10 +42,6 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
     }
     deleteAuthUser();
   };
-  const onCancelHandler = useCallback(() => {
-    setVisible?.(false);
-    setIsConfirm(false);
-  }, [setVisible]);
 
   return (
     <SafeAreaView>

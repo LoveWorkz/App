@@ -1,5 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -8,6 +10,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {
   THEME_STORAGE_KEY,
   USER_LANGUAGE_STORAGE_KEY,
@@ -65,6 +68,18 @@ class DeleteAccountStore {
 
   deleteUserAccount = async (actionAfterDeleting: () => void) => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        actionAfterDeleting();
+
+        return;
+      }
+
       const isAuthMethodEmail =
         userStore.authMethod === AuthMethod.AUTH_BY_EMAIL;
 

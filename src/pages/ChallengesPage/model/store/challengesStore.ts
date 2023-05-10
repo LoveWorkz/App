@@ -78,7 +78,7 @@ class ChallengesStore {
 
   fetchDefaultChallengeCategories = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = this.challengeCategory;
       const userId = userStore.authUserId;
@@ -91,7 +91,7 @@ class ChallengesStore {
 
       const challengeCategoryData = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
 
       const userChallengeCategory =
         userChallengeCategoryStore.userChallengeCategory;
@@ -122,6 +122,8 @@ class ChallengesStore {
 
   fetchChallenges = async () => {
     try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
       const currentChallengeCategory = this.challengeCategory;
       const userId = userStore.authUserId;
       if (!userId) {
@@ -136,7 +138,7 @@ class ChallengesStore {
         .doc(currentChallengeCategory.currentChallengeCategoryId)
         .collection(Collections.CHALLENGES)
         .orderBy('createdDate')
-        .get();
+        .get({source});
 
       const userChallengeCategory =
         userChallengeCategoryStore.userChallengeCategory;
@@ -284,7 +286,6 @@ class ChallengesStore {
         this.setIsCongratsModalVisible(true);
 
         // fetching actual data after selecting all challenges
-        await userChallengeCategoryStore.fetchUserChallengeCategory();
         await this.fetchChallengeCategories();
       }
     } catch (e) {

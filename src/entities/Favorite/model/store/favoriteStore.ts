@@ -1,8 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import firestore from '@react-native-firebase/firestore';
 
 import {profileStore} from '@src/entities/Profile';
-import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {questionStore} from '@src/entities/QuestionCard';
 import {questionsStore} from '@src/pages/QuestionsPage';
@@ -21,23 +19,18 @@ class FavoriteStore {
 
   setIsQuestionFavorite = (questionId: string) => {
     try {
-      this.isQuestionFavorite =
-        this.checkIsQuestionFavorite(questionId) || false;
+      this.isQuestionFavorite = this.checkIsQuestionFavorite(questionId);
     } catch (e) {
       console.log(e);
     }
   };
 
   checkIsQuestionFavorite = (questionId: string) => {
-    try {
-      if (!this.favorite) {
-        return;
-      }
-
-      return this.favorite.questions.includes(questionId);
-    } catch (e) {
-      console.log(e);
+    if (!this.favorite) {
+      return false;
     }
+
+    return this.favorite.questions.includes(questionId);
   };
 
   toggleFavorite = async () => {
@@ -80,17 +73,16 @@ class FavoriteStore {
     const questionsIds = this.favorite.questions;
     const newQuestionsIds = [...questionsIds, questionId];
 
-    await firestore()
-      .collection(Collections.USERS)
-      .doc(userId)
-      .update({
-        favorites: {
-          currentQuestion: newQuestionsIds[0],
-          questions: newQuestionsIds,
-        },
-      });
+    await userStore.updateUser({
+      field: 'favorites',
+      data: {
+        currentQuestion: newQuestionsIds[0],
+        questions: newQuestionsIds,
+      },
+    });
 
     await profileStore.fetchProfile();
+
     runInAction(() => {
       this.isQuestionFavorite = true;
     });
@@ -126,8 +118,9 @@ class FavoriteStore {
       };
     }
 
-    await firestore().collection(Collections.USERS).doc(userId).update({
-      favorites,
+    await userStore.updateUser({
+      field: 'favorites',
+      data: favorites,
     });
 
     await profileStore.fetchProfile();

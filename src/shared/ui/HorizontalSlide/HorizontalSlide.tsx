@@ -4,11 +4,12 @@ import React, {
   MemoExoticComponent,
   useCallback,
 } from 'react';
-// import {FadeInRight} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
+import {StyleSheet, View} from 'react-native';
 
-import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 
 interface HorizontalSlideProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
@@ -44,8 +45,13 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
       <Carousel
         defaultIndex={(defaultElement || 1) - 1}
         onSnapToItem={onSnapToItemHandler}
-        style={itemStyle}
-        width={windowWidthMinusPaddings}
+        style={[
+          itemStyle,
+          {
+            marginLeft: horizontalScale(-15),
+          },
+        ]}
+        width={windowWidth * 0.95}
         pagingEnabled={true}
         mode={'horizontal-stack'}
         loop={false}
@@ -54,10 +60,22 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
           showLength: 2,
           snapDirection,
           stackInterval: 6,
+          rotateZDeg: 20,
         }}
         customConfig={() => ({type: 'positive', viewCount})}
-        renderItem={({item}) => <Component {...item} />}
+        renderItem={({item}) => (
+          <View style={styles.wrapper}>
+            <Component {...item} />
+          </View>
+        )}
       />
     </>
   );
+});
+
+const styles = StyleSheet.create({
+  wrapper: {
+    alignItems: 'center',
+    marginTop: verticalScale(30),
+  },
 });

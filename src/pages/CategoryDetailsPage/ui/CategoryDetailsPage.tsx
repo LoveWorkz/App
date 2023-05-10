@@ -33,10 +33,10 @@ interface CategoryDetailsPageProps {
 
 export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
-  const category = categoryStore.category;
   const {t, i18n} = useTranslation();
   const colors = useColors();
   const language = i18n.language as LanguageValueType;
+  const category = categoryStore.category;
 
   useEffect(() => {
     route?.params.id && categoryStore.fetchCategory({id: route.params.id});

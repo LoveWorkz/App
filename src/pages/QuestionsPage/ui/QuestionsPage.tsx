@@ -104,7 +104,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       <View style={styles.QuestionsPage}>
         <Gradient style={styles.category} size={GradientSize.SMALL}>
           <AppText
-            style={styles.categoryText}
+            style={{color: colors.white}}
             weight={'700'}
             size={TextSize.LEVEL_5}
             text={questionsPageInfo.categoryName}
@@ -167,13 +167,9 @@ const styles = StyleSheet.create({
   category: {
     marginBottom: horizontalScale(20),
   },
-  categoryText: {
-    color: 'white',
-  },
   rubricAndQuestionsCountBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: verticalScale(20),
   },
   rubricText: {
     textTransform: 'capitalize',
@@ -195,7 +191,7 @@ const styles = StyleSheet.create({
   questionsCardBack: {
     position: 'absolute',
     right: 0,
-    top: 8,
+    top: verticalScale(40),
     ...globalStyles.simpleShadowOpacity,
   },
   slideItemStyle: {

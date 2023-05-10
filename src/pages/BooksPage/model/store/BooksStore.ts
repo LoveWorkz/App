@@ -33,11 +33,11 @@ class BooksStore {
 
   getBooks = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
         .collection(Collections.BOOKS)
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
       const booksList = data.docs.map(book => book.data());
       runInAction(() => {
         this.booksSize = data.size;

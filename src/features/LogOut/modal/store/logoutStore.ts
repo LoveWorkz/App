@@ -1,14 +1,15 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {Collections} from '@src/shared/types/firebase';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class LogoutStore {
   isLoading: boolean = false;
@@ -23,15 +24,26 @@ class LogoutStore {
 
   logout = async (actionAfterLogout: () => void) => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        actionAfterLogout();
+
+        return;
+      }
+
       this.setIsLoading(true);
 
       const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
-      await firestore()
-        .collection(Collections.USERS)
-        .doc(userStore.authUser?.id)
-        .update({
-          isAuth: false,
-        });
+
+      await userStore.updateUser({
+        field: 'isAuth',
+        data: false,
+      });
 
       if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
         await GoogleSignin.signOut();

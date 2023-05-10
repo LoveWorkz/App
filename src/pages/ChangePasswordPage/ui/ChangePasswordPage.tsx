@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 10,
     width: '100%',
   },
 });

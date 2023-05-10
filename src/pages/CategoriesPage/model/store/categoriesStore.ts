@@ -55,7 +55,7 @@ class CategoriesStore {
 
   fetchDefaultCategories = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const userCategories = userCategoryStore.userCategory;
       if (!userCategories) {
@@ -65,7 +65,7 @@ class CategoriesStore {
       const data = await firestore()
         .collection(Collections.CATEGORIES)
         .orderBy('categoryNumber')
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
 
       // merge default categories with user custom categories
       const categories = data.docs.map(category => {
@@ -86,12 +86,12 @@ class CategoriesStore {
 
   fetchDefaultRubrics = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
         .collection(Collections.RUBRICS)
         .orderBy('rubricNumber')
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
 
       // merge default rubrics with user custom rubrics
       const rubrics = data.docs.map(rubric => ({

@@ -16,13 +16,15 @@ export type Colors =
   | 'questionCardBackColor'
   | 'bgChallengeContentColor'
   | 'bgHomePageHeaderColor'
-  | 'bgQuinaryColor';
+  | 'bgQuinaryColor'
+  | 'orange';
 
 export type ColorType = Record<Colors, string>;
 
 const commonColor = {
   white: '#FFFFFF',
   black: '#000000',
+  orange: 'orange',
   authPageAgreementText: '#9A9AA5',
 };
 

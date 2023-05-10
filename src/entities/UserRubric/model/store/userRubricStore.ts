@@ -1,6 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-
 import firestore from '@react-native-firebase/firestore';
+
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {userRubricInitData} from '../lib/userRubric';
@@ -15,8 +15,7 @@ class UserRubricStore {
 
   fetchUserRubrics = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
-
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUserId;
       if (!userId) {
         return;
@@ -25,7 +24,7 @@ class UserRubricStore {
       const data = await firestore()
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
 
       runInAction(() => {
         this.userRubric = data.data() as UserRubric;
@@ -41,6 +40,42 @@ class UserRubricStore {
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
         .set(userRubricInitData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  updateUserRubric = async ({
+    id,
+    field,
+    data,
+  }: {
+    id: string;
+    field: string;
+    data: number | string;
+  }) => {
+    try {
+      const isOffline = await userStore.getIsUserOffline();
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_RUBRICS)
+          .doc(userId)
+          .update({
+            [`rubrics.${id}.${field}`]: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_RUBRICS)
+          .doc(userId)
+          .update({
+            [`rubrics.${id}.${field}`]: data,
+          });
+      }
     } catch (e) {
       console.log(e);
     }

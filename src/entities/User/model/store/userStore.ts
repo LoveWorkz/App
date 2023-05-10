@@ -57,8 +57,8 @@ class UserStore {
 
   initAuthUser = async () => {
     try {
-      const isOfline = await this.isUserOfline();
-      if (!isOfline) {
+      const isOffline = await this.getIsUserOffline();
+      if (!isOffline) {
         await auth().currentUser?.reload();
       }
 
@@ -82,13 +82,23 @@ class UserStore {
     }
   };
 
-  isUserOfline = async () => {
+  getIsUserOffline = async () => {
     try {
       const network = await NetInfo.fetch();
       return !network.isConnected;
     } catch (e: unknown) {
       console.log(e);
-      this.errorHandler(e);
+    }
+  };
+
+  checkIsUserOfflineAndReturnSource = async (): Promise<'cache' | 'server'> => {
+    try {
+      const isOffline = await this.getIsUserOffline();
+      const source = isOffline ? 'cache' : 'server';
+      return source;
+    } catch (e: unknown) {
+      console.log(e);
+      return 'server';
     }
   };
 
@@ -201,17 +211,27 @@ class UserStore {
   };
 
   updateUser = async ({data, field}: {data: any; field: string}) => {
+    const isOffline = await this.getIsUserOffline();
     const userId = this.authUserId;
     if (!userId) {
       return;
     }
 
-    await firestore()
-      .collection(Collections.USERS)
-      .doc(userId)
-      .update({
-        [field]: data,
-      });
+    if (isOffline) {
+      firestore()
+        .collection(Collections.USERS)
+        .doc(userId)
+        .update({
+          [field]: data,
+        });
+    } else {
+      await firestore()
+        .collection(Collections.USERS)
+        .doc(userId)
+        .update({
+          [field]: data,
+        });
+    }
   };
 }
 

@@ -8,6 +8,7 @@ import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {userCategoryStore} from '@src/entities/UserCategory';
 import {CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
@@ -32,7 +33,7 @@ class CategoryStore {
 
       const firstQuestion = questions[0];
 
-      await this.updateUserCategory({
+      await userCategoryStore.updateUserCategory({
         id,
         field: 'currentQuestion',
         data: firstQuestion.id,
@@ -50,6 +51,7 @@ class CategoryStore {
 
   fetchCategory = async ({id}: {id: string}) => {
     try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUserId;
       if (!userId) {
         return;
@@ -63,12 +65,12 @@ class CategoryStore {
       const categoryData = await firestore()
         .collection(Collections.CATEGORIES)
         .doc(id)
-        .get();
+        .get({source});
       // user custom category
       const userCategoryData = await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
-        .get();
+        .get({source});
 
       const userCategory = userCategoryData.data();
       if (!userCategory) {
@@ -95,32 +97,6 @@ class CategoryStore {
       runInAction(() => {
         this.isCategoryDetailsPageLoading = false;
       });
-    }
-  };
-
-  updateUserCategory = async ({
-    field,
-    id,
-    data,
-  }: {
-    id: string;
-    field: string;
-    data: number | string | boolean;
-  }) => {
-    try {
-      const userId = userStore.authUserId;
-      if (!userId) {
-        return;
-      }
-
-      await firestore()
-        .collection(Collections.USER_CATEGORIES)
-        .doc(userId)
-        .update({
-          [`categories.${id}.${field}`]: data,
-        });
-    } catch (e) {
-      console.log(e);
     }
   };
 

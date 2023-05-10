@@ -4,7 +4,7 @@ import colors from '@src/app/styles/themeStyle';
 import {ColorContext} from '../lib/ColorContext';
 
 interface ColorsProviderProps {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
 }
 
 export const ColorsProvider = (props: ColorsProviderProps) => {

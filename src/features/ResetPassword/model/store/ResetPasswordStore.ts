@@ -1,9 +1,13 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {validateEmail} from '@src/shared/lib/validation/emailValidation';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {userStore} from '@src/entities/User';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class ResetPasswordStore {
   email: string = '';
@@ -44,6 +48,17 @@ class ResetPasswordStore {
   }
   sendPasswordResetEmail = async () => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        this.setResetPasswordModalVisible(false);
+        return;
+      }
+
       this.setEmailError('');
       const {emailError} = this.validateResetPasswordEmail(this.email);
       if (emailError) {

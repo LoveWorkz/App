@@ -1,9 +1,10 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
-
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
@@ -18,6 +19,7 @@ import {
   ProfilePhotoActionType,
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -155,19 +157,20 @@ class ProfileStore {
 
   fetchProfile = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUser?.id;
       if (userId) {
         const authUser = await firestore()
           .collection(Collections.USERS)
           .doc(userId)
-          .get({source: isOfline ? 'cache' : 'server'});
+          .get({source});
 
         runInAction(() => {
           const data = authUser.data() as Profile;
           if (!data) {
             return;
           }
+
           this.setProfileData(data);
           this.setProfileForm(data);
           this.setAvatar(data.photo);
@@ -191,7 +194,7 @@ class ProfileStore {
 
   updateProfile = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const isOffline = await userStore.getIsUserOffline();
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields(this.profileForm);
@@ -210,7 +213,8 @@ class ProfileStore {
         return;
       }
 
-      if (isOfline) {
+      // deleting await if user is offline
+      if (isOffline) {
         firestore()
           .collection(Collections.USERS)
           .doc(userId)
@@ -245,6 +249,16 @@ class ProfileStore {
 
   deletePhoto = async () => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        return;
+      }
+
       const userId = this.profileData?.id;
 
       if (!userId) {
@@ -253,8 +267,9 @@ class ProfileStore {
 
       this.setAvatar('');
 
-      await firestore().collection(Collections.USERS).doc(userId).update({
-        photo: null,
+      await userStore.updateUser({
+        field: 'photo',
+        data: null,
       });
       await this.profilePhotoAction(ProfilePhotoActionType.DELETE);
 

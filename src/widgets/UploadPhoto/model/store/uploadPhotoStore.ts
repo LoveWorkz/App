@@ -1,4 +1,6 @@
 import {makeAutoObservable} from 'mobx';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 import {
   CameraOptions,
   ImageLibraryOptions,
@@ -7,6 +9,8 @@ import {
   launchImageLibrary,
 } from 'react-native-image-picker';
 
+import {userStore} from '@src/entities/User';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {UploadPhotoType} from '../types/uploadPhoto';
 
 class UploadPhotoStore {
@@ -18,6 +22,16 @@ class UploadPhotoStore {
     type: UploadPhotoType,
   ): Promise<ImagePickerResponse | undefined> => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        return;
+      }
+
       const options: CameraOptions | ImageLibraryOptions = {
         mediaType: 'photo',
         includeBase64: true,

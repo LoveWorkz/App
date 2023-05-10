@@ -8,6 +8,7 @@ import {questionsStore} from '@src/pages/QuestionsPage';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
+import {userRubricStore} from '@src/entities/UserRubric';
 import {RubricType} from '../types/rubricTypes';
 
 class RubricStore {
@@ -30,7 +31,7 @@ class RubricStore {
 
       const firstQuestion = questions[0];
 
-      await this.updateUserRubric({
+      await userRubricStore.updateUserRubric({
         id,
         field: 'currentQuestion',
         data: firstQuestion.id,
@@ -61,6 +62,8 @@ class RubricStore {
 
   fetchRubric = async (id: string) => {
     try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
       const userId = userStore.authUserId;
       if (!userId) {
         return;
@@ -69,12 +72,12 @@ class RubricStore {
       const data = await firestore()
         .collection(Collections.RUBRICS)
         .doc(id)
-        .get();
+        .get({source});
       // user custom rubric
       const userRubricData = await firestore()
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
-        .get();
+        .get({source});
 
       const userRubric = userRubricData.data();
       if (!userRubric) {
@@ -91,31 +94,6 @@ class RubricStore {
         this.rubric = rubric;
       });
       return rubric;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  updateUserRubric = async ({
-    id,
-    field,
-    data,
-  }: {
-    id: string;
-    field: string;
-    data: number | string;
-  }) => {
-    const userId = userStore.authUserId;
-    if (!userId) {
-      return;
-    }
-    try {
-      await firestore()
-        .collection(Collections.USER_RUBRICS)
-        .doc(userId)
-        .update({
-          [`rubrics.${id}.${field}`]: data,
-        });
     } catch (e) {
       console.log(e);
     }

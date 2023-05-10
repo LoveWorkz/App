@@ -1,1 +1,1 @@
-export {Wrapper as UploadPhoto} from './ui/UploadPhoto';
+export {default as UploadPhoto} from './ui/UploadPhoto';

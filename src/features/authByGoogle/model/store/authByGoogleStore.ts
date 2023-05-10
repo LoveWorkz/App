@@ -3,12 +3,15 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class AuthByGoogleStore {
   constructor() {
@@ -37,6 +40,17 @@ class AuthByGoogleStore {
   };
   signIn = async () => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+
+        return;
+      }
+
       crashlytics().log('User tried to sign in with Google.');
 
       await GoogleSignin.hasPlayServices();

@@ -1,5 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {userStore} from '@src/entities/User';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
@@ -11,6 +13,7 @@ import {
   ChangePasswordFormData,
 } from '../types/changePassword';
 import {validateFields} from '../services/validate/validateField';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class ChangePasswordStore {
   formData: ChangePasswordFormData = {
@@ -85,6 +88,16 @@ class ChangePasswordStore {
 
   changePassword = async () => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+        return;
+      }
+
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields(this.formData);

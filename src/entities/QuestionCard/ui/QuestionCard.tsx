@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {ImageSourcePropType, StyleSheet} from 'react-native';
+import {ImageSourcePropType, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 
@@ -29,33 +29,36 @@ const QuestionCard = (props: QuestionCardProps) => {
   const language = i18n.language as LanguageValueType;
 
   return (
-    <FastImage
-      resizeMode="cover"
-      source={image as number}
-      style={styles.questionsCard}>
-      <AppText
-        style={[
-          styles.questionText,
-          {color: isTypeOrdinary ? colors.primaryTextColor : 'white'},
-        ]}
-        weight={'600'}
-        size={TextSize.LEVEL_7}
-        text={question[language]}
-      />
-    </FastImage>
+    <View style={styles.questionCardWrapper}>
+      <FastImage
+        resizeMode="stretch"
+        source={image as number} // image number
+        style={styles.questionCard}>
+        <AppText
+          style={[
+            styles.questionText,
+            {color: isTypeOrdinary ? colors.primaryTextColor : colors.white},
+          ]}
+          weight={'600'}
+          size={TextSize.LEVEL_7}
+          text={question[language]}
+        />
+      </FastImage>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  questionsCard: {
+  questionCardWrapper: {
+    ...globalStyles.shadowOpacity,
+  },
+  questionCard: {
     height: verticalScale(450),
     width: windowWidth * 0.88,
-    backgroundColor: 'white',
     borderRadius: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
-    ...globalStyles.shadowOpacity,
   },
 
   slideItemStyle: {

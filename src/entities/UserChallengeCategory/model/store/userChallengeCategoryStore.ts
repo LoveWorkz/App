@@ -17,7 +17,7 @@ class UserChallengeCategoryStore {
 
   fetchUserChallengeCategory = async () => {
     try {
-      const isOfline = await userStore.isUserOfline();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = challengesStore.challengeCategory;
       const userId = userStore.authUserId;
@@ -31,7 +31,7 @@ class UserChallengeCategoryStore {
       const userChallengeCategoryData = await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
-        .get({source: isOfline ? 'cache' : 'server'});
+        .get({source});
       const userChallengeCategory =
         userChallengeCategoryData.data() as UserChallengeCategoryType;
 
@@ -59,39 +59,6 @@ class UserChallengeCategoryStore {
     }
   };
 
-  updateUserChallengeCategory = async ({
-    field,
-    data,
-    challengeCategoryName,
-  }: {
-    field: string;
-    data: any;
-    challengeCategoryName?: ChallengeCategoriesNames;
-  }) => {
-    try {
-      const currentChallengeCategory = challengesStore.challengeCategory;
-      const userId = userStore.authUserId;
-      if (!userId) {
-        return;
-      }
-      if (!currentChallengeCategory) {
-        return;
-      }
-
-      await firestore()
-        .collection(Collections.USER_CHALLENGE_CATEGORIES)
-        .doc(userId)
-        .update({
-          [`challengeCategory.${
-            challengeCategoryName ||
-            currentChallengeCategory.currentChallengeCategory
-          }.${field}`]: data,
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   setUserChallengeCategory = async (userId: string) => {
     try {
       await firestore()
@@ -103,6 +70,52 @@ class UserChallengeCategoryStore {
     }
   };
 
+  updateUserChallengeCategory = async ({
+    field,
+    data,
+    challengeCategoryName,
+  }: {
+    field: string;
+    data: any;
+    challengeCategoryName?: ChallengeCategoriesNames;
+  }) => {
+    try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      const currentChallengeCategory = challengesStore.challengeCategory;
+      const userId = userStore.authUserId;
+      if (!userId) {
+        return;
+      }
+      if (!currentChallengeCategory) {
+        return;
+      }
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            [`challengeCategory.${
+              challengeCategoryName ||
+              currentChallengeCategory.currentChallengeCategory
+            }.${field}`]: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            [`challengeCategory.${
+              challengeCategoryName ||
+              currentChallengeCategory.currentChallengeCategory
+            }.${field}`]: data,
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   deleteUserChallengeCategory = async (userId: string) => {
     try {
       await firestore()

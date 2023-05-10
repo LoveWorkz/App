@@ -1,12 +1,15 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
+import Toast from 'react-native-toast-message';
+import {t} from 'i18next';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {InitlUserInfo} from '@src/entities/User';
 import {SignInData, SignInErrorInfo} from '../types/signIn';
 import {validateFields} from '../../../../model/services/validation/validateFields';
@@ -73,6 +76,17 @@ class SignInStore {
 
   signIn = async () => {
     try {
+      const isOffline = await userStore.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+
+        return;
+      }
+
       crashlytics().log('User tried to sign in.');
       this.clearErrors();
 

@@ -12,6 +12,8 @@ import {profileStore} from '@src/entities/Profile';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
+import {userRubricStore} from '@src/entities/UserRubric';
+import {userCategoryStore} from '@src/entities/UserCategory';
 import {QuestionsPageInfo} from '../types/questionTypes';
 import {breakPoint, minute} from '../lib/questions';
 
@@ -138,8 +140,7 @@ class QuestionsStore {
     key: 'rubric' | 'category' | 'favorite';
     language: LanguageValueType;
   }) => {
-    const userId = userStore.authUserId;
-    if (!question && !userId) {
+    if (!question) {
       return;
     }
 
@@ -151,34 +152,31 @@ class QuestionsStore {
         if (currentCategory && currentCategory.name === 'All_In_One') {
           categoryId = currentCategory.id;
         }
+
         categoryStore.categorySwipeLogic({questionId: question.id, language});
-        await firestore()
-          .collection(Collections.USER_CATEGORIES)
-          .doc(userId)
-          .update({
-            [`categories.${categoryId}.currentQuestion`]: question.id,
-          });
+
+        await userCategoryStore.updateUserCategory({
+          id: categoryId,
+          data: question.id,
+          field: 'currentQuestion',
+        });
         break;
       case 'rubric':
         rubricStore.rubricSwipeLogic({questionId: question.id, language});
-        await firestore()
-          .collection(Collections.USER_RUBRICS)
-          .doc(userId)
-          .update({
-            [`rubrics.${question.rubricId}.currentQuestion`]: question.id,
-          });
+
+        await userRubricStore.updateUserRubric({
+          id: question.rubricId,
+          data: question.id,
+          field: 'currentQuestion',
+        });
         break;
       case 'favorite':
         favoriteStore.favoritesSwipeLogic({id: question.id, language});
-        await firestore()
-          .collection(Collections.USERS)
-          .doc(userId)
-          .update({
-            favorites: {
-              ...favoriteStore.favorite,
-              currentQuestion: question.id,
-            },
-          });
+
+        await userStore.updateUser({
+          field: 'favorites.currentQuestion',
+          data: question.id,
+        });
         break;
       default:
     }
@@ -199,10 +197,13 @@ class QuestionsStore {
 
   fetchQuestionsById = async ({id, key}: {id: string; key: string}) => {
     try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
+        .orderBy('createdDate', 'desc')
         .where(key, '==', id)
-        .get();
+        .get({source});
+
       const questions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
@@ -218,7 +219,11 @@ class QuestionsStore {
 
   fetchAllQuestions = async () => {
     try {
-      const data = await firestore().collection(Collections.QUESTIONS).get();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+      const data = await firestore()
+        .collection(Collections.QUESTIONS)
+        .get({source});
+
       const questions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
@@ -234,12 +239,16 @@ class QuestionsStore {
 
   fetchFavoritesQuestions = async () => {
     try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const favorites = favoriteStore.favorite;
       if (!favorites) {
         return;
       }
 
-      const data = await firestore().collection(Collections.QUESTIONS).get();
+      const data = await firestore()
+        .collection(Collections.QUESTIONS)
+        .get({source});
+
       const questions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
@@ -346,13 +355,13 @@ class QuestionsStore {
       }
 
       if (isCategory) {
-        await categoryStore.updateUserCategory({
+        await userCategoryStore.updateUserCategory({
           id,
           field: 'breakPointForCheckingDate',
           data: newCheckTime,
         });
       } else {
-        await rubricStore.updateUserRubric({
+        await userRubricStore.updateUserRubric({
           id,
           field: 'breakPointForCheckingDate',
           data: newCheckTime,
@@ -374,13 +383,13 @@ class QuestionsStore {
     const startDate = new Date().toJSON();
 
     if (isCategory) {
-      await categoryStore.updateUserCategory({
+      await userCategoryStore.updateUserCategory({
         id,
         field: 'questionSwipeStartDate',
         data: startDate,
       });
     } else {
-      await rubricStore.updateUserRubric({
+      await userRubricStore.updateUserRubric({
         id,
         field: 'questionSwipeStartDate',
         data: startDate,
@@ -407,13 +416,13 @@ class QuestionsStore {
       }
 
       if (isCategory) {
-        await categoryStore.updateUserCategory({
+        await userCategoryStore.updateUserCategory({
           id,
           field: 'swipedQuestionsPercentage',
           data: swipedQuestionsPercentage,
         });
       } else {
-        await rubricStore.updateUserRubric({
+        await userRubricStore.updateUserRubric({
           id,
           field: 'swipedQuestionsPercentage',
           data: swipedQuestionsPercentage,
@@ -476,13 +485,13 @@ class QuestionsStore {
 
         // after swiped all questions update user data
 
-        await categoryStore.updateUserCategory({
+        await userCategoryStore.updateUserCategory({
           id: category.id,
           field: 'isAllQuestionsSwiped',
           data: true,
         });
 
-        await categoryStore.updateUserCategory({
+        await userCategoryStore.updateUserCategory({
           id: nextCategory.id,
           field: 'isBlocked',
           data: false,

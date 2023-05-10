@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Wrapper = memo(UploadPhoto);
+export default memo(UploadPhoto);
