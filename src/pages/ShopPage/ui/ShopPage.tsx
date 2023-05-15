@@ -1,10 +1,12 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+
+import {InAppPurchase} from '@src/features/InAppPurchase';
 
 const ShopPage = () => {
   return (
     <View style={styles.container}>
-      <Text>Shop Page</Text>
+      <InAppPurchase />
     </View>
   );
 };

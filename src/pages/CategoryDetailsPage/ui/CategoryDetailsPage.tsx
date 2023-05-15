@@ -13,7 +13,6 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
@@ -105,26 +104,29 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
             <AppText size={TextSize.LEVEL_4} text={category.description} />
           </View>
         </View>
-        <Gradient style={styles.btn}>
-          <Button onPress={onPressHandler} theme={ButtonTheme.CLEAR}>
+        <View style={styles.btnWrapper}>
+          <Button
+            onPress={onPressHandler}
+            style={styles.btn}
+            theme={ButtonTheme.GRADIENT}>
             <AppText
               style={{color: colors.bgQuinaryColor}}
               weight={'700'}
               size={TextSize.LEVEL_4}
-              text={category.isBlocked ? t('buy_now') : 'Start'}
+              text={category.isBlocked ? t('buy_now') : t('start')}
             />
           </Button>
-        </Gradient>
-        {!category.isBlocked && (
-          <Pressable onPress={dontShowAgainHandler}>
-            <AppText
-              style={styles.dontShowAgain}
-              weight={'600'}
-              size={TextSize.LEVEL_4}
-              text={t('dont_show_again')}
-            />
-          </Pressable>
-        )}
+          {!category.isBlocked && (
+            <Pressable onPress={dontShowAgainHandler}>
+              <AppText
+                style={styles.dontShowAgain}
+                weight={'600'}
+                size={TextSize.LEVEL_4}
+                text={t('dont_show_again')}
+              />
+            </Pressable>
+          )}
+        </View>
       </View>
     </LoaderWrapper>
   );
@@ -136,15 +138,16 @@ const styles = StyleSheet.create({
   CategoryDetailsPage: {
     flex: 1,
   },
-  btn: {
+  btnWrapper: {
     marginTop: verticalScale(75),
+  },
+  btn: {
     borderRadius: moderateScale(10),
     justifyContent: 'center',
-    paddingVertical: verticalScale(5),
   },
   dontShowAgain: {
     textDecorationLine: 'underline',
-    marginTop: verticalScale(10),
+    marginTop: verticalScale(5),
     alignSelf: 'center',
   },
   CategoryDetails: {

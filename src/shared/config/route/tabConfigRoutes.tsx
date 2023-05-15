@@ -113,7 +113,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
         <Layout
           isPageScrolling={true}
           deleteBottomPadding={false}
-          deleteTopPadding={false}
+          deleteTopPadding={true}
           isTabBar>
           <ShopPage {...props} />
         </Layout>

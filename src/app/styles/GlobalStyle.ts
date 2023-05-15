@@ -39,16 +39,16 @@ export const getShadowOpacity = (theme: Theme) => {
   return {
     shadowOpacity_level_1: {
       ...globalStyles.shadowOpacity_level_1,
-      shadowColor: '#000',
+      shadowColor: '#767672',
     },
 
     shadowOpacity_level_2: {
       ...globalStyles.shadowOpacity_level_2,
-      shadowColor: '#000',
+      shadowColor: '#767672',
     },
     shadowOpacity_level_3: {
       ...globalStyles.shadowOpacity_level_3,
-      shadowColor: '#000',
+      shadowColor: '#767672',
     },
   };
 };

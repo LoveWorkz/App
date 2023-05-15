@@ -18,7 +18,9 @@ export type Colors =
   | 'bgHomePageHeaderColor'
   | 'bgQuinaryColor'
   | 'orange'
-  | 'red';
+  | 'purchaseDescriptionColor'
+  | 'purchaseButtonColor'
+  | 'secondaryError';
 
 export type ColorType = Record<Colors, string>;
 
@@ -26,8 +28,8 @@ const commonColor = {
   white: '#FFFFFF',
   black: '#000000',
   orange: 'orange',
-  red: 'red',
   authPageAgreementText: '#9A9AA5',
+  secondaryError: '#E1437C',
 };
 
 const light: ColorType = {
@@ -40,6 +42,7 @@ const light: ColorType = {
   bgHomePageHeaderColor: '#EEF4FF',
   questionCardBackColor: '#F8F5FF',
   bgChallengeContentColor: '#F1F3FF',
+  purchaseButtonColor: '#B9C3FD',
 
   // text colors
   primaryTextColor: '#395180',
@@ -48,6 +51,7 @@ const light: ColorType = {
   homePageCategoryTitleColor: '#395180',
   challengeCategoryNameColor: '#B6B6BD',
   categoryAndFavoritesTextColor: '#395180',
+  purchaseDescriptionColor: '#8698BB',
 
   // icons colors
   appleIconColor: '#1B1B1B',
@@ -65,6 +69,7 @@ const dark: ColorType = {
   bgHomePageHeaderColor: '#242832',
   questionCardBackColor: '#242832',
   bgChallengeContentColor: '#242832',
+  purchaseButtonColor: '#242832',
 
   // text colors
   primaryTextColor: '#C0C3CF',
@@ -73,6 +78,7 @@ const dark: ColorType = {
   homePageCategoryTitleColor: '#FFFFFF',
   challengeCategoryNameColor: '#C0C3CF',
   categoryAndFavoritesTextColor: '#1F232C',
+  purchaseDescriptionColor: '#565F77',
 
   // icons colors
   appleIconColor: '#FFFFFF',

@@ -135,7 +135,7 @@ export const Input = memo((props: InputProps) => {
           size={TextSize.LEVEL_1}
           weight={'500'}
           type={TextType.ERROR}
-          style={[styles.errorText, {color: colors.red}]}
+          style={[styles.errorText, {color: colors.secondaryError}]}
           text={error}
         />
       )}

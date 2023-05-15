@@ -14,16 +14,6 @@ export {default as questionImageDark4} from './dark/questions/questionImageDark4
 export {default as questionImageDark5} from './dark/questions/questionImageDark5.png';
 export {default as questionImageDark6} from './dark/questions/questionImageDark6.png';
 
-export {default as Action_CARD} from './Action_CARD.png';
-export {default as WILD_CARD} from './WILD_CARD.png';
-
-export {default as favorites} from './favorites.png';
-export {default as homeCategoryImage} from './light/homeCategoryImage.png';
-export {default as HomepageBackground} from './light/HomepageBackground.png';
-export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
-export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
-export {default as splashScreenImage} from './splashScreenImage.png';
-
 // progress bar light
 export {default as StarterImage} from './light/progressBar/Starter.png';
 export {default as BasicImage} from './light/progressBar/Basic.png';
@@ -37,3 +27,16 @@ export {default as BasicDarkImage} from './dark/progressBar/Basic.png';
 export {default as DeepDarkImage} from './dark/progressBar/Deep.png';
 export {default as IntimateDarkImage} from './dark/progressBar/Intimate.png';
 export {default as HotDarkImage} from './dark/progressBar/Hot.png';
+
+export {default as Action_CARD} from './Action_CARD.png';
+export {default as WILD_CARD} from './WILD_CARD.png';
+
+export {default as favorites} from './favorites.png';
+export {default as homeCategoryImage} from './light/homeCategoryImage.png';
+export {default as HomepageBackground} from './light/HomepageBackground.png';
+export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
+export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
+export {default as splashScreenImage} from './splashScreenImage.png';
+
+export {default as shopTopBackground} from './light/shopTopBackground.png';
+export {default as shopTopBackgroundDark} from './dark/shopTopBackground.png';
