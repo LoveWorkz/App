@@ -6,14 +6,14 @@ export const validateFields = (formData: Profile) => {
 
   let errorInfo = {} as ProfileErrorInfo;
 
-  const {age, name, rubric} = formData;
+  const {age, name, preferences} = formData;
 
   if (!name) {
     errorInfo.nameError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 
-  if (!rubric) {
+  if (!(preferences && preferences.length)) {
     errorInfo.rubricError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }

@@ -1,4 +1,7 @@
+import {moderateScale} from '@src/shared/lib/Metrics';
 import {StyleSheet, Dimensions} from 'react-native';
+
+import {Theme} from '../providers/themeProvider';
 
 // paddings
 export const globalPadding = 20;
@@ -14,52 +17,92 @@ export const windowHeightHalf = windowHeight / 2;
 // heights
 export const tabBarHeight = 80;
 
-//fontSizes
-export enum FontSizes {
-  SIZE_1 = 10,
-  SIZE_2 = 12,
-  SIZE_3 = 14,
-  SIZE_4 = 16,
-  SIZE_5 = 18,
-  SIZE_6 = 22,
-  SIZE_7 = 24,
-}
+export const getShadowOpacity = (theme: Theme) => {
+  if (theme === Theme.Dark) {
+    return {
+      shadowOpacity_level_1: {
+        ...globalStyles.shadowOpacity_level_1,
+        shadowColor: 'rgb(66, 76, 104)',
+      },
 
-// z-index
-export const forgotPasswordZIndex = 1;
-export const categoryLayoutZIndex = 1;
-export const categoryLayoutIconZIndex = 2;
-export const challengeLayoutZIndex = 1;
-export const challengeLayoutIconZIndex = 2;
+      shadowOpacity_level_2: {
+        ...globalStyles.shadowOpacity_level_2,
+        shadowColor: 'rgb(66, 76, 104)',
+      },
+      shadowOpacity_level_3: {
+        ...globalStyles.shadowOpacity_level_3,
+        shadowColor: 'rgb(66, 76, 104)',
+      },
+    };
+  }
+
+  return {
+    shadowOpacity_level_1: {
+      ...globalStyles.shadowOpacity_level_1,
+      shadowColor: '#000',
+    },
+
+    shadowOpacity_level_2: {
+      ...globalStyles.shadowOpacity_level_2,
+      shadowColor: '#000',
+    },
+    shadowOpacity_level_3: {
+      ...globalStyles.shadowOpacity_level_3,
+      shadowColor: '#000',
+    },
+  };
+};
 
 export const globalStyles = StyleSheet.create({
   textFont: {
     fontFamily: 'Quicksand-Bold',
   },
-  shadowOpacity: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
 
-    elevation: 4,
+  // z-index
+  forgotPasswordZIndex: {
+    zIndex: 1,
   },
-  strongShadowOpacity: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.46,
-    shadowRadius: 11.14,
+  categoryLayoutZIndex: {
+    zIndex: 1,
+  },
+  categoryLayoutIconZIndex: {
+    zIndex: 2,
+  },
+  challengeLayoutZIndex: {
+    zIndex: 1,
+  },
+  challengeLayoutIconZIndex: {
+    zIndex: 2,
+  },
+  slideItemZindex: {
+    zIndex: 1,
+  },
 
-    elevation: 17,
+  //font Sizes
+  size_1: {
+    fontSize: moderateScale(10),
   },
-  simpleShadowOpacity: {
-    shadowColor: '#000',
+  size_2: {
+    fontSize: moderateScale(12),
+  },
+  size_3: {
+    fontSize: moderateScale(14),
+  },
+  size_4: {
+    fontSize: moderateScale(16),
+  },
+  size_5: {
+    fontSize: moderateScale(18),
+  },
+  size_6: {
+    fontSize: moderateScale(22),
+  },
+  size_7: {
+    fontSize: moderateScale(26),
+  },
+
+  // shadow light
+  shadowOpacity_level_1: {
     shadowOffset: {
       width: 0,
       height: 1,
@@ -68,5 +111,25 @@ export const globalStyles = StyleSheet.create({
     shadowRadius: 1.0,
 
     elevation: 1,
+  },
+  shadowOpacity_level_2: {
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  shadowOpacity_level_3: {
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+
+    elevation: 17,
   },
 });

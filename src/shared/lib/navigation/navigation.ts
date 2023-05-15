@@ -27,24 +27,43 @@ const navigationRef = createNavigationContainerRef<ParamListBase>();
 
 const navigate = (name: string, params?: RootStackParamList) => {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(name, params);
+    const currentRoute = navigationRef.getCurrentRoute();
+
+    navigationRef.navigate(name, {
+      ...params,
+      prevRouteName: currentRoute ? currentRoute.name : '',
+    });
   }
 };
 
 const replace = (name: string, params?: RootStackParamList) => {
   if (navigationRef.isReady()) {
-    navigationRef.current?.dispatch(StackActions.replace(name, params));
+    const currentRoute = navigationRef.getCurrentRoute();
+
+    navigationRef.current?.dispatch(
+      StackActions.replace(name, {
+        ...params,
+        prevRouteName: currentRoute ? currentRoute.name : '',
+      }),
+    );
   }
 };
 
 const goBack = () => {
   if (navigationRef.isReady()) {
+    const currentRoute = navigationRef.getCurrentRoute();
+
     navigationRef.goBack();
+    navigationRef.setParams({
+      prevRouteName: currentRoute ? currentRoute.name : '',
+    });
   }
 };
 
 const resetHistoryAndNavigate = (name: string) => {
   if (navigationRef.isReady()) {
+    const currentRoute = navigationRef.getCurrentRoute();
+
     navigationRef.current?.dispatch(
       CommonActions.reset({
         index: 0,
@@ -55,6 +74,9 @@ const resetHistoryAndNavigate = (name: string) => {
         ],
       }),
     );
+    navigationRef.setParams({
+      prevRouteName: currentRoute ? currentRoute.name : '',
+    });
   }
 };
 

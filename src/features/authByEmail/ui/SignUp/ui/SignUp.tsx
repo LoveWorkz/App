@@ -1,7 +1,6 @@
 import React, {memo, useCallback, useEffect} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
-import CheckBox from '@react-native-community/checkbox';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
@@ -9,6 +8,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
@@ -78,11 +78,13 @@ const SignUp = () => {
         />
       </View>
       <View style={styles.privacyPolicy}>
-        <CheckBox
-          value={signUpStore.agreeWithPrivacyPolicy}
-          onValueChange={onCheckboxChangeHandler}
-          style={styles.checkbox}
-        />
+        <View style={styles.checkbox}>
+          <CustomCheckBox
+            checked={signUpStore.agreeWithPrivacyPolicy}
+            onChange={onCheckboxChangeHandler}
+          />
+        </View>
+
         <View style={styles.privacyPolicyTextWrapper}>
           <AppText
             size={TextSize.LEVEL_3}
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkbox: {
-    transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+    marginRight: 8,
   },
   privacyPolicyTextWrapper: {
     flexDirection: 'row',

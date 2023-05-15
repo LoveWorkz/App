@@ -12,7 +12,7 @@ export interface User {
   age: number;
   country: string;
   relationshipStatus: string;
-  rubric: string;
+  preferences: string[];
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
   favorites: FavoriteType;

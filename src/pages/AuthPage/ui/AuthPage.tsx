@@ -81,7 +81,7 @@ const AuthPage = () => {
         <OrLine />
       </View>
       <View style={styles.btnWrapper}>
-        <AuthByGoogle style={styles.authByGoogleBtn} />
+        <AuthByGoogle style={isPlatformIos ? styles.authByGoogleBtn : {}} />
         {isPlatformIos && <AuthByApple />}
       </View>
       <View

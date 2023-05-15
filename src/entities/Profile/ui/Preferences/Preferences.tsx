@@ -1,45 +1,63 @@
 import React, {memo} from 'react';
-import {StyleSheet, SafeAreaView} from 'react-native';
+import {StyleSheet, SafeAreaView, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {Radio} from '@src/shared/ui/Radio/Radio';
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {Preference} from '@src/entities/Preference';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {getPreferences} from '../../model/lib/profile';
 
-interface RubricsPropss {
-  changeRubric: (rubric: string) => void;
-  rubric: string;
+interface PreferencesPropss {
+  changePreference: (preference: string) => void;
+  selectedPreferences: string[];
   error?: string;
-  initialValue?: string;
 }
 
-const Preferences = (props: RubricsPropss) => {
+const Preferences = (props: PreferencesPropss) => {
   const {t} = useTranslation();
   const colors = useColors();
   const preferences = getPreferences(t);
 
-  const {changeRubric, rubric, error, initialValue} = props;
+  const {changePreference, selectedPreferences, error} = props;
+
+  if (!selectedPreferences) {
+    return <></>;
+  }
 
   return (
-    <SafeAreaView style={styles.rubrics}>
+    <SafeAreaView style={styles.preferences}>
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
         weight={'600'}
         size={TextSize.LEVEL_2}
         text={t('profile.preferences')}
       />
-      <Radio
-        activeItemStyle={{backgroundColor: colors.primaryTextColor}}
-        roundStyle={{borderColor: colors.primaryTextColor}}
-        nameStyle={{color: colors.primaryTextColor}}
-        style={{color: colors.primaryTextColor}}
-        initialValue={initialValue}
-        error={error}
-        value={rubric}
-        data={preferences}
-        onChange={changeRubric}
-      />
+      {preferences.map(preference => {
+        const value = preference.value;
+        const isChecked = selectedPreferences.includes(value);
+
+        return (
+          <View style={styles.preferenceWrapper} key={value}>
+            <Preference
+              changePreference={changePreference}
+              preference={preference}
+              isChecked={isChecked}
+            />
+          </View>
+        );
+      })}
+
+      {error && (
+        <View>
+          <AppText
+            weight={'600'}
+            size={TextSize.LEVEL_2}
+            text={error}
+            type={TextType.ERROR}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -47,10 +65,13 @@ const Preferences = (props: RubricsPropss) => {
 export default memo(Preferences);
 
 const styles = StyleSheet.create({
-  rubrics: {
+  preferences: {
     width: '100%',
   },
   title: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
+  },
+  preferenceWrapper: {
+    marginBottom: verticalScale(20),
   },
 });

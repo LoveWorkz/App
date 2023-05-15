@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, windowWidth} from '@src/app/styles/GlobalStyle';
 import {
   horizontalScale,
   moderateScale,
@@ -13,6 +13,7 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface QuestionCardProps {
   question: DisplayText;
@@ -22,14 +23,16 @@ interface QuestionCardProps {
 
 const QuestionCard = (props: QuestionCardProps) => {
   const {question, image, type} = props;
-  const isTypeOrdinary = type === 'ORDINARY';
 
   const colors = useColors();
   const {i18n} = useTranslation();
+  const {theme} = useTheme();
+
+  const isTypeOrdinary = type === 'ORDINARY';
   const language = i18n.language as LanguageValueType;
 
   return (
-    <View style={styles.questionCardWrapper}>
+    <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
       <FastImage
         resizeMode="stretch"
         source={image as number} // image number
@@ -49,9 +52,6 @@ const QuestionCard = (props: QuestionCardProps) => {
 };
 
 const styles = StyleSheet.create({
-  questionCardWrapper: {
-    ...globalStyles.shadowOpacity,
-  },
   questionCard: {
     height: verticalScale(450),
     width: windowWidth * 0.88,
@@ -59,10 +59,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
-  },
-
-  slideItemStyle: {
-    zIndex: 1,
   },
   questionText: {
     textAlign: 'center',

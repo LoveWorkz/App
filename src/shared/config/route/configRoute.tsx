@@ -94,6 +94,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.setup,
     headerShown: false,
     Element: SetUpPage,
+    isPageScrolling: true,
   },
 
   // tab routes

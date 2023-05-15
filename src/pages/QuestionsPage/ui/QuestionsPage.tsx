@@ -13,7 +13,11 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
+import {
+  getShadowOpacity,
+  globalStyles,
+  windowWidth,
+} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
 import {CategoryName} from '@src/entities/Category';
@@ -81,20 +85,19 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         return;
       }
 
-      questionsStore.swipe({question: param, key, language});
-
       if (id) {
         questionsStore.setQuestionsSwipedInfo({
           questionId: param.id,
           id: id,
           type: key,
         });
-
-        questionsStore.checkIfAllQuestionsSwiped({
-          questionId: param.id,
-          type: key,
-        });
       }
+      questionsStore.swipe({question: param, key, language});
+
+      questionsStore.checkIfAllQuestionsSwiped({
+        questionId: param.id,
+        type: key,
+      });
     },
     [key, id, language],
   );
@@ -139,8 +142,13 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           <View
             style={[
               styles.questionsCard,
-              styles.questionsCardBack,
-              {backgroundColor: colors.questionCardBackColor},
+              {
+                ...styles.questionsCardBack,
+                ...getShadowOpacity(theme).shadowOpacity_level_1,
+              },
+              {
+                backgroundColor: colors.questionCardBackColor,
+              },
             ]}
           />
         </View>
@@ -185,16 +193,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
-    ...globalStyles.shadowOpacity,
   },
 
   questionsCardBack: {
     position: 'absolute',
     right: 0,
     top: verticalScale(40),
-    ...globalStyles.simpleShadowOpacity,
   },
   slideItemStyle: {
-    zIndex: 1,
+    ...globalStyles.slideItemZindex,
   },
 });

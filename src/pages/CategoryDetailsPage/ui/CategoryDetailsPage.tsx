@@ -1,8 +1,9 @@
 import React, {memo, useEffect, useMemo} from 'react';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {
   horizontalScale,
@@ -11,11 +12,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {
-  categoryLayoutIconZIndex,
-  categoryLayoutZIndex,
-  globalStyles,
-} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -25,6 +22,7 @@ import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {useTheme} from '@src/app/providers/themeProvider';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -35,18 +33,21 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {route} = props;
   const {t, i18n} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
+
   const language = i18n.language as LanguageValueType;
   const category = categoryStore.category;
+  const categoryImage = category?.image.large;
 
   useEffect(() => {
-    route?.params.id && categoryStore.fetchCategory({id: route.params.id});
+    route?.params.id && categoryStore.init(route.params.id);
   }, [route?.params.id]);
 
   const uri = useMemo(() => {
     return {
-      uri: category?.image.large,
+      uri: categoryImage,
     };
-  }, [category?.image.large]);
+  }, [categoryImage]);
 
   const onPressHandler = () => {
     if (category?.isBlocked) {
@@ -74,24 +75,16 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
         <View
           style={[
             styles.CategoryDetails,
-            {backgroundColor: colors.bgTertiaryColor},
+            {
+              backgroundColor: colors.bgTertiaryColor,
+              ...getShadowOpacity(theme).shadowOpacity_level_2,
+            },
           ]}>
           <View>
             {category.isBlocked && (
               <>
-                <View
-                  style={[
-                    styles.layout,
-                    {
-                      zIndex: categoryLayoutZIndex,
-                    },
-                  ]}
-                />
-                <View
-                  style={[
-                    styles.lockIconWrapper,
-                    {zIndex: categoryLayoutIconZIndex},
-                  ]}>
+                <View style={[styles.layout]} />
+                <View style={[styles.lockIconWrapper]}>
                   <SvgXml
                     xml={LockIcon}
                     fill={'white'}
@@ -100,7 +93,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
                 </View>
               </>
             )}
-            <Image style={styles.image} source={uri} />
+            <FastImage style={styles.image} source={uri} />
           </View>
           <View>
             <AppText
@@ -115,7 +108,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
         <Gradient style={styles.btn}>
           <Button onPress={onPressHandler} theme={ButtonTheme.CLEAR}>
             <AppText
-              style={styles.btnText}
+              style={{color: colors.bgQuinaryColor}}
               weight={'700'}
               size={TextSize.LEVEL_4}
               text={category.isBlocked ? t('buy_now') : 'Start'}
@@ -149,23 +142,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: verticalScale(5),
   },
-  btnText: {
-    color: 'white',
-  },
   dontShowAgain: {
     textDecorationLine: 'underline',
     marginTop: verticalScale(10),
     alignSelf: 'center',
   },
   CategoryDetails: {
-    height: verticalScale(525),
+    height: 525,
     borderRadius: moderateScale(20),
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(10),
-    ...globalStyles.shadowOpacity,
   },
   image: {
-    height: verticalScale(225),
+    height: 225,
     borderRadius: moderateScale(20),
   },
   title: {
@@ -180,6 +169,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: moderateScale(20),
     height: '100%',
+    ...globalStyles.categoryLayoutZIndex,
   },
   lockIconWrapper: {
     position: 'absolute',
@@ -187,6 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '100%',
     width: '100%',
+    ...globalStyles.categoryLayoutIconZIndex,
   },
   lockIcon: {
     height: verticalScale(46),

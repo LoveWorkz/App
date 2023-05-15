@@ -8,6 +8,8 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface BookPreviewProps {
   image: BookImage;
@@ -15,6 +17,8 @@ interface BookPreviewProps {
 
 const BookPreview = (props: BookPreviewProps) => {
   const {image} = props;
+  const {theme} = useTheme();
+
   const imageFront = image.front;
 
   const uri = useMemo(() => {
@@ -22,7 +26,11 @@ const BookPreview = (props: BookPreviewProps) => {
   }, [imageFront]);
 
   return (
-    <View style={styles.BookPreview}>
+    <View
+      style={[
+        styles.BookPreview,
+        {...getShadowOpacity(theme).shadowOpacity_level_3},
+      ]}>
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
     </View>
   );

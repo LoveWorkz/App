@@ -9,12 +9,18 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {favorites} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
+import {
+  getShadowOpacity,
+  windowWidthMinusPaddings,
+} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 import favoriteStore from '../model/store/favoriteStore';
 
 export const Favorite = () => {
   const colors = useColors();
   const {t} = useTranslation();
+  const {theme} = useTheme();
+
   const favorite = favoriteStore.favorite;
 
   if (!favorite) {
@@ -22,7 +28,7 @@ export const Favorite = () => {
   }
 
   return (
-    <View>
+    <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
       <View>
         <AppText
           style={{color: colors.primaryTextColor}}

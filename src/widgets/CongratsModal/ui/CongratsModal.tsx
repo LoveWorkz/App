@@ -1,7 +1,8 @@
 import React, {memo, useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Modal} from '@src/shared/ui/Modal/Modal';
@@ -38,7 +39,7 @@ const CongratsModal = (props: CongratsModalProps) => {
       visible={visible}
       onClose={onCancelHandler}>
       <View style={[{height, width}]}>
-        <Image style={styles.image} source={uri} />
+        <FastImage style={styles.image} source={uri} />
       </View>
 
       <AppText
@@ -62,7 +63,7 @@ const CongratsModal = (props: CongratsModalProps) => {
         onPress={onCancelHandler}
         theme={ButtonTheme.GRADIENT}>
         <AppText
-          style={styles.btnText}
+          style={{color: colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
           text={t('continue')}
         />
@@ -89,9 +90,6 @@ const styles = StyleSheet.create({
   btn: {
     width: '100%',
     height: verticalScale(40),
-  },
-  btnText: {
-    color: 'white',
   },
   dontShowAgaing: {
     textDecorationLine: 'underline',

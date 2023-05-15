@@ -28,8 +28,8 @@ const ProfileForm = () => {
     profileStore.setRelationshipStatus(value);
   }, []);
 
-  const onRubricChangeHandler = useCallback((value: string) => {
-    profileStore.setRubric(value);
+  const onPreferenceChangeHandler = useCallback((value: string) => {
+    profileStore.setPreferences(value);
   }, []);
 
   return (
@@ -70,12 +70,11 @@ const ProfileForm = () => {
           changeStatus={onStatusChangeHandler}
         />
       </View>
-      <View style={styles.rubrics}>
+      <View style={styles.preferences}>
         <Preferences
-          initialValue={profileStore.profileData?.rubric}
           error={profileStore.errorInfo.rubricError}
-          changeRubric={onRubricChangeHandler}
-          rubric={profileStore.profileForm.rubric}
+          changePreference={onPreferenceChangeHandler}
+          selectedPreferences={profileStore.profileForm.preferences || []}
         />
       </View>
     </SafeAreaView>
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 15,
   },
-  rubrics: {
+  preferences: {
     marginTop: 15,
   },
 });

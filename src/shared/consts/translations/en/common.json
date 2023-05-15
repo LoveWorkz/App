@@ -5,11 +5,12 @@
    "confirm": "confirm",
    "enter_your_data": "Enter your data",
    "continue": "Continue",
-   "dont_show_again": "Dont Show again",
+   "dont_show_again": "Don't Show again",
    "show_more": "Show more",
    "show_less": "Show less",
    "noResults": "No Results",
    "save": "Save",
    "buy_now": "buy now",
-   "you_are_offline": "You are offline"
+   "you_are_offline": "You are offline",
+   "search": "Search"
 }

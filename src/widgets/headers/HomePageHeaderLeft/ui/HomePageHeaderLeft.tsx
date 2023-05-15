@@ -9,11 +9,15 @@ import {profileStore} from '@src/entities/Profile';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {
+  globalPadding,
+  windowWidthMinusPaddings,
+} from '@src/app/styles/GlobalStyle';
 
 const HomePageHeaderLeft = () => {
   const {t} = useTranslation();
   const profile = profileStore.profileData;
+  const maxNameLength = 25;
 
   const onProfilePressHandler = () => {
     navigation.navigate(AppRouteNames.PROFILE);
@@ -22,6 +26,9 @@ const HomePageHeaderLeft = () => {
   if (!profile) {
     return null;
   }
+
+  const name = profile.name;
+  const isNameLarge = name?.length >= maxNameLength;
 
   return (
     <View style={styles.headerLeft}>
@@ -32,8 +39,8 @@ const HomePageHeaderLeft = () => {
         <View style={styles.nameWrapper}>
           <AppText text={t('home.welcome_back')} weight={'300'} />
           <AppText
-            text={profile.name || ''}
-            size={TextSize.LEVEL_5}
+            text={name || ''}
+            size={isNameLarge ? TextSize.LEVEL_3 : TextSize.LEVEL_5}
             weight={'600'}
           />
         </View>
@@ -47,11 +54,12 @@ export default memo(observer(HomePageHeaderLeft));
 const styles = StyleSheet.create({
   headerLeft: {
     paddingLeft: horizontalScale(globalPadding),
-    width: '100%',
+    width: windowWidthMinusPaddings,
     height: verticalScale(50),
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
+    paddingBottom: verticalScale(10),
   },
   nameWrapper: {
     marginLeft: horizontalScale(10),

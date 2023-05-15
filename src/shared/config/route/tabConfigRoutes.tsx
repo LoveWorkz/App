@@ -1,4 +1,4 @@
-import {ComponentType} from 'react';
+import React, {ComponentType} from 'react';
 
 import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
@@ -7,6 +7,8 @@ import {CategoriesPage} from '@src/pages/CategoriesPage';
 import {BooksPage} from '@src/pages/BooksPage';
 import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
 import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
+import {Layout} from '@src/app/providers/layout';
+import {ParamListBase} from '@react-navigation/native';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -29,9 +31,6 @@ type NewRouteProps = {
   name: string;
   Element: ComponentType;
   headerTitle?: string;
-  isPageScrolling?: boolean;
-  deleteBottomPadding?: boolean;
-  deleteTopPadding?: boolean;
   headerShown?: boolean;
   HeaderLeft?: ComponentType<any>;
   isHomePage?: boolean;
@@ -40,43 +39,87 @@ type NewRouteProps = {
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
-    Element: CategoriesPage,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={true}
+          deleteBottomPadding={false}
+          deleteTopPadding={false}
+          isTabBar>
+          <CategoriesPage {...props} />
+        </Layout>
+      );
+    },
     headerTitle: 'questions.title',
-    isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
-    Element: ChallengesPage,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={true}
+          deleteBottomPadding={false}
+          deleteTopPadding={false}
+          isTabBar>
+          <ChallengesPage {...props} />
+        </Layout>
+      );
+    },
     headerTitle: 'challenge.title',
-    isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
-    Element: HomePage,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={true}
+          deleteBottomPadding={false}
+          deleteTopPadding={true}
+          isTabBar>
+          <HomePage {...props} />
+        </Layout>
+      );
+    },
     headerTitle: '',
-    isPageScrolling: true,
-    deleteTopPadding: true,
     headerShown: true,
     HeaderLeft: HomePageHeaderLeft,
     isHomePage: true,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
-    Element: BooksPage,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={true}
+          deleteBottomPadding={false}
+          deleteTopPadding={false}
+          isTabBar>
+          <BooksPage {...props} />
+        </Layout>
+      );
+    },
     headerTitle: 'books.title',
-    isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
-    Element: ShopPage,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={true}
+          deleteBottomPadding={false}
+          deleteTopPadding={false}
+          isTabBar>
+          <ShopPage {...props} />
+        </Layout>
+      );
+    },
     headerTitle: 'shop.title',
-    isPageScrolling: true,
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },

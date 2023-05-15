@@ -11,7 +11,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.age = 0;
   formatedUser.country = '';
   formatedUser.relationshipStatus = '';
-  formatedUser.rubric = '';
+  formatedUser.preferences = [];
   formatedUser.category = {
     currentCategory: 'Starter',
     currentCategoryId: '',

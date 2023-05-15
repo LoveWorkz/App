@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     width: '100%',
-    marginBottom: 20,
+    marginTop: 20,
   },
   uploadPhoto: {
     width: 180,

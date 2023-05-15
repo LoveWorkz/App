@@ -4,8 +4,9 @@ import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {useTheme} from '@src/app/providers/themeProvider';
 import {getNumberFromPercentage} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {RubricType} from '../model/types/rubricTypes';
@@ -20,6 +21,8 @@ export const Rubric = (props: RubricProps) => {
     rubric;
   const colors = useColors();
   const {i18n} = useTranslation();
+  const {theme} = useTheme();
+
   const language = i18n.language as LanguageValueType;
 
   const swipedQuestionCount = getNumberFromPercentage(
@@ -32,7 +35,7 @@ export const Rubric = (props: RubricProps) => {
       style={[
         styles.Rubric,
         {
-          ...globalStyles.simpleShadowOpacity,
+          ...getShadowOpacity(theme).shadowOpacity_level_1,
           backgroundColor: colors.bgSecondaryColor,
         },
       ]}>

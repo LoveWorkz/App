@@ -10,7 +10,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {
-  globalStyles,
+  getShadowOpacity,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
@@ -35,12 +35,14 @@ const HomeCategory = () => {
         text={t('home.quick_start')}
         weight={'500'}
       />
-      <View style={{...globalStyles.shadowOpacity}}>
+      <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
         <FastImage
+          resizeMode={'cover'}
           style={[
             styles.container,
             {
               backgroundColor: colors.bgTertiaryColor,
+              ...getShadowOpacity(theme).shadowOpacity_level_2,
             },
           ]}
           source={

@@ -1,10 +1,11 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   HomepageBackground,
@@ -18,18 +19,35 @@ import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {booksStore} from '@src/pages/BooksPage';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
-const HomePage = () => {
+interface HomePageProps {
+  route?: {params: {prevRouteName: AppRouteNames}};
+}
+
+const HomePage = (props: HomePageProps) => {
+  const {route} = props;
   const {theme} = useTheme();
   const navbarHeaderHeight = useHeaderHeight();
   const statusBarHeight = getStatusBarHeight();
   const {i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
+  const isPreviousScreenQuestions =
+    route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+
+  useFocusEffect(
+    useCallback(() => {
+      // if the user returns from the questions page, get the actual categories data
+      if (isPreviousScreenQuestions) {
+        homePageStore.init(language);
+      }
+    }, [isPreviousScreenQuestions, language]),
+  );
 
   useEffect(() => {
     homePageStore.init(language);
@@ -43,11 +61,11 @@ const HomePage = () => {
             styles.homepageBackground,
             {
               marginTop: isPlatformIos
-                ? -(navbarHeaderHeight - statusBarHeight)
-                : -navbarHeaderHeight,
+                ? -navbarHeaderHeight
+                : -navbarHeaderHeight - statusBarHeight,
               paddingTop: isPlatformIos
-                ? navbarHeaderHeight - statusBarHeight
-                : navbarHeaderHeight,
+                ? navbarHeaderHeight
+                : navbarHeaderHeight + statusBarHeight,
             },
           ]}
           source={
@@ -76,7 +94,7 @@ const styles = StyleSheet.create({
   homepageBackground: {
     marginLeft: -globalPadding,
     width: windowWidth,
-    height: 310,
+    height: 365,
   },
   container: {
     flexx: 1,
@@ -86,14 +104,13 @@ const styles = StyleSheet.create({
   homeCategoryWrapper: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 10,
-    marginTop: verticalScale(6),
+    marginBottom: verticalScale(10),
   },
   categoriesCarouselWrappeer: {
-    marginTop: 25,
+    marginTop: verticalScale(25),
   },
   challangesWrapper: {
-    marginTop: 40,
+    marginTop: verticalScale(40),
     width: '100%',
   },
 });

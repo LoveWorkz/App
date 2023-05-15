@@ -10,10 +10,11 @@ import {
 } from '@src/entities/RubricFilterItem';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {
-  globalStyles,
+  getShadowOpacity,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
+import {useTheme} from '@src/app/providers/themeProvider';
 import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
@@ -24,6 +25,8 @@ interface BookPreview {
 
 const BookPreview = memo((props: BookPreview) => {
   const {image} = props;
+
+  const {theme} = useTheme();
 
   const [isBookModalVisible, setIsBookModalVisible] = useState(false);
 
@@ -48,7 +51,7 @@ const BookPreview = memo((props: BookPreview) => {
       style={[
         styles.imageWrapper,
         {
-          ...globalStyles.shadowOpacity,
+          ...getShadowOpacity(theme).shadowOpacity_level_2,
         },
       ]}>
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />

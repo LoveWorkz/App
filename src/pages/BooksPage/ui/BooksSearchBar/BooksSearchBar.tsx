@@ -7,10 +7,13 @@ import {SvgXml} from 'react-native-svg';
 import {Input} from '@src/shared/ui/Input/Input';
 import {SearchIcon} from '@src/shared/assets/icons/Search';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 import booksStore from '../../model/store/BooksStore';
 
 const BooksSearchBar = () => {
   const {t} = useTranslation();
+  const {theme} = useTheme();
 
   const onSearchHandler = useCallback((searchBooksText: string) => {
     booksStore.setSearchBooksText(searchBooksText);
@@ -18,11 +21,11 @@ const BooksSearchBar = () => {
   }, []);
 
   return (
-    <View style={styles.BooksSearchBar}>
+    <View style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
       <Input
         value={booksStore.searchBooksText}
         onChange={onSearchHandler}
-        placeholder={t('auth.enter_email') || ''}
+        placeholder={t('search') || ''}
         StartIcon={() => (
           <SvgXml
             xml={SearchIcon}
@@ -39,7 +42,6 @@ const BooksSearchBar = () => {
 export default memo(observer(BooksSearchBar));
 
 const styles = StyleSheet.create({
-  BooksSearchBar: {},
   searchIcon: {
     width: horizontalScale(14),
     height: verticalScale(14),

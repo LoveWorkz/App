@@ -35,7 +35,7 @@ const ProgressBar = () => {
 
       {progressBarImage && (
         <FastImage
-          resizeMode={'contain'}
+          resizeMode={'stretch'}
           source={progressBarImage}
           style={styles.progressImage}
         />
@@ -59,37 +59,37 @@ export default memo(observer(ProgressBar));
 const styles = StyleSheet.create<Record<string, any>>({
   ProgressBar: {},
   currentLevelText: {
-    marginTop: verticalScale(20),
-    marginBottom: verticalScale(10),
+    marginTop: verticalScale(isPlatformIos ? 15 : 25),
+    marginBottom: verticalScale(20),
     marginLeft: horizontalScale(globalPadding),
   },
   progressImage: {
     width: windowWidth,
-    height: verticalScale(190),
+    height: 166,
   },
 
   Basic: {
     position: 'absolute',
-    bottom: 55,
-    left: isPlatformIos ? 62 : 65,
+    bottom: 45,
+    left: isPlatformIos ? 60 : 60,
     color: '#885FFF',
   },
   Deep: {
     position: 'absolute',
-    bottom: 80,
-    left: isPlatformIos ? 180 : 192,
+    bottom: 70,
+    left: isPlatformIos ? 180 : 185,
     color: '#885FFF',
   },
   Intimate: {
     position: 'absolute',
-    bottom: 140,
-    left: isPlatformIos ? 178 : 190,
+    bottom: 130,
+    left: isPlatformIos ? 178 : 180,
     color: '#885FFF',
   },
   Hot: {
     position: 'absolute',
-    bottom: 145,
-    left: isPlatformIos ? 298 : 315,
+    bottom: 135,
+    left: isPlatformIos ? 298 : horizontalScale(305),
     color: '#885FFF',
   },
 });

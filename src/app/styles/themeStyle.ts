@@ -17,7 +17,8 @@ export type Colors =
   | 'bgChallengeContentColor'
   | 'bgHomePageHeaderColor'
   | 'bgQuinaryColor'
-  | 'orange';
+  | 'orange'
+  | 'red';
 
 export type ColorType = Record<Colors, string>;
 
@@ -25,6 +26,7 @@ const commonColor = {
   white: '#FFFFFF',
   black: '#000000',
   orange: 'orange',
+  red: 'red',
   authPageAgreementText: '#9A9AA5',
 };
 

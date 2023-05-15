@@ -4,7 +4,7 @@ import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
-import {forgotPasswordZIndex} from '@src/app/styles/GlobalStyle';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {ResetPassword} from '@src/features/ResetPassword';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import signInStore from '../model/store/SignInStore';
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: verticalScale(-10),
     right: 0,
-    zIndex: forgotPasswordZIndex,
+    ...globalStyles.forgotPasswordZIndex,
   },
 });

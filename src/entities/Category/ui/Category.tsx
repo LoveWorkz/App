@@ -8,15 +8,12 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {DisplayText, StyleType} from '@src/shared/types/types';
-import {
-  categoryLayoutIconZIndex,
-  categoryLayoutZIndex,
-  globalStyles,
-} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {useTheme} from '@src/app/providers/themeProvider';
 import {CateorySize} from '../model/types/categoryTypes';
 
 interface CategoryProps {
@@ -43,9 +40,10 @@ const Category = (props: CategoryProps) => {
     displayName,
   } = props;
   const colors = useColors();
+  const {theme} = useTheme();
   const {t, i18n} = useTranslation();
-  const language = i18n.language as LanguageValueType;
 
+  const language = i18n.language as LanguageValueType;
   const isSizeL = size === CateorySize.L;
 
   const onCategoryPressHandler = () => {
@@ -68,32 +66,31 @@ const Category = (props: CategoryProps) => {
               styles.layout,
               styles[size],
               {
-                zIndex: categoryLayoutZIndex,
                 backgroundColor: colors.black,
               },
             ]}
           />
-          <View
-            style={[
-              styles.lockIconWrapper,
-              {zIndex: categoryLayoutIconZIndex},
-            ]}>
+          <View style={[styles.lockIconWrapper]}>
             <SvgXml
               xml={LockIcon}
               fill={colors.white}
-              style={styles.lockIcon}
+              height={isSizeL ? 60 : 35}
+              width={isSizeL ? 40 : 27}
             />
           </View>
         </>
       )}
-      <View style={{...globalStyles.shadowOpacity}}>
+      <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
         <FastImage
           resizeMode="cover"
           style={[
             styles.category,
             styles[size],
             style,
-            {padding: isSizeL ? 20 : 10},
+            {
+              padding: isSizeL ? 20 : 10,
+              ...getShadowOpacity(theme).shadowOpacity_level_2,
+            },
           ]}
           source={{
             uri: image,
@@ -143,6 +140,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     opacity: 0.4,
     width: '100%',
     borderRadius: 20,
+    ...globalStyles.categoryLayoutZIndex,
   },
   lockIconWrapper: {
     position: 'absolute',
@@ -150,10 +148,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     alignItems: 'center',
     height: '100%',
     width: '100%',
-  },
-  lockIcon: {
-    height: 35,
-    width: 27,
+    ...globalStyles.categoryLayoutIconZIndex,
   },
 
   size_m: {

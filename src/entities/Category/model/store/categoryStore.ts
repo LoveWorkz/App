@@ -57,10 +57,6 @@ class CategoryStore {
         return;
       }
 
-      runInAction(() => {
-        this.isCategoryDetailsPageLoading = true;
-      });
-
       // default category
       const categoryData = await firestore()
         .collection(Collections.CATEGORIES)
@@ -93,10 +89,39 @@ class CategoryStore {
       return category;
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  init = (id: string) => {
+    try {
+      runInAction(() => {
+        this.isCategoryDetailsPageLoading = true;
+      });
+
+      this.getAndSetCategory({id});
+    } catch (e) {
+      console.log(e);
     } finally {
       runInAction(() => {
         this.isCategoryDetailsPageLoading = false;
       });
+    }
+  };
+
+  getAndSetCategory = ({id}: {id: string}) => {
+    try {
+      const category = this.getCategory(id);
+
+      if (!category) {
+        return;
+      }
+
+      runInAction(() => {
+        this.category = category;
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
     }
   };
 

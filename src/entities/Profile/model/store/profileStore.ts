@@ -58,8 +58,23 @@ class ProfileStore {
     this.profileForm.relationshipStatus = staus;
   }
 
-  setRubric(rubric: string) {
-    this.profileForm.rubric = rubric;
+  setPreferences(preference: string) {
+    const preferences = this.profileForm.preferences || [];
+    if (preferences.includes(preference)) {
+      this.profileForm.preferences = preferences.filter(
+        item => item !== preference,
+      );
+    } else {
+      this.profileForm.preferences = [...preferences, preference];
+    }
+  }
+
+  clearPreferences() {
+    if (!this.profileData) {
+      return;
+    }
+
+    this.profileForm.preferences = this.profileData.preferences;
   }
 
   setValidationError(errorInfo: ProfileErrorInfo) {
@@ -150,7 +165,7 @@ class ProfileStore {
     this.setAge('');
     this.setCountry('');
     this.setRelationshipStatus('');
-    this.setRubric('');
+    this.clearPreferences();
     this.setTempAvatar(this.avatar);
     this.clearErrors();
   }

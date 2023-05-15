@@ -1,17 +1,21 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import {ScrollView} from 'react-native-gesture-handler';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {
+  getShadowOpacity,
   globalPadding,
-  globalStyles,
   windowHeight,
   windowWidth,
+  windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {isPlatformIos} from '@src/shared/consts/common';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface BookProps {
   description: string;
@@ -20,43 +24,59 @@ interface BookProps {
 const Description = (props: BookProps) => {
   const {description} = props;
   const colors = useColors();
+  const {theme} = useTheme();
   const {t} = useTranslation();
+
+  const descriptionHeight = windowHeight * 0.55;
+  const verticalPadding = globalPadding + globalPadding;
+  const descriptionHeightWinusPaddings = descriptionHeight - verticalPadding;
 
   return (
     <View
       style={[
         styles.description,
         {
-          ...globalStyles.strongShadowOpacity,
-          height: windowHeight * 0.57,
+          ...getShadowOpacity(theme).shadowOpacity_level_3,
+          height: descriptionHeight,
           width: windowWidth,
           left: -globalPadding,
           backgroundColor: colors.bgTertiaryColor,
         },
       ]}>
-      <View>
-        <AppText
-          style={[styles.bottomTitle, {color: colors.primaryTextColor}]}
-          text={t('books.description')}
-          weight={'500'}
-          size={TextSize.LEVEL_7}
-        />
-        <AppText
-          style={[styles.bottomTitle, {color: colors.primaryTextColor}]}
-          text={description}
-          size={TextSize.LEVEL_4}
-        />
-      </View>
-      <Gradient style={styles.btnWrapper}>
-        <Button style={styles.btn} theme={ButtonTheme.CLEAR}>
-          <AppText
-            weight={'700'}
-            style={[styles.btnText]}
-            text={t('buy_now')}
-            size={TextSize.LEVEL_4}
-          />
-        </Button>
-      </Gradient>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <View
+          style={[
+            styles.content,
+            {
+              minHeight: descriptionHeightWinusPaddings,
+            },
+          ]}>
+          <View style={{width: windowWidthMinusPaddings}}>
+            <AppText
+              style={[styles.bottomTitle, {color: colors.primaryTextColor}]}
+              text={t('books.description')}
+              weight={'500'}
+              size={TextSize.LEVEL_7}
+            />
+            <AppText
+              style={[styles.bottomTitle, {color: colors.primaryTextColor}]}
+              text={description}
+              weight={isPlatformIos ? '400' : '100'}
+              size={TextSize.LEVEL_4}
+            />
+          </View>
+          <Button style={styles.btnWrapper} theme={ButtonTheme.GRADIENT}>
+            <AppText
+              weight={'700'}
+              style={{color: colors.bgQuinaryColor}}
+              text={t('buy_now')}
+              size={TextSize.LEVEL_4}
+            />
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -65,28 +85,24 @@ export default memo(Description);
 
 const styles = StyleSheet.create({
   description: {
-    backgroundColor: 'white',
-    position: 'relative',
-    top: 50,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    padding: 20,
+    padding: globalPadding,
     alignItems: 'center',
+    position: 'absolute',
+    bottom: -(globalPadding + 10),
+  },
+  content: {
+    paddingBottom: verticalScale(90),
   },
   bottomTitle: {
     marginBottom: 15,
   },
   btnWrapper: {
     position: 'absolute',
-    bottom: 60,
-    padding: 5,
+    bottom: verticalScale(15),
+    height: verticalScale(50),
     width: '100%',
     borderRadius: 10,
-  },
-  btn: {
-    width: '100%',
-  },
-  btnText: {
-    color: 'white',
   },
 });

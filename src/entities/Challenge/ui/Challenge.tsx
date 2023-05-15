@@ -10,13 +10,15 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {cutText} from '@src/shared/lib/common';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
+import {isPlatformIos} from '@src/shared/consts/common';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {useTheme} from '@src/app/providers/themeProvider';
 import {ChallengeType} from '../model/types/ChallengeTypes';
 import challengeStore from '../model/store/challengeStore';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 interface SubChallengeProps {
   challenge: ChallengeType;
@@ -27,6 +29,7 @@ export const SubChallenge = (props: SubChallengeProps) => {
   const {title, description, isChecked, nomer, id} = challenge;
   const colors = useColors();
   const {t, i18n} = useTranslation();
+  const {theme} = useTheme();
 
   const [visible, setVisible] = useState(false);
 
@@ -48,13 +51,19 @@ export const SubChallenge = (props: SubChallengeProps) => {
 
   return (
     <View
-      style={[styles.SubChallenge, {backgroundColor: colors.bgSecondaryColor}]}>
+      style={[
+        styles.SubChallenge,
+        {
+          backgroundColor: colors.bgSecondaryColor,
+          ...getShadowOpacity(theme).shadowOpacity_level_1,
+        },
+      ]}>
       <View style={styles.nomerWrapper}>
         <ChallengeCategory number={nomer} isActive={isChecked} />
       </View>
       <View style={styles.textWrapper}>
         <AppText
-          style={[styles.title, {color: colors.primaryTextColor}]}
+          style={styles.title}
           weight={'500'}
           size={TextSize.LEVEL_4}
           text={title[language]}
@@ -62,9 +71,10 @@ export const SubChallenge = (props: SubChallengeProps) => {
         {visible ? (
           <>
             <AppText
-              style={styles.description}
+              style={[{color: colors.challengeCategoryNameColor}]}
               size={TextSize.LEVEL_4}
               text={description[language]}
+              weight={isPlatformIos ? '400' : '100'}
             />
             <TouchableOpacity onPress={onHideHandler}>
               <GradientText
@@ -78,7 +88,7 @@ export const SubChallenge = (props: SubChallengeProps) => {
         ) : (
           <Text>
             <AppText
-              style={styles.description}
+              style={[{color: colors.challengeCategoryNameColor}]}
               size={TextSize.LEVEL_4}
               text={
                 ISDescriptionLarge
@@ -88,6 +98,7 @@ export const SubChallenge = (props: SubChallengeProps) => {
                     })
                   : description[language]
               }
+              weight={isPlatformIos ? '400' : '100'}
             />
             <TouchableOpacity onPress={onShowHandler}>
               <GradientText
@@ -116,14 +127,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(10),
     paddingVertical: verticalScale(10),
     borderRadius: moderateScale(20),
-    ...globalStyles.simpleShadowOpacity,
   },
   nomerWrapper: {
     alignItems: 'center',
     width: 'auto',
-  },
-  description: {
-    color: '#B6B6BD',
   },
   textWrapper: {
     width: horizontalScale(191),

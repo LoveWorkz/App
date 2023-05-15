@@ -6,7 +6,8 @@ import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 export enum SelectTheme {
   CLEAR = 'clear',
@@ -31,13 +32,14 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     theme = SelectTheme.CLEAR,
   } = props;
   const colors = useColors();
+  const {theme: appTheme} = useTheme();
 
   const onSelectOpenHandler = () => {
     setIsVisible(true);
   };
 
   return (
-    <SafeAreaView style={{...globalStyles.simpleShadowOpacity}}>
+    <SafeAreaView style={{...getShadowOpacity(appTheme).shadowOpacity_level_1}}>
       {label && (
         <AppText
           style={[styles.label, {...selectedValueStyle}]}

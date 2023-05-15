@@ -65,12 +65,7 @@ const QuotesModal = (props: QuotesModalProps) => {
           weight={'600'}
           text={`${bookAuthor},`}
         />
-        <GradientText
-          style={styles.bookName}
-          size={TextSize.LEVEL_5}
-          weight={'600'}
-          text={bookName}
-        />
+        <GradientText size={TextSize.LEVEL_5} weight={'600'} text={bookName} />
       </View>
 
       <Button
@@ -113,13 +108,10 @@ const styles = StyleSheet.create({
   bookInfoGroup: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     width: '100%',
     marginTop: verticalScale(20),
     marginBottom: verticalScale(40),
-  },
-  bookName: {
-    marginLeft: horizontalScale(5),
   },
   btn: {
     width: '100%',

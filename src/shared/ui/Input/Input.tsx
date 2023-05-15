@@ -1,7 +1,6 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   KeyboardType,
-  Pressable,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -12,10 +11,12 @@ import {SvgXml} from 'react-native-svg';
 import {EyeIcon} from '@src/shared/assets/icons/Eye';
 import {whitespaceRegexp} from '@src/shared/consts/validation';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {AppText, TextSize, TextType} from '../AppText/AppText';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {horizontalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {useTheme} from '@src/app/providers/themeProvider';
+import {AppText, TextSize, TextType} from '../AppText/AppText';
+import {Button} from '../Button/Button';
 
 export enum Inputheme {}
 
@@ -51,6 +52,7 @@ export const Input = memo((props: InputProps) => {
     ...rest
   } = props;
   const colors = useColors();
+  const {theme: appTheme} = useTheme();
 
   const [isPasswordHidden, setIsPasswordHidden] = useState(false);
 
@@ -79,7 +81,13 @@ export const Input = memo((props: InputProps) => {
   };
 
   return (
-    <SafeAreaView style={[style, {...globalStyles.simpleShadowOpacity}]}>
+    <SafeAreaView
+      style={[
+        style,
+        {
+          ...getShadowOpacity(appTheme).shadowOpacity_level_1,
+        },
+      ]}>
       {label && (
         <AppText
           style={[styles.inputText, {color: colors.primaryTextColor}]}
@@ -91,36 +99,43 @@ export const Input = memo((props: InputProps) => {
       <View style={styles.startIconWrapper}>
         {StartIcon ? <StartIcon /> : <></>}
       </View>
-      <TextInput
-        autoCapitalize="none"
-        secureTextEntry={isPasswordHidden}
-        keyboardType={keyboardType}
-        style={[
-          styles.input,
-          styles[theme],
-          {
-            color: colors.primaryTextColor,
-            paddingLeft: StartIcon ? horizontalScale(50) : horizontalScale(20),
-            backgroundColor: colors.bgTertiaryColor,
-          },
-        ]}
-        onChangeText={onChangeTextHandler}
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={colors.secondaryTextColor}
-        {...rest}
-      />
-      <Pressable
-        onPress={togglePasswordHiddenHandler}
-        style={styles.eyeIconWrapper}>
-        {secureTextEntry && <SvgXml xml={EyeIcon} style={styles.eyeIcon} />}
-      </Pressable>
+      <View style={styles.inputWrapper}>
+        <TextInput
+          autoCapitalize="none"
+          secureTextEntry={isPasswordHidden}
+          keyboardType={keyboardType}
+          style={[
+            styles.input,
+            styles[theme],
+            {
+              color: colors.primaryTextColor,
+              paddingLeft: StartIcon
+                ? horizontalScale(50)
+                : horizontalScale(20),
+              backgroundColor: colors.bgTertiaryColor,
+            },
+          ]}
+          onChangeText={onChangeTextHandler}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={colors.secondaryTextColor}
+          {...rest}
+        />
+        {secureTextEntry && (
+          <Button
+            onPress={togglePasswordHiddenHandler}
+            style={styles.eyeIconWrapper}>
+            <SvgXml xml={EyeIcon} style={styles.eyeIcon} />
+          </Button>
+        )}
+      </View>
+
       {error && (
         <AppText
           size={TextSize.LEVEL_1}
           weight={'500'}
           type={TextType.ERROR}
-          style={styles.errorText}
+          style={[styles.errorText, {color: colors.red}]}
           text={error}
         />
       )}
@@ -129,10 +144,12 @@ export const Input = memo((props: InputProps) => {
 });
 
 const styles = StyleSheet.create<Record<string, any>>({
+  inputWrapper: {
+    justifyContent: 'center',
+  },
   input: {
     height: 40,
     alignItems: 'center',
-    backgroundColor: 'white',
     borderRadius: 10,
     paddingRight: 20,
   },
@@ -140,14 +157,13 @@ const styles = StyleSheet.create<Record<string, any>>({
     marginBottom: 5,
   },
   errorText: {
-    color: 'red',
     position: 'absolute',
     bottom: -14,
   },
   eyeIconWrapper: {
     position: 'absolute',
     right: 10,
-    bottom: 15,
+    width: horizontalScale(30),
   },
   startIconWrapper: {
     position: 'absolute',
@@ -156,7 +172,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     zIndex: 10,
   },
   eyeIcon: {
-    width: 13,
-    height: 10,
+    width: horizontalScale(18),
+    height: verticalScale(16),
   },
 });

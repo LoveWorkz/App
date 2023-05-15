@@ -60,6 +60,22 @@ class RubricStore {
     }
   };
 
+  getAndSetRubric = (id: string) => {
+    try {
+      const rubric = this.getRubric(id);
+
+      if (!rubric) {
+        return;
+      }
+
+      runInAction(() => {
+        this.rubric = rubric;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   fetchRubric = async (id: string) => {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();

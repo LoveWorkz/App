@@ -44,6 +44,9 @@ const IconItem = (props: IconItemProps) => {
 const styles = StyleSheet.create({
   iconWrapper: {
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   round: {
     height: 4,

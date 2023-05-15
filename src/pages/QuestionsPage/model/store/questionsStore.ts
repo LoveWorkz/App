@@ -53,7 +53,7 @@ class QuestionsStore {
 
       // if category details is forbidden (user pressed don't show again), fetching category here
       if (!currentCategory && categoryId) {
-        await categoryStore.fetchCategory({id: categoryId});
+        categoryStore.getAndSetCategory({id: categoryId});
       }
 
       await this.getQuestionsPageInfo(param);
@@ -81,7 +81,7 @@ class QuestionsStore {
           if (!id) {
             return;
           }
-          await rubricStore.fetchRubric(id);
+          rubricStore.getAndSetRubric(id);
           await this.fetchQuestionsById({
             id,
             key: 'rubricId',
@@ -101,7 +101,7 @@ class QuestionsStore {
           }
           const currentCategoryName = currentCategory.name === 'All_In_One';
 
-          await categoryStore.fetchCategory({id});
+          categoryStore.getAndSetCategory({id});
 
           // if it's the last category get all questions
           if (currentCategoryName) {
@@ -294,10 +294,19 @@ class QuestionsStore {
       return;
     }
 
-    let document: RubricType | CategoryType | undefined =
-      await rubricStore.fetchRubric(id);
+    // set swiped questions percentage
+    await this.setSwipedQuestionsPercentage({
+      id,
+      currentQuestionIndex: questionInfo.currentQuestionIndex + 1,
+      isCategory,
+    });
+
+    let document: RubricType | CategoryType | undefined;
+
     if (isCategory) {
       document = await categoryStore.fetchCategory({id});
+    } else {
+      document = await rubricStore.fetchRubric(id);
     }
 
     if (!document) {
@@ -309,29 +318,18 @@ class QuestionsStore {
       this.setSwipedQuestionsStartDate({id, isCategory});
     }
 
-    // set swiped questions percentage
-    await this.setSwipedQuestionsPercentage({
-      id,
-      currentQuestionIndex: questionInfo.currentQuestionIndex + 1,
-      isCategory,
-    });
-
-    this.checkIfUserSwipedFast({id, isCategory});
+    this.checkIfUserSwipedFast({id, isCategory, document});
   };
 
   checkIfUserSwipedFast = async ({
     id,
     isCategory,
+    document,
   }: {
     id: string;
     isCategory: boolean;
+    document: RubricType | CategoryType | undefined;
   }) => {
-    let document: RubricType | CategoryType | undefined =
-      await rubricStore.fetchRubric(id);
-
-    if (isCategory) {
-      document = await categoryStore.fetchCategory({id});
-    }
     if (!document) {
       return;
     }

@@ -1,9 +1,8 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, Text} from 'react-native';
 
-import {FontSizes, globalStyles} from '@src/app/styles/GlobalStyle';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {moderateScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 export enum TextSize {
@@ -25,7 +24,9 @@ export type TextWeight =
   | '600'
   | '700'
   | '800'
-  | '900';
+  | '900'
+  | 'normal'
+  | 'bold';
 
 export enum TextType {
   PRIMARY = 'primary',
@@ -70,25 +71,25 @@ export const AppText = memo((props: AppTextProps) => {
 const styles = StyleSheet.create<Record<string, any>>({
   primary: {},
   size_1: {
-    fontSize: moderateScale(FontSizes.SIZE_1),
+    ...globalStyles.size_1,
   },
   size_2: {
-    fontSize: moderateScale(FontSizes.SIZE_2),
+    ...globalStyles.size_2,
   },
   size_3: {
-    fontSize: moderateScale(FontSizes.SIZE_3),
+    ...globalStyles.size_3,
   },
   size_4: {
-    fontSize: moderateScale(FontSizes.SIZE_4),
+    ...globalStyles.size_4,
   },
   size_5: {
-    fontSize: moderateScale(FontSizes.SIZE_5),
+    ...globalStyles.size_5,
   },
   size_6: {
-    fontSize: moderateScale(FontSizes.SIZE_6),
+    ...globalStyles.size_6,
   },
   size_7: {
-    fontSize: moderateScale(FontSizes.SIZE_7),
+    ...globalStyles.size_7,
   },
   error: {
     color: 'red',

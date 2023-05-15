@@ -16,6 +16,8 @@ import {cutText} from '@src/shared/lib/common';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface BookProps {
   title: string;
@@ -28,6 +30,7 @@ const BookItem = (props: BookProps) => {
   const {title, description, image, id} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {theme} = useTheme();
 
   const StandardTextLength = 110;
   const ISDescriptionLarge = description.length > StandardTextLength;
@@ -42,7 +45,10 @@ const BookItem = (props: BookProps) => {
     <View style={styles.Book}>
       <Pressable
         onPress={() => onBookPreviewPressHandler(id)}
-        style={styles.imageWrapper}>
+        style={[
+          styles.imageWrapper,
+          {...getShadowOpacity(theme).shadowOpacity_level_2},
+        ]}>
         <FastImage
           style={styles.image}
           source={{

@@ -3,7 +3,11 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
-import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 
@@ -55,7 +59,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
               style={styles.btn}
               onPress={onPressHandler}>
               <AppText
-                style={[styles.text, {color: colors.bgQuinaryColor}]}
+                style={[{color: colors.bgQuinaryColor}]}
                 text={text}
                 weight={'500'}
                 size={
@@ -73,7 +77,6 @@ const RubricFilterItem = (props: bookCategoryProps) => {
               style={styles.btn}
               onPress={onPressHandler}>
               <GradientText
-                style={[styles.text]}
                 text={text}
                 weight={'500'}
                 size={
@@ -103,7 +106,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
         style={styles.btn}
         onPress={onPressHandler}>
         <AppText
-          style={[styles.text, {color: colors.bgQuinaryColor}]}
+          style={[{color: colors.bgQuinaryColor}]}
           text={text}
           weight={'500'}
           size={
@@ -124,16 +127,14 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(10),
     alignSelf: 'flex-start',
   },
-  text: {
-    color: 'white',
-  },
   btn: {
     justifyContent: 'center',
     paddingHorizontal: horizontalScale(20),
     height: '100%',
+    alignItems: 'center',
+    marginTop: verticalScale(-1),
   },
   content: {
-    flex: 1,
     margin: 1,
     width: '100%',
     justifyContent: 'center',
