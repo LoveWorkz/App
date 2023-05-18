@@ -1,17 +1,10 @@
 import React, {memo, useCallback} from 'react';
 import {SafeAreaView} from 'react-native';
-
-import {Select} from '@src/shared/ui/Select/Select';
-import {SelectTheme} from '@src/shared/ui/Select/TouchableComponent';
-import {useColors} from '@src/app/providers/colorsProvider';
 import {useTranslation} from 'react-i18next';
 
-const options = [
-  {label: 'status 1', value: 'status 1'},
-  {label: 'status 2', value: 'status 2'},
-  {label: 'status 3', value: 'status 3'},
-  {label: 'status 4', value: 'status 4'},
-];
+import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {getRelationshipStatusOptions} from '../model/lib/relationshipStatus';
 
 interface RelationshipStatusSelectProps {
   status: string;
@@ -37,9 +30,9 @@ const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
         selectedValueStyle={{color: colors.primaryTextColor}}
         Theme={SelectTheme.OUTLINE}
         initialValue={initialValue}
-        prompt={'Status'}
+        prompt={t('profile.relationship_status') || ''}
         label={t('profile.relationship_status') || ''}
-        options={options}
+        options={getRelationshipStatusOptions(t)}
         value={status}
         onSelect={onChangeHandler}
       />

@@ -36,6 +36,13 @@ class UserStore {
     makeAutoObservable(this);
   }
 
+  setFirstUserVisit = () => {
+    this.updateUser({
+      field: 'isFirstUserVisit',
+      data: false,
+    });
+  };
+
   setAuthUserInfo({user, authMethod}: AuthUserInfo) {
     try {
       this.authUser = user;
@@ -211,26 +218,30 @@ class UserStore {
   };
 
   updateUser = async ({data, field}: {data: any; field: string}) => {
-    const isOffline = await this.getIsUserOffline();
-    const userId = this.authUserId;
-    if (!userId) {
-      return;
-    }
+    try {
+      const isOffline = await this.getIsUserOffline();
+      const userId = this.authUserId;
+      if (!userId) {
+        return;
+      }
 
-    if (isOffline) {
-      firestore()
-        .collection(Collections.USERS)
-        .doc(userId)
-        .update({
-          [field]: data,
-        });
-    } else {
-      await firestore()
-        .collection(Collections.USERS)
-        .doc(userId)
-        .update({
-          [field]: data,
-        });
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USERS)
+          .doc(userId)
+          .update({
+            [field]: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USERS)
+          .doc(userId)
+          .update({
+            [field]: data,
+          });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 }

@@ -1,15 +1,17 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 
 import {SelectOption, StyleType} from '@src/shared/types/types';
-import {SelectTheme, Wrapper as TouchableComponent} from './TouchableComponent';
-import {DialogSelect} from './DialogSelect';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {Wrapper as TouchableComponent} from './TouchableComponent';
 import {PageSelect} from './PageSelect';
 import {Loader, LoaderSize} from '../Loader/Loader';
+import {RenderItem} from './RenderItem';
+import {RadioGroup} from '../Radio/RadioGroup';
 
-export enum SelectMode {
-  DIALOG = 'dialog',
-  PAGE = 'page',
+export enum SelectTheme {
+  CLEAR = 'clear',
+  OUTLINE = 'outline',
 }
 
 interface SelectProps {
@@ -21,11 +23,9 @@ interface SelectProps {
   prompt?: string;
   Theme?: SelectTheme;
   selectedValueStyle?: StyleType;
-  mode?: SelectMode;
   style?: StyleType;
+  isScrolling?: boolean;
 }
-
-const itemHeight = 40;
 
 export const Select = memo((props: SelectProps) => {
   const {
@@ -35,24 +35,31 @@ export const Select = memo((props: SelectProps) => {
     value,
     initialValue,
     prompt,
-    Theme = SelectTheme.UNDERLINE,
+    Theme = SelectTheme.OUTLINE,
     selectedValueStyle,
-    mode = SelectMode.PAGE,
+    isScrolling = false,
   } = props;
+
+  const itemHeight = verticalScale(40);
 
   const [visible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [flatlistRef, setFlatlistRef] = useState<null | FlatList>(null);
 
+  const firstValue = options[0]?.value;
+  const selectedDisplayValue = options.find(
+    option => option.value === value,
+  )?.label;
+
   useEffect(() => {
-    onSelect?.(initialValue || options[0]?.value);
-  }, [initialValue, onSelect, options]);
+    onSelect?.(initialValue || firstValue);
+  }, [initialValue, onSelect, firstValue]);
 
   useEffect(() => {
     if (options.length) {
       setIsLoading(false);
     }
-  }, [options]);
+  }, [options.length]);
 
   useEffect(() => {
     if (!flatlistRef) {
@@ -78,7 +85,6 @@ export const Select = memo((props: SelectProps) => {
   const onSelectHandler = useCallback(
     (itemValue: string) => {
       onSelect?.(itemValue);
-      onCloseHandler();
     },
     [onSelect],
   );
@@ -93,7 +99,7 @@ export const Select = memo((props: SelectProps) => {
       offset: itemHeight * index,
       index,
     }),
-    [],
+    [itemHeight],
   );
 
   const getFlatlistRef = useCallback((ref: FlatList) => {
@@ -103,106 +109,63 @@ export const Select = memo((props: SelectProps) => {
   const renderItem = useCallback(
     ({item}: {item: SelectOption}) => {
       return (
-        <Pressable
-          onPress={() => onSelectHandler(item.value)}
-          style={styles.item}
-          key={item.label}>
-          <Text
-            style={[
-              styles.itemText,
-              value === item.value ? styles.selectedValue : '',
-            ]}>
-            {item.label}
-          </Text>
-        </Pressable>
+        <RenderItem
+          item={item}
+          onSelectHandler={onSelectHandler}
+          selectedValue={value}
+          itemHeight={itemHeight}
+        />
       );
     },
-    [onSelectHandler, value],
+    [onSelectHandler, value, itemHeight],
   );
-
-  let select;
-
-  switch (mode) {
-    case SelectMode.DIALOG:
-      select = (
-        <DialogSelect
-          onClose={onCloseHandler}
-          prompt={prompt}
-          visible={visible}>
-          {isLoading ? (
-            <View style={styles.loaderWrapper}>
-              <Loader style={styles.loader} size={LoaderSize.LARGE} />
-            </View>
-          ) : (
-            <FlatList
-              initialScrollIndex={0}
-              getItemLayout={getItemLayout}
-              ref={getFlatlistRef}
-              style={styles.body}
-              data={options}
-              renderItem={renderItem}
-              keyExtractor={item => item.label}
-            />
-          )}
-        </DialogSelect>
-      );
-      break;
-    default:
-      select = (
-        <PageSelect onClose={onCloseHandler} prompt={prompt} visible={visible}>
-          {isLoading ? (
-            <Loader style={styles.loader} size={LoaderSize.LARGE} />
-          ) : (
-            <FlatList
-              initialScrollIndex={0}
-              getItemLayout={getItemLayout}
-              ref={getFlatlistRef}
-              style={styles.body}
-              data={options}
-              renderItem={renderItem}
-              keyExtractor={item => `${item.label}`}
-            />
-          )}
-        </PageSelect>
-      );
-  }
 
   return (
     <View>
       <TouchableComponent
+        selectedDisplayValue={selectedDisplayValue || ''}
         theme={Theme}
         label={label}
-        value={value}
         setIsVisible={setIsVisible}
         selectedValueStyle={selectedValueStyle}
       />
-      {select}
+      <PageSelect onClose={onCloseHandler} prompt={prompt} visible={visible}>
+        {isLoading ? (
+          <Loader style={styles.loader} size={LoaderSize.LARGE} />
+        ) : isScrolling ? (
+          <FlatList
+            initialScrollIndex={0}
+            getItemLayout={getItemLayout}
+            ref={getFlatlistRef}
+            style={styles.body}
+            data={options}
+            renderItem={renderItem}
+            keyExtractor={item => `${item.label}`}
+          />
+        ) : (
+          <RadioGroup
+            style={styles.selectItem}
+            value={value}
+            data={options}
+            onChange={onSelectHandler}
+          />
+        )}
+      </PageSelect>
     </View>
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   body: {
     width: '100%',
-  },
-  item: {
-    height: itemHeight,
-    justifyContent: 'center',
-    paddingLeft: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D0D2D3',
-    borderBottomStyle: 'solid',
-  },
-  itemText: {
-    fontSize: 16,
   },
   selectedValue: {
     fontWeight: '800',
   },
-  loaderWrapper: {
-    width: '100%',
-  },
   loader: {
     margin: 'auto',
+  },
+  selectItem: {
+    marginBottom: verticalScale(20),
   },
 });

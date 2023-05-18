@@ -18,7 +18,7 @@ import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {booksStore} from '@src/pages/BooksPage';
+import {profileStore} from '@src/entities/Profile';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
@@ -39,6 +39,9 @@ const HomePage = (props: HomePageProps) => {
   const language = i18n.language as LanguageValueType;
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+  // if user swipe question first time show home page quick start
+  const hasUserSwipedAnyQuestion =
+    profileStore.profileData?.hasUserSwipedAnyQuestion;
 
   useFocusEffect(
     useCallback(() => {
@@ -73,16 +76,16 @@ const HomePage = (props: HomePageProps) => {
           }>
           <ProgressBar />
         </FastImage>
-        <View style={styles.homeCategoryWrapper}>
-          <HomeCategory />
-        </View>
-        <View style={styles.categoriesCarouselWrappeer}>
-          <CategoriesCarousel />
-        </View>
+        {hasUserSwipedAnyQuestion && (
+          <View style={styles.homeCategoryWrapper}>
+            <HomeCategory />
+          </View>
+        )}
+        <CategoriesCarousel />
         <View style={styles.challangesWrapper}>
           <Challanges />
         </View>
-        <Quotes books={booksStore.booksList} />
+        <Quotes />
       </View>
     </LoaderWrapper>
   );
@@ -104,11 +107,9 @@ const styles = StyleSheet.create({
   homeCategoryWrapper: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: verticalScale(10),
+    marginBottom: verticalScale(35),
   },
-  categoriesCarouselWrappeer: {
-    marginTop: verticalScale(25),
-  },
+
   challangesWrapper: {
     marginTop: verticalScale(40),
     width: '100%',

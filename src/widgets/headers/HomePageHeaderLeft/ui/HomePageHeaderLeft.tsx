@@ -27,6 +27,7 @@ const HomePageHeaderLeft = () => {
     return null;
   }
 
+  const isFirstUserVisit = profile.isFirstUserVisit;
   const name = profile.name;
   const isNameLarge = name?.length >= maxNameLength;
 
@@ -37,7 +38,9 @@ const HomePageHeaderLeft = () => {
       </Pressable>
       <Pressable onPress={onProfilePressHandler}>
         <View style={styles.nameWrapper}>
-          <AppText text={t('home.welcome_back')} weight={'300'} />
+          {!isFirstUserVisit && (
+            <AppText text={t('home.welcome_back')} weight={'300'} />
+          )}
           <AppText
             text={name || ''}
             size={isNameLarge ? TextSize.LEVEL_3 : TextSize.LEVEL_5}

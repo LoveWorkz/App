@@ -1,92 +1,66 @@
-import React, {memo, useEffect} from 'react';
-import {StyleSheet, SafeAreaView, Pressable, View} from 'react-native';
+import React, {memo} from 'react';
+import {StyleSheet, Pressable} from 'react-native';
 
-import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {StyleType} from '@src/shared/types/types';
 import {Gradient} from '../Gradient/Gradient';
+import {GradientOutline} from '../Gradient/GradientOutline';
 
 interface RadioProps {
-  data: {label: string; value: string}[];
   value: string;
   onChange: (value: string) => void;
-  error?: string;
-  initialValue?: string;
   style?: StyleType;
   nameStyle?: StyleType;
-  roundStyle?: StyleType;
-  activeItemStyle?: StyleType;
+  label: string;
+  isSelected: boolean;
 }
 
 export const Radio = memo((props: RadioProps) => {
-  const {
-    data,
-    onChange,
-    value,
-    error,
-    initialValue,
-    style,
-    nameStyle,
-    roundStyle,
-    activeItemStyle,
-  } = props;
+  const {onChange, value, style, nameStyle, label, isSelected} = props;
+  const colors = useColors();
 
-  useEffect(() => {
-    initialValue && onChange?.(initialValue);
-  }, [onChange, initialValue]);
+  const onHandleChange = () => {
+    onChange?.(value);
+  };
 
   return (
-    <SafeAreaView>
-      {data.map(item => {
-        return (
-          <Pressable
-            key={item.value}
-            style={[styles.radio, style]}
-            onPress={() => onChange(item.value)}>
-            <View style={[styles.round, {...roundStyle}]}>
-              {value === item.value ? (
-                <Gradient style={[styles.checked, {...activeItemStyle}]} />
-              ) : (
-                <></>
-              )}
-            </View>
-            <AppText
-              style={[styles.radioText, {...nameStyle}]}
-              size={TextSize.LEVEL_4}
-              text={item.label}
-            />
-          </Pressable>
-        );
-      })}
-      {error && (
-        <AppText style={styles.errorText} type={TextType.ERROR} text={error} />
-      )}
-    </SafeAreaView>
+    <Pressable style={[styles.radio, style]} onPress={onHandleChange}>
+      <GradientOutline
+        borderWeight={2}
+        radius={50}
+        style={[styles.roundWrapper]}
+        contentStyle={[styles.round, {backgroundColor: colors.bgColor}]}>
+        {isSelected ? <Gradient style={[styles.checked]} /> : <></>}
+      </GradientOutline>
+      <AppText
+        style={[styles.radioText, {...nameStyle}]}
+        size={TextSize.LEVEL_4}
+        text={label}
+      />
+    </Pressable>
   );
 });
 
 const styles = StyleSheet.create({
   radio: {
     flexDirection: 'row',
-    marginBottom: 15,
   },
-  round: {
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+  roundWrapper: {
     height: 20,
     width: 20,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRadius: 50,
+    marginRight: 10,
+  },
+  round: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   radioText: {
     flexShrink: 1,
   },
   checked: {
-    backgroundColor: 'black',
-    height: 13,
-    width: 13,
+    height: 10,
+    width: 10,
     borderRadius: 50,
   },
   errorText: {

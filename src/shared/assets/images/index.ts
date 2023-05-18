@@ -37,6 +37,8 @@ export {default as HomepageBackground} from './light/HomepageBackground.png';
 export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
 export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
 export {default as splashScreenImage} from './splashScreenImage.png';
+export {default as defaultAvatarImage} from './light/defaultAvatarImage.png';
+export {default as defaultAvatarImageDark} from './dark/defaultAvatarImageDark.png';
 
 export {default as shopTopBackground} from './light/shopTopBackground.png';
 export {default as shopTopBackgroundDark} from './dark/shopTopBackground.png';

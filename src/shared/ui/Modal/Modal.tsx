@@ -1,8 +1,12 @@
 import React, {ReactElement, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import Popup from 'react-native-modal';
+import {SvgXml} from 'react-native-svg';
 
 import {useColors} from '@src/app/providers/colorsProvider';
+import {CloseIcon} from '@src/shared/assets/icons/Close';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {Button} from '../Button/Button';
 
 export enum Animation {
   BOUNCEIN = 'bounceIn',
@@ -17,6 +21,7 @@ interface ModalProps {
     | Record<string, string | number>;
   animationIn?: Animation;
   onClose?: () => void;
+  isCloseIcon?: boolean;
 }
 
 export const Modal = (props: ModalProps) => {
@@ -26,6 +31,7 @@ export const Modal = (props: ModalProps) => {
     contentStyle,
     animationIn = Animation.BOUNCEIN,
     onClose,
+    isCloseIcon = false,
   } = props;
 
   const colors = useColors();
@@ -47,9 +53,19 @@ export const Modal = (props: ModalProps) => {
           <View
             style={[
               styles.content,
-              contentStyle,
               {backgroundColor: colors.bgQuaternaryColor},
+              contentStyle,
             ]}>
+            {isCloseIcon && (
+              <Button onPress={onCancelHandler} style={styles.closeIconWrapper}>
+                <SvgXml
+                  xml={CloseIcon}
+                  fill={colors.primaryTextColor}
+                  height={13}
+                  width={13}
+                />
+              </Button>
+            )}
             {children}
           </View>
         </Popup>
@@ -66,5 +82,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 240,
     padding: 30,
+  },
+  closeIconWrapper: {
+    position: 'absolute',
+    top: 15,
+    right: 25,
+    ...globalStyles.modalCloseIconZIndex,
   },
 });

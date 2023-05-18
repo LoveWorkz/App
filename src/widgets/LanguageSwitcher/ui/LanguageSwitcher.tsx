@@ -1,10 +1,10 @@
-import React, {memo, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useCallback, useMemo} from 'react';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {TFunction} from 'i18next';
 
-import {useColors} from '@src/app/providers/colorsProvider';
-import {Radio} from '@src/shared/ui/Radio/Radio';
+import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {LanguageValueType} from '../model/types/language';
 
 const getLanguages = (
@@ -27,8 +27,8 @@ const getLanguages = (
 };
 
 const LanguageSwitcher = () => {
-  const colors = useColors();
   const {t, i18n} = useTranslation();
+  const languages = getLanguages(t);
 
   const onLanguageChangeHandler = useCallback(
     (value: string) => {
@@ -37,24 +37,24 @@ const LanguageSwitcher = () => {
     [i18n],
   );
 
+  const mode = useMemo(() => {
+    return {...globalStyles.size_5};
+  }, []);
+
   return (
     <View>
-      <Radio
-        roundStyle={{borderColor: colors.primaryTextColor}}
-        nameStyle={{color: colors.primaryTextColor}}
-        style={[styles.language, {color: colors.primaryTextColor}]}
+      <Select
+        selectedValueStyle={mode}
+        Theme={SelectTheme.CLEAR}
+        prompt={t('settings.language') || ''}
+        label={t('settings.language') || ''}
+        initialValue={i18n.language}
+        options={languages}
         value={i18n.language}
-        data={getLanguages(t)}
-        onChange={onLanguageChangeHandler}
+        onSelect={onLanguageChangeHandler}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  language: {
-    marginBottom: 24,
-  },
-});
 
 export default memo(LanguageSwitcher);

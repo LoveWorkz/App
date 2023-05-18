@@ -2,7 +2,12 @@ import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+import {
+  defaultAvatarImage,
+  defaultAvatarImageDark,
+} from '@src/shared/assets/images';
 import {Loader} from '../Loader/Loader';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 export enum AvatarTheme {
   SMALL = 'small',
@@ -18,6 +23,10 @@ interface AvatarProps {
 
 export const Avatar = memo((props: AvatarProps) => {
   const {theme = AvatarTheme.SMALL, style, imageUrl, borderRadius = 50} = props;
+
+  const {theme: appTheme} = useTheme();
+  const isDarkMode = appTheme === Theme.Dark;
+  const defaultImage = isDarkMode ? defaultAvatarImageDark : defaultAvatarImage;
 
   const [isLoading, setIsloading] = useState(false);
 
@@ -44,14 +53,12 @@ export const Avatar = memo((props: AvatarProps) => {
           <Loader />
         </View>
       )}
-      {imageUrl && (
-        <FastImage
-          onLoadStart={onLoadStartHandler}
-          onLoadEnd={onLoadEndHandler}
-          source={image}
-          style={[styles.image, {borderRadius}]}
-        />
-      )}
+      <FastImage
+        onLoadStart={onLoadStartHandler}
+        onLoadEnd={onLoadEndHandler}
+        source={imageUrl ? image : defaultImage}
+        style={[styles.image, {borderRadius}]}
+      />
     </View>
   );
 });
@@ -65,9 +72,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   small: {
     height: 40,
     width: 40,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 1,
   },
   image: {
     height: '100%',
@@ -76,9 +80,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   large: {
     height: 200,
     width: 200,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderWidth: 1,
     borderRadius: 100,
   },
   loader: {

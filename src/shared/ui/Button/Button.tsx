@@ -5,9 +5,10 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import React, {ReactElement, useMemo} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Gradient} from '../Gradient/Gradient';
+import {GradientOutline} from '../Gradient/GradientOutline';
 
 export enum ButtonTheme {
   CLEAR = 'clear',
@@ -59,12 +60,16 @@ export const Button = (props: ButtonProps) => {
   if (theme === ButtonTheme.OUTLINED_GRADIENT) {
     return (
       <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
-        <Gradient style={[...mode, styles.contentWrapper]}>
-          <View
-            style={[styles.content, {backgroundColor: colors.bgQuinaryColor}]}>
-            {children}
-          </View>
-        </Gradient>
+        <GradientOutline
+          borderWeight={1}
+          radius={10}
+          style={[...mode, styles.contentWrapper]}
+          contentStyle={[
+            styles.content,
+            {backgroundColor: colors.bgQuinaryColor},
+          ]}>
+          {children}
+        </GradientOutline>
       </TouchableOpacity>
     );
   }
@@ -98,12 +103,9 @@ const styles = StyleSheet.create<Record<string, any>>({
     width: horizontalScale(30),
   },
   content: {
-    flex: 1,
-    margin: 1,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: moderateScale(10),
   },
   contentWrapper: {
     width: '100%',

@@ -66,7 +66,6 @@ export default memo(InAppPurchase);
 const styles = StyleSheet.create({
   InAppPurchase: {
     width: '100%',
-    zIndex: 1,
   },
   image: {
     height: verticalScale(180),
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
   textWrapper: {
     marginBottom: verticalScale(50),
     alignItems: 'center',
-    zIndex: 1,
   },
   title: {
     marginBottom: verticalScale(10),
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    zIndex: 1,
   },
   btn: {
     marginTop: verticalScale(30),

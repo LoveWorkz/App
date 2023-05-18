@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface TabHeaderProps {
@@ -16,11 +16,7 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
   const {t} = useTranslation();
 
   return (
-    <View
-      style={[
-        styles.TabHeaderRight,
-        {paddingRight: globalPadding, width: windowWidth * 0.7},
-      ]}>
+    <View style={[styles.TabHeaderRight, {paddingRight: globalPadding}]}>
       <AppText
         weight={'500'}
         size={TextSize.LEVEL_6}
@@ -34,6 +30,7 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
 const styles = StyleSheet.create({
   TabHeaderRight: {
     justifyContent: 'center',
+    width: '100%',
   },
 });
 

@@ -5,7 +5,6 @@ import {SvgXml} from 'react-native-svg';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {
   horizontalScale,
   moderateScale,
@@ -13,8 +12,9 @@ import {
 } from '@src/shared/lib/Metrics';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {FireIcon} from '@src/shared/assets/icons/FireIcon';
-import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {GradientOutline} from '@src/shared/ui/Gradient/GradientOutline';
 
 interface SubscriptionBlockProps {
   isActive?: boolean;
@@ -40,63 +40,58 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
         <SvgXml xml={FireIcon} style={[styles.fireIcon]} />
         <GradientText size={TextSize.LEVEL_2} text={'80% Off'} />
       </View>
-      <Gradient style={styles.contentWrapper}>
-        <View
-          style={[
-            styles.content,
-            {
-              backgroundColor: colors.bgSecondaryColor,
-              margin: isActive ? 1.5 : 0,
-            },
-          ]}>
-          <AppText
-            style={styles.title}
-            text={isYearly ? 'Yearly' : 'Monthly'}
-          />
 
-          <View style={styles.costWrapper}>
-            <AppText
-              style={[styles.cost, {color: colors.secondaryError}]}
-              size={TextSize.LEVEL_4}
-              weight={'bold'}
-              text={'$1.49'}
-            />
-            <AppText
-              style={styles.discount}
-              size={TextSize.LEVEL_3}
-              weight={'200'}
-              text={'$1.99'}
-            />
-            <AppText
-              style={styles.type}
-              size={TextSize.LEVEL_4}
-              weight={'bold'}
-              text={isYearly ? '/ year' : '/ month'}
-            />
-          </View>
+      <GradientOutline
+        borderWeight={isActive ? 1.5 : 0}
+        radius={20}
+        style={styles.contentWrapper}
+        contentStyle={[
+          styles.content,
+          {
+            backgroundColor: colors.bgSecondaryColor,
+          },
+        ]}>
+        <AppText style={styles.title} text={isYearly ? 'Yearly' : 'Monthly'} />
+
+        <View style={styles.costWrapper}>
           <AppText
-            style={[
-              styles.description,
-              {color: colors.purchaseDescriptionColor},
-            ]}
-            size={TextSize.LEVEL_1}
-            text={
-              isYearly
-                ? 'All categories with no adss + all challenges inside'
-                : 'All categories with no adss + bronze, silver and gold challenges'
-            }
+            style={[styles.cost, {color: colors.secondaryError}]}
+            size={TextSize.LEVEL_4}
+            weight={'bold'}
+            text={'$1.49'}
           />
-          <Button
-            style={[styles.btn, {backgroundColor: colors.purchaseButtonColor}]}
-            theme={ButtonTheme.CLEAR}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_2}
-              text={isYearly ? 'Billed yearly' : 'Billed monthly'}
-            />
-          </Button>
+          <AppText
+            style={styles.discount}
+            size={TextSize.LEVEL_3}
+            weight={'200'}
+            text={'$1.99'}
+          />
+          <AppText
+            style={styles.type}
+            size={TextSize.LEVEL_4}
+            weight={'bold'}
+            text={isYearly ? '/ year' : '/ month'}
+          />
         </View>
-      </Gradient>
+        <AppText
+          style={[styles.description, {color: colors.purchaseDescriptionColor}]}
+          size={TextSize.LEVEL_1}
+          text={
+            isYearly
+              ? 'All categories with no adss + all challenges inside'
+              : 'All categories with no adss + bronze, silver and gold challenges'
+          }
+        />
+        <Button
+          style={[styles.btn, {backgroundColor: colors.purchaseButtonColor}]}
+          theme={ButtonTheme.CLEAR}>
+          <AppText
+            style={{color: colors.white}}
+            size={TextSize.LEVEL_2}
+            text={isYearly ? 'Billed yearly' : 'Billed monthly'}
+          />
+        </Button>
+      </GradientOutline>
     </View>
   );
 };
@@ -109,8 +104,6 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     minHeight: 187,
-    borderRadius: 20,
-    zIndex: 1,
   },
   fireIcon: {
     height: verticalScale(13),
@@ -118,12 +111,9 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(3),
   },
   content: {
-    flex: 1,
     padding: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: 20,
-    zIndex: 1,
   },
   percentage: {
     position: 'absolute',
@@ -132,10 +122,10 @@ const styles = StyleSheet.create({
     height: verticalScale(25),
     width: horizontalScale(76),
     borderRadius: moderateScale(10),
-    zIndex: 5,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    ...globalStyles.subscriptionPercentageZIndex,
   },
   title: {},
   costWrapper: {

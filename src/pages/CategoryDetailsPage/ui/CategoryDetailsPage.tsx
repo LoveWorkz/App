@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   CategoryDetails: {
-    height: 525,
+    minHeight: 525,
     borderRadius: moderateScale(20),
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(10),

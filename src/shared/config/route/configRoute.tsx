@@ -13,7 +13,6 @@ import {AboutPage} from '@src/pages/AboutPage';
 import {HowToUsePage} from '@src/pages/HowToUsePage';
 import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
-import {LanguagePage} from '@src/pages/LanguagePage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
 import {CategoryDetailsHeaderRight} from '@src/widgets/headers/CategoryDetailsHeaderRight';
@@ -36,7 +35,6 @@ export enum AppRouteNames {
   HOW_TO_USE = 'howToUse',
   CONTACT_US = 'contactUs',
   BOOK_DETAILS = 'bookDetails',
-  LANGUAGE = 'language',
   CATEGORY_DETAILS = 'categoryDetails',
   QUESTIONS = 'questions',
 }
@@ -57,7 +55,6 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.HOW_TO_USE]: 'howToUse',
   [AppRouteNames.CONTACT_US]: 'contactUs',
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
-  [AppRouteNames.LANGUAGE]: 'language',
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
   [AppRouteNames.QUESTIONS]: 'questions',
 };
@@ -163,12 +160,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: '',
     Element: BookDetailsPage,
     deleteTopPadding: true,
-  },
-  [AppRouteNames.LANGUAGE]: {
-    name: appRoutePaths.language,
-    headerShown: true,
-    headerTitle: 'settings.language',
-    Element: LanguagePage,
   },
   [AppRouteNames.CATEGORY_DETAILS]: {
     name: appRoutePaths.categoryDetails,

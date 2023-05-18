@@ -42,6 +42,7 @@ const QuotesModal = (props: QuotesModalProps) => {
 
   return (
     <Modal
+      isCloseIcon
       contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>

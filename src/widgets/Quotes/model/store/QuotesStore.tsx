@@ -57,7 +57,7 @@ class QuotesStore {
     }
   };
 
-  checkQuotesShownStatus = async (books: BookType[]) => {
+  checkQuotesShownStatus = (books: BookType[]) => {
     try {
       // return if a user clicked on "don't show again" button
       if (!this.quoteInfo.isQuoteVisible) {
@@ -66,12 +66,12 @@ class QuotesStore {
 
       if (!this.quoteInfo.quoteCheckingDate) {
         // only works the first time when user enter the system
-        await this.getQuotesModalInfo(books);
+        this.getAndSetQuotesModalInfo(books);
 
         this.setIsQuoteModalVisible(true);
         const currentDate = new Date();
 
-        await userStore.updateUser({
+        userStore.updateUser({
           field: 'quote.quoteCheckingDate',
           data: currentDate.toJSON(),
         });
@@ -83,7 +83,7 @@ class QuotesStore {
         const diff = datediff(currentDate, quoteCheckingDate);
         // checking last show time
         if (diff >= oneDay) {
-          await this.getQuotesModalInfo(books);
+          this.getAndSetQuotesModalInfo(books);
 
           this.setIsQuoteModalVisible(true);
           // seting new date for checking next time
@@ -98,7 +98,7 @@ class QuotesStore {
     }
   };
 
-  getQuotesModalInfo = async (books: BookType[]) => {
+  getAndSetQuotesModalInfo = (books: BookType[]) => {
     try {
       const currentBookId = this.quoteInfo.bookId;
       if (!currentBookId) {

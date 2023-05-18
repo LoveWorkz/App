@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {SvgXml} from 'react-native-svg';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '../Gradient/Gradient';
+import {GradientOutline} from '../Gradient/GradientOutline';
 
 interface Checkbox {
   checked: boolean;
@@ -35,9 +36,12 @@ const CustomCheckBox = memo((props: Checkbox) => {
           />
         </Gradient>
       ) : (
-        <Gradient style={[styles.checkBox]}>
-          <View style={[styles.space, {backgroundColor: colors.bgColor}]} />
-        </Gradient>
+        <GradientOutline
+          borderWeight={1}
+          radius={5}
+          style={[styles.checkBox]}
+          contentStyle={[styles.space, {backgroundColor: colors.bgColor}]}
+        />
       )}
     </TouchableOpacity>
   );
@@ -58,7 +62,6 @@ const styles = StyleSheet.create({
   },
   space: {
     borderRadius: moderateScale(3),
-    flex: 1,
     marginHorizontal: horizontalScale(2),
     marginVertical: verticalScale(2),
     justifyContent: 'center',

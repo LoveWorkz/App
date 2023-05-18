@@ -18,6 +18,8 @@ export interface User {
   favorites: FavoriteType;
   quote: QuoeType;
   isWowThatWasFastModalForbidden: boolean;
+  isFirstUserVisit: boolean;
+  hasUserSwipedAnyQuestion: boolean;
 }
 
 export enum AuthMethod {

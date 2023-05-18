@@ -6,6 +6,7 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {booksStore} from '@src/pages/BooksPage';
 import {CategoryName, categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {quotesStore} from '@src/widgets/Quotes';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -27,6 +28,7 @@ class HomePageStore {
       await challengesStore.fetchChallengeCategories();
       // fetching books for quotes modal
       await booksStore.getBooks();
+      quotesStore.checkQuotesShownStatus(booksStore.booksList);
       this.getHomePageCategory(language);
     } catch (e) {
       console.log(e);

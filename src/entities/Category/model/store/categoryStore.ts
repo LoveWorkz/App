@@ -145,7 +145,7 @@ class CategoryStore {
     }
   };
 
-  categorySwipeLogic = async ({
+  categorySwipeLogic = ({
     questionId,
     language,
   }: {
@@ -180,6 +180,14 @@ class CategoryStore {
         return;
       }
       const {currentQuestion, currentQuestionIndex} = questionInfo;
+      const swipedQuestionsCount = currentQuestionIndex + 1;
+
+      if (swipedQuestionsCount > 1) {
+        userStore.updateUser({
+          field: 'hasUserSwipedAnyQuestion',
+          data: true,
+        });
+      }
 
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
       if (!currentRubric) {
@@ -191,7 +199,7 @@ class CategoryStore {
         categoryName:
           categoryName || questionsStore.questionsPageInfo.categoryName,
         rubricName: currentRubric.displayName[language],
-        swipedQuestionsCount: currentQuestionIndex + 1,
+        swipedQuestionsCount,
         currentQuestion,
       });
     } catch (e) {

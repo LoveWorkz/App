@@ -77,6 +77,12 @@ export const globalStyles = StyleSheet.create({
   slideItemZindex: {
     zIndex: 1,
   },
+  subscriptionPercentageZIndex: {
+    zIndex: 1,
+  },
+  modalCloseIconZIndex: {
+    zIndex: 2,
+  },
 
   //font Sizes
   size_1: {

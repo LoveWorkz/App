@@ -2,45 +2,45 @@ import React, {memo} from 'react';
 import {Pressable, View, StyleSheet, SafeAreaView} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
-
-export enum SelectTheme {
-  CLEAR = 'clear',
-  UNDERLINE = 'underline',
-  OUTLINE = 'outline',
-}
+import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
+import {SelectTheme} from './Select';
 
 interface TouchableComponentProps {
   setIsVisible: (visible: boolean) => void;
-  value: string;
   selectedValueStyle?: StyleType;
   label?: string;
   theme?: SelectTheme;
+  selectedDisplayValue: string;
 }
 
 export const TouchableComponent = memo((props: TouchableComponentProps) => {
   const {
-    value,
     setIsVisible,
     selectedValueStyle,
     label,
     theme = SelectTheme.CLEAR,
+    selectedDisplayValue,
   } = props;
   const colors = useColors();
   const {theme: appTheme} = useTheme();
+  const isClear = theme === SelectTheme.CLEAR;
+  const isValueLarge = selectedDisplayValue.length >= 35;
 
   const onSelectOpenHandler = () => {
     setIsVisible(true);
   };
 
   return (
-    <SafeAreaView style={{...getShadowOpacity(appTheme).shadowOpacity_level_1}}>
-      {label && (
+    <SafeAreaView
+      style={
+        isClear ? {} : {...getShadowOpacity(appTheme).shadowOpacity_level_1}
+      }>
+      {!isClear && label && (
         <AppText
           style={[styles.label, {...selectedValueStyle}]}
           size={TextSize.LEVEL_2}
@@ -52,14 +52,26 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
         style={[
           styles.wrapper,
           styles[theme],
-          {backgroundColor: colors.bgTertiaryColor},
+          {
+            backgroundColor: isClear ? colors.bgColor : colors.bgTertiaryColor,
+          },
         ]}
         onPress={onSelectOpenHandler}>
-        <View>
-          <AppText style={selectedValueStyle} text={value} />
-        </View>
+        {isClear && label ? (
+          <View>
+            <AppText style={selectedValueStyle} text={label} />
+          </View>
+        ) : (
+          <View>
+            <AppText
+              size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
+              style={selectedValueStyle}
+              text={selectedDisplayValue}
+            />
+          </View>
+        )}
         <SvgXml
-          xml={ArrowDownIcon}
+          xml={SmallArrowRightIcon}
           stroke={colors.primaryTextColor}
           style={styles.icon}
         />
@@ -69,13 +81,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 });
 
 const styles = StyleSheet.create<Record<string, any>>({
-  underline: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#9A9AA5',
-    borderBottomStyle: 'solid',
-  },
   outline: {
-    backgroundColor: 'white',
     height: 40,
     borderRadius: 10,
     paddingLeft: 20,
@@ -84,6 +90,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   wrapper: {
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
     paddingVertical: 8,
   },
@@ -91,8 +98,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     marginBottom: 5,
   },
   icon: {
-    height: 15,
-    width: 15,
+    height: 12,
+    width: 12,
   },
 });
 

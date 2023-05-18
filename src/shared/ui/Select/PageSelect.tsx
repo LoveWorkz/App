@@ -1,15 +1,15 @@
 import React, {ReactElement} from 'react';
-import {
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Modal, SafeAreaView, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useHeaderHeight} from '@react-navigation/elements';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {isPlatformIos} from '@src/shared/consts/common';
+import {AppText, TextSize} from '../AppText/AppText';
+import {Button} from '../Button/Button';
 
 interface PageSelectProps {
   visible: boolean;
@@ -20,6 +20,11 @@ interface PageSelectProps {
 
 export const PageSelect = (props: PageSelectProps) => {
   const {visible, onClose, prompt, children} = props;
+
+  const colors = useColors();
+  const defaultNavbarHeight = verticalScale(isPlatformIos ? 90 : 55);
+  const navbarHeaderHeight = useHeaderHeight() || defaultNavbarHeight;
+  const statusBarHeight = getStatusBarHeight();
 
   if (!visible) {
     return <></>;
@@ -33,15 +38,35 @@ export const PageSelect = (props: PageSelectProps) => {
       onRequestClose={() => {
         onClose();
       }}>
-      <SafeAreaView style={styles.content}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onClose} style={styles.arrowLeft}>
-            <SvgXml xml={ArrowLeftIcon} />
-          </TouchableOpacity>
+      <SafeAreaView
+        style={[styles.selectPage, {backgroundColor: colors.bgColor}]}>
+        <View
+          style={[
+            styles.header,
+            {
+              height: isPlatformIos
+                ? navbarHeaderHeight - statusBarHeight
+                : navbarHeaderHeight,
+            },
+          ]}>
+          <Button style={styles.iconWrapper} onPress={onClose}>
+            <SvgXml
+              fill={colors.primaryTextColor}
+              style={styles.arrowLeft}
+              xml={ArrowLeftIcon}
+            />
+          </Button>
 
-          {prompt && <Text style={styles.title}>{prompt}</Text>}
+          {prompt && (
+            <AppText
+              style={{color: colors.primaryTextColor}}
+              size={TextSize.LEVEL_6}
+              text={prompt}
+              weight={'500'}
+            />
+          )}
         </View>
-        {children}
+        <View style={styles.content}>{children}</View>
       </SafeAreaView>
     </Modal>
   );
@@ -49,26 +74,22 @@ export const PageSelect = (props: PageSelectProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   content: {
+    paddingLeft: horizontalScale(15),
+    paddingTop: verticalScale(20),
+  },
+  selectPage: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#D0D2D3',
-    borderBottomStyle: 'solid',
+    flexDirection: 'row',
+    paddingLeft: horizontalScale(15),
   },
-  title: {
-    fontSize: 25,
-    fontWeight: '600',
+  iconWrapper: {
+    marginRight: horizontalScale(15),
   },
   arrowLeft: {
-    height: 20,
-    width: 20,
-    position: 'absolute',
-    left: 15,
+    height: verticalScale(15),
+    width: horizontalScale(18),
   },
 });
