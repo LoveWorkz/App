@@ -34,8 +34,11 @@ class AuthByAppleStore {
         field: 'isAuth',
         data: true,
       });
+
+      await userStore.checkAndSetUserVisitStatus({isSignUp: false});
     } else {
       await userStore.addUserToFirestore(user);
+      await userStore.checkAndSetUserVisitStatus({isSignUp: true});
     }
   };
   appleSignIn = async () => {

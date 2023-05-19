@@ -4,6 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import Lottie from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
+import SplashScreen from 'react-native-splash-screen';
 
 import {splashScreenImage} from '@src/shared/assets/images';
 import {globalPadding, windowHeight} from '@src/app/styles/GlobalStyle';
@@ -36,7 +37,11 @@ export const SplashPage = () => {
 
   return (
     <View style={styles.SplashPage}>
-      <FastImage style={[styles.splashScreenImage]} source={splashScreenImage}>
+      <FastImage
+        style={[styles.splashScreenImage]}
+        source={splashScreenImage}
+        // if image loaded hide native splash screen and show custom splash screen
+        onLoadEnd={() => SplashScreen.hide()}>
         <View style={styles.content}>
           <View style={styles.titleWrapper}>
             <AppText

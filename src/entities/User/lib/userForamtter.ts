@@ -30,7 +30,6 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     quoteCheckingDate: '',
   };
   formatedUser.isWowThatWasFastModalForbidden = false;
-  formatedUser.isFirstUserVisit = true;
   formatedUser.hasUserSwipedAnyQuestion = false;
 
   return formatedUser;

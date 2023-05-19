@@ -34,8 +34,10 @@ class AuthByGoogleStore {
         field: 'isAuth',
         data: true,
       });
+      await userStore.checkAndSetUserVisitStatus({isSignUp: false});
     } else {
       await userStore.addUserToFirestore(user);
+      await userStore.checkAndSetUserVisitStatus({isSignUp: true});
     }
   };
   signIn = async () => {

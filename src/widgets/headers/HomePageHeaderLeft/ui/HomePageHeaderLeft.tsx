@@ -13,11 +13,13 @@ import {
   globalPadding,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
+import {userStore} from '@src/entities/User';
 
 const HomePageHeaderLeft = () => {
   const {t} = useTranslation();
   const profile = profileStore.profileData;
   const maxNameLength = 25;
+  const isFirstUserVisit = userStore.isFirstUserVisit;
 
   const onProfilePressHandler = () => {
     navigation.navigate(AppRouteNames.PROFILE);
@@ -27,7 +29,6 @@ const HomePageHeaderLeft = () => {
     return null;
   }
 
-  const isFirstUserVisit = profile.isFirstUserVisit;
   const name = profile.name;
   const isNameLarge = name?.length >= maxNameLength;
 

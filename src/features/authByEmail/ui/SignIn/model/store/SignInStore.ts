@@ -68,10 +68,12 @@ class SignInStore {
       authMethod: AuthMethod.AUTH_BY_EMAIL,
     });
 
-    userStore.updateUser({
+    await userStore.updateUser({
       field: 'isAuth',
       data: true,
     });
+
+    await userStore.checkAndSetUserVisitStatus({isSignUp: false});
   };
 
   signIn = async () => {

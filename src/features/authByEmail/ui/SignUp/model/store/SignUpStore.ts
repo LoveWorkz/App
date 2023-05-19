@@ -83,6 +83,7 @@ class SignUpStore {
     });
 
     await userStore.addUserToFirestore(user);
+    await userStore.checkAndSetUserVisitStatus({isSignUp: true});
   };
 
   register = async (actionAfterRegistration: () => void) => {

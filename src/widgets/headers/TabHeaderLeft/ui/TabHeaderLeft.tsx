@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface TabHeaderProps {
@@ -30,7 +30,7 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
 const styles = StyleSheet.create({
   TabHeaderRight: {
     justifyContent: 'center',
-    width: '100%',
+    width: windowWidth * 0.8,
   },
 });
 

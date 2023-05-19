@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
@@ -11,6 +11,7 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
+  USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
 import {profileStore} from '@src/entities/Profile';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -31,6 +32,7 @@ class UserStore {
   authUserId: string = '';
   authMethod: AuthMethod | string = '';
   isDisabledDialogOpen: boolean = false;
+  isFirstUserVisit: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -43,31 +45,14 @@ class UserStore {
     });
   };
 
-  setAuthUserInfo({user, authMethod}: AuthUserInfo) {
-    try {
-      this.authUser = user;
-      if (user?.id) {
-        this.authUserId = user.id;
-      }
-      this.authMethod = authMethod;
-
-      authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
-      authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  toggleDisabledDialog = (isOpen: boolean) => {
-    this.isDisabledDialogOpen = isOpen;
-  };
-
   initAuthUser = async () => {
     try {
       const isOffline = await this.getIsUserOffline();
       if (!isOffline) {
         await auth().currentUser?.reload();
       }
+
+      await this.checkAndSetUserVisitStatus({isSplash: true});
 
       const user = auth().currentUser;
       if (!user) {
@@ -87,6 +72,77 @@ class UserStore {
       console.log(e);
       this.errorHandler(e);
     }
+  };
+
+  checkAndSetUserVisitStatus = async ({
+    isSignUp,
+    isSplash,
+  }: {
+    isSplash?: boolean;
+    isSignUp?: boolean;
+  }) => {
+    if (isSplash) {
+      const isUserVisitFirstTime = await authStorage.getAuthData(
+        USER_VISITED_STATUS,
+      );
+
+      // return if user never visited the project
+      if (!isUserVisitFirstTime) {
+        return;
+      }
+
+      const value = JSON.stringify(isUserVisitFirstTime);
+      if (value) {
+        // user second visit
+        await authStorage.setAuthData(
+          USER_VISITED_STATUS,
+          JSON.stringify(false),
+        );
+
+        this.setIsFirstUserVisit(false);
+      } else {
+        this.setIsFirstUserVisit(false);
+      }
+
+      return;
+    }
+
+    if (isSignUp) {
+      await authStorage.setAuthData(USER_VISITED_STATUS, JSON.stringify(true));
+      this.setIsFirstUserVisit(true);
+    } else {
+      await authStorage.setAuthData(USER_VISITED_STATUS, JSON.stringify(false));
+      this.setIsFirstUserVisit(false);
+    }
+  };
+
+  setIsFirstUserVisit = async (isFirstUserVisit: boolean) => {
+    try {
+      runInAction(() => {
+        this.isFirstUserVisit = isFirstUserVisit;
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  setAuthUserInfo({user, authMethod}: AuthUserInfo) {
+    try {
+      this.authUser = user;
+      if (user?.id) {
+        this.authUserId = user.id;
+      }
+      this.authMethod = authMethod;
+
+      authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
+      authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  toggleDisabledDialog = (isOpen: boolean) => {
+    this.isDisabledDialogOpen = isOpen;
   };
 
   getIsUserOffline = async () => {
@@ -215,6 +271,8 @@ class UserStore {
     await userChallengeCategoryStore.deleteUserChallengeCategory(id);
 
     await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
+
+    await authStorage.removeAuthData(USER_VISITED_STATUS);
   };
 
   updateUser = async ({data, field}: {data: any; field: string}) => {

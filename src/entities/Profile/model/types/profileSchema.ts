@@ -19,7 +19,6 @@ export interface Profile {
   challengeCategory: CurrentChallengeCategoryType;
   quote: QuoeType;
   isWowThatWasFastModalForbidden: boolean;
-  isFirstUserVisit: boolean;
   hasUserSwipedAnyQuestion: boolean;
 }
 
