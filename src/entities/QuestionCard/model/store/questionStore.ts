@@ -29,7 +29,7 @@ class QuestionStore {
         return;
       }
 
-      return {currentQuestion, currentQuestionIndex};
+      return {currentQuestion, currentQuestionNumber: currentQuestionIndex + 1};
     } catch (e) {
       console.log(e);
     }

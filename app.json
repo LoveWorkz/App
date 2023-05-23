@@ -2,8 +2,8 @@
   "name": "Bline2",
   "displayName": "Bline2",
   "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-9255281399250879~5312878106",
-    "ios_app_id": "ca-app-pub-9255281399250879~6074708701",
+    "android_app_id": "ca-app-pub-9255281399250879~9870843244",
+    "ios_app_id": "ca-app-pub-9255281399250879~7218944966",
     "delay_app_measurement_init": true,
     "user_tracking_usage_description": "This identifier will be used to deliver personalized ads to you."
   }

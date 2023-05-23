@@ -12,14 +12,14 @@ import {favoriteStore} from '@src/entities/Favorite';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CurrentCategory} from '@src/entities/Category';
 import {quotesStore} from '@src/widgets/Quotes';
-import {questionsStore} from '@src/pages/QuestionsPage';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
+import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {
   Profile,
   ProfileErrorInfo,
   ProfilePhotoActionType,
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class ProfileStore {
   profileData = null as Profile | null;
@@ -193,7 +193,7 @@ class ProfileStore {
           challengesStore.setChallengeCategory(data.challengeCategory);
           favoriteStore.setFavorites(data.favorites);
           quotesStore.setIsQuoteInfo(data.quote);
-          questionsStore.setIsWowThatWasFastModalForbidden(
+          wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
             data.isWowThatWasFastModalForbidden,
           );
         });

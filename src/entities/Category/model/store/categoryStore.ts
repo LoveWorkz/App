@@ -149,7 +149,6 @@ class CategoryStore {
     questionId,
     language,
   }: {
-    categoryId?: string;
     questionId?: string;
     language: LanguageValueType;
   }) => {
@@ -157,6 +156,7 @@ class CategoryStore {
       let currentquestionId = questionId;
       let categoryName: string | undefined;
 
+      // it's working only for the first time
       if (!questionId) {
         const category = this.category;
 
@@ -179,8 +179,8 @@ class CategoryStore {
       if (!questionInfo) {
         return;
       }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
-      const swipedQuestionsCount = currentQuestionIndex + 1;
+      const {currentQuestion, currentQuestionNumber} = questionInfo;
+      const swipedQuestionsCount = currentQuestionNumber;
 
       if (swipedQuestionsCount > 1) {
         userStore.updateUser({

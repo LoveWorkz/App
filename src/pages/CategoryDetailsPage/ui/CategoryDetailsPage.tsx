@@ -22,6 +22,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {DocumentType} from '@src/shared/types/types';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -54,7 +55,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
     } else {
       category?.id &&
         navigation.replace(AppRouteNames.QUESTIONS, {
-          type: 'category',
+          type: DocumentType.CATEGORY,
           id: category.id,
         });
     }

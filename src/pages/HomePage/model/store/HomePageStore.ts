@@ -4,14 +4,14 @@ import {categoriesStore} from '@src/pages/CategoriesPage';
 import {profileStore} from '@src/entities/Profile';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {booksStore} from '@src/pages/BooksPage';
-import {CategoryName, categoryStore} from '@src/entities/Category';
+import {CategoryKey, categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {quotesStore} from '@src/widgets/Quotes';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
   homePageCategoryName: string = '';
-  homePageCategoryKey: CategoryName = 'Starter'; // first category
+  homePageCategoryKey: CategoryKey = CategoryKey.Starter; // first category
 
   constructor() {
     makeAutoObservable(this);
@@ -42,7 +42,7 @@ class HomePageStore {
   getHomePageCategory = (language: LanguageValueType) => {
     try {
       const userCurrentCategoryKey = profileStore.currentCategory
-        ?.currentCategory as CategoryName;
+        ?.currentCategory as CategoryKey;
 
       if (!userCurrentCategoryKey) {
         return;

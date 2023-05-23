@@ -25,10 +25,13 @@ export const Rubric = (props: RubricProps) => {
 
   const language = i18n.language as LanguageValueType;
 
-  const swipedQuestionCount = getNumberFromPercentage(
+  const numberFromPercentage = getNumberFromPercentage(
     swipedQuestionsPercentage,
     questions.length,
   );
+
+  //if it's the first question set 1
+  const swipedQuestionCount = numberFromPercentage || 1;
 
   return (
     <View
@@ -57,7 +60,7 @@ export const Rubric = (props: RubricProps) => {
           style={{color: colors.primaryTextColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={`${Math.ceil(swipedQuestionCount)}/${questions.length}`}
+          text={`${swipedQuestionCount}/${questions.length}`}
         />
       </View>
     </View>

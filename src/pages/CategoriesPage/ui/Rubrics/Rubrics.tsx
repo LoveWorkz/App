@@ -8,6 +8,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Rubric} from '@src/entities/Rubric';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {DocumentType} from '@src/shared/types/types';
 import categoriesStore from '../../model/store/categoriesStore';
 
 const Rubrics = () => {
@@ -16,7 +17,10 @@ const Rubrics = () => {
   const rubrics = categoriesStore.rubrics;
 
   const onRubricPressHandler = (id: string) => {
-    navigation.navigate(AppRouteNames.QUESTIONS, {type: 'rubric', id});
+    navigation.navigate(AppRouteNames.QUESTIONS, {
+      type: DocumentType.RUBRIC,
+      id,
+    });
   };
 
   return (

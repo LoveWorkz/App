@@ -7,7 +7,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import questionsStore from '../../model/store/questionsStore';
+import WowThatWasFastStore from '../model/store/WowThatWasFastStore';
 
 interface WowThatWasFastModalProps {
   visible: boolean;
@@ -24,7 +24,7 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
   };
 
   const onDontShowAgainHandler = () => {
-    questionsStore.forbidThatWasFastModalVisible();
+    WowThatWasFastStore.forbidThatWasFastModalVisible();
   };
 
   return (

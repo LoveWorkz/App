@@ -12,3 +12,9 @@ export interface DisplayText {
   de: string;
   pt: string;
 }
+
+export enum DocumentType {
+  RUBRIC = 'rubric',
+  CATEGORY = 'category',
+  FAVORITE = 'favorite',
+}

@@ -12,16 +12,17 @@ export interface CategoryImageType {
   middle: string;
 }
 
-export type CategoryName =
-  | 'Starter'
-  | 'Basic'
-  | 'Deep'
-  | 'Intimate'
-  | 'Hot'
-  | 'All_In_One';
+export enum CategoryKey {
+  Starter = 'Starter',
+  Basic = 'Basic',
+  Deep = 'Deep',
+  Intimate = 'Intimate',
+  Hot = 'Hot',
+  All_In_One = 'All_In_One',
+}
 
 export interface CategoryType {
-  name: CategoryName;
+  name: CategoryKey;
   id: string;
   image: CategoryImageType;
   isBlocked: boolean;
@@ -42,5 +43,4 @@ export interface CategoryType {
 
 export interface CurrentCategory {
   currentCategory: string;
-  currentCategoryId: string;
 }

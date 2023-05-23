@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import {AdEventType} from 'react-native-google-mobile-ads';
 
 import {
   horizontalScale,
@@ -20,20 +21,24 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
-import {CategoryName} from '@src/entities/Category';
+import {CategoryKey} from '@src/entities/Category';
 import {profileStore} from '@src/entities/Profile';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
 import {CongratsModal} from '@src/widgets/CongratsModal';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {initInterstitialAd} from '@src/app/config/admobConfig';
+import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
+import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import questionsStore from '../model/store/questionsStore';
-import WowThatWasFastModal from './WowThatWasFastModal/WowThatWasFastModal';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 
 interface QuestionsPageProps {
-  route?: {params: {type: 'rubric' | 'category' | 'favorite'; id: string}};
+  route?: {params: {type: DocumentType; id: string}};
 }
+
+const interstitial = initInterstitialAd();
 
 const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
@@ -48,24 +53,22 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const currentCategory = profileStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
 
-  const getFormattedQuestions = useMemo(() => {
-    return getFormattedQuestionsWrapper({
-      questions,
-      isDarkMode: theme === Theme.Dark,
-    });
-  }, [questions, theme]);
-
-  const content = getCongratsModalContent(t)[currentCategory as CategoryName];
-
-  const formattedQuestions = useMemo(() => {
-    return getFormattedQuestions();
-  }, [getFormattedQuestions]);
-
   useFocusEffect(
     useCallback(() => {
       questionsStore.clearQuestionsInfo();
     }, []),
   );
+
+  useEffect(() => {
+    const unsubscribe = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        interstitial.show();
+      },
+    );
+
+    return unsubscribe;
+  }, [key]);
 
   useEffect(() => {
     if (!key) {
@@ -79,24 +82,32 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     });
   }, [key, id, language]);
 
+  const getFormattedQuestions = useMemo(() => {
+    return getFormattedQuestionsWrapper({
+      questions,
+      isDarkMode: theme === Theme.Dark,
+    });
+  }, [questions, theme]);
+
+  const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
+
+  const formattedQuestions = useMemo(() => {
+    return getFormattedQuestions();
+  }, [getFormattedQuestions]);
+
   const onSwipeHandler = useCallback(
-    (param: QuestionType) => {
+    (param: QuestionType, questionNumber: number) => {
       if (!key) {
         return;
       }
 
-      if (id) {
-        questionsStore.setQuestionsSwipedInfo({
-          questionId: param.id,
-          id: id,
-          type: key,
-        });
-      }
-      questionsStore.swipe({question: param, key, language});
-
-      questionsStore.checkIfAllQuestionsSwiped({
-        questionId: param.id,
-        type: key,
+      questionsStore.swipe({
+        question: param,
+        key,
+        language,
+        documentId: id,
+        interstitial,
+        questionNumber,
       });
     },
     [key, id, language],
@@ -152,10 +163,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
             ]}
           />
         </View>
-        <WowThatWasFastModal
-          visible={questionsStore.thatWasFastModalVisible}
-          setVisible={questionsStore.setThatWasFastModalVisible}
-        />
+        <WowThatWasFast />
         <CongratsModal
           content={content}
           visible={questionsStore.congratsModalVisible}

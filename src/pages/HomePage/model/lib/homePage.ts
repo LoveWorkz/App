@@ -1,4 +1,4 @@
-import {CategoryName} from '@src/entities/Category';
+import {CategoryKey} from '@src/entities/Category';
 import {
   BasicDarkImage,
   BasicImage,
@@ -16,17 +16,17 @@ export const getProgressBarImage = ({
   category,
   isDarkMode,
 }: {
-  category: CategoryName;
+  category: CategoryKey;
   isDarkMode: boolean;
 }) => {
   switch (category) {
-    case 'Starter':
+    case CategoryKey.Starter:
       return isDarkMode ? StarterDarkImage : StarterImage;
-    case 'Basic':
+    case CategoryKey.Basic:
       return isDarkMode ? BasicDarkImage : BasicImage;
-    case 'Deep':
+    case CategoryKey.Deep:
       return isDarkMode ? DeepDarkImage : DeepImage;
-    case 'Intimate':
+    case CategoryKey.Intimate:
       return isDarkMode ? IntimateDarkImage : IntimateImage;
     default:
       return isDarkMode ? HotDarkImage : HotImage;

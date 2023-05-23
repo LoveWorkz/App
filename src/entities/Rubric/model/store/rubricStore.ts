@@ -126,6 +126,7 @@ class RubricStore {
       let currentquestionId = questionId;
       let rubricName: string | undefined;
 
+      // it's working only for the first time
       if (!questionId) {
         const rubric = this.rubric;
         if (!rubric) {
@@ -145,7 +146,7 @@ class RubricStore {
       if (!questionInfo) {
         return;
       }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
+      const {currentQuestion, currentQuestionNumber} = questionInfo;
 
       const currentCategory = categoryStore.getCategory(
         currentQuestion?.categoryId,
@@ -158,7 +159,7 @@ class RubricStore {
         questionsCount: questionsStore.questions.length,
         categoryName: currentCategory.displayName[language],
         rubricName: rubricName || questionsStore.questionsPageInfo.rubricName,
-        swipedQuestionsCount: currentQuestionIndex + 1,
+        swipedQuestionsCount: currentQuestionNumber,
         currentQuestion,
       });
     } catch (e) {

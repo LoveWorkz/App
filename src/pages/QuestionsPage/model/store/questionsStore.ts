@@ -1,49 +1,42 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import {InterstitialAd} from 'react-native-google-mobile-ads';
 
 import {Collections} from '@src/shared/types/firebase';
-import {categoryStore, CategoryType} from '@src/entities/Category';
-import {rubricStore, RubricType} from '@src/entities/Rubric';
+import {CategoryKey, categoryStore} from '@src/entities/Category';
+import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
-import {minutesDiff} from '@src/shared/lib/date';
 import {profileStore} from '@src/entities/Profile';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
+import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
+import {DocumentType} from '@src/shared/types/types';
+import {getNumbersDiff} from '@src/shared/lib/common';
 import {QuestionsPageInfo} from '../types/questionTypes';
-import {breakPoint, minute} from '../lib/questions';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
   questionsPageInfo: QuestionsPageInfo = {} as QuestionsPageInfo;
-  thatWasFastModalVisible: boolean = false;
   congratsModalVisible: boolean = false;
   questionsPageloading: boolean = true;
-  isWowThatWasFastModalForbidden: boolean = true;
+
+  questionsSize: number = 0;
+  breakPointForShowingAds: number = 1;
 
   constructor() {
     makeAutoObservable(this);
   }
-
-  setThatWasFastModalVisible = (isVisible: boolean) => {
-    this.thatWasFastModalVisible = isVisible;
-  };
-
-  setIsWowThatWasFastModalForbidden = (isVisible: boolean) => {
-    this.isWowThatWasFastModalForbidden = isVisible;
-  };
-
   setCongratsModalVisible = (isVisible: boolean) => {
     this.congratsModalVisible = isVisible;
   };
 
   init = async (param: {
     id?: string;
-    key: 'rubric' | 'category' | 'favorite';
+    key: DocumentType;
     language: LanguageValueType;
   }) => {
     try {
@@ -72,12 +65,12 @@ class QuestionsStore {
     language,
   }: {
     id?: string;
-    key: 'rubric' | 'category' | 'favorite';
+    key: DocumentType;
     language: LanguageValueType;
   }) => {
     try {
       switch (key) {
-        case 'rubric':
+        case DocumentType.RUBRIC:
           if (!id) {
             return;
           }
@@ -94,17 +87,19 @@ class QuestionsStore {
           // init questions page info
           rubricStore.rubricSwipeLogic({language});
           break;
-        case 'category':
+        case DocumentType.CATEGORY:
           const currentCategory = categoryStore.category;
           if (!id || !currentCategory) {
             return;
           }
-          const currentCategoryName = currentCategory.name === 'All_In_One';
+
+          const lastCategoryKey = CategoryKey.All_In_One;
+          const isLastCategoryKey = currentCategory.name === lastCategoryKey;
 
           categoryStore.getAndSetCategory({id});
 
           // if it's the last category get all questions
-          if (currentCategoryName) {
+          if (isLastCategoryKey) {
             await this.fetchAllQuestions();
           } else {
             await this.fetchQuestionsById({
@@ -135,21 +130,44 @@ class QuestionsStore {
     question,
     key,
     language,
+    documentId,
+    interstitial,
+    questionNumber,
   }: {
     question: QuestionType;
-    key: 'rubric' | 'category' | 'favorite';
+    key: DocumentType;
     language: LanguageValueType;
+    documentId?: string;
+    interstitial: InterstitialAd;
+    questionNumber: number;
   }) => {
     if (!question) {
       return;
     }
 
-    switch (key) {
-      case 'category':
-        const currentCategory = categoryStore.category;
-        let categoryId = question.categoryId;
+    this.loadAds({questionNumber, interstitial});
 
-        if (currentCategory && currentCategory.name === 'All_In_One') {
+    switch (key) {
+      case DocumentType.CATEGORY:
+        if (documentId) {
+          wowThatWasFastModalStore.wowThatWasFastLogic({
+            documentId: documentId,
+            type: key,
+            questions: this.questions,
+            questionId: question.id,
+          });
+        }
+
+        const currentCategory = categoryStore.category;
+        if (!currentCategory) {
+          return;
+        }
+
+        let categoryId = question.categoryId;
+        const lastCategoryKey = CategoryKey.All_In_One;
+        const isLastCategoryKey = currentCategory.name === lastCategoryKey;
+
+        if (isLastCategoryKey) {
           categoryId = currentCategory.id;
         }
 
@@ -160,8 +178,23 @@ class QuestionsStore {
           data: question.id,
           field: 'currentQuestion',
         });
+
+        this.checkIfAllQuestionsSwiped({
+          questionId: question.id,
+          type: key,
+        });
+
         break;
-      case 'rubric':
+      case DocumentType.RUBRIC:
+        if (documentId) {
+          wowThatWasFastModalStore.wowThatWasFastLogic({
+            documentId: documentId,
+            type: key,
+            questions: this.questions,
+            questionId: question.id,
+          });
+        }
+
         rubricStore.rubricSwipeLogic({questionId: question.id, language});
 
         await userRubricStore.updateUserRubric({
@@ -169,8 +202,9 @@ class QuestionsStore {
           data: question.id,
           field: 'currentQuestion',
         });
+
         break;
-      case 'favorite':
+      case DocumentType.FAVORITE:
         favoriteStore.favoritesSwipeLogic({id: question.id, language});
 
         await userStore.updateUser({
@@ -211,6 +245,7 @@ class QuestionsStore {
 
       runInAction(() => {
         this.questions = questions as QuestionType[];
+        this.questionsSize = data.size;
       });
     } catch (e) {
       console.log(e);
@@ -231,6 +266,7 @@ class QuestionsStore {
 
       runInAction(() => {
         this.questions = questions as QuestionType[];
+        this.questionsSize = data.size;
       });
     } catch (e) {
       console.log(e);
@@ -260,6 +296,7 @@ class QuestionsStore {
 
       runInAction(() => {
         this.questions = favoritesQuestions as QuestionType[];
+        this.questionsSize = data.size;
       });
     } catch (e) {
       console.log(e);
@@ -270,165 +307,9 @@ class QuestionsStore {
     runInAction(() => {
       this.questions = [];
       this.questionsPageInfo = {} as QuestionsPageInfo;
+      this.breakPointForShowingAds = 1;
+      this.questionsSize = 0;
     });
-  };
-
-  // wow that was fast logic
-
-  setQuestionsSwipedInfo = async ({
-    questionId,
-    id,
-    type,
-  }: {
-    questionId: string;
-    id: string;
-    type: 'rubric' | 'category' | 'favorite';
-  }) => {
-    const isCategory = type === 'category';
-
-    const questionInfo = questionStore.getQuestionInfo({
-      questionId: questionId,
-      questions: this.questions,
-    });
-    if (!questionInfo) {
-      return;
-    }
-
-    // set swiped questions percentage
-    await this.setSwipedQuestionsPercentage({
-      id,
-      currentQuestionIndex: questionInfo.currentQuestionIndex + 1,
-      isCategory,
-    });
-
-    let document: RubricType | CategoryType | undefined;
-
-    if (isCategory) {
-      document = await categoryStore.fetchCategory({id});
-    } else {
-      document = await rubricStore.fetchRubric(id);
-    }
-
-    if (!document) {
-      return;
-    }
-
-    // set swipe start date
-    if (!document.questionSwipeStartDate) {
-      this.setSwipedQuestionsStartDate({id, isCategory});
-    }
-
-    this.checkIfUserSwipedFast({id, isCategory, document});
-  };
-
-  checkIfUserSwipedFast = async ({
-    id,
-    isCategory,
-    document,
-  }: {
-    id: string;
-    isCategory: boolean;
-    document: RubricType | CategoryType | undefined;
-  }) => {
-    if (!document) {
-      return;
-    }
-
-    const newCheckTime = document.breakPointForCheckingDate + breakPoint;
-
-    if (
-      document.swipedQuestionsPercentage >=
-        document.breakPointForCheckingDate &&
-      newCheckTime < 100
-    ) {
-      const currentDate = new Date();
-      const diff = minutesDiff(
-        currentDate,
-        new Date(document.questionSwipeStartDate),
-      );
-
-      // show modal if user swiped fast
-      if (diff <= minute && !this.isWowThatWasFastModalForbidden) {
-        this.setThatWasFastModalVisible(true);
-      }
-
-      if (isCategory) {
-        await userCategoryStore.updateUserCategory({
-          id,
-          field: 'breakPointForCheckingDate',
-          data: newCheckTime,
-        });
-      } else {
-        await userRubricStore.updateUserRubric({
-          id,
-          field: 'breakPointForCheckingDate',
-          data: newCheckTime,
-        });
-      }
-
-      // set new Date for next checking
-      this.setSwipedQuestionsStartDate({id, isCategory});
-    }
-  };
-
-  setSwipedQuestionsStartDate = async ({
-    id,
-    isCategory,
-  }: {
-    id: string;
-    isCategory: boolean;
-  }) => {
-    const startDate = new Date().toJSON();
-
-    if (isCategory) {
-      await userCategoryStore.updateUserCategory({
-        id,
-        field: 'questionSwipeStartDate',
-        data: startDate,
-      });
-    } else {
-      await userRubricStore.updateUserRubric({
-        id,
-        field: 'questionSwipeStartDate',
-        data: startDate,
-      });
-    }
-  };
-
-  setSwipedQuestionsPercentage = async ({
-    id,
-    currentQuestionIndex,
-    isCategory,
-  }: {
-    id: string;
-    currentQuestionIndex: number;
-    isCategory: boolean;
-  }) => {
-    try {
-      const swipedQuestionsPercentage = Math.floor(
-        getPercentageFromNumber(currentQuestionIndex, this.questions.length),
-      );
-
-      if (!swipedQuestionsPercentage) {
-        return;
-      }
-
-      if (isCategory) {
-        await userCategoryStore.updateUserCategory({
-          id,
-          field: 'swipedQuestionsPercentage',
-          data: swipedQuestionsPercentage,
-        });
-      } else {
-        await userRubricStore.updateUserRubric({
-          id,
-          field: 'swipedQuestionsPercentage',
-          data: swipedQuestionsPercentage,
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   checkIfAllQuestionsSwiped = async ({
@@ -436,10 +317,10 @@ class QuestionsStore {
     type,
   }: {
     questionId: string;
-    type: 'rubric' | 'category' | 'favorite';
+    type: DocumentType;
   }) => {
     try {
-      const isCategory = type === 'category';
+      const isCategory = type === DocumentType.CATEGORY;
 
       if (!isCategory) {
         return;
@@ -453,8 +334,8 @@ class QuestionsStore {
         return;
       }
 
-      const swipedQuestionsCount = questionInfo.currentQuestionIndex + 1;
-      const lastQueston = this.questions.length;
+      const swipedQuestionsCount = questionInfo.currentQuestionNumber;
+      const lastQueston = this.questionsSize;
       const isLastQuestion = swipedQuestionsCount === lastQueston;
 
       if (isLastQuestion) {
@@ -468,36 +349,8 @@ class QuestionsStore {
           return;
         }
 
-        const nextCategory = categoriesStore.getNextCategory({
-          currentCategoryId: category.id,
-        });
-
-        if (!nextCategory) {
-          return;
-        }
-
-        profileStore.setCurrentCategory({
-          currentCategory: nextCategory.name,
-          currentCategoryId: nextCategory.id,
-        });
-
-        // after swiped all questions update user data
-
-        await userCategoryStore.updateUserCategory({
-          id: category.id,
-          field: 'isAllQuestionsSwiped',
-          data: true,
-        });
-
-        await userCategoryStore.updateUserCategory({
-          id: nextCategory.id,
-          field: 'isBlocked',
-          data: false,
-        });
-
-        await userStore.updateUser({
-          field: 'category',
-          data: {currentCategory: nextCategory.name},
+        this.UpdateUserDataAfterSwipedAllQuestions({
+          categoryId: category.id,
         });
 
         this.setCongratsModalVisible(true);
@@ -507,16 +360,54 @@ class QuestionsStore {
     }
   };
 
-  forbidThatWasFastModalVisible = async () => {
-    try {
-      await userStore.updateUser({
-        field: 'isWowThatWasFastModalForbidden',
-        data: true,
-      });
-      this.setIsWowThatWasFastModalForbidden(true);
-      this.setThatWasFastModalVisible(false);
-    } catch (e) {
-      console.log(e);
+  UpdateUserDataAfterSwipedAllQuestions = async ({
+    categoryId,
+  }: {
+    categoryId: string;
+  }) => {
+    const nextCategory = categoriesStore.getNextCategory({
+      currentCategoryId: categoryId,
+    });
+
+    if (!nextCategory) {
+      return;
+    }
+
+    profileStore.setCurrentCategory({
+      currentCategory: nextCategory.name,
+    });
+
+    await userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: 'isAllQuestionsSwiped',
+      data: true,
+    });
+
+    await userCategoryStore.updateUserCategory({
+      id: nextCategory.id,
+      field: 'isBlocked',
+      data: false,
+    });
+
+    await userStore.updateUser({
+      field: 'category.currentCategory',
+      data: nextCategory.name,
+    });
+  };
+
+  loadAds = ({
+    questionNumber,
+    interstitial,
+  }: {
+    questionNumber: number;
+    interstitial: InterstitialAd;
+  }) => {
+    const diff = getNumbersDiff(questionNumber, this.breakPointForShowingAds);
+
+    // if user has swiped 3 or more questions load ads
+    if (diff >= 3) {
+      interstitial.load();
+      this.breakPointForShowingAds = questionNumber;
     }
   };
 }

@@ -8,9 +8,13 @@ export const cutText = ({text, textSize}: {text: string; textSize: number}) => {
 };
 
 export const getPercentageFromNumber = (number: number, count: number) => {
-  return (100 * number) / count;
+  return Math.ceil((100 * number) / count);
 };
 
 export const getNumberFromPercentage = (count: number, percentage: number) => {
-  return (count * percentage) / 100;
+  return Math.ceil((count * percentage) / 100);
+};
+
+export const getNumbersDiff = (a: number, b: number) => {
+  return Math.abs(a - b);
 };

@@ -16,10 +16,6 @@ import {
   WILD_CARD,
 } from '@src/shared/assets/images';
 
-export const counts = [3, 6];
-export const minute = 1;
-export const breakPoint = 30;
-
 export const getQuestionsImages = (isDarkMode: boolean) => {
   return [
     isDarkMode ? questionImageDark1 : questionImage1,

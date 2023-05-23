@@ -1,3 +1,4 @@
+import {CategoryKey} from '@src/entities/Category';
 import {User, InitlUserInfo} from '../model/types/userSchema';
 
 export const userFormatter = (userInfo: InitlUserInfo): User => {
@@ -13,8 +14,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.relationshipStatus = '';
   formatedUser.preferences = [];
   formatedUser.category = {
-    currentCategory: 'Starter',
-    currentCategoryId: '',
+    currentCategory: CategoryKey.Starter,
   };
   formatedUser.challengeCategory = {
     currentChallengeCategory: 'Bronze',

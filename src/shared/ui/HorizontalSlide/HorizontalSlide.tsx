@@ -15,7 +15,7 @@ interface HorizontalSlideProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
   snapDirection?: 'left' | 'right';
   itemStyle?: StyleType;
-  onSwipeHandler?: (param: any) => void;
+  onSwipeHandler?: (param: any, itemNumber: number) => void;
   data: Array<Record<string, any>>;
   defaultElement?: number;
 }
@@ -35,7 +35,9 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const onSnapToItemHandler = useCallback(
     (index: number) => {
       const currentElementInfo = data.find((_, i) => i === index);
-      currentElementInfo && onSwipeHandler?.(currentElementInfo);
+      const itemNumber = index + 1;
+
+      currentElementInfo && onSwipeHandler?.(currentElementInfo, itemNumber);
     },
     [data, onSwipeHandler],
   );

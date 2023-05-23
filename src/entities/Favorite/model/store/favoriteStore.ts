@@ -163,7 +163,7 @@ class FavoriteStore {
       if (!questionInfo) {
         return;
       }
-      const {currentQuestion, currentQuestionIndex} = questionInfo;
+      const {currentQuestion, currentQuestionNumber} = questionInfo;
 
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
       if (!currentRubric) {
@@ -181,7 +181,7 @@ class FavoriteStore {
         questionsCount: questionsStore.questions.length,
         categoryName: currentCategory.displayName[language],
         rubricName: currentRubric.displayName[language],
-        swipedQuestionsCount: currentQuestionIndex + 1,
+        swipedQuestionsCount: currentQuestionNumber,
         currentQuestion,
       });
     } catch (e) {

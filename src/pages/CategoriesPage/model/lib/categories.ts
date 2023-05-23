@@ -1,6 +1,10 @@
+import {CategoryKey} from '@src/entities/Category';
 import {TFunction} from 'i18next';
+import {CongratsModalContentType} from '@src/widgets/CongratsModal';
 
-export const getCongratsModalContent = (t: TFunction) => {
+export const getCongratsModalContent = (
+  t: TFunction,
+): Record<CategoryKey, CongratsModalContentType> => {
   const title = t('questions.congrats_for_reached_next_category');
   return {
     Starter: {
