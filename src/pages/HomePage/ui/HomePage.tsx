@@ -20,6 +20,7 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {profileStore} from '@src/entities/Profile';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
@@ -27,7 +28,7 @@ import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
 interface HomePageProps {
-  route?: {params: {prevRouteName: AppRouteNames}};
+  route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
 }
 
 const HomePage = (props: HomePageProps) => {
@@ -37,8 +38,8 @@ const HomePage = (props: HomePageProps) => {
   const statusBarHeight = getStatusBarHeight();
   const {i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
-  const isPreviousScreenQuestions =
-    route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+  const prevRouteName = route?.params?.prevRouteName;
+
   // if user swipe question first time show home page quick start
   const hasUserSwipedAnyQuestion =
     profileStore.profileData?.hasUserSwipedAnyQuestion;
@@ -46,10 +47,18 @@ const HomePage = (props: HomePageProps) => {
   useFocusEffect(
     useCallback(() => {
       // if the user returns from the questions page, get the actual categories data
-      if (isPreviousScreenQuestions) {
-        homePageStore.init(language);
+      if (
+        prevRouteName === AppRouteNames.QUESTIONS ||
+        prevRouteName === TabRoutesNames.CATEGORIES
+      ) {
+        homePageStore.fetchHomePageCategoryies(language);
       }
-    }, [isPreviousScreenQuestions, language]),
+
+      // if the user returns from the Challenges page, get the actual Challenges data
+      if (prevRouteName === TabRoutesNames.CHALLENGES) {
+        homePageStore.fetchHomePageCategoryChallenges();
+      }
+    }, [prevRouteName, language]),
   );
 
   useEffect(() => {

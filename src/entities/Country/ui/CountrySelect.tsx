@@ -4,6 +4,7 @@ import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import countryStore from '../model/store/countryStore';
 
 interface CountrySelectProps {
@@ -14,11 +15,12 @@ interface CountrySelectProps {
 
 const CountrySelect = (props: CountrySelectProps) => {
   const {changeCountry, country, initialValue} = props;
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
 
   useEffect(() => {
-    countryStore.fetchCountries();
-  }, []);
+    countryStore.fetchCountries(language);
+  }, [language]);
 
   const onChangeHandler = useCallback(
     (value: string) => {

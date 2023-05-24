@@ -39,6 +39,39 @@ class HomePageStore {
     }
   };
 
+  fetchHomePageCategoryChallenges = async () => {
+    try {
+      runInAction(() => {
+        this.isHomePageLoading = true;
+      });
+
+      await challengesStore.fetchChallengeCategories();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isHomePageLoading = false;
+      });
+    }
+  };
+
+  fetchHomePageCategoryies = async (language: LanguageValueType) => {
+    try {
+      runInAction(() => {
+        this.isHomePageLoading = true;
+      });
+      await profileStore.fetchProfile();
+      await categoriesStore.fetchCategories();
+      this.getHomePageCategory(language);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      runInAction(() => {
+        this.isHomePageLoading = false;
+      });
+    }
+  };
+
   getHomePageCategory = (language: LanguageValueType) => {
     try {
       const userCurrentCategoryKey = profileStore.currentCategory

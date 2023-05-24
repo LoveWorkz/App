@@ -140,7 +140,7 @@ export const Select = memo((props: SelectProps) => {
             style={styles.body}
             data={options}
             renderItem={renderItem}
-            keyExtractor={item => `${item.label}`}
+            keyExtractor={item => `${item.value}`}
           />
         ) : (
           <RadioGroup
