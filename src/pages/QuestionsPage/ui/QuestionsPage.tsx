@@ -20,7 +20,11 @@ import {
   windowWidth,
 } from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
-import {QuestionCard, QuestionType} from '@src/entities/QuestionCard';
+import {
+  QuestionCard,
+  questionStore,
+  QuestionType,
+} from '@src/entities/QuestionCard';
 import {CategoryKey} from '@src/entities/Category';
 import {profileStore} from '@src/entities/Profile';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
@@ -35,7 +39,7 @@ import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 
 interface QuestionsPageProps {
-  route?: {params: {type: DocumentType; id: string}};
+  route?: {params: {type: DocumentType; id: string; initialQuestionId: string}};
 }
 
 const interstitial = initInterstitialAd();
@@ -48,8 +52,11 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   const key = route?.params.type;
   const id = route?.params.id;
+  const initialQuestionId = route?.params.initialQuestionId;
+  const isSliideEnabled = !initialQuestionId;
+
   const questions = questionsStore.questions;
-  const questionsPageInfo = questionsStore.questionsPageInfo;
+  const questionsPageInfo = questionStore.questionPreviewInfo;
   const currentCategory = profileStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
 
@@ -79,8 +86,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       id,
       key: key,
       language,
+      questionId: initialQuestionId,
     });
-  }, [key, id, language]);
+  }, [key, id, language, initialQuestionId]);
 
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
@@ -138,17 +146,18 @@ const QuestionsPage = (props: QuestionsPageProps) => {
               style={{color: colors.primaryTextColor}}
               weight={'500'}
               size={TextSize.LEVEL_5}
-              text={`${questionsPageInfo.swipedQuestionsCount}/${questionsPageInfo.questionsCount}`}
+              text={`${questionsPageInfo.questionNumber}/${questionsStore.questionsSize}`}
             />
           </View>
         </View>
         <View style={styles.question}>
           <HorizontalSlide
+            isSlideEnabled={isSliideEnabled}
             onSwipeHandler={onSwipeHandler}
             data={formattedQuestions}
             itemStyle={styles.slideItemStyle}
             Component={QuestionCard}
-            defaultElement={questionsPageInfo.swipedQuestionsCount}
+            defaultElement={questionsPageInfo.questionNumber}
           />
           <View
             style={[

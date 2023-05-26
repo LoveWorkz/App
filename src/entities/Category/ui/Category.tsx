@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {DisplayText, StyleType} from '@src/shared/types/types';
+import {DisplayText, DocumentType, StyleType} from '@src/shared/types/types';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -53,7 +53,10 @@ const Category = (props: CategoryProps) => {
         id,
       });
     } else {
-      navigation.navigate(AppRouteNames.QUESTIONS, {type: 'category', id});
+      navigation.navigate(AppRouteNames.QUESTIONS, {
+        type: DocumentType.CATEGORY,
+        id,
+      });
     }
   };
 

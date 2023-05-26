@@ -18,6 +18,7 @@ interface HorizontalSlideProps {
   onSwipeHandler?: (param: any, itemNumber: number) => void;
   data: Array<Record<string, any>>;
   defaultElement?: number;
+  isSlideEnabled?: boolean;
 }
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
@@ -28,6 +29,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     onSwipeHandler,
     data,
     defaultElement,
+    isSlideEnabled = true,
   } = props;
 
   const viewCount = 5;
@@ -53,6 +55,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
             marginLeft: horizontalScale(-15),
           },
         ]}
+        enabled={isSlideEnabled}
         width={windowWidth * 0.95}
         pagingEnabled={true}
         mode={'horizontal-stack'}

@@ -10,3 +10,9 @@ export interface QuestionType {
   id: string;
   createdDate: string;
 }
+
+export interface QuestionPreviewType {
+  categoryName: string;
+  rubricName: string;
+  questionNumber: number;
+}

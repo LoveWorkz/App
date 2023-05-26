@@ -2,8 +2,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 
 import {profileStore} from '@src/entities/Profile';
 import {userStore} from '@src/entities/User';
-import {questionStore} from '@src/entities/QuestionCard';
-import {questionsStore} from '@src/pages/QuestionsPage';
+import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {rubricStore} from '@src/entities/Rubric';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -130,12 +129,14 @@ class FavoriteStore {
     });
   };
 
-  favoritesSwipeLogic = async ({
+  getQuestionSwipeInfoForFavorites = async ({
     id,
     language,
+    questions,
   }: {
     language: LanguageValueType;
     id?: string;
+    questions: QuestionType[];
   }) => {
     try {
       let questionId = id;
@@ -158,7 +159,7 @@ class FavoriteStore {
 
       const questionInfo = questionStore.getQuestionInfo({
         questionId: questionId,
-        questions: questionsStore.questions,
+        questions: questions,
       });
       if (!questionInfo) {
         return;
@@ -177,12 +178,10 @@ class FavoriteStore {
         return;
       }
 
-      questionsStore.setQuestionsPageInfo({
-        questionsCount: questionsStore.questions.length,
+      questionStore.setQuestionPreviewInfo({
         categoryName: currentCategory.displayName[language],
         rubricName: currentRubric.displayName[language],
-        swipedQuestionsCount: currentQuestionNumber,
-        currentQuestion,
+        questionNumber: currentQuestionNumber,
       });
     } catch (e) {
       console.log(e);

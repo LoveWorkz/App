@@ -5,14 +5,16 @@ import {
   NavigationContainerRefWithCurrent,
   ParamListBase,
 } from '@react-navigation/native';
+import {DocumentType} from '@src/shared/types/types';
 
 type RootStackParamList = {
   Home?: undefined;
   Profile?: {userId: string};
   Feed?: {sort: 'latest' | 'top'} | undefined;
   id?: string;
+  initialQuestionId?: string;
   title?: string;
-  type?: 'category' | 'rubric' | 'favorite';
+  type?: DocumentType;
 };
 
 export interface Navigation {

@@ -6,11 +6,12 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {shareUsStore} from '@src/features/ShareUs';
+import {shareStore} from '@src/features/Share';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {shareAppDomainUri} from '@src/app/config/shareConfig';
 
 const options = {
-  message: 'App link',
+  message: shareAppDomainUri,
 };
 
 const ShareUs = () => {
@@ -18,7 +19,7 @@ const ShareUs = () => {
   const colors = useColors();
 
   const onPressHandler = async () => {
-    shareUsStore.share(options);
+    shareStore.share(options);
   };
 
   return (

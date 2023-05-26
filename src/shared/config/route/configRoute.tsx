@@ -15,7 +15,6 @@ import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
-import {CategoryDetailsHeaderRight} from '@src/widgets/headers/CategoryDetailsHeaderRight';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 
@@ -167,7 +166,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: '',
     Element: CategoryDetailsPage,
     isPageScrolling: true,
-    HeaderRight: CategoryDetailsHeaderRight,
   },
   [AppRouteNames.QUESTIONS]: {
     name: appRoutePaths.questions,

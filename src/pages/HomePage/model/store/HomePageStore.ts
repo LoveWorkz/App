@@ -7,6 +7,7 @@ import {booksStore} from '@src/pages/BooksPage';
 import {CategoryKey, categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {quotesStore} from '@src/widgets/Quotes';
+import {shareStore} from '@src/features/Share';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -30,6 +31,7 @@ class HomePageStore {
       await booksStore.getBooks();
       quotesStore.checkQuotesShownStatus(booksStore.booksList);
       this.getHomePageCategory(language);
+      shareStore.shareQuestionHandler(language);
     } catch (e) {
       console.log(e);
     } finally {

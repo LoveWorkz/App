@@ -3,6 +3,7 @@ import {makeAutoObservable} from 'mobx';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {userCategoryStore} from '@src/entities/UserCategory';
+import {DocumentType} from '@src/shared/types/types';
 
 class CategoryDetailsStore {
   constructor() {
@@ -17,7 +18,10 @@ class CategoryDetailsStore {
         data: false,
       });
 
-      navigation.replace(AppRouteNames.QUESTIONS, {id, type: 'category'});
+      navigation.replace(AppRouteNames.QUESTIONS, {
+        id,
+        type: DocumentType.CATEGORY,
+      });
     } catch (e) {
       console.log(e);
     }

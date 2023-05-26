@@ -1,5 +1,5 @@
 import React, {memo, useEffect} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {observer} from 'mobx-react-lite';
 
@@ -9,6 +9,8 @@ import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore} from '@src/entities/QuestionCard';
+import {Button} from '@src/shared/ui/Button/Button';
+import {shareStore} from '@src/features/Share';
 
 export const QuestionsHeaderRight = () => {
   const colors = useColors();
@@ -27,14 +29,20 @@ export const QuestionsHeaderRight = () => {
     favoriteStore.toggleFavorite();
   };
 
+  const onShareHandler = async () => {
+    shareStore.shareQuestion();
+  };
+
   return (
     <View style={styles.QuestionsHeaderRight}>
-      <SvgXml
-        xml={ShareIcon}
-        stroke={colors.primaryTextColor}
-        style={styles.shareIcon}
-      />
-      <Pressable onPress={toggleFavorite}>
+      <Button onPress={onShareHandler}>
+        <SvgXml
+          xml={ShareIcon}
+          stroke={colors.primaryTextColor}
+          style={styles.shareIcon}
+        />
+      </Button>
+      <Button onPress={toggleFavorite}>
         {isQuestionFavorite ? (
           <SvgXml
             xml={HeartIcon}
@@ -49,7 +57,7 @@ export const QuestionsHeaderRight = () => {
             style={styles.HeartIcon}
           />
         )}
-      </Pressable>
+      </Button>
     </View>
   );
 };

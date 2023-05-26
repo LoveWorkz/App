@@ -4,12 +4,11 @@ import firestore from '@react-native-firebase/firestore';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
-import {questionsStore} from '@src/pages/QuestionsPage';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userCategoryStore} from '@src/entities/UserCategory';
-import {CategoryType} from '../types/categoryTypes';
+import {CategoryKey, CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -135,6 +134,21 @@ class CategoryStore {
     }
   };
 
+  getIsLastCategory = () => {
+    try {
+      const currentCategory = this.category;
+      if (!currentCategory) {
+        return;
+      }
+      const lastCategoryKey = CategoryKey.All_In_One;
+      const isLastCategoryKey = currentCategory.name === lastCategoryKey;
+      return isLastCategoryKey;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
+
   getCategoryByName = (name: string) => {
     try {
       return categoriesStore.categories.find(category => {
@@ -145,26 +159,30 @@ class CategoryStore {
     }
   };
 
-  categorySwipeLogic = ({
+  getQuestionSwipeInfoForCategory = ({
     questionId,
     language,
+    questions,
+    initialQuestionId,
   }: {
-    questionId?: string;
     language: LanguageValueType;
+    questions: QuestionType[];
+    questionId?: string;
+    initialQuestionId?: string;
   }) => {
     try {
-      let currentquestionId = questionId;
+      let currentquestionId = initialQuestionId || questionId;
       let categoryName: string | undefined;
 
       // it's working only for the first time
-      if (!questionId) {
+      if (!questionId || initialQuestionId) {
         const category = this.category;
 
         if (!category) {
           return;
         }
 
-        currentquestionId = category.currentQuestion;
+        currentquestionId = initialQuestionId || category.currentQuestion;
         categoryName = category.displayName[language as LanguageValueType];
       }
 
@@ -174,15 +192,15 @@ class CategoryStore {
 
       const questionInfo = questionStore.getQuestionInfo({
         questionId: currentquestionId,
-        questions: questionsStore.questions,
+        questions: questions,
       });
       if (!questionInfo) {
         return;
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
-      const swipedQuestionsCount = currentQuestionNumber;
 
-      if (swipedQuestionsCount > 1) {
+      // if a user swipe some question show quick start block in the home page
+      if (currentQuestionNumber > 1) {
         userStore.updateUser({
           field: 'hasUserSwipedAnyQuestion',
           data: true,
@@ -194,13 +212,11 @@ class CategoryStore {
         return;
       }
 
-      questionsStore.setQuestionsPageInfo({
-        questionsCount: questionsStore.questions.length,
+      questionStore.setQuestionPreviewInfo({
         categoryName:
-          categoryName || questionsStore.questionsPageInfo.categoryName,
+          categoryName || questionStore.questionPreviewInfo.categoryName,
         rubricName: currentRubric.displayName[language],
-        swipedQuestionsCount,
-        currentQuestion,
+        questionNumber: currentQuestionNumber,
       });
     } catch (e) {
       console.log(e);

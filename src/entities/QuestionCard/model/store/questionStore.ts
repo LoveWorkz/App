@@ -1,12 +1,31 @@
-import {makeAutoObservable} from 'mobx';
-import {QuestionType} from '../types/questionTypes';
+import {makeAutoObservable, runInAction} from 'mobx';
+
+import {QuestionPreviewType, QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
   question: null | QuestionType = null;
+  questionPreviewInfo: QuestionPreviewType = {
+    categoryName: '',
+    rubricName: '',
+    questionNumber: 0,
+  };
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setQuestionPreviewInfo = (questionPreviewInfo: QuestionPreviewType) => {
+    try {
+      runInAction(() => {
+        this.questionPreviewInfo = this.questionPreviewInfo = {
+          ...this.questionPreviewInfo,
+          ...questionPreviewInfo,
+        };
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   getQuestionInfo = ({
     questionId,
@@ -16,7 +35,10 @@ class QuestionStore {
     questions: QuestionType[];
   }) => {
     try {
-      const currentQuestion = this.getQuestionById({questionId, questions});
+      const currentQuestion = this.getAndSetQuestionById({
+        questionId,
+        questions,
+      });
       if (!currentQuestion) {
         return;
       }
@@ -35,7 +57,7 @@ class QuestionStore {
     }
   };
 
-  getQuestionById = ({
+  getAndSetQuestionById = ({
     questionId,
     questions,
   }: {
@@ -46,7 +68,10 @@ class QuestionStore {
       const currentQuestion = questions.find(
         question => question.id === questionId,
       );
-      this.question = currentQuestion || null;
+
+      runInAction(() => {
+        this.question = currentQuestion || null;
+      });
       return currentQuestion;
     } catch (e) {
       console.log(e);
