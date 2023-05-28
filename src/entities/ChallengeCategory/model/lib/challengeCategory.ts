@@ -1,18 +1,18 @@
-import {ChallengeCategoriesNames} from '../types/challengeCategory';
+import {ChallengeCategoryKeys} from '../types/challengeCategory';
 
 export const getNextChallengeCategory = (
-  currentChallengeCategory: ChallengeCategoriesNames,
-): ChallengeCategoriesNames => {
+  currentChallengeCategory: ChallengeCategoryKeys,
+): ChallengeCategoryKeys => {
   switch (currentChallengeCategory) {
-    case 'Bronze':
-      return 'Silver';
-    case 'Silver':
-      return 'Gold';
-    case 'Gold':
-      return 'Diamond';
-    case 'Diamond':
-      return 'Platinum';
+    case ChallengeCategoryKeys.Bronze:
+      return ChallengeCategoryKeys.Silver;
+    case ChallengeCategoryKeys.Silver:
+      return ChallengeCategoryKeys.Gold;
+    case ChallengeCategoryKeys.Gold:
+      return ChallengeCategoryKeys.Diamond;
+    case ChallengeCategoryKeys.Diamond:
+      return ChallengeCategoryKeys.Platinum;
     default:
-      return 'Platinum';
+      return ChallengeCategoryKeys.Platinum;
   }
 };

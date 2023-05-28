@@ -1,9 +1,8 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {
   horizontalScale,
@@ -15,19 +14,33 @@ import {FireIcon} from '@src/shared/assets/icons/FireIcon';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {GradientOutline} from '@src/shared/ui/Gradient/GradientOutline';
+import {SubscriptionType} from '../model/types/subscriptionTypes';
 
 interface SubscriptionBlockProps {
-  isActive?: boolean;
-  isYearly?: boolean;
+  subscriptionType: SubscriptionType;
+  chosenSubscriptionType?: SubscriptionType;
+  setSubscriptionType?: (subscriptionType: SubscriptionType) => void;
 }
 
 const SubscriptionBlock = (props: SubscriptionBlockProps) => {
-  const {isActive = false, isYearly = false} = props;
+  const {
+    subscriptionType,
+    chosenSubscriptionType = SubscriptionType.MONTHLY,
+    setSubscriptionType,
+  } = props;
+
   const colors = useColors();
   const {theme} = useTheme();
+  const isActive = subscriptionType === chosenSubscriptionType;
+  const isYearly = SubscriptionType.YEARLY === subscriptionType;
+
+  const onSubscriptionHandler = () => {
+    setSubscriptionType?.(subscriptionType);
+  };
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={onSubscriptionHandler}
       style={[
         styles.SubscriptionBlock,
         {...getShadowOpacity(theme).shadowOpacity_level_2},
@@ -49,6 +62,8 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
           styles.content,
           {
             backgroundColor: colors.bgSecondaryColor,
+            paddingVertical: verticalScale(isActive ? 8 : 9.5),
+            paddingHorizontal: horizontalScale(isActive ? 8 : 9.5),
           },
         ]}>
         <AppText style={styles.title} text={isYearly ? 'Yearly' : 'Monthly'} />
@@ -82,17 +97,19 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
               : 'All categories with no adss + bronze, silver and gold challenges'
           }
         />
-        <Button
-          style={[styles.btn, {backgroundColor: colors.purchaseButtonColor}]}
-          theme={ButtonTheme.CLEAR}>
+        <View
+          style={[
+            styles.billedType,
+            {backgroundColor: colors.purchaseButtonColor},
+          ]}>
           <AppText
             style={{color: colors.white}}
             size={TextSize.LEVEL_2}
             text={isYearly ? 'Billed yearly' : 'Billed monthly'}
           />
-        </Button>
+        </View>
       </GradientOutline>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -111,7 +128,6 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(3),
   },
   content: {
-    padding: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -140,8 +156,11 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
   },
   description: {},
-  btn: {
+  billedType: {
     width: '100%',
     borderRadius: 10,
+    height: verticalScale(40),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

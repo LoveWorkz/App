@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -10,7 +10,10 @@ import {
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {SubscriptionBlock} from '@src/entities/SubscriptionBlock';
+import {
+  SubscriptionBlock,
+  SubscriptionType,
+} from '@src/entities/SubscriptionBlock';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
@@ -23,6 +26,10 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
   const colors = useColors();
   const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
+
+  const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
+    SubscriptionType.MONTHLY,
+  );
 
   return (
     <View style={styles.InAppPurchase}>
@@ -46,8 +53,16 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
         />
       </View>
       <View style={styles.subscriptionBlocks}>
-        <SubscriptionBlock isActive />
-        <SubscriptionBlock isYearly />
+        <SubscriptionBlock
+          subscriptionType={SubscriptionType.MONTHLY}
+          chosenSubscriptionType={subscriptionType}
+          setSubscriptionType={setSubscriptionType}
+        />
+        <SubscriptionBlock
+          subscriptionType={SubscriptionType.YEARLY}
+          chosenSubscriptionType={subscriptionType}
+          setSubscriptionType={setSubscriptionType}
+        />
       </View>
       <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
         <AppText

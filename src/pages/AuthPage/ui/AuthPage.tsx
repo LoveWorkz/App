@@ -24,6 +24,9 @@ const AuthPage = () => {
   const statusBarHeight = getStatusBarHeight();
   const signInTopHeight = isPlatformIos ? 240 : 240 - statusBarHeight;
   const signUpTopHeight = isPlatformIos ? 125 : 125 - statusBarHeight;
+  const dialogContent = userStore.isAccountDeleted
+    ? t('auth.deleted_account')
+    : t('auth.disabled_account');
 
   const [isSignIn, setISignIn] = useState(true);
 
@@ -64,7 +67,7 @@ const AuthPage = () => {
   };
 
   const onConfirmHandler = useCallback(() => {
-    userStore.toggleDisabledDialog(false);
+    userStore.toggleDialog(false);
   }, []);
 
   return (
@@ -139,12 +142,12 @@ const AuthPage = () => {
           )}
         </View>
       </View>
-      {userStore.isDisabledDialogOpen && (
+      {userStore.isDialogOpen && (
         <Dialog
-          visible={userStore.isDisabledDialogOpen}
+          visible={userStore.isDialogOpen}
           confirmText={'OK'}
           onConfirmHandler={onConfirmHandler}
-          title={t('auth.disabled_account') || ''}
+          title={dialogContent || ''}
         />
       )}
     </View>

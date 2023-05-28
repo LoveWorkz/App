@@ -59,6 +59,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const questionsPageInfo = questionStore.questionPreviewInfo;
   const currentCategory = profileStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
+  const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
 
   useFocusEffect(
     useCallback(() => {
@@ -96,8 +97,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       isDarkMode: theme === Theme.Dark,
     });
   }, [questions, theme]);
-
-  const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
 
   const formattedQuestions = useMemo(() => {
     return getFormattedQuestions();

@@ -173,7 +173,7 @@ class QuestionsStore {
     key: DocumentType;
     language: LanguageValueType;
   }) => {
-    const {question, key, language} = categorySwipeParam;
+    const {question, language} = categorySwipeParam;
 
     try {
       categoryStore.getQuestionSwipeInfoForCategory({
@@ -203,7 +203,6 @@ class QuestionsStore {
 
       this.checkIfAllQuestionsSwiped({
         questionId: question.id,
-        type: key,
       });
     } catch (e) {
       console.log(e);
@@ -261,7 +260,7 @@ class QuestionsStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
-        .orderBy('createdDate', 'desc')
+        .orderBy('createdDate')
         .where(key, '==', id)
         .get({source});
 
@@ -284,6 +283,7 @@ class QuestionsStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
+        .orderBy('createdDate')
         .get({source});
 
       const questions = data.docs.map(question => ({
@@ -310,6 +310,7 @@ class QuestionsStore {
 
       const data = await firestore()
         .collection(Collections.QUESTIONS)
+        .orderBy('createdDate')
         .get({source});
 
       const questions = data.docs.map(question => ({
@@ -330,18 +331,9 @@ class QuestionsStore {
     }
   };
 
-  checkIfAllQuestionsSwiped = async (param: {
-    questionId: string;
-    type: DocumentType;
-  }) => {
+  checkIfAllQuestionsSwiped = async (param: {questionId: string}) => {
     try {
-      const {questionId, type} = param;
-
-      const isCategory = type === DocumentType.CATEGORY;
-
-      if (!isCategory) {
-        return;
-      }
+      const {questionId} = param;
 
       const questionInfo = questionStore.getQuestionInfo({
         questionId,
@@ -356,6 +348,12 @@ class QuestionsStore {
       const lastQueston = this.questionsSize;
       const isLastQuestion = currentQuestionNumber === lastQueston;
 
+      const isLastCategory = categoryStore.getIsLastCategory();
+      // we don't need any logic for last category
+      if (isLastCategory) {
+        return;
+      }
+
       if (isLastQuestion) {
         const category = categoryStore.category;
         if (!category) {
@@ -367,7 +365,7 @@ class QuestionsStore {
           return;
         }
 
-        this.UpdateUserDataAfterSwipedAllQuestions({
+        this.updateUserDataAfterSwipedAllQuestions({
           categoryId: category.id,
         });
 
@@ -378,7 +376,7 @@ class QuestionsStore {
     }
   };
 
-  UpdateUserDataAfterSwipedAllQuestions = async ({
+  updateUserDataAfterSwipedAllQuestions = async ({
     categoryId,
   }: {
     categoryId: string;

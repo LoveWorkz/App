@@ -1,16 +1,17 @@
 import {DisplayText} from '@src/shared/types/types';
 
-export type ChallengeCategoriesNames =
-  | 'Bronze'
-  | 'Silver'
-  | 'Gold'
-  | 'Diamond'
-  | 'Platinum';
+export enum ChallengeCategoryKeys {
+  Bronze = 'Bronze',
+  Silver = 'Silver',
+  Gold = 'Gold',
+  Diamond = 'Diamond',
+  Platinum = 'Platinum',
+}
 
 export interface ChallengeCategoryType {
   id: string;
   image: string;
-  name: ChallengeCategoriesNames;
+  name: ChallengeCategoryKeys;
   isBlocked: boolean;
   isActive: Boolean;
   nomer: number;

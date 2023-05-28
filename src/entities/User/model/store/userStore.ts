@@ -31,8 +31,9 @@ class UserStore {
   authUser: null | User = null;
   authUserId: string = '';
   authMethod: AuthMethod | string = '';
-  isDisabledDialogOpen: boolean = false;
+  isDialogOpen: boolean = false;
   isFirstUserVisit: boolean = true;
+  isAccountDeleted: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -141,8 +142,8 @@ class UserStore {
     }
   }
 
-  toggleDisabledDialog = (isOpen: boolean) => {
-    this.isDisabledDialogOpen = isOpen;
+  toggleDialog = (isOpen: boolean) => {
+    this.isDialogOpen = isOpen;
   };
 
   getIsUserOffline = async () => {
@@ -170,15 +171,21 @@ class UserStore {
       return;
     }
 
+    // this works when the account has been deleted
     if (e.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)) {
       await this.clearUserInfo();
       navigation.navigate(AppRouteNames.AUTH);
+
+      runInAction(() => {
+        this.isAccountDeleted = true;
+      });
+      this.toggleDialog(true);
     }
 
     if (e.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       await this.clearUserInfo();
       navigation.navigate(AppRouteNames.AUTH);
-      this.toggleDisabledDialog(true);
+      this.toggleDialog(true);
     }
   };
 

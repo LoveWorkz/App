@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {
-  ChallengeCategoriesNames,
+  ChallengeCategoryKeys,
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
@@ -91,6 +91,7 @@ class ChallengesStore {
 
       const challengeCategoryData = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
+        .orderBy('createdDate')
         .get({source});
 
       const userChallengeCategory =
@@ -263,7 +264,7 @@ class ChallengesStore {
         }
 
         const nextChallengeCategoryName = getNextChallengeCategory(
-          currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames,
+          currentChallengeCategory.currentChallengeCategory as ChallengeCategoryKeys,
         );
 
         if (this.isAllChallengesSelected) {

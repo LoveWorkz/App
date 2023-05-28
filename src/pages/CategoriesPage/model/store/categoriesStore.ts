@@ -64,7 +64,7 @@ class CategoriesStore {
 
       const data = await firestore()
         .collection(Collections.CATEGORIES)
-        .orderBy('categoryNumber')
+        .orderBy('createdDate')
         .get({source});
 
       // merge default categories with user custom categories
@@ -90,7 +90,7 @@ class CategoriesStore {
 
       const data = await firestore()
         .collection(Collections.RUBRICS)
-        .orderBy('rubricNumber')
+        .orderBy('createdDate')
         .get({source});
 
       // merge default rubrics with user custom rubrics

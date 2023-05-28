@@ -1,44 +1,35 @@
+import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
 import {CongratsModalContentType} from '@src/widgets/CongratsModal';
 
 export const getCongratsModalContentForChallenges = (): Record<
-  string,
+  ChallengeCategoryKeys,
   CongratsModalContentType
 > => {
   return {
     Bronze: {
-      height: 150,
-      width: 158,
       title: 'congrats you unlocked the Silver',
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fsilver.png?alt=media&token=a668b563-1b28-411b-bea9-49a04653c699',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FSilver.png?alt=media&token=0e51447a-ff1f-4a82-9b25-59b3b9601abd',
     },
     Silver: {
-      height: 150,
-      width: 170,
       title: 'congrats you unlocked the Gold',
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fgold.png?alt=media&token=305daa3c-ba62-474d-9156-667735e4ff58',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FGold.png?alt=media&token=7f267e09-81be-4003-a147-0e2af70f7084',
     },
     Gold: {
-      height: 150,
-      width: 170,
       title: 'congrats you unlocked the Diamond',
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fdiamond.png?alt=media&token=74d4470f-465a-4c04-84c6-a816dd7732f2',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FDiamond.png?alt=media&token=00172a85-e790-4ee7-82cc-d76c6d98be8d',
     },
     Diamond: {
-      height: 150,
-      width: 170,
       title: 'congrats you unlocked the Platinum',
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fplatinum.png?alt=media&token=fed91f9c-81ba-447e-910d-dd8b948575cb',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FPlatinum.png?alt=media&token=19e20e96-dce7-4d69-97c4-f7a73e75eca3',
     },
     Platinum: {
-      height: 151,
-      width: 170,
       title: 'congrats you unlocked the all challenges',
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2Fplatinum.png?alt=media&token=fed91f9c-81ba-447e-910d-dd8b948575cb',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FPlatinum.png?alt=media&token=19e20e96-dce7-4d69-97c4-f7a73e75eca3',
     },
   };
 };

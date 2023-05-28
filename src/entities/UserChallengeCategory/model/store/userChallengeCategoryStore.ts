@@ -3,7 +3,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {ChallengeCategoriesNames} from '@src/entities/ChallengeCategory';
+import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
 import userStore from '@src/entities/User/model/store/userStore';
 import {userChallengeCategoryInitData} from '../lib/userChallengeCategory';
 import {UserChallengeCategoryType} from '../types/userChallengeCategoryType';
@@ -41,7 +41,7 @@ class UserChallengeCategoryStore {
 
       const currenetChallengeCategory =
         userChallengeCategory.challengeCategory[
-          currentChallengeCategory.currentChallengeCategory as ChallengeCategoriesNames
+          currentChallengeCategory.currentChallengeCategory as ChallengeCategoryKeys
         ];
 
       runInAction(() => {
@@ -77,7 +77,7 @@ class UserChallengeCategoryStore {
   }: {
     field: string;
     data: any;
-    challengeCategoryName?: ChallengeCategoriesNames;
+    challengeCategoryName?: ChallengeCategoryKeys;
   }) => {
     try {
       const isOffline = await userStore.getIsUserOffline();

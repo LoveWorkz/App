@@ -10,6 +10,7 @@ import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {CategoryKey} from '@src/entities/Category';
 import {getProgressBarImage} from '../../model/lib/homePage';
 import homePageStore from '../../model/store/HomePageStore';
 
@@ -40,7 +41,7 @@ const ProgressBar = () => {
           style={styles.progressImage}
         />
       )}
-      {homePageCategoryKey !== 'Starter' && (
+      {homePageCategoryKey !== CategoryKey.Starter && (
         <AppText
           style={[
             styles[homePageCategoryKey],

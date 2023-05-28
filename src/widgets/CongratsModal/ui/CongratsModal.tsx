@@ -1,6 +1,6 @@
 import React, {memo, useMemo} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 
@@ -8,7 +8,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {CongratsModalContentType} from '../model/types/congratsModalType';
 
 interface CongratsModalProps {
@@ -19,7 +19,7 @@ interface CongratsModalProps {
 
 const CongratsModal = (props: CongratsModalProps) => {
   const {visible, setVisible, content} = props;
-  const {height, width, title, description, image} = content;
+  const {title, description, image} = content;
   const colors = useColors();
   const {t} = useTranslation();
 
@@ -38,9 +38,7 @@ const CongratsModal = (props: CongratsModalProps) => {
       contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>
-      <View style={[{height, width}]}>
-        <FastImage style={styles.image} source={uri} />
-      </View>
+      <FastImage resizeMode="contain" style={styles.image} source={uri} />
 
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
@@ -96,8 +94,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(10),
   },
   image: {
-    resizeMode: 'contain',
-    width: '100%',
-    height: '100%',
+    height: verticalScale(150),
+    width: horizontalScale(150),
   },
 });

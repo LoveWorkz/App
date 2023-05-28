@@ -18,11 +18,11 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {ChallengeCategoriesNames} from '../model/types/challengeCategory';
+import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
 
 interface ChallangeProps {
   image?: string;
-  name?: ChallengeCategoriesNames;
+  name?: ChallengeCategoryKeys;
   isActive?: boolean;
   onPressHanlder?: (data: {id: string; name: string}) => void;
   isBlocked?: boolean;
@@ -110,7 +110,11 @@ const ChallengeCategory = (props: ChallangeProps) => {
                 styles.content,
                 {backgroundColor: colors.bgChallengeContentColor},
               ]}>
-              <FastImage style={styles.image} source={uri} />
+              <FastImage
+                resizeMode="contain"
+                style={styles.image}
+                source={uri}
+              />
             </View>
           </TouchableOpacity>
         </Gradient>
@@ -130,7 +134,11 @@ const ChallengeCategory = (props: ChallangeProps) => {
                   styles.content,
                   {backgroundColor: colors.bgChallengeContentColor},
                 ]}>
-                <FastImage style={styles.image} source={uri} />
+                <FastImage
+                  resizeMode="contain"
+                  style={styles.image}
+                  source={uri}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -196,8 +204,8 @@ const styles = StyleSheet.create<Record<string, any>>({
     color: 'white',
   },
   image: {
-    height: '90%',
-    width: '90%',
+    height: '100%',
+    width: '100%',
   },
   name: {
     marginVertical: verticalScale(5),

@@ -94,7 +94,7 @@ class AuthByAppleStore {
     crashlytics().recordError(error);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
-      userStore.toggleDisabledDialog(true);
+      userStore.toggleDialog(true);
     }
     console.log(error);
   };
