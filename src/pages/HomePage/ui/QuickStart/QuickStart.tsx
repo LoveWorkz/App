@@ -20,12 +20,16 @@ import {
   homeCategoryImageDark,
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import HomePageStore from '../../model/store/HomePageStore';
+import homePageStore from '../../model/store/HomePageStore';
 
-const HomeCategory = () => {
+const QuickStart = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
+
+  const onPressHandler = () => {
+    homePageStore.goToQuestionsPage();
+  };
 
   return (
     <View style={{width: windowWidthMinusPaddings}}>
@@ -55,16 +59,22 @@ const HomeCategory = () => {
                 size={TextSize.LEVEL_2}
                 text={t('home.continue_where_you_left_off')}
               />
-              <GradientText weight={'700'} text={'0/40'} />
+              <GradientText
+                weight={'700'}
+                text={`${homePageStore.currentQuestionNumber}/${homePageStore.homePageCategoryQuestionsSize}`}
+              />
             </View>
             <View style={styles.bottomBlock}>
               <AppText
                 style={{color: colors.primaryTextColor}}
                 weight={'700'}
                 size={TextSize.LEVEL_5}
-                text={HomePageStore.homePageCategoryName}
+                text={homePageStore.quickStartCategoryName}
               />
-              <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
+              <Button
+                onPress={onPressHandler}
+                style={styles.btn}
+                theme={ButtonTheme.GRADIENT}>
                 <SvgXml
                   xml={getArrowRightIcon({})}
                   style={styles.arrowIcon}
@@ -115,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ComponentWrapper = memo(observer(HomeCategory));
+export default memo(observer(QuickStart));

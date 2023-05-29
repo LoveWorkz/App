@@ -18,10 +18,10 @@ const ProgressBar = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-  const {homePageCategoryName, homePageCategoryKey} = homePageStore;
+  const {progressBarCategoryName, progressBarCategoryKey} = homePageStore;
 
   const progressBarImage = getProgressBarImage({
-    category: homePageCategoryKey,
+    category: progressBarCategoryKey,
     isDarkMode: theme === Theme.Dark,
   });
 
@@ -41,15 +41,15 @@ const ProgressBar = () => {
           style={styles.progressImage}
         />
       )}
-      {homePageCategoryKey !== CategoryKey.Starter && (
+      {progressBarCategoryKey !== CategoryKey.Starter && (
         <AppText
           style={[
-            styles[homePageCategoryKey],
+            styles[progressBarCategoryKey],
             {color: colors.homePageCategoryTextColor},
           ]}
           weight={'700'}
           size={TextSize.LEVEL_4}
-          text={homePageCategoryName}
+          text={progressBarCategoryName}
         />
       )}
     </View>

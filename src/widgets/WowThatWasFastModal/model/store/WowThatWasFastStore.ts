@@ -202,8 +202,9 @@ class WowThatWasFastStore {
     questions: QuestionType[];
   }) => {
     try {
-      const swipedQuestionsPercentage = Math.floor(
-        getPercentageFromNumber(currentQuestionIndex, questions.length),
+      const swipedQuestionsPercentage = getPercentageFromNumber(
+        currentQuestionIndex,
+        questions.length,
       );
 
       if (!swipedQuestionsPercentage) {

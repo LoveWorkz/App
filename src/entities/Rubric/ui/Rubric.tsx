@@ -25,9 +25,8 @@ export const Rubric = (props: RubricProps) => {
 
   const language = i18n.language as LanguageValueType;
 
-  const numberFromPercentage = getNumberFromPercentage(
-    swipedQuestionsPercentage,
-    questions.length,
+  const numberFromPercentage = Math.ceil(
+    getNumberFromPercentage(swipedQuestionsPercentage, questions.length),
   );
 
   //if it's the first question set 1

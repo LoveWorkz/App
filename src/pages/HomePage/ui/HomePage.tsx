@@ -23,7 +23,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
-import {ComponentWrapper as HomeCategory} from './HomeCategory/HomeCategory';
+import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
@@ -87,7 +87,7 @@ const HomePage = (props: HomePageProps) => {
         </FastImage>
         {hasUserSwipedAnyQuestion && (
           <View style={styles.homeCategoryWrapper}>
-            <HomeCategory />
+            <QuickStart />
           </View>
         )}
         <CategoriesCarousel />
