@@ -12,6 +12,7 @@ import categories from './categories.json';
 import shop from './shop.json';
 import quotes from './quotes.json';
 import splash from './splash.json';
+import error from './error.json';
 
 export const de = {
   ...common,
@@ -28,4 +29,5 @@ export const de = {
   ...shop,
   ...quotes,
   ...splash,
+  ...error,
 };

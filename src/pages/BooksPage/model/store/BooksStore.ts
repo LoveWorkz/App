@@ -1,10 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
 import {BookType} from '@src/entities/Book';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {userStore} from '@src/entities/User';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class BooksStore {
   booksList: BookType[] = [];
@@ -18,12 +20,25 @@ class BooksStore {
     makeAutoObservable(this);
   }
 
+  setSearchBooksText = (searchBooksText: string) => {
+    this.searchBooksText = searchBooksText;
+  };
+
+  clearBooksInfo = () => {
+    rubricFilterItemStore.clearInfo();
+    this.booksFilteredList = this.booksList;
+  };
+
   init = async () => {
     try {
-      this.isBooksPageLoading = true;
+      crashlytics().log('Fetching books page.');
+
+      runInAction(() => {
+        this.isBooksPageLoading = true;
+      });
       await this.getBooks();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isBooksPageLoading = false;
@@ -46,22 +61,14 @@ class BooksStore {
         this.recommendedBooksList = booksList as BookType[];
       });
     } catch (e) {
-      console.log(e);
-    }
-  };
-
-  setSearchBooksText = (searchBooksText: string) => {
-    try {
-      runInAction(() => {
-        this.searchBooksText = searchBooksText;
-      });
-    } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   filterBooks = (name: string) => {
     try {
+      crashlytics().log('User tried to filter books by rubrics.');
+
       rubricFilterItemStore.toggleRubricStatus({name});
       if (rubricFilterItemStore.rubricskeys.includes(name)) {
         this.booksFilteredList = rubricFilterItemStore.turnOffFilterByKey({
@@ -84,7 +91,7 @@ class BooksStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -98,6 +105,8 @@ class BooksStore {
     isSearchBarFilterActive?: boolean;
   }) => {
     try {
+      crashlytics().log('User tried to filter books by text.');
+
       this.booksFilteredList = list.filter(book => {
         const lowercaseBookInfo = searchBooksText.toLocaleLowerCase();
         const bookName = book.name.toLocaleLowerCase();
@@ -121,13 +130,8 @@ class BooksStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
-  };
-
-  clearBooksInfo = () => {
-    rubricFilterItemStore.clearInfo();
-    this.booksFilteredList = this.booksList;
   };
 }
 

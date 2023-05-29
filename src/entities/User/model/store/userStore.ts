@@ -4,6 +4,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import NetInfo from '@react-native-community/netinfo';
 import appleAuth from '@invertase/react-native-apple-authentication';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import {t} from 'i18next';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -11,6 +13,8 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   AUTH_USER_STORAGE_KEY,
+  THEME_STORAGE_KEY,
+  USER_LANGUAGE_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
 import {profileStore} from '@src/entities/Profile';
@@ -19,6 +23,10 @@ import {ProfilePhotoActionType} from '@src/entities/Profile/model/types/profileS
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
+import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {
   User,
   InitlUserInfo,
@@ -155,6 +163,23 @@ class UserStore {
     }
   };
 
+  getIsUserOfflineAndShowMessage = async () => {
+    try {
+      const isOffline = await this.getIsUserOffline();
+
+      if (isOffline) {
+        Toast.show({
+          type: ToastType.WARNING,
+          text1: t('you_are_offline') || '',
+        });
+      }
+      return isOffline;
+    } catch (e: unknown) {
+      console.log(e);
+      return false;
+    }
+  };
+
   checkIsUserOfflineAndReturnSource = async (): Promise<'cache' | 'server'> => {
     try {
       const isOffline = await this.getIsUserOffline();
@@ -265,21 +290,27 @@ class UserStore {
 
       await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
+      await themeStorage.removeTheme(THEME_STORAGE_KEY);
+      await lngStorage.removeLanguage(USER_LANGUAGE_STORAGE_KEY);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   clearFirebaseUserInfo = async (id: string) => {
-    await firestore().collection(Collections.USERS).doc(id).delete();
+    try {
+      await firestore().collection(Collections.USERS).doc(id).delete();
 
-    await userRubricStore.deleteUserRubric(id);
-    await userCategoryStore.deleteUserCategory(id);
-    await userChallengeCategoryStore.deleteUserChallengeCategory(id);
+      await userRubricStore.deleteUserRubric(id);
+      await userCategoryStore.deleteUserCategory(id);
+      await userChallengeCategoryStore.deleteUserChallengeCategory(id);
 
-    await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
+      await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
 
-    await authStorage.removeAuthData(USER_VISITED_STATUS);
+      await authStorage.removeAuthData(USER_VISITED_STATUS);
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   updateUser = async ({data, field}: {data: any; field: string}) => {
@@ -306,7 +337,7 @@ class UserStore {
           });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

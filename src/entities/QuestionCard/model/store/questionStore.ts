@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {QuestionPreviewType, QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
@@ -23,7 +24,7 @@ class QuestionStore {
         };
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -53,7 +54,7 @@ class QuestionStore {
 
       return {currentQuestion, currentQuestionNumber: currentQuestionIndex + 1};
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -74,7 +75,7 @@ class QuestionStore {
       });
       return currentQuestion;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -88,7 +89,7 @@ class QuestionStore {
     try {
       return questions.findIndex(question => question.id === questionId);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

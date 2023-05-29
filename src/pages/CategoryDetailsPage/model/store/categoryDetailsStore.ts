@@ -1,17 +1,44 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {categoryStore} from '@src/entities/Category';
 
 class CategoryDetailsStore {
+  isCategoryDetailsPageLoading: boolean = true;
+
   constructor() {
     makeAutoObservable(this);
   }
 
+  init = (id: string) => {
+    try {
+      crashlytics().log('Fetching category details page.');
+
+      runInAction(() => {
+        this.isCategoryDetailsPageLoading = true;
+      });
+
+      categoryStore.getAndSetCategory({id});
+    } catch (e) {
+      errorHandler({error: e});
+    } finally {
+      runInAction(() => {
+        this.isCategoryDetailsPageLoading = false;
+      });
+    }
+  };
+
   hideCategoryDetails = async (id: string) => {
     try {
+      crashlytics().log(
+        'User clicked the "Do not show again" button on category details page.',
+      );
+
       await userCategoryStore.updateUserCategory({
         id,
         field: 'isCategoryDetailsVisible',
@@ -23,7 +50,7 @@ class CategoryDetailsStore {
         type: DocumentType.CATEGORY,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

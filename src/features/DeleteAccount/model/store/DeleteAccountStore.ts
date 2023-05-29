@@ -1,20 +1,13 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
-import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
-import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
-import {
-  THEME_STORAGE_KEY,
-  USER_LANGUAGE_STORAGE_KEY,
-} from '@src/shared/consts/storage';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
 import {validateFields} from '../services/validation/validateFields';
 
@@ -68,13 +61,9 @@ class DeleteAccountStore {
 
   deleteUserAccount = async (actionAfterDeleting: () => void) => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
-
+      crashlytics().log('User tried to delete account.');
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         actionAfterDeleting();
 
         return;
@@ -115,15 +104,12 @@ class DeleteAccountStore {
         await userStore.clearFirebaseUserInfo(currentUser.uid);
         await userStore.clearUserInfo();
 
-        await themeStorage.removeTheme(THEME_STORAGE_KEY);
-        await lngStorage.removeLanguage(USER_LANGUAGE_STORAGE_KEY);
-
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
         this.setIsLoading(false);
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       this.setIsLoading(false);
     }
@@ -134,25 +120,32 @@ class DeleteAccountStore {
       return;
     }
 
-    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
+    const isInvalidEmail = error.message.includes(
+      FirebaseErrorCodes.AUTH_INVALID_EMAIL,
+    );
+    const isWrongPassword = error.message.includes(
+      FirebaseErrorCodes.AUTH_WRONG_PASSWORD,
+    );
+    const isUserNotFound = error.message.includes(
+      FirebaseErrorCodes.AUTH_USER_NOT_FOUND,
+    );
+
+    if (isInvalidEmail) {
       const serverError: DeleteAccountFormError = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.INVALID_EMAIL,
       };
 
       this.setServerError(serverError);
-    }
-
-    if (
-      error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD) ||
-      error.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)
-    ) {
+    } else if (isWrongPassword || isUserNotFound) {
       const serverError: DeleteAccountFormError = {
         ...this.errorInfo,
         passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
       };
 
       this.setServerError(serverError);
+    } else {
+      errorHandler({error});
     }
   }
 }

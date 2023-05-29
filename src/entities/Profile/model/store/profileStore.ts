@@ -2,18 +2,20 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-toast-message';
 import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {StorageServices} from '@src/shared/lib/firebase/storageServices/storageServices';
+import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {favoriteStore} from '@src/entities/Favorite';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CurrentCategory} from '@src/entities/Category';
 import {quotesStore} from '@src/widgets/Quotes';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {
   Profile,
   ProfileErrorInfo,
@@ -135,6 +137,8 @@ class ProfileStore {
 
       switch (type) {
         case ProfilePhotoActionType.UPLOAD:
+          crashlytics().log('Uploading profile photo to firebase.');
+
           if (!this.tempAvatar) {
             return '';
           }
@@ -156,7 +160,7 @@ class ProfileStore {
           break;
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -172,6 +176,8 @@ class ProfileStore {
 
   fetchProfile = async () => {
     try {
+      crashlytics().log('Fetching user profile.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUser?.id;
       if (userId) {
@@ -199,7 +205,7 @@ class ProfileStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.initialFetching = false;
@@ -209,6 +215,8 @@ class ProfileStore {
 
   updateProfile = async () => {
     try {
+      crashlytics().log('User tried to update profile.');
+
       const isOffline = await userStore.getIsUserOffline();
       this.clearErrors();
 
@@ -254,7 +262,7 @@ class ProfileStore {
       await this.fetchProfile();
       navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isLoading = false;
@@ -264,6 +272,8 @@ class ProfileStore {
 
   deletePhoto = async () => {
     try {
+      crashlytics().log('User tried to delete profile photo.');
+
       const isOffline = await userStore.getIsUserOffline();
 
       if (isOffline) {
@@ -290,7 +300,7 @@ class ProfileStore {
 
       await this.fetchProfile();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

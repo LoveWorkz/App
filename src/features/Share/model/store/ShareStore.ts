@@ -115,12 +115,6 @@ class shareStore {
         navigation: {
           forcedRedirectEnabled: true,
         },
-        social: {
-          title: 'Social Application',
-          descriptionText: 'A Social Application',
-          imageUrl:
-            'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_large.png?alt=media&token=55ef341d-836d-44c6-922b-20a7536f0300',
-        },
       });
 
       return link;

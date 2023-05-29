@@ -1,13 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {validateEmail} from '@src/shared/lib/validation/emailValidation';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class ResetPasswordStore {
   email: string = '';
@@ -48,13 +47,10 @@ class ResetPasswordStore {
   }
   sendPasswordResetEmail = async () => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
+      crashlytics().log('User tried to reset password');
 
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         this.setResetPasswordModalVisible(false);
         return;
       }
@@ -66,9 +62,13 @@ class ResetPasswordStore {
         return;
       }
 
-      this.isloading = true;
+      runInAction(() => {
+        this.isloading = true;
+      });
 
       await auth().sendPasswordResetEmail(this.email);
+
+      crashlytics().log('User reset password');
 
       this.toggleCheckEmailDialog(true);
       this.setResetPasswordModalVisible(false);
@@ -86,14 +86,20 @@ class ResetPasswordStore {
       return;
     }
 
-    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
-      this.setEmailError(ValidationErrorCodes.INVALID_EMAIL);
-    }
+    const isInvalidEmail = error.message.includes(
+      FirebaseErrorCodes.AUTH_INVALID_EMAIL,
+    );
+    const isUserNotFound = error.message.includes(
+      FirebaseErrorCodes.AUTH_USER_NOT_FOUND,
+    );
 
-    if (error.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)) {
+    if (isInvalidEmail) {
+      this.setEmailError(ValidationErrorCodes.INVALID_EMAIL);
+    } else if (isUserNotFound) {
       this.setEmailError(ValidationErrorCodes.USER_NOT_FOUNG);
+    } else {
+      errorHandler({error});
     }
-    console.log(error);
   }
 }
 

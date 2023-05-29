@@ -1,15 +1,14 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class LogoutStore {
   isLoading: boolean = false;
@@ -24,13 +23,10 @@ class LogoutStore {
 
   logout = async (actionAfterLogout: () => void) => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
+      crashlytics().log('User tried to log out.');
 
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         actionAfterLogout();
 
         return;
@@ -57,7 +53,7 @@ class LogoutStore {
       navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
     } catch (e) {
       this.setIsLoading(false);
-      console.error(e);
+      errorHandler({error: e});
     }
   };
 }

@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {CategoryType, CateorySize} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
@@ -9,6 +10,7 @@ import {profileStore} from '@src/entities/Profile';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userStore} from '@src/entities/User';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
@@ -22,12 +24,16 @@ class CategoriesStore {
 
   init = async () => {
     try {
-      this.isCategoriesPageLoading = true;
+      crashlytics().log('Fetching Categories page');
+
+      runInAction(() => {
+        this.isCategoriesPageLoading = true;
+      });
       await this.fetchRubrics();
       await this.fetchCategories();
       await profileStore.fetchProfile();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isCategoriesPageLoading = false;
@@ -37,19 +43,23 @@ class CategoriesStore {
 
   fetchCategories = async () => {
     try {
+      crashlytics().log('Fetching Categories');
+
       await userCategoryStore.fetchUserCategories();
       await this.fetchDefaultCategories();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchRubrics = async () => {
     try {
+      crashlytics().log('Fetching Rubrics');
+
       await userRubricStore.fetchUserRubrics();
       await this.fetchDefaultRubrics();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -80,7 +90,7 @@ class CategoriesStore {
         this.categories = this.editCategories(categories as CategoryType[]);
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -106,7 +116,7 @@ class CategoriesStore {
         this.rubrics = rubrics as RubricType[];
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -146,7 +156,7 @@ class CategoriesStore {
         return nextCategory;
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

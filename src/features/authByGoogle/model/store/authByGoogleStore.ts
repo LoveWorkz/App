@@ -12,6 +12,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class AuthByGoogleStore {
   constructor() {
@@ -19,25 +20,29 @@ class AuthByGoogleStore {
   }
 
   setUser = async (user: User) => {
-    userStore.setAuthUserInfo({
-      user,
-      authMethod: AuthMethod.AUTH_BY_GOOGLE,
-    });
-
-    const authUser = await firestore()
-      .collection(Collections.USERS)
-      .doc(user.id)
-      .get();
-
-    if (authUser.exists) {
-      userStore.updateUser({
-        field: 'isAuth',
-        data: true,
+    try {
+      userStore.setAuthUserInfo({
+        user,
+        authMethod: AuthMethod.AUTH_BY_GOOGLE,
       });
-      await userStore.checkAndSetUserVisitStatus({isSignUp: false});
-    } else {
-      await userStore.addUserToFirestore(user);
-      await userStore.checkAndSetUserVisitStatus({isSignUp: true});
+
+      const authUser = await firestore()
+        .collection(Collections.USERS)
+        .doc(user.id)
+        .get();
+
+      if (authUser.exists) {
+        userStore.updateUser({
+          field: 'isAuth',
+          data: true,
+        });
+        await userStore.checkAndSetUserVisitStatus({isSignUp: false});
+      } else {
+        await userStore.addUserToFirestore(user);
+        await userStore.checkAndSetUserVisitStatus({isSignUp: true});
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
   signIn = async () => {
@@ -76,12 +81,11 @@ class AuthByGoogleStore {
         return;
       }
 
-      crashlytics().recordError(error);
-
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
         userStore.toggleDialog(true);
+      } else {
+        errorHandler({error});
       }
-      console.log(error);
     }
   };
 }

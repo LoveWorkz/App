@@ -1,6 +1,7 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import {InterstitialAd} from 'react-native-google-mobile-ads';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
 import {categoryStore} from '@src/entities/Category';
@@ -16,6 +17,7 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {getNumbersDiff} from '@src/shared/lib/common';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -28,8 +30,17 @@ class QuestionsStore {
   constructor() {
     makeAutoObservable(this);
   }
+
   setCongratsModalVisible = (isVisible: boolean) => {
     this.congratsModalVisible = isVisible;
+  };
+
+  clearQuestionsInfo = () => {
+    runInAction(() => {
+      this.questions = [];
+      this.breakPointForShowingAds = 1;
+      this.questionsSize = 0;
+    });
   };
 
   init = async (param: {
@@ -39,13 +50,15 @@ class QuestionsStore {
     questionId?: string;
   }) => {
     try {
+      crashlytics().log('Fetching questions page');
+
       runInAction(() => {
         this.questionsPageloading = true;
       });
 
       await this.getQuestionsPageInfo(param);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.questionsPageloading = false;
@@ -73,7 +86,8 @@ class QuestionsStore {
           rubricStore.getAndSetRubric(id);
           await this.fetchQuestionsById({
             id,
-            key: 'rubricId',
+            field: 'rubricId',
+            key: DocumentType.RUBRIC,
           });
           // init current question id for the first time
           await rubricStore.initUserRubricQuestionId({
@@ -100,7 +114,8 @@ class QuestionsStore {
           } else {
             await this.fetchQuestionsById({
               id,
-              key: 'categoryId',
+              field: 'categoryId',
+              key: DocumentType.CATEGORY,
             });
           }
 
@@ -125,7 +140,7 @@ class QuestionsStore {
           });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -137,34 +152,41 @@ class QuestionsStore {
     interstitial: InterstitialAd;
     questionNumber: number;
   }) => {
-    const {question, questionNumber, interstitial, key, documentId} = swipeData;
+    try {
+      crashlytics().log('User tried to swipe questions.');
 
-    if (!question) {
-      return;
-    }
+      const {question, questionNumber, interstitial, key, documentId} =
+        swipeData;
 
-    this.loadAds({questionNumber, interstitial});
+      if (!question) {
+        return;
+      }
 
-    if (key !== DocumentType.FAVORITE && documentId) {
-      wowThatWasFastModalStore.wowThatWasFastLogic({
-        documentId,
-        type: key,
-        questions: this.questions,
-        questionId: question.id,
-      });
-    }
+      this.loadAds({questionNumber, interstitial});
 
-    switch (key) {
-      case DocumentType.CATEGORY:
-        this.categorySwipeLogic(swipeData);
-        break;
-      case DocumentType.RUBRIC:
-        this.rubricSwipeLogic(swipeData);
-        break;
-      case DocumentType.FAVORITE:
-        this.favoritesSwipeLogic(swipeData);
-        break;
-      default:
+      if (key !== DocumentType.FAVORITE && documentId) {
+        wowThatWasFastModalStore.wowThatWasFastLogic({
+          documentId,
+          type: key,
+          questions: this.questions,
+          questionId: question.id,
+        });
+      }
+
+      switch (key) {
+        case DocumentType.CATEGORY:
+          this.categorySwipeLogic(swipeData);
+          break;
+        case DocumentType.RUBRIC:
+          this.rubricSwipeLogic(swipeData);
+          break;
+        case DocumentType.FAVORITE:
+          this.favoritesSwipeLogic(swipeData);
+          break;
+        default:
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -173,9 +195,11 @@ class QuestionsStore {
     key: DocumentType;
     language: LanguageValueType;
   }) => {
-    const {question, language} = categorySwipeParam;
-
     try {
+      crashlytics().log('User tried to swipe category questions.');
+
+      const {question, language} = categorySwipeParam;
+
       categoryStore.getQuestionSwipeInfoForCategory({
         questionId: question.id,
         questions: this.questions,
@@ -205,7 +229,7 @@ class QuestionsStore {
         questionId: question.id,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -215,6 +239,8 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
+      crashlytics().log('User tried to swipe rubric questions.');
+
       const {question, language} = rubricSwipeParam;
 
       rubricStore.getQuestionSwipeInfoForRubric({
@@ -229,7 +255,7 @@ class QuestionsStore {
         field: 'currentQuestion',
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -238,6 +264,8 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
+      crashlytics().log('User tried to swipe favorites questions.');
+
       const {question, language} = favoritesSwipeParam;
 
       favoriteStore.getQuestionSwipeInfoForFavorites({
@@ -251,17 +279,27 @@ class QuestionsStore {
         data: question.id,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
-  fetchQuestionsById = async ({id, key}: {id: string; key: string}) => {
+  fetchQuestionsById = async ({
+    id,
+    field,
+    key,
+  }: {
+    id: string;
+    field: string;
+    key: DocumentType;
+  }) => {
     try {
+      crashlytics().log(`Fetching ${key} questions`);
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
         .orderBy('createdDate')
-        .where(key, '==', id)
+        .where(field, '==', id)
         .get({source});
 
       const questions = data.docs.map(question => ({
@@ -274,12 +312,14 @@ class QuestionsStore {
         this.questionsSize = data.size;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchAllQuestions = async () => {
     try {
+      crashlytics().log('Fetching all questions');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
@@ -296,12 +336,14 @@ class QuestionsStore {
         this.questionsSize = data.size;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchFavoritesQuestions = async () => {
     try {
+      crashlytics().log('Fetching favorites questions');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const favorites = favoriteStore.favorite;
       if (!favorites) {
@@ -327,12 +369,14 @@ class QuestionsStore {
         this.questionsSize = favoritesQuestions.length;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   checkIfAllQuestionsSwiped = async (param: {questionId: string}) => {
     try {
+      crashlytics().log('Checking are all questions swiped.');
+
       const {questionId} = param;
 
       const questionInfo = questionStore.getQuestionInfo({
@@ -372,7 +416,7 @@ class QuestionsStore {
         this.setCongratsModalVisible(true);
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -381,54 +425,56 @@ class QuestionsStore {
   }: {
     categoryId: string;
   }) => {
-    const nextCategory = categoriesStore.getNextCategory({
-      currentCategoryId: categoryId,
-    });
+    try {
+      const nextCategory = categoriesStore.getNextCategory({
+        currentCategoryId: categoryId,
+      });
 
-    if (!nextCategory) {
-      return;
+      if (!nextCategory) {
+        return;
+      }
+
+      profileStore.setCurrentCategory({
+        currentCategory: nextCategory.name,
+      });
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: 'isAllQuestionsSwiped',
+        data: true,
+      });
+
+      await userCategoryStore.updateUserCategory({
+        id: nextCategory.id,
+        field: 'isBlocked',
+        data: false,
+      });
+
+      await userStore.updateUser({
+        field: 'category.currentCategory',
+        data: nextCategory.name,
+      });
+    } catch (e) {
+      errorHandler({error: e});
     }
-
-    profileStore.setCurrentCategory({
-      currentCategory: nextCategory.name,
-    });
-
-    await userCategoryStore.updateUserCategory({
-      id: categoryId,
-      field: 'isAllQuestionsSwiped',
-      data: true,
-    });
-
-    await userCategoryStore.updateUserCategory({
-      id: nextCategory.id,
-      field: 'isBlocked',
-      data: false,
-    });
-
-    await userStore.updateUser({
-      field: 'category.currentCategory',
-      data: nextCategory.name,
-    });
   };
 
   loadAds = (param: {questionNumber: number; interstitial: InterstitialAd}) => {
-    const {questionNumber, interstitial} = param;
+    try {
+      crashlytics().log('loading ads.');
 
-    const diff = getNumbersDiff(questionNumber, this.breakPointForShowingAds);
+      const {questionNumber, interstitial} = param;
 
-    // if user has swiped 3 or more questions load ads
-    if (diff >= 3) {
-      interstitial.load();
-      this.breakPointForShowingAds = questionNumber;
+      const diff = getNumbersDiff(questionNumber, this.breakPointForShowingAds);
+
+      // if user has swiped 3 or more questions load ads
+      if (diff >= 3) {
+        interstitial.load();
+        this.breakPointForShowingAds = questionNumber;
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
-  };
-
-  clearQuestionsInfo = () => {
-    runInAction(() => {
-      this.questions = [];
-      this.breakPointForShowingAds = 1;
-      this.questionsSize = 0;
-    });
   };
 }
 

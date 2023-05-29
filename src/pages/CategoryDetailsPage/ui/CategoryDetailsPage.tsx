@@ -40,7 +40,7 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const categoryImage = category?.image.large;
 
   useEffect(() => {
-    route?.params.id && categoryStore.init(route.params.id);
+    route?.params.id && categoryDetailsStore.init(route.params.id);
   }, [route?.params.id]);
 
   const uri = useMemo(() => {
@@ -70,7 +70,8 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   }
 
   return (
-    <LoaderWrapper isLoading={categoryStore.isCategoryDetailsPageLoading}>
+    <LoaderWrapper
+      isLoading={categoryDetailsStore.isCategoryDetailsPageLoading}>
       <View style={styles.CategoryDetailsPage}>
         <View
           style={[

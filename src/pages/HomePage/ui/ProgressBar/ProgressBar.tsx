@@ -72,25 +72,25 @@ const styles = StyleSheet.create<Record<string, any>>({
   Basic: {
     position: 'absolute',
     bottom: 45,
-    left: isPlatformIos ? 60 : 60,
+    left: horizontalScale(65),
     color: '#885FFF',
   },
   Deep: {
     position: 'absolute',
     bottom: 70,
-    left: isPlatformIos ? 180 : 185,
+    left: horizontalScale(185),
     color: '#885FFF',
   },
   Intimate: {
     position: 'absolute',
     bottom: 130,
-    left: isPlatformIos ? 178 : 180,
+    left: horizontalScale(185),
     color: '#885FFF',
   },
   Hot: {
     position: 'absolute',
     bottom: 135,
-    left: isPlatformIos ? 298 : horizontalScale(305),
+    left: horizontalScale(305),
     color: '#885FFF',
   },
 });

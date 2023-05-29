@@ -1,16 +1,14 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {InitlUserInfo} from '@src/entities/User';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {SignInData, SignInErrorInfo} from '../types/signIn';
 import {validateFields} from '../../../../model/services/validation/validateFields';
 
@@ -63,33 +61,32 @@ class SignInStore {
   }
 
   setUser = async (user: User) => {
-    userStore.setAuthUserInfo({
-      user,
-      authMethod: AuthMethod.AUTH_BY_EMAIL,
-    });
+    try {
+      userStore.setAuthUserInfo({
+        user,
+        authMethod: AuthMethod.AUTH_BY_EMAIL,
+      });
 
-    await userStore.updateUser({
-      field: 'isAuth',
-      data: true,
-    });
+      await userStore.updateUser({
+        field: 'isAuth',
+        data: true,
+      });
 
-    await userStore.checkAndSetUserVisitStatus({isSignUp: false});
+      await userStore.checkAndSetUserVisitStatus({isSignUp: false});
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   signIn = async () => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
-
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
-
         return;
       }
 
-      crashlytics().log('User tried to sign in.');
+      crashlytics().log('User tried to sign in with Email.');
+
       this.clearErrors();
 
       const {isError, errorInfo} = validateFields({
@@ -113,9 +110,10 @@ class SignInStore {
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
 
-      crashlytics().log('User signed in.');
-      currentUser && crashlytics().setUserId(currentUser.uid),
-        this.setIsloading(false);
+      crashlytics().log('User signed in with Email.');
+      currentUser && crashlytics().setUserId(currentUser.uid);
+
+      this.setIsloading(false);
       navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (error: unknown) {
       this.setIsloading(false);
@@ -127,36 +125,43 @@ class SignInStore {
     if (!(error instanceof Error)) {
       return;
     }
-    crashlytics().recordError(error);
 
-    if (error.message.includes(FirebaseErrorCodes.AUTH_INVALID_EMAIL)) {
+    const isInvalidEmail = error.message.includes(
+      FirebaseErrorCodes.AUTH_INVALID_EMAIL,
+    );
+    const isWrongPassword = error.message.includes(
+      FirebaseErrorCodes.AUTH_WRONG_PASSWORD,
+    );
+    const isUserNotFound = error.message.includes(
+      FirebaseErrorCodes.AUTH_USER_NOT_FOUND,
+    );
+    const isUserDisabled = error.message.includes(
+      FirebaseErrorCodes.AUTH_USER_DISABLED,
+    );
+
+    if (isInvalidEmail) {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.INVALID_EMAIL,
       };
 
       this.setServerError(serverError);
-    }
-
-    if (
-      error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD) ||
-      error.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)
-    ) {
+    } else if (isWrongPassword || isUserNotFound) {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,
         passwordError: ValidationErrorCodes.INVALID_EMAIL_OR_PASSWORD,
       };
 
       this.setServerError(serverError);
-    }
-
-    if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
+    } else if (isUserDisabled) {
       const serverError: SignInErrorInfo = {
         ...this.errorInfo,
         emailError: ValidationErrorCodes.USER_IS_DISABLED,
       };
 
       this.setServerError(serverError);
+    } else {
+      errorHandler({error});
     }
   }
 }

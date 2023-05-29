@@ -1,6 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import Toast from 'react-native-toast-message';
 import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 import {
   CameraOptions,
   ImageLibraryOptions,
@@ -11,6 +12,7 @@ import {
 
 import {userStore} from '@src/entities/User';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {UploadPhotoType} from '../types/uploadPhoto';
 
 class UploadPhotoStore {
@@ -22,8 +24,9 @@ class UploadPhotoStore {
     type: UploadPhotoType,
   ): Promise<ImagePickerResponse | undefined> => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
+      crashlytics().log('Uploading profile photo.');
 
+      const isOffline = await userStore.getIsUserOffline();
       if (isOffline) {
         Toast.show({
           type: ToastType.WARNING,
@@ -50,7 +53,7 @@ class UploadPhotoStore {
 
       return result;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
       return;
     }
   };

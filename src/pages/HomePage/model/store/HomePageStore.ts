@@ -1,4 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {profileStore} from '@src/entities/Profile';
@@ -8,6 +9,7 @@ import {CategoryKey, categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {quotesStore} from '@src/widgets/Quotes';
 import {shareStore} from '@src/features/Share';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -20,6 +22,8 @@ class HomePageStore {
 
   init = async (language: LanguageValueType) => {
     try {
+      crashlytics().log('Fetching home page');
+
       runInAction(() => {
         this.isHomePageLoading = true;
       });
@@ -30,10 +34,12 @@ class HomePageStore {
       // fetching books for quotes modal
       await booksStore.getBooks();
       quotesStore.checkQuotesShownStatus(booksStore.booksList);
+
       this.getHomePageCategory(language);
+
       shareStore.shareQuestionHandler(language);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isHomePageLoading = false;
@@ -43,13 +49,15 @@ class HomePageStore {
 
   fetchHomePageCategoryChallenges = async () => {
     try {
+      crashlytics().log('Fetching home page Challenges');
+
       runInAction(() => {
         this.isHomePageLoading = true;
       });
 
       await challengesStore.fetchChallengeCategories();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isHomePageLoading = false;
@@ -57,8 +65,10 @@ class HomePageStore {
     }
   };
 
-  fetchHomePageCategoryies = async (language: LanguageValueType) => {
+  fetchHomePageCategories = async (language: LanguageValueType) => {
     try {
+      crashlytics().log('Fetching home page Categories');
+
       runInAction(() => {
         this.isHomePageLoading = true;
       });
@@ -66,7 +76,7 @@ class HomePageStore {
       await categoriesStore.fetchCategories();
       this.getHomePageCategory(language);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isHomePageLoading = false;
@@ -107,7 +117,7 @@ class HomePageStore {
         this.homePageCategoryKey = homePageCategoryKey;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

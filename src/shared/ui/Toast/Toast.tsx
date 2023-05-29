@@ -34,6 +34,7 @@ const getToastConfig = (colors: ColorType): ToastConfig => ({
 
 export enum ToastType {
   WARNING = 'warning',
+  ERROR = 'error',
 }
 
 export const Toast = memo(() => {

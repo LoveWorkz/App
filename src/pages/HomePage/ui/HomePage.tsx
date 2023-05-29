@@ -51,7 +51,7 @@ const HomePage = (props: HomePageProps) => {
         prevRouteName === AppRouteNames.QUESTIONS ||
         prevRouteName === TabRoutesNames.CATEGORIES
       ) {
-        homePageStore.fetchHomePageCategoryies(language);
+        homePageStore.fetchHomePageCategories(language);
       }
 
       // if the user returns from the Challenges page, get the actual Challenges data

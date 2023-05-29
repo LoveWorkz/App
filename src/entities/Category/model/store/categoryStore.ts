@@ -7,12 +7,12 @@ import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;
-  isCategoryDetailsPageLoading: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -44,7 +44,7 @@ class CategoryStore {
         } as CategoryType;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -87,23 +87,7 @@ class CategoryStore {
       });
       return category;
     } catch (e) {
-      console.log(e);
-    }
-  };
-
-  init = (id: string) => {
-    try {
-      runInAction(() => {
-        this.isCategoryDetailsPageLoading = true;
-      });
-
-      this.getAndSetCategory({id});
-    } catch (e) {
-      console.log(e);
-    } finally {
-      runInAction(() => {
-        this.isCategoryDetailsPageLoading = false;
-      });
+      errorHandler({error: e});
     }
   };
 
@@ -119,7 +103,7 @@ class CategoryStore {
         this.category = category;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
     }
   };
@@ -130,7 +114,7 @@ class CategoryStore {
         return category.id === id;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -144,7 +128,7 @@ class CategoryStore {
       const isLastCategoryKey = currentCategory.name === lastCategoryKey;
       return isLastCategoryKey;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
       return false;
     }
   };
@@ -155,7 +139,7 @@ class CategoryStore {
         return category.name === name;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -219,7 +203,7 @@ class CategoryStore {
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

@@ -1,19 +1,18 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {userStore} from '@src/entities/User';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {
   ChangePasswordErrorInfo,
   ChangePasswordFormData,
 } from '../types/changePassword';
 import {validateFields} from '../services/validate/validateField';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 class ChangePasswordStore {
   formData: ChangePasswordFormData = {
@@ -76,25 +75,28 @@ class ChangePasswordStore {
       return;
     }
 
-    if (error.message.includes(FirebaseErrorCodes.AUTH_WRONG_PASSWORD)) {
+    const isWrongPassword = error.message.includes(
+      FirebaseErrorCodes.AUTH_WRONG_PASSWORD,
+    );
+
+    if (isWrongPassword) {
       const serverError: ChangePasswordErrorInfo = {
         ...this.errorInfo,
         oldPasswordError: ValidationErrorCodes.INVALID_PASSWORD,
       };
 
       this.setServerError(serverError);
+    } else {
+      errorHandler({error});
     }
   }
 
   changePassword = async () => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
+      crashlytics().log('User tried to change password.');
 
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         return;
       }
 
@@ -123,7 +125,7 @@ class ChangePasswordStore {
       this.setIsLoading(false);
     } catch (e) {
       this.setIsLoading(false);
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

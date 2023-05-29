@@ -132,7 +132,7 @@ export const Book = (props: BookProps) => {
   );
 };
 
-export const Wrapper = memo(Book);
+export default memo(Book);
 
 const styles = StyleSheet.create({
   Book: {

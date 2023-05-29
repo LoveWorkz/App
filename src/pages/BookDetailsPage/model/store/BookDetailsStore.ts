@@ -1,7 +1,9 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {BookType} from '@src/entities/Book';
 import {booksStore} from '@src/pages/BooksPage';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class BookDetailsStore {
   currentBook: BookType | null = null;
@@ -12,7 +14,11 @@ class BookDetailsStore {
   }
   getCurrentBook = (id: string) => {
     try {
-      this.isBookDetailsPageLoading = true;
+      crashlytics().log('Fetching books details page.');
+
+      runInAction(() => {
+        this.isBookDetailsPageLoading = true;
+      });
 
       const currentBook =
         booksStore.booksList.find(book => {
@@ -20,9 +26,11 @@ class BookDetailsStore {
         }) || null;
       this.currentBook = currentBook;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
-      this.isBookDetailsPageLoading = false;
+      runInAction(() => {
+        this.isBookDetailsPageLoading = false;
+      });
     }
   };
 }

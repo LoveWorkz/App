@@ -1,4 +1,5 @@
 import {makeAutoObservable} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
@@ -9,6 +10,7 @@ import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {breakPoint, minute} from '../consts/wowThatWasFast';
 
 class WowThatWasFastStore {
@@ -38,28 +40,34 @@ class WowThatWasFastStore {
     type: DocumentType;
     questions: QuestionType[];
   }) => {
-    const isCategory = type === DocumentType.CATEGORY;
-    let document: RubricType | CategoryType | undefined;
+    try {
+      crashlytics().log('Wow That Was Fast modal logic.');
 
-    if (isCategory) {
-      document = await categoryStore.fetchCategory({id: documentId});
-    } else {
-      document = await rubricStore.fetchRubric(documentId);
+      const isCategory = type === DocumentType.CATEGORY;
+      let document: RubricType | CategoryType | undefined;
+
+      if (isCategory) {
+        document = await categoryStore.fetchCategory({id: documentId});
+      } else {
+        document = await rubricStore.fetchRubric(documentId);
+      }
+
+      if (!document) {
+        return;
+      }
+
+      await this.setQuestionsSwipedInfo({
+        questionId,
+        documentId,
+        questions,
+        document,
+        isCategory,
+      });
+
+      this.checkIfQuestionsSwipedFast({id: documentId, isCategory, document});
+    } catch (e) {
+      errorHandler({error: e});
     }
-
-    if (!document) {
-      return;
-    }
-
-    await this.setQuestionsSwipedInfo({
-      questionId,
-      documentId,
-      questions,
-      document,
-      isCategory,
-    });
-
-    this.checkIfQuestionsSwipedFast({id: documentId, isCategory, document});
   };
 
   setQuestionsSwipedInfo = async ({
@@ -75,24 +83,28 @@ class WowThatWasFastStore {
     isCategory: boolean;
     document: RubricType | CategoryType;
   }) => {
-    const questionInfo = questionStore.getQuestionInfo({
-      questionId: questionId,
-      questions,
-    });
-    if (!questionInfo) {
-      return;
-    }
+    try {
+      const questionInfo = questionStore.getQuestionInfo({
+        questionId: questionId,
+        questions,
+      });
+      if (!questionInfo) {
+        return;
+      }
 
-    await this.setSwipedQuestionsPercentage({
-      id: documentId,
-      currentQuestionIndex: questionInfo.currentQuestionNumber,
-      isCategory,
-      questions,
-    });
+      await this.setSwipedQuestionsPercentage({
+        id: documentId,
+        currentQuestionIndex: questionInfo.currentQuestionNumber,
+        isCategory,
+        questions,
+      });
 
-    // if user swipe first time set first swipe date
-    if (!document.questionSwipeStartDate) {
-      this.setSwipedQuestionsDate({id: documentId, isCategory});
+      // if user swipe first time set first swipe date
+      if (!document.questionSwipeStartDate) {
+        this.setSwipedQuestionsDate({id: documentId, isCategory});
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -105,44 +117,48 @@ class WowThatWasFastStore {
     isCategory: boolean;
     document: RubricType | CategoryType;
   }) => {
-    // update breakPoint for next checking
-    const newCheckTime = document.breakPointForCheckingDate + breakPoint;
-    const allQuestionsSwipedPercentage = 100;
+    try {
+      // update breakPoint for next checking
+      const newCheckTime = document.breakPointForCheckingDate + breakPoint;
+      const allQuestionsSwipedPercentage = 100;
 
-    // check if user swipe 30 percent
-    const isCheckTime =
-      document.swipedQuestionsPercentage >=
-        document.breakPointForCheckingDate &&
-      newCheckTime < allQuestionsSwipedPercentage;
+      // check if user swipe 30 percent
+      const isCheckTime =
+        document.swipedQuestionsPercentage >=
+          document.breakPointForCheckingDate &&
+        newCheckTime < allQuestionsSwipedPercentage;
 
-    if (isCheckTime) {
-      const currentDate = new Date();
-      const diff = minutesDiff(
-        currentDate,
-        new Date(document.questionSwipeStartDate),
-      );
+      if (isCheckTime) {
+        const currentDate = new Date();
+        const diff = minutesDiff(
+          currentDate,
+          new Date(document.questionSwipeStartDate),
+        );
 
-      // show modal if user swiped fast than 1 minute
-      if (diff <= minute && !this.isThatWasFastModalForbidden) {
-        this.setThatWasFastModalVisible(true);
+        // show modal if user swiped fast than 1 minute
+        if (diff <= minute && !this.isThatWasFastModalForbidden) {
+          this.setThatWasFastModalVisible(true);
+        }
+
+        if (isCategory) {
+          await userCategoryStore.updateUserCategory({
+            id,
+            field: 'breakPointForCheckingDate',
+            data: newCheckTime,
+          });
+        } else {
+          await userRubricStore.updateUserRubric({
+            id,
+            field: 'breakPointForCheckingDate',
+            data: newCheckTime,
+          });
+        }
+
+        // set current date for next checking
+        this.setSwipedQuestionsDate({id, isCategory});
       }
-
-      if (isCategory) {
-        await userCategoryStore.updateUserCategory({
-          id,
-          field: 'breakPointForCheckingDate',
-          data: newCheckTime,
-        });
-      } else {
-        await userRubricStore.updateUserRubric({
-          id,
-          field: 'breakPointForCheckingDate',
-          data: newCheckTime,
-        });
-      }
-
-      // set current date for next checking
-      this.setSwipedQuestionsDate({id, isCategory});
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -153,20 +169,24 @@ class WowThatWasFastStore {
     id: string;
     isCategory: boolean;
   }) => {
-    const currentDate = new Date().toJSON();
+    try {
+      const currentDate = new Date().toJSON();
 
-    if (isCategory) {
-      await userCategoryStore.updateUserCategory({
-        id,
-        field: 'questionSwipeStartDate',
-        data: currentDate,
-      });
-    } else {
-      await userRubricStore.updateUserRubric({
-        id,
-        field: 'questionSwipeStartDate',
-        data: currentDate,
-      });
+      if (isCategory) {
+        await userCategoryStore.updateUserCategory({
+          id,
+          field: 'questionSwipeStartDate',
+          data: currentDate,
+        });
+      } else {
+        await userRubricStore.updateUserRubric({
+          id,
+          field: 'questionSwipeStartDate',
+          data: currentDate,
+        });
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -204,12 +224,16 @@ class WowThatWasFastStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   forbidThatWasFastModalVisible = async () => {
     try {
+      crashlytics().log(
+        'Wow That Was Fast modal, User clicked the "Do not show again" button.',
+      );
+
       await userStore.updateUser({
         field: 'isWowThatWasFastModalForbidden',
         data: true,
@@ -217,7 +241,7 @@ class WowThatWasFastStore {
       this.setIsThatWasFastModalForbidden(true);
       this.setThatWasFastModalVisible(false);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }
