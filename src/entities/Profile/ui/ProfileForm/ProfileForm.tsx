@@ -6,10 +6,20 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
 import {RelationshipStatusSelect} from '@src/entities/RelationshipStatus';
+import {userStore} from '@src/entities/User';
 import profileStore from '../../model/store/profileStore';
 import Preferences from '../Preferences/Preferences';
 
-const ProfileForm = () => {
+interface ProfileFormProps {
+  isSetup?: boolean;
+}
+
+const ProfileForm = (props: ProfileFormProps) => {
+  const {isSetup = false} = props;
+  const profileData = profileStore.profileData;
+  // if the user is trying to set the profile for the first time, chose the account name (google, apple)
+  const userName = isSetup ? userStore.authUser?.name : profileData?.name;
+
   const {t} = useTranslation();
 
   const onNameChangeHandler = useCallback((value: string) => {
@@ -37,7 +47,7 @@ const ProfileForm = () => {
       <View style={styles.item}>
         <Input
           isSpaceAllowed
-          initialValue={profileStore.profileData?.name}
+          initialValue={userName || ''}
           label={t('profile.name') || ''}
           value={profileStore.profileForm.name}
           onChange={onNameChangeHandler}
@@ -48,7 +58,7 @@ const ProfileForm = () => {
       <View style={styles.item}>
         <Input
           keyboardType={'numeric'}
-          initialValue={profileStore.profileData?.age}
+          initialValue={profileData?.age}
           label={t('profile.age') || ''}
           value={profileStore.profileForm.age}
           onChange={onAgeChangeHandler}
@@ -58,14 +68,14 @@ const ProfileForm = () => {
       </View>
       <View style={styles.item}>
         <CountrySelect
-          initialValue={profileStore.profileData?.country}
+          initialValue={profileData?.country}
           country={profileStore.profileForm.country}
           changeCountry={onCountryChangeHandler}
         />
       </View>
       <View style={styles.item}>
         <RelationshipStatusSelect
-          initialValue={profileStore.profileData?.relationshipStatus}
+          initialValue={profileData?.relationshipStatus}
           status={profileStore.profileForm.relationshipStatus}
           changeStatus={onStatusChangeHandler}
         />

@@ -21,6 +21,8 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
+  const userAvatar = userStore.authUser?.photo;
+
   const colors = useColors();
   const {t} = useTranslation();
 
@@ -28,8 +30,15 @@ const Profile = (props: ProfileProps) => {
     return () => profileStore.resetForm();
   }, []);
 
+  useEffect(() => {
+    if (isSetUp && userAvatar) {
+      // if the user is trying to set the profile for the first time, chose the account photo (google, apple)
+      profileStore.setAvatar(userAvatar);
+    }
+  }, [userAvatar, isSetUp]);
+
   const onSaveHandler = () => {
-    profileStore.updateProfile();
+    profileStore.updateProfile({isSetUp});
   };
 
   const onUploadPhotoHandler = useCallback((photoData: Asset) => {
@@ -44,7 +53,7 @@ const Profile = (props: ProfileProps) => {
     return (
       <View style={styles.profile}>
         <View style={styles.profileFormWrapper}>
-          <ProfileForm />
+          <ProfileForm isSetup />
         </View>
         <Button
           disabled={profileStore.isLoading}

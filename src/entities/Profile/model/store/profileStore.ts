@@ -1,7 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {CloudStoragePaths, Collections} from '@src/shared/types/firebase';
@@ -13,7 +11,6 @@ import {favoriteStore} from '@src/entities/Favorite';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CurrentCategory} from '@src/entities/Category';
 import {quotesStore} from '@src/widgets/Quotes';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {
@@ -213,7 +210,7 @@ class ProfileStore {
     }
   };
 
-  updateProfile = async () => {
+  updateProfile = async ({isSetUp}: {isSetUp: boolean}) => {
     try {
       crashlytics().log('User tried to update profile.');
 
@@ -243,12 +240,14 @@ class ProfileStore {
           .doc(userId)
           .update({
             ...this.profileForm,
-            photo: '',
           });
       } else {
-        const photoUrl = await this.profilePhotoAction(
+        const uploadedPhotoUrl = await this.profilePhotoAction(
           ProfilePhotoActionType.UPLOAD,
         );
+
+        // if the user is trying to set the profile for the first time, chose the account photo (google, apple)
+        const photoUrl = isSetUp ? this.avatar : uploadedPhotoUrl;
 
         await firestore()
           .collection(Collections.USERS)
@@ -274,18 +273,12 @@ class ProfileStore {
     try {
       crashlytics().log('User tried to delete profile photo.');
 
-      const isOffline = await userStore.getIsUserOffline();
-
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         return;
       }
 
       const userId = this.profileData?.id;
-
       if (!userId) {
         return;
       }

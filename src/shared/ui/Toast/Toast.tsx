@@ -2,6 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet} from 'react-native';
 import ToastMessage, {
   BaseToast,
+  ErrorToast,
   ToastConfig,
   ToastProps,
 } from 'react-native-toast-message';
@@ -30,6 +31,24 @@ const getToastConfig = (colors: ColorType): ToastConfig => ({
       ]}
     />
   ),
+  error: props => (
+    <ErrorToast
+      {...props}
+      style={[
+        styles.error,
+        {
+          borderLeftColor: colors.secondaryError,
+          backgroundColor: colors.bgTertiaryColor,
+        },
+      ]}
+      text1Style={[
+        styles.errorText,
+        {
+          color: colors.secondaryError,
+        },
+      ]}
+    />
+  ),
 });
 
 export enum ToastType {
@@ -43,11 +62,19 @@ export const Toast = memo(() => {
   return <ToastMessage config={getToastConfig(colors)} />;
 });
 
+const height = verticalScale(60);
+
 const styles = StyleSheet.create({
   warning: {
-    height: verticalScale(80),
+    height,
   },
   warningText: {
-    fontSize: moderateScale(20),
+    fontSize: moderateScale(15),
+  },
+  error: {
+    height,
+  },
+  errorText: {
+    fontSize: moderateScale(13),
   },
 });

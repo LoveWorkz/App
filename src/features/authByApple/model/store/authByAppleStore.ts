@@ -38,9 +38,11 @@ class AuthByAppleStore {
         });
 
         await userStore.checkAndSetUserVisitStatus({isSignUp: false});
+        navigation.replace(AppRouteNames.TAB_ROUTE);
       } else {
         await userStore.addUserToFirestore(user);
         await userStore.checkAndSetUserVisitStatus({isSignUp: true});
+        navigation.replace(AppRouteNames.SETUP);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -85,8 +87,6 @@ class AuthByAppleStore {
 
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
-
-      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (error) {
       this.signInErrorHandler(error);
     }

@@ -1,12 +1,10 @@
 import {makeAutoObservable} from 'mobx';
 import Share, {ShareOptions} from 'react-native-share';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import queryString from 'query-string';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {userStore} from '@src/entities/User';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {questionStore} from '@src/entities/QuestionCard';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -15,6 +13,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {shareQuestionDomainUri} from '@src/app/config/shareConfig';
 import {appPackageName} from '@src/app/config/appConfig';
 import {DocumentType} from '@src/shared/types/types';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class shareStore {
   constructor() {
@@ -23,24 +22,28 @@ class shareStore {
 
   share = async (options: ShareOptions) => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
+      crashlytics().log('User tried to share.');
 
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
         return;
       }
 
       await Share.open(options);
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
   shareQuestion = async () => {
     try {
+      crashlytics().log('User tried to share question page link.');
+
+      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      if (isOffline) {
+        return;
+      }
+
       const link = await this.buildLink();
       if (!link) {
         return;
@@ -52,7 +55,7 @@ class shareStore {
 
       this.share(options);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -94,7 +97,7 @@ class shareStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -119,7 +122,7 @@ class shareStore {
 
       return link;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

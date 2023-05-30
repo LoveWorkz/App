@@ -37,9 +37,11 @@ class AuthByGoogleStore {
           data: true,
         });
         await userStore.checkAndSetUserVisitStatus({isSignUp: false});
+        navigation.replace(AppRouteNames.TAB_ROUTE);
       } else {
         await userStore.addUserToFirestore(user);
         await userStore.checkAndSetUserVisitStatus({isSignUp: true});
+        navigation.replace(AppRouteNames.SETUP);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -74,8 +76,6 @@ class AuthByGoogleStore {
 
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
-
-      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (error) {
       if (!(error instanceof Error)) {
         return;
