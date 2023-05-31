@@ -14,6 +14,8 @@ import {shareQuestionDomainUri} from '@src/app/config/shareConfig';
 import {appPackageName} from '@src/app/config/appConfig';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {StorageServices} from '@src/shared/lib/firebase/storageServices';
+import {CloudStoragePaths} from '@src/shared/types/firebase';
 
 class shareStore {
   constructor() {
@@ -101,13 +103,33 @@ class shareStore {
     }
   };
 
+  getQuestionCardUrl = async (questionCardScreenshot: string) => {
+    try {
+      const userId = userStore.authUserId;
+      const cloudStorage = new StorageServices({
+        folderName: CloudStoragePaths.QUESTIONS_SCREENSHOTS,
+        fileName: userId,
+      });
+      // add file to storage for getting url
+      await cloudStorage.upload(questionCardScreenshot);
+      const url = await cloudStorage.download();
+
+      return url;
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
   buildLink = async () => {
     try {
       const question = questionStore.question;
+      const questionCardScreenshot = questionStore.questionCardScreenshot;
       const category = categoryStore.category;
-      if (!(question && category)) {
+      if (!(question && category && questionCardScreenshot)) {
         return;
       }
+
+      const imageUrl = await this.getQuestionCardUrl(questionCardScreenshot);
 
       const link = await dynamicLinks().buildShortLink({
         link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}`,
@@ -117,6 +139,10 @@ class shareStore {
         },
         navigation: {
           forcedRedirectEnabled: true,
+        },
+        social: {
+          title: 'love is not Enough',
+          imageUrl,
         },
       });
 

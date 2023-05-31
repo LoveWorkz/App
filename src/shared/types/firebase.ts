@@ -13,6 +13,7 @@ export enum Collections {
 
 export enum CloudStoragePaths {
   AVATARS = 'avatars',
+  QUESTIONS_SCREENSHOTS = 'questions_screenshots',
 }
 
 export enum FirebaseErrorCodes {

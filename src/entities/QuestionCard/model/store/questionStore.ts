@@ -10,6 +10,7 @@ class QuestionStore {
     rubricName: '',
     questionNumber: 0,
   };
+  questionCardScreenshot: string = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -26,6 +27,9 @@ class QuestionStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+  setQuestionCardScreenshot = (url: string) => {
+    this.questionCardScreenshot = url;
   };
 
   getQuestionInfo = ({
