@@ -3,9 +3,11 @@ import countries from 'i18n-iso-countries';
 import en from 'i18n-iso-countries/langs/en.json';
 import de from 'i18n-iso-countries/langs/de.json';
 import pt from 'i18n-iso-countries/langs/pt.json';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {SelectOption} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 countries.registerLocale(en);
 countries.registerLocale(de);
@@ -20,6 +22,8 @@ class CountryStore {
 
   fetchCountries = async (language: LanguageValueType) => {
     try {
+      crashlytics().log('Fetching countries.');
+
       const data = countries.getNames(language, {select: 'official'});
 
       const formattedCountries = Object.keys(data).map(key => {
@@ -31,7 +35,7 @@ class CountryStore {
 
       this.setCountries(formattedCountries);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 

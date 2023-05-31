@@ -273,7 +273,7 @@ class ProfileStore {
     try {
       crashlytics().log('User tried to delete profile photo.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }

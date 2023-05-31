@@ -91,7 +91,7 @@ class SignUpStore {
   register = async (actionAfterRegistration: () => void) => {
     try {
       crashlytics().log('User tried to register with Email.');
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }

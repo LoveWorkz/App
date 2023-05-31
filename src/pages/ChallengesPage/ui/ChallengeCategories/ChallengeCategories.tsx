@@ -10,7 +10,7 @@ export const ChallengeCategories = () => {
 
   const onChallengeCategoryPressHandler = useCallback(
     ({id, name}: {id: string; name: string}) => {
-      challengesStore.updateChallengeCategory({id, name});
+      challengesStore.selectChallengeCategory({id, name});
     },
     [],
   );

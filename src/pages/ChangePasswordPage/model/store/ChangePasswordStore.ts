@@ -93,9 +93,9 @@ class ChangePasswordStore {
 
   changePassword = async () => {
     try {
-      crashlytics().log('User tried to change password.');
+      crashlytics().log('Changing user password.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }

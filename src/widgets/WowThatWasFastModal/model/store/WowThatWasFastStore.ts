@@ -118,6 +118,8 @@ class WowThatWasFastStore {
     document: RubricType | CategoryType;
   }) => {
     try {
+      crashlytics().log('Checking if question was scrolled fast.');
+
       // update breakPoint for next checking
       const newCheckTime = document.breakPointForCheckingDate + breakPoint;
       const allQuestionsSwipedPercentage = 100;
@@ -170,6 +172,8 @@ class WowThatWasFastStore {
     isCategory: boolean;
   }) => {
     try {
+      crashlytics().log('Setting swiped questions Date.');
+
       const currentDate = new Date().toJSON();
 
       if (isCategory) {
@@ -202,6 +206,8 @@ class WowThatWasFastStore {
     questions: QuestionType[];
   }) => {
     try {
+      crashlytics().log('Setting swiped questions percentage.');
+
       const swipedQuestionsPercentage = getPercentageFromNumber(
         currentQuestionIndex,
         questions.length,

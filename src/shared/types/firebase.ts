@@ -22,4 +22,7 @@ export enum FirebaseErrorCodes {
   AUTH_INVALID_EMAIL = 'auth/invalid-email',
   AUTH_WRONG_PASSWORD = 'auth/wrong-password',
   AUTH_EMAIL_ALREADY_IN_USE = 'auth/email-already-in-use',
+
+  USER_CANCELED_APPLE_SIGN_IN = 'The operation couldn’t be completed',
+  USER_CANCELED_GOOGLE_SIGN_IN = 'The user canceled the sign in request',
 }

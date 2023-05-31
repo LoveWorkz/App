@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
@@ -50,6 +51,8 @@ class CategoryStore {
 
   fetchCategory = async ({id}: {id: string}) => {
     try {
+      crashlytics().log('Fetching Category.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUserId;
       if (!userId) {

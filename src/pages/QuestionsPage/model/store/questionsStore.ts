@@ -153,7 +153,7 @@ class QuestionsStore {
     questionNumber: number;
   }) => {
     try {
-      crashlytics().log('User tried to swipe questions.');
+      crashlytics().log('Swiping question.');
 
       const {question, questionNumber, interstitial, key, documentId} =
         swipeData;
@@ -196,7 +196,7 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
-      crashlytics().log('User tried to swipe category questions.');
+      crashlytics().log('Swiping category questions.');
 
       const {question, language} = categorySwipeParam;
 
@@ -239,7 +239,7 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
-      crashlytics().log('User tried to swipe rubric questions.');
+      crashlytics().log('Swiping rubric questions.');
 
       const {question, language} = rubricSwipeParam;
 
@@ -264,7 +264,7 @@ class QuestionsStore {
     language: LanguageValueType;
   }) => {
     try {
-      crashlytics().log('User tried to swipe favorites questions.');
+      crashlytics().log('Swiping favorites questions.');
 
       const {question, language} = favoritesSwipeParam;
 

@@ -1,9 +1,11 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import userStore from '@src/entities/User/model/store/userStore';
 import {userChallengeCategoryInitData} from '../lib/userChallengeCategory';
 import {UserChallengeCategoryType} from '../types/userChallengeCategoryType';
@@ -17,6 +19,8 @@ class UserChallengeCategoryStore {
 
   fetchUserChallengeCategory = async () => {
     try {
+      crashlytics().log('Fetching User Challenge Category.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = challengesStore.challengeCategory;
@@ -55,18 +59,20 @@ class UserChallengeCategoryStore {
         );
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   setUserChallengeCategory = async (userId: string) => {
     try {
+      crashlytics().log('Setting User Challenge Category.');
+
       await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
         .set(userChallengeCategoryInitData);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -80,6 +86,8 @@ class UserChallengeCategoryStore {
     challengeCategoryName?: ChallengeCategoryKeys;
   }) => {
     try {
+      crashlytics().log('Updating User Challenge Category.');
+
       const isOffline = await userStore.getIsUserOffline();
 
       const currentChallengeCategory = challengesStore.challengeCategory;
@@ -113,17 +121,19 @@ class UserChallengeCategoryStore {
           });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
   deleteUserChallengeCategory = async (userId: string) => {
     try {
+      crashlytics().log('Deleting User Challenge Category.');
+
       await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
         .delete();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

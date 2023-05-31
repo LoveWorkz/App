@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
@@ -8,6 +9,7 @@ import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
 import {userRubricStore} from '@src/entities/UserRubric';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {RubricType} from '../types/rubricTypes';
 
 class RubricStore {
@@ -24,6 +26,8 @@ class RubricStore {
     id: string;
   }) => {
     try {
+      crashlytics().log('Initializing user rubric question id.');
+
       if (this.rubric?.currentQuestion) {
         return;
       }
@@ -42,7 +46,7 @@ class RubricStore {
         } as RubricType;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -55,7 +59,7 @@ class RubricStore {
 
       return currentRubric;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -71,12 +75,14 @@ class RubricStore {
         this.rubric = rubric;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchRubric = async (id: string) => {
     try {
+      crashlytics().log('Fetching rubric.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const userId = userStore.authUserId;
@@ -110,7 +116,7 @@ class RubricStore {
       });
       return rubric;
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -163,7 +169,7 @@ class RubricStore {
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

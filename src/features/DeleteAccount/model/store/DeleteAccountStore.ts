@@ -61,8 +61,8 @@ class DeleteAccountStore {
 
   deleteUserAccount = async (actionAfterDeleting: () => void) => {
     try {
-      crashlytics().log('User tried to delete account.');
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      crashlytics().log('Deleting user account.');
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         actionAfterDeleting();
 

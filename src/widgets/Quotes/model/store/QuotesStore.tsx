@@ -1,7 +1,9 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {QuoeType, userStore} from '@src/entities/User';
 import {datediff} from '@src/shared/lib/date';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {BookType} from '@src/entities/Book';
 import {QuotesModalInfoType} from '../types/quotesType';
 
@@ -24,27 +26,17 @@ class QuotesStore {
   }
 
   setIsQuoteModalVisible = (visible: boolean) => {
-    try {
-      runInAction(() => {
-        this.isQuoteModalVisible = visible;
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.isQuoteModalVisible = visible;
   };
 
   setIsQuoteInfo = (QuoteInfo: QuoeType) => {
-    try {
-      runInAction(() => {
-        this.quoteInfo = QuoteInfo;
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.quoteInfo = QuoteInfo;
   };
 
   toggleQuote = async (visible: boolean) => {
     try {
+      crashlytics().log('Toggling quotes.');
+
       await userStore.updateUser({
         field: 'quote.isQuoteVisible',
         data: visible,
@@ -53,12 +45,14 @@ class QuotesStore {
         this.quoteInfo.isQuoteVisible = visible;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   checkQuotesShownStatus = (books: BookType[]) => {
     try {
+      crashlytics().log('Checking quotes visible status.');
+
       // return if a user clicked on "don't show again" button
       if (!this.quoteInfo.isQuoteVisible) {
         return;
@@ -94,7 +88,7 @@ class QuotesStore {
         }
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -139,7 +133,7 @@ class QuotesStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -156,7 +150,7 @@ class QuotesStore {
         this.quotesModalInfo = quotesModalInfo;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 

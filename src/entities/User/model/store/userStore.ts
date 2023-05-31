@@ -6,6 +6,7 @@ import NetInfo from '@react-native-community/netinfo';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {t} from 'i18next';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -54,8 +55,18 @@ class UserStore {
     });
   };
 
+  toggleDialog = (isOpen: boolean) => {
+    this.isDialogOpen = isOpen;
+  };
+
+  setIsFirstUserVisit = async (isFirstUserVisit: boolean) => {
+    this.isFirstUserVisit = isFirstUserVisit;
+  };
+
   initAuthUser = async () => {
     try {
+      crashlytics().log('Initializing user.');
+
       const isOffline = await this.getIsUserOffline();
       if (!isOffline) {
         await auth().currentUser?.reload();
@@ -78,7 +89,6 @@ class UserStore {
 
       navigation.navigate(AppRouteNames.TAB_ROUTE);
     } catch (e: unknown) {
-      console.log(e);
       this.errorHandler(e);
     }
   };
@@ -90,48 +100,50 @@ class UserStore {
     isSplash?: boolean;
     isSignUp?: boolean;
   }) => {
-    if (isSplash) {
-      const isUserVisitFirstTime = await authStorage.getAuthData(
-        USER_VISITED_STATUS,
-      );
+    try {
+      crashlytics().log('Setting user visite status.');
 
-      // return if user never visited the project
-      if (!isUserVisitFirstTime) {
+      if (isSplash) {
+        const isUserVisitFirstTime = await authStorage.getAuthData(
+          USER_VISITED_STATUS,
+        );
+
+        // return if user never visited the project
+        if (!isUserVisitFirstTime) {
+          return;
+        }
+
+        const value = JSON.stringify(isUserVisitFirstTime);
+        if (value) {
+          // user second visit
+          await authStorage.setAuthData(
+            USER_VISITED_STATUS,
+            JSON.stringify(false),
+          );
+
+          this.setIsFirstUserVisit(false);
+        } else {
+          this.setIsFirstUserVisit(false);
+        }
+
         return;
       }
 
-      const value = JSON.stringify(isUserVisitFirstTime);
-      if (value) {
-        // user second visit
+      if (isSignUp) {
+        await authStorage.setAuthData(
+          USER_VISITED_STATUS,
+          JSON.stringify(true),
+        );
+        this.setIsFirstUserVisit(true);
+      } else {
         await authStorage.setAuthData(
           USER_VISITED_STATUS,
           JSON.stringify(false),
         );
-
-        this.setIsFirstUserVisit(false);
-      } else {
         this.setIsFirstUserVisit(false);
       }
-
-      return;
-    }
-
-    if (isSignUp) {
-      await authStorage.setAuthData(USER_VISITED_STATUS, JSON.stringify(true));
-      this.setIsFirstUserVisit(true);
-    } else {
-      await authStorage.setAuthData(USER_VISITED_STATUS, JSON.stringify(false));
-      this.setIsFirstUserVisit(false);
-    }
-  };
-
-  setIsFirstUserVisit = async (isFirstUserVisit: boolean) => {
-    try {
-      runInAction(() => {
-        this.isFirstUserVisit = isFirstUserVisit;
-      });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -146,24 +158,22 @@ class UserStore {
       authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
       authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   }
 
-  toggleDialog = (isOpen: boolean) => {
-    this.isDialogOpen = isOpen;
-  };
-
   getIsUserOffline = async () => {
     try {
+      crashlytics().log('Checking user offline status.');
+
       const network = await NetInfo.fetch();
       return !network.isConnected;
     } catch (e: unknown) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
-  getIsUserOfflineAndShowMessage = async () => {
+  checkIfUserOfflineAndShowMessage = async () => {
     try {
       const isOffline = await this.getIsUserOffline();
 
@@ -175,7 +185,8 @@ class UserStore {
       }
       return isOffline;
     } catch (e: unknown) {
-      console.log(e);
+      errorHandler({error: e});
+
       return false;
     }
   };
@@ -186,7 +197,8 @@ class UserStore {
       const source = isOffline ? 'cache' : 'server';
       return source;
     } catch (e: unknown) {
-      console.log(e);
+      errorHandler({error: e});
+
       return 'server';
     }
   };
@@ -196,8 +208,15 @@ class UserStore {
       return;
     }
 
+    const isUserNotFound = e.message.includes(
+      FirebaseErrorCodes.AUTH_USER_NOT_FOUND,
+    );
+    const isUserDisabled = e.message.includes(
+      FirebaseErrorCodes.AUTH_USER_DISABLED,
+    );
+
     // this works when the account has been deleted
-    if (e.message.includes(FirebaseErrorCodes.AUTH_USER_NOT_FOUND)) {
+    if (isUserNotFound) {
       await this.clearUserInfo();
       navigation.navigate(AppRouteNames.AUTH);
 
@@ -205,12 +224,12 @@ class UserStore {
         this.isAccountDeleted = true;
       });
       this.toggleDialog(true);
-    }
-
-    if (e.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
+    } else if (isUserDisabled) {
       await this.clearUserInfo();
       navigation.navigate(AppRouteNames.AUTH);
       this.toggleDialog(true);
+    } else {
+      errorHandler({error: e});
     }
   };
 
@@ -224,6 +243,8 @@ class UserStore {
     erorHandler?: (e: unknown) => void;
   }) => {
     try {
+      crashlytics().log('Reauthenticating user credentials.');
+
       let credential;
 
       switch (this.authMethod) {
@@ -262,6 +283,8 @@ class UserStore {
 
   addUserToFirestore = async (user: User) => {
     try {
+      crashlytics().log('Adding user info to firestore.');
+
       const userId = user.id;
 
       await firestore()
@@ -276,12 +299,14 @@ class UserStore {
       await userCategoryStore.setUserCategory(userId);
       await userChallengeCategoryStore.setUserChallengeCategory(userId);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   clearUserInfo = async () => {
     try {
+      crashlytics().log('clearing user information.');
+
       this.setAuthUserInfo({
         user: null,
         authMethod: '',
@@ -299,6 +324,8 @@ class UserStore {
 
   clearFirebaseUserInfo = async (id: string) => {
     try {
+      crashlytics().log('Clearing user info from firestore.');
+
       await firestore().collection(Collections.USERS).doc(id).delete();
 
       await userRubricStore.deleteUserRubric(id);
@@ -315,6 +342,8 @@ class UserStore {
 
   updateUser = async ({data, field}: {data: any; field: string}) => {
     try {
+      crashlytics().log('Updating user data.');
+
       const isOffline = await this.getIsUserOffline();
       const userId = this.authUserId;
       if (!userId) {

@@ -1,7 +1,9 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class ChallengeStore {
   constructor() {
@@ -10,6 +12,8 @@ class ChallengeStore {
 
   updateChallenge = async (id: string) => {
     try {
+      crashlytics().log('Updating challenge.');
+
       const selectedChallengesIds = challengesStore.selectedChallengesIds;
       let newSelectedChallengesIds;
 
@@ -29,7 +33,7 @@ class ChallengeStore {
       });
       this.updateLocalChallenge(id);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -60,10 +64,12 @@ class ChallengeStore {
 
   selectChallenge = async ({id}: {id: string}) => {
     try {
+      crashlytics().log('Selecting challenge.');
+
       await this.updateChallenge(id);
       await challengesStore.checkIfAllChallengesSelected();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

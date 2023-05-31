@@ -3,15 +3,12 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import crashlytics from '@react-native-firebase/crashlytics';
-import Toast from 'react-native-toast-message';
-import {t} from 'i18next';
 
 import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class AuthByAppleStore {
@@ -51,14 +48,8 @@ class AuthByAppleStore {
 
   appleSignIn = async () => {
     try {
-      const isOffline = await userStore.getIsUserOffline();
-
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
-        Toast.show({
-          type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
-        });
-
         return;
       }
 
@@ -97,9 +88,17 @@ class AuthByAppleStore {
       return;
     }
 
+    const isUserCanceledSignIn = error.message.includes(
+      FirebaseErrorCodes.USER_CANCELED_APPLE_SIGN_IN,
+    );
+
     if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       userStore.toggleDialog(true);
     } else {
+      if (isUserCanceledSignIn) {
+        return;
+      }
+
       errorHandler({error});
     }
   };

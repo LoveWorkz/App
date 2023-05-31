@@ -1,10 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {userCategoryInitData} from '../lib/userCategory';
 import {UserCategory} from '../types/userCategoryType';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class UserCategoryStore {
   userCategory: null | UserCategory = null;
@@ -15,6 +17,8 @@ class UserCategoryStore {
 
   fetchUserCategories = async () => {
     try {
+      crashlytics().log('Fetching User Category.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const userId = userStore.authUserId;
@@ -31,18 +35,20 @@ class UserCategoryStore {
         this.userCategory = data.data() as UserCategory;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   setUserCategory = async (userId: string) => {
     try {
+      crashlytics().log('Setting User Category.');
+
       await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
         .set(userCategoryInitData);
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
@@ -56,6 +62,8 @@ class UserCategoryStore {
     data: number | string | boolean;
   }) => {
     try {
+      crashlytics().log('Updating User Category.');
+
       const isOffline = await userStore.getIsUserOffline();
       const userId = userStore.authUserId;
       if (!userId) {
@@ -78,18 +86,20 @@ class UserCategoryStore {
           });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   deleteUserCategory = async (userId: string) => {
     try {
+      crashlytics().log('Deleting User Category.');
+
       await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
         .delete();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

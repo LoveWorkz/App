@@ -80,7 +80,7 @@ class SignInStore {
 
   signIn = async () => {
     try {
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }

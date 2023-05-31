@@ -25,7 +25,7 @@ class LogoutStore {
     try {
       crashlytics().log('User tried to log out.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         actionAfterLogout();
 

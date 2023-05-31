@@ -16,6 +16,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {CloudStoragePaths} from '@src/shared/types/firebase';
+import {USER_CANCELED_SHARE} from '../lib/share';
 
 class shareStore {
   constructor() {
@@ -24,24 +25,33 @@ class shareStore {
 
   share = async (options: ShareOptions) => {
     try {
-      crashlytics().log('User tried to share.');
+      crashlytics().log('Sharing app link.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }
 
       await Share.open(options);
     } catch (e) {
+      if (!(e instanceof Error)) {
+        return;
+      }
+
+      const isUserCanceledShare = e.message.includes(USER_CANCELED_SHARE);
+      if (isUserCanceledShare) {
+        return;
+      }
+
       errorHandler({error: e});
     }
   };
 
   shareQuestion = async () => {
     try {
-      crashlytics().log('User tried to share question page link.');
+      crashlytics().log('Sharing question page link.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         return;
       }
@@ -122,6 +132,8 @@ class shareStore {
 
   buildLink = async () => {
     try {
+      crashlytics().log('Building deep link for question page.');
+
       const question = questionStore.question;
       const questionCardScreenshot = questionStore.questionCardScreenshot;
       const category = categoryStore.category;

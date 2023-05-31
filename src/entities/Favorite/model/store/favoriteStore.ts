@@ -1,4 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {profileStore} from '@src/entities/Profile';
 import {userStore} from '@src/entities/User';
@@ -6,6 +7,7 @@ import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {rubricStore} from '@src/entities/Rubric';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {FavoriteType} from '../types/favoriteType';
 
 class FavoriteStore {
@@ -17,11 +19,7 @@ class FavoriteStore {
   }
 
   setIsQuestionFavorite = (questionId: string) => {
-    try {
-      this.isQuestionFavorite = this.checkIsQuestionFavorite(questionId);
-    } catch (e) {
-      console.log(e);
-    }
+    this.isQuestionFavorite = this.checkIsQuestionFavorite(questionId);
   };
 
   checkIsQuestionFavorite = (questionId: string) => {
@@ -34,6 +32,8 @@ class FavoriteStore {
 
   toggleFavorite = async () => {
     try {
+      crashlytics().log('Switching favorites questions.');
+
       const currentQuestion = questionStore.question;
       if (!currentQuestion) {
         return;
@@ -45,88 +45,94 @@ class FavoriteStore {
         this.addQuestionToFavorites(currentQuestion.id);
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   setFavorites = (favorites: FavoriteType) => {
-    try {
-      runInAction(() => {
-        this.favorite = favorites;
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.favorite = favorites;
   };
 
   addQuestionToFavorites = async (questionId: string) => {
-    const userId = userStore.authUser?.id;
-    if (!userId) {
-      return;
+    try {
+      crashlytics().log('Adding question to favorites.');
+
+      const userId = userStore.authUser?.id;
+      if (!userId) {
+        return;
+      }
+
+      if (!this.favorite) {
+        return;
+      }
+
+      const questionsIds = this.favorite.questions;
+      const newQuestionsIds = [...questionsIds, questionId];
+
+      await userStore.updateUser({
+        field: 'favorites',
+        data: {
+          currentQuestion: newQuestionsIds[0],
+          questions: newQuestionsIds,
+        },
+      });
+
+      await profileStore.fetchProfile();
+
+      runInAction(() => {
+        this.isQuestionFavorite = true;
+      });
+    } catch (e) {
+      errorHandler({error: e});
     }
-
-    if (!this.favorite) {
-      return;
-    }
-
-    const questionsIds = this.favorite.questions;
-    const newQuestionsIds = [...questionsIds, questionId];
-
-    await userStore.updateUser({
-      field: 'favorites',
-      data: {
-        currentQuestion: newQuestionsIds[0],
-        questions: newQuestionsIds,
-      },
-    });
-
-    await profileStore.fetchProfile();
-
-    runInAction(() => {
-      this.isQuestionFavorite = true;
-    });
   };
 
   deleteQuestionFromFavorites = async (questionId: string) => {
-    const userId = userStore.authUser?.id;
-    if (!userId) {
-      return;
+    try {
+      crashlytics().log('Delleting question from favorites.');
+
+      const userId = userStore.authUser?.id;
+      if (!userId) {
+        return;
+      }
+      if (!this.favorite) {
+        return;
+      }
+
+      const questionsIds = this.favorite.questions;
+      let favorites: FavoriteType;
+      const isOnlyOneFavoriteQuestion = questionsIds.length === 1;
+
+      const newQuestionsIds = questionsIds.filter(id => {
+        return id !== questionId;
+      });
+
+      // if deleting last favorite question reset favorites
+      if (isOnlyOneFavoriteQuestion) {
+        favorites = {
+          currentQuestion: '',
+          questions: [],
+        };
+      } else {
+        favorites = {
+          currentQuestion: newQuestionsIds[0],
+          questions: newQuestionsIds,
+        };
+      }
+
+      await userStore.updateUser({
+        field: 'favorites',
+        data: favorites,
+      });
+
+      await profileStore.fetchProfile();
+
+      runInAction(() => {
+        this.isQuestionFavorite = false;
+      });
+    } catch (e) {
+      errorHandler({error: e});
     }
-    if (!this.favorite) {
-      return;
-    }
-
-    const questionsIds = this.favorite.questions;
-    let favorites: FavoriteType;
-    const isOnlyOneFavoriteQuestion = questionsIds.length === 1;
-
-    const newQuestionsIds = questionsIds.filter(id => {
-      return id !== questionId;
-    });
-
-    // if deleting last favorite question reset favorites
-    if (isOnlyOneFavoriteQuestion) {
-      favorites = {
-        currentQuestion: '',
-        questions: [],
-      };
-    } else {
-      favorites = {
-        currentQuestion: newQuestionsIds[0],
-        questions: newQuestionsIds,
-      };
-    }
-
-    await userStore.updateUser({
-      field: 'favorites',
-      data: favorites,
-    });
-
-    await profileStore.fetchProfile();
-
-    runInAction(() => {
-      this.isQuestionFavorite = false;
-    });
   };
 
   getQuestionSwipeInfoForFavorites = async ({
@@ -184,7 +190,7 @@ class FavoriteStore {
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

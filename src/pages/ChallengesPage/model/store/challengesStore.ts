@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
@@ -13,6 +14,7 @@ import {ChallengeType} from '@src/entities/Challenge';
 import {profileStore} from '@src/entities/Profile';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -31,13 +33,15 @@ class ChallengesStore {
 
   init = async () => {
     try {
+      crashlytics().log('Fetching Challenges page.');
+
       this.isChallengePageLoading = true;
       // the order is important
       await profileStore.fetchProfile();
       await this.fetchChallengeCategories();
       await this.fetchChallenges();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isChallengePageLoading = false;
@@ -46,13 +50,7 @@ class ChallengesStore {
   };
 
   setChallengeCategory = (challengeCategory: CurrentChallengeCategoryType) => {
-    try {
-      runInAction(() => {
-        this.challengeCategory = challengeCategory;
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    this.challengeCategory = challengeCategory;
   };
 
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {
@@ -69,15 +67,19 @@ class ChallengesStore {
 
   fetchChallengeCategories = async () => {
     try {
+      crashlytics().log('Fetching Challenge Categories.');
+
       await userChallengeCategoryStore.fetchUserChallengeCategory();
       await this.fetchDefaultChallengeCategories();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchDefaultChallengeCategories = async () => {
     try {
+      crashlytics().log('Fetching default Challenge Categories.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = this.challengeCategory;
@@ -117,12 +119,14 @@ class ChallengesStore {
         this.challengeCategories = challengeCategories;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   fetchChallenges = async () => {
     try {
+      crashlytics().log('Fetching Challenges.');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = this.challengeCategory;
@@ -164,18 +168,22 @@ class ChallengesStore {
         this.filteredChallengesList = challenges;
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
-  updateChallengeCategory = async ({id, name}: {id: string; name: string}) => {
+  selectChallengeCategory = async ({id, name}: {id: string; name: string}) => {
     try {
+      crashlytics().log('Selecting challenge category.');
+
       // return if user pressed already chosen challenge category
       if (this.challengeCategory?.currentChallengeCategoryId === id) {
         return;
       }
 
-      this.isChallengesLoading = true;
+      runInAction(() => {
+        this.isChallengesLoading = true;
+      });
 
       const newChallengeCategory = {
         currentChallengeCategory: name,
@@ -199,7 +207,7 @@ class ChallengesStore {
       // fetchig challenges for new challengeCategory
       await this.fetchChallenges();
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     } finally {
       runInAction(() => {
         this.isChallengesLoading = false;
@@ -219,12 +227,14 @@ class ChallengesStore {
         });
       });
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   filterChallenges = (name: string) => {
     try {
+      crashlytics().log('Filtering challenges.');
+
       rubricFilterItemStore.toggleRubricStatus({name});
 
       if (rubricFilterItemStore.rubricskeys.includes(name)) {
@@ -239,21 +249,19 @@ class ChallengesStore {
         });
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 
   clearChallengesInfo = () => {
-    try {
-      rubricFilterItemStore.clearInfo();
-      this.filteredChallengesList = this.challenges;
-    } catch (e) {
-      console.log(e);
-    }
+    rubricFilterItemStore.clearInfo();
+    this.filteredChallengesList = this.challenges;
   };
 
   checkIfAllChallengesSelected = async () => {
     try {
+      crashlytics().log('Checking if all challenges selected.');
+
       const isAllChallengesSelected =
         this.challenges.length === this.selectedChallengesIds.length;
 
@@ -284,13 +292,15 @@ class ChallengesStore {
           data: false,
         });
 
+        crashlytics().log('User selected all challenges.');
+
         this.setIsCongratsModalVisible(true);
 
         // fetching actual data after selecting all challenges
         await this.fetchChallengeCategories();
       }
     } catch (e) {
-      console.log(e);
+      errorHandler({error: e});
     }
   };
 }

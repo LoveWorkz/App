@@ -47,9 +47,9 @@ class ResetPasswordStore {
   }
   sendPasswordResetEmail = async () => {
     try {
-      crashlytics().log('User tried to reset password');
+      crashlytics().log('Resetting user password.');
 
-      const isOffline = await userStore.getIsUserOfflineAndShowMessage();
+      const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
       if (isOffline) {
         this.setResetPasswordModalVisible(false);
         return;
@@ -67,8 +67,6 @@ class ResetPasswordStore {
       });
 
       await auth().sendPasswordResetEmail(this.email);
-
-      crashlytics().log('User reset password');
 
       this.toggleCheckEmailDialog(true);
       this.setResetPasswordModalVisible(false);
