@@ -100,7 +100,7 @@ const HomePage = (props: HomePageProps) => {
   );
 };
 
-export const ComponentWrapper = memo(observer(HomePage));
+export default memo(observer(HomePage));
 
 const styles = StyleSheet.create({
   homepageBackground: {

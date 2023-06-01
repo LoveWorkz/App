@@ -235,26 +235,17 @@ class ChallengesStore {
     try {
       crashlytics().log('Filtering challenges.');
 
-      rubricFilterItemStore.toggleRubricStatus({name});
-
-      if (rubricFilterItemStore.rubricskeys.includes(name)) {
-        this.filteredChallengesList = rubricFilterItemStore.turnOffFilterByKey({
-          key: name,
-          list: this.challenges,
-        }) as ChallengeType[];
-      } else {
-        this.filteredChallengesList = rubricFilterItemStore.filterByKey({
-          key: name,
-          list: this.filteredChallengesList,
-        });
-      }
+      this.filteredChallengesList = rubricFilterItemStore.startFilterLogic({
+        list: this.challenges,
+        key: name,
+      });
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
   clearChallengesInfo = () => {
-    rubricFilterItemStore.clearInfo();
+    rubricFilterItemStore.clearFilteredInfo();
     this.filteredChallengesList = this.challenges;
   };
 

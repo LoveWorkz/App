@@ -18,41 +18,73 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
+import {useFocusEffect} from '@react-navigation/native';
 
 interface ChallangeProps {
   image?: string;
   name?: ChallengeCategoryKeys;
   isActive?: boolean;
-  onPressHanlder?: (data: {id: string; name: string}) => void;
+  selectChallngeCategory?: (data: {id: string; name: string}) => void;
   isBlocked?: boolean;
   number?: string;
   id?: string;
   displayName?: DisplayText;
+  defaultChallengeId?: string;
+  isHomePage?: boolean;
 }
 
 const ChallengeCategory = (props: ChallangeProps) => {
   const {
+    defaultChallengeId,
     image,
     name,
     isActive = false,
-    onPressHanlder,
+    selectChallngeCategory,
     isBlocked = true,
     number,
     id,
     displayName,
+    isHomePage = false,
   } = props;
   const colors = useColors();
   const {i18n} = useTranslation();
   const {theme} = useTheme();
-
   const language = i18n.language as LanguageValueType;
 
+  // select default challenge category
+  useFocusEffect(
+    useCallback(() => {
+      if (defaultChallengeId && name && selectChallngeCategory) {
+        if (defaultChallengeId !== id) {
+          return;
+        }
+
+        selectChallngeCategory({id, name});
+      }
+    }, [defaultChallengeId, name, selectChallngeCategory, id]),
+  );
+
   const onPressHandler = useCallback(() => {
-    if (id && name && onPressHanlder) {
-      onPressHanlder({id, name});
+    if (isBlocked) {
+      navigation.navigate(TabRoutesNames.SHOP);
+      return;
     }
-  }, [onPressHanlder, id, name]);
+
+    if (isHomePage) {
+      // when press on challenge category in home page navigate to Challenges page and set selected challenge id
+      console.log(id, 'id');
+      navigation.navigate(TabRoutesNames.CHALLENGES, {id});
+
+      return;
+    }
+
+    if (id && name && selectChallngeCategory) {
+      selectChallngeCategory({id, name});
+    }
+  }, [selectChallngeCategory, id, name, isBlocked, isHomePage]);
 
   const uri = useMemo(() => {
     return {
@@ -119,7 +151,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
           </TouchableOpacity>
         </Gradient>
       ) : (
-        <View>
+        <TouchableOpacity onPress={onPressHandler}>
           <View
             style={[
               styles.challange,
@@ -128,19 +160,17 @@ const ChallengeCategory = (props: ChallangeProps) => {
                 backgroundColor: colors.bgTertiaryColor,
               },
             ]}>
-            <TouchableOpacity onPress={onPressHandler}>
-              <View
-                style={[
-                  styles.content,
-                  {backgroundColor: colors.bgChallengeContentColor},
-                ]}>
-                <FastImage
-                  resizeMode="contain"
-                  style={styles.image}
-                  source={uri}
-                />
-              </View>
-            </TouchableOpacity>
+            <View
+              style={[
+                styles.content,
+                {backgroundColor: colors.bgChallengeContentColor},
+              ]}>
+              <FastImage
+                resizeMode="contain"
+                style={styles.image}
+                source={uri}
+              />
+            </View>
           </View>
           {isBlocked && (
             <>
@@ -154,7 +184,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
               </View>
             </>
           )}
-        </View>
+        </TouchableOpacity>
       )}
       {displayName && (
         <AppText

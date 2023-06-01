@@ -11,14 +11,11 @@ import booksStore from '../model/store/BooksStore';
 const BooksPage = () => {
   useEffect(() => {
     booksStore.init();
-
-    return () => {
-      booksStore.clearBooksInfo();
-    };
   }, []);
 
   useFocusEffect(
     useCallback(() => {
+      booksStore.clearBooksInfo();
       // unfocus search input
       return () => Keyboard.dismiss();
     }, []),

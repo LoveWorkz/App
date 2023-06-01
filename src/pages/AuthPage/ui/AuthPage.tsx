@@ -22,7 +22,7 @@ const AuthPage = () => {
   const colors = useColors();
   const {height} = useWindowDimensions();
   const statusBarHeight = getStatusBarHeight();
-  const signInTopHeight = isPlatformIos ? 240 : 240 - statusBarHeight;
+  const signInTopHeight = isPlatformIos ? 230 : 230 - statusBarHeight;
   const signUpTopHeight = isPlatformIos ? 125 : 125 - statusBarHeight;
   const dialogContent = userStore.isAccountDeleted
     ? t('auth.deleted_account')
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   line: {
     marginTop: verticalScale(40),
-    marginBottom: verticalScale(40),
+    marginBottom: verticalScale(35),
   },
   btnWrapper: {
     justifyContent: 'center',

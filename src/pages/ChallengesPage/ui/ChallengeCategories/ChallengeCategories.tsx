@@ -5,7 +5,12 @@ import {observer} from 'mobx-react-lite';
 import {ChallengeCategory} from '@src/entities/ChallengeCategory';
 import challengesStore from '../../model/store/challengesStore';
 
-export const ChallengeCategories = () => {
+interface ChallengeCategoriesProps {
+  defaultChallengeId?: string;
+}
+
+export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
+  const {defaultChallengeId} = props;
   const challengeCategories = challengesStore.challengeCategories;
 
   const onChallengeCategoryPressHandler = useCallback(
@@ -25,9 +30,10 @@ export const ChallengeCategories = () => {
             name={challange.name}
             isActive={challange.isActive as boolean}
             isBlocked={challange.isBlocked}
-            onPressHanlder={onChallengeCategoryPressHandler}
+            selectChallngeCategory={onChallengeCategoryPressHandler}
             id={challange.id}
             displayName={challange.displayName}
+            defaultChallengeId={defaultChallengeId}
           />
         );
       })}

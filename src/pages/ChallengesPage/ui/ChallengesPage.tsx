@@ -1,6 +1,7 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {CongratsModal} from '@src/widgets/CongratsModal';
@@ -12,7 +13,14 @@ import Challenges from './Challenges/Challenges';
 import challengesStore from '../model/store/challengesStore';
 import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
-const ChallengesPage = () => {
+interface ChallengesPageProps {
+  route?: {params: {id: string}};
+}
+
+const ChallengesPage = (props: ChallengesPageProps) => {
+  const {route} = props;
+  const defaultChallengeId = route?.params?.id;
+
   const challengeCategory = challengesStore.challengeCategory;
   const congratsModalContent =
     getCongratsModalContentForChallenges()[
@@ -22,16 +30,38 @@ const ChallengesPage = () => {
 
   useEffect(() => {
     challengesStore.init();
-
-    return () => {
-      challengesStore.clearChallengesInfo();
-    };
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      challengesStore.clearChallengesInfo();
+    }, []),
+  );
+
+  // useEffect(() => {
+  //   if (!defaultChallengeId) {
+  //     return;
+  //   }
+
+  //   challengesStore.init();
+
+  //   return () => {
+  //     challengesStore.clearChallengesInfo();
+  //   };
+  // }, [defaultChallengeId]);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (defaultChallengeId) {
+  //       challengesStore.init();
+  //     }
+  //   }, [defaultChallengeId]),
+  // );
 
   return (
     <LoaderWrapper isLoading={isLoading}>
       <View style={styles.container}>
-        <ChallengeCategories />
+        <ChallengeCategories defaultChallengeId={defaultChallengeId} />
         <View style={styles.FilterItemsWrapper}>
           <ChallengesFilterItems />
         </View>
@@ -46,7 +76,7 @@ const ChallengesPage = () => {
   );
 };
 
-export const ComponentWrapper = memo(observer(ChallengesPage));
+export default memo(observer(ChallengesPage));
 
 const styles = StyleSheet.create({
   container: {

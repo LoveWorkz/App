@@ -56,6 +56,7 @@ const Challanges = () => {
                 isBlocked={challange.isBlocked}
                 id={challange.id}
                 displayName={challange.displayName}
+                isHomePage
               />
             );
           })}

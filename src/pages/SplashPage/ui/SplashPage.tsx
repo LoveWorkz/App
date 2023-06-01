@@ -11,7 +11,7 @@ import {globalPadding, windowHeight} from '@src/app/styles/GlobalStyle';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {userStore} from '@src/entities/User';
-import {SPLASH_PAGE_DURATION} from '@src/shared/consts/common';
+import {isPlatformIos, SPLASH_PAGE_DURATION} from '@src/shared/consts/common';
 import myAnimation from '@src/shared/assets/images/splashScreenLoader.json';
 
 export const colorizeLoader = () => {
@@ -40,7 +40,8 @@ export const SplashPage = () => {
       <FastImage
         style={[styles.splashScreenImage]}
         source={splashScreenImage}
-        // if image loaded hide native splash screen and show custom splash screen
+        resizeMode={isPlatformIos ? 'contain' : 'cover'}
+        // if image loaded hide native splash screen and show dynamic splash screen
         onLoadEnd={() => SplashScreen.hide()}>
         <View style={styles.content}>
           <View style={styles.titleWrapper}>
@@ -59,7 +60,7 @@ export const SplashPage = () => {
   );
 };
 
-export const ComponentWrapper = memo(observer(SplashPage));
+export default memo(observer(SplashPage));
 
 const styles = StyleSheet.create({
   SplashPage: {
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
     margin: -globalPadding,
     resizeMode: 'contain',
     alignItems: 'center',
+    flex: 1,
   },
   content: {
     marginTop: verticalScale(180),

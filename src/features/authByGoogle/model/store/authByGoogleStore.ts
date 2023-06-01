@@ -10,6 +10,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {isPlatformIos} from '@src/shared/consts/common';
 
 class AuthByGoogleStore {
   constructor() {
@@ -73,7 +74,9 @@ class AuthByGoogleStore {
       }
 
       const isUserCanceledSignIn = error.message.includes(
-        FirebaseErrorCodes.USER_CANCELED_GOOGLE_SIGN_IN,
+        isPlatformIos
+          ? FirebaseErrorCodes.USER_CANCELED_GOOGLE_SIGN_IN_APPLE
+          : FirebaseErrorCodes.USER_CANCELED_GOOGLE_SIGN_IN_GOOGLE,
       );
 
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {

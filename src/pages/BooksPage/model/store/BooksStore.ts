@@ -25,8 +25,9 @@ class BooksStore {
   };
 
   clearBooksInfo = () => {
-    rubricFilterItemStore.clearInfo();
+    rubricFilterItemStore.clearFilteredInfo();
     this.booksFilteredList = this.booksList;
+    this.setSearchBooksText('');
   };
 
   init = async () => {
@@ -69,25 +70,17 @@ class BooksStore {
     try {
       crashlytics().log('User tried to filter books by rubrics.');
 
-      rubricFilterItemStore.toggleRubricStatus({name});
-      if (rubricFilterItemStore.rubricskeys.includes(name)) {
-        this.booksFilteredList = rubricFilterItemStore.turnOffFilterByKey({
-          key: name,
-          list: this.booksList,
-        }) as BookType[];
+      this.booksFilteredList = rubricFilterItemStore.startFilterLogic({
+        list: this.booksList,
+        key: name,
+      });
 
-        // after filtering books by rubric name filter by search name if the search bar is active
-        if (this.searchBooksText) {
-          this.searchBooks({
-            isSearchBarFilterActive: false,
-            list: this.booksFilteredList,
-            searchBooksText: this.searchBooksText,
-          });
-        }
-      } else {
-        this.booksFilteredList = rubricFilterItemStore.filterByKey({
-          key: name,
+      // after filtering books by rubric name filter by search name if the search bar is active
+      if (this.searchBooksText) {
+        this.searchBooks({
+          isSearchBarFilterActive: false,
           list: this.booksFilteredList,
+          searchBooksText: this.searchBooksText,
         });
       }
     } catch (e) {
@@ -120,13 +113,12 @@ class BooksStore {
         );
       });
 
+      const selectedRubricKey = rubricFilterItemStore.selectedRubricKey;
       // after searching filter books by rubric name, if the rubrics are active
-      if (isSearchBarFilterActive && rubricFilterItemStore.rubricskeys.length) {
-        rubricFilterItemStore.rubricskeys.forEach(key => {
-          this.booksFilteredList = rubricFilterItemStore.filterByKey({
-            key: key,
-            list: this.booksFilteredList,
-          });
+      if (isSearchBarFilterActive && selectedRubricKey) {
+        this.booksFilteredList = rubricFilterItemStore.filterByKey({
+          key: selectedRubricKey,
+          list: this.booksFilteredList,
         });
       }
     } catch (e) {

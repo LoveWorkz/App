@@ -1,1 +1,1 @@
-export {ComponentWrapper as SplashPage} from './ui/SplashPage';
+export {default as SplashPage} from './ui/SplashPage';

@@ -4,25 +4,28 @@ import {rubricFilterItems} from '../consts/consts';
 import {RubricFilterItemType} from '../types/rubricFilterItemTypes';
 
 class RubricFilterItemStore {
-  rubricskeys: string[] = [];
   rubricFilterItems: RubricFilterItemType[] = rubricFilterItems;
+  selectedRubricKey: string = '';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  toggleRubricStatus = ({name, status}: {name: string; status?: boolean}) => {
+  resetActiveRubricStatus = () => {
     this.rubricFilterItems = this.rubricFilterItems.map(rubric => {
-      if (typeof status === 'boolean') {
-        return {...rubric, active: status};
-      }
+      return {...rubric, active: false};
+    });
+  };
 
-      if (rubric.name === name) {
+  toggleRubricStatus = ({key, status}: {key: string; status: boolean}) => {
+    this.rubricFilterItems = this.rubricFilterItems.map(rubric => {
+      if (rubric.name === key) {
         return {
           ...rubric,
-          active: !rubric.active,
+          active: status,
         };
       }
+
       return rubric;
     });
   };
@@ -34,35 +37,38 @@ class RubricFilterItemStore {
     key: string;
     list: Array<{rubrics: string[]}>;
   }) => {
-    // delete category key from keys
-    this.rubricskeys = this.rubricskeys.filter(item => item !== key);
+    this.toggleRubricStatus({key, status: false});
+    this.selectedRubricKey = '';
 
-    let currentList = list;
-    // if the keys are empty, set to 1 and make the loop run at least once to remove the first active category
-    const keysLength = this.rubricskeys.length ? this.rubricskeys.length : 1;
-
-    for (let i = 0; i < keysLength; i++) {
-      currentList = currentList.filter(item => {
-        if (this.rubricskeys[i]) {
-          return item.rubrics.includes(this.rubricskeys[i]);
-        }
-        return true;
-      });
-    }
-    return currentList;
+    return list;
   };
 
   filterByKey = ({key, list}: {key: string; list: any[]}) => {
-    this.rubricskeys = Array.from(new Set([...this.rubricskeys, key]));
+    this.selectedRubricKey = key;
+    this.toggleRubricStatus({key, status: true});
 
     return list.filter(item => {
       return item.rubrics.includes(key);
     });
   };
 
-  clearInfo = () => {
-    this.rubricskeys = [];
-    this.toggleRubricStatus({name: '', status: false});
+  startFilterLogic = ({key, list}: {key: string; list: any[]}) => {
+    // when user presses already selected filter item
+    if (this.selectedRubricKey === key) {
+      return this.turnOffFilterByKey({key, list});
+    }
+    // when user presses filter item but there is already selected another item
+    if (this.selectedRubricKey) {
+      this.resetActiveRubricStatus();
+      return this.filterByKey({key, list});
+    }
+
+    return this.filterByKey({key, list});
+  };
+
+  clearFilteredInfo = () => {
+    this.selectedRubricKey = '';
+    this.resetActiveRubricStatus();
   };
 }
 

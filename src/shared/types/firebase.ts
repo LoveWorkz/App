@@ -24,5 +24,6 @@ export enum FirebaseErrorCodes {
   AUTH_EMAIL_ALREADY_IN_USE = 'auth/email-already-in-use',
 
   USER_CANCELED_APPLE_SIGN_IN = 'The operation couldn’t be completed',
-  USER_CANCELED_GOOGLE_SIGN_IN = 'The user canceled the sign in request',
+  USER_CANCELED_GOOGLE_SIGN_IN_APPLE = 'The user canceled the sign in request',
+  USER_CANCELED_GOOGLE_SIGN_IN_GOOGLE = 'Sign in action cancelled',
 }

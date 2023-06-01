@@ -1,9 +1,11 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, View, Pressable} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import authByGoogleStore from '../model/store/authByGoogleStore';
 import {GoogleIcon} from '@src/shared/assets/icons/Google';
+import {Button} from '@src/shared/ui/Button/Button';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import authByGoogleStore from '../model/store/authByGoogleStore';
 
 interface AuthByGoogleProps {
   style?: Record<string, string | number>;
@@ -17,18 +19,16 @@ export const AuthByGoogle = memo((props: AuthByGoogleProps) => {
   }, []);
 
   return (
-    <View style={[style, styles.authByGoogle]}>
-      <Pressable onPress={onHandlePress}>
-        <SvgXml xml={GoogleIcon} style={styles.icon} />
-      </Pressable>
-    </View>
+    <Button style={[styles.btn, {...style}]} onPress={onHandlePress}>
+      <SvgXml xml={GoogleIcon} style={styles.icon} />
+    </Button>
   );
 });
 
 const styles = StyleSheet.create({
-  authByGoogle: {
-    height: 20,
-    width: 20,
+  btn: {
+    width: horizontalScale(32),
+    height: verticalScale(32),
   },
   icon: {
     width: '100%',

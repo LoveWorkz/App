@@ -1,9 +1,11 @@
 import React, {memo} from 'react';
-import {StyleSheet, Pressable, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {AppleIcon} from '@src/shared/assets/icons/Apple';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {Button} from '@src/shared/ui/Button/Button';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import authByAppleStore from '../model/store/authByAppleStore';
 
 interface AuthByAppleProps {
@@ -19,22 +21,20 @@ export const AuthByApple = memo((props: AuthByAppleProps) => {
   };
 
   return (
-    <View style={[styles.authByApple, style]}>
-      <Pressable onPress={onAppleSingnInHandler}>
-        <SvgXml
-          xml={AppleIcon}
-          style={styles.icon}
-          fill={colors.appleIconColor}
-        />
-      </Pressable>
-    </View>
+    <Button style={[styles.btn, {...style}]} onPress={onAppleSingnInHandler}>
+      <SvgXml
+        xml={AppleIcon}
+        style={styles.icon}
+        fill={colors.appleIconColor}
+      />
+    </Button>
   );
 });
 
 const styles = StyleSheet.create({
-  authByApple: {
-    height: 20,
-    width: 20,
+  btn: {
+    width: horizontalScale(32),
+    height: verticalScale(32),
   },
   icon: {
     width: '100%^',
