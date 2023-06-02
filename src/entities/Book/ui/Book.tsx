@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -15,6 +16,7 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
@@ -25,7 +27,6 @@ interface BookPreview {
 
 const BookPreview = memo((props: BookPreview) => {
   const {image} = props;
-
   const {theme} = useTheme();
 
   const [isBookModalVisible, setIsBookModalVisible] = useState(false);
@@ -70,9 +71,16 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo} = props;
-  const {image, name, description, author, rubrics, rate} = bookInfo;
+  const {image, displayName, description, author, rubrics, rate, links} =
+    bookInfo;
 
+  const {i18n} = useTranslation();
   const colors = useColors();
+
+  const language = i18n.language as LanguageValueType;
+  const title = displayName[language];
+  const translatedDescription = description[language];
+  const translatedlinks = links[language];
 
   const bookCarouselData = [
     {
@@ -101,7 +109,7 @@ export const Book = (props: BookProps) => {
             style={{color: colors.primaryTextColor}}
             weight={'600'}
             size={TextSize.LEVEL_7}
-            text={name}
+            text={title}
           />
           <AppText
             style={[styles.author, {color: colors.primaryTextColor}]}
@@ -112,14 +120,14 @@ export const Book = (props: BookProps) => {
           <View style={styles.rateWrapper}>
             <StarRatings size={5} count={rate} />
           </View>
-          <View style={styles.categories}>
-            {rubrics.map(category => {
+          <View style={styles.rubrics}>
+            {rubrics.map(rubric => {
               return (
-                <View style={styles.category} key={category}>
+                <View style={styles.category} key={rubric}>
                   <RubricFilterItem
-                    rubric={category}
+                    rubric={rubric}
                     size={BookCategorySize.SMALL}
-                    text={category}
+                    displayName={rubric}
                   />
                 </View>
               );
@@ -127,7 +135,10 @@ export const Book = (props: BookProps) => {
           </View>
         </View>
       </View>
-      <Description description={description} />
+      <Description
+        bookLink={translatedlinks}
+        description={translatedDescription}
+      />
     </View>
   );
 };
@@ -160,7 +171,7 @@ const styles = StyleSheet.create({
   author: {
     marginTop: 5,
   },
-  categories: {
+  rubrics: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginLeft: -4,

@@ -4,18 +4,42 @@ import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
+import {booksFilterItems} from '@src/entities/Book';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {Wrapper as RecommendedBooks} from './RecommendedBooks/RecommendedBooks';
-import {Wrapper as Books} from './Books/Books';
+import Books from './Books/Books';
 import booksStore from '../model/store/BooksStore';
 
-const BooksPage = () => {
+interface BooksPageProps {
+  route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
+}
+
+const BooksPage = (props: BooksPageProps) => {
+  const {route} = props;
+  const prevRouteName = route?.params?.prevRouteName;
+
   useEffect(() => {
     booksStore.init();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
+      if (
+        prevRouteName === AppRouteNames.BOOK_DETAILS ||
+        prevRouteName === AppRouteNames.SETTINGS
+      ) {
+        return;
+      }
+
       booksStore.clearBooksInfo();
+      rubricFilterItemStore.setRubricFilterItems(booksFilterItems);
+    }, [prevRouteName]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
       // unfocus search input
       return () => Keyboard.dismiss();
     }, []),

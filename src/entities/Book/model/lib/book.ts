@@ -1,14 +1,14 @@
-export const rubricFilterItems = [
+export const booksFilterItems = [
   {
     name: 'Fun',
     active: false,
   },
   {
-    name: 'Bestseller',
+    name: 'Intimacy',
     active: false,
   },
   {
-    name: 'Romance',
+    name: 'Respect',
     active: false,
   },
   {

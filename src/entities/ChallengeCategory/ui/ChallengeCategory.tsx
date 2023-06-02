@@ -75,7 +75,6 @@ const ChallengeCategory = (props: ChallangeProps) => {
 
     if (isHomePage) {
       // when press on challenge category in home page navigate to Challenges page and set selected challenge id
-      console.log(id, 'id');
       navigation.navigate(TabRoutesNames.CHALLENGES, {id});
 
       return;

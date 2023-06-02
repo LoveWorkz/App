@@ -11,6 +11,7 @@ import {
 } from '@src/entities/RubricFilterItem';
 import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import booksStore from '../../model/store/BooksStore';
 import {Wrapper as BookItem} from '../BookItem/BookItem';
@@ -34,7 +35,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
           onPress={onFiltreHandler}
           active={active}
           rubric={name}
-          text={name}
+          displayName={name}
         />
       )}
     </View>
@@ -43,9 +44,12 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
 
 const Books = () => {
   const {t} = useTranslation();
+  const {i18n} = useTranslation();
   const colors = useColors();
   const booksList = booksStore.booksFilteredList;
   const booksCategories = rubricFilterItemStore.rubricFilterItems;
+
+  const language = i18n.language as LanguageValueType;
 
   // adding an empty object for a space at the beginning
   const booksCategoriesWithSpace = useMemo(() => {
@@ -75,8 +79,8 @@ const Books = () => {
                 <BookItem
                   id={book.id}
                   image={book.image.front}
-                  title={book.name}
-                  description={book.description}
+                  title={book.displayName[language]}
+                  description={book.description[language]}
                 />
               </View>
             );
@@ -95,7 +99,7 @@ const Books = () => {
   );
 };
 
-export const Wrapper = memo(observer(Books));
+export default memo(observer(Books));
 
 const styles = StyleSheet.create({
   booksTitle: {

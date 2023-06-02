@@ -13,6 +13,7 @@ import shop from './shop.json';
 import quotes from './quotes.json';
 import splash from './splash.json';
 import error from './error.json';
+import rubricFilterItem from './rubricFilterItem.json';
 
 export const en = {
   ...common,
@@ -30,4 +31,5 @@ export const en = {
   ...quotes,
   ...splash,
   ...error,
+  ...rubricFilterItem,
 };

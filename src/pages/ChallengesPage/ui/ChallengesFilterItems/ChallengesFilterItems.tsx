@@ -28,7 +28,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
           onPress={onFiltreHandler}
           active={active}
           rubric={name}
-          text={name}
+          displayName={name}
         />
       )}
     </View>

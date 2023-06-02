@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Linking} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -19,10 +19,12 @@ import {useTheme} from '@src/app/providers/themeProvider';
 
 interface BookProps {
   description: string;
+  bookLink: string;
 }
 
 const Description = (props: BookProps) => {
-  const {description} = props;
+  const {description, bookLink} = props;
+
   const colors = useColors();
   const {theme} = useTheme();
   const {t} = useTranslation();
@@ -30,6 +32,10 @@ const Description = (props: BookProps) => {
   const descriptionHeight = windowHeight * 0.55;
   const verticalPadding = globalPadding + globalPadding;
   const descriptionHeightWinusPaddings = descriptionHeight - verticalPadding;
+
+  const onPressHandler = () => {
+    Linking.openURL(bookLink);
+  };
 
   return (
     <View
@@ -67,7 +73,10 @@ const Description = (props: BookProps) => {
               size={TextSize.LEVEL_4}
             />
           </View>
-          <Button style={styles.btnWrapper} theme={ButtonTheme.GRADIENT}>
+          <Button
+            onPress={onPressHandler}
+            style={styles.btnWrapper}
+            theme={ButtonTheme.GRADIENT}>
             <AppText
               weight={'700'}
               style={{color: colors.bgQuinaryColor}}

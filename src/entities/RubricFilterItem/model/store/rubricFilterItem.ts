@@ -1,15 +1,18 @@
 import {makeAutoObservable} from 'mobx';
 
-import {rubricFilterItems} from '../consts/consts';
 import {RubricFilterItemType} from '../types/rubricFilterItemTypes';
 
 class RubricFilterItemStore {
-  rubricFilterItems: RubricFilterItemType[] = rubricFilterItems;
+  rubricFilterItems: RubricFilterItemType[] = [];
   selectedRubricKey: string = '';
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setRubricFilterItems = (filterItems: RubricFilterItemType[]) => {
+    this.rubricFilterItems = filterItems;
+  };
 
   resetActiveRubricStatus = () => {
     this.rubricFilterItems = this.rubricFilterItems.map(rubric => {

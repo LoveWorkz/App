@@ -1,12 +1,15 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
+import i18n from '@src/shared/config/i18next/i18next';
 
-import {Collections} from '@src/shared/types/firebase';
+// import {Collections} from '@src/shared/types/firebase';
 import {BookType} from '@src/entities/Book';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
-import {userStore} from '@src/entities/User';
+// import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {booksData} from '../../lib/books';
 
 class BooksStore {
   booksList: BookType[] = [];
@@ -49,17 +52,24 @@ class BooksStore {
 
   getBooks = async () => {
     try {
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
+      // const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const data = await firestore()
-        .collection(Collections.BOOKS)
-        .get({source});
-      const booksList = data.docs.map(book => book.data());
+      // const data = await firestore()
+      //   .collection(Collections.BOOKS)
+      //   .get({source});
+      // const booksList = data.docs.map(book => book.data());
+      // runInAction(() => {
+      //   this.booksSize = data.size;
+      //   this.booksList = booksList as BookType[];
+      //   this.booksFilteredList = booksList as BookType[];
+      //   this.recommendedBooksList = booksList as BookType[];
+      // });
+
       runInAction(() => {
-        this.booksSize = data.size;
-        this.booksList = booksList as BookType[];
-        this.booksFilteredList = booksList as BookType[];
-        this.recommendedBooksList = booksList as BookType[];
+        this.booksSize = booksData.length;
+        this.booksList = booksData as BookType[];
+        this.booksFilteredList = booksData as BookType[];
+        this.recommendedBooksList = booksData as BookType[];
       });
     } catch (e) {
       errorHandler({error: e});
@@ -100,11 +110,16 @@ class BooksStore {
     try {
       crashlytics().log('User tried to filter books by text.');
 
+      const language = i18n.language;
+
       this.booksFilteredList = list.filter(book => {
+        const displayName = book.displayName[language as LanguageValueType];
+        const description = book.description[language as LanguageValueType];
+
         const lowercaseBookInfo = searchBooksText.toLocaleLowerCase();
-        const bookName = book.name.toLocaleLowerCase();
+        const bookName = displayName.toLocaleLowerCase();
         const bookAuthor = book.author.toLocaleLowerCase();
-        const bookDescription = book.description.toLocaleLowerCase();
+        const bookDescription = description.toLocaleLowerCase();
 
         return (
           bookName.includes(lowercaseBookInfo) ||

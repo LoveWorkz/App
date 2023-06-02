@@ -7,6 +7,10 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {CongratsModal} from '@src/widgets/CongratsModal';
 import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
+import {challengeFilterItems} from '@src/entities/Challenge';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
 import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
 import Challenges from './Challenges/Challenges';
@@ -14,12 +18,13 @@ import challengesStore from '../model/store/challengesStore';
 import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
 interface ChallengesPageProps {
-  route?: {params: {id: string}};
+  route?: {params: {id: string; prevRouteName: AppRouteNames | TabRoutesNames}};
 }
 
 const ChallengesPage = (props: ChallengesPageProps) => {
   const {route} = props;
   const defaultChallengeId = route?.params?.id;
+  const prevRouteName = route?.params?.prevRouteName;
 
   const challengeCategory = challengesStore.challengeCategory;
   const congratsModalContent =
@@ -34,29 +39,14 @@ const ChallengesPage = (props: ChallengesPageProps) => {
 
   useFocusEffect(
     useCallback(() => {
+      if (prevRouteName === AppRouteNames.SETTINGS) {
+        return;
+      }
+
+      rubricFilterItemStore.setRubricFilterItems(challengeFilterItems);
       challengesStore.clearChallengesInfo();
-    }, []),
+    }, [prevRouteName]),
   );
-
-  // useEffect(() => {
-  //   if (!defaultChallengeId) {
-  //     return;
-  //   }
-
-  //   challengesStore.init();
-
-  //   return () => {
-  //     challengesStore.clearChallengesInfo();
-  //   };
-  // }, [defaultChallengeId]);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     if (defaultChallengeId) {
-  //       challengesStore.init();
-  //     }
-  //   }, [defaultChallengeId]),
-  // );
 
   return (
     <LoaderWrapper isLoading={isLoading}>

@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
@@ -17,18 +18,18 @@ export enum BookCategorySize {
 }
 
 interface bookCategoryProps {
-  text: string;
   rubric: string;
   size?: BookCategorySize;
   onPress?: (key: string) => void;
   action?: boolean;
   active?: boolean;
   isOutline?: Boolean;
+  displayName: string;
 }
 
 const RubricFilterItem = (props: bookCategoryProps) => {
   const {
-    text,
+    displayName,
     rubric,
     onPress,
     action = false,
@@ -38,6 +39,8 @@ const RubricFilterItem = (props: bookCategoryProps) => {
   } = props;
 
   const colors = useColors();
+  const {t} = useTranslation();
+  const name = t(displayName);
 
   const onPressHandler = () => {
     onPress?.(rubric);
@@ -60,7 +63,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
               onPress={onPressHandler}>
               <AppText
                 style={[{color: colors.bgQuinaryColor}]}
-                text={text}
+                text={name}
                 weight={'500'}
                 size={
                   size === BookCategorySize.SMALL
@@ -77,7 +80,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
               style={styles.btn}
               onPress={onPressHandler}>
               <GradientText
-                text={text}
+                text={name}
                 weight={'500'}
                 size={
                   size === BookCategorySize.SMALL
@@ -107,7 +110,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
         onPress={onPressHandler}>
         <AppText
           style={[{color: colors.bgQuinaryColor}]}
-          text={text}
+          text={name}
           weight={'500'}
           size={
             size === BookCategorySize.SMALL

@@ -3,13 +3,20 @@ export interface BookImage {
   back: string;
 }
 
+export interface BookFieldType {
+  en: string;
+  de: string;
+  pt: string;
+}
+
 export interface BookType {
   author: string;
   rubrics: string[];
-  description: string;
+  description: BookFieldType;
   id: string;
   image: BookImage;
-  name: string;
+  displayName: BookFieldType;
   rate: number;
-  quote: string;
+  quote: BookFieldType;
+  links: BookFieldType;
 }
