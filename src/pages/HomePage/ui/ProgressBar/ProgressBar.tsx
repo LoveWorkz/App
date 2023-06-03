@@ -10,7 +10,6 @@ import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {CategoryKey} from '@src/entities/Category';
 import {getProgressBarImage} from '../../model/lib/homePage';
 import homePageStore from '../../model/store/HomePageStore';
 
@@ -41,17 +40,15 @@ const ProgressBar = () => {
           style={styles.progressImage}
         />
       )}
-      {progressBarCategoryKey !== CategoryKey.Starter && (
-        <AppText
-          style={[
-            styles[progressBarCategoryKey],
-            {color: colors.homePageCategoryTextColor},
-          ]}
-          weight={'700'}
-          size={TextSize.LEVEL_4}
-          text={progressBarCategoryName}
-        />
-      )}
+      <AppText
+        style={[
+          styles[progressBarCategoryKey],
+          {color: colors.homePageCategoryTextColor},
+        ]}
+        weight={'700'}
+        size={TextSize.LEVEL_4}
+        text={progressBarCategoryName}
+      />
     </View>
   );
 };
@@ -69,28 +66,28 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: 166,
   },
 
-  Basic: {
+  Starter: {
     position: 'absolute',
     bottom: 45,
-    left: horizontalScale(65),
+    left: horizontalScale(62),
+    color: '#885FFF',
+  },
+  Basic: {
+    position: 'absolute',
+    bottom: 70,
+    left: horizontalScale(182),
     color: '#885FFF',
   },
   Deep: {
     position: 'absolute',
-    bottom: 70,
-    left: horizontalScale(185),
+    bottom: 125,
+    left: horizontalScale(180),
     color: '#885FFF',
   },
   Intimate: {
     position: 'absolute',
     bottom: 130,
-    left: horizontalScale(185),
-    color: '#885FFF',
-  },
-  Hot: {
-    position: 'absolute',
-    bottom: 135,
-    left: horizontalScale(305),
+    left: horizontalScale(302),
     color: '#885FFF',
   },
 });

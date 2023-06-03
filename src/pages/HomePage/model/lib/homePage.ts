@@ -4,8 +4,6 @@ import {
   BasicImage,
   DeepDarkImage,
   DeepImage,
-  HotDarkImage,
-  HotImage,
   IntimateDarkImage,
   IntimateImage,
   StarterDarkImage,
@@ -29,6 +27,6 @@ export const getProgressBarImage = ({
     case CategoryKey.Intimate:
       return isDarkMode ? IntimateDarkImage : IntimateImage;
     default:
-      return isDarkMode ? HotDarkImage : HotImage;
+      return isDarkMode ? IntimateDarkImage : IntimateDarkImage;
   }
 };

@@ -99,13 +99,11 @@ class HomePageStore {
     try {
       const userCurrentCategoryKey = profileStore.currentCategory
         ?.currentCategory as CategoryKey;
-
       if (!userCurrentCategoryKey) {
         return;
       }
 
       const category = categoryStore.getCategoryByName(userCurrentCategoryKey);
-
       if (!category) {
         return;
       }
@@ -116,20 +114,27 @@ class HomePageStore {
       let progressBarCategoryName = quickStartCategoryName;
       let progressBarCategoryKey = quickStartCategoryKey;
 
-      const categories = categoriesStore.categories;
-      const lastCategory = categories[categories.length - 1];
-      const penultimateCategory = categories[categories.length - 2];
-
       const homePageCategoryQuestionsSize = homePageCategory.questions.length;
       const currentQuestionNumber = this.getHomePageQuestionNumber({
         homePageCategory,
         homePageCategoryQuestionsSize,
       });
 
-      // if it's the last category show penultimate category, we should not show the last category
-      if (userCurrentCategoryKey === lastCategory.name) {
-        progressBarCategoryName = penultimateCategory.displayName[language];
-        progressBarCategoryKey = penultimateCategory.name;
+      // Hot and All in One categories should not show up in the progress bar
+      if (
+        userCurrentCategoryKey === CategoryKey.All_In_One ||
+        userCurrentCategoryKey === CategoryKey.Hot
+      ) {
+        const intimateCategory = categoryStore.getCategoryByName(
+          CategoryKey.Intimate,
+        );
+
+        if (!intimateCategory) {
+          return;
+        }
+
+        progressBarCategoryName = intimateCategory.displayName[language];
+        progressBarCategoryKey = CategoryKey.Intimate;
       }
 
       runInAction(() => {

@@ -19,14 +19,12 @@ export {default as StarterImage} from './light/progressBar/Starter.png';
 export {default as BasicImage} from './light/progressBar/Basic.png';
 export {default as DeepImage} from './light/progressBar/Deep.png';
 export {default as IntimateImage} from './light/progressBar/Intimate.png';
-export {default as HotImage} from './light/progressBar/Hot.png';
 
 // progress bar dark
 export {default as StarterDarkImage} from './dark/progressBar/Starter.png';
 export {default as BasicDarkImage} from './dark/progressBar/Basic.png';
 export {default as DeepDarkImage} from './dark/progressBar/Deep.png';
 export {default as IntimateDarkImage} from './dark/progressBar/Intimate.png';
-export {default as HotDarkImage} from './dark/progressBar/Hot.png';
 
 export {default as Action_CARD} from './Action_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';

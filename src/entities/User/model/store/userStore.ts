@@ -315,6 +315,7 @@ class UserStore {
 
       await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
+      await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await lngStorage.removeLanguage(USER_LANGUAGE_STORAGE_KEY);
     } catch (e) {
@@ -333,8 +334,6 @@ class UserStore {
       await userChallengeCategoryStore.deleteUserChallengeCategory(id);
 
       await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
-
-      await authStorage.removeAuthData(USER_VISITED_STATUS);
     } catch (e) {
       errorHandler({error: e});
     }
