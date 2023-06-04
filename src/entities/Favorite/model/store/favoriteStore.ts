@@ -146,6 +146,7 @@ class FavoriteStore {
   }) => {
     try {
       let questionId = id;
+      const isInitialSetUp = !questionId;
 
       // initial logic
       if (!id && this.favorite) {
@@ -182,6 +183,13 @@ class FavoriteStore {
       );
       if (!currentCategory) {
         return;
+      }
+
+      if (isInitialSetUp) {
+        questionStore.setQuestionPreviewInfo({
+          ...questionStore.questionPreviewInfo,
+          defaultQuestionNumber: currentQuestionNumber,
+        });
       }
 
       questionStore.setQuestionPreviewInfo({

@@ -161,8 +161,10 @@ class CategoryStore {
       let currentquestionId = initialQuestionId || questionId;
       let categoryName: string | undefined;
 
+      const isInitialSetUp = !currentquestionId;
+
       // it's working only for the first time
-      if (!questionId || initialQuestionId) {
+      if (isInitialSetUp) {
         const category = this.category;
 
         if (!category) {
@@ -197,6 +199,13 @@ class CategoryStore {
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
       if (!currentRubric) {
         return;
+      }
+
+      if (isInitialSetUp) {
+        questionStore.setQuestionPreviewInfo({
+          ...questionStore.questionPreviewInfo,
+          defaultQuestionNumber: currentQuestionNumber,
+        });
       }
 
       questionStore.setQuestionPreviewInfo({

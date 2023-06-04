@@ -15,4 +15,5 @@ export interface QuestionPreviewType {
   categoryName: string;
   rubricName: string;
   questionNumber: number;
+  defaultQuestionNumber?: number;
 }

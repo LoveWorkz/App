@@ -156,7 +156,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
             data={formattedQuestions}
             itemStyle={styles.slideItemStyle}
             Component={QuestionCard}
-            defaultElement={questionsPageInfo.questionNumber}
+            defaultElement={questionsPageInfo.defaultQuestionNumber}
           />
           <View
             style={[

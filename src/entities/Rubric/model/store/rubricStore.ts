@@ -132,6 +132,7 @@ class RubricStore {
     try {
       let currentquestionId = questionId;
       let rubricName: string | undefined;
+      const isInitialSetUp = !questionId;
 
       // it's working only for the first time
       if (!questionId) {
@@ -161,6 +162,13 @@ class RubricStore {
       );
       if (!currentCategory) {
         return;
+      }
+
+      if (isInitialSetUp) {
+        questionStore.setQuestionPreviewInfo({
+          ...questionStore.questionPreviewInfo,
+          defaultQuestionNumber: currentQuestionNumber,
+        });
       }
 
       questionStore.setQuestionPreviewInfo({

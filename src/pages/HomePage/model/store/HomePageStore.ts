@@ -43,8 +43,10 @@ class HomePageStore {
       await categoriesStore.fetchRubrics();
       await challengesStore.fetchChallengeCategories();
       // fetching books for quotes modal
-      await booksStore.getBooks();
-      quotesStore.checkQuotesShownStatus(booksStore.booksList);
+      const books = await booksStore.fetchBooks();
+      if (books) {
+        quotesStore.checkQuotesShownStatus(books);
+      }
 
       this.getHomePageCategory(language);
 

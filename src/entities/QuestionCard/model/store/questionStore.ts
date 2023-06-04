@@ -9,6 +9,7 @@ class QuestionStore {
     categoryName: '',
     rubricName: '',
     questionNumber: 0,
+    defaultQuestionNumber: 0,
   };
   questionCardScreenshot: string = '';
 

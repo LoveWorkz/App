@@ -1,10 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
+import i18n from '@src/shared/config/i18next/i18next';
 
 import {QuoeType, userStore} from '@src/entities/User';
 import {datediff} from '@src/shared/lib/date';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {BookType} from '@src/entities/Book';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {QuotesModalInfoType} from '../types/quotesType';
 
 class QuotesStore {
@@ -139,10 +141,12 @@ class QuotesStore {
 
   setQuotesModalInfo = async (book: BookType) => {
     try {
+      const language = i18n.language as LanguageValueType;
+
       const quotesModalInfo = {
-        quote: book.quote,
+        quote: book.quote[language],
         bookAuthor: book.author,
-        bookName: book.name,
+        bookName: book.displayName[language],
         bookId: book.id,
       };
 

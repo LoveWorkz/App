@@ -40,7 +40,7 @@ class BooksStore {
       runInAction(() => {
         this.isBooksPageLoading = true;
       });
-      await this.getBooks();
+      await this.setBooks();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -50,7 +50,7 @@ class BooksStore {
     }
   };
 
-  getBooks = async () => {
+  fetchBooks = async () => {
     try {
       // const source = await userStore.checkIsUserOfflineAndReturnSource();
 
@@ -58,6 +58,15 @@ class BooksStore {
       //   .collection(Collections.BOOKS)
       //   .get({source});
       // const booksList = data.docs.map(book => book.data());
+
+      return booksData;
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  setBooks = async () => {
+    try {
       // runInAction(() => {
       //   this.booksSize = data.size;
       //   this.booksList = booksList as BookType[];
@@ -65,11 +74,17 @@ class BooksStore {
       //   this.recommendedBooksList = booksList as BookType[];
       // });
 
+      const books = await this.fetchBooks();
+
+      if (!books) {
+        return;
+      }
+
       runInAction(() => {
-        this.booksSize = booksData.length;
-        this.booksList = booksData as BookType[];
-        this.booksFilteredList = booksData as BookType[];
-        this.recommendedBooksList = booksData as BookType[];
+        this.booksSize = books.length;
+        this.booksList = books as BookType[];
+        this.booksFilteredList = books as BookType[];
+        this.recommendedBooksList = books as BookType[];
       });
     } catch (e) {
       errorHandler({error: e});
