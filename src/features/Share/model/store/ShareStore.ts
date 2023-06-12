@@ -105,7 +105,7 @@ class shareStore {
 
   getQuestionCardUrl = async (questionCardScreenshot: string) => {
     try {
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       const cloudStorage = new StorageServices({
         folderName: CloudStoragePaths.QUESTIONS_SCREENSHOTS,
         fileName: userId,

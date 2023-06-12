@@ -14,7 +14,7 @@ export const validateFields = (formData: Profile) => {
   }
 
   if (!(preferences && preferences.length)) {
-    errorInfo.rubricError = ValidationErrorCodes.FIELD_IS_REQUIRED;
+    errorInfo.preferenceError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 

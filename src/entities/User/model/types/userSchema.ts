@@ -4,9 +4,9 @@ import {FavoriteType} from '@src/entities/Favorite';
 
 export interface User {
   id: string;
-  photo: string | null;
+  photo: string;
   email: string;
-  name: string | null;
+  name: string;
   emailVerified: boolean;
   isAuth: boolean;
   age: number;
@@ -36,7 +36,7 @@ export interface InitlUserInfo {
 }
 
 export interface AuthUserInfo {
-  user: User | null;
+  userId: string;
   authMethod: AuthMethod | string;
 }
 

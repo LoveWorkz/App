@@ -85,7 +85,7 @@ class RubricStore {
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }

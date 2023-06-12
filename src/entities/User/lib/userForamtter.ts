@@ -7,9 +7,9 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
 
   formatedUser.email = userInfo.email;
   formatedUser.id = userInfo.uid;
-  formatedUser.name = userInfo.displayName;
+  formatedUser.name = userInfo.displayName || '';
   formatedUser.emailVerified = userInfo.emailVerified;
-  formatedUser.photo = userInfo.photoURL;
+  formatedUser.photo = userInfo.photoURL || '';
   formatedUser.age = 0;
   formatedUser.country = '';
   formatedUser.relationshipStatus = '';
@@ -19,7 +19,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   };
   formatedUser.challengeCategory = {
     currentChallengeCategory: ChallengeCategoryKeys.Bronze,
-    currentChallengeCategoryId: 'challenge_category_1',
+    currentChallengeCategoryId: '',
   };
   formatedUser.favorites = {
     currentQuestion: '',

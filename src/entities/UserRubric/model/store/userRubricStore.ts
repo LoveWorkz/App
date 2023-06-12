@@ -22,7 +22,7 @@ class UserRubricStore {
       crashlytics().log('Fetching User Rubrics.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -79,7 +79,7 @@ class UserRubricStore {
       crashlytics().log('Updating User Rubric.');
 
       const isOffline = await userStore.getIsUserOffline();
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }

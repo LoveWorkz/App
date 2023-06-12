@@ -17,8 +17,10 @@ interface ProfileFormProps {
 const ProfileForm = (props: ProfileFormProps) => {
   const {isSetup = false} = props;
   const profileData = profileStore.profileData;
+  const user = userStore.user;
+
   // if the user is trying to set the profile for the first time, chose the account name (google, apple)
-  const userName = isSetup ? userStore.authUser?.name : profileData?.name;
+  const userName = isSetup ? user?.name : profileData?.name;
 
   const {t} = useTranslation();
 
@@ -82,7 +84,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       </View>
       <View style={styles.preferences}>
         <Preferences
-          error={profileStore.errorInfo.rubricError}
+          error={profileStore.errorInfo.preferenceError}
           changePreference={onPreferenceChangeHandler}
           selectedPreferences={profileStore.profileForm.preferences || []}
         />

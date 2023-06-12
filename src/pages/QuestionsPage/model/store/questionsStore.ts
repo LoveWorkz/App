@@ -9,7 +9,6 @@ import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
-import {profileStore} from '@src/entities/Profile';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {userRubricStore} from '@src/entities/UserRubric';
@@ -434,7 +433,7 @@ class QuestionsStore {
         return;
       }
 
-      profileStore.setCurrentCategory({
+      userStore.setCurrentCategory({
         currentCategory: nextCategory.name,
       });
 

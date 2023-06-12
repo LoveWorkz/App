@@ -1,25 +1,10 @@
-import {CurrentCategory} from '@src/entities/Category';
-import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
-import {FavoriteType} from '@src/entities/Favorite';
-import {QuoeType} from '@src/entities/User';
-
 export interface Profile {
-  id: string;
   photo: string;
-  email: string;
   name: string;
-  emailVerified: boolean;
-  isAuth: boolean;
   age: string;
   country: string;
   relationshipStatus: string;
   preferences: string[];
-  favorites: FavoriteType;
-  category: CurrentCategory;
-  challengeCategory: CurrentChallengeCategoryType;
-  quote: QuoeType;
-  isWowThatWasFastModalForbidden: boolean;
-  hasUserSwipedAnyQuestion: boolean;
 }
 
 export interface ProfileErrorInfo {
@@ -27,7 +12,7 @@ export interface ProfileErrorInfo {
   ageError: string;
   countryError: string;
   relationshipStatusError: string;
-  rubricError: string;
+  preferenceError: string;
 }
 
 export enum ProfilePhotoActionType {

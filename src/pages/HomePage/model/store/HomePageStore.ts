@@ -2,7 +2,6 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import {profileStore} from '@src/entities/Profile';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {booksStore} from '@src/pages/BooksPage';
 import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
@@ -14,6 +13,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {getNumberFromPercentage} from '@src/shared/lib/common';
+import {userStore} from '@src/entities/User';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -38,7 +38,7 @@ class HomePageStore {
       runInAction(() => {
         this.isHomePageLoading = true;
       });
-      await profileStore.fetchProfile();
+      await userStore.fetchUser();
       await categoriesStore.fetchCategories();
       await categoriesStore.fetchRubrics();
       await challengesStore.fetchChallengeCategories();
@@ -68,6 +68,7 @@ class HomePageStore {
         this.isHomePageLoading = true;
       });
 
+      await userStore.fetchUser();
       await this.fetchHomePageCategoryChallenges();
       await this.fetchHomePageCategories(language);
     } catch (e) {
@@ -93,7 +94,6 @@ class HomePageStore {
     try {
       crashlytics().log('Fetching home page Categories');
 
-      await profileStore.fetchProfile();
       await categoriesStore.fetchCategories();
       this.getHomePageCategory(language);
     } catch (e) {
@@ -103,7 +103,7 @@ class HomePageStore {
 
   getHomePageCategory = (language: LanguageValueType) => {
     try {
-      const userCurrentCategoryKey = profileStore.currentCategory
+      const userCurrentCategoryKey = userStore.currentCategory
         ?.currentCategory as CategoryKey;
       if (!userCurrentCategoryKey) {
         return;

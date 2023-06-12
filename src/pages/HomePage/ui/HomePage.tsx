@@ -18,8 +18,8 @@ import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {profileStore} from '@src/entities/Profile';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {userStore} from '@src/entities/User';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
@@ -47,8 +47,7 @@ const HomePage = (props: HomePageProps) => {
   const isTabScreen = route?.params?.isTabScreen;
 
   // if user swipe question first time show home page quick start
-  const hasUserSwipedAnyQuestion =
-    profileStore.profileData?.hasUserSwipedAnyQuestion;
+  const hasUserSwipedAnyQuestion = userStore.user?.hasUserSwipedAnyQuestion;
 
   useFocusEffect(
     useCallback(() => {

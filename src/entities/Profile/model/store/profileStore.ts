@@ -7,11 +7,6 @@ import {userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
-import {favoriteStore} from '@src/entities/Favorite';
-import {challengesStore} from '@src/pages/ChallengesPage';
-import {CurrentCategory} from '@src/entities/Category';
-import {quotesStore} from '@src/widgets/Quotes';
-import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {
   Profile,
@@ -28,14 +23,13 @@ class ProfileStore {
     countryError: '',
     nameError: '',
     relationshipStatusError: '',
-    rubricError: '',
+    preferenceError: '',
   };
   avatar: string = '';
   tempAvatar: string = '';
-  currentCategory: CurrentCategory | null = null;
 
   isLoading: boolean = false;
-  initialFetching: boolean = true;
+  isFetchingProfile: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -68,14 +62,6 @@ class ProfileStore {
     }
   }
 
-  clearPreferences() {
-    if (!this.profileData) {
-      return;
-    }
-
-    this.profileForm.preferences = this.profileData.preferences;
-  }
-
   setValidationError(errorInfo: ProfileErrorInfo) {
     this.errorInfo = errorInfo;
   }
@@ -97,10 +83,6 @@ class ProfileStore {
     this.setTempAvatar(avatar);
   }
 
-  setCurrentCategory(category: CurrentCategory) {
-    this.currentCategory = category;
-  }
-
   setTempAvatar(avatar: string) {
     this.tempAvatar = avatar;
   }
@@ -117,19 +99,20 @@ class ProfileStore {
       countryError: '',
       nameError: '',
       relationshipStatusError: '',
-      rubricError: '',
+      preferenceError: '',
     });
   }
 
   profilePhotoAction = async (type: ProfilePhotoActionType) => {
     try {
-      if (!this.profileData?.id) {
+      const userId = userStore.userId;
+      if (!userId) {
         return;
       }
 
       const cloudStorage = new StorageServices({
         folderName: CloudStoragePaths.AVATARS,
-        fileName: this.profileData?.id,
+        fileName: userId,
       });
 
       switch (type) {
@@ -167,11 +150,12 @@ class ProfileStore {
   };
 
   resetForm() {
-    this.setName('');
-    this.setAge('');
-    this.setCountry('');
-    this.setRelationshipStatus('');
-    this.clearPreferences();
+    if (!this.profileData) {
+      return;
+    }
+
+    this.setProfileForm(this.profileData);
+
     this.setTempAvatar(this.avatar);
     this.clearErrors();
   }
@@ -181,36 +165,34 @@ class ProfileStore {
       crashlytics().log('Fetching user profile.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
-      const userId = userStore.authUser?.id;
+      const userId = userStore.userId;
+
+      runInAction(() => {
+        this.isFetchingProfile = true;
+      });
+
       if (userId) {
-        const authUser = await firestore()
+        const data = await firestore()
           .collection(Collections.USERS)
           .doc(userId)
           .get({source});
 
         runInAction(() => {
-          const data = authUser.data() as Profile;
-          if (!data) {
+          const user = data.data() as Profile;
+          if (!user) {
             return;
           }
 
-          this.setProfileData(data);
-          this.setProfileForm(data);
-          this.setAvatar(data.photo);
-          this.setCurrentCategory(data.category);
-          challengesStore.setChallengeCategory(data.challengeCategory);
-          favoriteStore.setFavorites(data.favorites);
-          quotesStore.setIsQuoteInfo(data.quote);
-          wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
-            data.isWowThatWasFastModalForbidden,
-          );
+          this.setProfileData(user);
+          this.setProfileForm(user);
+          this.setAvatar(user.photo);
         });
       }
     } catch (e) {
       errorHandler({error: e});
     } finally {
       runInAction(() => {
-        this.initialFetching = false;
+        this.isFetchingProfile = false;
       });
     }
   };
@@ -233,7 +215,7 @@ class ProfileStore {
         this.isLoading = true;
       });
 
-      const userId = userStore.authUser?.id;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -273,7 +255,6 @@ class ProfileStore {
           });
       }
 
-      await this.fetchProfile();
       navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e) {
       errorHandler({error: e});
@@ -293,7 +274,7 @@ class ProfileStore {
         return;
       }
 
-      const userId = this.profileData?.id;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -302,7 +283,7 @@ class ProfileStore {
 
       await userStore.updateUser({
         field: 'photo',
-        data: null,
+        data: '',
       });
       await this.profilePhotoAction(ProfilePhotoActionType.DELETE);
 

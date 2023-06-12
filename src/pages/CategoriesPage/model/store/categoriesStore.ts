@@ -6,7 +6,6 @@ import {CategoryType, CateorySize} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
 import {RubricType} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
-import {profileStore} from '@src/entities/Profile';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userStore} from '@src/entities/User';
@@ -31,7 +30,7 @@ class CategoriesStore {
       });
       await this.fetchRubrics();
       await this.fetchCategories();
-      await profileStore.fetchProfile();
+      await userStore.fetchUser();
     } catch (e) {
       errorHandler({error: e});
     } finally {

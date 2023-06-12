@@ -26,7 +26,6 @@ import {
   QuestionType,
 } from '@src/entities/QuestionCard';
 import {CategoryKey} from '@src/entities/Category';
-import {profileStore} from '@src/entities/Profile';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
 import {CongratsModal} from '@src/widgets/CongratsModal';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -35,6 +34,7 @@ import {initInterstitialAd} from '@src/app/config/admobConfig';
 import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {userStore} from '@src/entities/User';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 
@@ -57,7 +57,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   const questions = questionsStore.questions;
   const questionsPageInfo = questionStore.questionPreviewInfo;
-  const currentCategory = profileStore.currentCategory?.currentCategory;
+  const currentCategory = userStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
   const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
 

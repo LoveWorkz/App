@@ -27,7 +27,7 @@ class UserChallengeCategoryStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const currentChallengeCategory = challengesStore.challengeCategory;
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -115,7 +115,7 @@ class UserChallengeCategoryStore {
       const isOffline = await userStore.getIsUserOffline();
 
       const currentChallengeCategory = challengesStore.challengeCategory;
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }

@@ -23,7 +23,7 @@ class UserCategoryStore {
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -81,7 +81,7 @@ class UserCategoryStore {
       crashlytics().log('Updating User Category.');
 
       const isOffline = await userStore.getIsUserOffline();
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }

@@ -11,6 +11,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
@@ -21,12 +22,14 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
-  const userAvatar = userStore.authUser?.photo;
+  const userAvatar = userStore.user?.photo;
 
   const colors = useColors();
   const {t} = useTranslation();
 
   useEffect(() => {
+    profileStore.fetchProfile();
+
     return () => profileStore.resetForm();
   }, []);
 
@@ -71,43 +74,45 @@ const Profile = (props: ProfileProps) => {
   }
 
   return (
-    <View style={styles.profile}>
-      <Avatar
-        theme={AvatarTheme.LARGE}
-        imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
-        borderRadius={100}
-      />
-      <View style={styles.uploadPhotoWrapper}>
-        <UploadPhoto
-          style={styles.uploadPhoto}
-          deletePhoto={onDeletePhotoHandler}
-          setPhtotData={onUploadPhotoHandler}
+    <LoaderWrapper isLoading={profileStore.isFetchingProfile}>
+      <View style={styles.profile}>
+        <Avatar
+          theme={AvatarTheme.LARGE}
+          imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
+          borderRadius={100}
         />
-      </View>
-      {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
-        <View style={styles.changePasswordWrapper}>
-          <ChangePassword />
-        </View>
-      )}
-      <View style={styles.profileFormWrapper}>
-        <ProfileForm />
-      </View>
-
-      <View style={styles.btns}>
-        <Button
-          disabled={profileStore.isLoading}
-          onPress={onSaveHandler}
-          theme={ButtonTheme.GRADIENT}
-          style={styles.saveBtn}>
-          <AppText
-            style={{color: colors.bgQuinaryColor}}
-            size={TextSize.LEVEL_4}
-            text={t('profile.save_changes')}
+        <View style={styles.uploadPhotoWrapper}>
+          <UploadPhoto
+            style={styles.uploadPhoto}
+            deletePhoto={onDeletePhotoHandler}
+            setPhtotData={onUploadPhotoHandler}
           />
-        </Button>
-        <DeleteAccount />
+        </View>
+        {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
+          <View style={styles.changePasswordWrapper}>
+            <ChangePassword />
+          </View>
+        )}
+        <View style={styles.profileFormWrapper}>
+          <ProfileForm />
+        </View>
+
+        <View style={styles.btns}>
+          <Button
+            disabled={profileStore.isLoading}
+            onPress={onSaveHandler}
+            theme={ButtonTheme.GRADIENT}
+            style={styles.saveBtn}>
+            <AppText
+              style={{color: colors.bgQuinaryColor}}
+              size={TextSize.LEVEL_4}
+              text={t('profile.save_changes')}
+            />
+          </Button>
+          <DeleteAccount />
+        </View>
       </View>
-    </View>
+    </LoaderWrapper>
   );
 };
 

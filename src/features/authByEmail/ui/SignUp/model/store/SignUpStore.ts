@@ -2,7 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
+import {AuthMethod, userFormatter, userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
@@ -74,14 +74,19 @@ class SignUpStore {
     this.clearErrors();
   }
 
-  setUser = async (user: User) => {
+  setUser = async (user: InitlUserInfo | null) => {
     try {
+      if (!user) {
+        return;
+      }
+      const formattedUser = userFormatter(user);
+
       userStore.setAuthUserInfo({
-        user,
+        userId: formattedUser.id,
         authMethod: AuthMethod.AUTH_BY_EMAIL,
       });
 
-      await userStore.addUserToFirestore(user);
+      await userStore.addUserToFirestore(formattedUser);
       await userStore.checkAndSetUserVisitStatus({isSignUp: true});
     } catch (e) {
       errorHandler({error: e});
@@ -119,8 +124,8 @@ class SignUpStore {
       crashlytics().log('User register with Email.');
 
       const currentUser = auth().currentUser;
-      const formattedUser = userFormatter(currentUser as InitlUserInfo);
-      await this.setUser(formattedUser);
+      await this.setUser(currentUser as InitlUserInfo);
+
       actionAfterRegistration?.();
 
       this.setIsloading(false);

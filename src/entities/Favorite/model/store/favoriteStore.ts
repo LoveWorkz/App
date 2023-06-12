@@ -1,7 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {profileStore} from '@src/entities/Profile';
 import {userStore} from '@src/entities/User';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {rubricStore} from '@src/entities/Rubric';
@@ -57,7 +56,7 @@ class FavoriteStore {
     try {
       crashlytics().log('Adding question to favorites.');
 
-      const userId = userStore.authUser?.id;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -77,7 +76,7 @@ class FavoriteStore {
         },
       });
 
-      await profileStore.fetchProfile();
+      await userStore.fetchUser();
 
       runInAction(() => {
         this.isQuestionFavorite = true;
@@ -91,7 +90,7 @@ class FavoriteStore {
     try {
       crashlytics().log('Delleting question from favorites.');
 
-      const userId = userStore.authUser?.id;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
@@ -125,7 +124,7 @@ class FavoriteStore {
         data: favorites,
       });
 
-      await profileStore.fetchProfile();
+      await userStore.fetchUser();
 
       runInAction(() => {
         this.isQuestionFavorite = false;

@@ -7,7 +7,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {AuthMethod, User, userFormatter, userStore} from '@src/entities/User';
+import {AuthMethod, userFormatter, userStore} from '@src/entities/User';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -19,16 +19,21 @@ class AuthByGoogleStore {
     makeAutoObservable(this);
   }
 
-  setUser = async (user: User) => {
+  setUser = async (user: InitlUserInfo | null) => {
     try {
+      if (!user) {
+        return;
+      }
+      const userId = user.uid;
+
       userStore.setAuthUserInfo({
-        user,
+        userId: userId,
         authMethod: AuthMethod.AUTH_BY_GOOGLE,
       });
 
       const authUser = await firestore()
         .collection(Collections.USERS)
-        .doc(user.id)
+        .doc(userId)
         .get();
 
       if (authUser.exists) {
@@ -36,10 +41,13 @@ class AuthByGoogleStore {
           field: 'isAuth',
           data: true,
         });
+
         await userStore.checkAndSetUserVisitStatus({isSignUp: false});
         navigation.replace(AppRouteNames.TAB_ROUTE);
       } else {
-        await userStore.addUserToFirestore(user);
+        const formattedUser = userFormatter(user);
+
+        await userStore.addUserToFirestore(formattedUser);
         await userStore.checkAndSetUserVisitStatus({isSignUp: true});
         navigation.replace(AppRouteNames.SETUP);
       }
@@ -68,8 +76,7 @@ class AuthByGoogleStore {
 
       const currentUser = auth().currentUser;
 
-      const formattedUser = userFormatter(currentUser as InitlUserInfo);
-      await this.setUser(formattedUser);
+      await this.setUser(currentUser as InitlUserInfo);
     } catch (error: any) {
       const isUserCanceledAuthorisation =
         error.code === statusCodes.SIGN_IN_CANCELLED;

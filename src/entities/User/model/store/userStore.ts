@@ -13,7 +13,6 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
-  AUTH_USER_STORAGE_KEY,
   THEME_STORAGE_KEY,
   USER_LANGUAGE_STORAGE_KEY,
   USER_VISITED_STATUS,
@@ -28,21 +27,21 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
-import {
-  User,
-  InitlUserInfo,
-  AuthMethod,
-  AuthUserInfo,
-} from '../types/userSchema';
-import {userFormatter} from '../../lib/userForamtter';
+import {challengesStore} from '@src/pages/ChallengesPage';
+import {favoriteStore} from '@src/entities/Favorite';
+import {quotesStore} from '@src/widgets/Quotes';
+import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
+import {CurrentCategory} from '@src/entities/Category';
+import {User, AuthMethod, AuthUserInfo} from '../types/userSchema';
 
 class UserStore {
-  authUser: null | User = null;
-  authUserId: string = '';
+  user: null | User = null;
+  userId: string = '';
   authMethod: AuthMethod | string = '';
   isDialogOpen: boolean = false;
   isFirstUserVisit: boolean = true;
   isAccountDeleted: boolean = false;
+  currentCategory: CurrentCategory | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -54,6 +53,10 @@ class UserStore {
       data: false,
     });
   };
+
+  setCurrentCategory(category: CurrentCategory) {
+    this.currentCategory = category;
+  }
 
   toggleDialog = (isOpen: boolean) => {
     this.isDialogOpen = isOpen;
@@ -79,17 +82,52 @@ class UserStore {
         return navigation.replace(AppRouteNames.AUTH);
       }
 
-      const formattedUser = userFormatter(user as InitlUserInfo);
+      // const formattedUser = userFormatter(user as InitlUserInfo);
       const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
 
       this.setAuthUserInfo({
-        user: formattedUser,
+        userId: user.uid,
         authMethod: authMethod || '',
       });
 
       navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e: unknown) {
       this.errorHandler(e);
+    }
+  };
+
+  fetchUser = async () => {
+    try {
+      crashlytics().log('Fetching current user.');
+
+      const source = await this.checkIsUserOfflineAndReturnSource();
+      const userId = this.userId;
+
+      if (userId) {
+        const data = await firestore()
+          .collection(Collections.USERS)
+          .doc(userId)
+          .get({source});
+
+        runInAction(() => {
+          const user = data.data() as User;
+          if (!data) {
+            return;
+          }
+
+          this.user = user;
+
+          this.setCurrentCategory(user.category);
+          challengesStore.setChallengeCategory(user.challengeCategory);
+          favoriteStore.setFavorites(user.favorites);
+          quotesStore.setIsQuoteInfo(user.quote);
+          wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
+            user.isWowThatWasFastModalForbidden,
+          );
+        });
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -147,15 +185,13 @@ class UserStore {
     }
   };
 
-  setAuthUserInfo({user, authMethod}: AuthUserInfo) {
+  setAuthUserInfo({userId, authMethod}: AuthUserInfo) {
     try {
-      this.authUser = user;
-      if (user?.id) {
-        this.authUserId = user.id;
-      }
-      this.authMethod = authMethod;
+      runInAction(() => {
+        this.userId = userId;
+        this.authMethod = authMethod;
+      });
 
-      authStorage.setAuthData(AUTH_USER_STORAGE_KEY, JSON.stringify(user));
       authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
     } catch (e) {
       errorHandler({error: e});
@@ -319,12 +355,11 @@ class UserStore {
       crashlytics().log('clearing user information.');
 
       this.setAuthUserInfo({
-        user: null,
+        userId: '',
         authMethod: '',
       });
       profileStore.clearProfileData();
 
-      await authStorage.removeAuthData(AUTH_USER_STORAGE_KEY);
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
@@ -355,7 +390,7 @@ class UserStore {
       crashlytics().log('Updating user data.');
 
       const isOffline = await this.getIsUserOffline();
-      const userId = this.authUserId;
+      const userId = this.userId;
       if (!userId) {
         return;
       }

@@ -11,7 +11,6 @@ import {
   getNextChallengeCategory,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType} from '@src/entities/Challenge';
-import {profileStore} from '@src/entities/Profile';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
@@ -37,7 +36,7 @@ class ChallengesStore {
 
       this.isChallengePageLoading = true;
       // the order is important
-      await profileStore.fetchProfile();
+      await userStore.fetchUser();
       await this.fetchChallengeCategories();
       await this.fetchChallenges();
     } catch (e) {
@@ -148,18 +147,28 @@ class ChallengesStore {
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const currentChallengeCategory = this.challengeCategory;
-      const userId = userStore.authUserId;
+      const userId = userStore.userId;
       if (!userId) {
         return;
       }
-      if (!currentChallengeCategory) {
-        return;
+
+      let currentChallengeCategoryId =
+        this.challengeCategory?.currentChallengeCategoryId;
+
+      // if user has not selected some category set first one
+      if (!currentChallengeCategoryId) {
+        const firstChallengeCategory = this.challengeCategories[0];
+        this.setChallengeCategory({
+          currentChallengeCategory: firstChallengeCategory.name,
+          currentChallengeCategoryId: firstChallengeCategory.id,
+        });
+
+        currentChallengeCategoryId = firstChallengeCategory.id;
       }
 
       const challengesData = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
-        .doc(currentChallengeCategory.currentChallengeCategoryId)
+        .doc(currentChallengeCategoryId)
         .collection(Collections.CHALLENGES)
         .orderBy('createdDate')
         .get({source});
@@ -195,8 +204,11 @@ class ChallengesStore {
     try {
       crashlytics().log('Selecting challenge category.');
 
+      let currentChallengeCategoryId =
+        this.challengeCategory?.currentChallengeCategoryId;
+
       // return if user pressed already chosen challenge category
-      if (this.challengeCategory?.currentChallengeCategoryId === id) {
+      if (currentChallengeCategoryId === id) {
         return;
       }
 

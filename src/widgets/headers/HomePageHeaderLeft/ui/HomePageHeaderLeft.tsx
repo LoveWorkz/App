@@ -5,7 +5,6 @@ import {observer} from 'mobx-react-lite';
 
 import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {profileStore} from '@src/entities/Profile';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
@@ -17,25 +16,25 @@ import {userStore} from '@src/entities/User';
 
 const HomePageHeaderLeft = () => {
   const {t} = useTranslation();
-  const profile = profileStore.profileData;
   const maxNameLength = 25;
   const isFirstUserVisit = userStore.isFirstUserVisit;
+
+  const user = userStore.user;
+  if (!user) {
+    return <></>;
+  }
 
   const onProfilePressHandler = () => {
     navigation.navigate(AppRouteNames.PROFILE);
   };
 
-  if (!profile) {
-    return null;
-  }
-
-  const name = profile.name;
-  const isNameLarge = name?.length >= maxNameLength;
+  const name = user.name;
+  const isNameLarge = name.length >= maxNameLength;
 
   return (
     <View style={styles.headerLeft}>
       <Pressable onPress={onProfilePressHandler}>
-        <Avatar theme={AvatarTheme.SMALL} imageUrl={profile.photo || ''} />
+        <Avatar theme={AvatarTheme.SMALL} imageUrl={user.photo || ''} />
       </Pressable>
       <Pressable onPress={onProfilePressHandler}>
         <View style={styles.nameWrapper}>
