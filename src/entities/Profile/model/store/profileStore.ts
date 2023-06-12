@@ -30,6 +30,7 @@ class ProfileStore {
 
   isLoading: boolean = false;
   isFetchingProfile: boolean = true;
+  isDeletingPhoto: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -274,22 +275,33 @@ class ProfileStore {
         return;
       }
 
+      runInAction(() => {
+        this.isDeletingPhoto = true;
+      });
+
+      if (!this.tempAvatar) {
+        return;
+      }
+
       const userId = userStore.userId;
       if (!userId) {
         return;
       }
-
-      this.setAvatar('');
 
       await userStore.updateUser({
         field: 'photo',
         data: '',
       });
       await this.profilePhotoAction(ProfilePhotoActionType.DELETE);
+      await userStore.fetchUser();
 
-      await this.fetchProfile();
+      this.setAvatar('');
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      runInAction(() => {
+        this.isDeletingPhoto = false;
+      });
     }
   };
 }

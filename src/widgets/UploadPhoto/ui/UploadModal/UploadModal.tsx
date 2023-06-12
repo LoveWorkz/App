@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, useWindowDimensions} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {useTranslation} from 'react-i18next';
@@ -14,11 +14,11 @@ interface UploadModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
   setPhtotData: (photoData: Asset) => void;
-  deletePhoto: () => void;
+  setConfirmModalVisible: (visible: boolean) => void;
 }
 
 const UploadModal = (props: UploadModalProps) => {
-  const {visible, setVisible, setPhtotData, deletePhoto} = props;
+  const {visible, setVisible, setPhtotData, setConfirmModalVisible} = props;
   const {t} = useTranslation();
   const colors = useColors();
 
@@ -43,13 +43,13 @@ const UploadModal = (props: UploadModalProps) => {
     }
   };
 
-  const onCancelHandler = () => {
+  const onCancelHandler = useCallback(() => {
     setVisible?.(false);
-  };
+  }, [setVisible]);
 
   const onDeleteHandler = () => {
-    deletePhoto?.();
-    onCancelHandler?.();
+    setVisible(false);
+    setConfirmModalVisible(true);
   };
 
   return (
@@ -93,7 +93,7 @@ const UploadModal = (props: UploadModalProps) => {
   );
 };
 
-export const Wrapper = memo(UploadModal);
+export default memo(UploadModal);
 
 const styles = StyleSheet.create({
   content: {

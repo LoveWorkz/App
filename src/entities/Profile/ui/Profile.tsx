@@ -86,6 +86,7 @@ const Profile = (props: ProfileProps) => {
             style={styles.uploadPhoto}
             deletePhoto={onDeletePhotoHandler}
             setPhtotData={onUploadPhotoHandler}
+            isDeletingPhoto={profileStore.isDeletingPhoto}
           />
         </View>
         {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (

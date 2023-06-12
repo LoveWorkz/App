@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     height: 290,
   },
   text: {
-    fontSize: 16,
     textAlign: 'center',
   },
   btnGroup: {

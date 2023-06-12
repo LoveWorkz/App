@@ -6,20 +6,23 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {Wrapper as UploadModal} from './UploadModal/UploadModal';
+import UploadModal from './UploadModal/UploadModal';
+import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
 
 interface UploadPhotoProps {
   setPhtotData: (photoData: Asset) => void;
   deletePhoto: () => void;
   style?: Record<string, string | number>;
+  isDeletingPhoto: boolean;
 }
 
 const UploadPhoto = (props: UploadPhotoProps) => {
-  const {setPhtotData, deletePhoto, style} = props;
+  const {setPhtotData, deletePhoto, style, isDeletingPhoto} = props;
   const {t} = useTranslation();
   const colors = useColors();
 
   const [visible, setVisible] = useState(false);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   const onPressHandler = () => {
     setVisible(true);
@@ -49,7 +52,13 @@ const UploadPhoto = (props: UploadPhotoProps) => {
         visible={visible}
         setVisible={setVisible}
         setPhtotData={setPhtotData}
+        setConfirmModalVisible={setConfirmModalVisible}
+      />
+      <ConfirmDeleteModal
         deletePhoto={deletePhoto}
+        visible={confirmModalVisible}
+        setVisible={setConfirmModalVisible}
+        isDeletingPhoto={isDeletingPhoto}
       />
     </View>
   );
