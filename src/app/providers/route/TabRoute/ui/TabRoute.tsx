@@ -10,7 +10,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
-import {ComponentWrapper as IconItem} from './IconItem/IconItem';
+import IconItem from './IconItem/IconItem';
 import {getTabIcon} from '../lib/getIcon';
 
 const Tab = createBottomTabNavigator();
@@ -21,6 +21,7 @@ const TabRoute = () => {
 
   return (
     <Tab.Navigator
+      backBehavior={'history'}
       initialRouteName={TabRoutesNames.HOME}
       screenOptions={({route}) => ({
         headerShown: false,

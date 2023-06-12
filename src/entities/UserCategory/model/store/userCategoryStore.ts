@@ -4,9 +4,11 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {categoriesStore} from '@src/pages/CategoriesPage';
+import {CategoryKey, CategoryType} from '@src/entities/Category';
 import {userCategoryInitData} from '../lib/userCategory';
 import {UserCategory} from '../types/userCategoryType';
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class UserCategoryStore {
   userCategory: null | UserCategory = null;
@@ -43,10 +45,24 @@ class UserCategoryStore {
     try {
       crashlytics().log('Setting User Category.');
 
+      const defaultCategories = await categoriesStore.fetchDefaultCategories();
+      if (!defaultCategories) {
+        return;
+      }
+
+      const userCategories: Record<string, Partial<CategoryType>> = {};
+
+      defaultCategories.forEach(category => {
+        userCategories[category.id] = {
+          ...userCategoryInitData,
+          isBlocked: category.name === CategoryKey.Starter ? false : true,
+        };
+      });
+
       await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
-        .set(userCategoryInitData);
+        .set({categories: userCategories});
     } catch (e) {
       errorHandler({error: e});
     }

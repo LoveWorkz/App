@@ -1,4 +1,5 @@
 import React, {ComponentType} from 'react';
+import {ParamListBase} from '@react-navigation/native';
 
 import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
@@ -8,7 +9,6 @@ import {BooksPage} from '@src/pages/BooksPage';
 import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
 import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 import {Layout} from '@src/app/providers/layout';
-import {ParamListBase} from '@react-navigation/native';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -111,7 +111,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout
-          isPageScrolling={true}
+          isPageScrolling={false}
           deleteBottomPadding={false}
           deleteTopPadding={true}
           isTabBar>

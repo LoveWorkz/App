@@ -37,9 +37,18 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const viewCount = 5;
 
   const carouselRef = useRef() as MutableRefObject<ICarouselInstance>;
-  const newSwapIndex = useRef(0);
+  const newSwapIndex = useRef(-1);
+  const swipeStartStatus = useRef(false) as MutableRefObject<boolean>;
 
   const onProgressChange = useCallback(() => {
+    // the logic should start working when user start swiping
+
+    if (!swipeStartStatus.current) {
+      swipeStartStatus.current = true;
+
+      return;
+    }
+
     const index = carouselRef.current?.getCurrentIndex();
 
     if (newSwapIndex.current !== index) {

@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
   bookInfo: {
     width: '50%',
     marginTop: 15,
+    paddingLeft: 5,
   },
   image: {
     width: '100%',
@@ -181,7 +182,6 @@ const styles = StyleSheet.create({
   },
   rateWrapper: {
     marginTop: 15,
-    marginBottom: 25,
-    marginLeft: -4,
+    marginBottom: 20,
   },
 });

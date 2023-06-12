@@ -17,7 +17,7 @@ export const BookDetailsPage = (props: BookDetailsPageProps) => {
 
   useEffect(() => {
     if (route?.params && route.params.id) {
-      bookDetailsStore.getCurrentBook(route.params.id);
+      bookDetailsStore.init(route.params.id);
     }
   }, [route]);
 

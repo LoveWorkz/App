@@ -151,7 +151,12 @@ class ProfileStore {
           }
 
         case ProfilePhotoActionType.DELETE:
-          await cloudStorage.detete();
+          try {
+            await cloudStorage.detete();
+          } catch (e) {
+            errorHandler({error: e, withCrashlytics: false, withToast: false});
+          }
+
           break;
         default:
           break;
@@ -233,13 +238,23 @@ class ProfileStore {
         return;
       }
 
+      const profileForm = this.profileForm;
+
+      const newProfileData = {
+        name: profileForm.name,
+        age: profileForm.age,
+        country: profileForm.country,
+        relationshipStatus: profileForm.relationshipStatus,
+        preferences: profileForm.preferences,
+      };
+
       // deleting await if user is offline
       if (isOffline) {
         firestore()
           .collection(Collections.USERS)
           .doc(userId)
           .update({
-            ...this.profileForm,
+            ...newProfileData,
           });
       } else {
         const uploadedPhotoUrl = await this.profilePhotoAction(
@@ -253,7 +268,7 @@ class ProfileStore {
           .collection(Collections.USERS)
           .doc(userId)
           .update({
-            ...this.profileForm,
+            ...newProfileData,
             photo: photoUrl ?? '',
           });
       }

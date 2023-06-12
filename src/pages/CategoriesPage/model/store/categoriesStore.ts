@@ -46,7 +46,7 @@ class CategoriesStore {
       crashlytics().log('Fetching Categories');
 
       await userCategoryStore.fetchUserCategories();
-      await this.fetchDefaultCategories();
+      await this.mergeDefaultAndUserCategories();
     } catch (e) {
       errorHandler({error: e});
     }
@@ -57,7 +57,39 @@ class CategoriesStore {
       crashlytics().log('Fetching Rubrics');
 
       await userRubricStore.fetchUserRubrics();
-      await this.fetchDefaultRubrics();
+      await this.mergeDefaultAndUserRubrics();
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  mergeDefaultAndUserCategories = async () => {
+    try {
+      crashlytics().log('Merging default and user Categories.');
+
+      const userCategories = userCategoryStore.userCategory;
+      if (!userCategories) {
+        return;
+      }
+
+      const defaultCategories = await this.fetchDefaultCategories();
+      if (!defaultCategories) {
+        return;
+      }
+
+      // merge default categories with user custom categories
+      const categories = defaultCategories.map(defaultCategory => {
+        return {
+          ...defaultCategory,
+          ...(userCategories
+            ? userCategories.categories[defaultCategory.id]
+            : {}),
+        };
+      });
+
+      runInAction(() => {
+        this.categories = this.editCategories(categories as CategoryType[]);
+      });
     } catch (e) {
       errorHandler({error: e});
     }
@@ -67,27 +99,46 @@ class CategoriesStore {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const userCategories = userCategoryStore.userCategory;
-      if (!userCategories) {
-        return;
-      }
-
       const data = await firestore()
         .collection(Collections.CATEGORIES)
         .orderBy('createdDate')
         .get({source});
 
-      // merge default categories with user custom categories
       const categories = data.docs.map(category => {
         const currentCategory = category.data() as CategoryType;
         return {
           ...currentCategory,
-          ...(userCategories ? userCategories.categories[category.id] : {}),
         };
       });
 
+      return categories;
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  mergeDefaultAndUserRubrics = async () => {
+    try {
+      crashlytics().log('Merging default and user Rubrics.');
+
+      const userRubrics = userRubricStore.userRubric;
+      if (!userRubrics) {
+        return;
+      }
+
+      const defaultRubrics = await this.fetchDefaultRubrics();
+      if (!defaultRubrics) {
+        return;
+      }
+
+      // merge default rubrics with user custom rubrics
+      const rubrics = defaultRubrics.map(rubric => ({
+        ...rubric,
+        ...userRubrics.rubrics[rubric.id],
+      }));
+
       runInAction(() => {
-        this.categories = this.editCategories(categories as CategoryType[]);
+        this.rubrics = rubrics as RubricType[];
       });
     } catch (e) {
       errorHandler({error: e});
@@ -103,18 +154,14 @@ class CategoriesStore {
         .orderBy('createdDate')
         .get({source});
 
-      // merge default rubrics with user custom rubrics
-      const rubrics = data.docs.map(rubric => ({
-        ...rubric.data(),
-        id: rubric.id,
-        ...(userRubricStore.userRubric
-          ? userRubricStore.userRubric.rubrics[rubric.id]
-          : {}),
-      }));
-
-      runInAction(() => {
-        this.rubrics = rubrics as RubricType[];
+      const rubrics = data.docs.map(rubric => {
+        return {
+          ...(rubric.data() as RubricType),
+          id: rubric.id,
+        };
       });
+
+      return rubrics;
     } catch (e) {
       errorHandler({error: e});
     }

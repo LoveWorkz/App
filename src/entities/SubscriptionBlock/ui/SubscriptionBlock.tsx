@@ -61,53 +61,59 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
         contentStyle={[
           styles.content,
           {
+            ...getShadowOpacity(theme).shadowOpacity_level_2,
             backgroundColor: colors.bgSecondaryColor,
             paddingVertical: verticalScale(isActive ? 8 : 9.5),
             paddingHorizontal: horizontalScale(isActive ? 8 : 9.5),
           },
         ]}>
-        <AppText style={styles.title} text={isYearly ? 'Yearly' : 'Monthly'} />
+        <>
+          <AppText
+            style={styles.title}
+            text={isYearly ? 'Yearly' : 'Monthly'}
+          />
 
-        <View style={styles.costWrapper}>
+          <View style={styles.costWrapper}>
+            <AppText
+              style={[styles.cost, {color: colors.secondaryError}]}
+              size={TextSize.LEVEL_4}
+              weight={'bold'}
+              text={'$1.49'}
+            />
+            <AppText
+              style={styles.discount}
+              size={TextSize.LEVEL_3}
+              weight={'200'}
+              text={'$1.99'}
+            />
+            <AppText
+              style={styles.type}
+              size={TextSize.LEVEL_4}
+              weight={'bold'}
+              text={isYearly ? '/ year' : '/ month'}
+            />
+          </View>
           <AppText
-            style={[styles.cost, {color: colors.secondaryError}]}
-            size={TextSize.LEVEL_4}
-            weight={'bold'}
-            text={'$1.49'}
+            style={[{color: colors.purchaseDescriptionColor}]}
+            size={TextSize.LEVEL_1}
+            text={
+              isYearly
+                ? 'All categories with no adss + all challenges inside'
+                : 'All categories with no adss + bronze, silver and gold challenges'
+            }
           />
-          <AppText
-            style={styles.discount}
-            size={TextSize.LEVEL_3}
-            weight={'200'}
-            text={'$1.99'}
-          />
-          <AppText
-            style={styles.type}
-            size={TextSize.LEVEL_4}
-            weight={'bold'}
-            text={isYearly ? '/ year' : '/ month'}
-          />
-        </View>
-        <AppText
-          style={[styles.description, {color: colors.purchaseDescriptionColor}]}
-          size={TextSize.LEVEL_1}
-          text={
-            isYearly
-              ? 'All categories with no adss + all challenges inside'
-              : 'All categories with no adss + bronze, silver and gold challenges'
-          }
-        />
-        <View
-          style={[
-            styles.billedType,
-            {backgroundColor: colors.purchaseButtonColor},
-          ]}>
-          <AppText
-            style={{color: colors.white}}
-            size={TextSize.LEVEL_2}
-            text={isYearly ? 'Billed yearly' : 'Billed monthly'}
-          />
-        </View>
+          <View
+            style={[
+              styles.billedType,
+              {backgroundColor: colors.purchaseButtonColor},
+            ]}>
+            <AppText
+              style={{color: colors.white}}
+              size={TextSize.LEVEL_2}
+              text={isYearly ? 'Billed yearly' : 'Billed monthly'}
+            />
+          </View>
+        </>
       </GradientOutline>
     </TouchableOpacity>
   );
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
     width: '46%',
   },
   contentWrapper: {
-    minHeight: 187,
+    minHeight: verticalScale(187),
   },
   fireIcon: {
     height: verticalScale(13),
@@ -155,7 +161,6 @@ const styles = StyleSheet.create({
   discount: {
     textDecorationLine: 'line-through',
   },
-  description: {},
   billedType: {
     width: '100%',
     borderRadius: 10,

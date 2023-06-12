@@ -4,19 +4,23 @@ import {SvgXml} from 'react-native-svg';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 interface IconItemProps {
   name: string;
   focused: boolean;
-  icon: (param: {isGradient: boolean}) => any;
+  icon: (param: {isGradient: boolean; isDarkMode: boolean}) => any;
   size: number;
 }
 
 const IconItem = (props: IconItemProps) => {
   const {name, focused, icon, size} = props;
 
+  const {theme} = useTheme();
+  const isDarkMode = theme === Theme.Dark;
+
   const onPressHandler = useCallback(() => {
-    navigation.navigate(name);
+    navigation.navigate(name, {isTabScreen: true});
   }, [name]);
 
   const roundStyle = useMemo(() => {
@@ -33,10 +37,9 @@ const IconItem = (props: IconItemProps) => {
       {focused && <Gradient style={roundStyle} />}
       {!focused && <View style={roundStyle} />}
       <SvgXml
-        xml={icon({isGradient: focused})}
+        xml={icon({isGradient: focused, isDarkMode})}
         height={size || 16}
         width={size || 16}
-        fill={focused ? 'black' : '#DCDCDC'}
       />
     </Pressable>
   );
@@ -55,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ComponentWrapper = memo(IconItem);
+export default memo(IconItem);

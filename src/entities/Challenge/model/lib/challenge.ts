@@ -12,11 +12,11 @@ export const challengeFilterItems = [
     active: false,
   },
   {
-    name: 'GAME',
+    name: 'Game',
     active: false,
   },
   {
-    name: 'COMMUNICATION',
+    name: 'Communication',
     active: false,
   },
 ];

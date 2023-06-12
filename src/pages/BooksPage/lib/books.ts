@@ -22,7 +22,7 @@ export const booksData = [
       pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
       de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
     },
-    rate: 1,
+    rate: 3.5,
     rubrics: ['Fun'],
     links: {
       en: 'https://www.google.com/?client=safari',
@@ -78,11 +78,6 @@ export const booksData = [
       en: 'All about love',
       pt: 'pt All about love',
       de: 'de All about love',
-    },
-    quote: {
-      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
-      pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
-      de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
     },
     rate: 3,
     rubrics: ['Respect'],

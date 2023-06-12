@@ -83,19 +83,13 @@ class AuthByAppleStore {
     }
   };
 
-  signInErrorHandler = (error: unknown) => {
-    if (!(error instanceof Error)) {
-      return;
-    }
-
-    const isUserCanceledSignIn = error.message.includes(
-      FirebaseErrorCodes.USER_CANCELED_APPLE_SIGN_IN,
-    );
+  signInErrorHandler = (error: any) => {
+    const isUserCanceledAuthorisation = error.code === appleAuth.Error.CANCELED;
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       userStore.toggleDialog(true);
     } else {
-      if (isUserCanceledSignIn) {
+      if (isUserCanceledAuthorisation) {
         return;
       }
 

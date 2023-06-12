@@ -8,7 +8,7 @@ import React, {
 import {FlatList, SafeAreaView, Animated, View} from 'react-native';
 
 import {StyleType} from '@src/shared/types/types';
-import {Wrapper as Pagination} from './Pagination';
+import Pagination from './Pagination';
 
 interface CarouselProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;

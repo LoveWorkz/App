@@ -5,6 +5,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {categoriesStore} from '@src/pages/CategoriesPage';
+import {RubricType} from '@src/entities/Rubric';
 import {userRubricInitData} from '../lib/userRubric';
 import {UserRubric} from '../types/userRubricType';
 
@@ -17,7 +19,7 @@ class UserRubricStore {
 
   fetchUserRubrics = async () => {
     try {
-      crashlytics().log('Fetching User Rubric.');
+      crashlytics().log('Fetching User Rubrics.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.authUserId;
@@ -40,12 +42,25 @@ class UserRubricStore {
 
   setUserRubric = async (userId: string) => {
     try {
-      crashlytics().log('Setting User Rubric.');
+      crashlytics().log('Setting User Rubrics.');
+
+      const defaultRubrics = await categoriesStore.fetchDefaultRubrics();
+      if (!defaultRubrics) {
+        return;
+      }
+
+      const userRubrics: Record<string, Partial<RubricType>> = {};
+
+      defaultRubrics.forEach(rubric => {
+        userRubrics[rubric.id] = {
+          ...userRubricInitData,
+        };
+      });
 
       await firestore()
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
-        .set(userRubricInitData);
+        .set({rubrics: userRubrics});
     } catch (e) {
       errorHandler({error: e});
     }

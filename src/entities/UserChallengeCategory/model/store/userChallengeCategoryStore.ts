@@ -4,7 +4,10 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
+import {
+  ChallengeCategoryKeys,
+  ChallengeCategoryType,
+} from '@src/entities/ChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import userStore from '@src/entities/User/model/store/userStore';
 import {userChallengeCategoryInitData} from '../lib/userChallengeCategory';
@@ -63,14 +66,35 @@ class UserChallengeCategoryStore {
     }
   };
 
-  setUserChallengeCategory = async (userId: string) => {
+  setUserChallengeCategories = async (userId: string) => {
     try {
       crashlytics().log('Setting User Challenge Category.');
+
+      const defaultChallengeCategories =
+        await challengesStore.fetchDefaultChallengeCategories();
+      if (!defaultChallengeCategories) {
+        return;
+      }
+
+      const userChallengeCategories: Record<
+        string,
+        Partial<ChallengeCategoryType>
+      > = {};
+
+      defaultChallengeCategories.forEach(challengeCategory => {
+        userChallengeCategories[challengeCategory.name] = {
+          ...userChallengeCategoryInitData,
+          isBlocked:
+            challengeCategory.name === ChallengeCategoryKeys.Bronze
+              ? false
+              : true,
+        };
+      });
 
       await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
-        .set(userChallengeCategoryInitData);
+        .set({challengeCategory: userChallengeCategories});
     } catch (e) {
       errorHandler({error: e});
     }

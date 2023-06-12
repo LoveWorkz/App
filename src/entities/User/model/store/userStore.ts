@@ -87,7 +87,7 @@ class UserStore {
         authMethod: authMethod || '',
       });
 
-      navigation.navigate(AppRouteNames.TAB_ROUTE);
+      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e: unknown) {
       this.errorHandler(e);
     }
@@ -254,7 +254,7 @@ class UserStore {
           }
           break;
         case AuthMethod.AUTH_BY_GOOGLE:
-          // using sign in and sign out for refresh id token
+          // using sign in and sign out for refreshing id token
           // without it reauthenticateWithCredential not working
           await GoogleSignin.signInSilently();
           const tokens = await GoogleSignin.getTokens();
@@ -295,9 +295,20 @@ class UserStore {
           isAuth: true,
         });
 
-      await userRubricStore.setUserRubric(userId);
-      await userCategoryStore.setUserCategory(userId);
-      await userChallengeCategoryStore.setUserChallengeCategory(userId);
+      await this.setDocuments(userId);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  setDocuments = async (userId: string) => {
+    try {
+      const document1 = userCategoryStore.setUserCategory(userId);
+      const document2 = userRubricStore.setUserRubric(userId);
+      const document3 =
+        userChallengeCategoryStore.setUserChallengeCategories(userId);
+
+      await Promise.all([document1, document2, document3]);
     } catch (e) {
       errorHandler({error: e});
     }

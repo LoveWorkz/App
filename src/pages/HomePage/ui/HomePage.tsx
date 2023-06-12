@@ -28,7 +28,12 @@ import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
 interface HomePageProps {
-  route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
+  route?: {
+    params: {
+      prevRouteName: AppRouteNames | TabRoutesNames;
+      isTabScreen: boolean;
+    };
+  };
 }
 
 const HomePage = (props: HomePageProps) => {
@@ -39,6 +44,7 @@ const HomePage = (props: HomePageProps) => {
   const {i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
   const prevRouteName = route?.params?.prevRouteName;
+  const isTabScreen = route?.params?.isTabScreen;
 
   // if user swipe question first time show home page quick start
   const hasUserSwipedAnyQuestion =
@@ -46,19 +52,11 @@ const HomePage = (props: HomePageProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      // if the user returns from the questions page, get the actual categories data
-      if (
-        prevRouteName === AppRouteNames.QUESTIONS ||
-        prevRouteName === TabRoutesNames.CATEGORIES
-      ) {
-        homePageStore.fetchHomePageCategories(language);
+      // when user returns from any tab screen or question page, get actual challenges and categories data
+      if (isTabScreen || prevRouteName === AppRouteNames.QUESTIONS) {
+        homePageStore.fetchHomePageCategoriesAndChallenges(language);
       }
-
-      // if the user returns from the Challenges page, get the actual Challenges data
-      if (prevRouteName === TabRoutesNames.CHALLENGES) {
-        homePageStore.fetchHomePageCategoryChallenges();
-      }
-    }, [prevRouteName, language]),
+    }, [language, isTabScreen, prevRouteName]),
   );
 
   useEffect(() => {

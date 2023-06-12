@@ -16,7 +16,6 @@ import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {CloudStoragePaths} from '@src/shared/types/firebase';
-import {USER_CANCELED_SHARE} from '../lib/share';
 
 class shareStore {
   constructor() {
@@ -34,16 +33,7 @@ class shareStore {
 
       await Share.open(options);
     } catch (e) {
-      if (!(e instanceof Error)) {
-        return;
-      }
-
-      const isUserCanceledShare = e.message.includes(USER_CANCELED_SHARE);
-      if (isUserCanceledShare) {
-        return;
-      }
-
-      errorHandler({error: e});
+      errorHandler({error: e, withCrashlytics: false, withToast: false});
     }
   };
 

@@ -1,7 +1,9 @@
 import React, {memo} from 'react';
 import {SafeAreaView, StyleSheet, Animated} from 'react-native';
+import {Extrapolate} from 'react-native-reanimated';
 
 import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 
 interface PaginationProps {
   data: Record<string, string | number>[];
@@ -12,6 +14,9 @@ interface PaginationProps {
 const Pagination = (props: PaginationProps) => {
   const {data, scrollX, itemWidth} = props;
   const colors = useColors();
+
+  const width = 6;
+  const activeWidth = 25;
 
   return (
     <SafeAreaView style={styles.pegination}>
@@ -24,14 +29,14 @@ const Pagination = (props: PaginationProps) => {
 
         const dotWidth = scrollX.interpolate({
           inputRange,
-          outputRange: [8, 25, 8],
-          extrapolate: 'clamp',
+          outputRange: [width, activeWidth, width],
+          extrapolate: Extrapolate.CLAMP,
         });
 
         const opacity = scrollX.interpolate({
           inputRange,
           outputRange: [0.3, 1, 0.3],
-          extrapolate: 'clamp',
+          extrapolate: Extrapolate.CLAMP,
         });
 
         return (
@@ -40,6 +45,7 @@ const Pagination = (props: PaginationProps) => {
             style={[
               styles.dot,
               {
+                height: width,
                 width: dotWidth,
                 backgroundColor: colors.primaryTextColor,
                 opacity,
@@ -57,11 +63,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dot: {
-    height: 5,
-    borderRadius: 5,
-    backgroundColor: 'black',
-    marginHorizontal: 3,
+    borderRadius: moderateScale(5),
+    marginHorizontal: horizontalScale(3),
   },
 });
 
-export const Wrapper = memo(Pagination);
+export default memo(Pagination);

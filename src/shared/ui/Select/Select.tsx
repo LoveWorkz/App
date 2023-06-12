@@ -82,16 +82,25 @@ export const Select = memo((props: SelectProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible, flatlistRef]);
 
+  const onCloseHandler = useCallback(() => {
+    setIsVisible(false);
+  }, []);
+
   const onSelectHandler = useCallback(
     (itemValue: string) => {
       onSelect?.(itemValue);
-    },
-    [onSelect],
-  );
 
-  const onCloseHandler = () => {
-    setIsVisible(false);
-  };
+      // using setTimeout for a bit delay
+      const timerId = setTimeout(() => {
+        onCloseHandler();
+
+        if (timerId) {
+          clearTimeout(timerId);
+        }
+      }, 120);
+    },
+    [onSelect, onCloseHandler],
+  );
 
   const getItemLayout = useCallback(
     (_: SelectOption[] | null | undefined, index: number) => ({

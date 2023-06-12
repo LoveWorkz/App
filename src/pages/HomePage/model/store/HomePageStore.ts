@@ -60,15 +60,16 @@ class HomePageStore {
     }
   };
 
-  fetchHomePageCategoryChallenges = async () => {
+  fetchHomePageCategoriesAndChallenges = async (
+    language: LanguageValueType,
+  ) => {
     try {
-      crashlytics().log('Fetching home page Challenges');
-
       runInAction(() => {
         this.isHomePageLoading = true;
       });
 
-      await challengesStore.fetchChallengeCategories();
+      await this.fetchHomePageCategoryChallenges();
+      await this.fetchHomePageCategories(language);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -78,22 +79,25 @@ class HomePageStore {
     }
   };
 
+  fetchHomePageCategoryChallenges = async () => {
+    try {
+      crashlytics().log('Fetching home page Challenges');
+
+      await challengesStore.fetchChallengeCategories();
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
   fetchHomePageCategories = async (language: LanguageValueType) => {
     try {
       crashlytics().log('Fetching home page Categories');
 
-      runInAction(() => {
-        this.isHomePageLoading = true;
-      });
       await profileStore.fetchProfile();
       await categoriesStore.fetchCategories();
       this.getHomePageCategory(language);
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      runInAction(() => {
-        this.isHomePageLoading = false;
-      });
     }
   };
 

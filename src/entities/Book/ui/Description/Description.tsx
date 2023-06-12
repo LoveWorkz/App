@@ -30,8 +30,8 @@ const Description = (props: BookProps) => {
   const {t} = useTranslation();
 
   const descriptionHeight = windowHeight * 0.55;
-  const verticalPadding = globalPadding + globalPadding;
-  const descriptionHeightWinusPaddings = descriptionHeight - verticalPadding;
+  const verticalPaddings = globalPadding + globalPadding;
+  const descriptionHeightWinusPaddings = descriptionHeight - verticalPaddings;
 
   const onPressHandler = () => {
     Linking.openURL(bookLink);

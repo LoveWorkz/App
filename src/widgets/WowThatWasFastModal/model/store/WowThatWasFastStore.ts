@@ -29,6 +29,28 @@ class WowThatWasFastStore {
     this.isThatWasFastModalForbidden = isVisible;
   };
 
+  getDocument = async ({
+    isCategory,
+    documentId,
+  }: {
+    isCategory: boolean;
+    documentId: string;
+  }) => {
+    try {
+      let document: RubricType | CategoryType | undefined;
+
+      if (isCategory) {
+        document = await categoryStore.fetchCategory({id: documentId});
+      } else {
+        document = await rubricStore.fetchRubric(documentId);
+      }
+
+      return document;
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
   wowThatWasFastLogic = async ({
     questionId,
     documentId,
@@ -44,14 +66,7 @@ class WowThatWasFastStore {
       crashlytics().log('Wow That Was Fast modal logic.');
 
       const isCategory = type === DocumentType.CATEGORY;
-      let document: RubricType | CategoryType | undefined;
-
-      if (isCategory) {
-        document = await categoryStore.fetchCategory({id: documentId});
-      } else {
-        document = await rubricStore.fetchRubric(documentId);
-      }
-
+      const document = await this.getDocument({isCategory, documentId});
       if (!document) {
         return;
       }
@@ -64,7 +79,7 @@ class WowThatWasFastStore {
         isCategory,
       });
 
-      this.checkIfQuestionsSwipedFast({id: documentId, isCategory, document});
+      this.checkIfQuestionsSwipedFast({id: documentId, isCategory});
     } catch (e) {
       errorHandler({error: e});
     }
@@ -111,14 +126,17 @@ class WowThatWasFastStore {
   checkIfQuestionsSwipedFast = async ({
     id,
     isCategory,
-    document,
   }: {
     id: string;
     isCategory: boolean;
-    document: RubricType | CategoryType;
   }) => {
     try {
       crashlytics().log('Checking if question was scrolled fast.');
+
+      const document = await this.getDocument({isCategory, documentId: id});
+      if (!document) {
+        return;
+      }
 
       // update breakPoint for next checking
       const newCheckTime = document.breakPointForCheckingDate + breakPoint;

@@ -12,7 +12,7 @@ export const getCongratsModalContent = (
       title: `${title} Starter:`,
       description: `${t('questions.reward_challanges')} Bronze`,
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FBronze.png?alt=media&token=f989c910-ca26-497a-a181-9a8363182591',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FBronze.png?alt=media&token=0b505bef-7ede-491b-bf41-9674c5579be9&_gl=1*143fuh2*_ga*Njk2NjAzNDE1LjE2Nzk2NTU4MjY.*_ga_CW55HF8NVT*MTY4NjIwNDI5My4yOS4xLjE2ODYyMDQ1NTEuMC4wLjA.',
     },
     Basic: {
       title: `${title} Basic:`,

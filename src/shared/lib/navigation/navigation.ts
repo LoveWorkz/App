@@ -15,6 +15,7 @@ type RootStackParamList = {
   initialQuestionId?: string;
   title?: string;
   type?: DocumentType;
+  isTabScreen?: boolean;
 };
 
 export interface Navigation {
@@ -34,6 +35,7 @@ const navigate = (name: string, params?: RootStackParamList) => {
     navigationRef.navigate(name, {
       ...params,
       prevRouteName: currentRoute ? currentRoute.name : '',
+      isTabScreen: params?.isTabScreen || false,
     });
   }
 };
@@ -46,6 +48,7 @@ const replace = (name: string, params?: RootStackParamList) => {
       StackActions.replace(name, {
         ...params,
         prevRouteName: currentRoute ? currentRoute.name : '',
+        isTabScreen: params?.isTabScreen || false,
       }),
     );
   }
@@ -58,6 +61,7 @@ const goBack = () => {
     navigationRef.goBack();
     navigationRef.setParams({
       prevRouteName: currentRoute ? currentRoute.name : '',
+      isTabScreen: false,
     });
   }
 };
@@ -78,6 +82,7 @@ const resetHistoryAndNavigate = (name: string) => {
     );
     navigationRef.setParams({
       prevRouteName: currentRoute ? currentRoute.name : '',
+      isTabScreen: false,
     });
   }
 };

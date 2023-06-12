@@ -1,6 +1,5 @@
 import {
   NavigationContainer,
-  ParamListBase,
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
@@ -13,7 +12,6 @@ import {
   appRoutesConfig,
 } from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {Layout} from '@src/app/providers/layout';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {Theme} from '@src/app/providers/themeProvider';
@@ -81,25 +79,8 @@ const Routes = memo(() => {
           headerShown,
           headerTitle,
           HeaderRight,
-          isPageScrolling,
-          deleteBottomPadding,
-          deleteTopPadding,
           isTitleLarge,
         }) => {
-          const Wrapper = (props: ParamListBase) => {
-            return (
-              <Layout
-                isPageScrolling={isPageScrolling}
-                deleteBottomPadding={deleteBottomPadding}
-                deleteTopPadding={deleteTopPadding}>
-                <Element {...props} />
-              </Layout>
-            );
-          };
-
-          const Component =
-            name === AppRouteNames.TAB_ROUTE ? Element : Wrapper;
-
           return (
             <Stack.Screen
               options={({route}) => ({
@@ -119,7 +100,7 @@ const Routes = memo(() => {
                   : undefined,
               })}
               name={name}
-              component={Component}
+              component={Element}
               key={name}
             />
           );

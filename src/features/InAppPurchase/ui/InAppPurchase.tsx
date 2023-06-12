@@ -52,7 +52,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           }
         />
       </View>
-      <View style={styles.subscriptionBlocks}>
+      <View style={[styles.subscriptionBlocks]}>
         <SubscriptionBlock
           subscriptionType={SubscriptionType.MONTHLY}
           chosenSubscriptionType={subscriptionType}
@@ -81,6 +81,8 @@ export default memo(InAppPurchase);
 const styles = StyleSheet.create({
   InAppPurchase: {
     width: '100%',
+    height: '100%',
+    justifyContent: 'space-around',
   },
   image: {
     height: verticalScale(180),
@@ -105,5 +107,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     marginTop: verticalScale(30),
+    bottom: verticalScale(5),
   },
 });

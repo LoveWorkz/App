@@ -70,7 +70,7 @@ class ChallengesStore {
       crashlytics().log('Fetching Challenge Categories.');
 
       await userChallengeCategoryStore.fetchUserChallengeCategory();
-      await this.fetchDefaultChallengeCategories();
+      await this.mergeDefaultAndUserChallengeCategories();
     } catch (e) {
       errorHandler({error: e});
     }
@@ -82,38 +82,57 @@ class ChallengesStore {
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const currentChallengeCategory = this.challengeCategory;
-      const userId = userStore.authUserId;
-      if (!userId) {
-        return;
-      }
-      if (!currentChallengeCategory) {
-        return;
-      }
-
-      const challengeCategoryData = await firestore()
+      const data = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
         .orderBy('createdDate')
         .get({source});
 
+      const challengeCategories = data.docs.map(challengeCategory => {
+        return challengeCategory.data() as ChallengeCategoryType;
+      });
+
+      return challengeCategories;
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  mergeDefaultAndUserChallengeCategories = async () => {
+    try {
+      crashlytics().log('Merging default and user Challenge Categories.');
+
+      const currentChallengeCategory = this.challengeCategory;
+      if (!currentChallengeCategory) {
+        return;
+      }
+
+      const challengeCategoryData =
+        await this.fetchDefaultChallengeCategories();
+
+      if (!challengeCategoryData) {
+        return;
+      }
+
       const userChallengeCategory =
         userChallengeCategoryStore.userChallengeCategory;
-
       if (!userChallengeCategory) {
         return;
       }
 
       // merge default challenge categories and user custom challenge categories together
-      const challengeCategories = challengeCategoryData.docs.map(doc => {
-        const data = doc.data() as ChallengeCategoryType;
-        return {
-          ...data,
-          isBlocked:
-            userChallengeCategory.challengeCategory[data.name].isBlocked,
-          isActive:
-            data.name === currentChallengeCategory.currentChallengeCategory,
-        };
-      });
+      const challengeCategories = challengeCategoryData.map(
+        challengeCategory => {
+          return {
+            ...challengeCategory,
+            isBlocked:
+              userChallengeCategory.challengeCategory[challengeCategory.name]
+                .isBlocked,
+            isActive:
+              challengeCategory.name ===
+              currentChallengeCategory.currentChallengeCategory,
+          };
+        },
+      );
 
       runInAction(() => {
         this.challengeCategories = challengeCategories;

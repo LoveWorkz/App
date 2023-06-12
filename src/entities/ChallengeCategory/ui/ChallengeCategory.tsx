@@ -3,6 +3,7 @@ import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {
@@ -21,7 +22,6 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
-import {useFocusEffect} from '@react-navigation/native';
 
 interface ChallangeProps {
   image?: string;
@@ -93,6 +93,22 @@ const ChallengeCategory = (props: ChallangeProps) => {
     };
   }, [image]);
 
+  const fastImage = (
+    <FastImage
+      resizeMode="contain"
+      style={[
+        name === ChallengeCategoryKeys.Bronze
+          ? {
+              right: horizontalScale(1),
+              top: horizontalScale(2),
+            }
+          : {},
+        styles.image,
+      ]}
+      source={uri}
+    />
+  );
+
   if (number) {
     return (
       <View
@@ -141,11 +157,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
                 styles.content,
                 {backgroundColor: colors.bgChallengeContentColor},
               ]}>
-              <FastImage
-                resizeMode="contain"
-                style={styles.image}
-                source={uri}
-              />
+              {fastImage}
             </View>
           </TouchableOpacity>
         </Gradient>
@@ -164,11 +176,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
                 styles.content,
                 {backgroundColor: colors.bgChallengeContentColor},
               ]}>
-              <FastImage
-                resizeMode="contain"
-                style={styles.image}
-                source={uri}
-              />
+              {fastImage}
             </View>
           </View>
           {isBlocked && (

@@ -34,6 +34,7 @@ const RecommendedBooks = () => {
       />
       {!!recommendedBooksList.length && (
         <CarouselSquare
+          withPagination
           isLandscape={false}
           carouselHeight={240}
           Component={(props: BookType) => (
@@ -52,6 +53,6 @@ export const Wrapper = memo(observer(RecommendedBooks));
 
 const styles = StyleSheet.create({
   recommended: {
-    marginBottom: verticalScale(-20),
+    marginBottom: verticalScale(-10),
   },
 });

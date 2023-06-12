@@ -101,11 +101,20 @@ class QuotesStore {
         // only works the first time
 
         const firstBook = books[0];
-        this.setQuotesModalInfo(firstBook);
+        let currentBook = firstBook;
+
+        if (!firstBook.quote) {
+          currentBook = this.getNextBook({
+            books,
+            currentBookId: firstBook.id,
+          });
+        }
+
+        this.setQuotesModalInfo(currentBook);
 
         const nextBook = this.getNextBook({
           books,
-          currentBookId: firstBook.id,
+          currentBookId: currentBook.id,
         });
 
         // set next book id for checking next time
@@ -143,6 +152,10 @@ class QuotesStore {
     try {
       const language = i18n.language as LanguageValueType;
 
+      if (!book.quote) {
+        return;
+      }
+
       const quotesModalInfo = {
         quote: book.quote[language],
         bookAuthor: book.author,
@@ -164,11 +177,26 @@ class QuotesStore {
   }: {
     books: BookType[];
     currentBookId: string;
-  }) => {
+  }): BookType => {
     const currentBookIndex = books.findIndex(book => book.id === currentBookId);
 
-    const nextBookIndex = currentBookIndex + 1;
-    return books[nextBookIndex];
+    let nextBookIndex = currentBookIndex + 1;
+    const lastBookIndex = books.length;
+    const firstBookIndex = 0;
+    const isLastBook = nextBookIndex === lastBookIndex;
+
+    if (isLastBook) {
+      nextBookIndex = firstBookIndex;
+    }
+
+    const nextBook = books[nextBookIndex];
+
+    // looking for the nearest book with quote
+    if (!nextBook.quote) {
+      return this.getNextBook({books, currentBookId: nextBook.id});
+    }
+
+    return nextBook;
   };
 }
 

@@ -83,7 +83,10 @@ const Category = (props: CategoryProps) => {
           </View>
         </>
       )}
-      <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
+      <View
+        style={{
+          ...getShadowOpacity(theme).shadowOpacity_level_2,
+        }}>
         <FastImage
           resizeMode="cover"
           style={[
@@ -126,9 +129,6 @@ export default memo(Category);
 const styles = StyleSheet.create<Record<string, any>>({
   category: {
     borderRadius: 20,
-    borderColor: 'silver',
-    borderStyle: 'solid',
-    borderWidth: 1,
   },
   image: {
     borderRadius: 20,

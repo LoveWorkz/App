@@ -2,12 +2,12 @@ import {View, StyleSheet} from 'react-native';
 import React, {ComponentType, memo, MemoExoticComponent} from 'react';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import Pagination from './Pagination';
 
 const PAGE_WIDTH = windowWidth;
 
@@ -17,10 +17,18 @@ interface CarousalSquareProps {
   isLandscape?: boolean;
   itemStyle?: StyleType;
   carouselHeight?: number;
+  withPagination?: boolean;
 }
 
 export const CarouselSquare = memo((props: CarousalSquareProps) => {
-  const {data, Component, isLandscape, itemStyle, carouselHeight} = props;
+  const {
+    data,
+    Component,
+    isLandscape,
+    itemStyle,
+    carouselHeight,
+    withPagination = false,
+  } = props;
 
   const progressValue = useSharedValue<number>(0);
   const baseOptions = {
@@ -31,6 +39,20 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
   return (
     <GestureHandlerRootView>
       <View style={[styles.container]}>
+        {!!progressValue && withPagination && (
+          <View style={styles.paginationWrapper}>
+            {data.map((_, index) => {
+              return (
+                <Pagination
+                  animValue={progressValue}
+                  index={index}
+                  key={index}
+                  length={data.length}
+                />
+              );
+            })}
+          </View>
+        )}
         <Carousel
           {...baseOptions}
           loop
@@ -70,10 +92,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  paginationItems: {
+  paginationWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 100,
-    alignSelf: 'center',
+    marginRight: 'auto',
+    top: 35,
   },
 });

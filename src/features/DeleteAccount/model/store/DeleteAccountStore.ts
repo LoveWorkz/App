@@ -1,6 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -116,11 +117,7 @@ class DeleteAccountStore {
     }
   };
 
-  erorHandler(error: unknown) {
-    if (!(error instanceof Error)) {
-      return;
-    }
-
+  erorHandler(error: any) {
     const isInvalidEmail = error.message.includes(
       FirebaseErrorCodes.AUTH_INVALID_EMAIL,
     );
@@ -146,6 +143,13 @@ class DeleteAccountStore {
 
       this.setServerError(serverError);
     } else {
+      const isUserCanceledAuthorisation =
+        error.code === appleAuth.Error.CANCELED;
+
+      if (isUserCanceledAuthorisation) {
+        return;
+      }
+
       errorHandler({error});
     }
   }

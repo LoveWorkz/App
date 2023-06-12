@@ -12,7 +12,8 @@ class BookDetailsStore {
   constructor() {
     makeAutoObservable(this);
   }
-  getCurrentBook = (id: string) => {
+
+  init = async (id: string) => {
     try {
       crashlytics().log('Fetching books details page.');
 
@@ -20,6 +21,23 @@ class BookDetailsStore {
         this.isBookDetailsPageLoading = true;
       });
 
+      // if we come from home page fetch books list and after it get specific book
+      if (!booksStore.booksList.length) {
+        await booksStore.setBooks();
+      }
+
+      this.getCurrentBook(id);
+    } catch (e) {
+      errorHandler({error: e});
+    } finally {
+      runInAction(() => {
+        this.isBookDetailsPageLoading = false;
+      });
+    }
+  };
+
+  getCurrentBook = (id: string) => {
+    try {
       const currentBook =
         booksStore.booksList.find(book => {
           return book.id === id;
@@ -27,10 +45,6 @@ class BookDetailsStore {
       this.currentBook = currentBook;
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      runInAction(() => {
-        this.isBookDetailsPageLoading = false;
-      });
     }
   };
 }

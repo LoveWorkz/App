@@ -1,6 +1,9 @@
 import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
@@ -10,7 +13,6 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
 import {InitlUserInfo} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {isPlatformIos} from '@src/shared/consts/common';
 
 class AuthByGoogleStore {
   constructor() {
@@ -68,21 +70,14 @@ class AuthByGoogleStore {
 
       const formattedUser = userFormatter(currentUser as InitlUserInfo);
       await this.setUser(formattedUser);
-    } catch (error) {
-      if (!(error instanceof Error)) {
-        return;
-      }
-
-      const isUserCanceledSignIn = error.message.includes(
-        isPlatformIos
-          ? FirebaseErrorCodes.USER_CANCELED_GOOGLE_SIGN_IN_APPLE
-          : FirebaseErrorCodes.USER_CANCELED_GOOGLE_SIGN_IN_GOOGLE,
-      );
+    } catch (error: any) {
+      const isUserCanceledAuthorisation =
+        error.code === statusCodes.SIGN_IN_CANCELLED;
 
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
         userStore.toggleDialog(true);
       } else {
-        if (isUserCanceledSignIn) {
+        if (isUserCanceledAuthorisation) {
           return;
         }
 

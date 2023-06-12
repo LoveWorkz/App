@@ -17,6 +17,6 @@ export interface BookType {
   image: BookImage;
   displayName: BookFieldType;
   rate: number;
-  quote: BookFieldType;
+  quote?: BookFieldType;
   links: BookFieldType;
 }

@@ -10,7 +10,9 @@ export const globalPadding = 20;
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
 export const windowWidthMinusPaddings =
-  Dimensions.get('window').width - globalPadding - globalPadding;
+  windowWidth - globalPadding - globalPadding;
+export const windowHeightMinusPaddings =
+  windowHeight - globalPadding - globalPadding;
 export const windowWidthHalf = windowWidth / 2;
 export const windowHeightHalf = windowHeight / 2;
 
