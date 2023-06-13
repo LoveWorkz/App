@@ -158,10 +158,14 @@ class CategoryStore {
     initialQuestionId?: string;
   }) => {
     try {
-      let currentquestionId = initialQuestionId || questionId;
+      let currentquestionId = questionId;
       let categoryName: string | undefined;
+      let isInitialSetUp = !questionId;
 
-      const isInitialSetUp = !currentquestionId;
+      if (initialQuestionId) {
+        currentquestionId = initialQuestionId;
+        isInitialSetUp = true;
+      }
 
       // it's working only for the first time
       if (isInitialSetUp) {
@@ -183,6 +187,7 @@ class CategoryStore {
         questionId: currentquestionId,
         questions: questions,
       });
+
       if (!questionInfo) {
         return;
       }

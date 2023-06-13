@@ -1,1 +1,1 @@
-export const appPackageName = 'com.bline2';
+export const appPackageName = 'com.bline';

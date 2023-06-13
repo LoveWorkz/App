@@ -1,4 +1,4 @@
-package com.bline2.newarchitecture.modules;
+package com.bline.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

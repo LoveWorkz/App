@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.bline2">
+  package="com.bline">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
