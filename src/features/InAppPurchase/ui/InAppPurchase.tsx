@@ -1,7 +1,19 @@
-import React, {memo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
+import {
+  initConnection,
+  endConnection,
+  getProducts,
+  PurchaseError,
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+  SubscriptionPurchase,
+  ProductPurchase,
+  // getSubscriptions,
+  // requestSubscription,
+} from 'react-native-iap';
 
 import {
   shopTopBackground,
@@ -18,18 +30,92 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
-interface InAppPurchaseProps {}
+const items = Platform.select({
+  ios: [],
+  android: ['rniap_1_49_1m'],
+});
 
-const InAppPurchase = (props: InAppPurchaseProps) => {
-  const {} = props;
+let purchaseUpdateSubscription: any;
+let purchaseErrorSubscription: any;
+
+const InAppPurchase = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
+  const [products, setProducts] = useState<any[]>([]);
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.MONTHLY,
   );
+
+  useEffect(() => {
+    if (__DEV__) {
+      return;
+    }
+
+    const init = async () => {
+      await initConnection();
+      const res = await getProducts({skus: items as string[]});
+      // const subscriptions = await getSubscriptions({skus: items as string[]});
+      setProducts(res);
+      // Alert.alert(JSON.stringify(subscriptions));
+      Alert.alert(JSON.stringify(res));
+
+      purchaseUpdateSubscription = purchaseUpdatedListener(
+        (purchase: SubscriptionPurchase | ProductPurchase) => {
+          Alert.alert('purchases', JSON.stringify(purchase));
+          console.log('purchaseUpdatedListener', purchase);
+          const receipt = purchase.transactionReceipt;
+          if (receipt) {
+            console.log(receipt);
+          }
+        },
+      );
+
+      purchaseErrorSubscription = purchaseErrorListener(
+        (error: PurchaseError) => {
+          console.warn('purchaseErrorListener', error);
+        },
+      );
+    };
+
+    init();
+
+    return () => {
+      if (purchaseUpdateSubscription) {
+        purchaseUpdateSubscription.remove();
+        purchaseUpdateSubscription = null;
+      }
+
+      if (purchaseErrorSubscription) {
+        purchaseErrorSubscription.remove();
+        purchaseErrorSubscription = null;
+      }
+
+      endConnection();
+    };
+  }, []);
+
+  // const subscribe = async (sku: string, offerToken: string) => {
+  //   try {
+  //     if (offerToken) {
+  //       await requestSubscription(
+  //         {sku},
+  //         //@ts-ignore
+  //         ...{subscriptionOffers: [{sku, offerToken}]},
+  //       );
+  //     } else {
+  //       await requestSubscription({sku});
+  //     }
+  //   } catch (err: any) {
+  //     console.warn(err.code, err.message);
+  //   }
+  // };
+
+  if (products.length) {
+    return <Text>{JSON.stringify(products[0])}</Text>;
+  }
 
   return (
     <View style={styles.InAppPurchase}>

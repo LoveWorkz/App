@@ -1,4 +1,4 @@
-package com.bline;
+package com.blineapp.bline;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

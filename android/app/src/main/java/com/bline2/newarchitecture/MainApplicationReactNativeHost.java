@@ -1,4 +1,4 @@
-package com.bline.newarchitecture;
+package com.blineapp.bline.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.bline.BuildConfig;
-import com.bline.newarchitecture.components.MainComponentsRegistry;
-import com.bline.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.blineapp.bline.BuildConfig;
+import com.blineapp.bline.newarchitecture.components.MainComponentsRegistry;
+import com.blineapp.bline.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

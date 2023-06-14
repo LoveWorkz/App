@@ -45,6 +45,7 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-google-mobile-ads": "^10.0.1",
+    "react-native-iap": "^12.10.5",
     "react-native-image-picker": "^5.0.1",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-localize": "^2.2.4",
