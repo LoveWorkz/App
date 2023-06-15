@@ -5,14 +5,13 @@ import {useTranslation} from 'react-i18next';
 import {
   initConnection,
   endConnection,
-  getProducts,
   PurchaseError,
   purchaseErrorListener,
   purchaseUpdatedListener,
   SubscriptionPurchase,
+  getSubscriptions,
   ProductPurchase,
-  // getSubscriptions,
-  // requestSubscription,
+  requestSubscription,
 } from 'react-native-iap';
 
 import {
@@ -32,7 +31,7 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const items = Platform.select({
   ios: [],
-  android: ['rniap_1_49_1m'],
+  android: ['rniap_14_99_1y', 'rniap_1_49_1m'],
 });
 
 let purchaseUpdateSubscription: any;
@@ -49,19 +48,23 @@ const InAppPurchase = () => {
     SubscriptionType.MONTHLY,
   );
 
-  useEffect(() => {
-    if (__DEV__) {
-      return;
-    }
+  console.log(
+    products[0]?.subscriptionOfferDetails[0]?.pricingPhases,
+    '??????',
+  );
 
+  const monthly = products.find(
+    product => product.productId === 'rniap_1_49_1m',
+  );
+  const yearly = products.find(
+    product => product.productId === 'rniap_14_99_1y',
+  );
+
+  useEffect(() => {
     const init = async () => {
       await initConnection();
-      const res = await getProducts({skus: items as string[]});
-      // const subscriptions = await getSubscriptions({skus: items as string[]});
-      setProducts(res);
-      // Alert.alert(JSON.stringify(subscriptions));
-      Alert.alert(JSON.stringify(res));
-
+      const subscriptions = await getSubscriptions({skus: items as string[]});
+      setProducts(subscriptions);
       purchaseUpdateSubscription = purchaseUpdatedListener(
         (purchase: SubscriptionPurchase | ProductPurchase) => {
           Alert.alert('purchases', JSON.stringify(purchase));
@@ -97,25 +100,40 @@ const InAppPurchase = () => {
     };
   }, []);
 
-  // const subscribe = async (sku: string, offerToken: string) => {
-  //   try {
-  //     if (offerToken) {
-  //       await requestSubscription(
-  //         {sku},
-  //         //@ts-ignore
-  //         ...{subscriptionOffers: [{sku, offerToken}]},
-  //       );
-  //     } else {
-  //       await requestSubscription({sku});
-  //     }
-  //   } catch (err: any) {
-  //     console.warn(err.code, err.message);
-  //   }
-  // };
-
-  if (products.length) {
-    return <Text>{JSON.stringify(products[0])}</Text>;
+  if (!products.length) {
+    return <></>;
   }
+
+  const subscribe = async (productId: string, offerToken: string) => {
+    try {
+      await requestSubscription({
+        sku: productId,
+        ...(offerToken && {
+          subscriptionOffers: [{sku: productId, offerToken}],
+        }),
+      });
+    } catch (err: any) {
+      console.warn(err.code, err.message);
+    }
+  };
+
+  const onPressHandler = () => {
+    let productId = yearly.productId;
+    let offerToken = yearly.subscriptionOfferDetails?.[0]?.offerToken;
+
+    const isMonthly = subscriptionType === SubscriptionType.MONTHLY;
+
+    if (isMonthly) {
+      productId = monthly.productId;
+      offerToken = monthly.subscriptionOfferDetails?.[0]?.offerToken;
+    }
+
+    if (productId && offerToken) {
+      subscribe(productId, offerToken);
+    }
+  };
+
+  console.log(products, '?????');
 
   return (
     <View style={styles.InAppPurchase}>
@@ -134,7 +152,7 @@ const InAppPurchase = () => {
         <AppText
           style={styles.text}
           text={
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet'
+            'sdsdsd Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet'
           }
         />
       </View>
@@ -150,7 +168,10 @@ const InAppPurchase = () => {
           setSubscriptionType={setSubscriptionType}
         />
       </View>
-      <Button style={styles.btn} theme={ButtonTheme.GRADIENT}>
+      <Button
+        onPress={onPressHandler}
+        style={styles.btn}
+        theme={ButtonTheme.GRADIENT}>
         <AppText
           style={{color: colors.bgQuinaryColor}}
           weight={'700'}
