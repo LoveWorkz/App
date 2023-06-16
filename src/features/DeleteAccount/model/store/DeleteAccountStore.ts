@@ -2,6 +2,7 @@ import {makeAutoObservable} from 'mobx';
 import auth from '@react-native-firebase/auth';
 import crashlytics from '@react-native-firebase/crashlytics';
 import appleAuth from '@invertase/react-native-apple-authentication';
+import {statusCodes} from '@react-native-google-signin/google-signin';
 
 import {AuthMethod, userStore} from '@src/entities/User';
 import {FirebaseErrorCodes} from '@src/shared/types/firebase';
@@ -82,21 +83,21 @@ class DeleteAccountStore {
       }
 
       this.setIsLoading(true);
-      let isCorrectUserData;
+      let isCorrectUser;
 
       if (isAuthMethodEmail) {
-        isCorrectUserData = await userStore.reauthenticateWithCredential({
+        isCorrectUser = await userStore.reauthenticateWithCredential({
           email: this.formData.email,
           password: this.formData.password,
           erorHandler: e => this.erorHandler(e),
         });
       } else {
-        isCorrectUserData = await userStore.reauthenticateWithCredential({
+        isCorrectUser = await userStore.reauthenticateWithCredential({
           erorHandler: e => this.erorHandler(e),
         });
       }
 
-      if (!isCorrectUserData) {
+      if (!isCorrectUser) {
         return;
       }
 
@@ -143,8 +144,10 @@ class DeleteAccountStore {
 
       this.setServerError(serverError);
     } else {
-      const isUserCanceledAuthorisation =
-        error.code === appleAuth.Error.CANCELED;
+      const appleCanceled = error.code === appleAuth.Error.CANCELED;
+      const googleCanceled = error.code === statusCodes.SIGN_IN_CANCELLED;
+
+      const isUserCanceledAuthorisation = appleCanceled || googleCanceled;
 
       if (isUserCanceledAuthorisation) {
         return;

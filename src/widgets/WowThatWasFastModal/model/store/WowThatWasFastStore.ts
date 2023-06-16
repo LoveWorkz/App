@@ -142,6 +142,11 @@ class WowThatWasFastStore {
       const newCheckTime = document.breakPointForCheckingDate + breakPoint;
       const allQuestionsSwipedPercentage = 100;
 
+      // if the last question modal should not be visible
+      if (document.swipedQuestionsPercentage === allQuestionsSwipedPercentage) {
+        return;
+      }
+
       // check if user swipe 30 percent
       const isCheckTime =
         document.swipedQuestionsPercentage >=

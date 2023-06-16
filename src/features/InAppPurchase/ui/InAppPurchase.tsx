@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {Alert, Platform, StyleSheet, Text, View} from 'react-native';
+import {Alert, Platform, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {

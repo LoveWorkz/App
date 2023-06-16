@@ -290,11 +290,8 @@ class UserStore {
           }
           break;
         case AuthMethod.AUTH_BY_GOOGLE:
-          // using sign in and sign out for refreshing id token
-          // without it reauthenticateWithCredential not working
-          await GoogleSignin.signInSilently();
+          await GoogleSignin.signIn();
           const tokens = await GoogleSignin.getTokens();
-          await GoogleSignin.signOut();
 
           credential = auth.GoogleAuthProvider.credential(tokens.idToken);
           break;
