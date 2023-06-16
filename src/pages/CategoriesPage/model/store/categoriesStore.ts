@@ -205,6 +205,26 @@ class CategoriesStore {
       errorHandler({error: e});
     }
   };
+
+  toggleCategoryPurchasedStatus = async (isBlocked: boolean) => {
+    try {
+      const promises: Promise<void>[] = [];
+
+      this.categories.map(category => {
+        const promise = userCategoryStore.updateUserCategory({
+          id: category.id,
+          field: 'isBlocked',
+          data: isBlocked,
+        });
+
+        promises.push(promise);
+      });
+
+      Promise.all(promises);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
 }
 
 export default new CategoriesStore();

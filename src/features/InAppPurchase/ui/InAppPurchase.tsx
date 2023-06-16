@@ -1,18 +1,16 @@
 import React, {memo, useEffect, useState} from 'react';
-import {Alert, Platform, StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {
-  initConnection,
   endConnection,
   PurchaseError,
   purchaseErrorListener,
   purchaseUpdatedListener,
   SubscriptionPurchase,
-  getSubscriptions,
   ProductPurchase,
-  requestSubscription,
 } from 'react-native-iap';
+import {observer} from 'mobx-react-lite';
 
 import {
   shopTopBackground,
@@ -28,10 +26,12 @@ import {
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
+import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
 
-const items = Platform.select({
+const subscriptionsIds = Platform.select({
   ios: [],
-  android: ['rniap_14_99_1y', 'rniap_1_49_1m'],
+  android: [SubscriptionsIds.YEARYL, SubscriptionsIds.MONTHLY],
 });
 
 let purchaseUpdateSubscription: any;
@@ -42,48 +42,33 @@ const InAppPurchase = () => {
   const colors = useColors();
   const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
-  const [products, setProducts] = useState<any[]>([]);
+  const subscriptions = inAppPurchaseStore.subscriptions;
+  const {yearly, monthly} =
+    inAppPurchaseStore.getYearlyAndMonthlySubscriptions(subscriptions);
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.MONTHLY,
   );
 
-  console.log(
-    products[0]?.subscriptionOfferDetails[0]?.pricingPhases,
-    '??????',
-  );
-
-  const monthly = products.find(
-    product => product.productId === 'rniap_1_49_1m',
-  );
-  const yearly = products.find(
-    product => product.productId === 'rniap_14_99_1y',
-  );
-
   useEffect(() => {
-    const init = async () => {
-      await initConnection();
-      const subscriptions = await getSubscriptions({skus: items as string[]});
-      setProducts(subscriptions);
-      purchaseUpdateSubscription = purchaseUpdatedListener(
-        (purchase: SubscriptionPurchase | ProductPurchase) => {
-          Alert.alert('purchases', JSON.stringify(purchase));
-          console.log('purchaseUpdatedListener', purchase);
-          const receipt = purchase.transactionReceipt;
-          if (receipt) {
-            console.log(receipt);
-          }
-        },
-      );
+    inAppPurchaseStore.init(subscriptionsIds as string[]);
 
-      purchaseErrorSubscription = purchaseErrorListener(
-        (error: PurchaseError) => {
-          console.warn('purchaseErrorListener', error);
-        },
-      );
-    };
+    purchaseUpdateSubscription = purchaseUpdatedListener(
+      (purchase: SubscriptionPurchase | ProductPurchase) => {
+        console.log('purchaseUpdatedListener', purchase);
 
-    init();
+        const receipt = purchase.transactionReceipt;
+        if (receipt) {
+          console.log(receipt);
+        }
+      },
+    );
+
+    purchaseErrorSubscription = purchaseErrorListener(
+      (error: PurchaseError) => {
+        console.warn('purchaseErrorListener', error);
+      },
+    );
 
     return () => {
       if (purchaseUpdateSubscription) {
@@ -100,27 +85,13 @@ const InAppPurchase = () => {
     };
   }, []);
 
-  if (!products.length) {
+  if (!(yearly && monthly)) {
     return <></>;
   }
-
-  const subscribe = async (productId: string, offerToken: string) => {
-    try {
-      await requestSubscription({
-        sku: productId,
-        ...(offerToken && {
-          subscriptionOffers: [{sku: productId, offerToken}],
-        }),
-      });
-    } catch (err: any) {
-      console.warn(err.code, err.message);
-    }
-  };
 
   const onPressHandler = () => {
     let productId = yearly.productId;
     let offerToken = yearly.subscriptionOfferDetails?.[0]?.offerToken;
-
     const isMonthly = subscriptionType === SubscriptionType.MONTHLY;
 
     if (isMonthly) {
@@ -129,11 +100,11 @@ const InAppPurchase = () => {
     }
 
     if (productId && offerToken) {
-      subscribe(productId, offerToken);
+      inAppPurchaseStore.subscribe({productId, offerToken});
     }
   };
 
-  console.log(products, '?????');
+  console.log(subscriptions, '?????');
 
   return (
     <View style={styles.InAppPurchase}>
@@ -183,7 +154,7 @@ const InAppPurchase = () => {
   );
 };
 
-export default memo(InAppPurchase);
+export default memo(observer(InAppPurchase));
 
 const styles = StyleSheet.create({
   InAppPurchase: {

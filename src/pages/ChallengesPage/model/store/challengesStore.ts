@@ -325,6 +325,26 @@ class ChallengesStore {
       errorHandler({error: e});
     }
   };
+
+  toggleChallengeCategoryPurchasedStatus = async (isBlocked: boolean) => {
+    try {
+      const promises: Promise<void>[] = [];
+
+      this.challengeCategories.map(challangeCategory => {
+        const promise = userChallengeCategoryStore.updateUserChallengeCategory({
+          challengeCategoryName: challangeCategory.name,
+          field: 'isBlocked',
+          data: isBlocked,
+        });
+
+        promises.push(promise);
+      });
+
+      Promise.all(promises);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
 }
 
 export default new ChallengesStore();
