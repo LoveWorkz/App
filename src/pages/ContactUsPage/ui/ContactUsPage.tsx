@@ -6,6 +6,7 @@ import {InstagramIcon} from '@src/shared/assets/icons/Instagram';
 import {LocationIcon} from '@src/shared/assets/icons/Location';
 import {PhoneIcon} from '@src/shared/assets/icons/Phone';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ContactUsItem} from './ContactUsItem/ContactUsItem';
 
 const getItemsData = (color: string) => {
@@ -34,7 +35,7 @@ const ContactUsPage = () => {
 
   return (
     <View style={styles.contactUs}>
-      <View style={styles.itemWrapper}>
+      <View>
         {getItemsData(colors.primaryTextColor).map(item => {
           return <ContactUsItem key={item.text} {...item} />;
         })}
@@ -49,9 +50,8 @@ const styles = StyleSheet.create({
   contactUs: {
     flex: 1,
   },
-  itemWrapper: {},
   icon: {
-    width: 20,
-    height: 20,
+    width: horizontalScale(20),
+    height: horizontalScale(20),
   },
 });

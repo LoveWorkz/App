@@ -9,6 +9,11 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {getNumberFromPercentage} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {RubricType} from '../model/types/rubricTypes';
 
 interface RubricProps {
@@ -71,17 +76,18 @@ export default memo(Rubric);
 const styles = StyleSheet.create({
   Rubric: {
     height: 80,
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     backgroundColor: '#F1F3FF',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    paddingHorizontal: horizontalScale(20),
+    paddingVertical: verticalScale(20),
   },
   name: {
     textTransform: 'uppercase',
   },
   text: {
     color: '#B6B6BD',
-    marginTop: 5,
+    marginTop: verticalScale(5),
   },
 });

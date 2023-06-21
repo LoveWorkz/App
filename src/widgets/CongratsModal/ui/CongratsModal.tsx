@@ -74,7 +74,7 @@ export default memo(observer(CongratsModal));
 
 const styles = StyleSheet.create({
   content: {
-    height: verticalScale(426),
+    minHeight: verticalScale(426),
   },
   title: {
     textAlign: 'center',

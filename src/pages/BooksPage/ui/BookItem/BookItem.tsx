@@ -18,6 +18,11 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 
 interface BookProps {
   title: string;
@@ -100,29 +105,29 @@ const styles = StyleSheet.create({
   Book: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   imageWrapper: {
     height: 100,
-    width: 70,
-    borderRadius: 5,
+    width: horizontalScale(70),
+    borderRadius: moderateScale(5),
   },
   textContent: {
     width: '80%',
-    marginLeft: 20,
+    marginLeft: horizontalScale(20),
   },
   title: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: verticalScale(10),
+    marginBottom: verticalScale(10),
   },
   descriptionWrapper: {
-    paddingRight: 20,
+    paddingRight: horizontalScale(20),
   },
   seeMore: {
     position: 'relative',

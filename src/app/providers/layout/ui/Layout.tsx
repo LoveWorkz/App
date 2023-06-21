@@ -27,6 +27,7 @@ export const Layout = (props: LayoutProps) => {
   } = props;
   const colors = useColors();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
+  const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
 
   if (isPageScrolling) {
     return (
@@ -39,7 +40,7 @@ export const Layout = (props: LayoutProps) => {
             styles.layout,
             {
               paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
-              marginTop: deleteTopPadding ? 0 : 20,
+              marginTop,
             },
           ]}>
           {children}
@@ -55,7 +56,7 @@ export const Layout = (props: LayoutProps) => {
         {
           backgroundColor: colors.bgColor,
           paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
-          paddingTop: deleteTopPadding ? 0 : 20,
+          paddingTop: marginTop,
         },
       ]}>
       {children}

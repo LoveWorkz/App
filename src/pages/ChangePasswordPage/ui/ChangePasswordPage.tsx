@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import changePasswordStore from '../model/store/ChangePasswordStore';
 
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   item: {
-    marginBottom: 15,
+    marginBottom: verticalScale(15),
   },
   btn: {
     position: 'absolute',

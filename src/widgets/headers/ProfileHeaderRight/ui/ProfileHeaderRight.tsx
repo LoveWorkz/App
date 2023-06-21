@@ -5,6 +5,7 @@ import {SvgXml} from 'react-native-svg';
 import {LogOutIcon} from '@src/shared/assets/icons/LogOut';
 import {LogOutModal} from '@src/features/LogOut';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 
 const ProfileHeaderRight = () => {
   const [visible, setVisible] = useState(false);
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: 20,
-    width: 20,
+    height: horizontalScale(20),
+    width: horizontalScale(20),
   },
 });

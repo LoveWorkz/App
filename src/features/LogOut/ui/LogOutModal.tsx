@@ -79,7 +79,7 @@ const btnWidth = '45%';
 
 const styles = StyleSheet.create({
   content: {
-    height: verticalScale(188),
+    minHeight: verticalScale(188),
   },
   btnGroup: {
     flexDirection: 'row',

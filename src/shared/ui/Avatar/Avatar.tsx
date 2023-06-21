@@ -6,8 +6,9 @@ import {
   defaultAvatarImage,
   defaultAvatarImageDark,
 } from '@src/shared/assets/images';
-import {Loader} from '../Loader/Loader';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
+import {Loader} from '../Loader/Loader';
 
 export enum AvatarTheme {
   SMALL = 'small',
@@ -65,22 +66,22 @@ export const Avatar = memo((props: AvatarProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   Avatar: {
-    borderRadius: 50,
+    borderRadius: moderateScale(50),
     justifyContent: 'center',
     alignItems: 'center',
   },
   small: {
-    height: 40,
-    width: 40,
+    height: horizontalScale(40),
+    width: horizontalScale(40),
   },
   image: {
     height: '100%',
     width: '100%',
   },
   large: {
-    height: 200,
-    width: 200,
-    borderRadius: 100,
+    height: horizontalScale(200),
+    width: horizontalScale(200),
+    borderRadius: moderateScale(100),
   },
   loader: {
     position: 'absolute',

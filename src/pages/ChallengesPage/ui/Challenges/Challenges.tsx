@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
   noResults: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
 });

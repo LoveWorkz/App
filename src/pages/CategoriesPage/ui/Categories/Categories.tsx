@@ -87,7 +87,6 @@ export default memo(observer(Categories));
 const styles = StyleSheet.create({
   categories: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
   },
   categoryWrapper: {
     width: '100%',

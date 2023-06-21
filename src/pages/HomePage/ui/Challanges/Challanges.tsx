@@ -12,6 +12,7 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 const Challanges = () => {
   const {t} = useTranslation();
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
   topBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   challangesWrapper: {
     alignItems: 'center',

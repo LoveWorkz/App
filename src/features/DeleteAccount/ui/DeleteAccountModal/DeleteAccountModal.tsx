@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, View, SafeAreaView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
@@ -9,8 +9,9 @@ import {Modal} from '@src/shared/ui/Modal/Modal';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
-import {Wrapper as ConfirmDeleting} from '../ConfirmDeleting/ConfirmDeleting';
+import ConfirmDeleting from '../ConfirmDeleting/ConfirmDeleting';
 
 interface DeleteAccountModalProps {
   visible: boolean;
@@ -44,59 +45,57 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
   };
 
   return (
-    <SafeAreaView>
-      <Modal
-        contentStyle={styles.content}
-        visible={visible}
-        onClose={onCancelHandler}>
-        {isConfirm ? (
-          <ConfirmDeleting
-            onDeleteHandler={deleteAuthUser}
-            onCancelHandler={onCancelHandler}
+    <Modal
+      contentStyle={styles.content}
+      visible={visible}
+      onClose={onCancelHandler}>
+      {isConfirm ? (
+        <ConfirmDeleting
+          onDeleteHandler={deleteAuthUser}
+          onCancelHandler={onCancelHandler}
+        />
+      ) : (
+        <>
+          <AppText
+            style={{color: colors.primaryTextColor}}
+            weight={'600'}
+            size={TextSize.LEVEL_6}
+            text={`${t('auth.delete_your_account')}?`}
           />
-        ) : (
-          <>
-            <AppText
-              style={{color: colors.primaryTextColor}}
-              weight={'600'}
-              size={TextSize.LEVEL_6}
-              text={`${t('auth.delete_your_account')}?`}
-            />
-            <AppText
-              style={[styles.text, {color: colors.primaryTextColor}]}
-              size={TextSize.LEVEL_4}
-              text={
-                'Lorem ipsum dolor sit amet, consectetuer adipiscing elit ipsum dolor'
-              }
-            />
-            <View style={styles.btnGroup}>
-              <Button
-                disabled={deleteAccountStore.isLoading}
-                style={styles.cancelBtn}
-                theme={ButtonTheme.OUTLINED_GRADIENT}
-                onPress={onCancelHandler}>
-                <GradientText
-                  weight={'700'}
-                  size={TextSize.LEVEL_4}
-                  text={t('cancel')}
-                />
-              </Button>
-              <Button
-                disabled={deleteAccountStore.isLoading}
-                theme={ButtonTheme.GRADIENT}
-                style={styles.logOutBtn}
-                onPress={onDeleteHandler}>
-                <AppText
-                  style={{color: colors.bgQuinaryColor}}
-                  size={TextSize.LEVEL_4}
-                  text={t('delete')}
-                />
-              </Button>
-            </View>
-          </>
-        )}
-      </Modal>
-    </SafeAreaView>
+          <AppText
+            style={[styles.text, {color: colors.primaryTextColor}]}
+            size={TextSize.LEVEL_4}
+            text={
+              'Lorem ipsum dolor sit amet, consectetuer adipiscing elit ipsum dolor'
+            }
+          />
+          <View style={styles.btnGroup}>
+            <Button
+              disabled={deleteAccountStore.isLoading}
+              style={styles.cancelBtn}
+              theme={ButtonTheme.OUTLINED_GRADIENT}
+              onPress={onCancelHandler}>
+              <GradientText
+                weight={'700'}
+                size={TextSize.LEVEL_4}
+                text={t('cancel')}
+              />
+            </Button>
+            <Button
+              disabled={deleteAccountStore.isLoading}
+              theme={ButtonTheme.GRADIENT}
+              style={styles.logOutBtn}
+              onPress={onDeleteHandler}>
+              <AppText
+                style={{color: colors.bgQuinaryColor}}
+                size={TextSize.LEVEL_4}
+                text={t('delete')}
+              />
+            </Button>
+          </View>
+        </>
+      )}
+    </Modal>
   );
 };
 
@@ -106,7 +105,7 @@ const btnWidth = '45%';
 
 const styles = StyleSheet.create({
   content: {
-    height: 290,
+    minHeight: verticalScale(290),
   },
   text: {
     textAlign: 'center',

@@ -78,7 +78,7 @@ export default memo(observer(ResetPasswordModal));
 
 const styles = StyleSheet.create({
   content: {
-    height: verticalScale(310),
+    minHeight: verticalScale(310),
   },
   inputWrapper: {
     width: '100%',

@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, View, Pressable, useWindowDimensions} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -14,16 +14,15 @@ import {userStore} from '@src/entities/User';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {windowHeightMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
   const {t} = useTranslation();
   const colors = useColors();
-  const {height} = useWindowDimensions();
   const statusBarHeight = getStatusBarHeight();
-  const signInTopHeight = isPlatformIos ? 230 : 230 - statusBarHeight;
-  const signUpTopHeight = isPlatformIos ? 125 : 125 - statusBarHeight;
+
   const dialogContent = userStore.isAccountDeleted
     ? t('auth.deleted_account')
     : t('auth.disabled_account');
@@ -71,7 +70,13 @@ const AuthPage = () => {
   }, []);
 
   return (
-    <View style={[styles.container, {height}]}>
+    <View
+      style={[
+        styles.container,
+        {
+          minHeight: windowHeightMinusPaddings - statusBarHeight,
+        },
+      ]}>
       <View style={styles.titleWrapper}>
         <AppText
           size={TextSize.LEVEL_6}
@@ -87,15 +92,8 @@ const AuthPage = () => {
         <AuthByGoogle style={isPlatformIos ? styles.authByGoogleBtn : {}} />
         {isPlatformIos && <AuthByApple />}
       </View>
-      <View
-        style={[
-          styles.bottomBlock,
-          {
-            marginTop: verticalScale(
-              isSignIn ? signInTopHeight : signUpTopHeight,
-            ),
-          },
-        ]}>
+
+      <View style={[styles.bottomBlock]}>
         <Button
           disabled={disabled()}
           onPress={auth}
@@ -157,9 +155,11 @@ const AuthPage = () => {
 export const ComponentWrapper = memo(observer(AuthPage));
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingBottom: verticalScale(140),
+    paddingTop: verticalScale(100),
+  },
   titleWrapper: {
-    marginTop: verticalScale(120),
     marginBottom: verticalScale(40),
   },
   line: {
@@ -184,6 +184,8 @@ const styles = StyleSheet.create({
   },
   bottomBlock: {
     width: '100%',
+    position: 'absolute',
+    bottom: verticalScale(isPlatformIos ? 10 : 25),
   },
   haveEnAccountWrapper: {
     flexDirection: 'row',

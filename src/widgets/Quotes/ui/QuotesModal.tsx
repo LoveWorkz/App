@@ -95,7 +95,7 @@ export default memo(observer(QuotesModal));
 
 const styles = StyleSheet.create({
   content: {
-    height: verticalScale(395),
+    minHeight: verticalScale(395),
   },
   icon: {
     height: verticalScale(23),

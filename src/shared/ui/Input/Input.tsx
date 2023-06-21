@@ -11,9 +11,13 @@ import {SvgXml} from 'react-native-svg';
 import {EyeIcon} from '@src/shared/assets/icons/Eye';
 import {whitespaceRegexp} from '@src/shared/consts/validation';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {AppText, TextSize, TextType} from '../AppText/AppText';
 import {Button} from '../Button/Button';
@@ -150,11 +154,11 @@ const styles = StyleSheet.create<Record<string, any>>({
   input: {
     height: 40,
     alignItems: 'center',
-    borderRadius: 10,
-    paddingRight: 20,
+    borderRadius: moderateScale(10),
+    paddingRight: horizontalScale(20),
   },
   inputText: {
-    marginBottom: 5,
+    marginBottom: verticalScale(5),
   },
   errorText: {
     position: 'absolute',
@@ -162,14 +166,14 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   eyeIconWrapper: {
     position: 'absolute',
-    right: 10,
+    right: horizontalScale(10),
     width: horizontalScale(30),
   },
   startIconWrapper: {
     position: 'absolute',
     left: 25,
     bottom: 15,
-    zIndex: 10,
+    ...globalStyles.inputStartIconZIndex,
   },
   eyeIcon: {
     width: horizontalScale(18),

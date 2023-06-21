@@ -8,6 +8,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {SelectTheme} from './Select';
 
 interface TouchableComponentProps {
@@ -83,23 +88,22 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 const styles = StyleSheet.create<Record<string, any>>({
   outline: {
     height: 40,
-    borderRadius: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    borderRadius: moderateScale(10),
+    paddingHorizontal: horizontalScale(20),
     alignItems: 'center',
   },
   wrapper: {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: 8,
+    paddingVertical: verticalScale(8),
   },
   label: {
-    marginBottom: 5,
+    marginBottom: verticalScale(5),
   },
   icon: {
-    height: 12,
-    width: 12,
+    height: horizontalScale(12),
+    width: horizontalScale(12),
   },
 });
 

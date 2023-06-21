@@ -13,7 +13,7 @@ import {
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {useTheme} from '@src/app/providers/themeProvider';
 
@@ -43,7 +43,7 @@ const Description = (props: BookProps) => {
         styles.description,
         {
           ...getShadowOpacity(theme).shadowOpacity_level_3,
-          height: descriptionHeight,
+          height: verticalScale(descriptionHeight),
           width: windowWidth,
           left: -globalPadding,
           backgroundColor: colors.bgTertiaryColor,
@@ -56,7 +56,7 @@ const Description = (props: BookProps) => {
           style={[
             styles.content,
             {
-              minHeight: descriptionHeightWinusPaddings,
+              minHeight: verticalScale(descriptionHeightWinusPaddings),
             },
           ]}>
           <View style={{width: windowWidthMinusPaddings}}>
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(90),
   },
   bottomTitle: {
-    marginBottom: 15,
+    marginBottom: verticalScale(15),
   },
   btnWrapper: {
     position: 'absolute',
     bottom: verticalScale(15),
     height: verticalScale(50),
     width: '100%',
-    borderRadius: 10,
+    borderRadius: moderateScale(10),
   },
 });

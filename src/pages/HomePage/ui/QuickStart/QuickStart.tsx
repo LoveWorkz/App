@@ -14,7 +14,6 @@ import {
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {
   homeCategoryImage,
   homeCategoryImageDark,
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   quickStart: {
-    marginBottom: verticalScale(20),
+    marginBottom: 20,
   },
   textWrapper: {
     flexDirection: 'row',
@@ -116,8 +115,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     borderRadius: 10,
-    height: verticalScale(30),
-    width: horizontalScale(30),
+    height: 30,
+    width: 30,
   },
   arrowIcon: {
     height: 15,

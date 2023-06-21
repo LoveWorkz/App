@@ -13,6 +13,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {categoriesStore} from '@src/pages/CategoriesPage';
+import {moderateScale} from '@src/shared/lib/Metrics';
 
 const CategoriesCarousel = () => {
   const {t} = useTranslation();
@@ -30,7 +31,7 @@ const CategoriesCarousel = () => {
   }, [categories]);
 
   return (
-    <View style={styles.carousel}>
+    <View>
       <View style={[styles.carouseTopBlock]}>
         <AppText
           style={{color: colors.primaryTextColor}}
@@ -67,11 +68,8 @@ const CategoriesCarousel = () => {
 export const ComponentWrapper = memo(observer(CategoriesCarousel));
 
 const styles = StyleSheet.create({
-  carousel: {
-    height: 200,
-  },
   itemStyle: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
   carouseTopBlock: {
     marginBottom: -5,

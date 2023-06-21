@@ -85,6 +85,9 @@ export const globalStyles = StyleSheet.create({
   modalCloseIconZIndex: {
     zIndex: 2,
   },
+  inputStartIconZIndex: {
+    zIndex: 2,
+  },
 
   //font Sizes
   size_1: {

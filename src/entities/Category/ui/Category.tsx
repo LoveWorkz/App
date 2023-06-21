@@ -11,6 +11,7 @@ import {DisplayText, DocumentType, StyleType} from '@src/shared/types/types';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -128,21 +129,21 @@ export default memo(Category);
 
 const styles = StyleSheet.create<Record<string, any>>({
   category: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
   },
   image: {
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     aspectRatio: 1 / 2,
   },
   status: {
-    marginTop: 8,
+    marginTop: verticalScale(8),
     textTransform: 'uppercase',
   },
   layout: {
     position: 'absolute',
     opacity: 0.4,
     width: '100%',
-    borderRadius: 20,
+    borderRadius: moderateScale(20),
     ...globalStyles.categoryLayoutZIndex,
   },
   lockIconWrapper: {

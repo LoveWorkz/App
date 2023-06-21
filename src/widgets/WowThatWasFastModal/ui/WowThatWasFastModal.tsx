@@ -70,7 +70,7 @@ export default memo(WowThatWasFastModal);
 
 const styles = StyleSheet.create({
   content: {
-    height: verticalScale(298),
+    minHeight: verticalScale(298),
   },
   description: {
     marginBottom: verticalScale(40),

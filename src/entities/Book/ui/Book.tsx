@@ -17,6 +17,11 @@ import {
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
@@ -155,9 +160,9 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     height: 210,
-    width: 150,
-    borderRadius: 5,
-    marginTop: 10,
+    width: horizontalScale(150),
+    borderRadius: moderateScale(5),
+    marginTop: verticalScale(10),
   },
   bookInfo: {
     width: '50%',
@@ -181,7 +186,7 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   rateWrapper: {
-    marginTop: 15,
-    marginBottom: 20,
+    marginTop: verticalScale(15),
+    marginBottom: verticalScale(20),
   },
 });

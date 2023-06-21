@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
   homeCategoryWrapper: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: verticalScale(35),
+    marginBottom: verticalScale(40),
   },
 
   challangesWrapper: {
-    marginTop: verticalScale(40),
+    marginTop: verticalScale(10),
     width: '100%',
   },
 });

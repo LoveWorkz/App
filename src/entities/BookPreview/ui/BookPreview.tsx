@@ -3,11 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {BookImage} from '@src/entities/Book';
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '@src/shared/lib/Metrics';
+import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 
@@ -38,7 +34,7 @@ const BookPreview = (props: BookPreviewProps) => {
 
 const styles = StyleSheet.create({
   BookPreview: {
-    height: verticalScale(340),
+    height: 340,
     borderRadius: moderateScale(10),
     width: horizontalScale(230),
   },

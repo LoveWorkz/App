@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 const AboutPage = () => {
   const colors = useColors();
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   title: {
-    marginBottom: 40,
+    marginBottom: verticalScale(40),
   },
   text: {},
 });

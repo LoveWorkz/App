@@ -8,6 +8,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 
 const ChangePassword = () => {
   const {t} = useTranslation();
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   icon: {
-    height: 16,
-    width: 16,
+    height: horizontalScale(16),
+    width: horizontalScale(16),
   },
 });

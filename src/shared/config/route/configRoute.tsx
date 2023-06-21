@@ -112,7 +112,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.title',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteBottomPadding={true}>
+        <Layout deleteBottomPadding={true} isPageScrolling={true}>
           <SettingsPage {...props} />
         </Layout>
       );

@@ -9,6 +9,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import signUpStore from '../model/store/SignUpStore';
 
 const SignUp = () => {
@@ -114,22 +115,22 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   password: {
-    marginBottom: 15,
-    marginTop: 15,
+    marginBottom: verticalScale(15),
+    marginTop: verticalScale(15),
   },
   privacyPolicy: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     flexDirection: 'row',
     alignItems: 'center',
   },
   checkbox: {
-    marginRight: 8,
+    marginRight: horizontalScale(8),
   },
   privacyPolicyTextWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
   privacyPolicyText: {
-    marginRight: 5,
+    marginRight: horizontalScale(5),
   },
 });

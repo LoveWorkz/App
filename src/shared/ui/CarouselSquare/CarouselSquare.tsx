@@ -6,7 +6,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 import Pagination from './Pagination';
 
 const PAGE_WIDTH = windowWidth;
@@ -58,7 +58,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
           loop
           style={{
             width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
-            height: carouselHeight ? verticalScale(carouselHeight) : undefined,
+            height: carouselHeight || undefined,
           }}
           pagingEnabled={true}
           snapEnabled={true}

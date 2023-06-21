@@ -4,6 +4,8 @@ import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
+import {useHeaderHeight} from '@react-navigation/elements';
 
 import {
   horizontalScale,
@@ -12,7 +14,11 @@ import {
 } from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
+import {
+  getShadowOpacity,
+  globalStyles,
+  windowHeightMinusPaddings,
+} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
@@ -23,6 +29,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {DocumentType} from '@src/shared/types/types';
+import {isPlatformIos} from '@src/shared/consts/common';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
 interface CategoryDetailsPageProps {
@@ -34,6 +41,12 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const {t, i18n} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
+  const statusBarHeight = getStatusBarHeight();
+  const navbarHeaderHeight = useHeaderHeight();
+
+  const navbarHeight = isPlatformIos
+    ? navbarHeaderHeight
+    : navbarHeaderHeight + statusBarHeight;
 
   const language = i18n.language as LanguageValueType;
   const category = categoryStore.category;
@@ -72,7 +85,13 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   return (
     <LoaderWrapper
       isLoading={categoryDetailsStore.isCategoryDetailsPageLoading}>
-      <View style={styles.CategoryDetailsPage}>
+      <View
+        style={[
+          styles.CategoryDetailsPage,
+          {
+            minHeight: windowHeightMinusPaddings - navbarHeight,
+          },
+        ]}>
         <View
           style={[
             styles.CategoryDetails,
@@ -138,10 +157,12 @@ export default memo(observer(CategoryDetailsPage));
 
 const styles = StyleSheet.create({
   CategoryDetailsPage: {
-    flex: 1,
+    paddingBottom: verticalScale(180),
   },
   btnWrapper: {
-    marginTop: verticalScale(75),
+    position: 'absolute',
+    bottom: verticalScale(50),
+    width: '100%',
   },
   btn: {
     borderRadius: moderateScale(10),

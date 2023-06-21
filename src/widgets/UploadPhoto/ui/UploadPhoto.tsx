@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import UploadModal from './UploadModal/UploadModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   plus: {
-    marginRight: 10,
+    marginRight: horizontalScale(10),
   },
 });
 

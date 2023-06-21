@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 interface ContactUsItemProps {
   Icon: ComponentType;
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     position: 'relative',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   textWrapper: {
     position: 'absolute',

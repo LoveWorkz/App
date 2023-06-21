@@ -9,6 +9,7 @@ import {Rubric} from '@src/entities/Rubric';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import categoriesStore from '../../model/store/categoriesStore';
 
 const Rubrics = () => {
@@ -49,6 +50,6 @@ export default memo(observer(Rubrics));
 
 const styles = StyleSheet.create({
   rubricWrapper: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
 });

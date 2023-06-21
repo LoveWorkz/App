@@ -7,6 +7,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Input} from '@src/shared/ui/Input/Input';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 
@@ -81,7 +82,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   );
 };
 
-export const Wrapper = memo(observer(ConfirmDeleting));
+export default memo(observer(ConfirmDeleting));
 
 const btnWidth = '45%';
 
@@ -91,10 +92,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
   },
   btns: {
-    marginTop: 30,
+    marginTop: verticalScale(30),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -109,9 +110,9 @@ const styles = StyleSheet.create({
   },
   inputs: {
     width: '100%',
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   emailInput: {
-    marginBottom: 15,
+    marginBottom: verticalScale(15),
   },
 });

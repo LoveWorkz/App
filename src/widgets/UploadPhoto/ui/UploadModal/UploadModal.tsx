@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     left: -20,
+    borderRadius: 0,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },

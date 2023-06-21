@@ -8,7 +8,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {favorites} from '@src/shared/assets/images';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {
   getShadowOpacity,
   windowWidthMinusPaddings,
@@ -64,10 +68,11 @@ export default memo(observer(Favorite));
 
 const styles = StyleSheet.create({
   favoritesFolder: {
-    marginTop: 20,
+    marginTop: verticalScale(20),
     height: 100,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: moderateScale(20),
+    paddingVertical: verticalScale(20),
+    paddingHorizontal: horizontalScale(20),
   },
   titleWrapper: {
     paddingVertical: verticalScale(4),

@@ -8,6 +8,7 @@ import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {booksFilterItems} from '@src/entities/Book';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as RecommendedBooks} from './RecommendedBooks/RecommendedBooks';
 import Books from './Books/Books';
 import booksStore from '../model/store/BooksStore';
@@ -69,6 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   booksWrapper: {
-    marginTop: 30,
+    marginTop: verticalScale(30),
   },
 });

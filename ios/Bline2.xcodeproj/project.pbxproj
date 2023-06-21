@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		24DE9B5B65124A2794ACD16F /* Quicksand-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B532796C9B2D48529D5B1F47 /* Quicksand-Light.ttf */; };
 		5B61EA77F8644BDAB2DFAD77 /* Quicksand-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F987BD2237F44F48877660B5 /* Quicksand-Medium.ttf */; };
+		63A8850C2A42E551007EE237 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A8850B2A42E551007EE237 /* StoreKit.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		90410CBDD1BC43D78027720D /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B3E464DB84D486B8488EBBF /* Quicksand-Bold.ttf */; };
 		91F75B83D4EA24E4429FDD4A /* Pods_Bline2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7CD823D7172C62CA53A02E5 /* Pods_Bline2.framework */; };
@@ -44,6 +45,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bline2/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Bline2/main.m; sourceTree = "<group>"; };
 		4B3E464DB84D486B8488EBBF /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../src/shared/assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
+		63A8850B2A42E551007EE237 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		63D89D502A0D68710089CC7F /* Bline2Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bline2Release.entitlements; path = Bline2/Bline2Release.entitlements; sourceTree = "<group>"; };
 		63DF371729D186FF00D3BB4A /* Bline2Debug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Bline2Debug.entitlements; path = Bline2/Bline2Debug.entitlements; sourceTree = "<group>"; };
 		6F948D9A9050772E91D1F3F8 /* Pods-Bline2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bline2.release.xcconfig"; path = "Target Support Files/Pods-Bline2/Pods-Bline2.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91F75B83D4EA24E4429FDD4A /* Pods_Bline2.framework in Frameworks */,
+				63A8850C2A42E551007EE237 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +119,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63A8850B2A42E551007EE237 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				F7CD823D7172C62CA53A02E5 /* Pods_Bline2.framework */,
 				F2BEF30C90B6126E15BAE064 /* Pods_Bline2_Bline2Tests.framework */,
@@ -573,7 +577,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bline2/Bline2Debug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.1.9;
+				CURRENT_PROJECT_VERSION = 2.2.0;
 				DEVELOPMENT_TEAM = DTWRZD523F;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bline2/Info.plist;
@@ -583,7 +587,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -607,7 +611,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bline2/Bline2Release.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.1.9;
+				CURRENT_PROJECT_VERSION = 2.2.0;
 				DEVELOPMENT_TEAM = DTWRZD523F;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;
@@ -616,7 +620,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.2;
+				MARKETING_VERSION = 2.1.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

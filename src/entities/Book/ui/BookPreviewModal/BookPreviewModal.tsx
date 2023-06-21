@@ -1,17 +1,16 @@
 import React, {memo, useMemo} from 'react';
-import {
-  StyleSheet,
-  View,
-  useWindowDimensions,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, Modal, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowHeight} from '@src/app/styles/GlobalStyle';
 import {CloseIcon} from '@src/shared/assets/icons/Close';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 
 interface BookProps {
   image: string;
@@ -22,8 +21,6 @@ interface BookProps {
 const BookPreviewModal = (props: BookProps) => {
   const {image, visible, onClose} = props;
   const colors = useColors();
-
-  const {height} = useWindowDimensions();
 
   const onCloseHandler = () => {
     onClose?.();
@@ -44,7 +41,11 @@ const BookPreviewModal = (props: BookProps) => {
       <View
         style={[
           styles.content,
-          {height, padding: globalPadding, backgroundColor: colors.bgColor},
+          {
+            height: windowHeight,
+            padding: globalPadding,
+            backgroundColor: colors.bgColor,
+          },
         ]}>
         <TouchableOpacity
           style={styles.closeIconWrapper}
@@ -60,7 +61,7 @@ const BookPreviewModal = (props: BookProps) => {
         <View />
         <FastImage
           resizeMode={'stretch'}
-          style={[styles.image, {height: height * 0.6}]}
+          style={[styles.image, {height: windowHeight * 0.6}]}
           source={uri}
         />
       </View>
@@ -73,12 +74,12 @@ export default memo(BookPreviewModal);
 const styles = StyleSheet.create({
   closeIconWrapper: {
     position: 'absolute',
-    right: 30,
-    top: 60,
+    right: horizontalScale(30),
+    top: verticalScale(60),
   },
   image: {
     width: '100%',
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   content: {
     justifyContent: 'center',

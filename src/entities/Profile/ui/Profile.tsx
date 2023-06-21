@@ -12,6 +12,7 @@ import {AuthMethod, userStore} from '@src/entities/User';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
@@ -124,24 +125,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   uploadPhotoWrapper: {
-    marginTop: -20,
+    marginTop: verticalScale(-20),
   },
   changePasswordWrapper: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: verticalScale(30),
+    marginBottom: verticalScale(30),
     width: '100%',
   },
   profileFormWrapper: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   deleteUserWrapper: {
     width: '100%',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   btns: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(20),
     alignItems: 'center',
     width: '100%',
   },
@@ -150,9 +151,9 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     width: '100%',
-    marginTop: 20,
+    marginTop: verticalScale(20),
   },
   uploadPhoto: {
-    width: 180,
+    width: horizontalScale(180),
   },
 });
