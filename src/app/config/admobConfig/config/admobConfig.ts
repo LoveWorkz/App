@@ -9,8 +9,8 @@ export const initAdmob = () => {
 };
 
 // const interstitialID = Platform.select({
-//   ios: 'ca-app-pub-4287224605926771/4098715773',
-//   android: 'ca-app-pub-4287224605926771/7818468938',
+//   ios: 'ca-app-pub-9255281399250879/9567590913',
+//   android: 'ca-app-pub-9255281399250879/1315047442',
 // });
 
 export const initInterstitialAd = () => {

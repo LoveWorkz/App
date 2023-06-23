@@ -41,7 +41,7 @@ class QuestionStore {
     questions: QuestionType[];
   }) => {
     try {
-      const currentQuestion = this.getAndSetQuestionById({
+      const currentQuestion = this.getQuestionById({
         questionId,
         questions,
       });
@@ -63,7 +63,11 @@ class QuestionStore {
     }
   };
 
-  getAndSetQuestionById = ({
+  setQuestion = (question: QuestionType) => {
+    this.question = question;
+  };
+
+  getQuestionById = ({
     questionId,
     questions,
   }: {
@@ -75,9 +79,6 @@ class QuestionStore {
         question => question.id === questionId,
       );
 
-      runInAction(() => {
-        this.question = currentQuestion || null;
-      });
       return currentQuestion;
     } catch (e) {
       errorHandler({error: e});

@@ -25,7 +25,7 @@ export const Favorite = () => {
   const {t} = useTranslation();
   const {theme} = useTheme();
 
-  const favorite = favoriteStore.favorite;
+  const favorite = favoriteStore.favorites;
 
   if (!favorite) {
     return null;

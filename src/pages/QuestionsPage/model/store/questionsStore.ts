@@ -344,10 +344,6 @@ class QuestionsStore {
       crashlytics().log('Fetching favorites questions');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
-      const favorites = favoriteStore.favorite;
-      if (!favorites) {
-        return;
-      }
 
       const data = await firestore()
         .collection(Collections.QUESTIONS)
@@ -357,11 +353,12 @@ class QuestionsStore {
       const questions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
-      }));
+      })) as QuestionType[];
 
-      const favoritesQuestions = questions.filter(question => {
-        return favorites.questions.includes(question.id);
-      });
+      const favoritesQuestions = this.getFavoritesQuestions(questions);
+      if (!favoritesQuestions) {
+        return;
+      }
 
       runInAction(() => {
         this.questions = favoritesQuestions as QuestionType[];
@@ -370,6 +367,24 @@ class QuestionsStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  getFavoritesQuestions = (questions: QuestionType[]) => {
+    const favorites = favoriteStore.favorites;
+    if (!favorites) {
+      return;
+    }
+
+    const questionsMap: Record<string, QuestionType> = {};
+    questions.forEach(question => {
+      questionsMap[question.id] = question;
+    });
+
+    const favoritesQuestions = favorites.questions.map(
+      questionId => questionsMap[questionId],
+    );
+
+    return favoritesQuestions;
   };
 
   checkIfAllQuestionsSwiped = async (param: {questionId: string}) => {

@@ -157,6 +157,8 @@ class RubricStore {
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
 
+      questionStore.setQuestion(currentQuestion);
+
       const currentCategory = categoryStore.getCategory(
         currentQuestion?.categoryId,
       );

@@ -10,7 +10,7 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {FavoriteType} from '../types/favoriteType';
 
 class FavoriteStore {
-  favorite: FavoriteType | null = null;
+  favorites: FavoriteType | null = null;
   isQuestionFavorite = false;
 
   constructor() {
@@ -22,11 +22,11 @@ class FavoriteStore {
   };
 
   checkIsQuestionFavorite = (questionId: string) => {
-    if (!this.favorite) {
+    if (!this.favorites) {
       return false;
     }
 
-    return this.favorite.questions.includes(questionId);
+    return this.favorites.questions.includes(questionId);
   };
 
   toggleFavorite = async () => {
@@ -49,31 +49,23 @@ class FavoriteStore {
   };
 
   setFavorites = (favorites: FavoriteType) => {
-    this.favorite = favorites;
+    this.favorites = favorites;
   };
 
   addQuestionToFavorites = async (questionId: string) => {
     try {
       crashlytics().log('Adding question to favorites.');
 
-      const userId = userStore.userId;
-      if (!userId) {
+      if (!this.favorites) {
         return;
       }
 
-      if (!this.favorite) {
-        return;
-      }
-
-      const questionsIds = this.favorite.questions;
+      const questionsIds = this.favorites.questions;
       const newQuestionsIds = [...questionsIds, questionId];
 
       await userStore.updateUser({
-        field: 'favorites',
-        data: {
-          currentQuestion: newQuestionsIds[0],
-          questions: newQuestionsIds,
-        },
+        field: 'favorites.questions',
+        data: newQuestionsIds,
       });
 
       await userStore.fetchUser();
@@ -94,11 +86,11 @@ class FavoriteStore {
       if (!userId) {
         return;
       }
-      if (!this.favorite) {
+      if (!this.favorites) {
         return;
       }
 
-      const questionsIds = this.favorite.questions;
+      const questionsIds = this.favorites.questions;
       let favorites: FavoriteType;
       const isOnlyOneFavoriteQuestion = questionsIds.length === 1;
 
@@ -113,8 +105,13 @@ class FavoriteStore {
           questions: [],
         };
       } else {
+        const prevQuestionId = this.getPrevFavoriteQuestionId({
+          questionsIds,
+          currentQuestionId: questionId,
+        });
+
         favorites = {
-          currentQuestion: newQuestionsIds[0],
+          currentQuestion: prevQuestionId,
           questions: newQuestionsIds,
         };
       }
@@ -134,6 +131,44 @@ class FavoriteStore {
     }
   };
 
+  getPrevFavoriteQuestionId = ({
+    currentQuestionId,
+    questionsIds,
+  }: {
+    currentQuestionId: string;
+    questionsIds: string[];
+  }) => {
+    const currentFavoriteQuestionIndex = questionsIds.findIndex(
+      id => currentQuestionId === id,
+    );
+
+    const isQuestionIdFound = currentFavoriteQuestionIndex === -1;
+    const isFirstQuestionId = currentQuestionId === questionsIds[0];
+
+    if (isQuestionIdFound || isFirstQuestionId) {
+      return questionsIds[0];
+    }
+
+    return questionsIds[currentFavoriteQuestionIndex - 1];
+  };
+
+  getInitialQuestionId = ({
+    currentQuestionId,
+    questionsIds,
+  }: {
+    currentQuestionId: string;
+    questionsIds: string[];
+  }) => {
+    const isQuestionFavorite = this.checkIsQuestionFavorite(currentQuestionId);
+
+    // when we removing chosen question from favorites we should reset swipe history
+    if (!isQuestionFavorite) {
+      return questionsIds[0];
+    }
+
+    return currentQuestionId;
+  };
+
   getQuestionSwipeInfoForFavorites = async ({
     id,
     language,
@@ -147,16 +182,17 @@ class FavoriteStore {
       let questionId = id;
       const isInitialSetUp = !questionId;
 
-      // initial logic
-      if (!id && this.favorite) {
-        const lastSwipedQuestionId = this.favorite.currentQuestion;
-        const isQuestionInFavorite =
-          this.favorite.questions.includes(lastSwipedQuestionId);
+      if (!this.favorites) {
+        return;
+      }
 
-        // when we removing chosen question from favorites we should reset swipe history
-        questionId = isQuestionInFavorite
-          ? this.favorite.currentQuestion
-          : this.favorite.questions[0];
+      if (!id) {
+        // initial logic
+
+        questionId = this.getInitialQuestionId({
+          questionsIds: this.favorites.questions,
+          currentQuestionId: this.favorites.currentQuestion,
+        });
       }
 
       if (!questionId) {
@@ -171,6 +207,8 @@ class FavoriteStore {
         return;
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
+
+      questionStore.setQuestion(currentQuestion);
 
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
       if (!currentRubric) {

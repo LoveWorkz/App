@@ -18,7 +18,7 @@ interface CategoriesPageProps {
 
 const CategoriesPage = (props: CategoriesPageProps) => {
   const {route} = props;
-  const favorites = favoriteStore.favorite;
+  const favorites = favoriteStore.favorites;
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
 

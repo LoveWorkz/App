@@ -193,6 +193,8 @@ class CategoryStore {
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
 
+      questionStore.setQuestion(currentQuestion);
+
       // if a user swipe some question show quick start block in the home page
       if (currentQuestionNumber > 1) {
         userStore.updateUser({
