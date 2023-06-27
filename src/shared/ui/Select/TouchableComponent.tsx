@@ -14,6 +14,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {SelectTheme} from './Select';
+import Skeleton from '../Skeleton/Skeleton';
 
 interface TouchableComponentProps {
   setIsVisible: (visible: boolean) => void;
@@ -21,7 +22,11 @@ interface TouchableComponentProps {
   label?: string;
   theme?: SelectTheme;
   selectedDisplayValue: string;
+  isLoading: boolean;
 }
+
+const height = 40;
+const borderRadius = moderateScale(10);
 
 export const TouchableComponent = memo((props: TouchableComponentProps) => {
   const {
@@ -30,6 +35,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     label,
     theme = SelectTheme.CLEAR,
     selectedDisplayValue,
+    isLoading,
   } = props;
   const colors = useColors();
   const {theme: appTheme} = useTheme();
@@ -39,6 +45,23 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
   const onSelectOpenHandler = () => {
     setIsVisible(true);
   };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView>
+        <View style={styles.uploadPhotoWrapper}>
+          <View style={styles.label}>
+            <Skeleton width={50} height={13} />
+          </View>
+          <Skeleton
+            width={'100%'}
+            height={height}
+            borderRadius={borderRadius}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -87,8 +110,8 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   outline: {
-    height: 40,
-    borderRadius: moderateScale(10),
+    height: height,
+    borderRadius: borderRadius,
     paddingHorizontal: horizontalScale(20),
     alignItems: 'center',
   },
@@ -107,4 +130,4 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
 });
 
-export const Wrapper = memo(TouchableComponent);
+export default memo(TouchableComponent);

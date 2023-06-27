@@ -10,10 +10,11 @@ interface RelationshipStatusSelectProps {
   status: string;
   changeStatus: (status: string) => void;
   initialValue?: string;
+  isLoading: boolean;
 }
 
 const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
-  const {changeStatus, status, initialValue} = props;
+  const {changeStatus, status, initialValue, isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
 
@@ -27,6 +28,7 @@ const RelationshipStatusSelect = (props: RelationshipStatusSelectProps) => {
   return (
     <SafeAreaView>
       <Select
+        isLoading={isLoading}
         selectedValueStyle={{color: colors.primaryTextColor}}
         Theme={SelectTheme.OUTLINE}
         initialValue={initialValue}

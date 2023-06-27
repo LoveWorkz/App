@@ -3,7 +3,6 @@ import {Keyboard, Pressable, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {booksFilterItems} from '@src/entities/Book';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -20,6 +19,7 @@ interface BooksPageProps {
 const BooksPage = (props: BooksPageProps) => {
   const {route} = props;
   const prevRouteName = route?.params?.prevRouteName;
+  const isLoading = booksStore.isBooksPageLoading;
 
   useEffect(() => {
     booksStore.init();
@@ -52,14 +52,12 @@ const BooksPage = (props: BooksPageProps) => {
   };
 
   return (
-    <LoaderWrapper isLoading={booksStore.isBooksPageLoading}>
-      <Pressable onPress={onBookPagePressHandler} style={styles.booksPage}>
-        <RecommendedBooks />
-        <View style={styles.booksWrapper}>
-          <Books />
-        </View>
-      </Pressable>
-    </LoaderWrapper>
+    <Pressable onPress={onBookPagePressHandler} style={styles.booksPage}>
+      <RecommendedBooks isLoading={isLoading} />
+      <View style={styles.booksWrapper}>
+        <Books isLoading={isLoading} />
+      </View>
+    </Pressable>
   );
 };
 

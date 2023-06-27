@@ -29,12 +29,12 @@ import {CategoryKey} from '@src/entities/Category';
 import {getCongratsModalContent} from '@src/pages/CategoriesPage';
 import {CongratsModal} from '@src/widgets/CongratsModal';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {initInterstitialAd} from '@src/app/config/admobConfig';
 import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {userStore} from '@src/entities/User';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 
@@ -43,6 +43,9 @@ interface QuestionsPageProps {
 }
 
 const interstitial = initInterstitialAd();
+
+const questionCardHeight = verticalScale(450);
+const questionCardBorderRadius = moderateScale(20);
 
 const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
@@ -60,6 +63,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const currentCategory = userStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
   const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
+  const isLoading = questionsStore.questionsPageloading;
 
   useFocusEffect(
     useCallback(() => {
@@ -120,65 +124,83 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     [key, id, language],
   );
 
-  return (
-    <LoaderWrapper isLoading={questionsStore.questionsPageloading}>
+  if (isLoading) {
+    return (
       <View style={styles.QuestionsPage}>
-        <Gradient style={styles.category} size={GradientSize.SMALL}>
-          <AppText
-            style={{color: colors.white}}
-            weight={'700'}
-            size={TextSize.LEVEL_5}
-            text={questionsPageInfo.categoryName}
-          />
-        </Gradient>
+        <View style={styles.category}>
+          <Skeleton width={100} height={40} borderRadius={10} />
+        </View>
         <View style={styles.rubricAndQuestionsCountBlock}>
-          <View>
-            <GradientText
-              style={styles.rubricText}
-              weight={'700'}
-              size={TextSize.LEVEL_4}
-              text={questionsPageInfo.rubricName}
-            />
-          </View>
-          <View>
-            <AppText
-              style={{color: colors.primaryTextColor}}
-              weight={'500'}
-              size={TextSize.LEVEL_5}
-              text={`${questionsPageInfo.questionNumber}/${questionsStore.questionsSize}`}
-            />
-          </View>
+          <Skeleton width={60} height={18} />
+          <Skeleton width={60} height={18} />
         </View>
-        <View style={styles.question}>
-          <HorizontalSlide
-            isSlideEnabled={isSliideEnabled}
-            onSwipeHandler={onSwipeHandler}
-            data={formattedQuestions}
-            itemStyle={styles.slideItemStyle}
-            Component={QuestionCard}
-            defaultElement={questionsPageInfo.defaultQuestionNumber}
-          />
-          <View
-            style={[
-              styles.questionsCard,
-              {
-                ...styles.questionsCardBack,
-                ...getShadowOpacity(theme).shadowOpacity_level_1,
-              },
-              {
-                backgroundColor: colors.questionCardBackColor,
-              },
-            ]}
+        <View style={styles.questionCardSkeleton}>
+          <Skeleton
+            height={questionCardHeight}
+            borderRadius={questionCardBorderRadius}
           />
         </View>
-        <WowThatWasFast />
-        <CongratsModal
-          content={content}
-          visible={questionsStore.congratsModalVisible}
-          setVisible={questionsStore.setCongratsModalVisible}
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.QuestionsPage}>
+      <Gradient style={styles.category} size={GradientSize.SMALL}>
+        <AppText
+          style={{color: colors.white}}
+          weight={'700'}
+          size={TextSize.LEVEL_5}
+          text={questionsPageInfo.categoryName}
+        />
+      </Gradient>
+      <View style={styles.rubricAndQuestionsCountBlock}>
+        <View>
+          <GradientText
+            style={styles.rubricText}
+            weight={'700'}
+            size={TextSize.LEVEL_4}
+            text={questionsPageInfo.rubricName}
+          />
+        </View>
+        <View>
+          <AppText
+            style={{color: colors.primaryTextColor}}
+            weight={'500'}
+            size={TextSize.LEVEL_5}
+            text={`${questionsPageInfo.questionNumber}/${questionsStore.questionsSize}`}
+          />
+        </View>
+      </View>
+      <View style={styles.question}>
+        <HorizontalSlide
+          isSlideEnabled={isSliideEnabled}
+          onSwipeHandler={onSwipeHandler}
+          data={formattedQuestions}
+          itemStyle={styles.slideItemStyle}
+          Component={QuestionCard}
+          defaultElement={questionsPageInfo.defaultQuestionNumber}
+        />
+        <View
+          style={[
+            styles.questionsCard,
+            {
+              ...styles.questionsCardBack,
+              ...getShadowOpacity(theme).shadowOpacity_level_1,
+            },
+            {
+              backgroundColor: colors.questionCardBackColor,
+            },
+          ]}
         />
       </View>
-    </LoaderWrapper>
+      <WowThatWasFast />
+      <CongratsModal
+        content={content}
+        visible={questionsStore.congratsModalVisible}
+        setVisible={questionsStore.setCongratsModalVisible}
+      />
+    </View>
   );
 };
 
@@ -189,7 +211,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   category: {
-    marginBottom: horizontalScale(20),
+    marginBottom: verticalScale(20),
   },
   rubricAndQuestionsCountBlock: {
     flexDirection: 'row',
@@ -203,9 +225,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   questionsCard: {
-    height: verticalScale(450),
+    height: questionCardHeight,
     width: windowWidth * 0.88,
-    borderRadius: moderateScale(20),
+    borderRadius: questionCardBorderRadius,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
@@ -218,5 +240,9 @@ const styles = StyleSheet.create({
   },
   slideItemStyle: {
     ...globalStyles.slideItemZindex,
+  },
+
+  questionCardSkeleton: {
+    marginTop: verticalScale(30),
   },
 });

@@ -6,21 +6,27 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {SelectOption} from '@src/shared/types/types';
 import {horizontalScale} from '@src/shared/lib/Metrics';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 interface PreferencePropss {
   changePreference: (preference: string) => void;
   preference: SelectOption;
   isChecked: boolean;
+  isLoading: boolean;
 }
 
 const Preference = memo((props: PreferencePropss) => {
-  const {changePreference, preference, isChecked} = props;
+  const {changePreference, preference, isChecked, isLoading} = props;
   const {value, label} = preference;
   const colors = useColors();
 
   const onChangeHandler = useCallback(() => {
     changePreference?.(value);
   }, [changePreference, value]);
+
+  if (isLoading) {
+    return <Skeleton width={'80%'} height={20} />;
+  }
 
   return (
     <Pressable style={styles.content} onPress={onChangeHandler}>

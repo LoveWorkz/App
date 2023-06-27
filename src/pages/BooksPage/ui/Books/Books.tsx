@@ -12,12 +12,21 @@ import {
 import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import booksStore from '../../model/store/BooksStore';
-import {Wrapper as BookItem} from '../BookItem/BookItem';
+import BookItem from '../BookItem/BookItem';
 import BooksSearchBar from '../BooksSearchBar/BooksSearchBar';
 
-const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
+interface FilterItemProps {
+  name: string;
+  active: boolean;
+  isLoading: boolean;
+}
+
+const FilterItem = memo((props: FilterItemProps) => {
+  const {name, active, isLoading} = props;
+
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
 
@@ -30,6 +39,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
     <View style={styles.rubricCategory}>
       {name && (
         <RubricFilterItem
+          isLoading={isLoading}
           isOutline={isDarkMode}
           action
           onPress={onFiltreHandler}
@@ -42,7 +52,13 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
   );
 });
 
-const Books = () => {
+interface BooksProps {
+  isLoading: boolean;
+}
+
+const Books = (props: BooksProps) => {
+  const {isLoading} = props;
+
   const {t} = useTranslation();
   const {i18n} = useTranslation();
   const colors = useColors();
@@ -51,20 +67,33 @@ const Books = () => {
 
   const language = i18n.language as LanguageValueType;
 
+  const filterItemsWithIsLoading = useMemo(() => {
+    return booksCategories.map(booksCategory => ({
+      ...booksCategory,
+      isLoading: isLoading,
+    }));
+  }, [isLoading, booksCategories]);
+
   // adding an empty object for a space at the beginning
   const booksCategoriesWithSpace = useMemo(() => {
-    return [{}, ...booksCategories];
-  }, [booksCategories]);
+    return [{}, ...filterItemsWithIsLoading];
+  }, [filterItemsWithIsLoading]);
 
   return (
     <View>
-      <AppText
-        style={[styles.booksTitle, {color: colors.primaryTextColor}]}
-        text={t('books.books')}
-        weight={'500'}
-        size={TextSize.LEVEL_5}
-      />
-      <BooksSearchBar />
+      {isLoading ? (
+        <View style={styles.titleSkeleton}>
+          <Skeleton height={18} width={70} />
+        </View>
+      ) : (
+        <AppText
+          style={[styles.booksTitle, {color: colors.primaryTextColor}]}
+          text={t('books.books')}
+          weight={'500'}
+          size={TextSize.LEVEL_5}
+        />
+      )}
+      <BooksSearchBar isLoading={isLoading} />
       <View style={styles.booksCategories}>
         <HorizontalCarousel
           data={booksCategoriesWithSpace}
@@ -77,6 +106,7 @@ const Books = () => {
             return (
               <View style={styles.book} key={book.id}>
                 <BookItem
+                  isLoading={isLoading}
                   id={book.id}
                   image={book.image.front}
                   title={book.displayName[language]}
@@ -123,5 +153,9 @@ const styles = StyleSheet.create({
   },
   rubricCategory: {
     marginLeft: horizontalScale(10),
+  },
+
+  titleSkeleton: {
+    marginBottom: 20,
   },
 });

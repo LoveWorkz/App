@@ -11,7 +11,13 @@ import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import booksStore from '../../model/store/BooksStore';
 
-const BooksSearchBar = () => {
+interface BooksSearchBarProps {
+  isLoading: boolean;
+}
+
+const BooksSearchBar = (props: BooksSearchBarProps) => {
+  const {isLoading} = props;
+
   const {t} = useTranslation();
   const {theme} = useTheme();
 
@@ -23,6 +29,7 @@ const BooksSearchBar = () => {
   return (
     <View style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
       <Input
+        isLoading={isLoading}
         value={booksStore.searchBooksText}
         onChange={onSearchHandler}
         placeholder={t('search') || ''}

@@ -23,16 +23,22 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 interface BookProps {
   title: string;
   description: string;
   image: string;
   id: string;
+  isLoading: boolean;
 }
 
+const height = 100;
+const borderRadius = moderateScale(5);
+const width = horizontalScale(70);
+
 const BookItem = (props: BookProps) => {
-  const {title, description, image, id} = props;
+  const {title, description, image, id, isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
   const {theme} = useTheme();
@@ -45,6 +51,20 @@ const BookItem = (props: BookProps) => {
     Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.Book}>
+        <Skeleton height={height} width={width} borderRadius={borderRadius} />
+        <View style={styles.textContent}>
+          <View style={styles.titleSkeleton}>
+            <Skeleton height={18} width={100} />
+          </View>
+          <Skeleton height={60} width={220} />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.Book}>
@@ -99,24 +119,24 @@ const BookItem = (props: BookProps) => {
   );
 };
 
-export const Wrapper = memo(BookItem);
+export default memo(BookItem);
 
 const styles = StyleSheet.create({
   Book: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderRadius: moderateScale(5),
+    borderRadius: borderRadius,
   },
   image: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: moderateScale(5),
+    borderRadius: borderRadius,
   },
   imageWrapper: {
-    height: 100,
-    width: horizontalScale(70),
-    borderRadius: moderateScale(5),
+    height: height,
+    width: width,
+    borderRadius: borderRadius,
   },
   textContent: {
     width: '80%',
@@ -133,5 +153,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     left: 3,
     top: 3,
+  },
+
+  titleSkeleton: {
+    marginBottom: verticalScale(15),
   },
 });

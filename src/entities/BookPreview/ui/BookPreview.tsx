@@ -6,13 +6,18 @@ import {BookImage} from '@src/entities/Book';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 interface BookPreviewProps {
   image: BookImage;
+  isLoading: boolean;
 }
 
+const height = 340;
+const borderRadius = moderateScale(10);
+
 const BookPreview = (props: BookPreviewProps) => {
-  const {image} = props;
+  const {image, isLoading} = props;
   const {theme} = useTheme();
 
   const imageFront = image.front;
@@ -20,6 +25,14 @@ const BookPreview = (props: BookPreviewProps) => {
   const uri = useMemo(() => {
     return {uri: imageFront, priority: FastImage.priority.normal};
   }, [imageFront]);
+
+  if (isLoading) {
+    return (
+      <View>
+        <Skeleton height={height} borderRadius={borderRadius} />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -34,12 +47,12 @@ const BookPreview = (props: BookPreviewProps) => {
 
 const styles = StyleSheet.create({
   BookPreview: {
-    height: 340,
-    borderRadius: moderateScale(10),
+    height: height,
+    border: borderRadius,
     width: horizontalScale(230),
   },
   image: {
-    borderRadius: moderateScale(10),
+    borderRadius: borderRadius,
     idth: '100%',
     height: '100%',
   },

@@ -7,12 +7,17 @@ import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {
   globalPadding,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {userStore} from '@src/entities/User';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 const HomePageHeaderLeft = () => {
   const {t} = useTranslation();
@@ -21,7 +26,25 @@ const HomePageHeaderLeft = () => {
 
   const user = userStore.user;
   if (!user) {
-    return <></>;
+    return (
+      <View style={styles.headerLeft}>
+        <View style={styles.avatarSkeleton}>
+          <Skeleton
+            width={horizontalScale(40)}
+            height={horizontalScale(40)}
+            borderRadius={moderateScale(50)}
+          />
+        </View>
+        <View>
+          <View style={styles.titleSkeleton}>
+            <Skeleton width={100} height={8} />
+          </View>
+          <View>
+            <Skeleton width={150} height={15} />
+          </View>
+        </View>
+      </View>
+    );
   }
 
   const onProfilePressHandler = () => {
@@ -66,5 +89,12 @@ const styles = StyleSheet.create({
   },
   nameWrapper: {
     marginLeft: horizontalScale(10),
+  },
+
+  avatarSkeleton: {
+    marginRight: 8,
+  },
+  titleSkeleton: {
+    marginBottom: 8,
   },
 });

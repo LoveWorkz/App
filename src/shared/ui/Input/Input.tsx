@@ -21,6 +21,7 @@ import {
 import {useTheme} from '@src/app/providers/themeProvider';
 import {AppText, TextSize, TextType} from '../AppText/AppText';
 import {Button} from '../Button/Button';
+import Skeleton from '../Skeleton/Skeleton';
 
 export enum Inputheme {}
 
@@ -37,7 +38,11 @@ interface InputProps {
   secureTextEntry?: boolean;
   isSpaceAllowed?: boolean;
   StartIcon?: React.ComponentType<any>;
+  isLoading?: boolean;
 }
+
+const height = 40;
+const borderRadius = moderateScale(10);
 
 export const Input = memo((props: InputProps) => {
   const {
@@ -53,6 +58,7 @@ export const Input = memo((props: InputProps) => {
     secureTextEntry,
     isSpaceAllowed = false,
     StartIcon,
+    isLoading = false,
     ...rest
   } = props;
   const colors = useColors();
@@ -83,6 +89,25 @@ export const Input = memo((props: InputProps) => {
   const togglePasswordHiddenHandler = () => {
     setIsPasswordHidden(prev => !prev);
   };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={[style]}>
+        <View style={styles.uploadPhotoWrapper}>
+          {label && (
+            <View style={styles.inputText}>
+              <Skeleton width={50} height={13} />
+            </View>
+          )}
+          <Skeleton
+            width={'100%'}
+            height={height}
+            borderRadius={borderRadius}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -154,7 +179,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   input: {
     height: 40,
     alignItems: 'center',
-    borderRadius: moderateScale(10),
+    borderRadius: borderRadius,
     paddingRight: horizontalScale(20),
   },
   inputText: {

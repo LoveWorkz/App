@@ -2,16 +2,30 @@ import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
-import {ChallengeCategory} from '@src/entities/ChallengeCategory';
+import {
+  ChallengeCategory,
+  challengeCategoryExample,
+  ChallengeCategoryType,
+} from '@src/entities/ChallengeCategory';
 import challengesStore from '../../model/store/challengesStore';
+import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 
 interface ChallengeCategoriesProps {
+  isLoading?: boolean;
   defaultChallengeId?: string;
 }
 
 export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
-  const {defaultChallengeId} = props;
-  const challengeCategories = challengesStore.challengeCategories;
+  const {defaultChallengeId, isLoading} = props;
+  let challengeCategories = challengesStore.challengeCategories;
+
+  // when loading, adding example data to make skeleton work
+  if (isLoading) {
+    challengeCategories = getEntityExampleDataForSkeleton({
+      entity: challengeCategoryExample,
+      count: 5,
+    }) as ChallengeCategoryType[];
+  }
 
   const onChallengeCategoryPressHandler = useCallback(
     ({id, name}: {id: string; name: string}) => {
@@ -25,6 +39,7 @@ export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
       {challengeCategories.map(challange => {
         return (
           <ChallengeCategory
+            isLoading={isLoading}
             key={challange.id}
             image={challange.image}
             name={challange.name}

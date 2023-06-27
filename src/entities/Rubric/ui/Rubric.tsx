@@ -14,14 +14,19 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
 
 interface RubricProps {
   rubric: RubricType;
+  isLoading: boolean;
 }
 
+const height = 80;
+const borderRadius = moderateScale(20);
+
 export const Rubric = (props: RubricProps) => {
-  const {rubric} = props;
+  const {rubric, isLoading} = props;
   const {displayName, questions, swipedQuestionsPercentage, description} =
     rubric;
   const colors = useColors();
@@ -36,6 +41,14 @@ export const Rubric = (props: RubricProps) => {
 
   //if it's the first question set 1
   const swipedQuestionCount = numberFromPercentage || 1;
+
+  if (isLoading) {
+    return (
+      <View>
+        <Skeleton height={height} borderRadius={borderRadius} />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -75,8 +88,8 @@ export default memo(Rubric);
 
 const styles = StyleSheet.create({
   Rubric: {
-    height: 80,
-    borderRadius: moderateScale(20),
+    height: height,
+    borderRadius: borderRadius,
     backgroundColor: '#F1F3FF',
     flexDirection: 'row',
     justifyContent: 'space-between',

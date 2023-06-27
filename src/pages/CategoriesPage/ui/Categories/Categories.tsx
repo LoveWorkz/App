@@ -5,23 +5,46 @@ import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {Category} from '@src/entities/Category';
+import {Category, categoryExample, CategoryType} from '@src/entities/Category';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
-import CategoriesStore from '../../model/store/categoriesStore';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
+import categoriesStore from '../../model/store/categoriesStore';
 
-const Categories = () => {
+interface CategoriesProps {
+  isLoading: boolean;
+}
+
+const Categories = (props: CategoriesProps) => {
+  const {isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
-  const categories = CategoriesStore.categories;
+  let categories = categoriesStore.categories;
+
+  // when loading, adding example data to make skeleton work
+  if (isLoading) {
+    categories = categoriesStore.editCategories(
+      getEntityExampleDataForSkeleton({
+        entity: categoryExample,
+        count: 6,
+      }) as CategoryType[],
+    );
+  }
 
   return (
     <View>
-      <AppText
-        style={{color: colors.primaryTextColor}}
-        weight={'500'}
-        size={TextSize.LEVEL_5}
-        text={t('categories.categories')}
-      />
+      {isLoading ? (
+        <View>
+          <Skeleton width={100} height={18} />
+        </View>
+      ) : (
+        <AppText
+          style={{color: colors.primaryTextColor}}
+          weight={'500'}
+          size={TextSize.LEVEL_5}
+          text={t('categories.categories')}
+        />
+      )}
       <View style={styles.categories}>
         <View style={[styles.leftSide, {marginRight: globalPadding}]}>
           {categories
@@ -37,6 +60,7 @@ const Categories = () => {
                   ]}
                   key={category.id}>
                   <Category
+                    isLoading={isLoading}
                     displayName={category.displayName}
                     id={category.id}
                     isBlocked={category.isBlocked}
@@ -64,6 +88,7 @@ const Categories = () => {
                   ]}
                   key={category.id}>
                   <Category
+                    isLoading={isLoading}
                     displayName={category.displayName}
                     id={category.id}
                     isBlocked={category.isBlocked}

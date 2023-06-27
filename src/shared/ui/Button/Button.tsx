@@ -1,4 +1,5 @@
 import {useColors} from '@src/app/providers/colorsProvider';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {
   horizontalScale,
   moderateScale,
@@ -9,6 +10,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Gradient} from '../Gradient/Gradient';
 import {GradientOutline} from '../Gradient/GradientOutline';
+import Skeleton from '../Skeleton/Skeleton';
 
 export enum ButtonTheme {
   CLEAR = 'clear',
@@ -26,7 +28,11 @@ interface ButtonProps {
     | Record<string, string | number | object>[];
   disabled?: boolean;
   squar?: boolean;
+  isLoading?: boolean;
 }
+
+const height = verticalScale(40);
+const borderRadius = moderateScale(10);
 
 export const Button = (props: ButtonProps) => {
   const {
@@ -36,6 +42,7 @@ export const Button = (props: ButtonProps) => {
     style,
     disabled,
     squar,
+    isLoading = false,
   } = props;
   const colors = useColors();
 
@@ -48,6 +55,16 @@ export const Button = (props: ButtonProps) => {
       squar ? styles.squar : '',
     ];
   }, [disabled, theme, style, squar]);
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        height={height}
+        width={windowWidth / 2}
+        borderRadius={borderRadius}
+      />
+    );
+  }
 
   if (theme === ButtonTheme.GRADIENT) {
     return (
@@ -83,7 +100,7 @@ export const Button = (props: ButtonProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   Button: {
-    height: verticalScale(40),
+    height: height,
     paddingHorizontal: horizontalScale(1),
     justifyContent: 'center',
     alignItems: 'center',
@@ -92,7 +109,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
-    borderRadius: moderateScale(10),
+    borderRadius: borderRadius,
   },
   disabled: {
     opacity: 0.4,

@@ -11,16 +11,20 @@ import {
   HomepageBackground,
   HomepageBackgroundDark,
 } from '@src/shared/assets/images';
-import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
+import {
+  globalPadding,
+  windowWidth,
+  windowWidthMinusPaddings,
+} from '@src/app/styles/GlobalStyle';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {userStore} from '@src/entities/User';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {ComponentWrapper as CategoriesCarousel} from './CategoriesCarousel/CategoriesCarousel';
 import {ComponentWrapper as Challanges} from './Challanges/Challanges';
 import QuickStart from './QuickStart/QuickStart';
@@ -45,6 +49,7 @@ const HomePage = (props: HomePageProps) => {
   const language = i18n.language as LanguageValueType;
   const prevRouteName = route?.params?.prevRouteName;
   const isTabScreen = route?.params?.isTabScreen;
+  const isLoading = homePageStore.isHomePageLoading;
 
   // if user swipe question first time show home page quick start
   const hasUserSwipedAnyQuestion = userStore.user?.hasUserSwipedAnyQuestion;
@@ -63,8 +68,12 @@ const HomePage = (props: HomePageProps) => {
   }, [language]);
 
   return (
-    <LoaderWrapper isLoading={homePageStore.isHomePageLoading}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      {isLoading ? (
+        <View style={styles.progressBarSkeleton}>
+          <Skeleton width={windowWidthMinusPaddings} height={250} />
+        </View>
+      ) : (
         <FastImage
           style={[
             styles.homepageBackground,
@@ -82,18 +91,18 @@ const HomePage = (props: HomePageProps) => {
           }>
           <ProgressBar />
         </FastImage>
-        {hasUserSwipedAnyQuestion && (
-          <View style={styles.homeCategoryWrapper}>
-            <QuickStart />
-          </View>
-        )}
-        <CategoriesCarousel />
-        <View style={styles.challangesWrapper}>
-          <Challanges />
+      )}
+      {(isLoading || hasUserSwipedAnyQuestion) && (
+        <View style={styles.homeCategoryWrapper}>
+          <QuickStart isLoading={isLoading} />
         </View>
-        <Quotes />
+      )}
+      <CategoriesCarousel isLoading={isLoading} />
+      <View style={styles.challangesWrapper}>
+        <Challanges isLoading={isLoading} />
       </View>
-    </LoaderWrapper>
+      <Quotes />
+    </View>
   );
 };
 
@@ -119,5 +128,9 @@ const styles = StyleSheet.create({
   challangesWrapper: {
     marginTop: verticalScale(10),
     width: '100%',
+  },
+
+  progressBarSkeleton: {
+    marginBottom: verticalScale(30),
   },
 });

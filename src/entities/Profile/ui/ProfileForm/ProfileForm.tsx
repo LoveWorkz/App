@@ -12,10 +12,11 @@ import Preferences from '../Preferences/Preferences';
 
 interface ProfileFormProps {
   isSetup?: boolean;
+  isLoading?: boolean;
 }
 
 const ProfileForm = (props: ProfileFormProps) => {
-  const {isSetup = false} = props;
+  const {isSetup = false, isLoading = false} = props;
   const profileData = profileStore.profileData;
   const user = userStore.user;
 
@@ -48,6 +49,7 @@ const ProfileForm = (props: ProfileFormProps) => {
     <SafeAreaView style={styles.profileForm}>
       <View style={styles.item}>
         <Input
+          isLoading={isLoading}
           isSpaceAllowed
           initialValue={userName || ''}
           label={t('profile.name') || ''}
@@ -59,6 +61,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       </View>
       <View style={styles.item}>
         <Input
+          isLoading={isLoading}
           keyboardType={'numeric'}
           initialValue={profileData?.age}
           label={t('profile.age') || ''}
@@ -70,6 +73,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       </View>
       <View style={styles.item}>
         <CountrySelect
+          isLoading={isLoading}
           initialValue={profileData?.country}
           country={profileStore.profileForm.country}
           changeCountry={onCountryChangeHandler}
@@ -77,6 +81,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       </View>
       <View style={styles.item}>
         <RelationshipStatusSelect
+          isLoading={isLoading}
           initialValue={profileData?.relationshipStatus}
           status={profileStore.profileForm.relationshipStatus}
           changeStatus={onStatusChangeHandler}
@@ -84,6 +89,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       </View>
       <View style={styles.preferences}>
         <Preferences
+          isLoading={isLoading}
           error={profileStore.errorInfo.preferenceError}
           changePreference={onPreferenceChangeHandler}
           selectedPreferences={profileStore.profileForm.preferences || []}

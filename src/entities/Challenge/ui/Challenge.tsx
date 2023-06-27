@@ -16,16 +16,20 @@ import {cutText} from '@src/shared/lib/common';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {ChallengeType} from '../model/types/ChallengeTypes';
 import challengeStore from '../model/store/challengeStore';
 
 interface SubChallengeProps {
   challenge: ChallengeType;
+  isLoading: boolean;
 }
 
+const borderRadius = moderateScale(20);
+
 export const SubChallenge = (props: SubChallengeProps) => {
-  const {challenge} = props;
+  const {challenge, isLoading} = props;
   const {title, description, isChecked, nomer, id} = challenge;
   const colors = useColors();
   const {t, i18n} = useTranslation();
@@ -48,6 +52,10 @@ export const SubChallenge = (props: SubChallengeProps) => {
   const onChangeHandler = useCallback(() => {
     challengeStore.selectChallenge({id});
   }, [id]);
+
+  if (isLoading) {
+    return <Skeleton width={'100%'} height={120} borderRadius={borderRadius} />;
+  }
 
   return (
     <View
@@ -126,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: horizontalScale(10),
     paddingVertical: verticalScale(10),
-    borderRadius: moderateScale(20),
+    borderRadius: borderRadius,
   },
   nomerWrapper: {
     alignItems: 'center',

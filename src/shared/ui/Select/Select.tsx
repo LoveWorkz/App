@@ -3,9 +3,8 @@ import {FlatList, StyleSheet, View} from 'react-native';
 
 import {SelectOption, StyleType} from '@src/shared/types/types';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {Wrapper as TouchableComponent} from './TouchableComponent';
+import TouchableComponent from './TouchableComponent';
 import {PageSelect} from './PageSelect';
-import {Loader, LoaderSize} from '../Loader/Loader';
 import {RenderItem} from './RenderItem';
 import {RadioGroup} from '../Radio/RadioGroup';
 
@@ -25,6 +24,7 @@ interface SelectProps {
   selectedValueStyle?: StyleType;
   style?: StyleType;
   isScrolling?: boolean;
+  isLoading?: boolean;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -38,12 +38,12 @@ export const Select = memo((props: SelectProps) => {
     Theme = SelectTheme.OUTLINE,
     selectedValueStyle,
     isScrolling = false,
+    isLoading = false,
   } = props;
 
   const itemHeight = verticalScale(40);
 
   const [visible, setIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [flatlistRef, setFlatlistRef] = useState<null | FlatList>(null);
 
   const firstValue = options[0]?.value;
@@ -54,12 +54,6 @@ export const Select = memo((props: SelectProps) => {
   useEffect(() => {
     onSelect?.(initialValue || firstValue);
   }, [initialValue, onSelect, firstValue]);
-
-  useEffect(() => {
-    if (options.length) {
-      setIsLoading(false);
-    }
-  }, [options.length]);
 
   useEffect(() => {
     if (!flatlistRef) {
@@ -132,6 +126,7 @@ export const Select = memo((props: SelectProps) => {
   return (
     <View>
       <TouchableComponent
+        isLoading={isLoading}
         selectedDisplayValue={selectedDisplayValue || ''}
         theme={Theme}
         label={label}
@@ -139,9 +134,7 @@ export const Select = memo((props: SelectProps) => {
         selectedValueStyle={selectedValueStyle}
       />
       <PageSelect onClose={onCloseHandler} prompt={prompt} visible={visible}>
-        {isLoading ? (
-          <Loader style={styles.loader} size={LoaderSize.LARGE} />
-        ) : isScrolling ? (
+        {isScrolling ? (
           <FlatList
             initialScrollIndex={0}
             getItemLayout={getItemLayout}

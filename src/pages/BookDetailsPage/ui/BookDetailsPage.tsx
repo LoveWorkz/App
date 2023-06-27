@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {Book} from '@src/entities/Book';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import bookDetailsStore from '../model/store/BookDetailsStore';
 
@@ -14,6 +13,7 @@ interface BookDetailsPageProps {
 export const BookDetailsPage = (props: BookDetailsPageProps) => {
   const {route} = props;
   const currentBook = bookDetailsStore.currentBook;
+  const isLoading = bookDetailsStore.isBookDetailsPageLoading;
 
   useEffect(() => {
     if (route?.params && route.params.id) {
@@ -22,11 +22,9 @@ export const BookDetailsPage = (props: BookDetailsPageProps) => {
   }, [route]);
 
   return (
-    <LoaderWrapper isLoading={bookDetailsStore.isBookDetailsPageLoading}>
-      <View style={styles.BookDetailsPage}>
-        {currentBook && <Book bookInfo={currentBook} />}
-      </View>
-    </LoaderWrapper>
+    <View style={styles.BookDetailsPage}>
+      {currentBook && <Book isLoading={isLoading} bookInfo={currentBook} />}
+    </View>
   );
 };
 

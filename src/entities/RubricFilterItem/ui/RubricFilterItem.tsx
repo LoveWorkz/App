@@ -11,6 +11,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 export enum BookCategorySize {
   SMALL = 'small',
@@ -25,7 +26,12 @@ interface bookCategoryProps {
   active?: boolean;
   isOutline?: Boolean;
   displayName: string;
+  isLoading?: boolean;
 }
+
+const borderRadius = moderateScale(10);
+const smallHeight = 28;
+const largeHeight = 40;
 
 const RubricFilterItem = (props: bookCategoryProps) => {
   const {
@@ -36,15 +42,27 @@ const RubricFilterItem = (props: bookCategoryProps) => {
     size = BookCategorySize.NORMAL,
     active = false,
     isOutline = false,
+    isLoading = false,
   } = props;
 
   const colors = useColors();
   const {t} = useTranslation();
   const name = t(displayName);
+  const height = size === BookCategorySize.SMALL ? smallHeight : largeHeight;
 
   const onPressHandler = () => {
     onPress?.(rubric);
   };
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        width={horizontalScale(120)}
+        height={height}
+        borderRadius={borderRadius}
+      />
+    );
+  }
 
   if (isOutline) {
     return (
@@ -52,7 +70,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
         style={[
           styles.RubricFilterItem,
           {
-            height: size === BookCategorySize.SMALL ? 28 : 40,
+            height,
           },
         ]}>
         {active ? (
@@ -100,7 +118,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
       style={[
         styles.RubricFilterItem,
         {
-          height: size === BookCategorySize.SMALL ? 28 : 40,
+          height,
           opacity: active || !action ? 1 : 0.6,
         },
       ]}>
@@ -127,7 +145,7 @@ export default memo(RubricFilterItem);
 
 const styles = StyleSheet.create({
   RubricFilterItem: {
-    borderRadius: moderateScale(10),
+    borderRadius: borderRadius,
     alignSelf: 'flex-start',
   },
   btn: {
@@ -142,7 +160,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: moderateScale(10),
+    borderRadius: borderRadius,
   },
   activeItemContent: {
     margin: 1,

@@ -6,7 +6,13 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {Favorite} from '@src/entities/Favorite';
 import {DocumentType} from '@src/shared/types/types';
 
-export const Favourites = () => {
+interface FavouritesProps {
+  isLoading: boolean;
+}
+
+export const Favourites = (props: FavouritesProps) => {
+  const {isLoading} = props;
+
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.QUESTIONS, {
       type: DocumentType.FAVORITE,
@@ -15,7 +21,7 @@ export const Favourites = () => {
 
   return (
     <Pressable onPress={onPressHandler}>
-      <Favorite />
+      <Favorite isLoading={isLoading} />
     </Pressable>
   );
 };

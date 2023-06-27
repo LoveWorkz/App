@@ -19,9 +19,18 @@ import {
   homeCategoryImageDark,
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import homePageStore from '../../model/store/HomePageStore';
 
-const QuickStart = () => {
+interface QuickStartProps {
+  isLoading: boolean;
+}
+
+const height = 92;
+const borderRadius = 20;
+
+const QuickStart = (props: QuickStartProps) => {
+  const {isLoading} = props;
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
@@ -30,10 +39,25 @@ const QuickStart = () => {
     homePageStore.goToQuestionsPage();
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.QuickStart}>
+        <View style={styles.quickStartTitleSkeleton}>
+          <Skeleton width={120} height={15} />
+        </View>
+        <Skeleton
+          width={windowWidthMinusPaddings}
+          height={height}
+          borderRadius={borderRadius}
+        />
+      </View>
+    );
+  }
+
   return (
-    <View style={{width: windowWidthMinusPaddings}}>
+    <View style={styles.QuickStart}>
       <AppText
-        style={[styles.quickStart, {color: colors.primaryTextColor}]}
+        style={[styles.quickStartTitle, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
         text={t('home.quick_start')}
         weight={'500'}
@@ -89,15 +113,18 @@ const QuickStart = () => {
 };
 
 const styles = StyleSheet.create({
+  QuickStart: {
+    width: windowWidthMinusPaddings,
+  },
   container: {
-    height: 92,
-    borderRadius: 20,
+    height: height,
+    borderRadius: borderRadius,
     justifyContent: 'center',
   },
   content: {
     padding: 15,
   },
-  quickStart: {
+  quickStartTitle: {
     marginBottom: 20,
   },
   textWrapper: {
@@ -121,6 +148,10 @@ const styles = StyleSheet.create({
   arrowIcon: {
     height: 15,
     width: 15,
+  },
+
+  quickStartTitleSkeleton: {
+    marginBottom: 20,
   },
 });
 

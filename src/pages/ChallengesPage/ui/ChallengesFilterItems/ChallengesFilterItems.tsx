@@ -11,7 +11,15 @@ import {
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import challengesStore from '../../model/store/challengesStore';
 
-const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
+interface FilterItemProps {
+  name: string;
+  active: boolean;
+  isLoading: boolean;
+}
+
+const FilterItem = memo((props: FilterItemProps) => {
+  const {name, active, isLoading} = props;
+
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
 
@@ -23,6 +31,7 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
     <View style={styles.rubricCategory}>
       {name && (
         <RubricFilterItem
+          isLoading={isLoading}
           isOutline={isDarkMode}
           action
           onPress={onFiltreHandler}
@@ -34,14 +43,25 @@ const FilterItem = memo(({name, active}: {name: string; active: boolean}) => {
     </View>
   );
 });
+interface ChallengesFilterItemsProps {
+  isLoading: boolean;
+}
 
-export const ChallengesFilterItems = () => {
+export const ChallengesFilterItems = (props: ChallengesFilterItemsProps) => {
+  const {isLoading} = props;
   const rubricFilterItems = rubricFilterItemStore.rubricFilterItems;
+
+  const filterItemsWithIsLoading = useMemo(() => {
+    return rubricFilterItems.map(rubricFilterItem => ({
+      ...rubricFilterItem,
+      isLoading: isLoading,
+    }));
+  }, [isLoading, rubricFilterItems]);
 
   // adding an empty object for a space at the beginning
   const rubricFilterItemsWithSpace = useMemo(() => {
-    return [{}, ...rubricFilterItems];
-  }, [rubricFilterItems]);
+    return [{}, ...filterItemsWithIsLoading];
+  }, [filterItemsWithIsLoading]);
 
   return (
     <View style={[styles.FilterItems]}>

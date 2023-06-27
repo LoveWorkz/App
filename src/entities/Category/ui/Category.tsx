@@ -14,6 +14,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CateorySize} from '../model/types/categoryTypes';
 
@@ -27,7 +28,13 @@ interface CategoryProps {
   id: string;
   isCategoryDetailsVisible: boolean;
   displayName: DisplayText;
+  isLoading?: boolean;
 }
+
+const sizeM = 120;
+const sizel = 210;
+const sizeXl = 200;
+const borderRadius = moderateScale(20);
 
 const Category = (props: CategoryProps) => {
   const {
@@ -39,6 +46,7 @@ const Category = (props: CategoryProps) => {
     isCategoryDetailsVisible,
     style,
     displayName,
+    isLoading = false,
   } = props;
   const colors = useColors();
   const {theme} = useTheme();
@@ -60,6 +68,24 @@ const Category = (props: CategoryProps) => {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.carouseTopBlock}>
+        {size === CateorySize.M ? (
+          <Skeleton width={'100%'} height={sizeM} borderRadius={borderRadius} />
+        ) : size === CateorySize.L ? (
+          <Skeleton width={'100%'} height={sizel} borderRadius={borderRadius} />
+        ) : (
+          <Skeleton
+            width={'100%'}
+            height={sizeXl}
+            borderRadius={borderRadius}
+          />
+        )}
+      </View>
+    );
+  }
 
   return (
     <Pressable onPress={onCategoryPressHandler}>
@@ -129,10 +155,10 @@ export default memo(Category);
 
 const styles = StyleSheet.create<Record<string, any>>({
   category: {
-    borderRadius: moderateScale(20),
+    borderRadius: borderRadius,
   },
   image: {
-    borderRadius: moderateScale(20),
+    borderRadius: borderRadius,
     aspectRatio: 1 / 2,
   },
   status: {
@@ -143,7 +169,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     position: 'absolute',
     opacity: 0.4,
     width: '100%',
-    borderRadius: moderateScale(20),
+    borderRadius: borderRadius,
     ...globalStyles.categoryLayoutZIndex,
   },
   lockIconWrapper: {
@@ -156,12 +182,12 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
 
   size_m: {
-    height: 120,
+    height: sizeM,
   },
   size_l: {
-    height: 210,
+    height: sizel,
   },
   size_xl: {
-    height: 200,
+    height: sizeXl,
   },
 });

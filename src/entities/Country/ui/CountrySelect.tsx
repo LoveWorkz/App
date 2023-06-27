@@ -11,10 +11,11 @@ interface CountrySelectProps {
   country: string;
   changeCountry: (country: string) => void;
   initialValue?: string;
+  isLoading: boolean;
 }
 
 const CountrySelect = (props: CountrySelectProps) => {
-  const {changeCountry, country, initialValue} = props;
+  const {changeCountry, country, initialValue, isLoading} = props;
   const {t, i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
 
@@ -32,6 +33,7 @@ const CountrySelect = (props: CountrySelectProps) => {
   return (
     <SafeAreaView>
       <Select
+        isLoading={isLoading}
         Theme={SelectTheme.OUTLINE}
         prompt={'Country'}
         initialValue={initialValue}

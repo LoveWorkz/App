@@ -22,6 +22,7 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
@@ -29,6 +30,11 @@ import Description from './Description/Description';
 interface BookPreview {
   image: string;
 }
+
+const bookPreviewheight = 210;
+const bookPreviewWidth = horizontalScale(150);
+
+const borderRadius = moderateScale(5);
 
 const BookPreview = memo((props: BookPreview) => {
   const {image} = props;
@@ -72,10 +78,11 @@ const BookPreview = memo((props: BookPreview) => {
 
 interface BookProps {
   bookInfo: BookType;
+  isLoading: boolean;
 }
 
 export const Book = (props: BookProps) => {
-  const {bookInfo} = props;
+  const {bookInfo, isLoading} = props;
   const {image, displayName, description, author, rubrics, rate, links} =
     bookInfo;
 
@@ -95,6 +102,53 @@ export const Book = (props: BookProps) => {
       bookImage: image.back,
     },
   ];
+
+  if (isLoading) {
+    return (
+      <View style={styles.Book}>
+        <View style={styles.paginSkeleton}>
+          <Skeleton height={10} width={50} />
+        </View>
+        <View style={styles.topBlock}>
+          <Skeleton
+            height={bookPreviewheight}
+            width={bookPreviewWidth}
+            borderRadius={borderRadius}
+          />
+          <View style={styles.bookInfo}>
+            <Skeleton height={22} width={160} />
+            <View style={styles.authorSkeleton}>
+              <Skeleton height={15} width={120} />
+            </View>
+            <View style={styles.rateWrapper}>
+              <Skeleton height={15} width={90} />
+            </View>
+            <View style={styles.rubrics}>
+              <View style={styles.category}>
+                <Skeleton
+                  height={30}
+                  width={70}
+                  borderRadius={moderateScale(10)}
+                />
+              </View>
+              <View style={styles.category}>
+                <Skeleton
+                  height={30}
+                  width={70}
+                  borderRadius={moderateScale(10)}
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+        <Description
+          isLoading={isLoading}
+          bookLink={translatedlinks}
+          description={translatedDescription}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.Book}>
@@ -141,6 +195,7 @@ export const Book = (props: BookProps) => {
         </View>
       </View>
       <Description
+        isLoading={isLoading}
         bookLink={translatedlinks}
         description={translatedDescription}
       />
@@ -159,9 +214,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imageWrapper: {
-    height: 210,
-    width: horizontalScale(150),
-    borderRadius: moderateScale(5),
+    height: bookPreviewheight,
+    width: bookPreviewWidth,
+    borderRadius: borderRadius,
     marginTop: verticalScale(10),
   },
   bookInfo: {
@@ -172,7 +227,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 5,
+    borderRadius: borderRadius,
   },
   author: {
     marginTop: 5,
@@ -188,5 +243,12 @@ const styles = StyleSheet.create({
   rateWrapper: {
     marginTop: verticalScale(15),
     marginBottom: verticalScale(20),
+  },
+
+  paginSkeleton: {
+    marginBottom: verticalScale(10),
+  },
+  authorSkeleton: {
+    marginTop: verticalScale(20),
   },
 });

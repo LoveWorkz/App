@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
@@ -21,6 +21,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
 
 interface ChallangeProps {
@@ -34,7 +35,11 @@ interface ChallangeProps {
   displayName?: DisplayText;
   defaultChallengeId?: string;
   isHomePage?: boolean;
+  isLoading?: boolean;
 }
+
+const challengeWidth = horizontalScale(60);
+const borderRadius = moderateScale(40);
 
 const ChallengeCategory = (props: ChallangeProps) => {
   const {
@@ -48,11 +53,17 @@ const ChallengeCategory = (props: ChallangeProps) => {
     id,
     displayName,
     isHomePage = false,
+    isLoading = false,
   } = props;
   const colors = useColors();
   const {i18n} = useTranslation();
   const {theme} = useTheme();
   const language = i18n.language as LanguageValueType;
+  const [isSkeleton, setIsSkeleton] = useState(true);
+
+  useEffect(() => {
+    setIsSkeleton(isLoading);
+  }, [isLoading]);
 
   // select default challenge category
   useFocusEffect(
@@ -96,6 +107,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
   const fastImage = (
     <FastImage
       resizeMode="contain"
+      onLoadEnd={() => setIsSkeleton(false)}
       style={[
         name === ChallengeCategoryKeys.Bronze
           ? {
@@ -138,6 +150,21 @@ const ChallengeCategory = (props: ChallangeProps) => {
               text={number}
             />
           )}
+        </View>
+      </View>
+    );
+  }
+
+  if (isSkeleton) {
+    return (
+      <View style={styles.skeleton}>
+        <Skeleton
+          width={challengeWidth}
+          height={challengeWidth}
+          borderRadius={borderRadius}
+        />
+        <View style={styles.nameSkeleton}>
+          <Skeleton width={30} height={10} />
         </View>
       </View>
     );
@@ -214,10 +241,10 @@ const styles = StyleSheet.create<Record<string, any>>({
   challange: {
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(10),
-    height: horizontalScale(60),
-    width: horizontalScale(60),
+    height: challengeWidth,
+    width: challengeWidth,
     backgroundColor: 'white',
-    borderRadius: moderateScale(40),
+    borderRadius: borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -225,7 +252,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     backgroundColor: '#F1F3FF',
     height: horizontalScale(50),
     width: horizontalScale(50),
-    borderRadius: moderateScale(40),
+    borderRadius: borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: verticalScale(3),
@@ -254,7 +281,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     opacity: 0.2,
     width: '100%',
     height: '100%',
-    borderRadius: moderateScale(40),
+    borderRadius: borderRadius,
     ...globalStyles.challengeLayoutZIndex,
   },
   lockIconWrapper: {
@@ -268,5 +295,12 @@ const styles = StyleSheet.create<Record<string, any>>({
   lockIcon: {
     height: verticalScale(27),
     width: horizontalScale(25),
+  },
+
+  skeleton: {
+    alignItems: 'center',
+  },
+  nameSkeleton: {
+    marginTop: 5,
   },
 });

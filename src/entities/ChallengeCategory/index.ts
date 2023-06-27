@@ -6,3 +6,4 @@ export type {
 
 export {ChallengeCategoryKeys} from './model/types/challengeCategory';
 export {getNextChallengeCategory} from './model/lib/challengeCategory';
+export {challengeCategoryExample} from './model/lib/challengeCategory';

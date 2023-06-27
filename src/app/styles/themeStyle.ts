@@ -20,7 +20,9 @@ export type Colors =
   | 'orange'
   | 'purchaseDescriptionColor'
   | 'purchaseButtonColor'
-  | 'secondaryError';
+  | 'secondaryError'
+  | 'skeletonColor'
+  | 'skeletonHighlightColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -43,6 +45,8 @@ const light: ColorType = {
   questionCardBackColor: '#F8F5FF',
   bgChallengeContentColor: '#F1F3FF',
   purchaseButtonColor: '#B9C3FD',
+  skeletonColor: '#E1E9EE',
+  skeletonHighlightColor: '#F2F8FC',
 
   // text colors
   primaryTextColor: '#395180',
@@ -70,6 +74,8 @@ const dark: ColorType = {
   questionCardBackColor: '#242832',
   bgChallengeContentColor: '#242832',
   purchaseButtonColor: '#242832',
+  skeletonColor: '#2E3440',
+  skeletonHighlightColor: '#242832',
 
   // text colors
   primaryTextColor: '#C0C3CF',

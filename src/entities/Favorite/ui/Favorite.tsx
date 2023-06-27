@@ -18,17 +18,37 @@ import {
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import favoriteStore from '../model/store/favoriteStore';
 
-export const Favorite = () => {
+interface FavouriteProps {
+  isLoading: boolean;
+}
+
+const height = 100;
+const borderRadius = moderateScale(20);
+
+export const Favorite = (props: FavouriteProps) => {
+  const {isLoading} = props;
+
   const colors = useColors();
   const {t} = useTranslation();
   const {theme} = useTheme();
 
   const favorite = favoriteStore.favorites;
-
   if (!favorite) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <View>
+        <View style={styles.titleSkeleton}>
+          <Skeleton width={100} height={18} />
+        </View>
+        <Skeleton height={height} borderRadius={borderRadius} />
+      </View>
+    );
   }
 
   return (
@@ -66,11 +86,13 @@ export const Favorite = () => {
 
 export default memo(observer(Favorite));
 
+const marginTop = verticalScale(20);
+
 const styles = StyleSheet.create({
   favoritesFolder: {
-    marginTop: verticalScale(20),
-    height: 100,
-    borderRadius: moderateScale(20),
+    marginTop: marginTop,
+    height: height,
+    borderRadius: borderRadius,
     paddingVertical: verticalScale(20),
     paddingHorizontal: horizontalScale(20),
   },
@@ -80,5 +102,9 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 13,
     textTransform: 'uppercase',
+  },
+
+  titleSkeleton: {
+    marginBottom: marginTop,
   },
 });

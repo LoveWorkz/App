@@ -1,4 +1,7 @@
-import {ChallengeCategoryKeys} from '../types/challengeCategory';
+import {
+  ChallengeCategoryKeys,
+  ChallengeCategoryType,
+} from '../types/challengeCategory';
 
 export const getNextChallengeCategory = (
   currentChallengeCategory: ChallengeCategoryKeys,
@@ -15,4 +18,18 @@ export const getNextChallengeCategory = (
     default:
       return ChallengeCategoryKeys.Platinum;
   }
+};
+
+export const challengeCategoryExample: ChallengeCategoryType = {
+  id: '',
+  image: '',
+  name: ChallengeCategoryKeys.Bronze,
+  isBlocked: true,
+  isActive: true,
+  nomer: 0,
+  displayName: {
+    en: '',
+    de: '',
+    pt: '',
+  },
 };

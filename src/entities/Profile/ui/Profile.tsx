@@ -11,7 +11,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AuthMethod, userStore} from '@src/entities/User';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
@@ -21,9 +21,13 @@ interface ProfileProps {
   isSetUp?: boolean;
 }
 
+const uploadPhotoWidth = horizontalScale(180);
+
 const Profile = (props: ProfileProps) => {
   const {isSetUp = false} = props;
   const userAvatar = userStore.user?.photo;
+  const isLoading = profileStore.isFetchingProfile;
+  const isAuthMethodEmail = userStore.authMethod === AuthMethod.AUTH_BY_EMAIL;
 
   const colors = useColors();
   const {t} = useTranslation();
@@ -57,7 +61,7 @@ const Profile = (props: ProfileProps) => {
     return (
       <View style={styles.profile}>
         <View style={styles.profileFormWrapper}>
-          <ProfileForm isSetup />
+          <ProfileForm isLoading={isLoading} isSetup />
         </View>
         <Button
           disabled={profileStore.isLoading}
@@ -74,47 +78,78 @@ const Profile = (props: ProfileProps) => {
     );
   }
 
-  return (
-    <LoaderWrapper isLoading={profileStore.isFetchingProfile}>
+  if (isLoading) {
+    return (
       <View style={styles.profile}>
         <Avatar
+          isLoading={isLoading}
           theme={AvatarTheme.LARGE}
           imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
           borderRadius={100}
         />
         <View style={styles.uploadPhotoWrapper}>
-          <UploadPhoto
-            style={styles.uploadPhoto}
-            deletePhoto={onDeletePhotoHandler}
-            setPhtotData={onUploadPhotoHandler}
-            isDeletingPhoto={profileStore.isDeletingPhoto}
-          />
+          <Skeleton width={uploadPhotoWidth} height={40} borderRadius={10} />
         </View>
-        {userStore.authMethod === AuthMethod.AUTH_BY_EMAIL && (
+        {isAuthMethodEmail && (
           <View style={styles.changePasswordWrapper}>
-            <ChangePassword />
+            <Skeleton width={100} height={20} />
           </View>
         )}
         <View style={styles.profileFormWrapper}>
-          <ProfileForm />
+          <ProfileForm isLoading={isLoading} />
         </View>
 
         <View style={styles.btns}>
-          <Button
-            disabled={profileStore.isLoading}
-            onPress={onSaveHandler}
-            theme={ButtonTheme.GRADIENT}
-            style={styles.saveBtn}>
-            <AppText
-              style={{color: colors.bgQuinaryColor}}
-              size={TextSize.LEVEL_4}
-              text={t('profile.save_changes')}
-            />
-          </Button>
-          <DeleteAccount />
+          <View style={styles.btnSkeleton}>
+            <Button isLoading={isLoading}>
+              <></>
+            </Button>
+          </View>
+          <Skeleton width={100} height={15} />
         </View>
       </View>
-    </LoaderWrapper>
+    );
+  }
+
+  return (
+    <View style={styles.profile}>
+      <Avatar
+        theme={AvatarTheme.LARGE}
+        imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
+        borderRadius={100}
+      />
+      <View style={styles.uploadPhotoWrapper}>
+        <UploadPhoto
+          style={styles.uploadPhoto}
+          deletePhoto={onDeletePhotoHandler}
+          setPhtotData={onUploadPhotoHandler}
+          isDeletingPhoto={profileStore.isDeletingPhoto}
+        />
+      </View>
+      {isAuthMethodEmail && (
+        <View style={styles.changePasswordWrapper}>
+          <ChangePassword />
+        </View>
+      )}
+      <View style={styles.profileFormWrapper}>
+        <ProfileForm />
+      </View>
+
+      <View style={styles.btns}>
+        <Button
+          disabled={profileStore.isLoading}
+          onPress={onSaveHandler}
+          theme={ButtonTheme.GRADIENT}
+          style={styles.saveBtn}>
+          <AppText
+            style={{color: colors.bgQuinaryColor}}
+            size={TextSize.LEVEL_4}
+            text={t('profile.save_changes')}
+          />
+        </Button>
+        <DeleteAccount />
+      </View>
+    </View>
   );
 };
 
@@ -155,5 +190,9 @@ const styles = StyleSheet.create({
   },
   uploadPhoto: {
     width: horizontalScale(180),
+  },
+
+  btnSkeleton: {
+    marginBottom: 10,
   },
 });

@@ -16,14 +16,18 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {useTheme} from '@src/app/providers/themeProvider';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 
 interface BookProps {
   description: string;
   bookLink: string;
+  isLoading: boolean;
 }
 
+const borderRadius = 30;
+
 const Description = (props: BookProps) => {
-  const {description, bookLink} = props;
+  const {description, bookLink, isLoading} = props;
 
   const colors = useColors();
   const {theme} = useTheme();
@@ -36,6 +40,26 @@ const Description = (props: BookProps) => {
   const onPressHandler = () => {
     Linking.openURL(bookLink);
   };
+
+  if (isLoading) {
+    return (
+      <View
+        style={[
+          styles.description,
+          {
+            height: verticalScale(descriptionHeight),
+            width: windowWidth,
+            left: -globalPadding,
+          },
+        ]}>
+        <Skeleton
+          height={descriptionHeight}
+          width={windowWidth}
+          borderRadius={moderateScale(borderRadius)}
+        />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -94,8 +118,8 @@ export default memo(Description);
 
 const styles = StyleSheet.create({
   description: {
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: borderRadius,
+    borderTopRightRadius: borderRadius,
     padding: globalPadding,
     alignItems: 'center',
     position: 'absolute',

@@ -1,3 +1,5 @@
+import {ChallengeType} from '../types/ChallengeTypes';
+
 export const challengeFilterItems = [
   {
     name: 'Routine',
@@ -20,3 +22,20 @@ export const challengeFilterItems = [
     active: false,
   },
 ];
+
+export const challengeExample: ChallengeType = {
+  title: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  description: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  isChecked: true,
+  rubrics: [],
+  id: '',
+  nomer: '',
+};

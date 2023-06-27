@@ -5,7 +5,6 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {Favourites} from '@src/widgets/Favourites';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {favoriteStore} from '@src/entities/Favorite';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
@@ -21,6 +20,7 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   const favorites = favoriteStore.favorites;
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+  const isLoading = categoriesStore.isCategoriesPageLoading;
 
   useFocusEffect(
     useCallback(() => {
@@ -36,19 +36,17 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   }, []);
 
   return (
-    <LoaderWrapper isLoading={categoriesStore.isCategoriesPageLoading}>
-      <View style={styles.container}>
-        {!!(favorites && favorites.questions.length) && (
-          <View style={styles.favouritesWrapper}>
-            <Favourites />
-          </View>
-        )}
-        <Categories />
-        <View style={styles.rubricsWrapper}>
-          <Rubrics />
+    <View style={styles.container}>
+      {!!(favorites && favorites.questions.length) && (
+        <View style={styles.favouritesWrapper}>
+          <Favourites isLoading={isLoading} />
         </View>
+      )}
+      <Categories isLoading={isLoading} />
+      <View style={styles.rubricsWrapper}>
+        <Rubrics isLoading={isLoading} />
       </View>
-    </LoaderWrapper>
+    </View>
   );
 };
 
