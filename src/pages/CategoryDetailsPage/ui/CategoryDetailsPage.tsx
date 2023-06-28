@@ -26,7 +26,6 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {LoaderWrapper} from '@src/shared/ui/LoaderWrapper/LoaderWrapper';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {DocumentType} from '@src/shared/types/types';
 import {isPlatformIos} from '@src/shared/consts/common';
@@ -83,73 +82,66 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   }
 
   return (
-    <LoaderWrapper
-      isLoading={categoryDetailsStore.isCategoryDetailsPageLoading}>
+    <View
+      style={[
+        styles.CategoryDetailsPage,
+        {
+          minHeight: windowHeightMinusPaddings - navbarHeight,
+        },
+      ]}>
       <View
         style={[
-          styles.CategoryDetailsPage,
+          styles.CategoryDetails,
           {
-            minHeight: windowHeightMinusPaddings - navbarHeight,
+            backgroundColor: colors.bgTertiaryColor,
+            ...getShadowOpacity(theme).shadowOpacity_level_2,
           },
         ]}>
-        <View
-          style={[
-            styles.CategoryDetails,
-            {
-              backgroundColor: colors.bgTertiaryColor,
-              ...getShadowOpacity(theme).shadowOpacity_level_2,
-            },
-          ]}>
-          <View>
-            {category.isBlocked && (
-              <>
-                <View style={[styles.layout]} />
-                <View style={[styles.lockIconWrapper]}>
-                  <SvgXml
-                    xml={LockIcon}
-                    fill={'white'}
-                    style={styles.lockIcon}
-                  />
-                </View>
-              </>
-            )}
-            <FastImage style={styles.image} source={uri} />
-          </View>
-          <View>
-            <AppText
-              style={styles.title}
-              weight={'500'}
-              size={TextSize.LEVEL_7}
-              text={`${category.displayName[language]} package`}
-            />
-            <AppText size={TextSize.LEVEL_4} text={category.description} />
-          </View>
-        </View>
-        <View style={styles.btnWrapper}>
-          <Button
-            onPress={onPressHandler}
-            style={styles.btn}
-            theme={ButtonTheme.GRADIENT}>
-            <AppText
-              style={{color: colors.bgQuinaryColor}}
-              weight={'700'}
-              size={TextSize.LEVEL_4}
-              text={category.isBlocked ? t('buy_now') : t('start')}
-            />
-          </Button>
-          {!category.isBlocked && (
-            <Pressable onPress={dontShowAgainHandler}>
-              <AppText
-                style={styles.dontShowAgain}
-                weight={'600'}
-                size={TextSize.LEVEL_4}
-                text={t('dont_show_again')}
-              />
-            </Pressable>
+        <View>
+          {category.isBlocked && (
+            <>
+              <View style={[styles.layout]} />
+              <View style={[styles.lockIconWrapper]}>
+                <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
+              </View>
+            </>
           )}
+          <FastImage style={styles.image} source={uri} />
+        </View>
+        <View>
+          <AppText
+            style={styles.title}
+            weight={'500'}
+            size={TextSize.LEVEL_7}
+            text={`${category.displayName[language]} package`}
+          />
+          <AppText size={TextSize.LEVEL_4} text={category.description} />
         </View>
       </View>
-    </LoaderWrapper>
+      <View style={styles.btnWrapper}>
+        <Button
+          onPress={onPressHandler}
+          style={styles.btn}
+          theme={ButtonTheme.GRADIENT}>
+          <AppText
+            style={{color: colors.bgQuinaryColor}}
+            weight={'700'}
+            size={TextSize.LEVEL_4}
+            text={category.isBlocked ? t('buy_now') : t('start')}
+          />
+        </Button>
+        {!category.isBlocked && (
+          <Pressable onPress={dontShowAgainHandler}>
+            <AppText
+              style={styles.dontShowAgain}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={t('dont_show_again')}
+            />
+          </Pressable>
+        )}
+      </View>
+    </View>
   );
 };
 

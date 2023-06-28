@@ -1,4 +1,4 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import {makeAutoObservable} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -19,17 +19,9 @@ class CategoryDetailsStore {
     try {
       crashlytics().log('Fetching category details page.');
 
-      runInAction(() => {
-        this.isCategoryDetailsPageLoading = true;
-      });
-
       categoryStore.getAndSetCategory({id});
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      runInAction(() => {
-        this.isCategoryDetailsPageLoading = false;
-      });
     }
   };
 

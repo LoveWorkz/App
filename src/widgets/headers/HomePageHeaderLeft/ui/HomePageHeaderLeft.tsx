@@ -18,14 +18,16 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {userStore} from '@src/entities/User';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {homePageStore} from '@src/pages/HomePage';
 
 const HomePageHeaderLeft = () => {
   const {t} = useTranslation();
   const maxNameLength = 25;
   const isFirstUserVisit = userStore.isFirstUserVisit;
+  const isLoading = homePageStore.isHomePageLoading;
 
   const user = userStore.user;
-  if (!user) {
+  if (isLoading || !user) {
     return (
       <View style={styles.headerLeft}>
         <View style={styles.avatarSkeleton}>
