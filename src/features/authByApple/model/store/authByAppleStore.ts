@@ -89,7 +89,8 @@ class AuthByAppleStore {
   };
 
   signInErrorHandler = (error: any) => {
-    const isUserCanceledAuthorisation = error.code === appleAuth.Error.CANCELED;
+    const errorCodes = [appleAuth.Error.UNKNOWN, appleAuth.Error.CANCELED];
+    const isUserCanceledAuthorisation = errorCodes.includes(error.code);
 
     if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
       userStore.toggleDialog(true);
