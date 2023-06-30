@@ -1,10 +1,10 @@
 {
-   "next": "Next",
-   "confirm": "confirm",
-   "enter_your_data": "Enter your data",
-   "show_more": "Show more",
-   "show_less": "Show less",
-   "noResults": "No Results",
+   "next": "Próxima",
+   "confirm": "Confirmar",
+   "enter_your_data": "Insira os seus dados",
+   "show_more": "Mostrar mais",
+   "show_less": "Mostrar menos",
+   "noResults": "Sem resultados",
    
    "delete": "Deletar",
    "cancel": "Cancelar",
@@ -13,6 +13,6 @@
    "continue": "Continuar",
    "dont_show_again": "Não mostrar de novo",
    "you_are_offline": "You are offline",
-   "search": "Search",
+   "search": "Pesquisa",
    "year": "ano"
 }

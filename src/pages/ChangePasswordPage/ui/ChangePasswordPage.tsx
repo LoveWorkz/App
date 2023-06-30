@@ -38,38 +38,38 @@ const ChangePasswordPage = () => {
     <View style={styles.container}>
       <View style={styles.item}>
         <Input
-          label={t('auth.current_password') || ''}
+          label={t('auth.current_password')}
           value={changePasswordStore.formData.oldPassword}
           onChange={onChangeOldPasswordHandler}
-          placeholder={t('auth.enter_current_password') || ''}
-          error={changePasswordStore.errorInfo.oldPasswordError}
+          placeholder={t('auth.enter_current_password')}
+          error={t(changePasswordStore.errorInfo.oldPasswordError)}
         />
       </View>
       <View style={styles.item}>
         <Input
           secureTextEntry
-          label={t('auth.new_assword') || ''}
+          label={t('auth.new_assword')}
           value={changePasswordStore.formData.newPassword}
           onChange={onChangeNewPasswordHandler}
-          placeholder={t('auth.enter_new_password') || ''}
+          placeholder={t('auth.enter_new_password')}
         />
         {changePasswordStore.errorInfo.passwordError && (
           <AppText
             type={TextType.ERROR}
             size={TextSize.LEVEL_1}
             weight={'500'}
-            text={changePasswordStore.errorInfo.passwordError}
+            text={t(changePasswordStore.errorInfo.passwordError)}
           />
         )}
       </View>
       <View style={styles.item}>
         <Input
           secureTextEntry
-          label={t('auth.repeat_password') || ''}
+          label={t('auth.repeat_password')}
           value={changePasswordStore.formData.confirmPassword}
           onChange={onChangeRepeatPasswordHandler}
-          error={changePasswordStore.errorInfo.confirmPasswordError}
-          placeholder={t('auth.repeat_new_password') || ''}
+          error={t(changePasswordStore.errorInfo.confirmPasswordError)}
+          placeholder={t('auth.repeat_new_password')}
         />
       </View>
       <Button

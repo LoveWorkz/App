@@ -14,7 +14,6 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   THEME_STORAGE_KEY,
-  USER_LANGUAGE_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
 import {profileStore} from '@src/entities/Profile';
@@ -25,7 +24,6 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
-import {lngStorage} from '@src/shared/lib/storage/adapters/lngAdapter';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {favoriteStore} from '@src/entities/Favorite';
@@ -360,7 +358,6 @@ class UserStore {
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
-      await lngStorage.removeLanguage(USER_LANGUAGE_STORAGE_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

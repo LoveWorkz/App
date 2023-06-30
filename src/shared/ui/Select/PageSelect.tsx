@@ -1,8 +1,6 @@
 import React, {ReactElement} from 'react';
 import {Modal, SafeAreaView, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {useHeaderHeight} from '@react-navigation/elements';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -22,9 +20,7 @@ export const PageSelect = (props: PageSelectProps) => {
   const {visible, onClose, prompt, children} = props;
 
   const colors = useColors();
-  const defaultNavbarHeight = verticalScale(isPlatformIos ? 90 : 55);
-  const navbarHeaderHeight = useHeaderHeight() || defaultNavbarHeight;
-  const statusBarHeight = getStatusBarHeight();
+  const navbarHeaderHeight = verticalScale(isPlatformIos ? 40 : 55);
 
   if (!visible) {
     return <></>;
@@ -44,9 +40,7 @@ export const PageSelect = (props: PageSelectProps) => {
           style={[
             styles.header,
             {
-              height: isPlatformIos
-                ? navbarHeaderHeight - statusBarHeight
-                : navbarHeaderHeight,
+              height: navbarHeaderHeight,
             },
           ]}>
           <Button style={styles.iconWrapper} onPress={onClose}>

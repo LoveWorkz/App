@@ -9,6 +9,7 @@ import {SearchIcon} from '@src/shared/assets/icons/Search';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {useColors} from '@src/app/providers/colorsProvider';
 import booksStore from '../../model/store/BooksStore';
 
 interface BooksSearchBarProps {
@@ -20,6 +21,7 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
 
   const {t} = useTranslation();
   const {theme} = useTheme();
+  const colors = useColors();
 
   const onSearchHandler = useCallback((searchBooksText: string) => {
     booksStore.setSearchBooksText(searchBooksText);
@@ -32,12 +34,12 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
         isLoading={isLoading}
         value={booksStore.searchBooksText}
         onChange={onSearchHandler}
-        placeholder={t('search') || ''}
+        placeholder={t('search')}
         StartIcon={() => (
           <SvgXml
             xml={SearchIcon}
             style={styles.searchIcon}
-            stroke={'#B6B6BD'}
+            stroke={colors.secondaryTextColor}
           />
         )}
         isSpaceAllowed

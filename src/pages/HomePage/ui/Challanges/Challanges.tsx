@@ -30,7 +30,6 @@ const Challanges = (props: ChallangesProps) => {
   const colors = useColors();
   let challenges = challengesStore.challengeCategories;
 
-  // when loading, adding example data to make skeleton work
   if (isLoading) {
     challenges = getEntityExampleDataForSkeleton({
       entity: challengeCategoryExample,

@@ -51,6 +51,7 @@ const LanguageSwitcher = () => {
         initialValue={i18n.language}
         options={languages}
         value={i18n.language}
+        closingTime={220}
         onSelect={onLanguageChangeHandler}
       />
     </View>

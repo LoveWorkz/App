@@ -28,11 +28,11 @@ const SignIn = () => {
     <View>
       <View style={styles.email}>
         <Input
-          label={t('auth.email') || ''}
+          label={t('auth.email')}
           value={signInStore.signInData.email}
           onChange={onEmailChangeHandler}
-          placeholder={t('auth.enter_email') || ''}
-          error={signInStore.errorInfo.emailError}
+          placeholder={t('auth.enter_email')}
+          error={t(signInStore.errorInfo.emailError)}
         />
       </View>
       <View style={styles.password}>
@@ -45,7 +45,7 @@ const SignIn = () => {
           onChange={onPasswordChangeHandler}
           placeholder={t('auth.enter_password') || ''}
           label={t('auth.password') || ''}
-          error={signInStore.errorInfo.passwordError}
+          error={t(signInStore.errorInfo.passwordError)}
         />
       </View>
     </View>

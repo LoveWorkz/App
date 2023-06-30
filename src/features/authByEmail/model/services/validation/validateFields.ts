@@ -1,3 +1,7 @@
+import {validatePassword} from '@src/shared/lib/validation/passwordValidation';
+import {validateEmail} from '@src/shared/lib/validation/emailValidation';
+import {ValidationErrorCodes} from '@src/shared/types/validation';
+import {validateSignUp} from './signupValidation';
 import {
   SignUpData,
   SignUpErrorInfo,
@@ -6,10 +10,6 @@ import {
   SignInData,
   SignInErrorInfo,
 } from '../../../ui/SignIn/model/types/signIn';
-import {validatePassword} from '@src/shared/lib/validation/passwordValidation';
-import {validateEmail} from '@src/shared/lib/validation/emailValidation';
-import {validateSignUp} from './signupValidation';
-import {ValidationErrorCodes} from '@src/shared/types/validation';
 
 export interface ValidateFields {
   isSignUp: boolean;

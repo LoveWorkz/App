@@ -25,7 +25,6 @@ const Rubrics = (props: RubricsProps) => {
   const {t} = useTranslation();
   let rubrics = categoriesStore.rubrics;
 
-  // when loading, adding example data to make skeleton work
   if (isLoading) {
     rubrics = getEntityExampleDataForSkeleton({
       entity: rubricExample,

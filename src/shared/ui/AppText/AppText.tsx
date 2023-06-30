@@ -57,13 +57,23 @@ export const AppText = memo((props: AppTextProps) => {
       globalStyles.textFont,
       {
         fontWeight: weight,
-        color: colors.primaryTextColor,
+        color:
+          type === TextType.ERROR
+            ? colors.secondaryError
+            : colors.primaryTextColor,
       },
       styles[size],
       styles[type],
       style,
     ];
-  }, [size, weight, type, style, colors.primaryTextColor]);
+  }, [
+    size,
+    weight,
+    type,
+    style,
+    colors.primaryTextColor,
+    colors.secondaryError,
+  ]);
 
   return <Text style={mode}>{text}</Text>;
 });
@@ -90,8 +100,5 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   size_7: {
     ...globalStyles.size_7,
-  },
-  error: {
-    color: 'red',
   },
 });

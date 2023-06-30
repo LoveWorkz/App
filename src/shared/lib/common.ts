@@ -1,3 +1,4 @@
+import {BookType} from '@src/entities/Book';
 import {CategoryType} from '@src/entities/Category';
 import {ChallengeType} from '@src/entities/Challenge';
 import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
@@ -24,11 +25,17 @@ export const getNumbersDiff = (a: number, b: number) => {
   return Math.abs(a - b);
 };
 
+// we can use this function to add example data for skeleton
 export const getEntityExampleDataForSkeleton = ({
   entity,
   count,
 }: {
-  entity: ChallengeType | ChallengeCategoryType | CategoryType | RubricType;
+  entity:
+    | ChallengeType
+    | ChallengeCategoryType
+    | CategoryType
+    | RubricType
+    | BookType;
   count: number;
 }) => {
   const result = [];

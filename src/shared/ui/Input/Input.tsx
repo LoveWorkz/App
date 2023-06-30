@@ -30,9 +30,9 @@ interface InputProps {
   value?: string;
   theme?: Inputheme;
   style?: StyleType;
-  placeholder?: string;
-  label?: string;
-  error?: string;
+  placeholder?: string | null;
+  label?: string | null;
+  error?: string | null;
   initialValue?: string;
   keyboardType?: KeyboardType;
   secureTextEntry?: boolean;
@@ -146,7 +146,7 @@ export const Input = memo((props: InputProps) => {
           ]}
           onChangeText={onChangeTextHandler}
           value={value}
-          placeholder={placeholder}
+          placeholder={placeholder || undefined}
           placeholderTextColor={colors.secondaryTextColor}
           {...rest}
         />

@@ -1,15 +1,14 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-// import firestore from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import i18n from '@src/shared/config/i18next/i18next';
 
-// import {Collections} from '@src/shared/types/firebase';
+import {Collections} from '@src/shared/types/firebase';
 import {BookType} from '@src/entities/Book';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
-// import {userStore} from '@src/entities/User';
+import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {booksData} from '../../lib/books';
 
 class BooksStore {
   booksList: BookType[] = [];
@@ -52,14 +51,14 @@ class BooksStore {
 
   fetchBooks = async () => {
     try {
-      // const source = await userStore.checkIsUserOfflineAndReturnSource();
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      // const data = await firestore()
-      //   .collection(Collections.BOOKS)
-      //   .get({source});
-      // const booksList = data.docs.map(book => book.data());
+      const data = await firestore()
+        .collection(Collections.BOOKS)
+        .get({source});
+      const booksList = data.docs.map(book => book.data());
 
-      return booksData;
+      return booksList as BookType[];
     } catch (e) {
       errorHandler({error: e});
     }
@@ -67,24 +66,16 @@ class BooksStore {
 
   setBooks = async () => {
     try {
-      // runInAction(() => {
-      //   this.booksSize = data.size;
-      //   this.booksList = booksList as BookType[];
-      //   this.booksFilteredList = booksList as BookType[];
-      //   this.recommendedBooksList = booksList as BookType[];
-      // });
-
-      const books = await this.fetchBooks();
-
-      if (!books) {
+      const booksList = await this.fetchBooks();
+      if (!booksList) {
         return;
       }
 
       runInAction(() => {
-        this.booksSize = books.length;
-        this.booksList = books as BookType[];
-        this.booksFilteredList = books as BookType[];
-        this.recommendedBooksList = books as BookType[];
+        this.booksSize = booksList.length;
+        this.booksList = booksList as BookType[];
+        this.booksFilteredList = booksList as BookType[];
+        this.recommendedBooksList = booksList as BookType[];
       });
     } catch (e) {
       errorHandler({error: e});

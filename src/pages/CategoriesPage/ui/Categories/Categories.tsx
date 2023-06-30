@@ -21,7 +21,6 @@ const Categories = (props: CategoriesProps) => {
   const {t} = useTranslation();
   let categories = categoriesStore.categories;
 
-  // when loading, adding example data to make skeleton work
   if (isLoading) {
     categories = categoriesStore.editCategories(
       getEntityExampleDataForSkeleton({

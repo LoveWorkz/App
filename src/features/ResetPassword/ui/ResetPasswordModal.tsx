@@ -50,11 +50,11 @@ const ResetPasswordModal = () => {
       />
       <View style={styles.inputWrapper}>
         <Input
-          label={t('auth.email') || ''}
-          placeholder={t('auth.enter_email') || ''}
+          label={t('auth.email')}
+          placeholder={t('auth.enter_email')}
           value={resetPasswordStore.email}
           onChange={onChangeHandler}
-          error={resetPasswordStore.emailError}
+          error={t(resetPasswordStore.emailError)}
         />
       </View>
       <View style={styles.buttonWrapper}>

@@ -56,7 +56,7 @@ const ProfileForm = (props: ProfileFormProps) => {
           value={profileStore.profileForm.name}
           onChange={onNameChangeHandler}
           placeholder={t('profile.enter_name') || ''}
-          error={profileStore.errorInfo.nameError}
+          error={t(profileStore.errorInfo.nameError) || ''}
         />
       </View>
       <View style={styles.item}>
@@ -68,7 +68,10 @@ const ProfileForm = (props: ProfileFormProps) => {
           value={profileStore.profileForm.age}
           onChange={onAgeChangeHandler}
           placeholder={t('profile.enter_age') || ''}
-          error={profileStore.errorInfo.ageError}
+          error={
+            profileStore.errorInfo.ageError &&
+            t(`${profileStore.errorInfo.ageError}`)
+          }
         />
       </View>
       <View style={styles.item}>
@@ -90,7 +93,7 @@ const ProfileForm = (props: ProfileFormProps) => {
       <View style={styles.preferences}>
         <Preferences
           isLoading={isLoading}
-          error={profileStore.errorInfo.preferenceError}
+          error={t(profileStore.errorInfo.preferenceError) || ''}
           changePreference={onPreferenceChangeHandler}
           selectedPreferences={profileStore.profileForm.preferences || []}
         />

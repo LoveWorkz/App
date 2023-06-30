@@ -14,6 +14,8 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {bookExample, BookType} from '@src/entities/Book';
+import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import booksStore from '../../model/store/BooksStore';
 import BookItem from '../BookItem/BookItem';
 import BooksSearchBar from '../BooksSearchBar/BooksSearchBar';
@@ -62,7 +64,7 @@ const Books = (props: BooksProps) => {
   const {t} = useTranslation();
   const {i18n} = useTranslation();
   const colors = useColors();
-  const booksList = booksStore.booksFilteredList;
+  let booksList = booksStore.booksFilteredList;
   const booksCategories = rubricFilterItemStore.rubricFilterItems;
 
   const language = i18n.language as LanguageValueType;
@@ -78,6 +80,13 @@ const Books = (props: BooksProps) => {
   const booksCategoriesWithSpace = useMemo(() => {
     return [{}, ...filterItemsWithIsLoading];
   }, [filterItemsWithIsLoading]);
+
+  if (isLoading) {
+    booksList = getEntityExampleDataForSkeleton({
+      entity: bookExample,
+      count: 3,
+    }) as BookType[];
+  }
 
   return (
     <View>
@@ -109,8 +118,8 @@ const Books = (props: BooksProps) => {
                   isLoading={isLoading}
                   id={book.id}
                   image={book.image.front}
-                  title={book.displayName[language]}
-                  description={book.description[language]}
+                  title={book.displayName?.[language] || ''}
+                  description={book.description?.[language] || ''}
                 />
               </View>
             );

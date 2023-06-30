@@ -1,10 +1,10 @@
 {
-  "next": "Next",
-  "confirm": "confirm",
-  "enter_your_data": "Enter your data",
-  "show_more": "Show more",
-  "show_less": "Show less",
-  "noResults": "No Results",
+  "next": "Nächste",
+  "confirm": "Bitte bestätigen",
+  "enter_your_data": "Bitte gib deine Daten ein",
+  "show_more": "Mehr anzeigen",
+  "show_less": "Weniger anzeigen",
+  "noResults": "kein Ergebnis",
 
   "delete": "Löschen",
   "save": "Sichern",
@@ -13,6 +13,6 @@
   "continue": "Weiter",
   "dont_show_again": "Nicht wieder zeigen",
   "you_are_offline": "You are offline",
-  "search": "Search",
+  "search": "Suchen",
   "year": "jahr"
 }

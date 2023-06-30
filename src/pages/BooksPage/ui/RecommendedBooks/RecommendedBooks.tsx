@@ -8,10 +8,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {BookPreview} from '@src/entities/BookPreview';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {BookType} from '@src/entities/Book';
+import {bookExample, BookType} from '@src/entities/Book';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import BooksStore from '../../model/store/BooksStore';
 
 interface RecommendedBooksProps {
@@ -23,7 +24,7 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
 
   const {t} = useTranslation();
   const colors = useColors();
-  const recommendedBooksList = BooksStore.recommendedBooksList;
+  let recommendedBooksList = BooksStore.recommendedBooksList;
 
   const onBookPreviewPressHandler = (id: string) => {
     if (isLoading) {
@@ -34,6 +35,13 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
     Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id});
   };
+
+  if (isLoading) {
+    recommendedBooksList = getEntityExampleDataForSkeleton({
+      entity: bookExample,
+      count: 4,
+    }) as BookType[];
+  }
 
   return (
     <View>

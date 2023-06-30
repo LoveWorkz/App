@@ -26,6 +26,7 @@ import {
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {isPlatformIos} from '@src/shared/consts/common';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
 import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
 
@@ -85,11 +86,15 @@ const InAppPurchase = () => {
     };
   }, []);
 
-  if (!(yearly && monthly)) {
+  if (!(yearly && monthly) && !isPlatformIos) {
     return <></>;
   }
 
   const onPressHandler = () => {
+    if (isPlatformIos) {
+      return;
+    }
+
     let productId = yearly.productId;
     let offerToken = yearly.subscriptionOfferDetails?.[0]?.offerToken;
     const isMonthly = subscriptionType === SubscriptionType.MONTHLY;
@@ -117,15 +122,10 @@ const InAppPurchase = () => {
           style={styles.title}
           size={TextSize.LEVEL_5}
           weight={'500'}
-          text={'Get access to all categories and challenges'}
+          text={t('shop.title')}
         />
 
-        <AppText
-          style={styles.text}
-          text={
-            'sdsdsd Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet'
-          }
-        />
+        <AppText style={styles.text} text={t('shop.description')} />
       </View>
       <View style={[styles.subscriptionBlocks]}>
         <SubscriptionBlock

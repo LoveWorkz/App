@@ -14,6 +14,7 @@ interface BookPreviewProps {
 }
 
 const height = 340;
+const width = horizontalScale(242);
 const borderRadius = moderateScale(10);
 
 const BookPreview = (props: BookPreviewProps) => {
@@ -28,8 +29,8 @@ const BookPreview = (props: BookPreviewProps) => {
 
   if (isLoading) {
     return (
-      <View>
-        <Skeleton height={height} borderRadius={borderRadius} />
+      <View style={[styles.BookPreview]}>
+        <Skeleton width={width} height={height} borderRadius={borderRadius} />
       </View>
     );
   }
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   BookPreview: {
     height: height,
     border: borderRadius,
-    width: horizontalScale(230),
+    width: width,
   },
   image: {
     borderRadius: borderRadius,

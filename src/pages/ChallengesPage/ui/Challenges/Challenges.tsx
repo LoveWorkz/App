@@ -25,7 +25,6 @@ export const Challenges = (props: ChallengeProps) => {
   const colors = useColors();
   const {t} = useTranslation();
 
-  // when loading, adding example data to make skeleton work
   if (isLoading) {
     challenges = getEntityExampleDataForSkeleton({
       entity: challengeExample,

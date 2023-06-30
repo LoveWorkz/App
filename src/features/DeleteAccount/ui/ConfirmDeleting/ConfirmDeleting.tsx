@@ -42,19 +42,19 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
       />
       <View style={styles.inputs}>
         <Input
-          error={deleteAccountStore.errorInfo.emailError}
+          error={t(deleteAccountStore.errorInfo.emailError)}
           value={deleteAccountStore.formData.email}
           style={styles.emailInput}
-          label={t('auth.email') || ''}
-          placeholder={t('auth.enter_email') || ''}
+          label={t('auth.email')}
+          placeholder={t('auth.enter_email')}
           onChange={onEmailChangeHandler}
         />
         <Input
           secureTextEntry
-          error={deleteAccountStore.errorInfo.passwordError}
+          error={t(deleteAccountStore.errorInfo.passwordError)}
           value={deleteAccountStore.formData.password}
-          label={t('auth.password') || ''}
-          placeholder={t('auth.enter_password') || ''}
+          label={t('auth.password')}
+          placeholder={t('auth.enter_password')}
           onChange={onPasswordChangeHandler}
         />
       </View>

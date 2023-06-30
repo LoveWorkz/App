@@ -1,8 +1,8 @@
 {
    "profile.save_changes": "Savar alterações",
-   "profile.name": "Name",
-   "profile.enter_name": "Enter Name",
-   "profile.enter_age": "Enter Age",
+   "profile.name": "Nome",
+   "profile.enter_name": "Insira o nome",
+   "profile.enter_age": "Inserir idade",
    "profile.age": "Idade",
    "profile.country": "País",
    "profile.relationship_status": "Status de Relacionamento",

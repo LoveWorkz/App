@@ -25,6 +25,7 @@ interface SelectProps {
   style?: StyleType;
   isScrolling?: boolean;
   isLoading?: boolean;
+  closingTime?: number;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -39,6 +40,7 @@ export const Select = memo((props: SelectProps) => {
     selectedValueStyle,
     isScrolling = false,
     isLoading = false,
+    closingTime,
   } = props;
 
   const itemHeight = verticalScale(40);
@@ -91,9 +93,9 @@ export const Select = memo((props: SelectProps) => {
         if (timerId) {
           clearTimeout(timerId);
         }
-      }, 120);
+      }, closingTime || 150);
     },
-    [onSelect, onCloseHandler],
+    [onSelect, onCloseHandler, closingTime],
   );
 
   const getItemLayout = useCallback(

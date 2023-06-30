@@ -2,10 +2,7 @@
     "books.title": "Literatur",
   
     "books.recommended": "Empfohlen für dich",
-    "books.books": "Books",
-    "books.bestseller": "Bestseller",
-    "books.romance": "Romance",
-    "books.conflict": "Conflict",
-    "books.see_more": "See more",
-    "books.description": "Description"
+    "books.books": "Bücher",
+    "books.see_more": "Mehr entdecken",
+    "books.description": "Beschreibung"
 }

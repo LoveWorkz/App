@@ -70,7 +70,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
           mode="parallax"
           modeConfig={{
             parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
-            parallaxScrollingOffset: isLandscape ? 120 : horizontalScale(115),
+            parallaxScrollingOffset: isLandscape ? 120 : horizontalScale(108),
             parallaxAdjacentItemScale: isLandscape ? 0.55 : 0.38,
           }}
           data={data}

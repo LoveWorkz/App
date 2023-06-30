@@ -44,38 +44,38 @@ const SignUp = () => {
     <View>
       <View>
         <Input
-          label={t('auth.email') || ''}
+          label={t('auth.email')}
           value={signUpStore.signUpData.email}
           onChange={onEmailChangeHandler}
-          placeholder={t('auth.enter_email') || ''}
-          error={signUpStore.errorInfo.emailError}
+          placeholder={t('auth.enter_email')}
+          error={t(signUpStore.errorInfo.emailError)}
         />
       </View>
       <View style={styles.password}>
         <Input
           secureTextEntry
-          label={t('auth.password') || ''}
+          label={t('auth.password')}
           value={signUpStore.signUpData.password}
           onChange={onPasswordChangeHandler}
-          placeholder={t('auth.enter_password') || ''}
+          placeholder={t('auth.enter_password')}
         />
         {signUpStore.errorInfo.passwordError && (
           <AppText
             size={TextSize.LEVEL_1}
             weight={'500'}
             type={TextType.ERROR}
-            text={signUpStore.errorInfo.passwordError}
+            text={t(signUpStore.errorInfo.passwordError)}
           />
         )}
       </View>
       <View>
         <Input
           secureTextEntry
-          label={t('auth.repeat_password') || ''}
+          label={t('auth.repeat_password')}
           value={signUpStore.signUpData.confirmPassword}
           onChange={onConfirmPasswordChangeHandler}
-          placeholder={t('auth.enter_password') || ''}
-          error={signUpStore.errorInfo.confirmPasswordError}
+          placeholder={t('auth.enter_password')}
+          error={t(signUpStore.errorInfo.confirmPasswordError)}
         />
       </View>
       <View style={styles.privacyPolicy}>
@@ -131,6 +131,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   privacyPolicyText: {
-    marginRight: horizontalScale(5),
+    marginRight: horizontalScale(10),
   },
 });

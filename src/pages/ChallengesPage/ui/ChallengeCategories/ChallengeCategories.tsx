@@ -19,7 +19,6 @@ export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
   const {defaultChallengeId, isLoading} = props;
   let challengeCategories = challengesStore.challengeCategories;
 
-  // when loading, adding example data to make skeleton work
   if (isLoading) {
     challengeCategories = getEntityExampleDataForSkeleton({
       entity: challengeCategoryExample,
