@@ -94,7 +94,7 @@ const Challanges = (props: ChallangesProps) => {
   );
 };
 
-export const ComponentWrapper = memo(Challanges);
+export default memo(Challanges);
 
 const styles = StyleSheet.create({
   seeAll: {

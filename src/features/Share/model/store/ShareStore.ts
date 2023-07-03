@@ -10,7 +10,7 @@ import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {shareQuestionDomainUri} from '@src/app/config/shareConfig';
+import {domainUriPrefix} from '@src/app/config/shareConfig';
 import {appPackageName} from '@src/app/config/appConfig';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
@@ -135,12 +135,16 @@ class shareStore {
 
       const link = await dynamicLinks().buildShortLink({
         link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}`,
-        domainUriPrefix: shareQuestionDomainUri,
+        domainUriPrefix: domainUriPrefix,
         android: {
           packageName: appPackageName,
         },
+        ios: {
+          appStoreId: '462054704',
+          bundleId: appPackageName,
+        },
         navigation: {
-          forcedRedirectEnabled: true,
+          forcedRedirectEnabled: false,
         },
         social: {
           title: 'love is not Enough',

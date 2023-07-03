@@ -2,7 +2,6 @@ import React, {memo, useMemo} from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
-import {observer} from 'mobx-react-lite';
 
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {Category, categoryExample, CateorySize} from '@src/entities/Category';
@@ -94,7 +93,7 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   );
 };
 
-export const ComponentWrapper = memo(observer(CategoriesCarousel));
+export default memo(CategoriesCarousel);
 
 const styles = StyleSheet.create({
   itemStyle: {

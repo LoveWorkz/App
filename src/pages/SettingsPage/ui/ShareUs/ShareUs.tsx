@@ -8,10 +8,10 @@ import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {shareStore} from '@src/features/Share';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {shareAppDomainUri} from '@src/app/config/shareConfig';
+import {shareAppUrl} from '@src/app/config/shareConfig';
 
 const options = {
-  message: shareAppDomainUri,
+  message: shareAppUrl,
 };
 
 const ShareUs = () => {

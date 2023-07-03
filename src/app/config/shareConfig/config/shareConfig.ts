@@ -1,2 +1,2 @@
-export const shareQuestionDomainUri = 'https://blinequestion.page.link';
-export const shareAppDomainUri = 'https://loveisnotenough.page.link/Sohr';
+export const domainUriPrefix = 'https://loveisnotenough.page.link';
+export const shareAppUrl = `${domainUriPrefix}/ib87`;
