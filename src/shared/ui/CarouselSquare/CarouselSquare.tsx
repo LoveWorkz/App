@@ -1,5 +1,5 @@
 import {View, StyleSheet} from 'react-native';
-import React, {ComponentType, memo, MemoExoticComponent} from 'react';
+import React, {ComponentType, memo, MemoExoticComponent, useRef} from 'react';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -30,12 +30,25 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
     withPagination = false,
   } = props;
 
+  const isScrolling = useRef(false);
+
   const progressValue = useSharedValue<number>(0);
   const baseOptions = {
     vertical: false,
     width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH * 0.6,
     height: PAGE_WIDTH * 0.6,
   };
+
+  const onProgressChange = (_: number, absoluteProgress: number) => {
+    const fixedAbsoluteProgress = absoluteProgress.toFixed(2);
+    const splitedProgress = String(fixedAbsoluteProgress).split('.');
+    const numberAfterDot = Number(splitedProgress[1]);
+    const value = isNaN(numberAfterDot) ? 0 : numberAfterDot;
+
+    isScrolling.current = value <= 90 && value >= 10;
+    progressValue.value = absoluteProgress;
+  };
+
   return (
     <GestureHandlerRootView>
       <View style={[styles.container]}>
@@ -55,6 +68,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
         )}
         <Carousel
           {...baseOptions}
+          onProgressChange={onProgressChange}
           loop
           style={{
             width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
@@ -64,9 +78,6 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
           snapEnabled={true}
           autoPlay={false}
           autoPlayInterval={1500}
-          onProgressChange={(_, absoluteProgress) =>
-            (progressValue.value = absoluteProgress)
-          }
           mode="parallax"
           modeConfig={{
             parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
@@ -77,7 +88,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
           renderItem={({item}) => {
             return (
               <View style={{...itemStyle}}>
-                <Component {...item} />
+                <Component isActionDisabled={isScrolling} {...item} />
               </View>
             );
           }}

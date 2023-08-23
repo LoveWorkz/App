@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, MutableRefObject} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
@@ -29,6 +29,7 @@ interface CategoryProps {
   isCategoryDetailsVisible: boolean;
   displayName: DisplayText;
   isLoading?: boolean;
+  isActionDisabled?: MutableRefObject<boolean>;
 }
 
 const sizeM = 120;
@@ -47,6 +48,7 @@ const Category = (props: CategoryProps) => {
     style,
     displayName,
     isLoading = false,
+    isActionDisabled,
   } = props;
   const colors = useColors();
   const {theme} = useTheme();
@@ -56,6 +58,10 @@ const Category = (props: CategoryProps) => {
   const isSizeL = size === CateorySize.L;
 
   const onCategoryPressHandler = () => {
+    if (isActionDisabled?.current) {
+      return;
+    }
+
     if (isCategoryDetailsVisible) {
       navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
         title: displayName[language],

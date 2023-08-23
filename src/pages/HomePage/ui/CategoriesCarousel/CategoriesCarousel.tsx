@@ -30,12 +30,22 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   };
 
   const formatedCategories = useMemo(() => {
+    if (isLoading) {
+      return [
+        {
+          ...categoryExample,
+          image: categoryExample.image.middle,
+          isLoading: true,
+        },
+      ];
+    }
+
     return categories.map(category => {
       return {
         ...category,
         image: category.image.middle,
         size: CateorySize.L,
-        isLoading: isLoading,
+        isLoading: false,
       };
     });
   }, [categories, isLoading]);
@@ -71,24 +81,16 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
           </Pressable>
         </View>
       )}
-      <CarouselSquare
-        isLandscape={true}
-        Component={Category}
-        // when loading, adding example data to make skeleton work
-        data={
-          isLoading
-            ? [
-                {
-                  ...categoryExample,
-                  image: categoryExample.image.middle,
-                  isLoading: true,
-                },
-              ]
-            : formatedCategories
-        }
-        itemStyle={styles.itemStyle}
-        carouselHeight={220}
-      />
+      {!!formatedCategories.length && (
+        <CarouselSquare
+          isLandscape={true}
+          Component={Category}
+          // when loading, adding example data to make skeleton work
+          data={formatedCategories}
+          itemStyle={styles.itemStyle}
+          carouselHeight={220}
+        />
+      )}
     </View>
   );
 };
