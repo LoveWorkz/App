@@ -578,7 +578,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.3.1;
-				DEVELOPMENT_TEAM = DTWRZD523F;
+				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;
@@ -593,7 +593,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.blineapp.bline;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbline.app;
 				PRODUCT_NAME = Bline2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -612,7 +612,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.3.1;
-				DEVELOPMENT_TEAM = DTWRZD523F;
+				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -626,7 +626,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.blineapp.bline;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appbline.app;
 				PRODUCT_NAME = Bline2;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

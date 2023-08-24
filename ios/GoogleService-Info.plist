@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>470642156929-46cmlfrrark01l9tvga62os0ppp6762h.apps.googleusercontent.com</string>
+	<string>470642156929-gipcb5tq27034r1rr3hevu4i97n6re7q.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.470642156929-46cmlfrrark01l9tvga62os0ppp6762h</string>
+	<string>com.googleusercontent.apps.470642156929-gipcb5tq27034r1rr3hevu4i97n6re7q</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>470642156929-6t0vjtk4pc62r67h0avmjci45ki64h1t.apps.googleusercontent.com</string>
+	<string>470642156929-0mobmfsn6j6uj10ufcna5vsfvcloasie.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBhj_3ZbFFcDj0QuJRXTK-Y6HzyJdHjZYE</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.blineapp.bline</string>
+	<string>com.appbline.app</string>
 	<key>PROJECT_ID</key>
 	<string>love-is-not-enough</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:470642156929:ios:0c219d6cbb2a7a0e983480</string>
+	<string>1:470642156929:ios:949b49c99b05940d983480</string>
 </dict>
 </plist>
