@@ -1,17 +1,22 @@
-export type QuestionCardTypes = 'WILD_CARD' | 'Action_CARD' | 'ORDINARY';
+import {DisplayText} from '@src/shared/types/types';
 
-export interface Session {
-  challenge: string;
-  question: string[];
-}
+export type QuestionCardTypes =
+  | 'WILD_CARD'
+  | 'Action_CARD'
+  | 'ORDINARY'
+  | 'CHALLANGE_CARD';
 
 export interface QuestionType {
   categoryId: string;
   rubricId: string;
   type: QuestionCardTypes;
+  question: DisplayText;
   id: string;
   createdDate: string;
-  sessions: Session[];
+  difficulty: number;
+  image?: string;
+
+  challengeId?: string;
 }
 
 export interface QuestionPreviewType {

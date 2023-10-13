@@ -109,8 +109,6 @@ const InAppPurchase = () => {
     }
   };
 
-  console.log(subscriptions, '?????');
-
   return (
     <View style={styles.InAppPurchase}>
       <FastImage

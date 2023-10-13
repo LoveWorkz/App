@@ -1,5 +1,6 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useCallback, useRef} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {
   globalPadding,
@@ -25,13 +26,21 @@ export const Layout = (props: LayoutProps) => {
     deleteTopPadding,
     isTabBar = false,
   } = props;
+  const scrollViewRef = useRef<ScrollView>(null);
   const colors = useColors();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
 
+  useFocusEffect(
+    useCallback(() => {
+      scrollViewRef?.current?.scrollTo({y: 0, animated: false});
+    }, []),
+  );
+
   if (isPageScrolling) {
     return (
       <ScrollView
+        ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         style={{height: windowHeight, backgroundColor: colors.bgColor}}>

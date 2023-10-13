@@ -2,7 +2,7 @@ import {DisplayText} from '@src/shared/types/types';
 
 export interface RubricType {
   description: DisplayText;
-  questions: string;
+  questions: string[];
   name: string;
   startQuestionDate: string;
   id: string;

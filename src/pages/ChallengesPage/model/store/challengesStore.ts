@@ -146,7 +146,6 @@ class ChallengesStore {
       crashlytics().log('Fetching Challenges.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
-
       const userId = userStore.userId;
       if (!userId) {
         return;

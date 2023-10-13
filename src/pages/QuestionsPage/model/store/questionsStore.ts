@@ -17,6 +17,7 @@ import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {sessionStore} from '@src/entities/Session';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -83,9 +84,8 @@ class QuestionsStore {
             return;
           }
           rubricStore.getAndSetRubric(id);
-          await this.fetchQuestionsById({
+          await this.fetchSpecificQuestions({
             id,
-            field: 'rubricId',
             key: DocumentType.RUBRIC,
           });
           // init current question id for the first time
@@ -111,9 +111,8 @@ class QuestionsStore {
           if (isLastCategoryKey) {
             await this.fetchAllQuestions();
           } else {
-            await this.fetchQuestionsById({
+            await this.fetchSpecificQuestions({
               id,
-              field: 'categoryId',
               key: DocumentType.CATEGORY,
             });
           }
@@ -282,13 +281,11 @@ class QuestionsStore {
     }
   };
 
-  fetchQuestionsById = async ({
+  fetchSpecificQuestions = async ({
     id,
-    field,
     key,
   }: {
     id: string;
-    field: string;
     key: DocumentType;
   }) => {
     try {
@@ -297,18 +294,39 @@ class QuestionsStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const data = await firestore()
         .collection(Collections.QUESTIONS)
-        .orderBy('createdDate')
-        .where(field, '==', id)
         .get({source});
 
-      const questions = data.docs.map(question => ({
+      const questionsMap: Record<string, QuestionType> = {};
+      const allQuestions = data.docs.map(question => ({
         ...question.data(),
         id: question.id,
-      }));
+      })) as QuestionType[];
+
+      allQuestions.forEach(question => {
+        questionsMap[question.id] = question;
+      });
+      let questions: QuestionType[] | undefined = [];
+
+      if (key === DocumentType.CATEGORY) {
+        questions = await sessionStore.fetchSessions(id, questionsMap);
+      } else {
+        const rubircquestionsIds = rubricStore.rubric?.questions;
+        if (!rubircquestionsIds) {
+          return;
+        }
+
+        questions = rubircquestionsIds.map(questionId => {
+          return questionsMap[questionId];
+        });
+      }
 
       runInAction(() => {
-        this.questions = questions as QuestionType[];
-        this.questionsSize = data.size;
+        if (!questions) {
+          return;
+        }
+
+        this.questions = questions;
+        this.questionsSize = questions.length;
       });
     } catch (e) {
       errorHandler({error: e});

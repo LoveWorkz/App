@@ -46,3 +46,7 @@ export const getEntityExampleDataForSkeleton = ({
 
   return result;
 };
+
+export const getDefaultIndexForCarousel = (index?: number) => {
+  return (index || 1) - 1;
+};

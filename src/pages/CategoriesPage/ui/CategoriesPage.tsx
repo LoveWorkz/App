@@ -5,6 +5,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {Favourites} from '@src/widgets/Favourites';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {favoriteStore} from '@src/entities/Favorite';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
@@ -12,7 +13,7 @@ import Rubrics from './Rubrics/Rubrics';
 import categoriesStore from '../model/store/categoriesStore';
 
 interface CategoriesPageProps {
-  route?: {params: {prevRouteName: AppRouteNames}};
+  route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
 }
 
 const CategoriesPage = (props: CategoriesPageProps) => {
@@ -20,15 +21,17 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   const favorites = favoriteStore.favorites;
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+  const isPreviousScreenChallenges =
+    route?.params?.prevRouteName === TabRoutesNames.CHALLENGES;
   const isLoading = categoriesStore.isCategoriesPageLoading;
 
   useFocusEffect(
     useCallback(() => {
-      // if the user returns from the questions page, get the actual data
-      if (isPreviousScreenQuestions) {
+      // if the user returns from the questions or challenges page, get the actual data
+      if (isPreviousScreenQuestions || isPreviousScreenChallenges) {
         categoriesStore.init();
       }
-    }, [isPreviousScreenQuestions]),
+    }, [isPreviousScreenQuestions, isPreviousScreenChallenges]),
   );
 
   useEffect(() => {

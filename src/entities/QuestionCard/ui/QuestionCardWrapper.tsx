@@ -6,12 +6,14 @@ import {observer} from 'mobx-react-lite';
 import {DisplayText} from '@src/shared/types/types';
 import questionStore from '../model/store/questionStore';
 import QuestionCard from './QuestionCard';
+import {QuestionCardTypes} from '../model/types/questionTypes';
 
 interface QuestionCardWrapperProps {
   question: DisplayText;
   image: ImageSourcePropType;
-  type: string;
+  type: QuestionCardTypes;
   id: string;
+  challengeId?: string;
 }
 
 const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {

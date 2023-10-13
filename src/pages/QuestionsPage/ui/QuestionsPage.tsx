@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -36,7 +36,10 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {userStore} from '@src/entities/User';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import questionsStore from '../model/store/questionsStore';
-import {getFormattedQuestionsWrapper} from '../model/lib/questions';
+import {
+  getFormattedQuestionsWrapper,
+  getGoodMoodQuestionCard,
+} from '../model/lib/questions';
 
 interface QuestionsPageProps {
   route?: {params: {type: DocumentType; id: string; initialQuestionId: string}};
@@ -52,6 +55,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const colors = useColors();
   const {t, i18n} = useTranslation();
   const {theme} = useTheme();
+  const [isGoodMoodCardVisible, setIsGoodMoodCardVisible] = useState(false);
 
   const key = route?.params.type;
   const id = route?.params.id;
@@ -106,6 +110,11 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     return getFormattedQuestions();
   }, [getFormattedQuestions]);
 
+  const goodMoodQuestionCard = getGoodMoodQuestionCard(
+    formattedQuestions,
+    questionsPageInfo.defaultQuestionNumber,
+  );
+
   const onSwipeHandler = useCallback(
     (param: QuestionType, questionNumber: number) => {
       if (!key) {
@@ -123,6 +132,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     },
     [key, id, language],
   );
+  const onGoodMoodQuestionCardHandler = useCallback(() => {
+    setIsGoodMoodCardVisible(true);
+  }, []);
 
   if (isLoading) {
     return (
@@ -172,6 +184,17 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           />
         </View>
       </View>
+      {/* {!isGoodMoodCardVisible && !initialQuestionId && (
+        <HorizontalSlide
+          isSlideEnabled={true}
+          onSwipeHandler={onGoodMoodQuestionCardHandler}
+          data={goodMoodQuestionCard}
+          Component={QuestionCard}
+          itemStyle={styles.slideItemStyle}
+          spead={300}
+          defaultElement={2}
+        />
+      )} */}
       <View style={styles.question}>
         <HorizontalSlide
           isSlideEnabled={isSliideEnabled}

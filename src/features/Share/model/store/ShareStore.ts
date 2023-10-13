@@ -11,7 +11,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {domainUriPrefix} from '@src/app/config/shareConfig';
-import {appPackageName} from '@src/app/config/appConfig';
+import {appBundleId, appPackageName} from '@src/app/config/appConfig';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
@@ -141,7 +141,7 @@ class shareStore {
         },
         ios: {
           appStoreId: '462054704',
-          bundleId: appPackageName,
+          bundleId: appBundleId,
         },
         navigation: {
           forcedRedirectEnabled: false,

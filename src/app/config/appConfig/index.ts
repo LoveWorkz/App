@@ -1,1 +1,1 @@
-export {appPackageName} from './config/appConfig';
+export {appPackageName, appBundleId} from './config/appConfig';

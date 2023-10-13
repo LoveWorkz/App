@@ -12,6 +12,7 @@ import {StyleSheet, View} from 'react-native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
 
 interface HorizontalSlideProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
@@ -21,6 +22,8 @@ interface HorizontalSlideProps {
   data: Array<Record<string, any>>;
   defaultElement?: number;
   isSlideEnabled?: boolean;
+  onScrollEnd?: () => void;
+  spead?: number;
 }
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
@@ -32,12 +35,15 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     data,
     defaultElement,
     isSlideEnabled = true,
+    onScrollEnd,
+    spead = 50,
   } = props;
 
   const viewCount = 5;
+  const defaultIndex = getDefaultIndexForCarousel(defaultElement);
 
   const carouselRef = useRef() as MutableRefObject<ICarouselInstance>;
-  const newSwapIndex = useRef(-1);
+  const newSwapIndex = useRef(defaultIndex);
   const swipeStartStatus = useRef(false) as MutableRefObject<boolean>;
 
   const onProgressChange = useCallback(() => {
@@ -64,16 +70,17 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
-      }, 50);
+      }, spead);
     }
-  }, [onSwipeHandler, data]);
+  }, [onSwipeHandler, data, spead]);
 
   return (
     <>
       <Carousel
         ref={carouselRef}
         onProgressChange={onProgressChange}
-        defaultIndex={(defaultElement || 1) - 1}
+        onScrollEnd={onScrollEnd}
+        defaultIndex={defaultIndex}
         style={[
           itemStyle,
           {
