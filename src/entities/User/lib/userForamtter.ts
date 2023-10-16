@@ -33,5 +33,11 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.isWowThatWasFastModalForbidden = false;
   formatedUser.hasUserSwipedAnyQuestion = false;
 
+  formatedUser.partner = {
+    name: '',
+    email: '',
+    age: 0,
+  };
+
   return formatedUser;
 };

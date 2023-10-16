@@ -19,6 +19,7 @@ import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/app/providers/layout';
+import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -38,6 +39,7 @@ export enum AppRouteNames {
   BOOK_DETAILS = 'bookDetails',
   CATEGORY_DETAILS = 'categoryDetails',
   QUESTIONS = 'questions',
+  PARTNER_EDIT = 'partnerEdit',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -58,6 +60,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
   [AppRouteNames.QUESTIONS]: 'questions',
+  [AppRouteNames.PARTNER_EDIT]: 'partnerEdit',
 };
 
 type NewRouteProps = {
@@ -237,6 +240,18 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteTopPadding={true}>
           <QuestionsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.PARTNER_EDIT]: {
+    name: appRoutePaths.partnerEdit,
+    headerShown: true,
+    headerTitle: 'profile.partner',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <PartnerEditPage {...props} />
         </Layout>
       );
     },

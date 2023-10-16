@@ -3,7 +3,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 
 import {SelectOption, StyleType} from '@src/shared/types/types';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import TouchableComponent from './TouchableComponent';
+import {TouchableComponent} from './TouchableComponent';
 import {PageSelect} from './PageSelect';
 import {RenderItem} from './RenderItem';
 import {RadioGroup} from '../Radio/RadioGroup';
@@ -17,7 +17,7 @@ interface SelectProps {
   options: SelectOption[];
   value: string;
   label?: string;
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   initialValue?: string;
   prompt?: string;
   Theme?: SelectTheme;
@@ -125,6 +125,10 @@ export const Select = memo((props: SelectProps) => {
     [onSelectHandler, value, itemHeight],
   );
 
+  const onSelectOpenHandler = useCallback(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
     <View>
       <TouchableComponent
@@ -132,7 +136,7 @@ export const Select = memo((props: SelectProps) => {
         selectedDisplayValue={selectedDisplayValue || ''}
         theme={Theme}
         label={label}
-        setIsVisible={setIsVisible}
+        onSelectOpenHandler={onSelectOpenHandler}
         selectedValueStyle={selectedValueStyle}
       />
       <PageSelect onClose={onCloseHandler} prompt={prompt} visible={visible}>

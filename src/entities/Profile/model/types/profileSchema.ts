@@ -1,3 +1,5 @@
+import {PartnerType} from '@src/entities/Partner';
+
 export interface Profile {
   photo: string;
   name: string;
@@ -5,6 +7,7 @@ export interface Profile {
   country: string;
   relationshipStatus: string;
   preferences: string[];
+  partner: PartnerType;
 }
 
 export interface ProfileErrorInfo {

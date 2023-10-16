@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
 import {RelationshipStatusSelect} from '@src/entities/RelationshipStatus';
+import {PartnerSelect} from '@src/entities/Partner';
 import {userStore} from '@src/entities/User';
 import profileStore from '../../model/store/profileStore';
 import Preferences from '../Preferences/Preferences';
@@ -18,6 +19,7 @@ interface ProfileFormProps {
 const ProfileForm = (props: ProfileFormProps) => {
   const {isSetup = false, isLoading = false} = props;
   const profileData = profileStore.profileData;
+  const partner = profileStore.partner;
   const user = userStore.user;
 
   // if the user is trying to set the profile for the first time, chose the account name (google, apple)
@@ -89,6 +91,9 @@ const ProfileForm = (props: ProfileFormProps) => {
           status={profileStore.profileForm.relationshipStatus}
           changeStatus={onStatusChangeHandler}
         />
+      </View>
+      <View style={styles.item}>
+        <PartnerSelect isLoading={isLoading} partner={partner} />
       </View>
       <View style={styles.preferences}>
         <Preferences

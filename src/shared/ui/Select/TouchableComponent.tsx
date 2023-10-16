@@ -15,14 +15,14 @@ import {
 } from '@src/shared/lib/Metrics';
 import {SelectTheme} from './Select';
 import Skeleton from '../Skeleton/Skeleton';
-
 interface TouchableComponentProps {
-  setIsVisible: (visible: boolean) => void;
+  onSelectOpenHandler: () => void;
   selectedValueStyle?: StyleType;
   label?: string;
   theme?: SelectTheme;
   selectedDisplayValue: string;
   isLoading: boolean;
+  placeholder?: string;
 }
 
 const height = 40;
@@ -30,21 +30,18 @@ const borderRadius = moderateScale(10);
 
 export const TouchableComponent = memo((props: TouchableComponentProps) => {
   const {
-    setIsVisible,
+    onSelectOpenHandler,
     selectedValueStyle,
     label,
     theme = SelectTheme.CLEAR,
     selectedDisplayValue,
     isLoading,
+    placeholder,
   } = props;
   const colors = useColors();
   const {theme: appTheme} = useTheme();
   const isClear = theme === SelectTheme.CLEAR;
   const isValueLarge = selectedDisplayValue.length >= 35;
-
-  const onSelectOpenHandler = () => {
-    setIsVisible(true);
-  };
 
   if (isLoading) {
     return (
@@ -60,6 +57,34 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
           />
         </View>
       </SafeAreaView>
+    );
+  }
+
+  let content = (
+    <View>
+      <AppText
+        size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
+        style={{color: colors.secondaryTextColor}}
+        text={placeholder || ''}
+      />
+    </View>
+  );
+
+  if (isClear && label) {
+    content = (
+      <View>
+        <AppText style={selectedValueStyle} text={label} />
+      </View>
+    );
+  } else if (selectedDisplayValue) {
+    content = (
+      <View>
+        <AppText
+          size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
+          style={selectedValueStyle}
+          text={selectedDisplayValue}
+        />
+      </View>
     );
   }
 
@@ -85,19 +110,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
           },
         ]}
         onPress={onSelectOpenHandler}>
-        {isClear && label ? (
-          <View>
-            <AppText style={selectedValueStyle} text={label} />
-          </View>
-        ) : (
-          <View>
-            <AppText
-              size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
-              style={selectedValueStyle}
-              text={selectedDisplayValue}
-            />
-          </View>
-        )}
+        {content}
         <SvgXml
           xml={SmallArrowRightIcon}
           stroke={colors.primaryTextColor}
@@ -129,5 +142,3 @@ const styles = StyleSheet.create<Record<string, any>>({
     width: horizontalScale(12),
   },
 });
-
-export default memo(TouchableComponent);

@@ -8,6 +8,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {PartnerType} from '@src/entities/Partner';
 import {
   Profile,
   ProfileErrorInfo,
@@ -27,6 +28,7 @@ class ProfileStore {
   };
   avatar: string = '';
   tempAvatar: string = '';
+  partner: PartnerType | null = null;
 
   isLoading: boolean = false;
   isFetchingProfile: boolean = true;
@@ -46,6 +48,10 @@ class ProfileStore {
 
   setCountry(country: string) {
     this.profileForm.country = country;
+  }
+
+  setPartner(partner: PartnerType) {
+    this.partner = partner;
   }
 
   setRelationshipStatus(staus: string) {
@@ -187,6 +193,7 @@ class ProfileStore {
           this.setProfileData(user);
           this.setProfileForm(user);
           this.setAvatar(user.photo);
+          this.setPartner(user.partner);
         });
       }
     } catch (e) {
@@ -203,10 +210,9 @@ class ProfileStore {
       crashlytics().log('User tried to update profile.');
 
       const isOffline = await userStore.getIsUserOffline();
+
       this.clearErrors();
-
       const {isError, errorInfo} = validateFields(this.profileForm);
-
       if (isError) {
         this.setValidationError(errorInfo);
         return;
