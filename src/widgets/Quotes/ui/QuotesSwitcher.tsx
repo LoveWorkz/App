@@ -24,7 +24,7 @@ const QuotesSwitcher = (props: QuotesSwitcherProps) => {
       />
       <Switch
         style={styles.switcher}
-        trackColor={{false: '#767577', true: '#ECB7FF'}}
+        trackColor={{false: '#767577', true: '#847AED'}}
         thumbColor={'white'}
         ios_backgroundColor="#3e3e3e"
         onValueChange={quotesStore.toggleQuote}

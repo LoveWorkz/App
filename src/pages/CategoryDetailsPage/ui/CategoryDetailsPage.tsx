@@ -100,7 +100,9 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
         <View>
           {category.isBlocked && (
             <>
-              <View style={[styles.layout]} />
+              <View
+                style={[styles.layout, {backgroundColor: colors.bgLayout}]}
+              />
               <View style={[styles.lockIconWrapper]}>
                 <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
               </View>
@@ -181,9 +183,7 @@ const styles = StyleSheet.create({
   },
 
   layout: {
-    backgroundColor: 'black',
     position: 'absolute',
-    opacity: 0.4,
     width: '100%',
     borderRadius: moderateScale(20),
     height: '100%',

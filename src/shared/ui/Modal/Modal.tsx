@@ -49,6 +49,7 @@ export const Modal = (props: ModalProps) => {
           statusBarTranslucent
           animationInTiming={300}
           animationIn={animationIn}
+          backdropColor={colors.bgPopup}
           isVisible={visible}>
           <View
             style={[

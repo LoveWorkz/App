@@ -102,7 +102,7 @@ const Category = (props: CategoryProps) => {
               styles.layout,
               styles[size],
               {
-                backgroundColor: colors.black,
+                backgroundColor: colors.bgLayout,
               },
             ]}
           />
@@ -173,7 +173,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   layout: {
     position: 'absolute',
-    opacity: 0.4,
     width: '100%',
     borderRadius: borderRadius,
     ...globalStyles.categoryLayoutZIndex,

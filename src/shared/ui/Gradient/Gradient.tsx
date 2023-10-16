@@ -26,7 +26,7 @@ export const Gradient = (props: GradientProps) => {
   return (
     <LinearGradient
       style={[styles.gradient, styles[size], style]}
-      colors={['#8CBBE9', '#ECB7FF']}
+      colors={['#83C0F8', '#847AED']}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}>
       {children}

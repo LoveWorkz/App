@@ -22,7 +22,10 @@ export type Colors =
   | 'purchaseButtonColor'
   | 'secondaryError'
   | 'skeletonColor'
-  | 'skeletonHighlightColor';
+  | 'skeletonHighlightColor'
+  | 'bgForgotPasswordPopupColor'
+  | 'bgPopup'
+  | 'bgLayout';
 
 export type ColorType = Record<Colors, string>;
 
@@ -47,6 +50,8 @@ const light: ColorType = {
   purchaseButtonColor: '#B9C3FD',
   skeletonColor: '#E1E9EE',
   skeletonHighlightColor: '#F2F8FC',
+  bgPopup: '#3951804D',
+  bgLayout: 'rgba(57, 81, 128, 0.5)',
 
   // text colors
   primaryTextColor: '#395180',
@@ -56,6 +61,7 @@ const light: ColorType = {
   challengeCategoryNameColor: '#B6B6BD',
   categoryAndFavoritesTextColor: '#395180',
   purchaseDescriptionColor: '#8698BB',
+  bgForgotPasswordPopupColor: '#F4F6FA',
 
   // icons colors
   appleIconColor: '#1B1B1B',
@@ -76,6 +82,9 @@ const dark: ColorType = {
   purchaseButtonColor: '#242832',
   skeletonColor: '#2E3440',
   skeletonHighlightColor: '#242832',
+  bgForgotPasswordPopupColor: '#242832',
+  bgPopup: '#000000',
+  bgLayout: 'rgba(0, 0, 0, 0.5)',
 
   // text colors
   primaryTextColor: '#C0C3CF',

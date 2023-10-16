@@ -33,7 +33,10 @@ const ResetPasswordModal = () => {
 
   return (
     <Modal
-      contentStyle={styles.content}
+      contentStyle={[
+        styles.content,
+        {backgroundColor: colors.bgForgotPasswordPopupColor},
+      ]}
       visible={resetPasswordStore.isResetPasswordModalVisible}
       onClose={onCancelHandler}>
       <AppText

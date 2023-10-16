@@ -42,14 +42,7 @@ const TabRoute = () => {
 
           const getIcon = getTabIcon(routeName);
 
-          return (
-            <IconItem
-              icon={getIcon}
-              focused={focused}
-              size={routeName === TabRoutesNames.HOME ? 25 : 0}
-              name={routeName}
-            />
-          );
+          return <IconItem icon={getIcon} focused={focused} name={routeName} />;
         },
       })}>
       <Tab.Group>

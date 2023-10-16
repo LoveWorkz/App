@@ -10,11 +10,10 @@ interface IconItemProps {
   name: string;
   focused: boolean;
   icon: (param: {isGradient: boolean; isDarkMode: boolean}) => any;
-  size: number;
 }
 
 const IconItem = (props: IconItemProps) => {
-  const {name, focused, icon, size} = props;
+  const {name, focused, icon} = props;
 
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
@@ -27,10 +26,10 @@ const IconItem = (props: IconItemProps) => {
     return [
       styles.round,
       {
-        marginBottom: size ? 0 : 5,
+        marginBottom: 5,
       },
     ];
-  }, [size]);
+  }, []);
 
   return (
     <Pressable style={styles.iconWrapper} onPress={onPressHandler}>
@@ -38,8 +37,8 @@ const IconItem = (props: IconItemProps) => {
       {!focused && <View style={roundStyle} />}
       <SvgXml
         xml={icon({isGradient: focused, isDarkMode})}
-        height={size || 16}
-        width={size || 16}
+        height={16}
+        width={16}
       />
     </Pressable>
   );
