@@ -9,6 +9,7 @@ import {BooksPage} from '@src/pages/BooksPage';
 import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
 import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 import {Layout} from '@src/app/providers/layout';
+import {TabName} from '@src/shared/types/types';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -34,11 +35,13 @@ type NewRouteProps = {
   headerShown?: boolean;
   HeaderLeft?: ComponentType<any>;
   isHomePage?: boolean;
+  tabName: TabName;
 };
 
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
+    tabName: 'Categories',
     Element: (props: ParamListBase) => {
       return (
         <Layout
@@ -56,6 +59,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   },
   [TabRoutesNames.CHALLENGES]: {
     name: tabRoutePaths.challenges,
+    tabName: 'Challenges',
     Element: (props: ParamListBase) => {
       return (
         <Layout
@@ -73,6 +77,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   },
   [TabRoutesNames.HOME]: {
     name: tabRoutePaths.home,
+    tabName: 'Home',
     Element: (props: ParamListBase) => {
       return (
         <Layout
@@ -91,6 +96,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,
+    tabName: 'Books',
     Element: (props: ParamListBase) => {
       return (
         <Layout
@@ -108,6 +114,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   },
   [TabRoutesNames.SHOP]: {
     name: tabRoutePaths.shop,
+    tabName: 'Shop',
     Element: (props: ParamListBase) => {
       return (
         <Layout

@@ -34,7 +34,7 @@ const ResetPassword = () => {
       {resetPasswordStore.isCheckEmailDialogOpen ? (
         <Dialog
           visible={resetPasswordStore.isCheckEmailDialogOpen}
-          confirmText={'ok'}
+          confirmText={t('ok')}
           onConfirmHandler={onConfirmHandler}
           title={t('auth.check_your_email') || ''}
         />

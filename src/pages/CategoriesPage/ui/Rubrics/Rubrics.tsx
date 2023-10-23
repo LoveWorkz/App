@@ -11,6 +11,8 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import InformationBlock from '@src/shared/ui/InformationBlock/InformationBlock';
+import {getInformationBlockContent} from '@src/widgets/InformationBlock';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import categoriesStore from '../../model/store/categoriesStore';
 
@@ -24,6 +26,8 @@ const Rubrics = (props: RubricsProps) => {
   const colors = useColors();
   const {t} = useTranslation();
   let rubrics = categoriesStore.rubrics;
+
+  const informationBlockContent = getInformationBlockContent('Rubrics');
 
   if (isLoading) {
     rubrics = getEntityExampleDataForSkeleton({
@@ -46,12 +50,20 @@ const Rubrics = (props: RubricsProps) => {
           <Skeleton width={100} height={18} />
         </View>
       ) : (
-        <AppText
-          style={[{color: colors.primaryTextColor}]}
-          weight={'500'}
-          size={TextSize.LEVEL_5}
-          text={t('rubrics.title')}
-        />
+        <View style={styles.titleWrapper}>
+          <AppText
+            style={[{color: colors.primaryTextColor}]}
+            weight={'500'}
+            size={TextSize.LEVEL_5}
+            text={t('rubrics.title')}
+          />
+          <View>
+            <InformationBlock
+              title={informationBlockContent.title}
+              text={informationBlockContent.text}
+            />
+          </View>
+        </View>
       )}
       {rubrics.map(rubric => {
         return rubric.questions.length ? (
@@ -72,5 +84,10 @@ export default memo(observer(Rubrics));
 const styles = StyleSheet.create({
   rubricWrapper: {
     marginTop: verticalScale(20),
+  },
+  titleWrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

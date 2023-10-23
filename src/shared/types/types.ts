@@ -18,3 +18,11 @@ export enum DocumentType {
   CATEGORY = 'category',
   FAVORITE = 'favorite',
 }
+
+export type TabName =
+  | 'Categories'
+  | 'Rubrics'
+  | 'Challenges'
+  | 'Books'
+  | 'Shop'
+  | 'Home';

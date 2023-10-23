@@ -40,3 +40,5 @@ export {default as defaultAvatarImageDark} from './dark/defaultAvatarImageDark.p
 
 export {default as shopTopBackground} from './light/shopTopBackground.png';
 export {default as shopTopBackgroundDark} from './dark/shopTopBackground.png';
+
+export {default as lockedImage} from './lockedImage.png';

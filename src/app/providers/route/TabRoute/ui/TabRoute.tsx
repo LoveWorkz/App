@@ -54,6 +54,7 @@ const TabRoute = () => {
             headerShown,
             HeaderLeft,
             isHomePage,
+            tabName,
           }) => {
             return (
               <Tab.Screen
@@ -76,7 +77,9 @@ const TabRoute = () => {
                       <HeaderLeft {...route.params} title={headerTitle} />
                     ) : null,
                   headerRight: () =>
-                    headerShown ? <TabHeaderRight {...route.params} /> : null,
+                    headerShown ? (
+                      <TabHeaderRight tabName={tabName} {...route.params} />
+                    ) : null,
                 })}
               />
             );
