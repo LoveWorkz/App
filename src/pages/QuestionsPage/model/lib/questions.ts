@@ -1,4 +1,4 @@
-import {goodMoodQuestionCard, QuestionType} from '@src/entities/QuestionCard';
+import {QuestionType} from '@src/entities/QuestionCard';
 import {
   Action_CARD,
   questionImage1,
@@ -15,7 +15,6 @@ import {
   questionImageDark6,
   WILD_CARD,
 } from '@src/shared/assets/images';
-import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
 
 export const getQuestionsImages = (isDarkMode: boolean) => {
   return [
@@ -71,22 +70,4 @@ export const getFormattedQuestionsWrapper = ({
       return newQuestions;
     });
   };
-};
-
-export const getGoodMoodQuestionCard = (
-  questions: QuestionType[],
-  index?: number,
-): QuestionType[] => {
-  const defaultIndex = getDefaultIndexForCarousel(index);
-
-  const currentQuestion = questions.find((_, i) => i === defaultIndex);
-  if (!currentQuestion) {
-    return [];
-  }
-
-  return [
-    currentQuestion,
-    {...goodMoodQuestionCard, image: currentQuestion.image},
-    currentQuestion,
-  ];
 };

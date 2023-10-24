@@ -6,6 +6,9 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections} from '@src/shared/types/firebase';
 import {QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {DocumentType} from '@src/shared/types/types';
 import {
   SessionType,
   SubCategories,
@@ -14,6 +17,7 @@ import {
 
 class SessionStore {
   sessions: SessionType[] = [];
+  session: SessionType | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -23,10 +27,29 @@ class SessionStore {
     this.sessions = sessions;
   };
 
-  fetchSessions = async (
-    categoryId: string,
-    questionsMap: Record<string, QuestionType>,
-  ) => {
+  setSession = (session: SessionType) => {
+    this.session = session;
+  };
+
+  selectSession = ({
+    session,
+    categoryId,
+  }: {
+    session: SessionType;
+    categoryId?: string;
+  }) => {
+    if (!categoryId) {
+      return;
+    }
+
+    this.setSession(session);
+    navigation.navigate(AppRouteNames.QUESTIONS, {
+      type: DocumentType.CATEGORY,
+      id: categoryId,
+    });
+  };
+
+  fetchSessions = async (categoryId: string) => {
     try {
       crashlytics().log('Fetching sessions');
 
@@ -46,42 +69,44 @@ class SessionStore {
         (a, b) => a.sessionNumber - b.sessionNumber,
       );
 
-      let questions: QuestionType[] = [];
-
-      sortedSessions.forEach(session => {
-        const subCategories = session.subCategories;
-        // receiving questions and sorting by sessions, by sub category and by difficulty
-        const sessionQuestions = this.sortAndReturnQuestions({
-          subCategories,
-          questionsMap,
-        });
-
-        const lastQuestion = sessionQuestions[sessionQuestions.length - 1];
-        const newQuestions = sessionQuestions.slice(
-          0,
-          sessionQuestions.length - 1,
-        );
-
-        questions = [
-          ...questions,
-          ...newQuestions,
-          // the last question inside session should be challenge question
-          {
-            ...lastQuestion,
-            type: 'CHALLANGE_CARD',
-            challengeId: session.challange,
-          },
-        ];
-      });
-
       runInAction(() => {
         this.sessions = sortedSessions;
       });
-
-      return questions;
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  getSessionQuestions = (questionsMap: Record<string, QuestionType>) => {
+    let questions: QuestionType[] = [];
+
+    const session = this.session;
+    if (!session) {
+      return [];
+    }
+
+    const subCategories = session.subCategories;
+    // receiving questions and sorting by sessions, by sub category and by difficulty
+    const sessionQuestions = this.sortAndReturnQuestions({
+      subCategories,
+      questionsMap,
+    });
+
+    const lastQuestion = sessionQuestions[sessionQuestions.length - 1];
+    const newQuestions = sessionQuestions.slice(0, sessionQuestions.length - 1);
+
+    questions = [
+      ...questions,
+      ...newQuestions,
+      // the last question inside session should be challenge question
+      {
+        ...lastQuestion,
+        type: 'CHALLANGE_CARD',
+        challengeId: session.challange,
+      },
+    ];
+
+    return questions;
   };
 
   sortAndReturnQuestions = ({

@@ -20,6 +20,7 @@ import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/app/providers/layout';
 import {PartnerEditPage} from '@src/pages/PartnerEditPage';
+import {SessionsPage} from '@src/pages/SessionsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -40,6 +41,7 @@ export enum AppRouteNames {
   CATEGORY_DETAILS = 'categoryDetails',
   QUESTIONS = 'questions',
   PARTNER_EDIT = 'partnerEdit',
+  SESSIONS = 'sessions',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -61,6 +63,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
   [AppRouteNames.QUESTIONS]: 'questions',
   [AppRouteNames.PARTNER_EDIT]: 'partnerEdit',
+  [AppRouteNames.SESSIONS]: 'sessions',
 };
 
 type NewRouteProps = {
@@ -252,6 +255,18 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <PartnerEditPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.SESSIONS]: {
+    name: appRoutePaths.sessions,
+    headerShown: true,
+    headerTitle: '',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout isPageScrolling>
+          <SessionsPage {...props} />
         </Layout>
       );
     },

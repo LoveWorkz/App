@@ -66,8 +66,9 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
       navigation.navigate(TabRoutesNames.SHOP);
     } else {
       category?.id &&
-        navigation.replace(AppRouteNames.QUESTIONS, {
+        navigation.replace(AppRouteNames.SESSIONS, {
           type: DocumentType.CATEGORY,
+          title: category.displayName[language],
           id: category.id,
         });
     }

@@ -68,8 +68,9 @@ const Category = (props: CategoryProps) => {
         id,
       });
     } else {
-      navigation.navigate(AppRouteNames.QUESTIONS, {
+      navigation.navigate(AppRouteNames.SESSIONS, {
         type: DocumentType.CATEGORY,
+        title: displayName[language],
         id,
       });
     }

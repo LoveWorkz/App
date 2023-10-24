@@ -49,7 +49,7 @@ export const InformationBlockPopup = (props: InformationBlockPopupProps) => {
         <AppText
           style={[styles.title, {color: colors.primaryTextColor}]}
           weight={'700'}
-          size={TextSize.LEVEL_5}
+          size={TextSize.LEVEL_6}
           text={title}
         />
         <View style={styles.texts}>

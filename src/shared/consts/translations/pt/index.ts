@@ -14,6 +14,7 @@ import quotes from './quotes.json';
 import splash from './splash.json';
 import error from './error.json';
 import rubricFilterItem from './rubricFilterItem.json';
+import sessions from './sessions.json';
 
 export const pt = {
   ...common,
@@ -32,4 +33,5 @@ export const pt = {
   ...splash,
   ...error,
   ...rubricFilterItem,
+  ...sessions,
 };

@@ -308,7 +308,7 @@ class QuestionsStore {
       let questions: QuestionType[] | undefined = [];
 
       if (key === DocumentType.CATEGORY) {
-        questions = await sessionStore.fetchSessions(id, questionsMap);
+        questions = sessionStore.getSessionQuestions(questionsMap);
       } else {
         const rubircquestionsIds = rubricStore.rubric?.questions;
         if (!rubircquestionsIds) {
