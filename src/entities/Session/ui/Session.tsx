@@ -1,41 +1,63 @@
-import React, {memo} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import React, {memo, useCallback, useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {UnlockedIcon} from '@src/shared/assets/icons/Unlocked';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {OutlineStarIcon} from '@src/shared/assets/icons/OutlineStar';
+import {StarIcon} from '@src/shared/assets/icons/Star';
+import {Button} from '@src/shared/ui/Button/Button';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import {SessionType} from '../model/types/sessionType';
 import sessionStore from '../model/store/sessionStore';
+import PresSessionModal from './PreSessionModal/PreSessionModal';
 
 interface SessionProps {
   count: string;
-  isLocked: boolean;
+  isBlocked: boolean;
   session: SessionType;
-  categoryId?: string;
   isLoading?: boolean;
+  isMarked: boolean;
+  sessionId: string;
 }
 
 const sessionHeight = 60;
 const sessionBorderRadius = 20;
 
 const Session = (props: SessionProps) => {
-  const {count, isLocked, session, categoryId, isLoading = false} = props;
+  const {
+    count,
+    isBlocked,
+    session,
+    isLoading = false,
+    isMarked,
+    sessionId,
+  } = props;
 
   const colors = useColors();
   const {theme} = useTheme();
   const {t} = useTranslation();
 
-  const onPressHandler = () => {
-    sessionStore.selectSession({session, categoryId});
+  const [visible, setVisible] = useState(false);
+
+  const onSessionPressHandler = () => {
+    setVisible(true);
   };
+
+  const onStarPressHandler = () => {
+    sessionStore.markSession({sessionId, isMarked});
+  };
+
+  const goToQuestions = useCallback(() => {
+    setVisible(false);
+    sessionStore.selectSession({session});
+  }, [session]);
 
   if (isLoading) {
     return (
@@ -48,14 +70,15 @@ const Session = (props: SessionProps) => {
   }
 
   return (
-    <Pressable onPress={onPressHandler} style={styles.wrapper}>
+    <View style={styles.wrapper}>
       <View>
         <SvgXml
-          xml={isLocked ? LockedIcon : UnlockedIcon}
-          style={[styles.icon, isLocked ? styles.lockIcon : {}]}
+          xml={isBlocked ? LockedIcon : UnlockedIcon}
+          style={[styles.icon, isBlocked ? styles.lockIcon : {}]}
         />
       </View>
-      <View
+      <TouchableOpacity
+        onPress={onSessionPressHandler}
         style={[
           styles.Session,
           {
@@ -77,12 +100,19 @@ const Session = (props: SessionProps) => {
             text={count}
           />
         </View>
-        <SvgXml
-          xml={getArrowRightIcon({isGradient: true})}
-          style={styles.arrowIcon}
-        />
-      </View>
-    </Pressable>
+        <Button onPress={onStarPressHandler} style={styles.starBtn}>
+          <SvgXml
+            xml={isMarked ? StarIcon : OutlineStarIcon}
+            style={styles.arrowIcon}
+          />
+        </Button>
+      </TouchableOpacity>
+      <PresSessionModal
+        goToQuestions={goToQuestions}
+        visible={visible}
+        setVisible={setVisible}
+      />
+    </View>
   );
 };
 
@@ -120,5 +150,8 @@ const styles = StyleSheet.create({
   },
   lockIcon: {
     opacity: 0.6,
+  },
+  starBtn: {
+    paddingHorizontal: horizontalScale(8),
   },
 });

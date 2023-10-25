@@ -186,26 +186,6 @@ class CategoriesStore {
     });
   };
 
-  getNextCategory = ({currentCategoryId}: {currentCategoryId: string}) => {
-    try {
-      if (!currentCategoryId) {
-        return;
-      }
-
-      const currentCategoryIndex = this.categories.findIndex(
-        category => category.id === currentCategoryId,
-      );
-
-      if (currentCategoryIndex !== -1) {
-        const nextCategory = this.categories[currentCategoryIndex + 1];
-
-        return nextCategory;
-      }
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
   toggleCategoryPurchasedStatus = async (isBlocked: boolean) => {
     try {
       const promises: Promise<void>[] = [];

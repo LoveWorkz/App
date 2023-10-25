@@ -4,7 +4,7 @@ import {InterstitialAd} from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections} from '@src/shared/types/firebase';
-import {categoryStore} from '@src/entities/Category';
+import {categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
@@ -15,9 +15,9 @@ import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
-import {getNumbersDiff} from '@src/shared/lib/common';
+import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {sessionStore} from '@src/entities/Session';
+import {lastSessionNumber, sessionStore} from '@src/entities/Session';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -85,7 +85,6 @@ class QuestionsStore {
           }
           rubricStore.getAndSetRubric(id);
           await this.fetchSpecificQuestions({
-            id,
             key: DocumentType.RUBRIC,
           });
           // init current question id for the first time
@@ -100,11 +99,10 @@ class QuestionsStore {
           });
           break;
         case DocumentType.CATEGORY:
-          if (!id) {
+          const sessionId = sessionStore.session?.id;
+          if (!(id && sessionId)) {
             return;
           }
-
-          categoryStore.getAndSetCategory({id});
 
           const isLastCategoryKey = categoryStore.getIsLastCategory();
           // if it's the last category (All In One) get all questions
@@ -112,7 +110,6 @@ class QuestionsStore {
             await this.fetchAllQuestions();
           } else {
             await this.fetchSpecificQuestions({
-              id,
               key: DocumentType.CATEGORY,
             });
           }
@@ -121,12 +118,14 @@ class QuestionsStore {
           await categoryStore.initUserCategoryQuestionId({
             id,
             questions: this.questions,
+            sessionId,
           });
           // init questions page info
           categoryStore.getQuestionSwipeInfoForCategory({
             initialQuestionId: questionId,
             questions: this.questions,
             language,
+            sessionId,
           });
 
           break;
@@ -155,8 +154,9 @@ class QuestionsStore {
 
       const {question, questionNumber, interstitial, key, documentId} =
         swipeData;
+      const sessionId = sessionStore.session?.id;
 
-      if (!question) {
+      if (!(question && sessionId)) {
         return;
       }
 
@@ -168,12 +168,13 @@ class QuestionsStore {
           type: key,
           questions: this.questions,
           questionId: question.id,
+          sessionId,
         });
       }
 
       switch (key) {
         case DocumentType.CATEGORY:
-          this.categorySwipeLogic(swipeData);
+          this.categorySwipeLogic({...swipeData, sessionId});
           break;
         case DocumentType.RUBRIC:
           this.rubricSwipeLogic(swipeData);
@@ -192,16 +193,18 @@ class QuestionsStore {
     question: QuestionType;
     key: DocumentType;
     language: LanguageValueType;
+    sessionId: string;
   }) => {
     try {
       crashlytics().log('Swiping category questions.');
 
-      const {question, language} = categorySwipeParam;
+      const {question, language, sessionId} = categorySwipeParam;
 
       categoryStore.getQuestionSwipeInfoForCategory({
         questionId: question.id,
         questions: this.questions,
         language,
+        sessionId,
       });
 
       let categoryId = question.categoryId;
@@ -220,11 +223,12 @@ class QuestionsStore {
       await userCategoryStore.updateUserCategory({
         id: categoryId,
         data: question.id,
-        field: 'currentQuestion',
+        field: `sessions.${sessionId}.currentQuestion`,
       });
 
       this.checkIfAllQuestionsSwiped({
         questionId: question.id,
+        sessionId,
       });
     } catch (e) {
       errorHandler({error: e});
@@ -281,13 +285,7 @@ class QuestionsStore {
     }
   };
 
-  fetchSpecificQuestions = async ({
-    id,
-    key,
-  }: {
-    id: string;
-    key: DocumentType;
-  }) => {
+  fetchSpecificQuestions = async ({key}: {key: DocumentType}) => {
     try {
       crashlytics().log(`Fetching ${key} questions`);
 
@@ -305,6 +303,7 @@ class QuestionsStore {
       allQuestions.forEach(question => {
         questionsMap[question.id] = question;
       });
+
       let questions: QuestionType[] | undefined = [];
 
       if (key === DocumentType.CATEGORY) {
@@ -405,11 +404,14 @@ class QuestionsStore {
     return favoritesQuestions;
   };
 
-  checkIfAllQuestionsSwiped = async (param: {questionId: string}) => {
+  checkIfAllQuestionsSwiped = async (param: {
+    questionId: string;
+    sessionId: string;
+  }) => {
     try {
       crashlytics().log('Checking are all questions swiped.');
 
-      const {questionId} = param;
+      const {questionId, sessionId} = param;
 
       const questionInfo = questionStore.getQuestionInfo({
         questionId,
@@ -421,31 +423,47 @@ class QuestionsStore {
 
       // check if user reached the last question of category
       const currentQuestionNumber = questionInfo.currentQuestionNumber;
-      const lastQueston = this.questionsSize;
-      const isLastQuestion = currentQuestionNumber === lastQueston;
-
-      const isLastCategory = categoryStore.getIsLastCategory();
-      // we don't need any logic for last category
-      if (isLastCategory) {
-        return;
-      }
+      const lastQuestion = this.questionsSize;
+      const isLastQuestion = currentQuestionNumber === lastQuestion;
 
       if (isLastQuestion) {
         const category = categoryStore.category;
-        if (!category) {
+        const session = sessionStore.session;
+        if (!(category && session)) {
           return;
         }
 
-        // the modal will be opened only one time
-        if (category.isAllQuestionsSwiped) {
+        const isLastSession = session.sessionNumber === lastSessionNumber;
+        // if its last session the update the next category
+        if (isLastSession) {
+          const isLastCategory = categoryStore.getIsLastCategory();
+          // we don't need any logic for last category
+          if (isLastCategory) {
+            return;
+          }
+
+          // the modal will be opened only one time
+          if (category.isAllSessionsPassed) {
+            return;
+          }
+
+          this.updateUserDataAfterSwipedAllQuestions({
+            categoryId: category.id,
+          });
+
+          this.setCongratsModalVisible(true);
+
           return;
         }
 
-        this.updateUserDataAfterSwipedAllQuestions({
+        if (category.sessions[sessionId].isAllQuestionsSwiped) {
+          return;
+        }
+
+        sessionStore.updateUserSessionAfterSwipedAllQuestions({
           categoryId: category.id,
+          sessionId,
         });
-
-        this.setCongratsModalVisible(true);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -458,8 +476,10 @@ class QuestionsStore {
     categoryId: string;
   }) => {
     try {
-      const nextCategory = categoriesStore.getNextCategory({
-        currentCategoryId: categoryId,
+      const categories = categoriesStore.categories;
+      const nextCategory = getNextElementById<CategoryType>({
+        id: categoryId,
+        array: categories,
       });
 
       if (!nextCategory) {
@@ -472,7 +492,7 @@ class QuestionsStore {
 
       await userCategoryStore.updateUserCategory({
         id: categoryId,
-        field: 'isAllQuestionsSwiped',
+        field: 'isAllSessionsPassed',
         data: true,
       });
 

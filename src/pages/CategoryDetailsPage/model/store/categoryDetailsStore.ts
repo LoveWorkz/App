@@ -15,17 +15,7 @@ class CategoryDetailsStore {
     makeAutoObservable(this);
   }
 
-  init = (id: string) => {
-    try {
-      crashlytics().log('Fetching category details page.');
-
-      categoryStore.getAndSetCategory({id});
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
-  hideCategoryDetails = async (id: string) => {
+  hideCategoryDetails = async ({id, title}: {id: string; title: string}) => {
     try {
       crashlytics().log(
         'User clicked the "Do not show again" button on category details page.',
@@ -37,9 +27,11 @@ class CategoryDetailsStore {
         data: false,
       });
 
-      navigation.replace(AppRouteNames.QUESTIONS, {
-        id,
+      categoryStore.getAndSetCategory({id});
+
+      navigation.replace(AppRouteNames.SESSIONS, {
         type: DocumentType.CATEGORY,
+        title,
       });
     } catch (e) {
       errorHandler({error: e});

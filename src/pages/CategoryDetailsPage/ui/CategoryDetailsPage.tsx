@@ -1,5 +1,5 @@
-import React, {memo, useEffect, useMemo} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import React, {memo, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
@@ -31,12 +31,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {isPlatformIos} from '@src/shared/consts/common';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 
-interface CategoryDetailsPageProps {
-  route?: {params: {id: string}};
-}
-
-export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
-  const {route} = props;
+export const CategoryDetailsPage = () => {
   const {t, i18n} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
@@ -50,10 +45,6 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   const language = i18n.language as LanguageValueType;
   const category = categoryStore.category;
   const categoryImage = category?.image.large;
-
-  useEffect(() => {
-    route?.params.id && categoryDetailsStore.init(route.params.id);
-  }, [route?.params.id]);
 
   const uri = useMemo(() => {
     return {
@@ -75,7 +66,11 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
   };
 
   const dontShowAgainHandler = () => {
-    category?.id && categoryDetailsStore.hideCategoryDetails(category.id);
+    category?.id &&
+      categoryDetailsStore.hideCategoryDetails({
+        id: category.id,
+        title: category.displayName[language],
+      });
   };
 
   if (!category) {
@@ -134,14 +129,14 @@ export const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
           />
         </Button>
         {!category.isBlocked && (
-          <Pressable onPress={dontShowAgainHandler}>
+          <Button onPress={dontShowAgainHandler}>
             <AppText
               style={styles.dontShowAgain}
               weight={'600'}
               size={TextSize.LEVEL_4}
               text={t('dont_show_again')}
             />
-          </Pressable>
+          </Button>
         )}
       </View>
     </View>

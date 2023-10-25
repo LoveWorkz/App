@@ -11,15 +11,20 @@ import {Modal} from '@src/shared/ui/Modal/Modal';
 interface PresSessionModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  goToQuestions: () => void;
 }
 
 const PresSessionModal = (props: PresSessionModalProps) => {
-  const {visible, setVisible} = props;
+  const {visible, setVisible, goToQuestions} = props;
 
   const colors = useColors();
 
   const onCancelHandler = () => {
     setVisible?.(false);
+  };
+
+  const onGoToQuestions = () => {
+    goToQuestions();
   };
 
   return (
@@ -66,7 +71,10 @@ const PresSessionModal = (props: PresSessionModalProps) => {
             text={'Skip it'}
           />
         </Button>
-        <Button theme={ButtonTheme.GRADIENT} style={styles.letsDoThisBtn}>
+        <Button
+          onPress={onGoToQuestions}
+          theme={ButtonTheme.GRADIENT}
+          style={styles.letsDoThisBtn}>
           <AppText
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}

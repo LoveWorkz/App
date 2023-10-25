@@ -9,11 +9,10 @@ import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
-import {
-  SessionType,
-  SubCategories,
-  SubCategoriesKeys,
-} from '../types/sessionType';
+import {categoryStore} from '@src/entities/Category';
+import {userCategoryStore} from '@src/entities/UserCategory';
+import {getNextElementById} from '@src/shared/lib/common';
+import {SessionType} from '../types/sessionType';
 
 class SessionStore {
   sessions: SessionType[] = [];
@@ -31,13 +30,8 @@ class SessionStore {
     this.session = session;
   };
 
-  selectSession = ({
-    session,
-    categoryId,
-  }: {
-    session: SessionType;
-    categoryId?: string;
-  }) => {
+  selectSession = ({session}: {session: SessionType}) => {
+    const categoryId = categoryStore.category?.id;
     if (!categoryId) {
       return;
     }
@@ -49,9 +43,14 @@ class SessionStore {
     });
   };
 
-  fetchSessions = async (categoryId: string) => {
+  fetchSessions = async () => {
     try {
       crashlytics().log('Fetching sessions');
+
+      const categoryId = categoryStore.category?.id;
+      if (!categoryId) {
+        return;
+      }
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
@@ -61,8 +60,20 @@ class SessionStore {
         .collection(Collections.SESSIONS)
         .get({source});
 
+      const userCategories = userCategoryStore.userCategory;
+      if (!userCategories) {
+        return;
+      }
+
+      const userSessions = userCategories.categories[categoryId].sessions;
+      if (!userSessions) {
+        return;
+      }
+
+      // merge default and user sessions together
       const sessions = data.docs.map(doc => {
-        return {...doc.data(), id: doc.id};
+        const docId = doc.id.trim();
+        return {...doc.data(), ...userSessions[docId], id: docId};
       }) as SessionType[];
 
       const sortedSessions = [...sessions].sort(
@@ -78,68 +89,95 @@ class SessionStore {
   };
 
   getSessionQuestions = (questionsMap: Record<string, QuestionType>) => {
-    let questions: QuestionType[] = [];
-
     const session = this.session;
     if (!session) {
       return [];
     }
 
-    const subCategories = session.subCategories;
-    // receiving questions and sorting by sessions, by sub category and by difficulty
-    const sessionQuestions = this.sortAndReturnQuestions({
-      subCategories,
-      questionsMap,
+    const sessionQuestionsIds = session.questions;
+
+    const questions = sessionQuestionsIds.map(questionId => {
+      return questionsMap[questionId];
     });
-
-    const lastQuestion = sessionQuestions[sessionQuestions.length - 1];
-    const newQuestions = sessionQuestions.slice(0, sessionQuestions.length - 1);
-
-    questions = [
-      ...questions,
-      ...newQuestions,
-      // the last question inside session should be challenge question
-      {
-        ...lastQuestion,
-        type: 'CHALLANGE_CARD',
-        challengeId: session.challange,
-      },
-    ];
 
     return questions;
   };
 
-  sortAndReturnQuestions = ({
-    subCategories,
-    questionsMap,
+  markSession = async ({
+    sessionId,
+    isMarked,
   }: {
-    subCategories: SubCategories;
-    questionsMap: Record<string, QuestionType>;
+    sessionId: string;
+    isMarked: boolean;
   }) => {
-    const result: QuestionType[] = [];
-    const subKeys: Array<SubCategoriesKeys> = [
-      'WARM_UP',
-      'DEEP',
-      'INTENSIFY',
-      'HOT',
-    ];
+    try {
+      crashlytics().log('Mark session');
 
-    subKeys.forEach(k => {
-      const key = k as SubCategoriesKeys;
+      const categoryId = categoryStore.category?.id;
+      if (!categoryId) {
+        return;
+      }
 
-      if (subCategories[key]) {
-        const questions = subCategories[key].map(questionId => {
-          return {...questionsMap[questionId]};
+      const newMarkedValue = !isMarked;
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        data: newMarkedValue,
+        field: `sessions.${sessionId}.isMarked`,
+      });
+
+      runInAction(() => {
+        const markedSessions = this.sessions.map(session => {
+          if (sessionId === session.id) {
+            return {...session, isMarked: newMarkedValue};
+          }
+
+          return session;
         });
 
-        const sortedQuestions = [...questions].sort(
-          (a, b) => a.difficulty - b.difficulty,
-        );
-        result.push(...sortedQuestions);
-      }
-    });
+        this.sessions = markedSessions;
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
 
-    return result;
+  updateUserSessionAfterSwipedAllQuestions = async ({
+    categoryId,
+    sessionId,
+  }: {
+    categoryId: string;
+    sessionId: string;
+  }) => {
+    try {
+      crashlytics().log('Updating user session');
+
+      const sessions = this.sessions;
+
+      const nextSession = getNextElementById<SessionType>({
+        id: sessionId,
+        array: sessions,
+      });
+
+      if (!nextSession) {
+        return;
+      }
+      const nextSessionId = nextSession.id;
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: `sessions.${sessionId}.isAllQuestionsSwiped`,
+        data: true,
+      });
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: `sessions.${nextSessionId}.isBlocked`,
+        data: false,
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 }
 

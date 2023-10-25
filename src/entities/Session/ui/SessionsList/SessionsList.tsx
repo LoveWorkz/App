@@ -7,12 +7,11 @@ import Session from '../Session';
 import sessionStore from '../../model/store/sessionStore';
 
 interface SessionsListProps {
-  categoryId?: string;
   isFetching?: boolean;
 }
 
 const SessionsList = (props: SessionsListProps) => {
-  const {categoryId, isFetching} = props;
+  const {isFetching} = props;
 
   const sessions = sessionStore.sessions;
 
@@ -29,11 +28,12 @@ const SessionsList = (props: SessionsListProps) => {
               <Gradient style={styles.verticalLine} />
             )}
             <Session
+              isMarked={item.isMarked}
               isLoading={isFetching}
-              categoryId={categoryId}
               session={item}
               count={sessionNumber}
-              isLocked
+              isBlocked={item.isBlocked}
+              sessionId={item.id}
             />
           </View>
         );
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -30,
     left: 12,
-    opacity: 0.4,
+    opacity: 0.5,
   },
 });

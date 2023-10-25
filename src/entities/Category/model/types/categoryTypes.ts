@@ -1,3 +1,4 @@
+import {UserSessionType} from '@src/entities/Session';
 import {DisplayText} from '@src/shared/types/types';
 
 export enum CateorySize {
@@ -32,13 +33,10 @@ export interface CategoryType {
   leftSide?: boolean;
   size?: CateorySize;
   isCategoryDetailsVisible: boolean;
-  currentQuestion: string;
-  swipedQuestionsPercentage: number;
-  questionSwipeStartDate: string;
-  breakPointForCheckingDate: number;
-  isAllQuestionsSwiped: boolean;
   createdDate: string;
   displayName: DisplayText;
+  sessions: UserSessionType;
+  isAllSessionsPassed: boolean;
 }
 
 export interface CurrentCategory {

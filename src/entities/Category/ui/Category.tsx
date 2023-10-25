@@ -7,16 +7,15 @@ import FastImage from 'react-native-fast-image';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {DisplayText, DocumentType, StyleType} from '@src/shared/types/types';
+import {DisplayText, StyleType} from '@src/shared/types/types';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
-import {navigation} from '@src/shared/lib/navigation/navigation';
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CateorySize} from '../model/types/categoryTypes';
+import categoryStore from '../model/store/categoryStore';
 
 interface CategoryProps {
   style?: StyleType;
@@ -58,22 +57,12 @@ const Category = (props: CategoryProps) => {
   const isSizeL = size === CateorySize.L;
 
   const onCategoryPressHandler = () => {
-    if (isActionDisabled?.current) {
-      return;
-    }
-
-    if (isCategoryDetailsVisible) {
-      navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
-        title: displayName[language],
-        id,
-      });
-    } else {
-      navigation.navigate(AppRouteNames.SESSIONS, {
-        type: DocumentType.CATEGORY,
-        title: displayName[language],
-        id,
-      });
-    }
+    categoryStore.categoryPressHandler({
+      displayName: displayName[language],
+      categoryId: id,
+      isActionDisabled: isActionDisabled?.current,
+      isCategoryDetailsVisible,
+    });
   };
 
   if (isLoading) {

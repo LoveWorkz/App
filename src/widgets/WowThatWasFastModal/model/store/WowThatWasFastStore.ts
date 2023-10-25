@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {categoryStore, CategoryType} from '@src/entities/Category';
+import {categoryStore} from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
@@ -11,6 +11,7 @@ import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {SessionType} from '@src/entities/Session';
 import {breakPoint, minute} from '../consts/wowThatWasFast';
 
 class WowThatWasFastStore {
@@ -32,15 +33,18 @@ class WowThatWasFastStore {
   getDocument = async ({
     isCategory,
     documentId,
+    sessionId,
   }: {
     isCategory: boolean;
     documentId: string;
+    sessionId: string;
   }) => {
     try {
-      let document: RubricType | CategoryType | undefined;
+      let document: RubricType | SessionType | undefined;
 
       if (isCategory) {
-        document = await categoryStore.fetchCategory({id: documentId});
+        const category = await categoryStore.fetchCategory({id: documentId});
+        document = category?.sessions[sessionId] as SessionType;
       } else {
         document = await rubricStore.fetchRubric(documentId);
       }
@@ -56,17 +60,23 @@ class WowThatWasFastStore {
     documentId,
     type,
     questions,
+    sessionId,
   }: {
     questionId: string;
     documentId: string;
     type: DocumentType;
     questions: QuestionType[];
+    sessionId: string;
   }) => {
     try {
       crashlytics().log('Wow That Was Fast modal logic.');
 
       const isCategory = type === DocumentType.CATEGORY;
-      const document = await this.getDocument({isCategory, documentId});
+      const document = await this.getDocument({
+        isCategory,
+        documentId,
+        sessionId,
+      });
       if (!document) {
         return;
       }
@@ -77,9 +87,10 @@ class WowThatWasFastStore {
         questions,
         document,
         isCategory,
+        sessionId,
       });
 
-      this.checkIfQuestionsSwipedFast({id: documentId, isCategory});
+      this.checkIfQuestionsSwipedFast({id: documentId, isCategory, sessionId});
     } catch (e) {
       errorHandler({error: e});
     }
@@ -91,12 +102,14 @@ class WowThatWasFastStore {
     questions,
     isCategory,
     document,
+    sessionId,
   }: {
     questionId: string;
     documentId: string;
     questions: QuestionType[];
     isCategory: boolean;
-    document: RubricType | CategoryType;
+    document: RubricType | SessionType;
+    sessionId: string;
   }) => {
     try {
       const questionInfo = questionStore.getQuestionInfo({
@@ -112,11 +125,12 @@ class WowThatWasFastStore {
         currentQuestionIndex: questionInfo.currentQuestionNumber,
         isCategory,
         questions,
+        sessionId,
       });
 
       // if user swipe first time set first swipe date
       if (!document.questionSwipeStartDate) {
-        this.setSwipedQuestionsDate({id: documentId, isCategory});
+        this.setSwipedQuestionsDate({id: documentId, isCategory, sessionId});
       }
     } catch (e) {
       errorHandler({error: e});
@@ -126,14 +140,20 @@ class WowThatWasFastStore {
   checkIfQuestionsSwipedFast = async ({
     id,
     isCategory,
+    sessionId,
   }: {
     id: string;
     isCategory: boolean;
+    sessionId: string;
   }) => {
     try {
       crashlytics().log('Checking if question was scrolled fast.');
 
-      const document = await this.getDocument({isCategory, documentId: id});
+      const document = await this.getDocument({
+        isCategory,
+        documentId: id,
+        sessionId,
+      });
       if (!document) {
         return;
       }
@@ -168,7 +188,7 @@ class WowThatWasFastStore {
         if (isCategory) {
           await userCategoryStore.updateUserCategory({
             id,
-            field: 'breakPointForCheckingDate',
+            field: `sessions.${sessionId}.breakPointForCheckingDate`,
             data: newCheckTime,
           });
         } else {
@@ -180,7 +200,7 @@ class WowThatWasFastStore {
         }
 
         // set current date for next checking
-        this.setSwipedQuestionsDate({id, isCategory});
+        this.setSwipedQuestionsDate({id, isCategory, sessionId});
       }
     } catch (e) {
       errorHandler({error: e});
@@ -190,9 +210,11 @@ class WowThatWasFastStore {
   setSwipedQuestionsDate = async ({
     id,
     isCategory,
+    sessionId,
   }: {
     id: string;
     isCategory: boolean;
+    sessionId: string;
   }) => {
     try {
       crashlytics().log('Setting swiped questions Date.');
@@ -202,7 +224,7 @@ class WowThatWasFastStore {
       if (isCategory) {
         await userCategoryStore.updateUserCategory({
           id,
-          field: 'questionSwipeStartDate',
+          field: `sessions.${sessionId}.questionSwipeStartDate`,
           data: currentDate,
         });
       } else {
@@ -222,11 +244,13 @@ class WowThatWasFastStore {
     currentQuestionIndex,
     isCategory,
     questions,
+    sessionId,
   }: {
     id: string;
     currentQuestionIndex: number;
     isCategory: boolean;
     questions: QuestionType[];
+    sessionId: string;
   }) => {
     try {
       crashlytics().log('Setting swiped questions percentage.');
@@ -243,7 +267,7 @@ class WowThatWasFastStore {
       if (isCategory) {
         await userCategoryStore.updateUserCategory({
           id,
-          field: 'swipedQuestionsPercentage',
+          field: `sessions.${sessionId}.swipedQuestionsPercentage`,
           data: swipedQuestionsPercentage,
         });
       } else {

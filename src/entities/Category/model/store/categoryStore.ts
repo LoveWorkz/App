@@ -10,6 +10,9 @@ import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userCategoryStore} from '@src/entities/UserCategory';
+import {DocumentType} from '@src/shared/types/types';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
@@ -22,12 +25,21 @@ class CategoryStore {
   initUserCategoryQuestionId = async ({
     questions,
     id,
+    sessionId,
   }: {
     questions: QuestionType[];
     id: string;
+    sessionId: string;
   }) => {
     try {
-      if (this.category?.currentQuestion) {
+      const category = this.category;
+      if (!category) {
+        return;
+      }
+
+      // if currentQuestion is empty set initial currentQuestion
+      const currentQuestion = category.sessions[sessionId].currentQuestion;
+      if (currentQuestion) {
         return;
       }
 
@@ -35,7 +47,7 @@ class CategoryStore {
 
       await userCategoryStore.updateUserCategory({
         id,
-        field: 'currentQuestion',
+        field: `sessions.${sessionId}.currentQuestion`,
         data: firstQuestion.id,
       });
       runInAction(() => {
@@ -61,7 +73,7 @@ class CategoryStore {
 
       // default category
       const categoryData = await firestore()
-        .collection(Collections.CATEGORIES)
+        .collection(Collections.CATEGORIES_2)
         .doc(id)
         .get({source});
       // user custom category
@@ -97,7 +109,6 @@ class CategoryStore {
   getAndSetCategory = ({id}: {id: string}) => {
     try {
       const category = this.getCategory(id);
-
       if (!category) {
         return;
       }
@@ -108,6 +119,40 @@ class CategoryStore {
     } catch (e) {
       errorHandler({error: e});
     } finally {
+    }
+  };
+
+  categoryPressHandler = ({
+    isActionDisabled,
+    isCategoryDetailsVisible,
+    displayName,
+    categoryId,
+  }: {
+    isActionDisabled?: boolean;
+    isCategoryDetailsVisible: Boolean;
+    displayName: string;
+    categoryId: string;
+  }) => {
+    try {
+      if (isActionDisabled) {
+        return;
+      }
+
+      this.getAndSetCategory({id: categoryId});
+
+      if (isCategoryDetailsVisible) {
+        navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
+          title: displayName,
+        });
+      } else {
+        navigation.navigate(AppRouteNames.SESSIONS, {
+          type: DocumentType.CATEGORY,
+          title: displayName,
+          id: categoryId,
+        });
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 
@@ -151,11 +196,13 @@ class CategoryStore {
     language,
     questions,
     initialQuestionId,
+    sessionId,
   }: {
     language: LanguageValueType;
     questions: QuestionType[];
     questionId?: string;
     initialQuestionId?: string;
+    sessionId: string;
   }) => {
     try {
       let currentquestionId = questionId;
@@ -170,12 +217,12 @@ class CategoryStore {
       // it's working only for the first time
       if (isInitialSetUp) {
         const category = this.category;
-
         if (!category) {
           return;
         }
 
-        currentquestionId = initialQuestionId || category.currentQuestion;
+        currentquestionId =
+          initialQuestionId || category.sessions[sessionId].currentQuestion;
         categoryName = category.displayName[language as LanguageValueType];
       }
 

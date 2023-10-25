@@ -50,3 +50,18 @@ export const getEntityExampleDataForSkeleton = ({
 export const getDefaultIndexForCarousel = (index?: number) => {
   return (index || 1) - 1;
 };
+
+export const getNextElementById = <T extends {id: string}>({
+  id,
+  array,
+}: {
+  id: string;
+  array: T[];
+}): T | null => {
+  const index = array.findIndex(item => item.id === id);
+
+  const nextItem =
+    index !== -1 && index < array.length - 1 ? array[index + 1] : null;
+
+  return nextItem;
+};
