@@ -34,7 +34,7 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
       return [
         {
           ...categoryExample,
-          image: categoryExample.image.middle,
+          image: categoryExample.image?.middle,
           isLoading: true,
         },
       ];

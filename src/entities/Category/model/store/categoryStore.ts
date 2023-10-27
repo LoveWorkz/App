@@ -54,6 +54,11 @@ class CategoryStore {
         this.category = {
           ...this.category,
           currentQuestion: firstQuestion.id,
+          sessions: {
+            [sessionId]: {
+              currentQuestion: firstQuestion.id,
+            },
+          },
         } as CategoryType;
       });
     } catch (e) {

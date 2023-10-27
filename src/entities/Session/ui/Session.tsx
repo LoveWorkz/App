@@ -1,157 +1,70 @@
-import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import {useTranslation} from 'react-i18next';
+import {observer} from 'mobx-react-lite';
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import {useColors} from '@src/app/providers/colorsProvider';
-import {horizontalScale} from '@src/shared/lib/Metrics';
-import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
-import {useTheme} from '@src/app/providers/themeProvider';
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {UnlockedIcon} from '@src/shared/assets/icons/Unlocked';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {OutlineStarIcon} from '@src/shared/assets/icons/OutlineStar';
-import {StarIcon} from '@src/shared/assets/icons/Star';
-import {Button} from '@src/shared/ui/Button/Button';
-import {LockedIcon} from '@src/shared/assets/icons/Locked';
-import {SessionType} from '../model/types/sessionType';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import sessionStore from '../model/store/sessionStore';
-import PresSessionModal from './PreSessionModal/PreSessionModal';
+import CategoryBlock from './CategoryBlock/CategoryBlock';
+import SessionsList from './SessionsList/SessionsList';
 
 interface SessionProps {
-  count: string;
-  isBlocked: boolean;
-  session: SessionType;
-  isLoading?: boolean;
-  isMarked: boolean;
-  sessionId: string;
+  isCategoryAllInOne: boolean;
+  isFetching: boolean;
 }
 
-const sessionHeight = 60;
-const sessionBorderRadius = 20;
-
 const Session = (props: SessionProps) => {
-  const {
-    count,
-    isBlocked,
-    session,
-    isLoading = false,
-    isMarked,
-    sessionId,
-  } = props;
+  const {isCategoryAllInOne, isFetching} = props;
 
-  const colors = useColors();
-  const {theme} = useTheme();
-  const {t} = useTranslation();
+  let sessions = sessionStore.sessions;
+  const allSessions = sessionStore.allSessions;
 
-  const [visible, setVisible] = useState(false);
-
-  const onSessionPressHandler = () => {
-    setVisible(true);
-  };
-
-  const onStarPressHandler = () => {
-    sessionStore.markSession({sessionId, isMarked});
-  };
-
-  const goToQuestions = useCallback(() => {
-    setVisible(false);
-    sessionStore.selectSession({session});
-  }, [session]);
-
-  if (isLoading) {
+  if (isFetching) {
     return (
-      <Skeleton
-        width={'100%'}
-        height={sessionHeight}
-        borderRadius={sessionBorderRadius}
-      />
+      <>
+        {[1, 2, 3, 4].map(item => {
+          return (
+            <View key={item} style={styles.skeletonItem}>
+              <Skeleton width={'100%'} height={60} borderRadius={20} />
+            </View>
+          );
+        })}
+      </>
+    );
+  }
+
+  if (isCategoryAllInOne) {
+    return (
+      <View>
+        {allSessions.map((item, i) => {
+          return (
+            <View key={i.toString()} style={styles.item}>
+              <CategoryBlock
+                sessions={item.sessions}
+                title={item.categoryName}
+                categoryKey={item.categoryName}
+              />
+            </View>
+          );
+        })}
+      </View>
     );
   }
 
   return (
-    <View style={styles.wrapper}>
-      <View>
-        <SvgXml
-          xml={isBlocked ? LockedIcon : UnlockedIcon}
-          style={[styles.icon, isBlocked ? styles.lockIcon : {}]}
-        />
-      </View>
-      <TouchableOpacity
-        onPress={onSessionPressHandler}
-        style={[
-          styles.Session,
-          {
-            ...getShadowOpacity(theme).shadowOpacity_level_2,
-            backgroundColor: colors.bgSecondaryColor,
-          },
-        ]}>
-        <View style={styles.textWrapper}>
-          <AppText
-            style={[styles.text, {color: colors.primaryTextColor}]}
-            weight={'500'}
-            size={TextSize.LEVEL_5}
-            text={t('sessions.session')}
-          />
-          <AppText
-            style={{color: colors.primaryTextColor}}
-            weight={'500'}
-            size={TextSize.LEVEL_5}
-            text={count}
-          />
-        </View>
-        <Button onPress={onStarPressHandler} style={styles.starBtn}>
-          <SvgXml
-            xml={isMarked ? StarIcon : OutlineStarIcon}
-            style={styles.arrowIcon}
-          />
-        </Button>
-      </TouchableOpacity>
-      <PresSessionModal
-        goToQuestions={goToQuestions}
-        visible={visible}
-        setVisible={setVisible}
-      />
+    <View>
+      <SessionsList sessions={sessions} />
     </View>
   );
 };
 
-export default memo(Session);
+export default memo(observer(Session));
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  skeletonItem: {
+    marginBottom: horizontalScale(20),
   },
-  Session: {
-    height: sessionHeight,
-    borderRadius: sessionBorderRadius,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: horizontalScale(20),
-    width: '88%',
-  },
-  textWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    marginRight: horizontalScale(5),
-  },
-  arrowIcon: {
-    height: 18,
-    width: 18,
-  },
-  icon: {
-    height: 25,
-    width: 25,
-  },
-  lockIcon: {
-    opacity: 0.6,
-  },
-  starBtn: {
-    paddingHorizontal: horizontalScale(8),
+  item: {
+    marginBottom: verticalScale(20),
   },
 });

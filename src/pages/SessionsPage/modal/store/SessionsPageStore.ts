@@ -3,6 +3,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore} from '@src/entities/Session';
 import {categoriesStore} from '@src/pages/CategoriesPage';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 class SessionsPageStore {
   isFetching: boolean = true;
@@ -11,14 +12,32 @@ class SessionsPageStore {
     makeAutoObservable(this);
   }
 
-  init = async () => {
+  init = async ({
+    isCategoryAllInOne,
+    language,
+  }: {
+    isCategoryAllInOne: boolean;
+    language: LanguageValueType;
+  }) => {
     try {
       runInAction(() => {
         this.isFetching = true;
       });
 
+      const categories = categoriesStore.categories;
+
       // the order is important
       await categoriesStore.fetchCategories();
+
+      if (isCategoryAllInOne) {
+        await sessionStore.fetchAllSessionsFromAllCategories({
+          categories,
+          language,
+        });
+
+        return;
+      }
+
       await sessionStore.fetchSessions();
     } catch (e) {
       errorHandler({error: e});

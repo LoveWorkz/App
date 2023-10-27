@@ -42,3 +42,9 @@ export {default as shopTopBackground} from './light/shopTopBackground.png';
 export {default as shopTopBackgroundDark} from './dark/shopTopBackground.png';
 
 export {default as lockedImage} from './lockedImage.png';
+
+// sessions images
+export {default as basicSessionImage} from './sessions/basicSessionImage.png';
+export {default as deepSessionImage} from './sessions/deepSessionImage.png';
+export {default as intimateSessionImage} from './sessions/intimateSessionImage.png';
+export {default as starterSessionImage} from './sessions/starterSessionImage.png';

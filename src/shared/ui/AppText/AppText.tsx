@@ -4,6 +4,7 @@ import {StyleSheet, Text} from 'react-native';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {moderateScale} from '@src/shared/lib/Metrics';
 
 export enum TextSize {
   LEVEL_1 = 'size_1',
@@ -33,12 +34,16 @@ export enum TextType {
   ERROR = 'error',
 }
 
+type AlignType = 'left' | 'right' | 'center' | 'justify';
+
 interface AppTextProps {
   text: string;
   size?: TextSize;
   weight?: TextWeight;
   type?: TextType;
   style?: StyleType;
+  lineHeight?: number;
+  align?: AlignType;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -48,6 +53,8 @@ export const AppText = memo((props: AppTextProps) => {
     weight = '400',
     type = TextType.PRIMARY,
     style,
+    lineHeight,
+    align = 'left',
   } = props;
 
   const colors = useColors();
@@ -56,12 +63,14 @@ export const AppText = memo((props: AppTextProps) => {
     return [
       globalStyles.textFont,
       {
+        textAlign: align,
         fontWeight: weight,
         color:
           type === TextType.ERROR
             ? colors.secondaryError
             : colors.primaryTextColor,
       },
+      lineHeight ? {lineHeight: moderateScale(lineHeight)} : undefined,
       styles[size],
       styles[type],
       style,
@@ -73,6 +82,8 @@ export const AppText = memo((props: AppTextProps) => {
     style,
     colors.primaryTextColor,
     colors.secondaryError,
+    lineHeight,
+    align,
   ]);
 
   return <Text style={mode}>{text}</Text>;

@@ -1,19 +1,17 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {observer} from 'mobx-react-lite';
 
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
-import Session from '../Session';
-import sessionStore from '../../model/store/sessionStore';
+import {horizontalScale} from '@src/shared/lib/Metrics';
+import SessionItem from '../SessionItem/SessionItem';
+import {SessionType} from '../../model/types/sessionType';
 
 interface SessionsListProps {
-  isFetching?: boolean;
+  sessions: SessionType[];
 }
 
 const SessionsList = (props: SessionsListProps) => {
-  const {isFetching} = props;
-
-  const sessions = sessionStore.sessions;
+  const {sessions} = props;
 
   return (
     <View>
@@ -23,13 +21,10 @@ const SessionsList = (props: SessionsListProps) => {
         const sessionNumber = item.sessionNumber.toString();
 
         return (
-          <View style={styles.item} key={sessionNumber}>
-            {!isLastElement && !isFetching && (
-              <Gradient style={styles.verticalLine} />
-            )}
-            <Session
+          <View style={styles.item} key={i.toString()}>
+            {!isLastElement && <Gradient style={styles.verticalLine} />}
+            <SessionItem
               isMarked={item.isMarked}
-              isLoading={isFetching}
               session={item}
               count={sessionNumber}
               isBlocked={item.isBlocked}
@@ -42,11 +37,11 @@ const SessionsList = (props: SessionsListProps) => {
   );
 };
 
-export default memo(observer(SessionsList));
+export default memo(SessionsList);
 
 const styles = StyleSheet.create({
   item: {
-    marginBottom: 20,
+    marginBottom: horizontalScale(20),
   },
   verticalLine: {
     backgroundColor: 'red',

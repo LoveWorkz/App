@@ -2,11 +2,13 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
-import {SessionsList} from '@src/entities/Session';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {Session} from '@src/entities/Session';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {categoryStore, CategoryKey} from '@src/entities/Category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import sessionsPageStore from '../modal/store/SessionsPageStore';
 
 interface SessionsPageProps {
@@ -16,26 +18,34 @@ interface SessionsPageProps {
 const SessionsPage = (props: SessionsPageProps) => {
   const {route} = props;
   const isFetching = sessionsPageStore.isFetching;
+  const currentCategory = categoryStore.category;
+  const isCategoryAllInOne = currentCategory?.name === CategoryKey.All_In_One;
 
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+
+  const {i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
 
   useFocusEffect(
     useCallback(() => {
       // if the user returns from the questions get the actual data
       if (isPreviousScreenQuestions) {
-        sessionsPageStore.init();
+        sessionsPageStore.init({isCategoryAllInOne, language});
       }
-    }, [isPreviousScreenQuestions]),
+    }, [isPreviousScreenQuestions, isCategoryAllInOne, language]),
   );
 
   useEffect(() => {
-    sessionsPageStore.init();
-  }, []);
+    sessionsPageStore.init({isCategoryAllInOne, language});
+  }, [isCategoryAllInOne, language]);
 
   return (
     <View style={styles.SessionsPage}>
-      <SessionsList isFetching={isFetching} />
+      <Session
+        isFetching={isFetching}
+        isCategoryAllInOne={isCategoryAllInOne}
+      />
     </View>
   );
 };
@@ -45,14 +55,5 @@ export default memo(observer(SessionsPage));
 const styles = StyleSheet.create({
   SessionsPage: {
     flex: 1,
-  },
-  btn: {
-    marginTop: verticalScale(20),
-  },
-
-  btnSkeleton: {
-    width: '100%',
-    backgroundColor: 'red',
-    alignItems: 'center',
   },
 });

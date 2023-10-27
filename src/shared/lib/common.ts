@@ -3,6 +3,7 @@ import {CategoryType} from '@src/entities/Category';
 import {ChallengeType} from '@src/entities/Challenge';
 import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {RubricType} from '@src/entities/Rubric';
+import {SessionType} from '@src/entities/Session';
 
 export const cutText = ({text, textSize}: {text: string; textSize: number}) => {
   let newText = '';
@@ -35,7 +36,8 @@ export const getEntityExampleDataForSkeleton = ({
     | ChallengeCategoryType
     | CategoryType
     | RubricType
-    | BookType;
+    | BookType
+    | SessionType;
   count: number;
 }) => {
   const result = [];

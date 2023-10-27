@@ -14,15 +14,12 @@ export const categoryExample: CategoryType = {
   questions: [],
   categorySize: 'large',
   isCategoryDetailsVisible: true,
-  currentQuestion: '',
-  swipedQuestionsPercentage: 0,
-  questionSwipeStartDate: '',
-  breakPointForCheckingDate: 0,
-  isAllQuestionsSwiped: false,
+  isAllSessionsPassed: false,
   createdDate: '',
   displayName: {
     en: '',
     de: '',
     pt: '',
   },
+  sessions: {},
 };
