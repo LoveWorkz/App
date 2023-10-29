@@ -12,15 +12,20 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
-import {userCategoryStore} from '@src/entities/UserCategory';
+import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {AllSessionsType, SessionType} from '../types/sessionType';
+import {
+  AllSessionsType,
+  MarkedSessionsMapType,
+  SessionType,
+} from '../types/sessionType';
 
 class SessionStore {
   sessions: SessionType[] = [];
   session: SessionType | null = null;
   allSessions: AllSessionsType[] = [];
+  markedSessionsMap: MarkedSessionsMapType = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -28,6 +33,14 @@ class SessionStore {
 
   setSessions = (sessions: SessionType[]) => {
     this.sessions = sessions;
+  };
+
+  setMarkedSessionsMap = (markedSessionsMap: MarkedSessionsMapType) => {
+    this.markedSessionsMap = markedSessionsMap;
+  };
+
+  updateMarkedSessionsMap = ({key, value}: {key: string; value: boolean}) => {
+    this.markedSessionsMap[key] = value;
   };
 
   setSession = (session: SessionType) => {
@@ -59,6 +72,11 @@ class SessionStore {
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
+      const currentCategoryId = categoryStore.category?.id;
+      if (!currentCategoryId) {
+        return;
+      }
+
       const {unlockedCategoryMap, unlockedCategories} =
         this.getUnlockedCategoriesInfo(categories);
 
@@ -76,25 +94,33 @@ class SessionStore {
         promises.push(data);
       });
 
+      const userCategories = userCategoryStore.userCategory;
+      const markedSessionsMap: MarkedSessionsMapType = {};
+
       // get all sessions from unlocked categories for All in One category
       const allSessions = (await Promise.all(promises)).map(item => {
-        const sessions = item.docs.map(doc => {
-          const docId = doc.id.trim();
-          return {...doc.data(), id: docId};
-        }) as SessionType[];
+        const sessions = this.formSessions({
+          docs: item.docs,
+          userCategories,
+          categoryId: currentCategoryId,
+        });
 
-        const sortedSessions = this.sortSessions(sessions);
+        sessions.forEach(session => {
+          markedSessionsMap[session.id] = session.isMarked;
+        });
 
-        const categoryId = sortedSessions[0].categoryId;
-        const category = unlockedCategoryMap[categoryId];
+        const firstCategoryId = sessions[0].categoryId;
+        const category = unlockedCategoryMap[firstCategoryId];
 
         return {
-          categoryId,
+          categoryId: firstCategoryId,
           categoryDisplayName: category ? category.displayName[language] : '',
-          sessions: sortedSessions,
+          sessions: sessions,
           categoryName: category.name,
         };
       });
+
+      this.setMarkedSessionsMap(markedSessionsMap);
 
       runInAction(() => {
         this.allSessions = allSessions;
@@ -108,6 +134,7 @@ class SessionStore {
     try {
       crashlytics().log('Fetching sessions');
 
+      const userCategories = userCategoryStore.userCategory;
       const categoryId = categoryStore.category?.id;
       if (!categoryId) {
         return;
@@ -121,26 +148,22 @@ class SessionStore {
         .collection(Collections.SESSIONS)
         .get({source});
 
-      const userCategories = userCategoryStore.userCategory;
-      if (!userCategories) {
-        return;
-      }
+      const sessions = this.formSessions({
+        docs: data.docs,
+        userCategories,
+        categoryId,
+      });
 
-      const userSessions = userCategories.categories[categoryId].sessions;
-      if (!userSessions) {
-        return;
-      }
+      const markedSessionsMap: MarkedSessionsMapType = {};
 
-      // merge default and user sessions together
-      const sessions = data.docs.map(doc => {
-        const docId = doc.id.trim();
-        return {...doc.data(), ...userSessions[docId], id: docId};
-      }) as SessionType[];
+      sessions.forEach(session => {
+        markedSessionsMap[session.id] = session.isMarked;
+      });
 
-      const sortedSessions = this.sortSessions(sessions);
+      this.setMarkedSessionsMap(markedSessionsMap);
 
       runInAction(() => {
-        this.sessions = sortedSessions;
+        this.sessions = sessions;
       });
     } catch (e) {
       errorHandler({error: e});
@@ -152,6 +175,33 @@ class SessionStore {
       (a, b) => a.sessionNumber - b.sessionNumber,
     );
 
+    return sortedSessions;
+  };
+
+  formSessions = ({
+    docs,
+    userCategories,
+    categoryId,
+  }: {
+    docs: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>[];
+    userCategories: UserCategory | null;
+    categoryId: string;
+  }) => {
+    if (!userCategories) {
+      return [];
+    }
+
+    const userSessions = userCategories.categories[categoryId].sessions;
+    if (!userSessions) {
+      return [];
+    }
+    // merge default and user sessions together
+    const sessions = docs.map(doc => {
+      const docId = doc.id.trim();
+      return {...doc.data(), ...userSessions[docId], id: docId};
+    }) as SessionType[];
+
+    const sortedSessions = this.sortSessions(sessions);
     return sortedSessions;
   };
 
@@ -199,22 +249,12 @@ class SessionStore {
 
       const newMarkedValue = !isMarked;
 
+      this.updateMarkedSessionsMap({key: sessionId, value: newMarkedValue});
+
       await userCategoryStore.updateUserCategory({
         id: categoryId,
         data: newMarkedValue,
         field: `sessions.${sessionId}.isMarked`,
-      });
-
-      runInAction(() => {
-        const markedSessions = this.sessions.map(session => {
-          if (sessionId === session.id) {
-            return {...session, isMarked: newMarkedValue};
-          }
-
-          return session;
-        });
-
-        this.sessions = markedSessions;
       });
     } catch (e) {
       errorHandler({error: e});

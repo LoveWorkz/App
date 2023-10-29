@@ -16,6 +16,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {CloudStoragePaths} from '@src/shared/types/firebase';
+import {sessionStore} from '@src/entities/Session';
 
 class shareStore {
   constructor() {
@@ -74,8 +75,9 @@ class shareStore {
 
       const categoryId = params.categoryId as string;
       const questionId = params.questionId as string;
+      const sessionId = params.sessionId as string;
 
-      if (!(categoryId && questionId)) {
+      if (!(categoryId && questionId && sessionId)) {
         return;
       }
 
@@ -96,6 +98,7 @@ class shareStore {
           type: DocumentType.CATEGORY,
           id: categoryId,
           initialQuestionId: questionId,
+          sessionId: sessionId,
         });
       }
     } catch (e) {
@@ -127,20 +130,21 @@ class shareStore {
       const question = questionStore.question;
       const questionCardScreenshot = questionStore.questionCardScreenshot;
       const category = categoryStore.category;
-      if (!(question && category && questionCardScreenshot)) {
+      const session = sessionStore.session;
+      if (!(question && category && questionCardScreenshot && session)) {
         return;
       }
 
       const imageUrl = await this.getQuestionCardUrl(questionCardScreenshot);
 
       const link = await dynamicLinks().buildShortLink({
-        link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}`,
+        link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}&sessionId=${session.id}`,
         domainUriPrefix: domainUriPrefix,
         android: {
           packageName: appPackageName,
         },
         ios: {
-          appStoreId: '462054704',
+          appStoreId: 'app store id',
           bundleId: appBundleId,
         },
         navigation: {

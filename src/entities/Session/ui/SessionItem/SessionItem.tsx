@@ -57,6 +57,7 @@ const SessionItem = (props: SessionItemProps) => {
         />
       </View>
       <TouchableOpacity
+        disabled={isBlocked}
         onPress={onSessionPressHandler}
         style={[
           styles.SessionItem,

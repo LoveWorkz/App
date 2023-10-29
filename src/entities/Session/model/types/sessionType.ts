@@ -24,3 +24,5 @@ export interface AllSessionsType {
   sessions: SessionType[];
   categoryDisplayName: string;
 }
+
+export type MarkedSessionsMapType = Record<string, boolean>;

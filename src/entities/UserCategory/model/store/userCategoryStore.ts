@@ -6,8 +6,8 @@ import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import {CategoryKey, CategoryType} from '@src/entities/Category';
-import {userCategoryInitData} from '../lib/userCategory';
+import {CategoryType} from '@src/entities/Category';
+import {getUserCategoryInitData} from '../lib/userCategory';
 import {UserCategory} from '../types/userCategoryType';
 
 class UserCategoryStore {
@@ -53,9 +53,10 @@ class UserCategoryStore {
       const userCategories: Record<string, Partial<CategoryType>> = {};
 
       defaultCategories.forEach(category => {
-        userCategories[category.id] = {
-          ...userCategoryInitData,
-          isBlocked: category.name === CategoryKey.Starter ? false : true,
+        const categoryId = category.id;
+
+        userCategories[categoryId] = {
+          ...getUserCategoryInitData(categoryId),
         };
       });
 

@@ -7,6 +7,7 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import sessionStore from '../model/store/sessionStore';
 import CategoryBlock from './CategoryBlock/CategoryBlock';
 import SessionsList from './SessionsList/SessionsList';
+import {sessionsCount} from '../model/lib/sessionLib';
 
 interface SessionProps {
   isCategoryAllInOne: boolean;
@@ -22,7 +23,7 @@ const Session = (props: SessionProps) => {
   if (isFetching) {
     return (
       <>
-        {[1, 2, 3, 4].map(item => {
+        {Array.from({length: sessionsCount}, (_, i) => i + 1).map(item => {
           return (
             <View key={item} style={styles.skeletonItem}>
               <Skeleton width={'100%'} height={60} borderRadius={20} />

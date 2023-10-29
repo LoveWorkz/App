@@ -1,10 +1,12 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {observer} from 'mobx-react-lite';
 
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import SessionItem from '../SessionItem/SessionItem';
 import {SessionType} from '../../model/types/sessionType';
+import sessionStore from '../../model/store/sessionStore';
 
 interface SessionsListProps {
   sessions: SessionType[];
@@ -12,6 +14,8 @@ interface SessionsListProps {
 
 const SessionsList = (props: SessionsListProps) => {
   const {sessions} = props;
+
+  const markedSessionsMap = sessionStore.markedSessionsMap;
 
   return (
     <View>
@@ -24,7 +28,7 @@ const SessionsList = (props: SessionsListProps) => {
           <View style={styles.item} key={i.toString()}>
             {!isLastElement && <Gradient style={styles.verticalLine} />}
             <SessionItem
-              isMarked={item.isMarked}
+              isMarked={markedSessionsMap[item.id]}
               session={item}
               count={sessionNumber}
               isBlocked={item.isBlocked}
@@ -37,7 +41,7 @@ const SessionsList = (props: SessionsListProps) => {
   );
 };
 
-export default memo(SessionsList);
+export default memo(observer(SessionsList));
 
 const styles = StyleSheet.create({
   item: {

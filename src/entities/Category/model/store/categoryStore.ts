@@ -200,13 +200,13 @@ class CategoryStore {
     questionId,
     language,
     questions,
-    initialQuestionId,
+    sharedQuestionId,
     sessionId,
   }: {
     language: LanguageValueType;
     questions: QuestionType[];
     questionId?: string;
-    initialQuestionId?: string;
+    sharedQuestionId?: string;
     sessionId: string;
   }) => {
     try {
@@ -214,8 +214,9 @@ class CategoryStore {
       let categoryName: string | undefined;
       let isInitialSetUp = !questionId;
 
-      if (initialQuestionId) {
-        currentquestionId = initialQuestionId;
+      // if a user opened a shared link
+      if (sharedQuestionId) {
+        currentquestionId = sharedQuestionId;
         isInitialSetUp = true;
       }
 
@@ -227,7 +228,7 @@ class CategoryStore {
         }
 
         currentquestionId =
-          initialQuestionId || category.sessions[sessionId].currentQuestion;
+          sharedQuestionId || category.sessions[sessionId].currentQuestion;
         categoryName = category.displayName[language as LanguageValueType];
       }
 

@@ -7,6 +7,7 @@ import {
 } from '@src/shared/assets/images';
 
 export const lastSessionNumber = 2;
+export const sessionsCount = lastSessionNumber;
 
 export const getSessionsImages = (key: CategoryKey) => {
   switch (key) {
@@ -21,4 +22,14 @@ export const getSessionsImages = (key: CategoryKey) => {
     default:
       return starterSessionImage;
   }
+};
+
+export const userSession = {
+  breakPointForCheckingDate: 30,
+  currentQuestion: '',
+  isAllQuestionsSwiped: false,
+  isBlocked: true,
+  questionSwipeStartDate: '',
+  swipedQuestionsPercentage: 0,
+  isMarked: false,
 };

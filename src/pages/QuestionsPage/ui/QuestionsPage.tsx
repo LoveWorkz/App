@@ -34,12 +34,20 @@ import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {userStore} from '@src/entities/User';
+import {sessionStore} from '@src/entities/Session';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 
 interface QuestionsPageProps {
-  route?: {params: {type: DocumentType; id: string; initialQuestionId: string}};
+  route?: {
+    params: {
+      type: DocumentType;
+      id: string;
+      initialQuestionId: string;
+      sessionId: string;
+    };
+  };
 }
 
 const interstitial = initInterstitialAd();
@@ -55,8 +63,8 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   const key = route?.params.type;
   const id = route?.params.id;
-  const initialQuestionId = route?.params.initialQuestionId;
-  const isSliideEnabled = !initialQuestionId;
+  const sharedQuestionId = route?.params.initialQuestionId;
+  const isSliideEnabled = !sharedQuestionId;
 
   const questions = questionsStore.questions;
   const questionsPageInfo = questionStore.questionPreviewInfo;
@@ -64,6 +72,8 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const language = i18n.language as LanguageValueType;
   const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
   const isLoading = questionsStore.questionsPageloading;
+  const sharedSessionId = route?.params.sessionId;
+  const sessionId = sharedSessionId || sessionStore.session?.id;
 
   useFocusEffect(
     useCallback(() => {
@@ -89,11 +99,12 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
     questionsStore.init({
       id,
-      key: key,
+      key,
       language,
-      questionId: initialQuestionId,
+      sharedQuestionId,
+      sessionId,
     });
-  }, [key, id, language, initialQuestionId]);
+  }, [key, id, language, sharedQuestionId, sessionId]);
 
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({

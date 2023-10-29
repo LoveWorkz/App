@@ -47,7 +47,8 @@ class QuestionsStore {
     id?: string;
     key: DocumentType;
     language: LanguageValueType;
-    questionId?: string;
+    sharedQuestionId?: string;
+    sessionId?: string;
   }) => {
     try {
       crashlytics().log('Fetching questions page');
@@ -70,12 +71,14 @@ class QuestionsStore {
     id,
     key,
     language,
-    questionId,
+    sharedQuestionId,
+    sessionId,
   }: {
     id?: string;
     key: DocumentType;
     language: LanguageValueType;
-    questionId?: string;
+    sharedQuestionId?: string;
+    sessionId?: string;
   }) => {
     try {
       switch (key) {
@@ -99,20 +102,18 @@ class QuestionsStore {
           });
           break;
         case DocumentType.CATEGORY:
-          const sessionId = sessionStore.session?.id;
           if (!(id && sessionId)) {
             return;
           }
 
-          const isLastCategoryKey = categoryStore.getIsLastCategory();
-          // if it's the last category (All In One) get all questions
-          if (isLastCategoryKey) {
-            await this.fetchAllQuestions();
-          } else {
-            await this.fetchSpecificQuestions({
-              key: DocumentType.CATEGORY,
-            });
+          // if a user opened a shared link
+          if (sharedQuestionId) {
+            categoryStore.getAndSetCategory({id});
           }
+          await this.fetchSpecificQuestions({
+            key: DocumentType.CATEGORY,
+            sharedQuestionId,
+          });
 
           // init current question id for the first time
           await categoryStore.initUserCategoryQuestionId({
@@ -122,7 +123,7 @@ class QuestionsStore {
           });
           // init questions page info
           categoryStore.getQuestionSwipeInfoForCategory({
-            initialQuestionId: questionId,
+            sharedQuestionId,
             questions: this.questions,
             language,
             sessionId,
@@ -200,6 +201,11 @@ class QuestionsStore {
 
       const {question, language, sessionId} = categorySwipeParam;
 
+      const currentCategory = categoryStore.category;
+      if (!currentCategory) {
+        return;
+      }
+
       categoryStore.getQuestionSwipeInfoForCategory({
         questionId: question.id,
         questions: this.questions,
@@ -207,12 +213,7 @@ class QuestionsStore {
         sessionId,
       });
 
-      let categoryId = question.categoryId;
-      const currentCategory = categoryStore.category;
-      if (!currentCategory) {
-        return;
-      }
-
+      let categoryId = currentCategory.id;
       const isLastCategoryKey = categoryStore.getIsLastCategory();
 
       // if category is last (All In One) set previous category id
@@ -285,7 +286,13 @@ class QuestionsStore {
     }
   };
 
-  fetchSpecificQuestions = async ({key}: {key: DocumentType}) => {
+  fetchSpecificQuestions = async ({
+    key,
+    sharedQuestionId,
+  }: {
+    key: DocumentType;
+    sharedQuestionId?: string;
+  }) => {
     try {
       crashlytics().log(`Fetching ${key} questions`);
 
@@ -306,7 +313,10 @@ class QuestionsStore {
 
       let questions: QuestionType[] | undefined = [];
 
-      if (key === DocumentType.CATEGORY) {
+      if (sharedQuestionId) {
+        // if a user opened a shared link
+        questions = [questionsMap[sharedQuestionId]];
+      } else if (key === DocumentType.CATEGORY) {
         questions = sessionStore.getSessionQuestions(questionsMap);
       } else {
         const rubircquestionsIds = rubricStore.rubric?.questions;
@@ -326,30 +336,6 @@ class QuestionsStore {
 
         this.questions = questions;
         this.questionsSize = questions.length;
-      });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
-  fetchAllQuestions = async () => {
-    try {
-      crashlytics().log('Fetching all questions');
-
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-      const data = await firestore()
-        .collection(Collections.QUESTIONS)
-        .orderBy('createdDate')
-        .get({source});
-
-      const questions = data.docs.map(question => ({
-        ...question.data(),
-        id: question.id,
-      }));
-
-      runInAction(() => {
-        this.questions = questions as QuestionType[];
-        this.questionsSize = data.size;
       });
     } catch (e) {
       errorHandler({error: e});
