@@ -52,7 +52,7 @@ const InformationBlock = (props: InformationBlockProps) => {
       buttonRef.current.measureInWindow((x, y, width, height) => {
         setModalPosition({
           top: y + height + verticalScale(10),
-          left: x + 8 - popupWidth,
+          left: x + 10 - popupWidth,
         });
 
         setVisible(true);
@@ -62,7 +62,7 @@ const InformationBlock = (props: InformationBlockProps) => {
 
   return (
     <View style={styles.container}>
-      <View ref={buttonRef}>
+      <View ref={buttonRef} collapsable={false}>
         <TouchableOpacity onPress={onPressHandler}>
           <SvgXml
             xml={InformationIcon}
