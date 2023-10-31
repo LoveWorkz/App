@@ -7,3 +7,4 @@ export {
   sessionsCount,
 } from './model/lib/sessionLib';
 export {default as CategoryBlock} from './ui/CategoryBlock/CategoryBlock';
+export {default as PresSessionModal} from './ui/PreSessionModal/PreSessionModal';

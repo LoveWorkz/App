@@ -18,6 +18,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {
   AllSessionsType,
   MarkedSessionsMapType,
+  SessionsMap,
   SessionType,
 } from '../types/sessionType';
 
@@ -26,6 +27,7 @@ class SessionStore {
   session: SessionType | null = null;
   allSessions: AllSessionsType[] = [];
   markedSessionsMap: MarkedSessionsMapType = {};
+  sessionsMap: SessionsMap = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -33,6 +35,25 @@ class SessionStore {
 
   setSessions = (sessions: SessionType[]) => {
     this.sessions = sessions;
+  };
+
+  getAndSetSessionsMap = (sessions: SessionType[]) => {
+    const sessionsMap: SessionsMap = {};
+    sessions.forEach(session => {
+      sessionsMap[session.id] = session;
+    });
+
+    this.sessionsMap = sessionsMap;
+  };
+
+  getSession = (sessionId: string) => {
+    const session = this.sessionsMap[sessionId];
+    return session;
+  };
+
+  getAndSetSession = (sessionId: string) => {
+    const session = this.getSession(sessionId);
+    this.setSession(session);
   };
 
   setMarkedSessionsMap = (markedSessionsMap: MarkedSessionsMapType) => {
@@ -161,10 +182,8 @@ class SessionStore {
       });
 
       this.setMarkedSessionsMap(markedSessionsMap);
-
-      runInAction(() => {
-        this.sessions = sessions;
-      });
+      this.setSessions(sessions);
+      this.getAndSetSessionsMap(sessions);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -293,6 +312,12 @@ class SessionStore {
         id: categoryId,
         field: `sessions.${nextSessionId}.isBlocked`,
         data: false,
+      });
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: 'currentSession',
+        data: nextSessionId,
       });
     } catch (e) {
       errorHandler({error: e});

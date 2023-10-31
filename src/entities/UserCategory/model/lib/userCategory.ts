@@ -5,17 +5,22 @@ const sessionsIdMap: Record<string, string> = {
   category_2: 'basic_session',
   category_3: 'deep_session',
   category_4: 'intimate_session',
+  category_5: 'hot_session',
 };
 
 export const getUserCategoryInitData = (categoryId: string) => {
   const allInOneCategoryId = 'category_6';
   const isCategoryAllInOne = categoryId === allInOneCategoryId;
   const isBlocked = categoryId !== 'category_1' && !isCategoryAllInOne;
+  const firstSessionId = sessionsIdMap[categoryId]
+    ? `${sessionsIdMap[categoryId]}_1`
+    : '';
 
   return {
     isBlocked,
     isCategoryDetailsVisible: true,
     isAllSessionsPassed: false,
+    currentSession: firstSessionId,
     sessions: {
       ...(isCategoryAllInOne
         ? getSessionsForAllInOne()

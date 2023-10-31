@@ -6,8 +6,9 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {appPackageName} from '@src/app/config/appConfig';
 
 const options = {
-  AmazonPackageName: appPackageName,
+  GooglePackageName: appPackageName,
   preferInApp: true,
+  AppleAppID: '2193813192',
 };
 
 class InAppReviewStore {
@@ -19,12 +20,11 @@ class InAppReviewStore {
     try {
       Rate.rate(options, (success, errorMessage) => {
         if (success) {
-          // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
           Alert.alert('rated');
         }
         if (errorMessage) {
-          // errorMessage comes from the native code. Useful for debugging, but probably not for users to view
           console.error(`Example page Rate.rate() error: ${errorMessage}`);
+          errorHandler({error: errorMessage});
         }
       });
     } catch (e) {

@@ -20,24 +20,24 @@ import {
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {userStore} from '@src/entities/User';
+import {sessionsCount, sessionStore} from '@src/entities/Session';
 import homePageStore from '../../model/store/HomePageStore';
 
 interface QuickStartProps {
   isLoading: boolean;
+  language: LanguageValueType;
 }
 
 const height = 92;
 const borderRadius = 20;
 
 const QuickStart = (props: QuickStartProps) => {
-  const {isLoading} = props;
+  const {isLoading, language} = props;
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-
-  const onPressHandler = () => {
-    homePageStore.goToQuestionsPage();
-  };
 
   if (isLoading) {
     return (
@@ -54,12 +54,23 @@ const QuickStart = (props: QuickStartProps) => {
     );
   }
 
+  const currentSession = sessionStore.session;
+  const user = userStore.user;
+  if (!(user && currentSession)) {
+    return <></>;
+  }
+  const isFirstUserVisit = !user.hasUserSwipedAnyQuestion;
+
+  const onPressHandler = () => {
+    homePageStore.goToQuestionsPage({isFirstUserVisit, language});
+  };
+
   return (
     <View style={styles.QuickStart}>
       <AppText
         style={[styles.quickStartTitle, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={t('home.quick_start')}
+        text={isFirstUserVisit ? t('home.start_game') : t('home.quick_start')}
         weight={'500'}
       />
       <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
@@ -80,19 +91,29 @@ const QuickStart = (props: QuickStartProps) => {
               <AppText
                 style={{color: colors.homePageCategoryTitleColor}}
                 size={TextSize.LEVEL_2}
-                text={t('home.continue_where_you_left_off')}
+                text={
+                  isFirstUserVisit
+                    ? t('home.start_your_sessions_here')
+                    : t('home.continue_where_you_left_off')
+                }
               />
               <GradientText
                 weight={'700'}
-                text={`${homePageStore.currentQuestionNumber}/${homePageStore.homePageCategoryQuestionsSize}`}
+                text={`${
+                  isFirstUserVisit ? 0 : currentSession.sessionNumber
+                }/${sessionsCount}`}
               />
             </View>
             <View style={styles.bottomBlock}>
               <AppText
-                style={{color: colors.primaryTextColor}}
+                style={[styles.categoryName, {color: colors.primaryTextColor}]}
                 weight={'700'}
                 size={TextSize.LEVEL_5}
-                text={homePageStore.quickStartCategoryName}
+                text={
+                  isFirstUserVisit
+                    ? t('home.start_your_journey')
+                    : homePageStore.quickStartCategoryName
+                }
               />
               <Button
                 onPress={onPressHandler}
@@ -148,6 +169,9 @@ const styles = StyleSheet.create({
   arrowIcon: {
     height: 15,
     width: 15,
+  },
+  categoryName: {
+    textTransform: 'uppercase',
   },
 
   quickStartTitleSkeleton: {

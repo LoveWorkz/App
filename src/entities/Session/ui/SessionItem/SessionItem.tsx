@@ -88,7 +88,7 @@ const SessionItem = (props: SessionItemProps) => {
         </Button>
       </TouchableOpacity>
       <PresSessionModal
-        goToQuestions={goToQuestions}
+        onConfirm={goToQuestions}
         visible={visible}
         setVisible={setVisible}
       />

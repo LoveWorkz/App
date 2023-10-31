@@ -37,6 +37,7 @@ export interface CategoryType {
   displayName: DisplayText;
   sessions: UserSessionType;
   isAllSessionsPassed: boolean;
+  currentSession: string;
 }
 
 export interface CurrentCategory {

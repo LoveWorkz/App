@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -34,7 +34,9 @@ import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {userStore} from '@src/entities/User';
-import {sessionStore} from '@src/entities/Session';
+import {PresSessionModal, sessionStore} from '@src/entities/Session';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
@@ -46,6 +48,7 @@ interface QuestionsPageProps {
       id: string;
       initialQuestionId: string;
       sessionId: string;
+      showPreSessionPopup: boolean;
     };
   };
 }
@@ -60,6 +63,12 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const colors = useColors();
   const {t, i18n} = useTranslation();
   const {theme} = useTheme();
+
+  const showPreSessionPopup = route?.params.showPreSessionPopup;
+
+  const [isPreSessionPopupVisible, setIsPreSessionPopupVisible] = useState(
+    !!showPreSessionPopup,
+  );
 
   const key = route?.params.type;
   const id = route?.params.id;
@@ -105,6 +114,15 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       sessionId,
     });
   }, [key, id, language, sharedQuestionId, sessionId]);
+
+  const onPreSessionConfirmHandler = useCallback(() => {
+    setIsPreSessionPopupVisible(false);
+  }, []);
+
+  const onPreSessionCancelHandler = useCallback(() => {
+    navigation.navigate(TabRoutesNames.HOME);
+    setIsPreSessionPopupVisible(false);
+  }, []);
 
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
@@ -211,6 +229,14 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         visible={questionsStore.congratsModalVisible}
         setVisible={questionsStore.setCongratsModalVisible}
       />
+      {!!showPreSessionPopup && (
+        <PresSessionModal
+          onConfirm={onPreSessionConfirmHandler}
+          onCancel={onPreSessionCancelHandler}
+          visible={isPreSessionPopupVisible}
+          setVisible={setIsPreSessionPopupVisible}
+        />
+      )}
     </View>
   );
 };

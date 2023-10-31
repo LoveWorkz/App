@@ -12,20 +12,17 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
-import {getNumberFromPercentage} from '@src/shared/lib/common';
 import {userStore} from '@src/entities/User';
+import {sessionStore} from '@src/entities/Session';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
 
   quickStartCategoryName: string = '';
   progressBarCategoryName: string = '';
-  progressBarCategoryKey: CategoryKey = CategoryKey.Starter; // first category
-  quickStartCategoryKey: CategoryKey = CategoryKey.Starter; // first category
+  progressBarCategoryKey: CategoryKey = CategoryKey.Starter;
 
   homePageCategory: CategoryType | null = null;
-  homePageCategoryQuestionsSize: number = 0;
-  currentQuestionNumber: number = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -38,10 +35,12 @@ class HomePageStore {
       runInAction(() => {
         this.isHomePageLoading = true;
       });
+
       await userStore.fetchUser();
       await categoriesStore.fetchCategories();
       await categoriesStore.fetchRubrics();
       await challengesStore.fetchChallengeCategories();
+
       // fetching books for quotes modal
       const books = await booksStore.fetchBooks();
       if (books) {
@@ -49,6 +48,8 @@ class HomePageStore {
       }
 
       this.getHomePageCategory(language);
+      await sessionStore.fetchSessions();
+      this.setInitSession();
 
       shareStore.shareQuestionHandler(language);
     } catch (e) {
@@ -101,6 +102,15 @@ class HomePageStore {
     }
   };
 
+  setInitSession = () => {
+    const homePageCategory = this.homePageCategory;
+    if (!homePageCategory) {
+      return;
+    }
+
+    sessionStore.getAndSetSession(homePageCategory.currentSession);
+  };
+
   getHomePageCategory = (language: LanguageValueType) => {
     try {
       const userCurrentCategoryKey = userStore.currentCategory
@@ -115,16 +125,11 @@ class HomePageStore {
       }
 
       let homePageCategory = category;
-      let quickStartCategoryName = category.displayName[language];
-      let quickStartCategoryKey = userCurrentCategoryKey;
-      let progressBarCategoryName = quickStartCategoryName;
-      let progressBarCategoryKey = quickStartCategoryKey;
+      categoryStore.setCategory(homePageCategory);
 
-      const homePageCategoryQuestionsSize = homePageCategory.questions.length;
-      const currentQuestionNumber = this.getHomePageQuestionNumber({
-        homePageCategory,
-        homePageCategoryQuestionsSize,
-      });
+      let quickStartCategoryName = category.displayName[language];
+      let progressBarCategoryName = quickStartCategoryName;
+      let progressBarCategoryKey = userCurrentCategoryKey;
 
       // Hot and All in One categories should not show up in the progress bar
       if (
@@ -147,36 +152,20 @@ class HomePageStore {
         this.progressBarCategoryKey = progressBarCategoryKey;
         this.quickStartCategoryName = quickStartCategoryName;
         this.progressBarCategoryName = progressBarCategoryName;
-        this.quickStartCategoryKey = quickStartCategoryKey;
-
         this.homePageCategory = homePageCategory;
-        this.currentQuestionNumber = currentQuestionNumber;
-        this.homePageCategoryQuestionsSize = homePageCategoryQuestionsSize;
       });
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  getHomePageQuestionNumber = ({
-    homePageCategory,
-    homePageCategoryQuestionsSize,
+  goToQuestionsPage = ({
+    isFirstUserVisit,
+    language,
   }: {
-    homePageCategory: CategoryType;
-    homePageCategoryQuestionsSize: number;
+    isFirstUserVisit: boolean;
+    language: LanguageValueType;
   }) => {
-    const numberFromPercentage = Math.ceil(
-      getNumberFromPercentage(
-        homePageCategory.swipedQuestionsPercentage,
-        homePageCategoryQuestionsSize,
-      ),
-    );
-
-    //if it's the first question set 1
-    return numberFromPercentage || 1;
-  };
-
-  goToQuestionsPage = async () => {
     try {
       crashlytics().log('User clicked quick start button.');
 
@@ -185,16 +174,32 @@ class HomePageStore {
         return;
       }
 
-      navigation.navigate(AppRouteNames.QUESTIONS, {
-        type: DocumentType.CATEGORY,
-        id: homePageCategory.id,
-      });
+      if (!isFirstUserVisit) {
+        navigation.navigate(AppRouteNames.QUESTIONS, {
+          type: DocumentType.CATEGORY,
+          id: homePageCategory.id,
+          showPreSessionPopup: true,
+        });
+
+        return;
+      }
+
+      const isCategoryDetailsVisible =
+        homePageCategory.isCategoryDetailsVisible;
+
+      if (isCategoryDetailsVisible) {
+        navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
+          title: homePageCategory.displayName[language],
+        });
+      } else {
+        navigation.navigate(AppRouteNames.SESSIONS, {
+          type: DocumentType.CATEGORY,
+          title: homePageCategory.displayName[language],
+          id: homePageCategory.id,
+        });
+      }
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      runInAction(() => {
-        this.isHomePageLoading = false;
-      });
     }
   };
 }

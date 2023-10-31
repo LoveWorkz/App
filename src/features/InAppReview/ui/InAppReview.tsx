@@ -1,10 +1,11 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
+import InAppReviewStore from '../model/store/InAppReviewStore';
 
-interface InAppReviewProps {}
-
-const InAppReview = (props: InAppReviewProps) => {
-  const {} = props;
+const InAppReview = () => {
+  useEffect(() => {
+    InAppReviewStore.rate();
+  }, []);
 
   return (
     <View style={styles.InAppReview}>

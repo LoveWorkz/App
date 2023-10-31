@@ -118,13 +118,15 @@ class CategoryStore {
         return;
       }
 
-      runInAction(() => {
-        this.category = category;
-      });
+      this.setCategory(category);
     } catch (e) {
       errorHandler({error: e});
     } finally {
     }
+  };
+
+  setCategory = (category: CategoryType) => {
+    this.category = category;
   };
 
   categoryPressHandler = ({

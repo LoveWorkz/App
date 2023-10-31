@@ -26,3 +26,5 @@ export interface AllSessionsType {
 }
 
 export type MarkedSessionsMapType = Record<string, boolean>;
+
+export type SessionsMap = Record<string, SessionType>;

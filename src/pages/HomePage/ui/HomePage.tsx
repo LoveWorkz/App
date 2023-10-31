@@ -22,7 +22,6 @@ import {Quotes} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {userStore} from '@src/entities/User';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
@@ -51,13 +50,14 @@ const HomePage = (props: HomePageProps) => {
   const isTabScreen = route?.params?.isTabScreen;
   const isLoading = homePageStore.isHomePageLoading;
 
-  // if user swipe question first time show home page quick start
-  const hasUserSwipedAnyQuestion = userStore.user?.hasUserSwipedAnyQuestion;
-
   useFocusEffect(
     useCallback(() => {
       // when user returns from any tab screen or question page, get actual challenges and categories data
-      if (isTabScreen || prevRouteName === AppRouteNames.QUESTIONS) {
+      if (
+        isTabScreen ||
+        prevRouteName === AppRouteNames.QUESTIONS ||
+        prevRouteName === AppRouteNames.SESSIONS
+      ) {
         homePageStore.fetchHomePageCategoriesAndChallenges(language);
       }
     }, [language, isTabScreen, prevRouteName]),
@@ -92,11 +92,9 @@ const HomePage = (props: HomePageProps) => {
           <ProgressBar />
         </FastImage>
       )}
-      {(isLoading || hasUserSwipedAnyQuestion) && (
-        <View style={styles.homeCategoryWrapper}>
-          <QuickStart isLoading={isLoading} />
-        </View>
-      )}
+      <View style={styles.homeCategoryWrapper}>
+        <QuickStart isLoading={isLoading} language={language} />
+      </View>
       <CategoriesCarousel isLoading={isLoading} />
       <View style={styles.challangesWrapper}>
         <Challanges isLoading={isLoading} />

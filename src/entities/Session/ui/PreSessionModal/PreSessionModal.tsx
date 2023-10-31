@@ -11,20 +11,26 @@ import {Modal} from '@src/shared/ui/Modal/Modal';
 interface PresSessionModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  goToQuestions: () => void;
+  onConfirm: () => void;
+  onCancel?: () => void;
 }
 
 const PresSessionModal = (props: PresSessionModalProps) => {
-  const {visible, setVisible, goToQuestions} = props;
+  const {visible, setVisible, onConfirm, onCancel} = props;
 
   const colors = useColors();
 
   const onCancelHandler = () => {
+    if (onCancel) {
+      onCancel();
+
+      return;
+    }
     setVisible?.(false);
   };
 
-  const onGoToQuestions = () => {
-    goToQuestions();
+  const onConfirmHandler = () => {
+    onConfirm();
   };
 
   return (
@@ -72,7 +78,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           />
         </Button>
         <Button
-          onPress={onGoToQuestions}
+          onPress={onConfirmHandler}
           theme={ButtonTheme.GRADIENT}
           style={styles.letsDoThisBtn}>
           <AppText

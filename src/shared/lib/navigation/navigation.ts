@@ -17,6 +17,7 @@ type RootStackParamList = {
   type?: DocumentType;
   isTabScreen?: boolean;
   sessionId?: string;
+  showPreSessionPopup?: boolean;
 };
 
 export interface Navigation {
