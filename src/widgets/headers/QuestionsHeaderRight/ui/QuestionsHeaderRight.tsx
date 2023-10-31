@@ -1,7 +1,9 @@
 import React, {memo, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TextStyle, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {observer} from 'mobx-react-lite';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {HeartIcon} from '@src/shared/assets/icons/Heart';
@@ -11,11 +13,16 @@ import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore} from '@src/entities/QuestionCard';
 import {Button} from '@src/shared/ui/Button/Button';
 import {shareStore} from '@src/features/Share';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 
 export const QuestionsHeaderRight = () => {
   const colors = useColors();
+  const {t} = useTranslation();
+
   const question = questionStore.question;
   const isQuestionFavorite = favoriteStore.isQuestionFavorite;
+  const isUploadingQuestionImageToStorage =
+    shareStore.isUploadingQuestionImageToStorage;
 
   useEffect(() => {
     if (!question) {
@@ -58,6 +65,16 @@ export const QuestionsHeaderRight = () => {
           />
         )}
       </Button>
+      <Spinner
+        visible={isUploadingQuestionImageToStorage}
+        textContent={`${t('loading')}...`}
+        textStyle={
+          [
+            styles.spinnerTextStyle,
+            {color: colors.primaryTextColor},
+          ] as TextStyle
+        }
+      />
     </View>
   );
 };
@@ -78,5 +95,10 @@ const styles = StyleSheet.create({
   HeartIcon: {
     height: verticalScale(18),
     width: horizontalScale(20),
+  },
+
+  spinnerTextStyle: {
+    ...globalStyles.textFont,
+    ...globalStyles.size_6,
   },
 });

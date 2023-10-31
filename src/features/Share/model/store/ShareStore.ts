@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import Share, {ShareOptions} from 'react-native-share';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import queryString from 'query-string';
@@ -19,6 +19,8 @@ import {CloudStoragePaths} from '@src/shared/types/firebase';
 import {sessionStore} from '@src/entities/Session';
 
 class shareStore {
+  isUploadingQuestionImageToStorage: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -47,18 +49,29 @@ class shareStore {
         return;
       }
 
-      const link = await this.buildLink();
-      if (!link) {
-        return;
-      }
+      runInAction(() => {
+        this.isUploadingQuestionImageToStorage = true;
+      });
+
+      const questionCardScreenshot = questionStore.questionCardScreenshot;
+      const imageUrl = await this.uploadImageToFirebase(questionCardScreenshot);
+
+      const link = await this.createDynamicLink(imageUrl);
 
       const options = {
-        message: link,
+        url: link,
       };
 
-      this.share(options);
+      // added some delay because we need to close the spinner modal first and then open the share modal
+      setTimeout(() => {
+        this.share(options);
+      }, 100);
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      runInAction(() => {
+        this.isUploadingQuestionImageToStorage = false;
+      });
     }
   };
 
@@ -106,60 +119,50 @@ class shareStore {
     }
   };
 
-  getQuestionCardUrl = async (questionCardScreenshot: string) => {
-    try {
-      const userId = userStore.userId;
-      const cloudStorage = new StorageServices({
-        folderName: CloudStoragePaths.QUESTIONS_SCREENSHOTS,
-        fileName: userId,
-      });
-      // add file to storage for getting url
-      await cloudStorage.upload(questionCardScreenshot);
-      const url = await cloudStorage.download();
+  uploadImageToFirebase = async (questionCardScreenshot: string) => {
+    const userId = userStore.userId;
+    const cloudStorage = new StorageServices({
+      folderName: CloudStoragePaths.QUESTIONS_SCREENSHOTS,
+      fileName: userId,
+    });
 
-      return url;
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    await cloudStorage.upload(questionCardScreenshot);
+    const url = await cloudStorage.download();
+
+    return url;
   };
 
-  buildLink = async () => {
-    try {
-      crashlytics().log('Building deep link for question page.');
+  createDynamicLink = async (imageUrl: string) => {
+    crashlytics().log('Building deep link for question page.');
 
-      const question = questionStore.question;
-      const questionCardScreenshot = questionStore.questionCardScreenshot;
-      const category = categoryStore.category;
-      const session = sessionStore.session;
-      if (!(question && category && questionCardScreenshot && session)) {
-        return;
-      }
+    const question = questionStore.question;
+    const category = categoryStore.category;
+    const session = sessionStore.session;
 
-      const imageUrl = await this.getQuestionCardUrl(questionCardScreenshot);
-
-      const link = await dynamicLinks().buildShortLink({
-        link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}&sessionId=${session.id}`,
-        domainUriPrefix: domainUriPrefix,
-        android: {
-          packageName: appPackageName,
-        },
-        ios: {
-          appStoreId: 'app store id',
-          bundleId: appBundleId,
-        },
-        navigation: {
-          forcedRedirectEnabled: false,
-        },
-        social: {
-          title: 'love is not Enough',
-          imageUrl,
-        },
-      });
-
-      return link;
-    } catch (e) {
-      errorHandler({error: e});
+    if (!(question && category && session)) {
+      return;
     }
+
+    const link = await dynamicLinks().buildShortLink({
+      link: `https://www.google.com?questionId=${question.id}&categoryId=${category.id}&sessionId=${session.id}`,
+      domainUriPrefix: domainUriPrefix,
+      android: {
+        packageName: appPackageName,
+      },
+      ios: {
+        appStoreId: 'app store id',
+        bundleId: appBundleId,
+      },
+      navigation: {
+        forcedRedirectEnabled: false,
+      },
+      social: {
+        title: 'Question Card',
+        imageUrl,
+      },
+    });
+
+    return link;
   };
 }
 
