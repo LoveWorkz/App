@@ -24,14 +24,14 @@ class SessionsPageStore {
         this.isFetching = true;
       });
 
-      const categories = categoriesStore.categories;
+      const unlockedCategories = categoriesStore.unlockedCategories;
 
       // the order is important
       await categoriesStore.fetchCategories();
 
       if (isCategoryAllInOne) {
         await sessionStore.fetchAllSessionsFromAllCategories({
-          categories,
+          unlockedCategories,
           language,
         });
 

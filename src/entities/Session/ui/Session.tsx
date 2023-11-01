@@ -18,7 +18,7 @@ const Session = (props: SessionProps) => {
   const {isCategoryAllInOne, isFetching} = props;
 
   let sessions = sessionStore.sessions;
-  const allSessions = sessionStore.allSessions;
+  const allInOneSessions = sessionStore.allInOneSessions;
 
   if (isFetching) {
     return (
@@ -37,7 +37,7 @@ const Session = (props: SessionProps) => {
   if (isCategoryAllInOne) {
     return (
       <View>
-        {allSessions.map((item, i) => {
+        {allInOneSessions.map((item, i) => {
           return (
             <View key={i.toString()} style={styles.item}>
               <CategoryBlock

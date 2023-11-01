@@ -2,7 +2,12 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {CategoryType, CateorySize} from '@src/entities/Category';
+import {
+  CategoryKey,
+  categoryStore,
+  CategoryType,
+  CateorySize,
+} from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
 import {RubricType} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
@@ -13,6 +18,7 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
+  unlockedCategories: CategoryType[] = [];
   rubrics: RubricType[] = [];
   favorites: FavoriteType | null = null;
   isCategoriesPageLoading: boolean = true;
@@ -86,12 +92,26 @@ class CategoriesStore {
         };
       });
 
+      const unlockedCategories = this.getUnlockedCategories(categories);
+
+      const lastCategory = categories[categories.length - 1];
+      categoryStore.setLastCategoryId(lastCategory.id);
+
       runInAction(() => {
         this.categories = this.editCategories(categories as CategoryType[]);
+        this.unlockedCategories = unlockedCategories;
       });
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  getUnlockedCategories = (categories: CategoryType[]) => {
+    const unlockedCategories = categories.filter(category => {
+      return !category.isBlocked && category.name !== CategoryKey.All_In_One;
+    });
+
+    return unlockedCategories;
   };
 
   fetchDefaultCategories = async () => {
@@ -99,8 +119,8 @@ class CategoriesStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
-        .collection(Collections.CATEGORIES)
-        .orderBy('createdDate')
+        .collection(Collections.CATEGORIES_2)
+        .orderBy('id')
         .get({source});
 
       const categories = data.docs.map(category => {

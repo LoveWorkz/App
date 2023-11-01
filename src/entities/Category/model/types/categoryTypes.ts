@@ -27,8 +27,7 @@ export interface CategoryType {
   id: string;
   image: CategoryImageType;
   isBlocked: boolean;
-  description: string;
-  questions: string[];
+  description: DisplayText;
   categorySize: 'large' | 'small';
   leftSide?: boolean;
   size?: CateorySize;

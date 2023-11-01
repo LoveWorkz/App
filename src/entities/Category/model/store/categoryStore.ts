@@ -13,14 +13,19 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {CategoryKey, CategoryType} from '../types/categoryTypes';
+import {CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;
+  lastCategoryId: string = '';
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setLastCategoryId = (categoryId: string) => {
+    this.lastCategoryId = categoryId;
+  };
 
   initUserCategoryQuestionId = async ({
     questions,
@@ -173,19 +178,8 @@ class CategoryStore {
     }
   };
 
-  getIsLastCategory = () => {
-    try {
-      const currentCategory = this.category;
-      if (!currentCategory) {
-        return;
-      }
-      const lastCategoryKey = CategoryKey.All_In_One;
-      const isLastCategoryKey = currentCategory.name === lastCategoryKey;
-      return isLastCategoryKey;
-    } catch (e) {
-      errorHandler({error: e});
-      return false;
-    }
+  getIsLastCategoryById = (categoryId: string) => {
+    return categoryId === this.lastCategoryId;
   };
 
   getCategoryByName = (name: string) => {

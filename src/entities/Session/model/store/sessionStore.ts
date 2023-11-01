@@ -11,7 +11,7 @@ import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
-import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
+import {categoryStore, CategoryType} from '@src/entities/Category';
 import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -25,7 +25,8 @@ import {
 class SessionStore {
   sessions: SessionType[] = [];
   session: SessionType | null = null;
-  allSessions: AllSessionsType[] = [];
+  allSessionsFromAllCategories: SessionType[] = [];
+  allInOneSessions: AllSessionsType[] = [];
   markedSessionsMap: MarkedSessionsMapType = {};
   sessionsMap: SessionsMap = {};
 
@@ -82,10 +83,10 @@ class SessionStore {
   };
 
   fetchAllSessionsFromAllCategories = async ({
-    categories,
+    unlockedCategories,
     language,
   }: {
-    categories: CategoryType[];
+    unlockedCategories: CategoryType[];
     language: LanguageValueType;
   }) => {
     try {
@@ -98,8 +99,8 @@ class SessionStore {
         return;
       }
 
-      const {unlockedCategoryMap, unlockedCategories} =
-        this.getUnlockedCategoriesInfo(categories);
+      const unlockedCategoryMap =
+        this.getUnlockedCategoriesMap(unlockedCategories);
 
       const promises: Promise<
         FirebaseFirestoreTypes.QuerySnapshot<FirebaseFirestoreTypes.DocumentData>
@@ -117,9 +118,10 @@ class SessionStore {
 
       const userCategories = userCategoryStore.userCategory;
       const markedSessionsMap: MarkedSessionsMapType = {};
+      const allSessionsFromAllCategories: SessionType[] = [];
 
       // get all sessions from unlocked categories for All in One category
-      const allSessions = (await Promise.all(promises)).map(item => {
+      const allInOneSessions = (await Promise.all(promises)).map(item => {
         const sessions = this.formSessions({
           docs: item.docs,
           userCategories,
@@ -133,6 +135,8 @@ class SessionStore {
         const firstCategoryId = sessions[0].categoryId;
         const category = unlockedCategoryMap[firstCategoryId];
 
+        allSessionsFromAllCategories.push(...sessions);
+
         return {
           categoryId: firstCategoryId,
           categoryDisplayName: category ? category.displayName[language] : '',
@@ -144,7 +148,8 @@ class SessionStore {
       this.setMarkedSessionsMap(markedSessionsMap);
 
       runInAction(() => {
-        this.allSessions = allSessions;
+        this.allInOneSessions = allInOneSessions;
+        this.allSessionsFromAllCategories = allSessionsFromAllCategories;
       });
     } catch (e) {
       errorHandler({error: e});
@@ -224,16 +229,12 @@ class SessionStore {
     return sortedSessions;
   };
 
-  getUnlockedCategoriesInfo = (categories: CategoryType[]) => {
-    const unlockedCategories = categories.filter(category => {
-      return !category.isBlocked && category.name !== CategoryKey.All_In_One;
-    });
-
+  getUnlockedCategoriesMap = (unlockedCategories: CategoryType[]) => {
     const unlockedCategoryMap = Object.fromEntries(
       unlockedCategories.map(cat => [cat.id, cat]),
     );
 
-    return {unlockedCategoryMap, unlockedCategories};
+    return unlockedCategoryMap;
   };
 
   getSessionQuestions = (questionsMap: Record<string, QuestionType>) => {
@@ -290,7 +291,12 @@ class SessionStore {
     try {
       crashlytics().log('Updating user session');
 
-      const sessions = this.sessions;
+      const isLastCategory = categoryStore.getIsLastCategoryById(categoryId);
+      let sessions = this.sessions;
+
+      if (isLastCategory) {
+        sessions = this.allSessionsFromAllCategories;
+      }
 
       const nextSession = getNextElementById<SessionType>({
         id: sessionId,

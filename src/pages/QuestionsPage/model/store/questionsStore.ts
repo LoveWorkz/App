@@ -17,7 +17,7 @@ import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {lastSessionNumber, sessionStore} from '@src/entities/Session';
+import {sessionsCount, sessionStore} from '@src/entities/Session';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -213,16 +213,8 @@ class QuestionsStore {
         sessionId,
       });
 
-      let categoryId = currentCategory.id;
-      const isLastCategoryKey = categoryStore.getIsLastCategory();
-
-      // if category is last (All In One) set previous category id
-      if (isLastCategoryKey) {
-        categoryId = currentCategory.id;
-      }
-
       await userCategoryStore.updateUserCategory({
-        id: categoryId,
+        id: currentCategory.id,
         data: question.id,
         field: `sessions.${sessionId}.currentQuestion`,
       });
@@ -407,50 +399,50 @@ class QuestionsStore {
         return;
       }
 
-      // check if user reached the last question of category
-      const currentQuestionNumber = questionInfo.currentQuestionNumber;
-      const lastQuestion = this.questionsSize;
-      const isLastQuestion = currentQuestionNumber === lastQuestion;
-
-      if (isLastQuestion) {
-        const category = categoryStore.category;
-        const session = sessionStore.session;
-        if (!(category && session)) {
-          return;
-        }
-
-        const isLastSession = session.sessionNumber === lastSessionNumber;
-        // if its last session the update the next category
-        if (isLastSession) {
-          const isLastCategory = categoryStore.getIsLastCategory();
-          // we don't need any logic for last category
-          if (isLastCategory) {
-            return;
-          }
-
-          // the modal will be opened only one time
-          if (category.isAllSessionsPassed) {
-            return;
-          }
-
-          this.updateUserDataAfterSwipedAllQuestions({
-            categoryId: category.id,
-          });
-
-          this.setCongratsModalVisible(true);
-
-          return;
-        }
-
-        if (category.sessions[sessionId].isAllQuestionsSwiped) {
-          return;
-        }
-
-        sessionStore.updateUserSessionAfterSwipedAllQuestions({
-          categoryId: category.id,
-          sessionId,
-        });
+      // if it's not last question exit
+      if (questionInfo.currentQuestionNumber !== this.questionsSize) {
+        return;
       }
+
+      const category = categoryStore.category;
+      const session = sessionStore.session;
+
+      if (!(category && session)) {
+        return;
+      }
+
+      const unlockedCategories = categoriesStore.unlockedCategories;
+      let lastSessionNumber = sessionsCount;
+
+      const isLastCategory = categoryStore.getIsLastCategoryById(category.id);
+      if (isLastCategory) {
+        lastSessionNumber = sessionsCount * unlockedCategories.length;
+      }
+
+      const isLastSession = session.sessionNumber === lastSessionNumber;
+      if (isLastSession) {
+        // we don't need any logic for last category
+        if (isLastCategory) {
+          return;
+        }
+
+        if (category.isAllSessionsPassed) {
+          return;
+        }
+
+        this.updateUserDataAfterSwipedAllQuestions({categoryId: category.id});
+        this.setCongratsModalVisible(true);
+        return;
+      }
+
+      if (category.sessions[sessionId].isAllQuestionsSwiped) {
+        return;
+      }
+
+      sessionStore.updateUserSessionAfterSwipedAllQuestions({
+        categoryId: category.id,
+        sessionId,
+      });
     } catch (e) {
       errorHandler({error: e});
     }

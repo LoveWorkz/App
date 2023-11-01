@@ -11,6 +11,7 @@ import {DisplayText, StyleType} from '@src/shared/types/types';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
+import {sessionsCount} from '@src/entities/Session';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -19,7 +20,6 @@ import categoryStore from '../model/store/categoryStore';
 
 interface CategoryProps {
   style?: StyleType;
-  questions: string[];
   name: string;
   image: string;
   size?: CateorySize;
@@ -38,7 +38,6 @@ const borderRadius = moderateScale(20);
 
 const Category = (props: CategoryProps) => {
   const {
-    questions,
     image,
     size = CateorySize.L,
     isBlocked = false,
@@ -129,7 +128,7 @@ const Category = (props: CategoryProps) => {
               style={{color: colors.white}}
               weight={'500'}
               size={isSizeL ? TextSize.LEVEL_6 : TextSize.LEVEL_3}
-              text={`${questions.length} ${t('questions.questions')}`}
+              text={`${sessionsCount} ${t('sessions.sessions')}`}
             />
           </Gradient>
           <AppText

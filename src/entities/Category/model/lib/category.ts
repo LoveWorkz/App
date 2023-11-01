@@ -10,11 +10,15 @@ export const categoryExample: CategoryType = {
   },
   leftSide: true,
   isBlocked: false,
-  description: '',
-  questions: [],
+  description: {
+    en: '',
+    de: '',
+    pt: '',
+  },
   categorySize: 'large',
   isCategoryDetailsVisible: true,
   isAllSessionsPassed: false,
+  currentSession: '',
   createdDate: '',
   displayName: {
     en: '',

@@ -113,7 +113,10 @@ export const CategoryDetailsPage = () => {
             size={TextSize.LEVEL_7}
             text={`${category.displayName[language]} package`}
           />
-          <AppText size={TextSize.LEVEL_4} text={category.description} />
+          <AppText
+            size={TextSize.LEVEL_4}
+            text={category.description[language]}
+          />
         </View>
       </View>
       <View style={styles.btnWrapper}>
