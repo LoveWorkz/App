@@ -49,10 +49,10 @@ export const Button = (props: ButtonProps) => {
   const mode = useMemo(() => {
     return [
       styles.Button,
-      style,
       styles[theme],
       disabled ? styles.disabled : '',
       squar ? styles.squar : '',
+      style,
     ];
   }, [disabled, theme, style, squar]);
 

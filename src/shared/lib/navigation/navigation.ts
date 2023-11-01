@@ -18,6 +18,7 @@ type RootStackParamList = {
   isTabScreen?: boolean;
   sessionId?: string;
   showPreSessionPopup?: boolean;
+  challenge?: string;
 };
 
 export interface Navigation {

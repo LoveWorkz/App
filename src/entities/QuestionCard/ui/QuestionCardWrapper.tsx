@@ -13,7 +13,7 @@ interface QuestionCardWrapperProps {
   image: ImageSourcePropType;
   type: QuestionCardTypes;
   id: string;
-  challengeId?: string;
+  challenge?: string;
 }
 
 const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {

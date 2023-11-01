@@ -3,7 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import {InterstitialAd} from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, DocsType} from '@src/shared/types/firebase';
 import {categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
@@ -286,23 +286,8 @@ class QuestionsStore {
     sharedQuestionId?: string;
   }) => {
     try {
-      crashlytics().log(`Fetching ${key} questions`);
-
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-      const data = await firestore()
-        .collection(Collections.QUESTIONS)
-        .get({source});
-
-      const questionsMap: Record<string, QuestionType> = {};
-      const allQuestions = data.docs.map(question => ({
-        ...question.data(),
-        id: question.id,
-      })) as QuestionType[];
-
-      allQuestions.forEach(question => {
-        questionsMap[question.id] = question;
-      });
-
+      const allQuestions = await this.fetchAllQuestions();
+      const questionsMap = this.getQuestionsMap(allQuestions);
       let questions: QuestionType[] | undefined = [];
 
       if (sharedQuestionId) {
@@ -332,6 +317,48 @@ class QuestionsStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  fetchAllQuestions = async () => {
+    crashlytics().log('Fetching all questions');
+
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+    // fetch and merge all questions
+
+    const promise1 = firestore()
+      .collection(Collections.ORDINARY_QUESTIONS)
+      .get({source});
+    const promise2 = firestore()
+      .collection(Collections.WILD_QUESTIONS)
+      .get({source});
+    const promise3 = firestore()
+      .collection(Collections.CHALLENGE_QUESTIONS)
+      .get({source});
+
+    const data = await Promise.all([promise1, promise2, promise3]);
+
+    const allQuestions: DocsType = [];
+
+    data.forEach(element => {
+      allQuestions.push(...element.docs);
+    });
+
+    const result = allQuestions.map(question => ({
+      ...question.data(),
+      id: question.id,
+    })) as QuestionType[];
+
+    return result;
+  };
+
+  getQuestionsMap = (questions: QuestionType[]) => {
+    const questionsMap: Record<string, QuestionType> = {};
+    questions.forEach(question => {
+      questionsMap[question.id] = question;
+    });
+
+    return questionsMap;
   };
 
   fetchFavoritesQuestions = async () => {

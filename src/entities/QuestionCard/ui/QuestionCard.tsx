@@ -14,33 +14,35 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {Button} from '@src/shared/ui/Button/Button';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {QuestionCardTypes} from '../model/types/questionTypes';
 
 interface QuestionCardProps {
   question: DisplayText;
   image: ImageSourcePropType;
   type: QuestionCardTypes;
-  challengeId?: string;
+  challenge?: string;
 }
 
 const QuestionCard = (props: QuestionCardProps) => {
-  const {question, image, type, challengeId} = props;
+  const {question, image, type, challenge} = props;
 
   const colors = useColors();
-  const {i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
   const {theme} = useTheme();
 
-  const isTypeOrdinary = type === 'ORDINARY';
-  const isTypeChallangeCard = type === 'CHALLANGE_CARD';
-  const isTextPrimary = isTypeOrdinary || isTypeChallangeCard;
+  const isTypeOrdinary = type === 'ORDINARY_CARD';
+  const isTypeChallange = type === 'CHALLENGE_CARD';
+  const isTextPrimary = isTypeOrdinary;
 
   const language = i18n.language as LanguageValueType;
+  const isGerman = language === 'de';
 
   const onButtonPressHandler = () => {
-    navigation.navigate(TabRoutesNames.CHALLENGES, {id: challengeId});
+    navigation.navigate(TabRoutesNames.CHALLENGES, {challenge: challenge});
   };
 
   return (
@@ -49,22 +51,35 @@ const QuestionCard = (props: QuestionCardProps) => {
         resizeMode="stretch"
         source={image as number} // image number
         style={styles.questionCard}>
-        <View style={styles.btnWrapper}>
-          {isTypeChallangeCard && (
-            <Button onPress={onButtonPressHandler}>
-              <AppText size={TextSize.LEVEL_4} text={'button'} />
-            </Button>
-          )}
-          <AppText
+        <AppText
+          style={[
+            styles.questionText,
+            {color: isTextPrimary ? colors.primaryTextColor : colors.white},
+          ]}
+          weight={'600'}
+          size={TextSize.LEVEL_7}
+          text={question[language]}
+        />
+
+        {isTypeChallange && (
+          <Button
             style={[
-              styles.questionText,
-              {color: isTextPrimary ? colors.primaryTextColor : colors.white},
+              styles.btn,
+              {
+                backgroundColor: colors.white,
+                paddingVertical: horizontalScale(isGerman ? 3 : 8),
+              },
             ]}
-            weight={'600'}
-            size={TextSize.LEVEL_7}
-            text={question[language]}
-          />
-        </View>
+            theme={ButtonTheme.CLEAR}
+            onPress={onButtonPressHandler}>
+            <GradientText
+              style={styles.btnText}
+              size={isGerman ? TextSize.LEVEL_4 : TextSize.LEVEL_5}
+              weight={'700'}
+              text={t('questions.move_to_challenges')}
+            />
+          </Button>
+        )}
       </FastImage>
     </View>
   );
@@ -82,8 +97,14 @@ const styles = StyleSheet.create({
   questionText: {
     textAlign: 'center',
   },
-  btnWrapper: {
-    position: 'relative',
+  btn: {
+    height: 'auto',
+    marginTop: verticalScale(20),
+    paddingHorizontal: horizontalScale(20),
+    borderRadius: moderateScale(10),
+  },
+  btnText: {
+    textAlign: 'center',
   },
 });
 

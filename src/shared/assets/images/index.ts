@@ -26,7 +26,7 @@ export {default as BasicDarkImage} from './dark/progressBar/Basic.png';
 export {default as DeepDarkImage} from './dark/progressBar/Deep.png';
 export {default as IntimateDarkImage} from './dark/progressBar/Intimate.png';
 
-export {default as Action_CARD} from './Action_CARD.png';
+export {default as CHALLENGE_CARD} from './CHALLENGE_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';
 
 export {default as favorites} from './favorites.png';

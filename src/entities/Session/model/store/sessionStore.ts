@@ -5,7 +5,7 @@ import firestore, {
 } from '@react-native-firebase/firestore';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, DocsType} from '@src/shared/types/firebase';
 import {QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -207,7 +207,7 @@ class SessionStore {
     userCategories,
     categoryId,
   }: {
-    docs: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>[];
+    docs: DocsType;
     userCategories: UserCategory | null;
     categoryId: string;
   }) => {
@@ -246,7 +246,12 @@ class SessionStore {
     const sessionQuestionsIds = session.questions;
 
     const questions = sessionQuestionsIds.map(questionId => {
-      return questionsMap[questionId];
+      const question = questionsMap[questionId];
+
+      return {
+        ...question,
+        challenge: question.type === 'CHALLENGE_CARD' ? session.challenge : '',
+      };
     });
 
     return questions;

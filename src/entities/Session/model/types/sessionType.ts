@@ -1,8 +1,7 @@
 import {CategoryKey} from '@src/entities/Category';
 
 export interface SessionType {
-  // change to challenge
-  challange: string;
+  challenge: string;
   id: string;
   sessionNumber: number;
   questions: string[];

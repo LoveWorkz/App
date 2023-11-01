@@ -1,6 +1,6 @@
 import {QuestionType} from '@src/entities/QuestionCard';
 import {
-  Action_CARD,
+  CHALLENGE_CARD,
   questionImage1,
   questionImage2,
   questionImage3,
@@ -38,17 +38,17 @@ export const getFormattedQuestionsWrapper = ({
 
   return () => {
     return questions.map(question => {
+      if (question.type === 'CHALLENGE_CARD') {
+        return {
+          ...question,
+          image: CHALLENGE_CARD,
+        };
+      }
+
       if (question.type === 'WILD_CARD') {
         return {
           ...question,
           image: WILD_CARD,
-        };
-      }
-
-      if (question.type === 'Action_CARD') {
-        return {
-          ...question,
-          image: Action_CARD,
         };
       }
 

@@ -17,7 +17,13 @@ import challengesStore from '../model/store/challengesStore';
 import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
 interface ChallengesPageProps {
-  route?: {params: {id: string; prevRouteName: AppRouteNames | TabRoutesNames}};
+  route?: {
+    params: {
+      id: string;
+      prevRouteName: AppRouteNames | TabRoutesNames;
+      challenge: string;
+    };
+  };
 }
 
 const ChallengesPage = (props: ChallengesPageProps) => {

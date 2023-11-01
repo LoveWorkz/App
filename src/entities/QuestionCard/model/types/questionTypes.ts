@@ -2,9 +2,8 @@ import {DisplayText} from '@src/shared/types/types';
 
 export type QuestionCardTypes =
   | 'WILD_CARD'
-  | 'Action_CARD'
-  | 'ORDINARY'
-  | 'CHALLANGE_CARD';
+  | 'CHALLENGE_CARD'
+  | 'ORDINARY_CARD';
 
 export interface QuestionType {
   categoryId: string;
@@ -16,7 +15,7 @@ export interface QuestionType {
   difficulty: number;
   image?: string;
 
-  challengeId?: string;
+  challenge?: string;
 }
 
 export interface QuestionPreviewType {
