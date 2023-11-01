@@ -50,18 +50,12 @@ class BooksStore {
   };
 
   fetchBooks = async () => {
-    try {
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const data = await firestore()
-        .collection(Collections.BOOKS)
-        .get({source});
-      const booksList = data.docs.map(book => book.data());
+    const data = await firestore().collection(Collections.BOOKS).get({source});
+    const booksList = data.docs.map(book => book.data());
 
-      return booksList as BookType[];
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    return booksList as BookType[];
   };
 
   setBooks = async () => {

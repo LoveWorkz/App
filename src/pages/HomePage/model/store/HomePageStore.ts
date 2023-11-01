@@ -43,13 +43,11 @@ class HomePageStore {
 
       // fetching books for quotes modal
       const books = await booksStore.fetchBooks();
-      if (books) {
-        quotesStore.checkQuotesShownStatus(books);
-      }
+      quotesStore.checkQuotesShownStatus(books);
 
       this.getHomePageCategory(language);
-      await sessionStore.fetchSessions();
-      this.setInitSession();
+
+      await this.fetchHomePageSessions();
 
       shareStore.shareQuestionHandler(language);
     } catch (e) {
@@ -72,6 +70,7 @@ class HomePageStore {
       await userStore.fetchUser();
       await this.fetchHomePageCategoryChallenges();
       await this.fetchHomePageCategories(language);
+      await this.fetchHomePageSessions();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -82,27 +81,27 @@ class HomePageStore {
   };
 
   fetchHomePageCategoryChallenges = async () => {
-    try {
-      crashlytics().log('Fetching home page Challenges');
+    crashlytics().log('Fetching home page Challenges');
 
-      await challengesStore.fetchChallengeCategories();
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    await challengesStore.fetchChallengeCategories();
+  };
+
+  fetchHomePageSessions = async () => {
+    crashlytics().log('Fetching home page Sessions');
+
+    // fetching sessions for action banner
+    await sessionStore.fetchSessions();
+    this.setCurrentSession();
   };
 
   fetchHomePageCategories = async (language: LanguageValueType) => {
-    try {
-      crashlytics().log('Fetching home page Categories');
+    crashlytics().log('Fetching home page Categories');
 
-      await categoriesStore.fetchCategories();
-      this.getHomePageCategory(language);
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    await categoriesStore.fetchCategories();
+    this.getHomePageCategory(language);
   };
 
-  setInitSession = () => {
+  setCurrentSession = () => {
     const homePageCategory = this.homePageCategory;
     if (!homePageCategory) {
       return;
