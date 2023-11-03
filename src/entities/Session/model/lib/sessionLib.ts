@@ -6,7 +6,7 @@ import {
   starterSessionImage,
 } from '@src/shared/assets/images';
 
-export const sessionsCount = 2;
+export const sessionsCount = 12;
 
 export const getSessionsImages = (key: CategoryKey) => {
   switch (key) {

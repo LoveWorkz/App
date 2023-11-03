@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
@@ -9,20 +9,23 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
-import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {getProgressBarImage} from '../../model/lib/homePage';
+import {useTheme} from '@src/app/providers/themeProvider';
 import homePageStore from '../../model/store/HomePageStore';
 
 const ProgressBar = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-  const {progressBarCategoryName, progressBarCategoryKey} = homePageStore;
+  const {progressBarCategoryName, progressBarCategoryKey, progressBarImg} =
+    homePageStore;
 
-  const progressBarImage = getProgressBarImage({
-    category: progressBarCategoryKey,
-    isDarkMode: theme === Theme.Dark,
-  });
+  useEffect(() => {
+    homePageStore.getProgressBarImage(theme);
+  }, [theme]);
+
+  if (!progressBarImg) {
+    return <></>;
+  }
 
   return (
     <View>
@@ -33,14 +36,13 @@ const ProgressBar = () => {
         text={t('home.current_level')}
       />
 
-      {progressBarImage && (
-        <FastImage
-          resizeMode={'stretch'}
-          source={progressBarImage}
-          style={styles.progressImage}
-        />
-      )}
-      <AppText
+      <FastImage
+        resizeMode={'stretch'}
+        source={progressBarImg}
+        style={styles.progressImage}
+      />
+
+      {/* <AppText
         style={[
           styles[progressBarCategoryKey],
           {color: colors.homePageCategoryTextColor},
@@ -48,7 +50,7 @@ const ProgressBar = () => {
         weight={'700'}
         size={TextSize.LEVEL_4}
         text={progressBarCategoryName}
-      />
+      /> */}
     </View>
   );
 };
@@ -68,26 +70,26 @@ const styles = StyleSheet.create<Record<string, any>>({
 
   Starter: {
     position: 'absolute',
-    bottom: 45,
+    bottom: 40,
     left: horizontalScale(62),
     color: '#885FFF',
   },
   Basic: {
     position: 'absolute',
-    bottom: 70,
-    left: horizontalScale(182),
+    bottom: 65,
+    left: horizontalScale(205),
     color: '#885FFF',
   },
   Deep: {
     position: 'absolute',
-    bottom: 125,
-    left: horizontalScale(180),
+    bottom: 105,
+    left: horizontalScale(160),
     color: '#885FFF',
   },
   Intimate: {
     position: 'absolute',
-    bottom: 130,
-    left: horizontalScale(302),
+    bottom: 126,
+    left: horizontalScale(295),
     color: '#885FFF',
   },
 });

@@ -15,16 +15,50 @@ export {default as questionImageDark5} from './dark/questions/questionImageDark5
 export {default as questionImageDark6} from './dark/questions/questionImageDark6.png';
 
 // progress bar light
-export {default as StarterImage} from './light/progressBar/Starter.png';
-export {default as BasicImage} from './light/progressBar/Basic.png';
-export {default as DeepImage} from './light/progressBar/Deep.png';
-export {default as IntimateImage} from './light/progressBar/Intimate.png';
+
+// Starter
+export {default as StarterImage} from './light/progressBar/starter/Starter.png';
+export {default as StarterImage_30} from './light/progressBar/starter/Starter_30.png';
+export {default as StarterImage_60} from './light/progressBar/starter/Starter_60.png';
+export {default as StarterImage_90} from './light/progressBar/starter/Starter_90.png';
+
+// Basic
+export {default as BasicImage} from './light/progressBar/basic/Basic.png';
+export {default as BasicImage_30} from './light/progressBar/basic/Basic_30.png';
+export {default as BasicImage_60} from './light/progressBar/basic/Basic_60.png';
+export {default as BasicImage_90} from './light/progressBar/basic/Basic_90.png';
+
+// Deep
+export {default as DeepImage} from './light/progressBar/deep/Deep.png';
+export {default as DeepImage_30} from './light/progressBar/deep/Deep_30.png';
+export {default as DeepImage_60} from './light/progressBar/deep/Deep_60.png';
+export {default as DeepImage_90} from './light/progressBar/deep/Deep_90.png';
+
+// Intimate
+export {default as IntimateImage} from './light/progressBar/intimate/Intimate.png';
 
 // progress bar dark
-export {default as StarterDarkImage} from './dark/progressBar/Starter.png';
-export {default as BasicDarkImage} from './dark/progressBar/Basic.png';
-export {default as DeepDarkImage} from './dark/progressBar/Deep.png';
-export {default as IntimateDarkImage} from './dark/progressBar/Intimate.png';
+
+// Starter
+export {default as StarterDarkImage} from './dark/progressBar/starter/Starter.png';
+export {default as StarterDarkImage_30} from './dark/progressBar/starter/Starter_30.png';
+export {default as StarterDarkImage_60} from './dark/progressBar/starter/Starter_60.png';
+export {default as StarterDarkImage_90} from './dark/progressBar/starter/Starter_90.png';
+
+// Basic
+export {default as BasicDarkImage} from './dark/progressBar/basic/Basic.png';
+export {default as BasicDarkImage_30} from './dark/progressBar/basic/Basic_30.png';
+export {default as BasicDarkImage_60} from './dark/progressBar/basic/Basic_60.png';
+export {default as BasicDarkImage_90} from './dark/progressBar/basic/Basic_90.png';
+
+// Deep
+export {default as DeepDarkImage} from './dark/progressBar/deep/Deep.png';
+export {default as DeepDarkImage_30} from './dark/progressBar/deep/Deep_30.png';
+export {default as DeepDarkImage_60} from './dark/progressBar/deep/Deep_60.png';
+export {default as DeepDarkImage_90} from './dark/progressBar/deep/Deep_90.png';
+
+// Intimate
+export {default as IntimateDarkImage} from './dark/progressBar/intimate/Intimate.png';
 
 export {default as CHALLENGE_CARD} from './CHALLENGE_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';

@@ -14,6 +14,9 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {userStore} from '@src/entities/User';
 import {sessionStore} from '@src/entities/Session';
+import {Theme} from '@src/app/providers/themeProvider';
+import {getPercentageFromNumber} from '@src/shared/lib/common';
+import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -23,6 +26,7 @@ class HomePageStore {
   progressBarCategoryKey: CategoryKey = CategoryKey.Starter;
 
   homePageCategory: CategoryType | null = null;
+  progressBarImg: number = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -200,6 +204,48 @@ class HomePageStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  getProgressBarImage = (theme: Theme) => {
+    try {
+      const progressBarCategoryKey = this.progressBarCategoryKey;
+      const sessions = sessionStore.sessions;
+      const unlockedSessions = sessions.filter(item => !item.isBlocked);
+
+      const progressBarImgGroups = getProgressBarImageGroups({
+        category: progressBarCategoryKey,
+        isDarkMode: theme === Theme.Dark,
+      });
+
+      const passedSessionsPercentage = getPercentageFromNumber(
+        unlockedSessions.length,
+        sessions.length,
+      );
+
+      const imgKey = this.getImageKeyByPercentage(passedSessionsPercentage);
+
+      runInAction(() => {
+        this.progressBarImg = progressBarImgGroups[imgKey];
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  getImageKeyByPercentage = (passedSessionsPercentage: number) => {
+    if (passedSessionsPercentage < 25) {
+      return 0;
+    }
+
+    if (passedSessionsPercentage >= 25 && passedSessionsPercentage < 50) {
+      return 1;
+    }
+
+    if (passedSessionsPercentage >= 50 && passedSessionsPercentage < 80) {
+      return 2;
+    }
+
+    return 3;
   };
 }
 
