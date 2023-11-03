@@ -1,14 +1,17 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
-import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {ChallengeCategory} from '@src/entities/ChallengeCategory';
 import {CongratsModalContentType} from '../model/types/congratsModalType';
 
 interface CongratsModalProps {
@@ -19,7 +22,7 @@ interface CongratsModalProps {
 
 const CongratsModal = (props: CongratsModalProps) => {
   const {visible, setVisible, content} = props;
-  const {title, description, image} = content;
+  const {title, description1, description2, categoryName, image} = content;
   const colors = useColors();
   const {t} = useTranslation();
 
@@ -27,18 +30,17 @@ const CongratsModal = (props: CongratsModalProps) => {
     setVisible?.(false);
   };
 
-  const uri = useMemo(() => {
-    return {
-      uri: image,
-    };
-  }, [image]);
+  const goToChallengesHandler = () => {
+    navigation.navigate(TabRoutesNames.CHALLENGES);
+    setVisible?.(false);
+  };
 
   return (
     <Modal
       contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>
-      <FastImage resizeMode="contain" style={styles.image} source={uri} />
+      <ChallengeCategory size={'large'} image={image} isBlocked={false} />
 
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
@@ -47,34 +49,67 @@ const CongratsModal = (props: CongratsModalProps) => {
         text={title}
       />
 
-      {description ? (
+      <Text style={styles.description}>
         <AppText
-          style={[styles.description, {color: colors.primaryTextColor}]}
+          style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_4}
-          text={description}
+          lineHeight={20}
+          align={'center'}
+          text={description1}
         />
-      ) : (
-        <></>
-      )}
-      <Button
-        style={styles.btn}
-        onPress={onCancelHandler}
-        theme={ButtonTheme.GRADIENT}>
+        {categoryName && (
+          <AppText
+            style={{color: colors.primaryTextColor}}
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            lineHeight={20}
+            align={'center'}
+            text={categoryName}
+          />
+        )}
         <AppText
-          style={{color: colors.bgQuinaryColor}}
+          style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_4}
-          text={t('continue')}
+          lineHeight={20}
+          align={'center'}
+          text={description2}
         />
-      </Button>
+      </Text>
+
+      <View style={styles.btnGroup}>
+        <Button
+          style={styles.btn}
+          theme={ButtonTheme.OUTLINED_GRADIENT}
+          onPress={onCancelHandler}>
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'700'}
+            text={t('cancel')}
+          />
+        </Button>
+        <Button
+          onPress={goToChallengesHandler}
+          theme={ButtonTheme.GRADIENT}
+          style={styles.btn}>
+          <AppText
+            style={{color: colors.bgQuinaryColor}}
+            size={TextSize.LEVEL_4}
+            weight={'700'}
+            text={t('challenge.title')}
+          />
+        </Button>
+      </View>
     </Modal>
   );
 };
 
 export default memo(observer(CongratsModal));
 
+const btnWidth = '47%';
+
 const styles = StyleSheet.create({
   content: {
-    minHeight: verticalScale(426),
+    minHeight: verticalScale(335),
   },
   title: {
     textAlign: 'center',
@@ -85,16 +120,16 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     textAlign: 'center',
   },
-  btn: {
+  btnGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: '100%',
-    height: verticalScale(40),
+  },
+  btn: {
+    width: btnWidth,
   },
   dontShowAgaing: {
     textDecorationLine: 'underline',
     marginTop: verticalScale(10),
-  },
-  image: {
-    height: verticalScale(150),
-    width: horizontalScale(150),
   },
 });

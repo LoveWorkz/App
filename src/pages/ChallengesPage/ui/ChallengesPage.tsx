@@ -4,8 +4,6 @@ import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {CongratsModal} from '@src/widgets/CongratsModal';
-import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {challengeFilterItems} from '@src/entities/Challenge';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -14,7 +12,6 @@ import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
 import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
 import Challenges from './Challenges/Challenges';
 import challengesStore from '../model/store/challengesStore';
-import {getCongratsModalContentForChallenges} from '../model/lib/challenges';
 
 interface ChallengesPageProps {
   route?: {
@@ -31,12 +28,6 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   const defaultChallengeId = route?.params?.id;
   const prevRouteName = route?.params?.prevRouteName;
   const isLoading = challengesStore.isChallengePageLoading;
-
-  const challengeCategory = challengesStore.challengeCategory;
-  const congratsModalContent =
-    getCongratsModalContentForChallenges()[
-      challengeCategory?.currentChallengeCategory as ChallengeCategoryKeys
-    ];
 
   useEffect(() => {
     challengesStore.init();
@@ -63,13 +54,6 @@ const ChallengesPage = (props: ChallengesPageProps) => {
         <ChallengesFilterItems isLoading={isLoading} />
       </View>
       <Challenges isLoading={isLoading} />
-      {congratsModalContent && (
-        <CongratsModal
-          visible={challengesStore.isCongratsModalVisible}
-          setVisible={challengesStore.setIsCongratsModalVisible}
-          content={congratsModalContent}
-        />
-      )}
     </View>
   );
 };

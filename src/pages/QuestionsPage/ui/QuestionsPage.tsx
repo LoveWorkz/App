@@ -25,21 +25,18 @@ import {
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
-import {CategoryKey} from '@src/entities/Category';
-import {getCongratsModalContent} from '@src/pages/CategoriesPage';
-import {CongratsModal} from '@src/widgets/CongratsModal';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {initInterstitialAd} from '@src/app/config/admobConfig';
 import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {userStore} from '@src/entities/User';
 import {PresSessionModal, sessionStore} from '@src/entities/Session';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
+import QuestionPageCongratsModal from './QuestionPageCongratsModal/QuestionPageCongratsModal';
 
 interface QuestionsPageProps {
   route?: {
@@ -61,7 +58,7 @@ const questionCardBorderRadius = moderateScale(20);
 const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
   const colors = useColors();
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const {theme} = useTheme();
 
   const showPreSessionPopup = route?.params.showPreSessionPopup;
@@ -77,9 +74,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   const questions = questionsStore.questions;
   const questionsPageInfo = questionStore.questionPreviewInfo;
-  const currentCategory = userStore.currentCategory?.currentCategory;
   const language = i18n.language as LanguageValueType;
-  const content = getCongratsModalContent(t)[currentCategory as CategoryKey];
   const isLoading = questionsStore.questionsPageloading;
   const sharedSessionId = route?.params.sessionId;
   const sessionId = sharedSessionId || sessionStore.session?.id;
@@ -224,11 +219,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         />
       </View>
       <WowThatWasFast />
-      <CongratsModal
-        content={content}
-        visible={questionsStore.congratsModalVisible}
-        setVisible={questionsStore.setCongratsModalVisible}
-      />
+      <QuestionPageCongratsModal />
       {!!showPreSessionPopup && (
         <PresSessionModal
           onConfirm={onPreSessionConfirmHandler}

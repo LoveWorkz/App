@@ -5,7 +5,17 @@
    
     "questions.wow_that_was_fast": "Wow, das ging aber schnell",
     "questions.remember_it_is_not_a_sprint": "Denk daran, das ist ein Marathon und kein Sprint.",
-    "questions.congrats_for_reached_next_category": "Congrats you have reached Intimacy Level",
-    "questions.reward_challanges": "Reward: 5 Challenges in",
-    "questions.move_to_challenges": "Bewegung zu Herausforderungen"
+    "questions.move_to_challenges": "Bewegung zu Herausforderungen",
+    "questions.great_job": "Großartige Arbeit!",
+    "questions.fantastic_work": "Fantastische Arbeit!",
+    "questions.way_to_go": "Weiter so!",
+ 
+    "questions.congrats_basic_description_1": "Sie haben die Intimitätsstufe: ",
+    "questions.congrats_basic_description_2": " erreicht. Sie haben neue Herausforderungen und Fragen freigeschaltet. Schauen Sie sie sich jetzt an!",
+    "questions.congrats_deep_description_1": "Sie haben die Intimitätsstufe ",
+    "questions.congrats_deep_description_2": " erreicht. Fantastisch! Sie haben erfolgreich neue Herausforderungen und Fragen freigeschaltet. Schauen Sie sie sich jetzt an!",
+    "questions.congrats_intimate_description_1": "Herzlichen Glückwunsch, Sie haben die Intimitätsstufe: ",
+    "questions.congrats_intimate_description_2": "Intim erreicht. Sie haben erfolgreich neue Herausforderungen und Fragen freigeschaltet. Schauen Sie sie sich jetzt an!"
 }
+
+

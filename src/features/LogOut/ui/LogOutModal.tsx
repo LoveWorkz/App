@@ -47,7 +47,7 @@ const LogOutModal = (props: LogOutModalProps) => {
       <View style={styles.btnGroup}>
         <Button
           disabled={logoutStore.isLoading}
-          style={styles.cancelBtn}
+          style={styles.btn}
           theme={ButtonTheme.OUTLINED_GRADIENT}
           onPress={onCancelHandler}>
           <GradientText
@@ -59,7 +59,7 @@ const LogOutModal = (props: LogOutModalProps) => {
         <Button
           disabled={logoutStore.isLoading}
           theme={ButtonTheme.GRADIENT}
-          style={styles.logOutBtn}
+          style={styles.btn}
           onPress={onlogoutHandler}>
           <AppText
             style={{color: colors.bgQuinaryColor}}
@@ -86,10 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
   },
-  logOutBtn: {
-    width: btnWidth,
-  },
-  cancelBtn: {
+  btn: {
     width: btnWidth,
   },
 });

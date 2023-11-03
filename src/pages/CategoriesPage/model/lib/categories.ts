@@ -5,44 +5,28 @@ import {CongratsModalContentType} from '@src/widgets/CongratsModal';
 
 export const getCongratsModalContent = (
   t: TFunction,
-): Record<CategoryKey, CongratsModalContentType> => {
-  const title = t('questions.congrats_for_reached_next_category');
+): Partial<Record<CategoryKey, CongratsModalContentType>> => {
   return {
     Starter: {
-      title: `${title} Starter:`,
-      description: `${t('questions.reward_challanges')} Bronze`,
+      title: t('questions.great_job'),
+      description1: t('questions.congrats_basic_description_1'),
+      description2: t('questions.congrats_basic_description_2'),
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FBronze.png?alt=media&token=0b505bef-7ede-491b-bf41-9674c5579be9&_gl=1*143fuh2*_ga*Njk2NjAzNDE1LjE2Nzk2NTU4MjY.*_ga_CW55HF8NVT*MTY4NjIwNDI5My4yOS4xLjE2ODYyMDQ1NTEuMC4wLjA.',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_small.png?alt=media&token=1314bee9-a566-4d39-8fb8-e80dafe139bc&_gl=1*85h64s*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODg2NDM2NS4xNjcuMS4xNjk4ODY0NDg2LjM3LjAuMA..',
     },
     Basic: {
-      title: `${title} Basic:`,
-      description: `${t('questions.reward_challanges')} Silver`,
+      title: t('questions.fantastic_work'),
+      description1: t('questions.congrats_deep_description_1'),
+      description2: t('questions.congrats_deep_description_2'),
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FSilver.png?alt=media&token=0e51447a-ff1f-4a82-9b25-59b3b9601abd',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_middle.png?alt=media&token=c00a8a27-ce44-476f-863b-3aff3db8d6aa&_gl=1*8k0lxh*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODkzOTYzNC4xNjkuMS4xNjk4OTM5NjU1LjM5LjAuMA..',
     },
     Deep: {
-      title: `${title} Deep:`,
-      description: `${t('questions.reward_challanges')} Gold`,
+      title: t('questions.way_to_go'),
+      description1: t('questions.congrats_intimate_description_1'),
+      description2: t('questions.congrats_intimate_description_2'),
       image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FGold.png?alt=media&token=7f267e09-81be-4003-a147-0e2af70f7084',
-    },
-    Intimate: {
-      title: `${title} Intimate:`,
-      description: `${t('questions.reward_challanges')} Diamond`,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FDiamond.png?alt=media&token=00172a85-e790-4ee7-82cc-d76c6d98be8d',
-    },
-    Hot: {
-      title: `${title} Hot:`,
-      description: `${t('questions.reward_challanges')} Platinum`,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FPlatinum.png?alt=media&token=19e20e96-dce7-4d69-97c4-f7a73e75eca3',
-    },
-    All_In_One: {
-      title: `${title} All In One:`,
-      description: `${t('questions.reward_challanges')} Platinum`,
-      image:
-        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/challenges%2FPlatinum.png?alt=media&token=19e20e96-dce7-4d69-97c4-f7a73e75eca3',
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_middle.png?alt=media&token=7fee4fbf-aa70-4f55-8aa7-52688731ac42&_gl=1*3jpb4h*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODkzOTYzNC4xNjkuMS4xNjk4OTM5NzEwLjU3LjAuMA..',
     },
   };
 };

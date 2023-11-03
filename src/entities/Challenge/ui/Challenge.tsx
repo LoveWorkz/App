@@ -3,7 +3,6 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {ChallengeCategory} from '@src/entities/ChallengeCategory';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
   horizontalScale,
@@ -20,6 +19,7 @@ import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {ChallengeType} from '../model/types/ChallengeTypes';
 import challengeStore from '../model/store/challengeStore';
+import RoundChallenge from './RoundChallenge/RoundChallenge';
 
 interface SubChallengeProps {
   challenge: ChallengeType;
@@ -67,7 +67,7 @@ export const SubChallenge = (props: SubChallengeProps) => {
         },
       ]}>
       <View style={styles.nomerWrapper}>
-        <ChallengeCategory number={nomer} isActive={isChecked} />
+        <RoundChallenge number={nomer} isActive={isChecked} />
       </View>
       <View style={styles.textWrapper}>
         <AppText

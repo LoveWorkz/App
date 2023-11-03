@@ -12,6 +12,7 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {CategoryType} from '../types/categoryTypes';
 
@@ -107,9 +108,7 @@ class CategoryStore {
         ...userCategory.categories[id],
       } as CategoryType;
 
-      runInAction(() => {
-        this.category = category;
-      });
+      this.setCategory(category);
       return category;
     } catch (e) {
       errorHandler({error: e});
@@ -126,8 +125,20 @@ class CategoryStore {
       this.setCategory(category);
     } catch (e) {
       errorHandler({error: e});
-    } finally {
     }
+  };
+
+  getNextCategory = (id?: string) => {
+    if (!id) {
+      return null;
+    }
+
+    const nextCategory = getNextElementById<CategoryType>({
+      id,
+      array: categoriesStore.categories,
+    });
+
+    return nextCategory;
   };
 
   setCategory = (category: CategoryType) => {

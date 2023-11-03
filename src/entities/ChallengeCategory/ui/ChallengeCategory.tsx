@@ -15,7 +15,6 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -24,21 +23,27 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
 
+type ChallengeCategorySize = 'large' | 'small';
+
 interface ChallangeProps {
   image?: string;
   name?: ChallengeCategoryKeys;
   isActive?: boolean;
   selectChallngeCategory?: (data: {id: string; name: string}) => void;
   isBlocked?: boolean;
-  number?: string;
   id?: string;
   displayName?: DisplayText;
   defaultChallengeId?: string;
   isHomePage?: boolean;
   isLoading?: boolean;
+  size?: ChallengeCategorySize;
 }
 
 const challengeWidth = horizontalScale(60);
+const largeChallengeWidth = horizontalScale(80);
+const challangeImgWidth = challengeWidth - 10;
+const largeChallangeImgWidth = largeChallengeWidth - 10;
+
 const borderRadius = moderateScale(40);
 
 const ChallengeCategory = (props: ChallangeProps) => {
@@ -49,17 +54,19 @@ const ChallengeCategory = (props: ChallangeProps) => {
     isActive = false,
     selectChallngeCategory,
     isBlocked = true,
-    number,
     id,
     displayName,
     isHomePage = false,
     isLoading = false,
+    size = 'small',
   } = props;
   const colors = useColors();
   const {i18n} = useTranslation();
   const {theme} = useTheme();
   const language = i18n.language as LanguageValueType;
   const [isSkeleton, setIsSkeleton] = useState(true);
+
+  const isLarge = size === 'large';
 
   useEffect(() => {
     setIsSkeleton(isLoading);
@@ -100,60 +107,27 @@ const ChallengeCategory = (props: ChallangeProps) => {
     return {
       uri: image,
       priority: FastImage.priority.normal,
-      resizeMode: FastImage.resizeMode.contain,
+      resizeMode: FastImage.resizeMode.cover,
     };
   }, [image]);
 
   const fastImage = (
-    <FastImage
-      resizeMode="contain"
-      onLoadEnd={() => setIsSkeleton(false)}
-      style={[
-        name === ChallengeCategoryKeys.Bronze
-          ? {
-              right: horizontalScale(1),
-              top: horizontalScale(2),
-            }
-          : {},
-        styles.image,
-      ]}
-      source={uri}
-    />
+    <View style={[isLarge ? styles.largeImgWrapper : styles.imgWrapper]}>
+      <FastImage
+        onLoadEnd={() => setIsSkeleton(false)}
+        style={styles.image}
+        source={uri}
+      />
+    </View>
   );
 
-  if (number) {
-    return (
-      <View
-        style={[
-          styles.challange,
-          {
-            ...getShadowOpacity(theme).shadowOpacity_level_2,
-            backgroundColor: colors.bgQuinaryColor,
-          },
-        ]}>
-        <View
-          style={[
-            styles.content,
-            {backgroundColor: colors.bgChallengeContentColor},
-          ]}>
-          {isActive ? (
-            <AppText
-              style={[{color: colors.primaryTextColor}]}
-              weight={'700'}
-              size={TextSize.LEVEL_7}
-              text={number}
-            />
-          ) : (
-            <GradientText
-              weight={'700'}
-              size={TextSize.LEVEL_7}
-              text={number}
-            />
-          )}
-        </View>
-      </View>
-    );
-  }
+  const mode = useMemo(() => {
+    return [
+      styles.challange,
+      {...getShadowOpacity(theme).shadowOpacity_level_2},
+      styles[size],
+    ];
+  }, [size, theme]);
 
   if (isSkeleton) {
     return (
@@ -173,38 +147,21 @@ const ChallengeCategory = (props: ChallangeProps) => {
   return (
     <View style={styles.challangeWrapper}>
       {isActive ? (
-        <Gradient
-          style={[
-            styles.challange,
-            {...getShadowOpacity(theme).shadowOpacity_level_2},
-          ]}>
+        <Gradient style={mode}>
           <TouchableOpacity onPress={onPressHandler}>
-            <View
-              style={[
-                styles.content,
-                {backgroundColor: colors.bgChallengeContentColor},
-              ]}>
-              {fastImage}
-            </View>
+            {fastImage}
           </TouchableOpacity>
         </Gradient>
       ) : (
         <TouchableOpacity onPress={onPressHandler}>
           <View
             style={[
-              styles.challange,
+              mode,
               {
-                ...getShadowOpacity(theme).shadowOpacity_level_2,
                 backgroundColor: colors.bgTertiaryColor,
               },
             ]}>
-            <View
-              style={[
-                styles.content,
-                {backgroundColor: colors.bgChallengeContentColor},
-              ]}>
-              {fastImage}
-            </View>
+            {fastImage}
           </View>
           {isBlocked && (
             <>
@@ -243,40 +200,28 @@ const styles = StyleSheet.create<Record<string, any>>({
     paddingHorizontal: horizontalScale(10),
     height: challengeWidth,
     width: challengeWidth,
-    backgroundColor: 'white',
     borderRadius: borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  content: {
-    backgroundColor: '#F1F3FF',
-    height: horizontalScale(50),
-    width: horizontalScale(50),
-    borderRadius: borderRadius,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: verticalScale(3),
-    paddingHorizontal: horizontalScale(3),
   },
   text: {
     color: 'black',
   },
-  active: {
-    backgroundColor: 'black',
-  },
-  activeText: {
-    color: 'white',
+  imgWrapper: {
+    width: challangeImgWidth,
+    height: challangeImgWidth,
+    borderRadius: borderRadius,
   },
   image: {
     height: '100%',
     width: '100%',
+    borderRadius: borderRadius,
   },
   name: {
     marginVertical: verticalScale(5),
   },
 
   layout: {
-    backgroundColor: 'black',
     position: 'absolute',
     opacity: 0.2,
     width: '100%',
@@ -302,5 +247,14 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   nameSkeleton: {
     marginTop: 5,
+  },
+
+  large: {
+    height: largeChallengeWidth,
+    width: largeChallengeWidth,
+  },
+  largeImgWrapper: {
+    height: largeChallangeImgWidth,
+    width: largeChallangeImgWidth,
   },
 });
