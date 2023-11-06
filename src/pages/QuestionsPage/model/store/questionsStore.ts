@@ -4,7 +4,7 @@ import {InterstitialAd} from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections, DocsType} from '@src/shared/types/firebase';
-import {categoryStore, CategoryType} from '@src/entities/Category';
+import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
@@ -409,6 +409,37 @@ class QuestionsStore {
     return favoritesQuestions;
   };
 
+  getIsLastSession = ({
+    sessionNumber,
+    isLastCategory,
+  }: {
+    sessionNumber: number;
+    isLastCategory: boolean;
+  }) => {
+    let lastSessionNumber = sessionsCount;
+    const unlockedCategories = categoriesStore.unlockedCategories;
+
+    if (isLastCategory) {
+      lastSessionNumber = sessionsCount * unlockedCategories.length;
+    }
+
+    return sessionNumber === lastSessionNumber;
+  };
+
+  shouldProceedToNextCategory = ({
+    category,
+    isLastCategory,
+  }: {
+    category: CategoryType;
+    isLastCategory: boolean;
+  }) => {
+    return (
+      category.name !== CategoryKey.Intimate &&
+      category.name !== CategoryKey.Hot &&
+      !isLastCategory
+    );
+  };
+
   checkIfAllQuestionsSwiped = async (param: {
     questionId: string;
     sessionId: string;
@@ -438,22 +469,25 @@ class QuestionsStore {
         return;
       }
 
-      const unlockedCategories = categoriesStore.unlockedCategories;
-      let lastSessionNumber = sessionsCount;
+      const isLastCategory = categoryStore.getIsLastCategoryByKey(
+        category.name,
+      );
+      const isLastSession = this.getIsLastSession({
+        sessionNumber: session.sessionNumber,
+        isLastCategory,
+      });
 
-      const isLastCategory = categoryStore.getIsLastCategoryById(category.id);
-      if (isLastCategory) {
-        lastSessionNumber = sessionsCount * unlockedCategories.length;
-      }
-
-      const isLastSession = session.sessionNumber === lastSessionNumber;
       if (isLastSession) {
-        // we don't need any logic for last category
-        if (isLastCategory) {
-          return;
-        }
+        // if the category is “All in one” || Hot || Intimate, we don't need to update the next category
+        const canOpenNextCategory = this.shouldProceedToNextCategory({
+          category,
+          isLastCategory,
+        });
 
-        if (category.isAllSessionsPassed) {
+        // if we update a category once, we won't need to update it again
+        const isAllSessionsPassed = category.isAllSessionsPassed;
+
+        if (!canOpenNextCategory || isAllSessionsPassed) {
           return;
         }
 
@@ -467,7 +501,7 @@ class QuestionsStore {
       }
 
       sessionStore.updateUserSessionAfterSwipedAllQuestions({
-        categoryId: category.id,
+        category,
         sessionId,
       });
     } catch (e) {

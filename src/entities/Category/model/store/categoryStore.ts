@@ -14,7 +14,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {CategoryType} from '../types/categoryTypes';
+import {CategoryKey, CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -189,8 +189,8 @@ class CategoryStore {
     }
   };
 
-  getIsLastCategoryById = (categoryId: string) => {
-    return categoryId === this.lastCategoryId;
+  getIsLastCategoryByKey = (categoryKey: CategoryKey) => {
+    return categoryKey === CategoryKey.All_In_One;
   };
 
   getCategoryByName = (name: string) => {

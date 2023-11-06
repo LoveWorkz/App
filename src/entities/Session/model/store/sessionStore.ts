@@ -287,16 +287,20 @@ class SessionStore {
   };
 
   updateUserSessionAfterSwipedAllQuestions = async ({
-    categoryId,
+    category,
     sessionId,
   }: {
-    categoryId: string;
+    category: CategoryType;
     sessionId: string;
   }) => {
     try {
       crashlytics().log('Updating user session');
 
-      const isLastCategory = categoryStore.getIsLastCategoryById(categoryId);
+      const categoryId = category.id;
+
+      const isLastCategory = categoryStore.getIsLastCategoryByKey(
+        category.name,
+      );
       let sessions = this.sessions;
 
       if (isLastCategory) {
