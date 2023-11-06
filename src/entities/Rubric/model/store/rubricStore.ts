@@ -14,6 +14,7 @@ import {RubricType} from '../types/rubricTypes';
 
 class RubricStore {
   rubric: null | RubricType = null;
+
   constructor() {
     makeAutoObservable(this);
   }

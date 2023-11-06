@@ -24,3 +24,5 @@ export interface QuestionPreviewType {
   questionNumber: number;
   defaultQuestionNumber?: number;
 }
+
+export type QuestionsMapType = Record<string, QuestionType>;

@@ -14,6 +14,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {userStore} from '@src/entities/User';
 import {sessionStore} from '@src/entities/Session';
+import {questionsStore} from '@src/pages/QuestionsPage';
 import {Theme} from '@src/app/providers/themeProvider';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {getProgressBarImageGroups} from '../lib/homePage';
@@ -52,6 +53,7 @@ class HomePageStore {
       this.getHomePageCategory(language);
 
       await this.fetchHomePageSessions();
+      await questionsStore.fetchAllQuestionsInfo();
 
       shareStore.shareQuestionHandler(language);
     } catch (e) {

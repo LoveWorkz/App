@@ -7,7 +7,11 @@ import {Collections, DocsType} from '@src/shared/types/firebase';
 import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
 import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
-import {questionStore, QuestionType} from '@src/entities/QuestionCard';
+import {
+  QuestionsMapType,
+  questionStore,
+  QuestionType,
+} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
@@ -23,6 +27,8 @@ class QuestionsStore {
   questions: QuestionType[] = [];
   congratsModalVisible: boolean = false;
   questionsPageloading: boolean = true;
+  allQuestions: QuestionType[] = [];
+  allQuestionsMap: QuestionsMapType = {};
 
   questionsSize: number = 0;
   breakPointForShowingAds: number = 1;
@@ -286,15 +292,14 @@ class QuestionsStore {
     sharedQuestionId?: string;
   }) => {
     try {
-      const allQuestions = await this.fetchAllQuestions();
-      const questionsMap = this.getQuestionsMap(allQuestions);
+      const allQuestionsMap = this.allQuestionsMap;
       let questions: QuestionType[] | undefined = [];
 
       if (sharedQuestionId) {
         // if a user opened a shared link
-        questions = [questionsMap[sharedQuestionId]];
+        questions = [allQuestionsMap[sharedQuestionId]];
       } else if (key === DocumentType.CATEGORY) {
-        questions = sessionStore.getSessionQuestions(questionsMap);
+        questions = sessionStore.getSessionQuestions(allQuestionsMap);
       } else {
         const rubircquestionsIds = rubricStore.rubric?.questions;
         if (!rubircquestionsIds) {
@@ -302,7 +307,7 @@ class QuestionsStore {
         }
 
         questions = rubircquestionsIds.map(questionId => {
-          return questionsMap[questionId];
+          return allQuestionsMap[questionId];
         });
       }
 
@@ -313,6 +318,20 @@ class QuestionsStore {
 
         this.questions = questions;
         this.questionsSize = questions.length;
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchAllQuestionsInfo = async () => {
+    try {
+      const allQuestions = await this.fetchAllQuestions();
+      const allQuestionsMap = this.getQuestionsMap(allQuestions);
+
+      runInAction(() => {
+        this.allQuestions = allQuestions as QuestionType[];
+        this.allQuestionsMap = allQuestionsMap;
       });
     } catch (e) {
       errorHandler({error: e});
@@ -337,7 +356,6 @@ class QuestionsStore {
       .get({source});
 
     const data = await Promise.all([promise1, promise2, promise3]);
-
     const allQuestions: DocsType = [];
 
     data.forEach(element => {
@@ -353,7 +371,7 @@ class QuestionsStore {
   };
 
   getQuestionsMap = (questions: QuestionType[]) => {
-    const questionsMap: Record<string, QuestionType> = {};
+    const questionsMap: QuestionsMapType = {};
     questions.forEach(question => {
       questionsMap[question.id] = question;
     });

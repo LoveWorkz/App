@@ -15,6 +15,8 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {questionsStore} from '@src/pages/QuestionsPage';
+import {QuestionType} from '@src/entities/QuestionCard';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
@@ -34,8 +36,8 @@ class CategoriesStore {
       runInAction(() => {
         this.isCategoriesPageLoading = true;
       });
-      await this.fetchRubrics();
       await this.fetchCategories();
+      await this.fetchRubrics();
       await userStore.fetchUser();
     } catch (e) {
       errorHandler({error: e});
@@ -150,11 +152,24 @@ class CategoriesStore {
         return;
       }
 
+      const questionsFromUnlockedCategories =
+        this.getAllQuestionsFromUnlockedCategories();
+
+      const rubricQuestionsMap = this.getRubricQuestionsMap(
+        questionsFromUnlockedCategories,
+      );
+
       // merge default rubrics with user custom rubrics
-      const rubrics = defaultRubrics.map(rubric => ({
-        ...rubric,
-        ...userRubrics.rubrics[rubric.id],
-      }));
+      const rubrics = defaultRubrics.map(rubric => {
+        const questionIds = rubricQuestionsMap[rubric.id];
+
+        return {
+          ...rubric,
+          ...userRubrics.rubrics[rubric.id],
+          // add dynamically questions from unlocked categories
+          questions: [...rubric.questions, ...(questionIds || [])],
+        };
+      });
 
       runInAction(() => {
         this.rubrics = rubrics as RubricType[];
@@ -164,13 +179,49 @@ class CategoriesStore {
     }
   };
 
+  getAllQuestionsFromUnlockedCategories = () => {
+    const unlockedCategories = this.unlockedCategories;
+    const unlockedCategoriesIds: string[] = [];
+
+    unlockedCategories.forEach(category => {
+      unlockedCategoriesIds.push(category.id);
+    });
+
+    const allQuestions = questionsStore.allQuestions;
+
+    const questionsFromUnlockedCategories = allQuestions.filter(question => {
+      // wild and challenge cards don't have a topics
+      if (question.type === 'CHALLENGE_CARD' || question.type === 'WILD_CARD') {
+        return false;
+      }
+
+      return unlockedCategoriesIds.includes(question.categoryId);
+    });
+
+    return questionsFromUnlockedCategories;
+  };
+
+  getRubricQuestionsMap = (questionsFromUnlockedCategories: QuestionType[]) => {
+    const rubricQuestionsMap: Record<string, string[]> = {};
+
+    questionsFromUnlockedCategories.forEach(item => {
+      const rubricId = item.rubricId;
+
+      rubricQuestionsMap[rubricId] = [
+        ...(rubricQuestionsMap[rubricId] || []),
+        item.id,
+      ];
+    });
+
+    return rubricQuestionsMap;
+  };
+
   fetchDefaultRubrics = async () => {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
         .collection(Collections.RUBRICS)
-        .orderBy('createdDate')
         .get({source});
 
       const rubrics = data.docs.map(rubric => {
