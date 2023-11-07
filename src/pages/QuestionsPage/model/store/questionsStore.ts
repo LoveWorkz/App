@@ -354,8 +354,11 @@ class QuestionsStore {
     const promise3 = firestore()
       .collection(Collections.CHALLENGE_QUESTIONS)
       .get({source});
+    const promise4 = firestore()
+      .collection(Collections.RUBRIC_QUESTIONS)
+      .get({source});
 
-    const data = await Promise.all([promise1, promise2, promise3]);
+    const data = await Promise.all([promise1, promise2, promise3, promise4]);
     const allQuestions: DocsType = [];
 
     data.forEach(element => {
@@ -383,19 +386,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Fetching favorites questions');
 
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-
-      const data = await firestore()
-        .collection(Collections.QUESTIONS)
-        .orderBy('createdDate')
-        .get({source});
-
-      const questions = data.docs.map(question => ({
-        ...question.data(),
-        id: question.id,
-      })) as QuestionType[];
-
-      const favoritesQuestions = this.getFavoritesQuestions(questions);
+      const favoritesQuestions = this.getFavoritesQuestions();
       if (!favoritesQuestions) {
         return;
       }
@@ -409,19 +400,16 @@ class QuestionsStore {
     }
   };
 
-  getFavoritesQuestions = (questions: QuestionType[]) => {
+  getFavoritesQuestions = () => {
     const favorites = favoriteStore.favorites;
     if (!favorites) {
       return;
     }
 
-    const questionsMap: Record<string, QuestionType> = {};
-    questions.forEach(question => {
-      questionsMap[question.id] = question;
-    });
+    const allQuestionsMap = this.allQuestionsMap;
 
     const favoritesQuestions = favorites.questions.map(
-      questionId => questionsMap[questionId],
+      questionId => allQuestionsMap[questionId],
     );
 
     return favoritesQuestions;

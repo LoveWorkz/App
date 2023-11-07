@@ -6,7 +6,7 @@ export const rubricExample: RubricType = {
     de: '',
     pt: '',
   },
-  questions: 'question',
+  questions: [],
   name: '',
   startQuestionDate: '',
   id: '',

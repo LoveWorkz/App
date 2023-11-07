@@ -13,25 +13,38 @@ import Rubrics from './Rubrics/Rubrics';
 import categoriesStore from '../model/store/categoriesStore';
 
 interface CategoriesPageProps {
-  route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
+  route?: {
+    params: {
+      prevRouteName: AppRouteNames | TabRoutesNames;
+      isTabScreen: boolean;
+    };
+  };
 }
 
 const CategoriesPage = (props: CategoriesPageProps) => {
   const {route} = props;
   const favorites = favoriteStore.favorites;
+
   const isPreviousScreenSessions =
     route?.params?.prevRouteName === AppRouteNames.SESSIONS;
-  const isPreviousScreenChallenges =
-    route?.params?.prevRouteName === TabRoutesNames.CHALLENGES;
+  const isPreviousScreenQuestions =
+    route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
+
+  const isTabScreen = route?.params?.isTabScreen;
+
   const isLoading = categoriesStore.isCategoriesPageLoading;
 
   useFocusEffect(
     useCallback(() => {
-      // if the user returns from the sessions or challenges page, get the actual data
-      if (isPreviousScreenSessions || isPreviousScreenChallenges) {
+      // if the user returns from the sessions, questions or tab screens, get the actual data
+      if (
+        isPreviousScreenSessions ||
+        isPreviousScreenQuestions ||
+        isTabScreen
+      ) {
         categoriesStore.init();
       }
-    }, [isPreviousScreenSessions, isPreviousScreenChallenges]),
+    }, [isPreviousScreenSessions, isPreviousScreenQuestions, isTabScreen]),
   );
 
   useEffect(() => {

@@ -52,22 +52,32 @@ class RubricStore {
   };
 
   getRubric = (id: string) => {
-    try {
-      const currentRubric =
-        categoriesStore.rubrics.find(rubric => {
-          return rubric.id === id;
-        }) || null;
+    const currentRubric =
+      categoriesStore.rubrics.find(rubric => {
+        return rubric.id === id;
+      }) || null;
 
-      return currentRubric;
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    return currentRubric;
+  };
+
+  getQuestionNumberForRubric = ({
+    questionIds,
+    currenctQuestionId,
+  }: {
+    questionIds: string[];
+    currenctQuestionId: string;
+  }) => {
+    const questionIndex = questionIds.findIndex(
+      questionId => questionId === currenctQuestionId,
+    );
+
+    const questionNumber = questionIndex !== -1 ? questionIndex + 1 : 1;
+    return questionNumber;
   };
 
   getAndSetRubric = (id: string) => {
     try {
       const rubric = this.getRubric(id);
-
       if (!rubric) {
         return;
       }
@@ -153,6 +163,7 @@ class RubricStore {
         questionId: currentquestionId,
         questions,
       });
+
       if (!questionInfo) {
         return;
       }
@@ -163,9 +174,6 @@ class RubricStore {
       const currentCategory = categoryStore.getCategory(
         currentQuestion?.categoryId,
       );
-      if (!currentCategory) {
-        return;
-      }
 
       if (isInitialSetUp) {
         questionStore.setQuestionPreviewInfo({
@@ -175,7 +183,7 @@ class RubricStore {
       }
 
       questionStore.setQuestionPreviewInfo({
-        categoryName: currentCategory.displayName[language],
+        categoryName: currentCategory?.displayName[language] || '',
         rubricName: rubricName || questionStore.questionPreviewInfo.rubricName,
         questionNumber: currentQuestionNumber,
       });

@@ -211,16 +211,10 @@ class FavoriteStore {
       questionStore.setQuestion(currentQuestion);
 
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-      if (!currentRubric) {
-        return;
-      }
 
       const currentCategory = categoryStore.getCategory(
         currentQuestion.categoryId,
       );
-      if (!currentCategory) {
-        return;
-      }
 
       if (isInitialSetUp) {
         questionStore.setQuestionPreviewInfo({
@@ -230,8 +224,8 @@ class FavoriteStore {
       }
 
       questionStore.setQuestionPreviewInfo({
-        categoryName: currentCategory.displayName[language],
-        rubricName: currentRubric.displayName[language],
+        categoryName: currentCategory?.displayName[language] || '',
+        rubricName: currentRubric?.displayName[language] || '',
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {

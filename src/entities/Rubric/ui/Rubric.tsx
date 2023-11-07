@@ -7,7 +7,6 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {getNumberFromPercentage} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {
   horizontalScale,
@@ -16,6 +15,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
+import rubricStore from '../model/store/rubricStore';
 
 interface RubricProps {
   rubric: RubricType;
@@ -27,20 +27,12 @@ const borderRadius = moderateScale(20);
 
 export const Rubric = (props: RubricProps) => {
   const {rubric, isLoading} = props;
-  const {displayName, questions, swipedQuestionsPercentage, description} =
-    rubric;
+  const {displayName, questions, description, currentQuestion} = rubric;
   const colors = useColors();
   const {i18n} = useTranslation();
   const {theme} = useTheme();
 
   const language = i18n.language as LanguageValueType;
-
-  const numberFromPercentage = Math.ceil(
-    getNumberFromPercentage(swipedQuestionsPercentage, questions.length),
-  );
-
-  //if it's the first question set 1
-  const swipedQuestionCount = numberFromPercentage || 1;
 
   if (isLoading) {
     return (
@@ -49,6 +41,11 @@ export const Rubric = (props: RubricProps) => {
       </View>
     );
   }
+
+  const swipedQuestionCount = rubricStore.getQuestionNumberForRubric({
+    questionIds: questions,
+    currenctQuestionId: currentQuestion,
+  });
 
   return (
     <View

@@ -180,13 +180,9 @@ class CategoryStore {
   };
 
   getCategory = (id: string) => {
-    try {
-      return categoriesStore.categories.find(category => {
-        return category.id === id;
-      });
-    } catch (e) {
-      errorHandler({error: e});
-    }
+    return categoriesStore.categories.find(category => {
+      return category.id === id;
+    });
   };
 
   getIsLastCategoryByKey = (categoryKey: CategoryKey) => {
@@ -264,9 +260,6 @@ class CategoryStore {
       }
 
       const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-      if (!currentRubric) {
-        return;
-      }
 
       if (isInitialSetUp) {
         questionStore.setQuestionPreviewInfo({
@@ -278,7 +271,7 @@ class CategoryStore {
       questionStore.setQuestionPreviewInfo({
         categoryName:
           categoryName || questionStore.questionPreviewInfo.categoryName,
-        rubricName: currentRubric.displayName[language],
+        rubricName: currentRubric?.displayName[language] || '',
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {

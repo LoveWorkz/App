@@ -151,7 +151,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   if (isLoading) {
     return (
       <View style={styles.QuestionsPage}>
-        <View style={styles.category}>
+        <View style={styles.categoryWrapper}>
           <Skeleton width={100} height={40} borderRadius={10} />
         </View>
         <View style={styles.rubricAndQuestionsCountBlock}>
@@ -170,22 +170,30 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
-      <Gradient style={styles.category} size={GradientSize.SMALL}>
-        <AppText
-          style={{color: colors.white}}
-          weight={'700'}
-          size={TextSize.LEVEL_5}
-          text={questionsPageInfo.categoryName}
-        />
-      </Gradient>
+      <View style={styles.categoryWrapper}>
+        {questionsPageInfo.categoryName ? (
+          <Gradient size={GradientSize.SMALL}>
+            <AppText
+              style={{color: colors.white}}
+              weight={'700'}
+              size={TextSize.LEVEL_5}
+              text={questionsPageInfo.categoryName}
+            />
+          </Gradient>
+        ) : (
+          <View />
+        )}
+      </View>
       <View style={styles.rubricAndQuestionsCountBlock}>
         <View>
-          <GradientText
-            style={styles.rubricText}
-            weight={'700'}
-            size={TextSize.LEVEL_4}
-            text={questionsPageInfo.rubricName}
-          />
+          {questionsPageInfo.rubricName && (
+            <GradientText
+              style={styles.rubricText}
+              weight={'700'}
+              size={TextSize.LEVEL_4}
+              text={questionsPageInfo.rubricName}
+            />
+          )}
         </View>
         <View>
           <AppText
@@ -238,17 +246,17 @@ const styles = StyleSheet.create({
   QuestionsPage: {
     flex: 1,
   },
-  category: {
-    marginBottom: verticalScale(20),
+  categoryWrapper: {
+    position: 'absolute',
   },
   rubricAndQuestionsCountBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: verticalScale(55),
   },
   rubricText: {
     textTransform: 'capitalize',
   },
-
   question: {
     width: '100%',
   },
@@ -260,7 +268,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
   },
-
   questionsCardBack: {
     position: 'absolute',
     right: 0,
@@ -269,7 +276,6 @@ const styles = StyleSheet.create({
   slideItemStyle: {
     ...globalStyles.slideItemZindex,
   },
-
   questionCardSkeleton: {
     marginTop: verticalScale(30),
   },

@@ -198,7 +198,14 @@ class CategoriesStore {
       return unlockedCategoriesIds.includes(question.categoryId);
     });
 
-    return questionsFromUnlockedCategories;
+    // the order should be “Starter”, “Basic” and other categories.
+    const sortedQuestions = questionsFromUnlockedCategories.sort((a, b) => {
+      const numA = a.categoryId.split('_')[1];
+      const numB = b.categoryId.split('_')[1];
+      return Number(numA) - Number(numB);
+    });
+
+    return sortedQuestions;
   };
 
   getRubricQuestionsMap = (questionsFromUnlockedCategories: QuestionType[]) => {

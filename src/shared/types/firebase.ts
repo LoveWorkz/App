@@ -9,6 +9,7 @@ export enum Collections {
   ORDINARY_QUESTIONS = 'ordinary_questions',
   CHALLENGE_QUESTIONS = 'challenge_questions',
   WILD_QUESTIONS = 'wild_questions',
+  RUBRIC_QUESTIONS = 'rubric_questions',
   CHALLENGE_CATEGORIES = 'Challenge_Categories',
   CHALLENGES = 'Challenges',
   USER_CHALLENGE_CATEGORIES = 'User_Challenge_Categories',
