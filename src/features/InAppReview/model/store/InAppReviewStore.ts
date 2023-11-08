@@ -16,11 +16,26 @@ class InAppReviewStore {
     makeAutoObservable(this);
   }
 
-  rate = async () => {
+  rate = async (actionAfterRating: () => void) => {
     try {
       Rate.rate(options, (success, errorMessage) => {
         if (success) {
-          Alert.alert('rated');
+          Alert.alert(
+            'Thank You',
+            'Did you enjoy your experience and rate our app?',
+            [
+              {
+                text: 'Yes, I rated!',
+                onPress: () => actionAfterRating(),
+              },
+              {
+                text: 'Not now',
+                onPress: () => console.log('Not Now Pressed'),
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+          );
         }
         if (errorMessage) {
           console.error(`Example page Rate.rate() error: ${errorMessage}`);

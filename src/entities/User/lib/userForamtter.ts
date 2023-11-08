@@ -39,5 +39,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     age: 0,
   };
 
+  formatedUser.hasUserRated = false;
+
   return formatedUser;
 };

@@ -21,6 +21,8 @@ export const getUserCategoryInitData = (categoryId: string) => {
     isCategoryDetailsVisible: true,
     isAllSessionsPassed: false,
     currentSession: firstSessionId,
+    currentSessionNumber: 1,
+    ratePopUpBreakpoint: 3,
     sessions: {
       ...(isCategoryAllInOne
         ? getSessionsForAllInOne()

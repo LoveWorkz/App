@@ -21,6 +21,7 @@ export interface User {
   isWowThatWasFastModalForbidden: boolean;
   hasUserSwipedAnyQuestion: boolean;
   partner: PartnerType;
+  hasUserRated: boolean;
 }
 
 export enum AuthMethod {

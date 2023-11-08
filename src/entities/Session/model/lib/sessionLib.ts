@@ -32,3 +32,5 @@ export const userSession = {
   swipedQuestionsPercentage: 0,
   isMarked: false,
 };
+
+export const SESSION_INTERVAL_FOR_RATE_PROMPT = 3;

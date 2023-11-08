@@ -37,6 +37,8 @@ export interface CategoryType {
   sessions: UserSessionType;
   isAllSessionsPassed: boolean;
   currentSession: string;
+  ratePopUpBreakpoint: number;
+  currentSessionNumber: number;
 }
 
 export interface CurrentCategory {

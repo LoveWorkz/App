@@ -15,12 +15,14 @@ import {categoryStore, CategoryType} from '@src/entities/Category';
 import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {inAppReviewStore} from '@src/features/InAppReview';
 import {
   AllSessionsType,
   MarkedSessionsMapType,
   SessionsMap,
   SessionType,
 } from '../types/sessionType';
+import {SESSION_INTERVAL_FOR_RATE_PROMPT} from '../lib/sessionLib';
 
 class SessionStore {
   sessions: SessionType[] = [];
@@ -317,6 +319,8 @@ class SessionStore {
       }
       const nextSessionId = nextSession.id;
 
+      this.checkSessionsAndShowRatePopup(category);
+
       await userCategoryStore.updateUserCategory({
         id: categoryId,
         field: `sessions.${sessionId}.isAllQuestionsSwiped`,
@@ -334,8 +338,49 @@ class SessionStore {
         field: 'currentSession',
         data: nextSessionId,
       });
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: 'currentSessionNumber',
+        data: nextSession.sessionNumber,
+      });
     } catch (e) {
       errorHandler({error: e});
+    }
+  };
+
+  checkSessionsAndShowRatePopup = async (category: CategoryType) => {
+    const user = userStore.user;
+    // user can rate the app only once
+    if (user?.hasUserRated) {
+      return;
+    }
+
+    const currentSessionNumber = category.currentSessionNumber;
+    const ratePopUpBreakpoint = category.ratePopUpBreakpoint;
+    const categoryId = category.id;
+
+    const newRatePopUpBreakpoint =
+      ratePopUpBreakpoint + SESSION_INTERVAL_FOR_RATE_PROMPT;
+
+    if (
+      newRatePopUpBreakpoint - currentSessionNumber ===
+      SESSION_INTERVAL_FOR_RATE_PROMPT
+    ) {
+      const actionAfterRating = () => {
+        userStore.updateUser({
+          field: 'hasUserRated',
+          data: true,
+        });
+      };
+
+      inAppReviewStore.rate(actionAfterRating);
+
+      await userCategoryStore.updateUserCategory({
+        id: categoryId,
+        field: 'ratePopUpBreakpoint',
+        data: newRatePopUpBreakpoint,
+      });
     }
   };
 }
