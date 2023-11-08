@@ -40,6 +40,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   };
 
   formatedUser.hasUserRated = false;
+  formatedUser.hasUserSubscription = false;
 
   return formatedUser;
 };

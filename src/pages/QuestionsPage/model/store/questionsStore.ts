@@ -21,7 +21,7 @@ import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {sessionsCount, sessionStore} from '@src/entities/Session';
+import {sessionStore} from '@src/entities/Session';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -422,6 +422,8 @@ class QuestionsStore {
     sessionNumber: number;
     isLastCategory: boolean;
   }) => {
+    const sessionsCount = sessionStore.getUserSessionsCount();
+
     let lastSessionNumber = sessionsCount;
     const unlockedCategories = categoriesStore.unlockedCategories;
 
@@ -484,6 +486,11 @@ class QuestionsStore {
       });
 
       if (isLastSession) {
+        const hasUserSubscription = userStore.checkIfUserHasSubscription();
+        if (!hasUserSubscription) {
+          return;
+        }
+
         // if the category is “All in one” || Hot || Intimate, we don't need to update the next category
         const canOpenNextCategory = this.shouldProceedToNextCategory({
           category,

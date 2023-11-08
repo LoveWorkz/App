@@ -10,17 +10,22 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {DisplayText, StyleType} from '@src/shared/types/types';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
-import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
-import {sessionsCount} from '@src/entities/Session';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
+import {sessionStore} from '@src/entities/Session';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {CateorySize} from '../model/types/categoryTypes';
+import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
 
 interface CategoryProps {
   style?: StyleType;
-  name: string;
+  name: CategoryKey;
   image: string;
   size?: CateorySize;
   isBlocked: boolean;
@@ -47,10 +52,14 @@ const Category = (props: CategoryProps) => {
     displayName,
     isLoading = false,
     isActionDisabled,
+    name,
   } = props;
   const colors = useColors();
   const {theme} = useTheme();
   const {t, i18n} = useTranslation();
+
+  const sessionsCount = sessionStore.getUserSessionsCount();
+  const isContentLocked = categoryStore.checkContentLock(name);
 
   const language = i18n.language as LanguageValueType;
   const isSizeL = size === CateorySize.L;
@@ -84,7 +93,7 @@ const Category = (props: CategoryProps) => {
 
   return (
     <Pressable onPress={onCategoryPressHandler}>
-      {isBlocked && (
+      {isContentLocked && (
         <>
           <View
             style={[
@@ -123,14 +132,27 @@ const Category = (props: CategoryProps) => {
           source={{
             uri: image,
           }}>
-          <Gradient size={GradientSize.SMALL}>
-            <AppText
-              style={{color: colors.white}}
-              weight={'500'}
-              size={isSizeL ? TextSize.LEVEL_6 : TextSize.LEVEL_3}
-              text={`${sessionsCount} ${t('sessions.sessions')}`}
-            />
-          </Gradient>
+          <View style={styles.headerSection}>
+            <Gradient size={GradientSize.SMALL}>
+              <AppText
+                style={{color: colors.white}}
+                weight={'500'}
+                size={isSizeL ? TextSize.LEVEL_6 : TextSize.LEVEL_3}
+                text={`${sessionsCount} ${t('sessions.sessions')}`}
+              />
+            </Gradient>
+            {isBlocked && (
+              <SvgXml
+                xml={LockedIcon}
+                style={[
+                  {
+                    width: horizontalScale(isSizeL ? 30 : 22),
+                    height: horizontalScale(isSizeL ? 40 : 26),
+                  },
+                ]}
+              />
+            )}
+          </View>
           <AppText
             style={[
               styles.status,
@@ -173,6 +195,11 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: '100%',
     width: '100%',
     ...globalStyles.categoryLayoutIconZIndex,
+  },
+  headerSection: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   size_m: {

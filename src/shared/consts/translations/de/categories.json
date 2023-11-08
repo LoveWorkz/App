@@ -1,4 +1,6 @@
 {
     "categories.categories": "Kategorie",
-    "categories.favourites": "Favoriten"
+    "categories.favourites": "Favoriten",
+    "categories.lockPopupTitle": "Tut mir leid, die Kategorie ist gesperrt.",
+    "categories.lockPopupText": "Um die nächste Stufe freizuschalten, müssen Sie die Fragen und Herausforderungen im aktuellen Schritt vollständig beantworten und beherrschen. Dieser Ansatz (4 Schritte zur Liebe) ist so konzipiert, dass Sie nicht vorzeitig weiterkommen, damit Sie den maximalen therapeutischen Effekt aus jeder Stufe ziehen können."
 }

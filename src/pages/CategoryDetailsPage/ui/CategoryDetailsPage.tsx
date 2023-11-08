@@ -20,16 +20,15 @@ import {
   windowHeightMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {DocumentType} from '@src/shared/types/types';
+import {LockedIcon} from '@src/shared/assets/icons/Locked';
+
 import {isPlatformIos} from '@src/shared/consts/common';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
+import LockedPopup from './LockedPopup/LockedPopup';
 
 export const CategoryDetailsPage = () => {
   const {t, i18n} = useTranslation();
@@ -37,6 +36,8 @@ export const CategoryDetailsPage = () => {
   const {theme} = useTheme();
   const statusBarHeight = getStatusBarHeight();
   const navbarHeaderHeight = useHeaderHeight();
+  const isLockedPopupVisible = categoryDetailsStore.isLockedPopupVisible;
+  const setIsLockedPopupVisible = categoryDetailsStore.setIsLockedPopupVisible;
 
   const navbarHeight = isPlatformIos
     ? navbarHeaderHeight
@@ -52,17 +53,17 @@ export const CategoryDetailsPage = () => {
     };
   }, [categoryImage]);
 
+  if (!category) {
+    return <></>;
+  }
+
+  const isContentLocked = categoryStore.checkContentLock(category.name);
+
   const onPressHandler = () => {
-    if (category?.isBlocked) {
-      navigation.navigate(TabRoutesNames.SHOP);
-    } else {
-      category?.id &&
-        navigation.replace(AppRouteNames.SESSIONS, {
-          type: DocumentType.CATEGORY,
-          title: category.displayName[language],
-          id: category.id,
-        });
-    }
+    categoryDetailsStore.onStartPressHandler({
+      language,
+      isContentLocked,
+    });
   };
 
   const dontShowAgainHandler = () => {
@@ -72,10 +73,6 @@ export const CategoryDetailsPage = () => {
         title: category.displayName[language],
       });
   };
-
-  if (!category) {
-    return <></>;
-  }
 
   return (
     <View
@@ -94,7 +91,7 @@ export const CategoryDetailsPage = () => {
           },
         ]}>
         <View>
-          {category.isBlocked && (
+          {isContentLocked && (
             <>
               <View
                 style={[styles.layout, {backgroundColor: colors.bgLayout}]}
@@ -104,7 +101,11 @@ export const CategoryDetailsPage = () => {
               </View>
             </>
           )}
-          <FastImage style={styles.image} source={uri} />
+          <FastImage style={styles.image} source={uri}>
+            {category.isBlocked && (
+              <SvgXml xml={LockedIcon} style={[styles.lockedIcon]} />
+            )}
+          </FastImage>
         </View>
         <View>
           <AppText
@@ -128,10 +129,10 @@ export const CategoryDetailsPage = () => {
             style={{color: colors.bgQuinaryColor}}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={category.isBlocked ? t('buy_now') : t('start')}
+            text={isContentLocked ? t('buy_now') : t('start')}
           />
         </Button>
-        {!category.isBlocked && (
+        {!category.isBlocked && !isContentLocked && (
           <Button onPress={dontShowAgainHandler}>
             <AppText
               style={styles.dontShowAgain}
@@ -141,6 +142,10 @@ export const CategoryDetailsPage = () => {
             />
           </Button>
         )}
+        <LockedPopup
+          visible={isLockedPopupVisible}
+          setVisible={setIsLockedPopupVisible}
+        />
       </View>
     </View>
   );
@@ -199,5 +204,12 @@ const styles = StyleSheet.create({
   lockIcon: {
     height: verticalScale(46),
     width: horizontalScale(36),
+  },
+  lockedIcon: {
+    height: verticalScale(32),
+    width: horizontalScale(27),
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 });

@@ -1,4 +1,8 @@
-import {sessionsCount, SessionType, userSession} from '@src/entities/Session';
+import {
+  sessionsCountWithSubscription,
+  SessionType,
+  userSession,
+} from '@src/entities/Session';
 
 const sessionsIdMap: Record<string, string> = {
   category_1: 'starter_session',
@@ -34,7 +38,7 @@ export const getUserCategoryInitData = (categoryId: string) => {
 const getSessions = (categoryId: string) => {
   const result: Record<string, Partial<SessionType>> = {};
 
-  for (let i = 1; i <= sessionsCount; i++) {
+  for (let i = 1; i <= sessionsCountWithSubscription; i++) {
     const isSessionUnlocked = i === 1;
 
     result[`${sessionsIdMap[categoryId]}_${i}`] = {
@@ -53,7 +57,7 @@ const getSessionsForAllInOne = () => {
   const sessionsId = Object.values(sessionsIdMap);
 
   sessionsId.forEach((sessionId, j) => {
-    for (let i = 1; i <= sessionsCount; i++) {
+    for (let i = 1; i <= sessionsCountWithSubscription; i++) {
       const isSessionUnlocked = j === 0 && i === 1;
 
       result[`${sessionId}_${i}`] = {

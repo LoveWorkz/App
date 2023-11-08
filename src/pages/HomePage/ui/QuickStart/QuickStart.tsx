@@ -22,7 +22,7 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
-import {sessionsCount, sessionStore} from '@src/entities/Session';
+import {sessionStore} from '@src/entities/Session';
 import homePageStore from '../../model/store/HomePageStore';
 
 interface QuickStartProps {
@@ -38,6 +38,8 @@ const QuickStart = (props: QuickStartProps) => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
+
+  const sessionsCount = sessionStore.getUserSessionsCount();
 
   if (isLoading) {
     return (

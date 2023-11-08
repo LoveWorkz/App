@@ -80,7 +80,10 @@ const SessionItem = (props: SessionItemProps) => {
             text={count}
           />
         </View>
-        <Button onPress={onStarPressHandler} style={styles.starBtn}>
+        <Button
+          disabled={isBlocked}
+          onPress={onStarPressHandler}
+          style={styles.starBtn}>
           <SvgXml
             xml={isMarked ? StarIcon : OutlineStarIcon}
             style={styles.arrowIcon}

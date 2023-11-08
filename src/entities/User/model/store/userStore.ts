@@ -64,6 +64,15 @@ class UserStore {
     this.isFirstUserVisit = isFirstUserVisit;
   };
 
+  checkIfUserHasSubscription = () => {
+    const user = this.user;
+    if (!user) {
+      return false;
+    }
+
+    return user.hasUserSubscription;
+  };
+
   initAuthUser = async () => {
     try {
       crashlytics().log('Initializing user.');

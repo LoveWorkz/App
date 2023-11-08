@@ -22,7 +22,11 @@ import {
   SessionsMap,
   SessionType,
 } from '../types/sessionType';
-import {SESSION_INTERVAL_FOR_RATE_PROMPT} from '../lib/sessionLib';
+import {
+  sessionsCountWithoutSubscription,
+  sessionsCountWithSubscription,
+  SESSION_INTERVAL_FOR_RATE_PROMPT,
+} from '../lib/sessionLib';
 
 class SessionStore {
   sessions: SessionType[] = [];
@@ -32,12 +36,18 @@ class SessionStore {
   markedSessionsMap: MarkedSessionsMapType = {};
   sessionsMap: SessionsMap = {};
 
+  allSessions: SessionType[] = [];
+
   constructor() {
     makeAutoObservable(this);
   }
 
   setSessions = (sessions: SessionType[]) => {
     this.sessions = sessions;
+  };
+
+  setAllSessions = (allSessions: SessionType[]) => {
+    this.allSessions = allSessions;
   };
 
   getAndSetSessionsMap = (sessions: SessionType[]) => {
@@ -71,6 +81,14 @@ class SessionStore {
     this.session = session;
   };
 
+  getUserSessionsCount = () => {
+    const hasUserSubscription = userStore.checkIfUserHasSubscription();
+
+    return hasUserSubscription
+      ? sessionsCountWithSubscription
+      : sessionsCountWithoutSubscription;
+  };
+
   selectSession = ({session}: {session: SessionType}) => {
     const categoryId = categoryStore.category?.id;
     if (!categoryId) {
@@ -82,6 +100,15 @@ class SessionStore {
       type: DocumentType.CATEGORY,
       id: categoryId,
     });
+  };
+
+  filterSessionsBySubscription = (sessions: SessionType[]) => {
+    const hasUserSubscription = userStore.checkIfUserHasSubscription();
+    if (!hasUserSubscription) {
+      return (sessions = sessions.slice(0, 4));
+    }
+
+    return sessions;
   };
 
   fetchAllSessionsFromAllCategories = async ({
@@ -130,19 +157,21 @@ class SessionStore {
           categoryId: currentCategoryId,
         });
 
-        sessions.forEach(session => {
+        const filteredSessions = this.filterSessionsBySubscription(sessions);
+
+        filteredSessions.forEach(session => {
           markedSessionsMap[session.id] = session.isMarked;
         });
 
-        const firstCategoryId = sessions[0].categoryId;
+        const firstCategoryId = filteredSessions[0].categoryId;
         const category = unlockedCategoryMap[firstCategoryId];
 
-        allSessionsFromAllCategories.push(...sessions);
+        allSessionsFromAllCategories.push(...filteredSessions);
 
         return {
           categoryId: firstCategoryId,
           categoryDisplayName: category ? category.displayName[language] : '',
-          sessions: sessions,
+          sessions: filteredSessions,
           categoryName: category.name,
         };
       });
@@ -161,6 +190,7 @@ class SessionStore {
   fetchSessions = async () => {
     try {
       crashlytics().log('Fetching sessions');
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const userCategories = userCategoryStore.userCategory;
       const categoryId = categoryStore.category?.id;
@@ -168,29 +198,32 @@ class SessionStore {
         return;
       }
 
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-
       const data = await firestore()
         .collection(Collections.CATEGORIES_2)
         .doc(categoryId)
         .collection(Collections.SESSIONS)
         .get({source});
 
-      const sessions = this.formSessions({
+      let sessions = this.formSessions({
         docs: data.docs,
         userCategories,
         categoryId,
       });
 
+      const allSessions = sessions;
       const markedSessionsMap: MarkedSessionsMapType = {};
 
-      sessions.forEach(session => {
+      const filteredSessions = this.filterSessionsBySubscription(sessions);
+
+      filteredSessions.forEach(session => {
         markedSessionsMap[session.id] = session.isMarked;
       });
 
       this.setMarkedSessionsMap(markedSessionsMap);
-      this.setSessions(sessions);
-      this.getAndSetSessionsMap(sessions);
+      this.setSessions(filteredSessions);
+      this.getAndSetSessionsMap(filteredSessions);
+
+      this.setAllSessions(allSessions);
     } catch (e) {
       errorHandler({error: e});
     }

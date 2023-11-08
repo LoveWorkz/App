@@ -211,7 +211,7 @@ class HomePageStore {
   getProgressBarImage = (theme: Theme) => {
     try {
       const progressBarCategoryKey = this.progressBarCategoryKey;
-      const sessions = sessionStore.sessions;
+      const sessions = sessionStore.allSessions;
       const unlockedSessions = sessions.filter(item => !item.isBlocked);
 
       const progressBarImgGroups = getProgressBarImageGroups({

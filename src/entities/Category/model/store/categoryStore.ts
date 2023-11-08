@@ -278,6 +278,25 @@ class CategoryStore {
       errorHandler({error: e});
     }
   };
+
+  checkContentLock = (categoryKey: CategoryKey) => {
+    try {
+      const hasUserSubscription = userStore.checkIfUserHasSubscription();
+      const isStarterOrAllInOneCategory =
+        categoryKey === CategoryKey.Starter ||
+        categoryKey === CategoryKey.All_In_One;
+
+      if (isStarterOrAllInOneCategory) {
+        return false;
+      }
+
+      const isContentLocked = !hasUserSubscription;
+      return isContentLocked;
+    } catch (e) {
+      errorHandler({error: e});
+      return false;
+    }
+  };
 }
 
 export default new CategoryStore();

@@ -26,4 +26,6 @@ export const categoryExample: CategoryType = {
     pt: '',
   },
   sessions: {},
+  ratePopUpBreakpoint: 3,
+  currentSessionNumber: 1,
 };

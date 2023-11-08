@@ -22,6 +22,7 @@ export interface User {
   hasUserSwipedAnyQuestion: boolean;
   partner: PartnerType;
   hasUserRated: boolean;
+  hasUserSubscription: boolean;
 }
 
 export enum AuthMethod {

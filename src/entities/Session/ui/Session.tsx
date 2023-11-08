@@ -7,7 +7,6 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import sessionStore from '../model/store/sessionStore';
 import CategoryBlock from './CategoryBlock/CategoryBlock';
 import SessionsList from './SessionsList/SessionsList';
-import {sessionsCount} from '../model/lib/sessionLib';
 
 interface SessionProps {
   isCategoryAllInOne: boolean;
@@ -16,6 +15,8 @@ interface SessionProps {
 
 const Session = (props: SessionProps) => {
   const {isCategoryAllInOne, isFetching} = props;
+
+  const sessionsCount = sessionStore.getUserSessionsCount();
 
   let sessions = sessionStore.sessions;
   const allInOneSessions = sessionStore.allInOneSessions;
