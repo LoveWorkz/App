@@ -14,6 +14,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {specialDayStore} from '@src/entities/SpecialDay';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 
 class CategoryStore {
@@ -296,6 +297,78 @@ class CategoryStore {
       errorHandler({error: e});
       return false;
     }
+  };
+
+  checkIfSpecialDateAndUpdateSpecialCategory = async (
+    specialCategoryId: string,
+  ): Promise<void> => {
+    try {
+      const specialCategory = categoriesStore.categoriesMap[specialCategoryId];
+      const shouldBlock = await this.shouldBlockCategory(specialCategory);
+      const shouldUnlock = await this.shouldUnlockCategory(specialCategory);
+
+      if (shouldBlock) {
+        this.editCategory({
+          isBlocked: true,
+          categoryId: specialCategoryId,
+        });
+      }
+
+      if (shouldUnlock) {
+        this.editCategory({
+          isBlocked: false,
+          categoryId: specialCategoryId,
+        });
+      }
+    } catch (error) {
+      errorHandler({error});
+    }
+  };
+
+  editCategory = async ({
+    categoryId,
+    isBlocked,
+  }: {
+    categoryId: string;
+    isBlocked: boolean;
+  }) => {
+    await userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: 'isBlocked',
+      data: isBlocked,
+    });
+
+    const categories = categoriesStore.categories;
+
+    const newCategories = categories.map(category => {
+      if (category.id === categoryId) {
+        return {...category, isBlocked};
+      }
+
+      return category;
+    });
+
+    categoriesStore.setCategories(newCategories);
+  };
+
+  shouldBlockCategory = async (category: CategoryType) => {
+    const isSpecialDay = await specialDayStore.isTodaySpecial();
+
+    if (!isSpecialDay && !category.isBlocked) {
+      return true;
+    }
+
+    return false;
+  };
+
+  shouldUnlockCategory = async (category: CategoryType) => {
+    const isSpecialDay = await specialDayStore.isTodaySpecial();
+
+    if (isSpecialDay && category.isBlocked) {
+      return true;
+    }
+
+    return false;
   };
 }
 

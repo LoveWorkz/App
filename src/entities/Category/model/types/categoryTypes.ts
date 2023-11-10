@@ -18,7 +18,7 @@ export enum CategoryKey {
   Basic = 'Basic',
   Deep = 'Deep',
   Intimate = 'Intimate',
-  Hot = 'Hot',
+  Specials = 'Specials',
   All_In_One = 'All_In_One',
 }
 

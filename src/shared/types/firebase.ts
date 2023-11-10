@@ -15,6 +15,7 @@ export enum Collections {
   USER_CHALLENGE_CATEGORIES = 'User_Challenge_Categories',
   USER_CATEGORIES = 'User_Categories',
   USER_RUBRICS = 'User_Rubrics',
+  SPECIAL_DAYS = 'special_days',
 
   CATEGORIES_2 = 'Categories_2',
   SESSIONS = 'sessions',

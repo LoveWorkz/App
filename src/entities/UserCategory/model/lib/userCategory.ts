@@ -1,23 +1,24 @@
+import {CategoryKey} from '@src/entities/Category';
 import {
   sessionsCountWithSubscription,
   SessionType,
   userSession,
 } from '@src/entities/Session';
 
-const sessionsIdMap: Record<string, string> = {
-  category_1: 'starter_session',
-  category_2: 'basic_session',
-  category_3: 'deep_session',
-  category_4: 'intimate_session',
-  category_5: 'hot_session',
+const sessionsIdMap: Partial<Record<CategoryKey, string>> = {
+  [CategoryKey.Starter]: 'starter_session',
+  [CategoryKey.Basic]: 'basic_session',
+  [CategoryKey.Deep]: 'deep_session',
+  [CategoryKey.Intimate]: 'intimate_session',
+  [CategoryKey.Specials]: 'hot_session',
 };
 
-export const getUserCategoryInitData = (categoryId: string) => {
-  const allInOneCategoryId = 'category_6';
-  const isCategoryAllInOne = categoryId === allInOneCategoryId;
-  const isBlocked = categoryId !== 'category_1' && !isCategoryAllInOne;
-  const firstSessionId = sessionsIdMap[categoryId]
-    ? `${sessionsIdMap[categoryId]}_1`
+export const getUserCategoryInitData = (categoryKey: CategoryKey) => {
+  const allInOneCategoryKey = CategoryKey.All_In_One;
+  const isCategoryAllInOne = categoryKey === allInOneCategoryKey;
+  const isBlocked = categoryKey !== CategoryKey.Starter && !isCategoryAllInOne;
+  const firstSessionId = sessionsIdMap[categoryKey]
+    ? `${sessionsIdMap[categoryKey]}_1`
     : '';
 
   return {
@@ -30,19 +31,19 @@ export const getUserCategoryInitData = (categoryId: string) => {
     sessions: {
       ...(isCategoryAllInOne
         ? getSessionsForAllInOne()
-        : getSessions(categoryId)),
+        : getSessions(categoryKey)),
     },
   };
 };
 
-const getSessions = (categoryId: string) => {
+const getSessions = (categoryKey: CategoryKey) => {
   const result: Record<string, Partial<SessionType>> = {};
 
   for (let i = 1; i <= sessionsCountWithSubscription; i++) {
     const isSessionUnlocked = i === 1;
 
-    result[`${sessionsIdMap[categoryId]}_${i}`] = {
-      ...result[`${sessionsIdMap[categoryId]}_${i}`],
+    result[`${sessionsIdMap[categoryKey]}_${i}`] = {
+      ...result[`${sessionsIdMap[categoryKey]}_${i}`],
       ...userSession,
       isBlocked: isSessionUnlocked ? false : true,
     };

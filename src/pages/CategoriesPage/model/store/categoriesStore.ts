@@ -17,9 +17,12 @@ import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {QuestionType} from '@src/entities/QuestionCard';
+import {normaliseData} from '@src/shared/lib/common';
+import {specialDayStore} from '@src/entities/SpecialDay';
 
 class CategoriesStore {
   categories: CategoryType[] = [];
+  categoriesMap: Record<string, CategoryType> = {};
   unlockedCategories: CategoryType[] = [];
   rubrics: RubricType[] = [];
   favorites: FavoriteType | null = null;
@@ -29,6 +32,18 @@ class CategoriesStore {
     makeAutoObservable(this);
   }
 
+  setCategories = (categories: CategoryType[]) => {
+    const unlockedCategories = this.getUnlockedCategories(categories);
+    const editedCategories = this.editCategories(categories as CategoryType[]);
+    const normalisedCategories = normaliseData<CategoryType>(categories);
+
+    runInAction(() => {
+      this.categories = editedCategories;
+      this.unlockedCategories = unlockedCategories;
+      this.categoriesMap = normalisedCategories;
+    });
+  };
+
   init = async () => {
     try {
       crashlytics().log('Fetching Categories page');
@@ -36,9 +51,11 @@ class CategoriesStore {
       runInAction(() => {
         this.isCategoriesPageLoading = true;
       });
+
       await this.fetchCategories();
       await this.fetchRubrics();
       await userStore.fetchUser();
+      await specialDayStore.fetchSpecialDays();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -94,15 +111,10 @@ class CategoriesStore {
         };
       });
 
-      const unlockedCategories = this.getUnlockedCategories(categories);
-
       const lastCategory = categories[categories.length - 1];
       categoryStore.setLastCategoryId(lastCategory.id);
 
-      runInAction(() => {
-        this.categories = this.editCategories(categories as CategoryType[]);
-        this.unlockedCategories = unlockedCategories;
-      });
+      this.setCategories(categories);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -110,7 +122,11 @@ class CategoriesStore {
 
   getUnlockedCategories = (categories: CategoryType[]) => {
     const unlockedCategories = categories.filter(category => {
-      return !category.isBlocked && category.name !== CategoryKey.All_In_One;
+      return (
+        !category.isBlocked &&
+        category.name !== CategoryKey.All_In_One &&
+        category.name !== CategoryKey.Specials
+      );
     });
 
     return unlockedCategories;

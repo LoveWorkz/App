@@ -17,6 +17,7 @@ import {sessionStore} from '@src/entities/Session';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {Theme} from '@src/app/providers/themeProvider';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
+import {specialDayStore} from '@src/entities/SpecialDay';
 import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
@@ -43,17 +44,24 @@ class HomePageStore {
 
       await userStore.fetchUser();
       await categoriesStore.fetchCategories();
-      await categoriesStore.fetchRubrics();
-      await challengesStore.fetchChallengeCategories();
-
-      // fetching books for quotes modal
-      const books = await booksStore.fetchBooks();
-      quotesStore.checkQuotesShownStatus(books);
 
       this.getHomePageCategory(language);
 
-      await this.fetchHomePageSessions();
-      await questionsStore.fetchAllQuestionsInfo();
+      const promise1 = categoriesStore.fetchRubrics();
+      const promise2 = challengesStore.fetchChallengeCategories();
+      const promise3 = this.fetchBooksAndCheckQuotesShownStatus();
+      const promise4 = this.fetchHomePageSessions();
+      const promise5 = questionsStore.fetchAllQuestionsInfo();
+      const promise6 = specialDayStore.fetchSpecialDays();
+
+      await Promise.all([
+        promise1,
+        promise2,
+        promise3,
+        promise4,
+        promise5,
+        promise6,
+      ]);
 
       shareStore.shareQuestionHandler(language);
     } catch (e) {
@@ -63,6 +71,12 @@ class HomePageStore {
         this.isHomePageLoading = false;
       });
     }
+  };
+
+  fetchBooksAndCheckQuotesShownStatus = async () => {
+    // fetching books for quotes modal
+    const books = await booksStore.fetchBooks();
+    quotesStore.checkQuotesShownStatus(books);
   };
 
   fetchHomePageCategoriesAndChallenges = async (
@@ -139,7 +153,7 @@ class HomePageStore {
       // Hot and All in One categories should not show up in the progress bar
       if (
         userCurrentCategoryKey === CategoryKey.All_In_One ||
-        userCurrentCategoryKey === CategoryKey.Hot
+        userCurrentCategoryKey === CategoryKey.Specials
       ) {
         const intimateCategory = categoryStore.getCategoryByName(
           CategoryKey.Intimate,

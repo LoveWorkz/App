@@ -443,7 +443,7 @@ class QuestionsStore {
   }) => {
     return (
       category.name !== CategoryKey.Intimate &&
-      category.name !== CategoryKey.Hot &&
+      category.name !== CategoryKey.Specials &&
       !isLastCategory
     );
   };

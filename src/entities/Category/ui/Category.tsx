@@ -1,4 +1,4 @@
-import React, {memo, MutableRefObject} from 'react';
+import React, {memo, MutableRefObject, useEffect} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
@@ -72,6 +72,14 @@ const Category = (props: CategoryProps) => {
       isCategoryDetailsVisible,
     });
   };
+
+  useEffect(() => {
+    if (name !== CategoryKey.Specials) {
+      return;
+    }
+
+    categoryStore.checkIfSpecialDateAndUpdateSpecialCategory(id);
+  }, [id, name]);
 
   if (isLoading) {
     return (

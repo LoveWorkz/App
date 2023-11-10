@@ -407,7 +407,7 @@ class SessionStore {
         });
       };
 
-      inAppReviewStore.rate(actionAfterRating);
+      // inAppReviewStore.rate(actionAfterRating);
 
       await userCategoryStore.updateUserCategory({
         id: categoryId,

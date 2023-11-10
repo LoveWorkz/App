@@ -56,7 +56,7 @@ class UserCategoryStore {
         const categoryId = category.id;
 
         userCategories[categoryId] = {
-          ...getUserCategoryInitData(categoryId),
+          ...getUserCategoryInitData(category.name),
         };
       });
 
