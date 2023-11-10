@@ -25,10 +25,10 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
-
 import {isPlatformIos} from '@src/shared/consts/common';
+import {LockedPopup} from '@src/widgets/LockedPopup';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
-import LockedPopup from './LockedPopup/LockedPopup';
+import {getCategoryDetailsLockedPopupContent} from '../model/lib/categoryDetailsLib';
 
 export const CategoryDetailsPage = () => {
   const {t, i18n} = useTranslation();
@@ -38,6 +38,9 @@ export const CategoryDetailsPage = () => {
   const navbarHeaderHeight = useHeaderHeight();
   const isLockedPopupVisible = categoryDetailsStore.isLockedPopupVisible;
   const setIsLockedPopupVisible = categoryDetailsStore.setIsLockedPopupVisible;
+
+  const categoryDetailsLockedPopupContent =
+    getCategoryDetailsLockedPopupContent(t);
 
   const navbarHeight = isPlatformIos
     ? navbarHeaderHeight
@@ -143,6 +146,8 @@ export const CategoryDetailsPage = () => {
           </Button>
         )}
         <LockedPopup
+          title={categoryDetailsLockedPopupContent.title}
+          text={categoryDetailsLockedPopupContent.text}
           visible={isLockedPopupVisible}
           setVisible={setIsLockedPopupVisible}
         />

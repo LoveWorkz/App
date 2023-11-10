@@ -13,10 +13,12 @@ import {lockedImage} from '@src/shared/assets/images';
 interface LockedPopupProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
+  title: string;
+  text: string;
 }
 
 const LockedPopup = (props: LockedPopupProps) => {
-  const {visible, setVisible} = props;
+  const {visible, setVisible, text, title} = props;
 
   const {t} = useTranslation();
   const colors = useColors();
@@ -38,13 +40,13 @@ const LockedPopup = (props: LockedPopupProps) => {
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
         weight={'600'}
-        text={t('categories.lockPopupTitle')}
+        text={title}
       />
       <AppText
         style={[styles.text, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
         weight={'400'}
-        text={t('categories.lockPopupText')}
+        text={text}
       />
 
       <View style={styles.buttonWrapper}>

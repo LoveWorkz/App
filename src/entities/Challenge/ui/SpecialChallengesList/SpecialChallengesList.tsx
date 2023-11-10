@@ -3,27 +3,27 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
-import {
-  Challenge,
-  challengeExample,
-  ChallengeType,
-} from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
-import challengesStore from '../../model/store/challengesStore';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import ChallengeItem, {ChallengeTheme} from '../ChallengeItem';
+import {ChallengeType} from '../../model/types/ChallengeTypes';
+import {challengeExample} from '../../model/lib/challenge';
 
-interface ChallengeProps {
+interface SpecialChallengesListProps {
   isLoading: boolean;
+  isChallengesLoading: boolean;
+  challengesList: ChallengeType[];
 }
 
-export const Challenges = (props: ChallengeProps) => {
-  const {isLoading} = props;
-  let challenges = challengesStore.filteredChallengesList;
-  const isChallengesLoading = challengesStore.isChallengesLoading;
+export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
+  const {isLoading, challengesList, isChallengesLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
+
+  let challenges = challengesList;
 
   if (isLoading) {
     challenges = getEntityExampleDataForSkeleton({
@@ -34,11 +34,24 @@ export const Challenges = (props: ChallengeProps) => {
 
   return (
     <View>
+      {isLoading ? (
+        <View style={styles.title}>
+          <Skeleton width={150} height={20} />
+        </View>
+      ) : (
+        <AppText
+          style={[styles.title, {color: colors.primaryTextColor}]}
+          text={t('challenge.specialChallengeTitle')}
+          weight={'500'}
+          size={TextSize.LEVEL_5}
+        />
+      )}
       {challenges.length ? (
         challenges.map(challange => {
           return (
-            <View style={styles.subChallengeWrappper} key={challange.id}>
-              <Challenge
+            <View style={styles.SpecialChallengesList} key={challange.id}>
+              <ChallengeItem
+                challengeTheme={ChallengeTheme.SPECIAL}
                 isLoading={isLoading || isChallengesLoading}
                 challenge={challange}
               />
@@ -58,15 +71,17 @@ export const Challenges = (props: ChallengeProps) => {
   );
 };
 
-export default memo(observer(Challenges));
+export default memo(observer(SpecialChallengesList));
 
 const styles = StyleSheet.create({
-  subChallengeWrappper: {
+  SpecialChallengesList: {
     marginBottom: verticalScale(10),
+  },
+  title: {
+    marginBottom: verticalScale(20),
   },
   noResults: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: verticalScale(20),
   },
 });

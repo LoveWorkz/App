@@ -9,16 +9,18 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {StyleType} from '@src/shared/types/types';
 import {Gradient} from '../Gradient/Gradient';
 import {GradientOutline} from '../Gradient/GradientOutline';
 
 interface Checkbox {
   checked: boolean;
   onChange?: (newValue: boolean) => void;
+  style?: StyleType;
 }
 
 const CustomCheckBox = memo((props: Checkbox) => {
-  const {checked = true, onChange} = props;
+  const {checked = true, onChange, style} = props;
   const colors = useColors();
 
   const onPressHandler = () => {
@@ -26,7 +28,7 @@ const CustomCheckBox = memo((props: Checkbox) => {
   };
 
   return (
-    <TouchableOpacity onPress={onPressHandler}>
+    <TouchableOpacity style={style} onPress={onPressHandler}>
       {checked ? (
         <Gradient style={[styles.checkBox, styles.checked]}>
           <SvgXml

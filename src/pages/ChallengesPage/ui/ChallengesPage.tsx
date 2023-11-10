@@ -5,12 +5,11 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
-import {challengeFilterItems} from '@src/entities/Challenge';
+import {challengeFilterItems, ChallengesList} from '@src/entities/Challenge';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
 import ChallengesFilterItems from './ChallengesFilterItems/ChallengesFilterItems';
-import Challenges from './Challenges/Challenges';
 import challengesStore from '../model/store/challengesStore';
 
 interface ChallengesPageProps {
@@ -28,6 +27,8 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   const defaultChallengeId = route?.params?.id;
   const prevRouteName = route?.params?.prevRouteName;
   const isLoading = challengesStore.isChallengePageLoading;
+  const challanges = challengesStore.challenges;
+  const isChallengesLoading = challengesStore.isChallengesLoading;
 
   useEffect(() => {
     challengesStore.init();
@@ -53,7 +54,11 @@ const ChallengesPage = (props: ChallengesPageProps) => {
       <View style={styles.FilterItemsWrapper}>
         <ChallengesFilterItems isLoading={isLoading} />
       </View>
-      <Challenges isLoading={isLoading} />
+      <ChallengesList
+        challengesList={challanges}
+        isChallengesLoading={isChallengesLoading}
+        isLoading={isLoading}
+      />
     </View>
   );
 };
