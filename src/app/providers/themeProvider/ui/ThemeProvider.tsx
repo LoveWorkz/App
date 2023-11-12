@@ -1,12 +1,8 @@
 import React, {ReactElement, useEffect, useMemo, useState} from 'react';
-import {Appearance} from 'react-native';
 
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {THEME_STORAGE_KEY} from '@src/shared/consts/storage';
 import {Theme, ThemeContext} from '../lib/ThemeContext';
-
-const defaultValue =
-  Appearance.getColorScheme() === 'dark' ? Theme.Dark : Theme.LIGHT;
 
 interface ThemeProviderProps {
   children: ReactElement;
@@ -15,7 +11,7 @@ interface ThemeProviderProps {
 export const ThemeProvider = (props: ThemeProviderProps) => {
   const {children} = props;
 
-  const [theme, setTheme] = useState<Theme>(defaultValue);
+  const [theme, setTheme] = useState<Theme>(Theme.LIGHT);
 
   useEffect(() => {
     const getDefaultTheme = async () => {

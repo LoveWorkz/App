@@ -13,6 +13,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
+  RATE_TYPE_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
@@ -367,6 +368,7 @@ class UserStore {
       await authStorage.removeAuthData(AUTH_METHOD_STORAGE_KEY);
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
+      await themeStorage.removeTheme(RATE_TYPE_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

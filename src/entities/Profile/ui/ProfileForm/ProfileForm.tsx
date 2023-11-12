@@ -92,9 +92,11 @@ const ProfileForm = (props: ProfileFormProps) => {
           changeStatus={onStatusChangeHandler}
         />
       </View>
-      <View style={styles.item}>
-        <PartnerSelect isLoading={isLoading} partner={partner} />
-      </View>
+      {!isSetup && (
+        <View style={styles.item}>
+          <PartnerSelect isLoading={isLoading} partner={partner} />
+        </View>
+      )}
       <View style={styles.preferences}>
         <Preferences
           isLoading={isLoading}

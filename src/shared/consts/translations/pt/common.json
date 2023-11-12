@@ -18,5 +18,7 @@
    "ok": "Ok",
    "got_it": "Entendi",
    "start_game": "Começar o jogo",
-   "loading": "carregando"
+   "loading": "carregando",
+   "yes": "Sim",
+   "no": "Não"
 }

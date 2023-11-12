@@ -352,7 +352,7 @@ class SessionStore {
       }
       const nextSessionId = nextSession.id;
 
-      this.checkSessionsAndShowRatePopup(category);
+      await this.checkSessionsAndShowRatePopup(category);
 
       await userCategoryStore.updateUserCategory({
         id: categoryId,
@@ -384,37 +384,33 @@ class SessionStore {
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {
     const user = userStore.user;
-    // user can rate the app only once
+    // If the user has already rated the app, do nothing.
     if (user?.hasUserRated) {
       return;
     }
 
-    const currentSessionNumber = category.currentSessionNumber;
-    const ratePopUpBreakpoint = category.ratePopUpBreakpoint;
-    const categoryId = category.id;
+    const isRatePromptSession = await this.showRatePopup(
+      category.currentSessionNumber,
+    );
 
-    const newRatePopUpBreakpoint =
-      ratePopUpBreakpoint + SESSION_INTERVAL_FOR_RATE_PROMPT;
+    if (isRatePromptSession) {
+      await inAppReviewStore.rate();
 
-    if (
-      newRatePopUpBreakpoint - currentSessionNumber ===
-      SESSION_INTERVAL_FOR_RATE_PROMPT
-    ) {
-      const actionAfterRating = () => {
-        userStore.updateUser({
-          field: 'hasUserRated',
-          data: true,
-        });
-      };
-
-      // inAppReviewStore.rate(actionAfterRating);
+      // Calculate the next session number when the rate popup should be shown again.
+      const nextRatePopupSession =
+        category.currentSessionNumber + SESSION_INTERVAL_FOR_RATE_PROMPT;
 
       await userCategoryStore.updateUserCategory({
-        id: categoryId,
+        id: category.id,
         field: 'ratePopUpBreakpoint',
-        data: newRatePopUpBreakpoint,
+        data: nextRatePopupSession,
       });
     }
+  };
+
+  showRatePopup = async (currentSessionNumber: number) => {
+    // Check if it's the correct session to prompt the rate popup based on the interval.
+    return currentSessionNumber % SESSION_INTERVAL_FOR_RATE_PROMPT === 0;
   };
 }
 

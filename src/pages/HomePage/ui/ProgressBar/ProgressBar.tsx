@@ -83,7 +83,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   Deep: {
     position: 'absolute',
     bottom: 105,
-    left: horizontalScale(160),
+    left: horizontalScale(155),
     color: '#885FFF',
   },
   Intimate: {
