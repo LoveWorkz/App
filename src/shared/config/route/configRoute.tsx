@@ -21,6 +21,7 @@ import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/app/providers/layout';
 import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 import {SessionsPage} from '@src/pages/SessionsPage';
+import {ChallengeCardsPage} from '@src/pages/ChallengeCardsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -42,6 +43,7 @@ export enum AppRouteNames {
   QUESTIONS = 'questions',
   PARTNER_EDIT = 'partnerEdit',
   SESSIONS = 'sessions',
+  CHALLENGE_CARDS = 'challengeCards',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -64,6 +66,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.QUESTIONS]: 'questions',
   [AppRouteNames.PARTNER_EDIT]: 'partnerEdit',
   [AppRouteNames.SESSIONS]: 'sessions',
+  [AppRouteNames.CHALLENGE_CARDS]: 'challengeCards',
 };
 
 type NewRouteProps = {
@@ -267,6 +270,18 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout isPageScrolling>
           <SessionsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.CHALLENGE_CARDS]: {
+    name: appRoutePaths.challengeCards,
+    headerShown: true,
+    headerTitle: '',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <ChallengeCardsPage {...props} />
         </Layout>
       );
     },

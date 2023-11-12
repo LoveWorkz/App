@@ -42,7 +42,7 @@ const ProgressBar = () => {
         style={styles.progressImage}
       />
 
-      {/* <AppText
+      <AppText
         style={[
           styles[progressBarCategoryKey],
           {color: colors.homePageCategoryTextColor},
@@ -50,7 +50,7 @@ const ProgressBar = () => {
         weight={'700'}
         size={TextSize.LEVEL_4}
         text={progressBarCategoryName}
-      /> */}
+      />
     </View>
   );
 };

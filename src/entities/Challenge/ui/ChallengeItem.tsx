@@ -17,6 +17,8 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedPopup} from '@src/widgets/LockedPopup';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {ChallengeType} from '../model/types/ChallengeTypes';
 import challengeStore from '../model/store/challengeStore';
@@ -65,7 +67,10 @@ export const ChallengeItem = (props: SubChallengeProps) => {
   }, [id]);
 
   const onChallengePressHandler = () => {
-    setLockedPopupVisible(true);
+    // setLockedPopupVisible(true);
+    navigation.navigate(AppRouteNames.CHALLENGE_CARDS, {
+      title: 'TEST',
+    });
   };
 
   if (isLoading) {

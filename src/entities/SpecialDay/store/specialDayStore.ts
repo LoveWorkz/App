@@ -49,7 +49,9 @@ class SpecialDayStore {
   isTodaySpecial = async () => {
     const currentDate = new Date();
     const formattedDate = getDateYYYYMMDD(currentDate);
-    return !!this.specialDaysMap[formattedDate];
+    const specialDay = this.specialDaysMap[formattedDate];
+
+    return !!specialDay && specialDay.isActive;
   };
 }
 
