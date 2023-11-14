@@ -28,4 +28,5 @@ export const categoryExample: CategoryType = {
   sessions: {},
   ratePopUpBreakpoint: 3,
   currentSessionNumber: 1,
+  challengeCategoryId: '',
 };

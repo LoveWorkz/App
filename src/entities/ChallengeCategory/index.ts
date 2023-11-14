@@ -4,6 +4,5 @@ export type {
   CurrentChallengeCategoryType,
 } from './model/types/challengeCategory';
 
-export {ChallengeCategoryKeys} from './model/types/challengeCategory';
 export {getNextChallengeCategory} from './model/lib/challengeCategory';
 export {challengeCategoryExample} from './model/lib/challengeCategory';

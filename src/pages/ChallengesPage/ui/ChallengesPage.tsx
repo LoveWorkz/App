@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -18,6 +18,7 @@ interface ChallengesPageProps {
       id: string;
       prevRouteName: AppRouteNames | TabRoutesNames;
       challenge: string;
+      isTabScreen: boolean;
     };
   };
 }
@@ -29,10 +30,16 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   const isLoading = challengesStore.isChallengePageLoading;
   const challanges = challengesStore.challenges;
   const isChallengesLoading = challengesStore.isChallengesLoading;
+  const isTabScreen = route?.params?.isTabScreen;
 
-  useEffect(() => {
-    challengesStore.init();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // when user returns from any tab screen or questions page, get actual challenges data
+      if (isTabScreen || prevRouteName === AppRouteNames.QUESTIONS) {
+        challengesStore.init();
+      }
+    }, [isTabScreen, prevRouteName]),
+  );
 
   useFocusEffect(
     useCallback(() => {

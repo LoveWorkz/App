@@ -39,6 +39,7 @@ export interface CategoryType {
   currentSession: string;
   ratePopUpBreakpoint: number;
   currentSessionNumber: number;
+  challengeCategoryId: string;
 }
 
 export interface CurrentCategory {

@@ -34,6 +34,7 @@ const QuestionPageCongratsModal = () => {
 
   return (
     <CongratsModal
+      challengeCategoryId={nextCategory.challengeCategoryId}
       content={contentWithCategoryName}
       visible={questionsStore.congratsModalVisible}
       setVisible={questionsStore.setCongratsModalVisible}

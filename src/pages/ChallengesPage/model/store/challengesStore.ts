@@ -5,7 +5,6 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {
-  ChallengeCategoryKeys,
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
@@ -14,12 +13,14 @@ import {ChallengeType} from '@src/entities/Challenge';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {CategoryKey} from '@src/entities/Category';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
   challenges: ChallengeType[] = [];
   filteredChallengesList: ChallengeType[] = [];
   selectedChallengesIds: string[] = [];
+  selectedSpecialChallengesIds: string[] = [];
   isAllChallengesSelected: boolean = false;
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isCongratsModalVisible: boolean = false;
@@ -34,7 +35,9 @@ class ChallengesStore {
     try {
       crashlytics().log('Fetching Challenges page.');
 
-      this.isChallengePageLoading = true;
+      runInAction(() => {
+        this.isChallengePageLoading = true;
+      });
       // the order is important
       await userStore.fetchUser();
       await this.fetchChallengeCategories();
@@ -54,6 +57,12 @@ class ChallengesStore {
 
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {
     this.selectedChallengesIds = selectedChallengesIds;
+  };
+
+  setsSelectedSpecialChallengesIds = (
+    selectedSpecialChallengesIds: string[],
+  ) => {
+    this.selectedSpecialChallengesIds = selectedSpecialChallengesIds;
   };
 
   setIsAllChallengesSelected = (isAllChallengesSelected: boolean) => {
@@ -293,7 +302,7 @@ class ChallengesStore {
         }
 
         const nextChallengeCategoryName = getNextChallengeCategory(
-          currentChallengeCategory.currentChallengeCategory as ChallengeCategoryKeys,
+          currentChallengeCategory.currentChallengeCategory as CategoryKey,
         );
 
         if (this.isAllChallengesSelected) {

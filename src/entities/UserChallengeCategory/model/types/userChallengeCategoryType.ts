@@ -1,13 +1,14 @@
-import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
+import {CategoryKey} from '@src/entities/Category';
 
 export interface UserChallengeCategoryType {
   userId: string;
   challengeCategory: Record<
-    ChallengeCategoryKeys,
+    CategoryKey,
     {
       isBlocked: boolean;
       selectedChallengesIds: string[];
       isAllChallengesSelected: boolean;
+      selectedSpecialChallengesIds: string[];
     }
   >;
 }

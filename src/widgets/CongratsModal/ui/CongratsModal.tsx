@@ -18,10 +18,11 @@ interface CongratsModalProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
   content: CongratsModalContentType;
+  challengeCategoryId: string;
 }
 
 const CongratsModal = (props: CongratsModalProps) => {
-  const {visible, setVisible, content} = props;
+  const {visible, setVisible, content, challengeCategoryId} = props;
   const {title, description1, description2, categoryName, image} = content;
   const colors = useColors();
   const {t} = useTranslation();
@@ -31,7 +32,9 @@ const CongratsModal = (props: CongratsModalProps) => {
   };
 
   const goToChallengesHandler = () => {
-    navigation.navigate(TabRoutesNames.CHALLENGES);
+    navigation.navigate(TabRoutesNames.CHALLENGES, {
+      id: challengeCategoryId,
+    });
     setVisible?.(false);
   };
 

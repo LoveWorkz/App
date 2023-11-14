@@ -1,17 +1,10 @@
+import {CategoryKey} from '@src/entities/Category';
 import {DisplayText} from '@src/shared/types/types';
-
-export enum ChallengeCategoryKeys {
-  Bronze = 'Bronze',
-  Silver = 'Silver',
-  Gold = 'Gold',
-  Diamond = 'Diamond',
-  Platinum = 'Platinum',
-}
 
 export interface ChallengeCategoryType {
   id: string;
   image: string;
-  name: ChallengeCategoryKeys;
+  name: CategoryKey;
   isBlocked: boolean;
   isActive: Boolean;
   nomer: number;

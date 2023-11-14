@@ -22,6 +22,7 @@ import {DocumentType} from '@src/shared/types/types';
 import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore} from '@src/entities/Session';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -557,6 +558,12 @@ class QuestionsStore {
       await userStore.updateUser({
         field: 'category.currentCategory',
         data: nextCategory.name,
+      });
+
+      await userChallengeCategoryStore.updateUserChallengeCategory({
+        field: 'isBlocked',
+        data: false,
+        challengeCategoryName: nextCategory.name,
       });
     } catch (e) {
       errorHandler({error: e});

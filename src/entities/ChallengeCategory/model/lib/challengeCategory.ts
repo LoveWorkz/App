@@ -1,29 +1,27 @@
-import {
-  ChallengeCategoryKeys,
-  ChallengeCategoryType,
-} from '../types/challengeCategory';
+import {CategoryKey} from '@src/entities/Category';
+import {ChallengeCategoryType} from '../types/challengeCategory';
 
 export const getNextChallengeCategory = (
-  currentChallengeCategory: ChallengeCategoryKeys,
-): ChallengeCategoryKeys => {
+  currentChallengeCategory: CategoryKey,
+): CategoryKey => {
   switch (currentChallengeCategory) {
-    case ChallengeCategoryKeys.Bronze:
-      return ChallengeCategoryKeys.Silver;
-    case ChallengeCategoryKeys.Silver:
-      return ChallengeCategoryKeys.Gold;
-    case ChallengeCategoryKeys.Gold:
-      return ChallengeCategoryKeys.Diamond;
-    case ChallengeCategoryKeys.Diamond:
-      return ChallengeCategoryKeys.Platinum;
+    case CategoryKey.Starter:
+      return CategoryKey.Basic;
+    case CategoryKey.Basic:
+      return CategoryKey.Deep;
+    case CategoryKey.Deep:
+      return CategoryKey.Intimate;
+    case CategoryKey.Intimate:
+      return CategoryKey.Specials;
     default:
-      return ChallengeCategoryKeys.Platinum;
+      return CategoryKey.Specials;
   }
 };
 
 export const challengeCategoryExample: ChallengeCategoryType = {
   id: '',
   image: '',
-  name: ChallengeCategoryKeys.Bronze,
+  name: CategoryKey.Starter,
   isBlocked: true,
   isActive: true,
   nomer: 0,

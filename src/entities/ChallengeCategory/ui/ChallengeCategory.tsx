@@ -21,13 +21,13 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {ChallengeCategoryKeys} from '../model/types/challengeCategory';
+import {CategoryKey} from '@src/entities/Category';
 
 type ChallengeCategorySize = 'large' | 'small';
 
 interface ChallangeProps {
   image?: string;
-  name?: ChallengeCategoryKeys;
+  name?: CategoryKey;
   isActive?: boolean;
   selectChallngeCategory?: (data: {id: string; name: string}) => void;
   isBlocked?: boolean;
@@ -106,8 +106,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
   const uri = useMemo(() => {
     return {
       uri: image,
-      priority: FastImage.priority.normal,
-      resizeMode: FastImage.resizeMode.cover,
+      resizeMode: FastImage.resizeMode.contain,
     };
   }, [image]);
 

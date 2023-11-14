@@ -4,11 +4,9 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 import {Collections} from '@src/shared/types/firebase';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {
-  ChallengeCategoryKeys,
-  ChallengeCategoryType,
-} from '@src/entities/ChallengeCategory';
+import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {CategoryKey} from '@src/entities/Category';
 import userStore from '@src/entities/User/model/store/userStore';
 import {userChallengeCategoryInitData} from '../lib/userChallengeCategory';
 import {UserChallengeCategoryType} from '../types/userChallengeCategoryType';
@@ -48,7 +46,7 @@ class UserChallengeCategoryStore {
 
       const currenetChallengeCategory =
         userChallengeCategory.challengeCategory[
-          currentChallengeCategory.currentChallengeCategory as ChallengeCategoryKeys
+          currentChallengeCategory.currentChallengeCategory as CategoryKey
         ];
 
       runInAction(() => {
@@ -85,9 +83,7 @@ class UserChallengeCategoryStore {
         userChallengeCategories[challengeCategory.name] = {
           ...userChallengeCategoryInitData,
           isBlocked:
-            challengeCategory.name === ChallengeCategoryKeys.Bronze
-              ? false
-              : true,
+            challengeCategory.name === CategoryKey.Starter ? false : true,
         };
       });
 
@@ -107,7 +103,7 @@ class UserChallengeCategoryStore {
   }: {
     field: string;
     data: any;
-    challengeCategoryName?: ChallengeCategoryKeys;
+    challengeCategoryName?: CategoryKey;
   }) => {
     try {
       crashlytics().log('Updating User Challenge Category.');

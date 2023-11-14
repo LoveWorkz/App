@@ -1,5 +1,4 @@
 import {CategoryKey} from '@src/entities/Category';
-import {ChallengeCategoryKeys} from '@src/entities/ChallengeCategory';
 import {User, InitlUserInfo} from '../model/types/userSchema';
 
 export const userFormatter = (userInfo: InitlUserInfo): User => {
@@ -18,7 +17,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     currentCategory: CategoryKey.Starter,
   };
   formatedUser.challengeCategory = {
-    currentChallengeCategory: ChallengeCategoryKeys.Bronze,
+    currentChallengeCategory: CategoryKey.Starter,
     currentChallengeCategoryId: '',
   };
   formatedUser.favorites = {
