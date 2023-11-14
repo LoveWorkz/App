@@ -8,6 +8,7 @@ export interface ChallengeType {
   rubrics: string[];
   id: string;
   nomer: string;
+  isChallengeSpecial: boolean;
 }
 
 export interface SpecialChallengeType extends UserSpecialChallenge {
@@ -15,4 +16,5 @@ export interface SpecialChallengeType extends UserSpecialChallenge {
   description: DisplayText;
   rubrics: string[];
   id: string;
+  isChallengeSpecial: boolean;
 }

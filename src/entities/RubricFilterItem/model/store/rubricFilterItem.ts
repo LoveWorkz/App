@@ -33,13 +33,7 @@ class RubricFilterItemStore {
     });
   };
 
-  turnOffFilterByKey = ({
-    key,
-    list,
-  }: {
-    key: string;
-    list: Array<{rubrics: string[]}>;
-  }) => {
+  turnOffFilterByKey = <T>({key, list}: {key: string; list: T[]}) => {
     this.toggleRubricStatus({key, status: false});
     this.selectedRubricKey = '';
 
@@ -55,10 +49,16 @@ class RubricFilterItemStore {
     });
   };
 
-  startFilterLogic = ({key, list}: {key: string; list: any[]}) => {
+  startFilterLogic = <T extends {rubrics: string[]}>({
+    key,
+    list,
+  }: {
+    key: string;
+    list: T[];
+  }): T[] => {
     // when user presses already selected filter item
     if (this.selectedRubricKey === key) {
-      return this.turnOffFilterByKey({key, list});
+      return this.turnOffFilterByKey<T>({key, list});
     }
     // when user presses filter item but there is already selected another item
     if (this.selectedRubricKey) {

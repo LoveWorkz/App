@@ -28,8 +28,8 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   const defaultChallengeId = route?.params?.id;
   const prevRouteName = route?.params?.prevRouteName;
   const isLoading = challengesStore.isChallengePageLoading;
-  const challanges = challengesStore.challenges;
-  const specialChallanges = challengesStore.specialChallenges;
+  const challanges = challengesStore.filteredChallengesList;
+  const specialChallanges = challengesStore.filteredSpecialChallenges;
   const isChallengesLoading = challengesStore.isChallengesLoading;
   const isTabScreen = route?.params?.isTabScreen;
 

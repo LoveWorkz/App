@@ -10,8 +10,9 @@ export const specialChallengesList = [
       pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
       de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
     },
-    rubrics: ['Self-reflection', 'Routine'],
+    rubrics: ['Dreams'],
     id: 'special_challenge_1',
+    isChallengeSpecial: true,
   },
   {
     title: {
@@ -24,7 +25,8 @@ export const specialChallengesList = [
       pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
       de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
     },
-    rubrics: ['Self-reflection', 'Routine'],
+    rubrics: [''],
     id: 'special_challenge_2',
+    isChallengeSpecial: true,
   },
 ];

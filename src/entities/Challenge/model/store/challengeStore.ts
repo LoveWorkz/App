@@ -89,15 +89,15 @@ class ChallengeStore {
     id: string;
     newValue: boolean;
   }) => {
-    // const newFilteredChallenges = challengesStore.filteredChallengesList.map(
-    //   challenge => {
-    //     if (challenge.id === id) {
-    //       return {...challenge, isChecked: newValue};
-    //     }
+    const newFilteredChallenges = challengesStore.filteredSpecialChallenges.map(
+      challenge => {
+        if (challenge.id === id) {
+          return {...challenge, isSelected: newValue};
+        }
 
-    //     return {...challenge};
-    //   },
-    // );
+        return {...challenge};
+      },
+    );
 
     const newSpecialChallenges = challengesStore.specialChallenges.map(
       challenge => {
@@ -110,7 +110,7 @@ class ChallengeStore {
     );
 
     runInAction(() => {
-      // challengesStore.filteredChallengesList = newFilteredChallenges;
+      challengesStore.filteredSpecialChallenges = newFilteredChallenges;
       challengesStore.specialChallenges = newSpecialChallenges;
     });
   };

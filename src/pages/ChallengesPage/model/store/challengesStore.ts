@@ -25,8 +25,9 @@ import {CategoryKey} from '@src/entities/Category';
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
   challenges: ChallengeType[] = [];
-  specialChallenges: SpecialChallengeType[] = [];
   filteredChallengesList: ChallengeType[] = [];
+  specialChallenges: SpecialChallengeType[] = [];
+  filteredSpecialChallenges: SpecialChallengeType[] = [];
   selectedChallengesIds: string[] = [];
   selectedSpecialChallengesIds: Record<string, UserSpecialChallenge> | null =
     null;
@@ -223,6 +224,7 @@ class ChallengesStore {
       runInAction(() => {
         this.challenges = challenges;
         this.filteredChallengesList = challenges;
+        this.filteredSpecialChallenges = specialChallenges;
         this.specialChallenges = specialChallenges;
       });
     } catch (e) {
@@ -296,10 +298,21 @@ class ChallengesStore {
     try {
       crashlytics().log('Filtering challenges.');
 
-      this.filteredChallengesList = rubricFilterItemStore.startFilterLogic({
-        list: this.challenges,
+      const result = rubricFilterItemStore.startFilterLogic({
+        list: [...this.challenges, ...this.specialChallenges],
         key: name,
       });
+
+      const filteredChallengesList = result.filter(
+        item => !item.isChallengeSpecial,
+      ) as ChallengeType[];
+
+      const filteredSpecialChallenges = result.filter(
+        item => item.isChallengeSpecial,
+      ) as SpecialChallengeType[];
+
+      this.filteredChallengesList = filteredChallengesList;
+      this.filteredSpecialChallenges = filteredSpecialChallenges;
     } catch (e) {
       errorHandler({error: e});
     }
@@ -308,6 +321,7 @@ class ChallengesStore {
   clearChallengesInfo = () => {
     rubricFilterItemStore.clearFilteredInfo();
     this.filteredChallengesList = this.challenges;
+    this.filteredSpecialChallenges = this.specialChallenges;
   };
 
   checkIfAllChallengesSelected = async () => {

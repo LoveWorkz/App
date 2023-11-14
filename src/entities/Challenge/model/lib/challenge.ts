@@ -3,7 +3,7 @@ import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 
 export const challengeFilterItems = [
   {
-    name: 'Routine',
+    name: 'Exercise',
     active: false,
   },
   {
@@ -11,15 +11,15 @@ export const challengeFilterItems = [
     active: false,
   },
   {
+    name: 'Routine',
+    active: false,
+  },
+  {
     name: 'Self-reflection',
     active: false,
   },
   {
-    name: 'Game',
-    active: false,
-  },
-  {
-    name: 'Communication',
+    name: 'Dreams',
     active: false,
   },
 ];
@@ -39,6 +39,7 @@ export const challengeExample: ChallengeType = {
   rubrics: [],
   id: '',
   nomer: '',
+  isChallengeSpecial: false,
 };
 
 export const specialChallengeExample: SpecialChallengeType = {
@@ -56,6 +57,7 @@ export const specialChallengeExample: SpecialChallengeType = {
   rubrics: [],
   id: '',
   isBlocked: true,
+  isChallengeSpecial: true,
 };
 
 export const getChallengesLockedPopupContent = (t: TFunction) => {
