@@ -17,10 +17,11 @@ interface Checkbox {
   checked: boolean;
   onChange?: (newValue: boolean) => void;
   style?: StyleType;
+  disabled?: boolean;
 }
 
 const CustomCheckBox = memo((props: Checkbox) => {
-  const {checked = true, onChange, style} = props;
+  const {checked = true, onChange, style, disabled} = props;
   const colors = useColors();
 
   const onPressHandler = () => {
@@ -28,7 +29,10 @@ const CustomCheckBox = memo((props: Checkbox) => {
   };
 
   return (
-    <TouchableOpacity style={style} onPress={onPressHandler}>
+    <TouchableOpacity
+      disabled={disabled}
+      style={style}
+      onPress={onPressHandler}>
       {checked ? (
         <Gradient style={[styles.checkBox, styles.checked]}>
           <SvgXml

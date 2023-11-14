@@ -1,9 +1,11 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {observer} from 'mobx-react-lite';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {ChallengeType} from '../../model/types/ChallengeTypes';
+import {
+  ChallengeType,
+  SpecialChallengeType,
+} from '../../model/types/ChallengeTypes';
 import CoreChallengesList from '../CoreChallengesList/CoreChallengesList';
 import SpecialChallengesList from '../SpecialChallengesList/SpecialChallengesList';
 
@@ -11,13 +13,16 @@ interface ChallengesListProps {
   isLoading: boolean;
   isChallengesLoading: boolean;
   challengesList: ChallengeType[];
+  specialChallangesList: SpecialChallengeType[];
 }
 
 export const ChallengesList = (props: ChallengesListProps) => {
-  const {isLoading, challengesList, isChallengesLoading} = props;
-
-  const coreChallengesList = challengesList;
-  const specialChallengesList = challengesList;
+  const {
+    isLoading,
+    challengesList,
+    isChallengesLoading,
+    specialChallangesList,
+  } = props;
 
   return (
     <>
@@ -25,19 +30,19 @@ export const ChallengesList = (props: ChallengesListProps) => {
         <CoreChallengesList
           isLoading={isLoading}
           isChallengesLoading={isChallengesLoading}
-          challengesList={coreChallengesList}
+          challengesList={challengesList}
         />
       </View>
       <SpecialChallengesList
         isLoading={isLoading}
         isChallengesLoading={isChallengesLoading}
-        challengesList={specialChallengesList}
+        challengesList={specialChallangesList}
       />
     </>
   );
 };
 
-export default memo(observer(ChallengesList));
+export default memo(ChallengesList);
 
 const styles = StyleSheet.create({
   coreChallengesListWrapper: {

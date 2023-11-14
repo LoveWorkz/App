@@ -31,7 +31,27 @@ class ChallengeStore {
         field: 'selectedChallengesIds',
         data: newSelectedChallengesIds,
       });
-      this.updateLocalChallenge(id);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  updateSpecialChallenge = async ({
+    id,
+    value,
+    field,
+  }: {
+    id: string;
+    value: boolean;
+    field: string;
+  }) => {
+    try {
+      crashlytics().log('Updating special challenge.');
+
+      await userChallengeCategoryStore.updateUserChallengeCategory({
+        field: `selectedSpecialChallengesIds.${id}.${field}`,
+        data: value,
+      });
     } catch (e) {
       errorHandler({error: e});
     }
@@ -62,12 +82,66 @@ class ChallengeStore {
     });
   };
 
+  updateLocalSpecialChallenge = ({
+    id,
+    newValue,
+  }: {
+    id: string;
+    newValue: boolean;
+  }) => {
+    // const newFilteredChallenges = challengesStore.filteredChallengesList.map(
+    //   challenge => {
+    //     if (challenge.id === id) {
+    //       return {...challenge, isChecked: newValue};
+    //     }
+
+    //     return {...challenge};
+    //   },
+    // );
+
+    const newSpecialChallenges = challengesStore.specialChallenges.map(
+      challenge => {
+        if (challenge.id === id) {
+          return {...challenge, isSelected: newValue};
+        }
+
+        return {...challenge};
+      },
+    );
+
+    runInAction(() => {
+      // challengesStore.filteredChallengesList = newFilteredChallenges;
+      challengesStore.specialChallenges = newSpecialChallenges;
+    });
+  };
+
   selectChallenge = async ({id}: {id: string}) => {
     try {
       crashlytics().log('Selecting challenge.');
 
       await this.updateChallenge(id);
-      await challengesStore.checkIfAllChallengesSelected();
+      this.updateLocalChallenge(id);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  selectSpecialChallenge = async ({
+    id,
+    newValue,
+  }: {
+    id: string;
+    newValue: boolean;
+  }) => {
+    try {
+      crashlytics().log('Selecting special challenge.');
+
+      await this.updateSpecialChallenge({
+        id,
+        value: newValue,
+        field: 'isSelected',
+      });
+      this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});
     }

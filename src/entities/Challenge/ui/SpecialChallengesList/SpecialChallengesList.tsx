@@ -8,14 +8,14 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import ChallengeItem, {ChallengeTheme} from '../ChallengeItem';
-import {ChallengeType} from '../../model/types/ChallengeTypes';
-import {challengeExample} from '../../model/lib/challenge';
+import {SpecialChallengeType} from '../../model/types/ChallengeTypes';
+import {specialChallengeExample} from '../../model/lib/challenge';
+import SpecialChallengeItem from '../ChallengeItem/SpecialChallengeItem';
 
 interface SpecialChallengesListProps {
   isLoading: boolean;
   isChallengesLoading: boolean;
-  challengesList: ChallengeType[];
+  challengesList: SpecialChallengeType[];
 }
 
 export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
@@ -27,9 +27,9 @@ export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
 
   if (isLoading) {
     challenges = getEntityExampleDataForSkeleton({
-      entity: challengeExample,
+      entity: specialChallengeExample,
       count: 5,
-    }) as ChallengeType[];
+    }) as SpecialChallengeType[];
   }
 
   return (
@@ -50,8 +50,7 @@ export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
         challenges.map(challange => {
           return (
             <View style={styles.SpecialChallengesList} key={challange.id}>
-              <ChallengeItem
-                challengeTheme={ChallengeTheme.SPECIAL}
+              <SpecialChallengeItem
                 isLoading={isLoading || isChallengesLoading}
                 challenge={challange}
               />

@@ -29,6 +29,7 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   const prevRouteName = route?.params?.prevRouteName;
   const isLoading = challengesStore.isChallengePageLoading;
   const challanges = challengesStore.challenges;
+  const specialChallanges = challengesStore.specialChallenges;
   const isChallengesLoading = challengesStore.isChallengesLoading;
   const isTabScreen = route?.params?.isTabScreen;
 
@@ -63,6 +64,7 @@ const ChallengesPage = (props: ChallengesPageProps) => {
       </View>
       <ChallengesList
         challengesList={challanges}
+        specialChallangesList={specialChallanges}
         isChallengesLoading={isChallengesLoading}
         isLoading={isLoading}
       />

@@ -8,7 +8,12 @@ export interface UserChallengeCategoryType {
       isBlocked: boolean;
       selectedChallengesIds: string[];
       isAllChallengesSelected: boolean;
-      selectedSpecialChallengesIds: string[];
+      selectedSpecialChallengesIds: Record<string, UserSpecialChallenge>;
     }
   >;
+}
+
+export interface UserSpecialChallenge {
+  isBlocked: boolean;
+  isSelected: boolean;
 }

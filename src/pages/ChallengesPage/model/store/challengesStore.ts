@@ -9,18 +9,27 @@ import {
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
 } from '@src/entities/ChallengeCategory';
-import {ChallengeType} from '@src/entities/Challenge';
+import {
+  ChallengeType,
+  specialChallengesList,
+  SpecialChallengeType,
+} from '@src/entities/Challenge';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
-import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {
+  userChallengeCategoryStore,
+  UserSpecialChallenge,
+} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {CategoryKey} from '@src/entities/Category';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
   challenges: ChallengeType[] = [];
+  specialChallenges: SpecialChallengeType[] = [];
   filteredChallengesList: ChallengeType[] = [];
   selectedChallengesIds: string[] = [];
-  selectedSpecialChallengesIds: string[] = [];
+  selectedSpecialChallengesIds: Record<string, UserSpecialChallenge> | null =
+    null;
   isAllChallengesSelected: boolean = false;
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isCongratsModalVisible: boolean = false;
@@ -60,7 +69,7 @@ class ChallengesStore {
   };
 
   setsSelectedSpecialChallengesIds = (
-    selectedSpecialChallengesIds: string[],
+    selectedSpecialChallengesIds: Record<string, UserSpecialChallenge>,
   ) => {
     this.selectedSpecialChallengesIds = selectedSpecialChallengesIds;
   };
@@ -199,9 +208,22 @@ class ChallengesStore {
         };
       });
 
+      const selectedSpecialChallengesIds = this.selectedSpecialChallengesIds;
+      if (!selectedSpecialChallengesIds) {
+        return;
+      }
+
+      const specialChallenges = specialChallengesList.map(specialChallenge => {
+        return {
+          ...specialChallenge,
+          ...selectedSpecialChallengesIds[specialChallenge.id],
+        };
+      });
+
       runInAction(() => {
         this.challenges = challenges;
         this.filteredChallengesList = challenges;
+        this.specialChallenges = specialChallenges;
       });
     } catch (e) {
       errorHandler({error: e});

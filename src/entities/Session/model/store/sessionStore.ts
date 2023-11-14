@@ -16,6 +16,7 @@ import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {inAppReviewStore} from '@src/features/InAppReview';
+import {challengeStore} from '@src/entities/Challenge';
 import {
   AllSessionsType,
   MarkedSessionsMapType,
@@ -323,10 +324,8 @@ class SessionStore {
 
   updateUserSessionAfterSwipedAllQuestions = async ({
     category,
-    sessionId,
   }: {
     category: CategoryType;
-    sessionId: string;
   }) => {
     try {
       crashlytics().log('Updating user session');
@@ -337,49 +336,71 @@ class SessionStore {
         category.name,
       );
       let sessions = this.sessions;
+      const currentSession = this.session;
+      if (!currentSession) {
+        return;
+      }
 
       if (isLastCategory) {
         sessions = this.allSessionsFromAllCategories;
       }
 
       const nextSession = getNextElementById<SessionType>({
-        id: sessionId,
+        id: currentSession.id,
         array: sessions,
       });
 
       if (!nextSession) {
         return;
       }
-      const nextSessionId = nextSession.id;
 
       await this.checkSessionsAndShowRatePopup(category);
-
-      await userCategoryStore.updateUserCategory({
-        id: categoryId,
-        field: `sessions.${sessionId}.isAllQuestionsSwiped`,
-        data: true,
-      });
-
-      await userCategoryStore.updateUserCategory({
-        id: categoryId,
-        field: `sessions.${nextSessionId}.isBlocked`,
-        data: false,
-      });
-
-      await userCategoryStore.updateUserCategory({
-        id: categoryId,
-        field: 'currentSession',
-        data: nextSessionId,
-      });
-
-      await userCategoryStore.updateUserCategory({
-        id: categoryId,
-        field: 'currentSessionNumber',
-        data: nextSession.sessionNumber,
-      });
+      await this.updateSessionsData({categoryId, nextSession, currentSession});
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  updateSessionsData = async ({
+    categoryId,
+    currentSession,
+    nextSession,
+  }: {
+    categoryId: string;
+    currentSession: SessionType;
+    nextSession: SessionType;
+  }) => {
+    const promise1 = userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: `sessions.${currentSession.id}.isAllQuestionsSwiped`,
+      data: true,
+    });
+
+    const promise2 = userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: `sessions.${nextSession.id}.isBlocked`,
+      data: false,
+    });
+
+    const promise3 = userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: 'currentSession',
+      data: nextSession.id,
+    });
+
+    const promise4 = userCategoryStore.updateUserCategory({
+      id: categoryId,
+      field: 'currentSessionNumber',
+      data: nextSession.sessionNumber,
+    });
+
+    const promise5 = challengeStore.updateSpecialChallenge({
+      id: currentSession.challenge,
+      value: false,
+      field: 'isBlocked',
+    });
+
+    await Promise.all([promise1, promise2, promise3, promise4, promise5]);
   };
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {

@@ -516,7 +516,6 @@ class QuestionsStore {
 
       sessionStore.updateUserSessionAfterSwipedAllQuestions({
         category,
-        sessionId,
       });
     } catch (e) {
       errorHandler({error: e});

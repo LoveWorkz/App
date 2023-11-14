@@ -58,6 +58,10 @@ class UserChallengeCategoryStore {
         challengesStore.setSelectedChallengesIds(
           currenetChallengeCategory.selectedChallengesIds,
         );
+
+        challengesStore.setsSelectedSpecialChallengesIds(
+          currenetChallengeCategory.selectedSpecialChallengesIds,
+        );
       });
     } catch (e) {
       errorHandler({error: e});

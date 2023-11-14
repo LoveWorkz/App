@@ -1,6 +1,5 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -8,7 +7,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import ChallengeItem from '../ChallengeItem';
+import ChallengeItem from '../ChallengeItem/ChallengeItem';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
 import {challengeExample} from '../../model/lib/challenge';
 
@@ -68,7 +67,7 @@ export const CoreChallengesList = (props: CoreChallengesListProps) => {
   );
 };
 
-export default memo(observer(CoreChallengesList));
+export default memo(CoreChallengesList);
 
 const styles = StyleSheet.create({
   title: {

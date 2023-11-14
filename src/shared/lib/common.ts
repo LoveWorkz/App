@@ -1,6 +1,6 @@
 import {BookType} from '@src/entities/Book';
 import {CategoryType} from '@src/entities/Category';
-import {ChallengeType} from '@src/entities/Challenge';
+import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {RubricType} from '@src/entities/Rubric';
 import {SessionType} from '@src/entities/Session';
@@ -37,7 +37,8 @@ export const getEntityExampleDataForSkeleton = ({
     | CategoryType
     | RubricType
     | BookType
-    | SessionType;
+    | SessionType
+    | SpecialChallengeType;
   count: number;
 }) => {
   const result = [];

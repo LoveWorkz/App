@@ -1,5 +1,5 @@
 import {TFunction} from 'i18next';
-import {ChallengeType} from '../types/ChallengeTypes';
+import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 
 export const challengeFilterItems = [
   {
@@ -39,6 +39,23 @@ export const challengeExample: ChallengeType = {
   rubrics: [],
   id: '',
   nomer: '',
+};
+
+export const specialChallengeExample: SpecialChallengeType = {
+  title: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  description: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  isSelected: true,
+  rubrics: [],
+  id: '',
+  isBlocked: true,
 };
 
 export const getChallengesLockedPopupContent = (t: TFunction) => {
