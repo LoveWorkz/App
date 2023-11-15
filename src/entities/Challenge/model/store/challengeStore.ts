@@ -4,11 +4,18 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {SpecialChallengeType} from '../types/ChallengeTypes';
 
 class ChallengeStore {
+  specialChallenge: SpecialChallengeType | null = null;
+
   constructor() {
     makeAutoObservable(this);
   }
+
+  setSpecialChallenge = (specialChallenge: SpecialChallengeType) => {
+    this.specialChallenge = specialChallenge;
+  };
 
   updateChallenge = async (id: string) => {
     try {

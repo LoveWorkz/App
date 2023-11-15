@@ -188,7 +188,6 @@ class ChallengesStore {
         .collection(Collections.CHALLENGE_CATEGORIES)
         .doc(currentChallengeCategoryId)
         .collection(Collections.CHALLENGES)
-        .orderBy('createdDate')
         .get({source});
 
       const userChallengeCategory =

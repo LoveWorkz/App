@@ -1,0 +1,72 @@
+import React, {memo} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {observer} from 'mobx-react-lite';
+import FastImage from 'react-native-fast-image';
+
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
+import {
+  getShadowOpacity,
+  windowHeight,
+  windowWidth,
+} from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
+import {challengeCard1} from '@src/shared/assets/images';
+import {useColors} from '@src/app/providers/colorsProvider';
+
+interface ChallengeIntroCardProps {
+  title: string;
+  description: string;
+}
+
+export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
+  const {title, description} = props;
+  const {theme} = useTheme();
+
+  const colors = useColors();
+
+  return (
+    <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
+      <FastImage
+        resizeMode="stretch"
+        source={challengeCard1 as number} // image number
+        style={styles.ChallengeIntroCard}>
+        <View style={styles.textWrapper}>
+          <AppText
+            style={[styles.title, {color: colors.primaryTextColor}]}
+            weight={'700'}
+            size={TextSize.LEVEL_5}
+            text={title}
+          />
+          <AppText
+            style={{color: colors.primaryTextColor}}
+            weight={'500'}
+            size={TextSize.LEVEL_4}
+            text={description}
+          />
+        </View>
+      </FastImage>
+    </View>
+  );
+};
+
+export default memo(observer(ChallengeIntroCard));
+
+const styles = StyleSheet.create({
+  ChallengeIntroCard: {
+    height: windowHeight * 0.75,
+    width: windowWidth * 0.88,
+    borderRadius: moderateScale(20),
+    paddingHorizontal: horizontalScale(25),
+  },
+  textWrapper: {
+    marginTop: verticalScale(200),
+  },
+  title: {
+    marginBottom: verticalScale(15),
+  },
+});

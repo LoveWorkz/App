@@ -1,5 +1,9 @@
 import {TFunction} from 'i18next';
-import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
+import {
+  ChallengeType,
+  SpecialChallengeEnum,
+  SpecialChallengeType,
+} from '../types/ChallengeTypes';
 
 export const challengeFilterItems = [
   {
@@ -15,7 +19,7 @@ export const challengeFilterItems = [
     active: false,
   },
   {
-    name: 'Self-reflection',
+    name: 'Self-Reflection',
     active: false,
   },
   {
@@ -58,6 +62,9 @@ export const specialChallengeExample: SpecialChallengeType = {
   id: '',
   isBlocked: true,
   isChallengeSpecial: true,
+  challengeCardsData: [],
+  specialChallengeType: SpecialChallengeEnum.SELF_REFLECTION,
+  categoryBlock: '',
 };
 
 export const getChallengesLockedPopupContent = (t: TFunction) => {

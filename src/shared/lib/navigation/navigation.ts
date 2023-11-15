@@ -19,6 +19,7 @@ type RootStackParamList = {
   sessionId?: string;
   showPreSessionPopup?: boolean;
   challenge?: string;
+  specialChallengeType?: string;
 };
 
 export interface Navigation {

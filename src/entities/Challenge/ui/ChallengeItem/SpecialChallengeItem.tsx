@@ -30,7 +30,8 @@ const borderRadius = moderateScale(20);
 
 export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
   const {challenge, isLoading} = props;
-  const {title, description, isSelected, id, isBlocked} = challenge;
+  const {title, description, isSelected, id, isBlocked, specialChallengeType} =
+    challenge;
 
   const colors = useColors();
   const {t, i18n} = useTranslation();
@@ -54,8 +55,11 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
       return;
     }
 
+    challengeStore.setSpecialChallenge(challenge);
+
     navigation.navigate(AppRouteNames.CHALLENGE_CARDS, {
       title: title[language],
+      specialChallengeType: specialChallengeType,
     });
   };
 

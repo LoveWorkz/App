@@ -17,4 +17,12 @@ export interface SpecialChallengeType extends UserSpecialChallenge {
   rubrics: string[];
   id: string;
   isChallengeSpecial: boolean;
+  specialChallengeType: SpecialChallengeEnum;
+  challengeCardsData: any[];
+  categoryBlock: string;
+}
+
+export enum SpecialChallengeEnum {
+  SELF_REFLECTION = 'selfReflection',
+  VOCABULARY_OF_FEEL = 'vocabularyOfFeel',
 }

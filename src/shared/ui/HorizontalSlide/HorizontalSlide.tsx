@@ -103,7 +103,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={({item}) => (
           <View style={styles.wrapper}>
-            <Component {...item} />
+            <Component {...item} data={item} />
           </View>
         )}
       />
