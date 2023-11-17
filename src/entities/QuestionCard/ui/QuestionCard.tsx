@@ -41,6 +41,11 @@ const QuestionCard = (props: QuestionCardProps) => {
   const language = i18n.language as LanguageValueType;
   const isGerman = language === 'de';
 
+  const translatedQuestion = question[language];
+
+  const questionTextSize =
+    translatedQuestion.length < 150 ? TextSize.LEVEL_7 : TextSize.LEVEL_5;
+
   const onButtonPressHandler = () => {
     navigation.navigate(TabRoutesNames.CHALLENGES, {challenge: challenge});
   };
@@ -57,8 +62,8 @@ const QuestionCard = (props: QuestionCardProps) => {
             {color: isTextPrimary ? colors.primaryTextColor : colors.white},
           ]}
           weight={'600'}
-          size={TextSize.LEVEL_7}
-          text={question[language]}
+          size={questionTextSize}
+          text={translatedQuestion}
         />
 
         {isTypeChallange && (

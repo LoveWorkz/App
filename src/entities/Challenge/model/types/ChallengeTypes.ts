@@ -25,4 +25,6 @@ export interface SpecialChallengeType extends UserSpecialChallenge {
 export enum SpecialChallengeEnum {
   SELF_REFLECTION = 'selfReflection',
   VOCABULARY_OF_FEEL = 'vocabularyOfFeel',
+  WALK_OF_GRATITUDE = 'walkOfGratitude',
+  SELF_REFLECTION_MY_OWN_NEEDS = 'selfReflectionMyOwnNeeds',
 }

@@ -19,9 +19,7 @@ interface HeaderLeftProps {
 const HeaderLeft = (props: HeaderLeftProps) => {
   const {headerTitle, title, isTitleLarge} = props;
   const colors = useColors();
-  const {t, i18n} = useTranslation();
-
-  const isLngEn = i18n.language === 'en';
+  const {t} = useTranslation();
 
   const onPressHandler = () => {
     navigation.goBack();
@@ -41,11 +39,13 @@ const HeaderLeft = (props: HeaderLeftProps) => {
           style={[
             {
               color: colors.primaryTextColor,
-              width: isTitleLarge ? '90%' : 'auto',
+              width: isTitleLarge ? '85%' : 'auto',
               paddingRight: isTitleLarge ? horizontalScale(20) : 0,
             },
           ]}
-          size={isTitleLarge && !isLngEn ? TextSize.LEVEL_4 : TextSize.LEVEL_6}
+          ellipsizeMode={'tail'}
+          numberOfLines={1}
+          size={TextSize.LEVEL_6}
           weight={'500'}
           text={t(title || headerTitle || '')}
         />

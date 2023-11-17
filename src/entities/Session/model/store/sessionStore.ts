@@ -394,13 +394,13 @@ class SessionStore {
       data: nextSession.sessionNumber,
     });
 
-    const promise5 = challengeStore.updateSpecialChallenge({
-      id: currentSession.challenge,
-      value: false,
-      field: 'isBlocked',
-    });
+    // const promise5 = challengeStore.updateSpecialChallenge({
+    //   id: currentSession.challenge,
+    //   value: false,
+    //   field: 'isBlocked',
+    // });
 
-    await Promise.all([promise1, promise2, promise3, promise4, promise5]);
+    await Promise.all([promise1, promise2, promise3, promise4]);
   };
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {

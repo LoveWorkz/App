@@ -185,7 +185,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         )}
       </View>
       <View style={styles.rubricAndQuestionsCountBlock}>
-        <View>
+        <View style={styles.rubricNameWrapper}>
           {questionsPageInfo.rubricName && (
             <GradientText
               style={styles.rubricText}
@@ -253,6 +253,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: verticalScale(55),
+  },
+  rubricNameWrapper: {
+    width: '80%',
   },
   rubricText: {
     textTransform: 'capitalize',

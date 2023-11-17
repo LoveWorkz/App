@@ -6,7 +6,7 @@ import {
   starterSessionImage,
 } from '@src/shared/assets/images';
 
-export const sessionsCountWithSubscription = 12;
+export const sessionsCountWithSubscription = 4;
 export const sessionsCountWithoutSubscription = 4;
 
 export const getSessionsImages = (key: CategoryKey) => {

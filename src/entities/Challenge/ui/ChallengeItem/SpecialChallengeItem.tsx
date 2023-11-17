@@ -30,7 +30,7 @@ const borderRadius = moderateScale(20);
 
 export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
   const {challenge, isLoading} = props;
-  const {title, description, isSelected, id, isBlocked, specialChallengeType} =
+  const {title, description, isSelected, isBlocked, id, specialChallengeType} =
     challenge;
 
   const colors = useColors();
@@ -52,6 +52,7 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
 
   const onChallengePressHandler = () => {
     if (isBlocked) {
+      setLockedPopupVisible(true);
       return;
     }
 

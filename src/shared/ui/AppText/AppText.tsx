@@ -16,6 +16,8 @@ export enum TextSize {
   LEVEL_7 = 'size_7',
 }
 
+type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip' | undefined;
+
 export type TextWeight =
   | '100'
   | '200'
@@ -44,6 +46,8 @@ interface AppTextProps {
   style?: StyleType;
   lineHeight?: number;
   align?: AlignType;
+  ellipsizeMode?: EllipsizeMode;
+  numberOfLines?: number;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -55,6 +59,8 @@ export const AppText = memo((props: AppTextProps) => {
     style,
     lineHeight,
     align = 'left',
+    ellipsizeMode,
+    numberOfLines,
   } = props;
 
   const colors = useColors();
@@ -86,7 +92,14 @@ export const AppText = memo((props: AppTextProps) => {
     align,
   ]);
 
-  return <Text style={mode}>{text}</Text>;
+  return (
+    <Text
+      ellipsizeMode={ellipsizeMode}
+      numberOfLines={numberOfLines}
+      style={mode}>
+      {text}
+    </Text>
+  );
 });
 
 const styles = StyleSheet.create<Record<string, any>>({

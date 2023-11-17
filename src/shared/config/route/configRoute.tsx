@@ -278,6 +278,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.challengeCards,
     headerShown: true,
     headerTitle: '',
+    isTitleLarge: true,
     Element: (props: ParamListBase) => {
       return (
         <Layout>

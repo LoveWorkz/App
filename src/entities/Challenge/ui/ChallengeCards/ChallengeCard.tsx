@@ -19,7 +19,7 @@ import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 
 interface ChallengeCardProps {
-  children: ReactElement;
+  children: ReactElement[] | ReactElement;
   title: string;
 }
 

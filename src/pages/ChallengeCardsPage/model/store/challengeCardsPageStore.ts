@@ -10,6 +10,10 @@ class ChallengeCardsPageStore {
   setCurrenctCategoryBlock = (currenctCategoryBlock: string) => {
     this.currenctCategoryBlock = currenctCategoryBlock;
   };
+
+  reset = () => {
+    this.setCurrenctCategoryBlock('');
+  };
 }
 
 export default new ChallengeCardsPageStore();

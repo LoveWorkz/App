@@ -2,6 +2,7 @@ import React, {memo, useCallback} from 'react';
 
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import VocabularyOfFeelContent from './VocabularyOfFeelContent';
+import challengeCardsPageStore from '../../../model/store/challengeCardsPageStore';
 
 interface VocabularyOfFeelProps {
   challengeCardsData: any[];
@@ -10,7 +11,9 @@ interface VocabularyOfFeelProps {
 export const VocabularyOfFeel = (props: VocabularyOfFeelProps) => {
   const {challengeCardsData} = props;
 
-  const onSwipeHandler = useCallback(() => {}, []);
+  const onSwipeHandler = useCallback((data: any) => {
+    challengeCardsPageStore.setCurrenctCategoryBlock(data.categoryBlock);
+  }, []);
 
   return (
     <HorizontalSlide

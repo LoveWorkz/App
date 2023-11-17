@@ -9,3 +9,6 @@ export {specialChallengesList} from './model/lib/specialChallengesList';
 export {SpecialChallengeEnum} from './model/types/ChallengeTypes';
 export {ChallengeIntroCard} from './ui/ChallengeCards/ChallengeIntroCard';
 export {ChallengeCard} from './ui/ChallengeCards/ChallengeCard';
+export {default as ChallengeDescription} from './ui/SpecialChallengeHelpers/ChallengeDescription/ChallengeDescription';
+export {default as ChallengeDescriptionList} from './ui/SpecialChallengeHelpers/ChallengeDescriptionList/ChallengeDescriptionList';
+export {default as ChallengeDetailsColumns} from './ui/SpecialChallengeHelpers/ChallengeDetailsColumns/ChallengeDetailsColumns';
