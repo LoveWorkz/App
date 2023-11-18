@@ -43,6 +43,7 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
 
   const StandardTextLength = 50;
   const language = i18n.language as LanguageValueType;
+
   const ISDescriptionLarge = description[language].length > StandardTextLength;
 
   const onChangeHandler = useCallback(() => {

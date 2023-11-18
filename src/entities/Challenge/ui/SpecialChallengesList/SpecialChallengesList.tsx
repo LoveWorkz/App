@@ -27,7 +27,7 @@ export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
 
   if (isLoading) {
     challenges = getEntityExampleDataForSkeleton({
-      entity: specialChallengeExample,
+      entity: specialChallengeExample as SpecialChallengeType,
       count: 5,
     }) as SpecialChallengeType[];
   }

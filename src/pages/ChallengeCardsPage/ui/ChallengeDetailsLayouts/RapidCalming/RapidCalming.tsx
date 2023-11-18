@@ -2,13 +2,13 @@ import React, {memo, useCallback} from 'react';
 
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import challengeCardsPageStore from '../../../model/store/challengeCardsPageStore';
-import WalkOfGratitudeContent from './WalkOfGratitudeContent';
+import RapidCalmingContent from './RapidCalmingContent';
 
-interface WalkOfGratitudeProps {
+interface RapidCalmingProps {
   challengeCardsData: any[];
 }
 
-export const WalkOfGratitude = (props: WalkOfGratitudeProps) => {
+export const RapidCalming = (props: RapidCalmingProps) => {
   const {challengeCardsData} = props;
 
   const onSwipeHandler = useCallback((data: {categoryBlock: string}) => {
@@ -19,9 +19,9 @@ export const WalkOfGratitude = (props: WalkOfGratitudeProps) => {
     <HorizontalSlide
       onSwipeHandler={onSwipeHandler}
       data={challengeCardsData}
-      Component={WalkOfGratitudeContent}
+      Component={RapidCalmingContent}
     />
   );
 };
 
-export default memo(WalkOfGratitude);
+export default memo(RapidCalming);

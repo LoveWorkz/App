@@ -21,13 +21,17 @@ import {useColors} from '@src/app/providers/colorsProvider';
 interface ChallengeIntroCardProps {
   title: string;
   description: string;
+  description2?: string;
+  description3?: string;
 }
 
 export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
-  const {title, description} = props;
+  const {title, description, description2, description3} = props;
   const {theme} = useTheme();
 
   const colors = useColors();
+
+  const isDescriptionLarge = description2;
 
   return (
     <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
@@ -35,19 +39,37 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
         resizeMode="stretch"
         source={challengeCard1 as number} // image number
         style={styles.ChallengeIntroCard}>
-        <View style={styles.textWrapper}>
+        <View style={{marginTop: verticalScale(isDescriptionLarge ? 80 : 200)}}>
           <AppText
             style={[styles.title, {color: colors.primaryTextColor}]}
             weight={'700'}
             size={TextSize.LEVEL_5}
             text={title}
           />
-          <AppText
-            style={{color: colors.primaryTextColor}}
-            weight={'500'}
-            size={TextSize.LEVEL_4}
-            text={description}
-          />
+          <View>
+            <AppText
+              style={[styles.description, {color: colors.primaryTextColor}]}
+              weight={'500'}
+              size={TextSize.LEVEL_4}
+              text={description}
+            />
+            {description2 && (
+              <AppText
+                style={[styles.description, {color: colors.primaryTextColor}]}
+                weight={'500'}
+                size={TextSize.LEVEL_4}
+                text={description2}
+              />
+            )}
+            {description3 && (
+              <AppText
+                style={{color: colors.primaryTextColor}}
+                weight={'500'}
+                size={TextSize.LEVEL_4}
+                text={description3}
+              />
+            )}
+          </View>
         </View>
       </FastImage>
     </View>
@@ -63,10 +85,10 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(20),
     paddingHorizontal: horizontalScale(25),
   },
-  textWrapper: {
-    marginTop: verticalScale(200),
-  },
   title: {
     marginBottom: verticalScale(15),
+  },
+  description: {
+    marginBottom: verticalScale(10),
   },
 });

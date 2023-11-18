@@ -14,6 +14,10 @@ import VocabularyOfFeel from './ChallengeDetailsLayouts/VocabularyOfFeel/Vocabul
 import challengeCardsPageStore from '../model/store/challengeCardsPageStore';
 import WalkOfGratitude from './ChallengeDetailsLayouts/WalkOfGratitude/WalkOfGratitude';
 import SelfReflectionMyOwnNeeds from './ChallengeDetailsLayouts/SelfReflectionMyOwnNeeds/SelfReflectionMyOwnNeeds';
+import KnowEachOtherBetter from './ChallengeDetailsLayouts/knowEachOtherBetter/KnowEachOtherBetter';
+import TenDaysChallenge from './ChallengeDetailsLayouts/TenDaysChallenge/TenDaysChallenge';
+import EffectiveApologies from './ChallengeDetailsLayouts/EffectiveApologies/EffectiveApologies';
+import RapidCalming from './ChallengeDetailsLayouts/RapidCalming/RapidCalming';
 
 interface ChallengeCardsPageProps {
   route?: {
@@ -48,6 +52,7 @@ const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
         type: 'intro',
         title: specialChallenge.title[language],
         description: specialChallenge.description[language],
+        multiDescription: specialChallenge.multiDescription,
       },
       ...specialChallenge.challengeCardsData,
     ];
@@ -81,6 +86,18 @@ const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
       content = (
         <SelfReflectionMyOwnNeeds challengeCardsData={challengeCardsData} />
       );
+      break;
+    case SpecialChallengeEnum.KNOW_EACH_OTHER_BETTER:
+      content = <KnowEachOtherBetter challengeCardsData={challengeCardsData} />;
+      break;
+    case SpecialChallengeEnum.TEN_DAYS_CHALLENGE:
+      content = <TenDaysChallenge challengeCardsData={challengeCardsData} />;
+      break;
+    case SpecialChallengeEnum.EFFECTIVE_APOLOGIES:
+      content = <EffectiveApologies challengeCardsData={challengeCardsData} />;
+      break;
+    case SpecialChallengeEnum.RAPID_CALMING:
+      content = <RapidCalming challengeCardsData={challengeCardsData} />;
       break;
     default:
       content = <View />;

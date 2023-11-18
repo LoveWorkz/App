@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
   ChallengeCard,
   ChallengeDescription,
@@ -134,12 +134,7 @@ export const VocabularyOfFeelContent = (
       );
       break;
     default:
-      content = (
-        <ChallengeCard title={data.title}>
-          <AppText weight={'400'} size={TextSize.LEVEL_3} text={''} />
-          <AppText weight={'400'} size={TextSize.LEVEL_3} text={''} />
-        </ChallengeCard>
-      );
+      content = <View />;
   }
 
   return <>{content}</>;

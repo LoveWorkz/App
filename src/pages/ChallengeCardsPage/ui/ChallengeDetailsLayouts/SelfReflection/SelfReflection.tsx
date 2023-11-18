@@ -13,7 +13,7 @@ interface SelfReflectionProps {
 export const SelfReflection = (props: SelfReflectionProps) => {
   const {challengeCardsData} = props;
 
-  const onSwipeHandler = useCallback((data: any) => {
+  const onSwipeHandler = useCallback((data: {categoryBlock: string}) => {
     challengeCardsPageStore.setCurrenctCategoryBlock(data.categoryBlock);
   }, []);
 

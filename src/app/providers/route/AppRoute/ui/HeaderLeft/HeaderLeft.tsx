@@ -39,7 +39,7 @@ const HeaderLeft = (props: HeaderLeftProps) => {
           style={[
             {
               color: colors.primaryTextColor,
-              width: isTitleLarge ? '85%' : 'auto',
+              width: isTitleLarge ? '88%' : 'auto',
               paddingRight: isTitleLarge ? horizontalScale(20) : 0,
             },
           ]}

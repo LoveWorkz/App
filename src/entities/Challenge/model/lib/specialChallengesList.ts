@@ -1637,4 +1637,87 @@ export const specialChallengesList = [
       },
     ],
   },
+  {
+    title: {
+      en: 'The classic: "I KNOW YOU BETTER" GAME"',
+      de: 'Der Klassiker: "Ich kenne dich besser - Spiel"',
+      pt: 'O famoso jogo "EU CONHEÇO VOCÊ MELHOR""',
+    },
+    description: {
+      part1: {
+        en: "Before diving in, each player should grab a sheet of paper and write down 15 random numbers between 1 and 60. Once that's sorted, we're all set to start the fun!",
+        de: 'Bevor es losgeht, sollte sich jeder Spieler ein Blatt Papier nehmen und 15 zufällige Zahlen zwischen 1 und 60 aufschreiben. Wenn das erledigt ist, kann der Spaß beginnen!',
+        pt: 'Antes de começar, cada jogador deve pegar uma folha de papel e escrever 15 números aleatórios entre 1 e 60. Quando isso estiver resolvido, estaremos prontos para começar a diversão!',
+      },
+      part2: {
+        en: 'Using the list, ask the questions you pre-selected, taking turns to quiz each other.Score yourself a point for each correct answer.',
+        de: 'Stellt anhand der Liste die Fragen, die Ihr vorher ausgewählt habt, und fragt euch abwechselnd ab, wobei Ihr für jede richtige Antwort einen Punkt bekommen.',
+        pt: 'Usando a lista, faça as perguntas que você pré-selecionou, revezando-se para questionar uns aos outros.',
+      },
+      part3: {
+        en: 'Each player has two "Jokers" at their disposal. Use a Joker before answering a question to either triple your points if you\'re confident, or to dock three points from your partner if you think thaven\'t got a clue. Hang onto that paper to keep track of your numbers for future rounds!',
+        de: 'Jeder Spieler hat zwei "Joker" zur Verfügung. Setzt einen Joker ein, bevor ihr eine Frage beantwortet, um entweder eure Punkte zu verdreifachen, wenn ihr euch sicher seid, oder um eurem Partner drei Punkte abzuziehen, wenn ihr glaubt, dass er keine Ahnung hat. Bewahrt die Zettel auf, um eure Zahlen für künftige Runden zu notieren',
+        pt: 'Cada jogador tem dois "Jokers" à sua disposição. Use um Coringa antes de responder a uma pergunta para triplicar seus pontos se estiver confiante ou para tirar três pontos de seu parceiro se achar que ele não tem a menor ideia. Guarde o papel para registrar seus números nas próximas rodadas!',
+      },
+    },
+    rubrics: ['Friendship'],
+    id: 'special_challenge_5',
+    isChallengeSpecial: true,
+    specialChallengeType: 'gettingToKnowEachOtherBetter',
+    challengeCardsData: [],
+  },
+  {
+    title: {
+      en: 'The 10 Days Challenge',
+      de: 'Die 10-Tage-Challenge',
+      pt: 'O desafio dos 10 dias',
+    },
+    description: {
+      en: 'In this exercise, you and your partner will openly celebrate one another in the form of specific, concrete expressions of gratitude. Take one thought a day. ',
+      de: 'Bei dieser Übung feiert ihr euch einander, in Form von ehrlichen, spezifischen und konkreten Dankesbekundungen. Nehmt euch einen Gedanken pro Tag vor.',
+      pt: 'Neste exercício, celebram-se mutuamente sob a forma de expressões honestas, específicas e concretas de gratidão. Pensem num pensamento por dia.',
+    },
+    multiDescription: {},
+    rubrics: ['Friendship'],
+    id: 'special_challenge_6',
+    isChallengeSpecial: true,
+    specialChallengeType: 'tenDaySChallenge',
+    challengeCardsData: [],
+  },
+  {
+    title: {
+      en: 'Non-defensive, effective apologies',
+      de: 'Nicht defensive, wirksame Entschuldigungen',
+      pt: 'Pedidos de desculpas eficazes e não defensivos',
+    },
+    description: {
+      en: 'Practice making effective apologies to nurture understanding, trust, and safety in your relationship.',
+      de: 'Üben Sie, sich wirksam zu entschuldigen, um das Verständnis, das Vertrauen und die Sicherheit in Ihrer Beziehung zu fördern.',
+      pt: 'Pratique pedir desculpas de forma eficaz para cultivar a compreensão, a confiança e a segurança em seu relacionamento.',
+    },
+    multiDescription: {},
+    rubrics: ['Conflict_Management'],
+    id: 'special_challenge_7',
+    isChallengeSpecial: true,
+    specialChallengeType: 'effectiveApologies',
+    challengeCardsData: [],
+  },
+  {
+    title: {
+      en: 'Rapid Calming in Relationship Discussions',
+      de: 'Techniken zur schnellen Beruhigung',
+      pt: 'Técnicas para acalmar rapidamente',
+    },
+    description: {
+      en: 'When you find yourself in a conflict situation or other times of distress, here is is a set of easily learnable skills which change your body’s chemistry in order to calm you down during times of distress.',
+      de: 'Wenn Sie sich in einer Konfliktsituation oder in anderen Stresssituationen befinden, finden Sie hier eine Reihe von leicht erlernbaren Fähigkeiten, die die Chemie Ihres Körpers verändern, um Sie in Stresssituationen zu beruhigen.',
+      pt: 'Quando você se encontrar em uma situação de conflito ou em outros momentos de angústia, aqui está um conjunto de habilidades fáceis de aprender que alteram a química do seu corpo para acalmá-lo em momentos de angústia.',
+    },
+    multiDescription: {},
+    rubrics: ['Conflict_Management'],
+    id: 'special_challenge_8',
+    isChallengeSpecial: true,
+    specialChallengeType: 'rapidCalming',
+    challengeCardsData: [],
+  },
 ];

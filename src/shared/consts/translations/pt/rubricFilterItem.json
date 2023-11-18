@@ -4,11 +4,14 @@
    "Respect": "pt Respect",
    "Conflict": "pt Conflict",
 
-   "Routine": "Rotina",
-   "Activity": "Atividade",
-   "Self-reflection": "Auto-reflexão",
-   "Game": "pt Game",
-   "Communication": "pt Communication",
-   "Exercise": "Exercício",
-   "Dreams": "Sonhos"
+   "routine": "Rotina",
+   "activity": "Atividade",
+   "self_reflection": "Auto-reflexão",
+   "game": "pt Game",
+   "communication": "pt Communication",
+   "exercise": "Exercício",
+   "dreams": "Sonhos",
+   "friendship": "Amizade",
+   "personal_growth": "Crescimento Pessoal",
+   "conflict_management": "Gestão de Conflitos"
 }

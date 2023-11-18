@@ -4,11 +4,14 @@
    "Respect": "Respect",
    "Conflict": "Conflict",
 
-   "Routine": "Routine",
-   "Activity": "Activity",
-   "Self-reflection": "Self-Reflection",
-   "Game": "Game",
-   "Communication": "Communication",
-   "Exercise": "Exercise",
-   "Dreams": "Dreams"
+   "routine": "Routine",
+   "activity": "Activity",
+   "self_reflection": "Self-Reflection",
+   "game": "Game",
+   "communication": "Communication",
+   "exercise": "Exercise",
+   "dreams": "Dreams",
+   "friendship": "Friendship",
+   "personal_growth": "Personal Growth",
+   "conflict_management": "Conflict Management"
 }

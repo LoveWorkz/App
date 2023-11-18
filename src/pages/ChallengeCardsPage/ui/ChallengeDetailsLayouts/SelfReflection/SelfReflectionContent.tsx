@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {useTranslation} from 'react-i18next';
+import {View} from 'react-native';
 
 import {
   ChallengeCard,
@@ -137,12 +138,7 @@ export const SelfReflectionContent = (props: SelfReflectionContentProps) => {
       );
       break;
     default:
-      content = (
-        <ChallengeCard title={data.title}>
-          <AppText weight={'400'} size={TextSize.LEVEL_3} text={''} />
-          <AppText weight={'400'} size={TextSize.LEVEL_3} text={''} />
-        </ChallengeCard>
-      );
+      content = <View />;
   }
 
   return <>{content}</>;

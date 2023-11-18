@@ -9,11 +9,7 @@ import {
   CurrentChallengeCategoryType,
   getNextChallengeCategory,
 } from '@src/entities/ChallengeCategory';
-import {
-  ChallengeType,
-  specialChallengesList,
-  SpecialChallengeType,
-} from '@src/entities/Challenge';
+import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {
   userChallengeCategoryStore,
@@ -51,7 +47,7 @@ class ChallengesStore {
       // the order is important
       await userStore.fetchUser();
       await this.fetchChallengeCategories();
-      await this.fetchChallenges();
+      await this.fetchCoreAndSpecialChallenges();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -160,11 +156,10 @@ class ChallengesStore {
     }
   };
 
-  fetchChallenges = async () => {
+  fetchCoreAndSpecialChallenges = async () => {
     try {
-      crashlytics().log('Fetching Challenges.');
+      crashlytics().log('Fetching Core and Special Challenges.');
 
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.userId;
       if (!userId) {
         return;
@@ -184,18 +179,73 @@ class ChallengesStore {
         currentChallengeCategoryId = firstChallengeCategory.id;
       }
 
-      const challengesData = await firestore()
-        .collection(Collections.CHALLENGE_CATEGORIES)
-        .doc(currentChallengeCategoryId)
-        .collection(Collections.CHALLENGES)
-        .get({source});
-
       const userChallengeCategory =
         userChallengeCategoryStore.userChallengeCategory;
-
       if (!userChallengeCategory) {
         return;
       }
+
+      await this.fetchChallenges(currentChallengeCategoryId);
+      await this.fetchSpecialChallenges(currentChallengeCategoryId);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchSpecialChallenges = async (categoryId: string) => {
+    try {
+      crashlytics().log('Fetching Special Challenges.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      const selectedSpecialChallengesIds = this.selectedSpecialChallengesIds;
+      if (!selectedSpecialChallengesIds) {
+        return;
+      }
+
+      const data = await firestore()
+        .collection(Collections.CHALLENGE_CATEGORIES)
+        .doc(categoryId)
+        .collection(Collections.SPECIAL_CHALLENGES)
+        .get({source});
+
+      const specialChallenges = data.docs.map(doc => {
+        const specialChallenge = doc.data() as SpecialChallengeType;
+        const description =
+          specialChallenge.multiDescription.part1 ||
+          specialChallenge.description;
+
+        return {
+          ...specialChallenge,
+          description,
+          ...selectedSpecialChallengesIds[specialChallenge.id],
+        };
+      });
+
+      runInAction(() => {
+        this.filteredSpecialChallenges = specialChallenges;
+        this.specialChallenges = specialChallenges;
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchChallenges = async (categoryId: string) => {
+    try {
+      crashlytics().log('Fetching Challenges.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const challengesData = await firestore()
+        .collection(Collections.CHALLENGE_CATEGORIES)
+        .doc(categoryId)
+        .collection(Collections.CHALLENGES)
+        .get({source});
 
       // merge default challenges and user custom challenges together
       const challenges = challengesData.docs.map((doc, i) => {
@@ -208,23 +258,9 @@ class ChallengesStore {
         };
       });
 
-      const selectedSpecialChallengesIds = this.selectedSpecialChallengesIds;
-      if (!selectedSpecialChallengesIds) {
-        return;
-      }
-
-      const specialChallenges = specialChallengesList.map(specialChallenge => {
-        return {
-          ...specialChallenge,
-          ...selectedSpecialChallengesIds[specialChallenge.id],
-        };
-      });
-
       runInAction(() => {
         this.challenges = challenges;
         this.filteredChallengesList = challenges;
-        this.filteredSpecialChallenges = specialChallenges;
-        this.specialChallenges = specialChallenges;
       });
     } catch (e) {
       errorHandler({error: e});
@@ -267,7 +303,7 @@ class ChallengesStore {
       // calling fetchUserChallengeCategory for refresing selectedChallengesIds
       await userChallengeCategoryStore.fetchUserChallengeCategory();
       // fetchig challenges for new challengeCategory
-      await this.fetchChallenges();
+      await this.fetchCoreAndSpecialChallenges();
     } catch (e) {
       errorHandler({error: e});
     } finally {

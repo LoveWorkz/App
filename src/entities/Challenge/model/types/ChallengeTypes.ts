@@ -14,12 +14,16 @@ export interface ChallengeType {
 export interface SpecialChallengeType extends UserSpecialChallenge {
   title: DisplayText;
   description: DisplayText;
+  multiDescription: {
+    part1: DisplayText;
+    part2: DisplayText;
+    part3: DisplayText;
+  };
   rubrics: string[];
   id: string;
   isChallengeSpecial: boolean;
-  specialChallengeType: SpecialChallengeEnum;
+  specialChallengeType: string;
   challengeCardsData: any[];
-  categoryBlock: string;
 }
 
 export enum SpecialChallengeEnum {
@@ -27,4 +31,8 @@ export enum SpecialChallengeEnum {
   VOCABULARY_OF_FEEL = 'vocabularyOfFeel',
   WALK_OF_GRATITUDE = 'walkOfGratitude',
   SELF_REFLECTION_MY_OWN_NEEDS = 'selfReflectionMyOwnNeeds',
+  KNOW_EACH_OTHER_BETTER = 'knowEachOtherBetter',
+  TEN_DAYS_CHALLENGE = 'tenDaysChallenge',
+  EFFECTIVE_APOLOGIES = 'effectiveApologies',
+  RAPID_CALMING = 'rapidCalming',
 }
