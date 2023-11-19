@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
@@ -10,7 +10,8 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {cutText} from '@src/shared/lib/common';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {isPlatformIos} from '@src/shared/consts/common';
@@ -32,22 +33,12 @@ export const ChallengeItem = (props: ChallengeItemProps) => {
   const {challenge, isLoading} = props;
   const {title, description, isChecked, nomer, id} = challenge;
   const colors = useColors();
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const {theme} = useTheme();
-
-  const [visible, setVisible] = useState(false);
 
   const StandardTextLength = 50;
   const language = i18n.language as LanguageValueType;
   const ISDescriptionLarge = description[language].length > StandardTextLength;
-
-  const onShowHandler = () => {
-    setVisible(true);
-  };
-
-  const onHideHandler = () => {
-    setVisible(false);
-  };
 
   const onChangeHandler = useCallback(() => {
     challengeStore.selectChallenge({id});
@@ -57,43 +48,35 @@ export const ChallengeItem = (props: ChallengeItemProps) => {
     return <Skeleton width={'100%'} height={120} borderRadius={borderRadius} />;
   }
 
+  const onChallengePressHandler = () => {
+    challengeStore.setCoreChallenge(challenge);
+
+    navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+      title: title[language],
+    });
+  };
+
   return (
-    <View
-      style={[
-        challengeStyles.ChallengeItem,
-        {
-          backgroundColor: colors.bgSecondaryColor,
-          ...getShadowOpacity(theme).shadowOpacity_level_1,
-        },
-      ]}>
-      <View style={challengeStyles.nomerWrapper}>
-        <RoundChallenge number={nomer} isActive={isChecked} />
-      </View>
-      <View style={challengeStyles.textWrapper}>
-        <AppText
-          style={challengeStyles.title}
-          weight={'500'}
-          size={TextSize.LEVEL_4}
-          text={title[language]}
-        />
-        {visible ? (
-          <>
-            <AppText
-              style={[{color: colors.challengeCategoryNameColor}]}
-              size={TextSize.LEVEL_4}
-              text={description[language]}
-              weight={isPlatformIos ? '400' : '100'}
-            />
-            <TouchableOpacity onPress={onHideHandler}>
-              <GradientText
-                style={challengeStyles.showLess}
-                weight={'700'}
-                size={TextSize.LEVEL_4}
-                text={t('show_less')}
-              />
-            </TouchableOpacity>
-          </>
-        ) : (
+    <TouchableOpacity onPress={onChallengePressHandler}>
+      <View
+        style={[
+          challengeStyles.ChallengeItem,
+          {
+            backgroundColor: colors.bgSecondaryColor,
+            ...getShadowOpacity(theme).shadowOpacity_level_1,
+          },
+        ]}>
+        <View style={challengeStyles.nomerWrapper}>
+          <RoundChallenge number={nomer} isActive={isChecked} />
+        </View>
+        <View style={challengeStyles.textWrapper}>
+          <AppText
+            style={challengeStyles.title}
+            weight={'500'}
+            size={TextSize.LEVEL_4}
+            text={title[language]}
+          />
+
           <Text>
             <AppText
               style={[{color: colors.challengeCategoryNameColor}]}
@@ -108,21 +91,13 @@ export const ChallengeItem = (props: ChallengeItemProps) => {
               }
               weight={isPlatformIos ? '400' : '100'}
             />
-            <TouchableOpacity onPress={onShowHandler}>
-              <GradientText
-                style={challengeStyles.showMore}
-                weight={'700'}
-                size={TextSize.LEVEL_4}
-                text={`${t('show_more')}...`}
-              />
-            </TouchableOpacity>
           </Text>
-        )}
+        </View>
+        <View>
+          <CustomCheckBox checked={isChecked} onChange={onChangeHandler} />
+        </View>
       </View>
-      <View>
-        <CustomCheckBox checked={isChecked} onChange={onChangeHandler} />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -145,14 +120,6 @@ export const challengeStyles = StyleSheet.create({
   },
   title: {
     marginBottom: horizontalScale(10),
-  },
-  showMore: {
-    textDecorationLine: 'underline',
-    left: horizontalScale(4),
-    top: verticalScale(2),
-  },
-  showLess: {
-    textDecorationLine: 'underline',
   },
   checkbox: {
     padding: moderateScale(5),

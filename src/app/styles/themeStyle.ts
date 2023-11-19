@@ -25,7 +25,8 @@ export type Colors =
   | 'skeletonHighlightColor'
   | 'bgForgotPasswordPopupColor'
   | 'bgPopup'
-  | 'bgLayout';
+  | 'bgLayout'
+  | 'specialChallengeBgColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -35,6 +36,7 @@ const commonColor = {
   orange: 'orange',
   authPageAgreementText: '#9A9AA5',
   secondaryError: '#E1437C',
+  specialChallengeBgColor: '#39518080',
 };
 
 const light: ColorType = {

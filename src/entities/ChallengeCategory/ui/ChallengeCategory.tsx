@@ -14,7 +14,6 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
-import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -22,6 +21,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {CategoryKey} from '@src/entities/Category';
+import {LockedIcon} from '@src/shared/assets/icons/Locked';
 
 type ChallengeCategorySize = 'large' | 'small';
 
@@ -167,7 +167,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
               <View style={[styles.layout]} />
               <View style={[styles.lockIconWrapper]}>
                 <SvgXml
-                  xml={LockIcon}
+                  xml={LockedIcon}
                   fill={colors.white}
                   style={styles.lockIcon}
                 />

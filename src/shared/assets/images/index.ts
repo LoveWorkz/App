@@ -84,4 +84,6 @@ export {default as intimateSessionImage} from './sessions/intimateSessionImage.p
 export {default as starterSessionImage} from './sessions/starterSessionImage.png';
 
 // challenge cards
-export {default as challengeCard1} from './dark/challenges/challengeCard1.png';
+export {default as challengeIntroCard} from './challengeIntroCard.png';
+
+export {default as SpecialChallengeImg} from './SpecialChallengeImg.png';

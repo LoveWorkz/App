@@ -21,7 +21,8 @@ import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/app/providers/layout';
 import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 import {SessionsPage} from '@src/pages/SessionsPage';
-import {ChallengeCardsPage} from '@src/pages/ChallengeCardsPage';
+import {ChallengeCardsPage} from '@src/pages/SpecialChallengeDetailsPage';
+import {CoreChallengeDetailsPage} from '@src/pages/CoreChallengeDetailsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -43,7 +44,8 @@ export enum AppRouteNames {
   QUESTIONS = 'questions',
   PARTNER_EDIT = 'partnerEdit',
   SESSIONS = 'sessions',
-  CHALLENGE_CARDS = 'challengeCards',
+  SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
+  CORE_CHALLENGE_CARDS = 'coreChallengeCards',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -66,7 +68,8 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.QUESTIONS]: 'questions',
   [AppRouteNames.PARTNER_EDIT]: 'partnerEdit',
   [AppRouteNames.SESSIONS]: 'sessions',
-  [AppRouteNames.CHALLENGE_CARDS]: 'challengeCards',
+  [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
+  [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
 };
 
 type NewRouteProps = {
@@ -274,8 +277,8 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       );
     },
   },
-  [AppRouteNames.CHALLENGE_CARDS]: {
-    name: appRoutePaths.challengeCards,
+  [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: {
+    name: appRoutePaths.specialChallengeCards,
     headerShown: true,
     headerTitle: '',
     isTitleLarge: true,
@@ -283,6 +286,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <ChallengeCardsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.CORE_CHALLENGE_CARDS]: {
+    name: appRoutePaths.coreChallengeCards,
+    headerShown: true,
+    headerTitle: '',
+    isTitleLarge: true,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <CoreChallengeDetailsPage {...props} />
         </Layout>
       );
     },

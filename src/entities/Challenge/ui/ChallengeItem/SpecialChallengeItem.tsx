@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -10,6 +11,7 @@ import {cutText} from '@src/shared/lib/common';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {SpecialChallengeImg} from '@src/shared/assets/images';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedPopup} from '@src/widgets/LockedPopup';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -59,7 +61,7 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
 
     challengeStore.setSpecialChallenge(challenge);
 
-    navigation.navigate(AppRouteNames.CHALLENGE_CARDS, {
+    navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_CARDS, {
       title: title[language],
       specialChallengeType: specialChallengeType,
     });
@@ -71,14 +73,16 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
 
   return (
     <TouchableOpacity onPress={onChallengePressHandler}>
-      <View
+      <FastImage
         style={[
           styles.ChallengeItem,
           {
             backgroundColor: colors.bgSecondaryColor,
             ...getShadowOpacity(theme).shadowOpacity_level_1,
           },
-        ]}>
+        ]}
+        resizeMode={'stretch'}
+        source={SpecialChallengeImg}>
         <View style={styles.nomerWrapper}>
           <RoundChallenge isLocked={isBlocked} />
         </View>
@@ -91,7 +95,7 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
           />
 
           <AppText
-            style={[{color: colors.challengeCategoryNameColor}]}
+            style={[{color: colors.specialChallengeBgColor}]}
             size={TextSize.LEVEL_4}
             text={
               ISDescriptionLarge
@@ -116,7 +120,7 @@ export const SpecialChallengeItem = (props: SpecialChallengeItemProps) => {
           visible={lockedPopupVisible}
           setVisible={setLockedPopupVisible}
         />
-      </View>
+      </FastImage>
     </TouchableOpacity>
   );
 };

@@ -15,7 +15,7 @@ import {
   windowWidth,
 } from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {challengeCard1} from '@src/shared/assets/images';
+import {challengeIntroCard} from '@src/shared/assets/images';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface ChallengeIntroCardProps {
@@ -37,7 +37,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
     <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
       <FastImage
         resizeMode="stretch"
-        source={challengeCard1 as number} // image number
+        source={challengeIntroCard as number} // image number
         style={styles.ChallengeIntroCard}>
         <View style={{marginTop: verticalScale(isDescriptionLarge ? 80 : 200)}}>
           <AppText

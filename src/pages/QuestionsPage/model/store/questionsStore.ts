@@ -21,8 +21,9 @@ import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {sessionStore} from '@src/entities/Session';
+import {sessionStore, SessionType} from '@src/entities/Session';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {challengeStore} from '@src/entities/Challenge';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -492,6 +493,16 @@ class QuestionsStore {
           return;
         }
 
+        if (category.name === CategoryKey.Intimate) {
+          if (session.challenge.isChallengeSpecial) {
+            await challengeStore.updateSpecialChallenge({
+              id: session.challenge.challengeId,
+              value: false,
+              field: 'isBlocked',
+            });
+          }
+        }
+
         // if the category is “All in one” || Hot || Intimate, we don't need to update the next category
         const canOpenNextCategory = this.shouldProceedToNextCategory({
           category,
@@ -505,7 +516,10 @@ class QuestionsStore {
           return;
         }
 
-        this.updateUserDataAfterSwipedAllQuestions({categoryId: category.id});
+        this.updateUserDataAfterSwipedAllQuestions({
+          categoryId: category.id,
+          session,
+        });
         this.setCongratsModalVisible(true);
         return;
       }
@@ -524,8 +538,10 @@ class QuestionsStore {
 
   updateUserDataAfterSwipedAllQuestions = async ({
     categoryId,
+    session,
   }: {
     categoryId: string;
+    session: SessionType;
   }) => {
     try {
       const categories = categoriesStore.categories;
@@ -564,6 +580,14 @@ class QuestionsStore {
         data: false,
         challengeCategoryName: nextCategory.name,
       });
+
+      if (session.challenge.isChallengeSpecial) {
+        await challengeStore.updateSpecialChallenge({
+          id: session.challenge.challengeId,
+          value: false,
+          field: 'isBlocked',
+        });
+      }
     } catch (e) {
       errorHandler({error: e});
     }

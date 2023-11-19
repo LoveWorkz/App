@@ -1,7 +1,10 @@
 import {CategoryKey} from '@src/entities/Category';
 
 export interface SessionType {
-  challenge: string;
+  challenge: {
+    isChallengeSpecial: boolean;
+    challengeId: string;
+  };
   id: string;
   sessionNumber: number;
   questions: string[];

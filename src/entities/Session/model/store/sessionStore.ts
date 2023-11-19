@@ -16,7 +16,11 @@ import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {inAppReviewStore} from '@src/features/InAppReview';
-import {challengeStore} from '@src/entities/Challenge';
+import {
+  challengeStore,
+  ChallengeType,
+  SpecialChallengeType,
+} from '@src/entities/Challenge';
 import {
   AllSessionsType,
   MarkedSessionsMapType,
@@ -36,6 +40,7 @@ class SessionStore {
   allInOneSessions: AllSessionsType[] = [];
   markedSessionsMap: MarkedSessionsMapType = {};
   sessionsMap: SessionsMap = {};
+  sessionChallenge?: ChallengeType | SpecialChallengeType;
 
   allSessions: SessionType[] = [];
 
@@ -286,7 +291,10 @@ class SessionStore {
 
       return {
         ...question,
-        challenge: question.type === 'CHALLENGE_CARD' ? session.challenge : '',
+        challenge:
+          question.type === 'CHALLENGE_CARD'
+            ? session.challenge.challengeId
+            : '',
       };
     });
 
@@ -394,13 +402,15 @@ class SessionStore {
       data: nextSession.sessionNumber,
     });
 
-    const promise5 = challengeStore.updateSpecialChallenge({
-      id: currentSession.challenge,
-      value: false,
-      field: 'isBlocked',
-    });
+    if (currentSession.challenge.isChallengeSpecial) {
+      await challengeStore.updateSpecialChallenge({
+        id: currentSession.challenge.challengeId,
+        value: false,
+        field: 'isBlocked',
+      });
+    }
 
-    await Promise.all([promise1, promise2, promise3, promise4, promise5]);
+    await Promise.all([promise1, promise2, promise3, promise4]);
   };
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {
