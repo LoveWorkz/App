@@ -55,29 +55,37 @@ export const EffectiveApologiesContent = (
           />
           <ChallengeDescription
             description={data.description2[language]}
+            gradientWordscount={2}
             isMarginBottom
           />
           <ChallengeDescription
             description={data.description3[language]}
+            gradientWordscount={2}
             isMarginBottom
           />
           <ChallengeDescription
             description={data.description4[language]}
+            gradientWordscount={2}
             isMarginBottom
           />
           <ChallengeDescription
             description={data.description5[language]}
+            gradientWordscount={2}
             isMarginBottom
           />
           <ChallengeDescription
             description={data.description6[language]}
+            gradientWordscount={2}
             isMarginBottom
           />
           <ChallengeDescription
             description={data.description7[language]}
             isMarginBottom
           />
-          <ChallengeDescription description={data.description8[language]} />
+          <ChallengeDescription
+            description={data.description8[language]}
+            gradientWordscount={3}
+          />
         </ChallengeCard>
       );
       break;
