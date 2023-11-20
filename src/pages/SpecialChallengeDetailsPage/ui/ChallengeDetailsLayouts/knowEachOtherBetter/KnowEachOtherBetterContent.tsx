@@ -37,65 +37,77 @@ export const KnowEachOtherBetterContent = (
 
     case 'data_1':
       content = (
-        <div>
-          <ChallengeCard title={data.title[language]}>
-            <ChallengeDescription
-              description={data.description1[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription
-              description={data.description2[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription description={data.description3[language]} />
-          </ChallengeCard>
-        </div>
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription
+            description={data.description1[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description2[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription description={data.description3[language]} />
+        </ChallengeCard>
       );
       break;
 
     case 'data_2':
       content = (
-        <div>
-          <ChallengeCard title={data.title[language]}>
-            <ChallengeDescription
-              description={data.description1[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription
-              description={data.description2[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription
-              description={data.description3[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription
-              description={data.description4[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription
-              description={data.description5[language]}
-              isMarginBottom
-            />
-            <ChallengeDescription description={data.description6[language]} />
-          </ChallengeCard>
-        </div>
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription
+            description={data.description1[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description2[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description3[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description4[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description5[language]}
+            isMarginBottom
+          />
+          <ChallengeDescription description={data.description6[language]} />
+        </ChallengeCard>
       );
       break;
 
-    case 'data_2':
+    case 'data_3':
       content = (
-        <div>
-          <ChallengeCard title={data.title[language]}>
-            <ChallengeDescription description={data.description1[language]} />
-          </ChallengeCard>
-          <ChallengeCard title={data.title[language]}>
-            <ChallengeDescription description={data.description2[language]} />
-          </ChallengeCard>
-          <ChallengeCard title={data.title[language]}>
-            <ChallengeDescription description={data.description3[language]} />
-          </ChallengeCard>
-        </div>
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription description={data.description1[language]} />
+        </ChallengeCard>
+      );
+      break;
+
+    case 'data_4':
+      content = (
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription description={data.description1[language]} />
+        </ChallengeCard>
+      );
+      break;
+
+    case 'data_5':
+      content = (
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription description={data.description1[language]} />
+        </ChallengeCard>
+      );
+      break;
+
+    case 'data_6':
+      content = (
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription description={data.description1[language]} />
+        </ChallengeCard>
       );
       break;
 
