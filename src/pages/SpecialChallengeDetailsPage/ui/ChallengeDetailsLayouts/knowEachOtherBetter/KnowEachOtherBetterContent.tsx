@@ -92,6 +92,7 @@ export const KnowEachOtherBetterContent = (
               <ChallengeDescription
                 key={index.toString()}
                 description={`${item.trim()}?`}
+                isMarginBottom
               />
             ))}
         </ChallengeCard>
