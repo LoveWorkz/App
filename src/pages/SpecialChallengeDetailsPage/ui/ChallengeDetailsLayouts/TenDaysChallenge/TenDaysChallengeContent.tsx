@@ -58,6 +58,62 @@ export const TenDaysChallengeContent = (
       );
       break;
 
+    case 'data_3':
+    case 'data_4':
+      content = (
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription
+            description={data.description1[language]}
+            gradientWordscount={1}
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description2[language]}
+            isMarginBottom
+          />
+
+          <ChallengeDescription
+            description={data.description3[language]}
+            gradientWordscount={1}
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description4[language]}
+            isMarginBottom
+          />
+
+          <ChallengeDescription
+            description={data.description5[language]}
+            gradientWordscount={1}
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description6[language]}
+            isMarginBottom
+          />
+
+          <ChallengeDescription
+            description={data.description7[language]}
+            gradientWordscount={1}
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description8[language]}
+            isMarginBottom
+          />
+
+          <ChallengeDescription
+            description={data.description9[language]}
+            gradientWordscount={1}
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description10[language]}
+          />
+        </ChallengeCard>
+      );
+      break;
+
     default:
       content = <View />;
   }
