@@ -83,6 +83,39 @@ export const RapidCalmingContent = (props: RapidCalmingContentProps) => {
       );
       break;
 
+    case 'data_3':
+    case 'data_4':
+    case 'data_5':
+      content = (
+        <ChallengeCard title={data.title[language]}>
+          <ChallengeDescription
+            description={data.description1[language]}
+            gradientWordscount={1}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description2[language]}
+            gradientWordscount={1}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description3[language]}
+            gradientWordscount={1}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            description={data.description4[language]}
+            gradientWordscount={1}
+            isMarginBottom
+          />
+          <ChallengeDescription
+            gradientWordscount={1}
+            description={data.description5[language]}
+          />
+        </ChallengeCard>
+      );
+      break;
+
     default:
       content = <View />;
   }
