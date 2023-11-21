@@ -92,7 +92,6 @@ export const KnowEachOtherBetterContent = (
               <ChallengeDescription
                 key={index.toString()}
                 description={`${item.trim()}?`}
-                gradientWordscount={1}
                 isMarginBottom
               />
             ))}
