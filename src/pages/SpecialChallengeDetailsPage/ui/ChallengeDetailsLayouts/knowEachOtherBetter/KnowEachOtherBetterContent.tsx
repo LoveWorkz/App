@@ -80,33 +80,20 @@ export const KnowEachOtherBetterContent = (
       break;
 
     case 'data_3':
-      content = (
-        <ChallengeCard title={data.title[language]}>
-          <ChallengeDescription description={data.description1[language]} />
-        </ChallengeCard>
-      );
-      break;
-
     case 'data_4':
-      content = (
-        <ChallengeCard title={data.title[language]}>
-          <ChallengeDescription description={data.description1[language]} />
-        </ChallengeCard>
-      );
-      break;
-
     case 'data_5':
-      content = (
-        <ChallengeCard title={data.title[language]}>
-          <ChallengeDescription description={data.description1[language]} />
-        </ChallengeCard>
-      );
-      break;
-
     case 'data_6':
       content = (
         <ChallengeCard title={data.title[language]}>
-          <ChallengeDescription description={data.description1[language]} />
+          {data.description1[language]
+            .split('?')
+            .filter((item: string) => item.trim())
+            .map((item: string, index: number) => (
+              <ChallengeDescription
+                key={index.toString()}
+                description={`${item.trim()}?`}
+              />
+            ))}
         </ChallengeCard>
       );
       break;
