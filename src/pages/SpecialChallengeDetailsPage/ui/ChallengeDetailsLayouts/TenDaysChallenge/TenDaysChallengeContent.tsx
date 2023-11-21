@@ -63,7 +63,7 @@ export const TenDaysChallengeContent = (
       content = (
         <ChallengeCard title={data.title[language]}>
           <ChallengeDescription
-            description={data.description1[language]}
+            description={`Day 1:\n${data.description1[language]}`}
             gradientWordscount={1}
           />
           <ChallengeDescription
@@ -73,7 +73,7 @@ export const TenDaysChallengeContent = (
           />
 
           <ChallengeDescription
-            description={data.description3[language]}
+            description={`Day 2:\n${data.description3[language]}`}
             gradientWordscount={1}
           />
           <ChallengeDescription
@@ -83,7 +83,7 @@ export const TenDaysChallengeContent = (
           />
 
           <ChallengeDescription
-            description={data.description5[language]}
+            description={`Day 3:\n${data.description5[language]}`}
             gradientWordscount={1}
           />
           <ChallengeDescription
@@ -93,7 +93,7 @@ export const TenDaysChallengeContent = (
           />
 
           <ChallengeDescription
-            description={data.description7[language]}
+            description={`Day 4:\n${data.description7[language]}`}
             gradientWordscount={1}
           />
           <ChallengeDescription
@@ -103,7 +103,7 @@ export const TenDaysChallengeContent = (
           />
 
           <ChallengeDescription
-            description={data.description9[language]}
+            description={`Day 5:\n${data.description9[language]}`}
             gradientWordscount={1}
           />
           <ChallengeDescription
