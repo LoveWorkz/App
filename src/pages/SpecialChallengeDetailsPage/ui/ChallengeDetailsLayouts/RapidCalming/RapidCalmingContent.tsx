@@ -24,7 +24,12 @@ export const RapidCalmingContent = (props: RapidCalmingContentProps) => {
   switch (data.type) {
     case 'intro':
       content = (
-        <ChallengeIntroCard title={data.title} description={data.description} />
+        <ChallengeIntroCard
+          title={data.title}
+          description={data.multiDescription.part1[language]}
+          description2={data.multiDescription.part2[language]}
+          description3={data.multiDescription.part3[language]}
+        />
       );
       break;
 
