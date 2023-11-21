@@ -64,7 +64,7 @@ export const TenDaysChallengeContent = (
         <ChallengeCard title={data.title[language]}>
           <ChallengeDescription
             description={`${data.description1[language].replace('\\n', '\n')}`}
-            gradientWordscount={2}
+            gradientWordscount={1}
           />
           <ChallengeDescription
             description={data.description2[language]}
@@ -73,7 +73,7 @@ export const TenDaysChallengeContent = (
 
           <ChallengeDescription
             description={`${data.description3[language].replace('\\n', '\n')}`}
-            gradientWordscount={2}
+            gradientWordscount={1}
           />
           <ChallengeDescription
             description={data.description4[language]}
@@ -82,7 +82,7 @@ export const TenDaysChallengeContent = (
 
           <ChallengeDescription
             description={`${data.description5[language].replace('\\n', '\n')}`}
-            gradientWordscount={2}
+            gradientWordscount={1}
           />
           <ChallengeDescription
             description={data.description6[language]}
@@ -91,7 +91,7 @@ export const TenDaysChallengeContent = (
 
           <ChallengeDescription
             description={`${data.description7[language].replace('\\n', '\n')}`}
-            gradientWordscount={2}
+            gradientWordscount={1}
           />
           <ChallengeDescription
             description={data.description8[language]}
@@ -99,8 +99,8 @@ export const TenDaysChallengeContent = (
           />
 
           <ChallengeDescription
-            description={`${data.description8[language].replace('\\n', '\n')}`}
-            gradientWordscount={2}
+            description={`${data.description9[language].replace('\\n', '\n')}`}
+            gradientWordscount={1}
           />
           <ChallengeDescription description={data.description10[language]} />
         </ChallengeCard>
