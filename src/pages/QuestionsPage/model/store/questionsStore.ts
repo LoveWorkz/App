@@ -66,6 +66,7 @@ class QuestionsStore {
       });
 
       await this.getQuestionsPageInfo(param);
+      await sessionStore.fetchSessionChallenge();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -353,14 +354,14 @@ class QuestionsStore {
     const promise2 = firestore()
       .collection(Collections.WILD_QUESTIONS)
       .get({source});
-    const promise3 = firestore()
-      .collection(Collections.CHALLENGE_QUESTIONS)
-      .get({source});
+    // const promise3 = firestore()
+    // .collection(Collections.CHALLENGE_QUESTIONS)
+    // .get({source});
     const promise4 = firestore()
       .collection(Collections.RUBRIC_QUESTIONS)
       .get({source});
 
-    const data = await Promise.all([promise1, promise2, promise3, promise4]);
+    const data = await Promise.all([promise1, promise2, promise4]);
     const allQuestions: DocsType = [];
 
     data.forEach(element => {

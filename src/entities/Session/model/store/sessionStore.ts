@@ -6,7 +6,7 @@ import firestore, {
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections, DocsType} from '@src/shared/types/firebase';
-import {QuestionType} from '@src/entities/QuestionCard';
+import {challengeCard, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -68,6 +68,41 @@ class SessionStore {
   getSession = (sessionId: string) => {
     const session = this.sessionsMap[sessionId];
     return session;
+  };
+
+  fetchSessionChallenge = async () => {
+    try {
+      crashlytics().log('Fetching session challenge');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const sessionChallengeInfo = this.session?.challenge;
+      const challengeCategoryId = categoryStore.category?.challengeCategoryId;
+      if (!(sessionChallengeInfo && challengeCategoryId)) {
+        return;
+      }
+
+      const challenge = await firestore()
+        .collection(Collections.CHALLENGE_CATEGORIES)
+        .doc(challengeCategoryId)
+        .collection(
+          sessionChallengeInfo.isChallengeSpecial
+            ? Collections.SPECIAL_CHALLENGES
+            : Collections.CHALLENGES,
+        )
+        .doc(sessionChallengeInfo.challengeId)
+        .get({source});
+
+      const sessionChallenge = challenge.data() as
+        | ChallengeType
+        | SpecialChallengeType;
+
+      runInAction(() => {
+        this.sessionChallenge = sessionChallenge;
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   getAndSetSession = (sessionId: string) => {
@@ -278,27 +313,41 @@ class SessionStore {
     return unlockedCategoryMap;
   };
 
-  getSessionQuestions = (questionsMap: Record<string, QuestionType>) => {
+  getSessionQuestions = (
+    questionsMap: Record<string, QuestionType>,
+  ): QuestionType[] => {
     const session = this.session;
     if (!session) {
       return [];
     }
-
+    // delete this line after deleting challenge questions from firebase from firebase
+    session.questions.pop();
     const sessionQuestionsIds = session.questions;
 
     const questions = sessionQuestionsIds.map(questionId => {
       const question = questionsMap[questionId];
 
-      return {
-        ...question,
-        challenge:
-          question.type === 'CHALLENGE_CARD'
-            ? session.challenge.challengeId
-            : '',
-      };
+      // return {
+      //   ...question,
+      //   challenge:
+      //     question.type === 'CHALLENGE_CARD'
+      //       ? session.challenge.challengeId
+      //       : '',
+      // };
+
+      return question;
     });
 
-    return questions;
+    const questionsWithChallengeCard = [
+      ...questions,
+      {
+        ...challengeCard,
+        challenge: session.challenge.challengeId,
+        categoryId: session.categoryId,
+      },
+    ];
+
+    return questionsWithChallengeCard;
   };
 
   markSession = async ({

@@ -13,3 +13,17 @@ export const goodMoodQuestionCard: QuestionType = {
   createdDate: '',
   difficulty: 0,
 };
+
+export const challengeCard: QuestionType = {
+  categoryId: '',
+  rubricId: '',
+  type: 'CHALLENGE_CARD',
+  question: {
+    de: '',
+    en: '',
+    pt: '',
+  },
+  id: 'challenge_question',
+  createdDate: '',
+  difficulty: 1,
+};

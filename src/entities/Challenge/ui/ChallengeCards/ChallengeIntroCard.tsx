@@ -41,6 +41,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
         style={styles.ChallengeIntroCard}>
         <View style={{marginTop: verticalScale(isDescriptionLarge ? 80 : 200)}}>
           <AppText
+            align="justify"
             style={[styles.title, {color: colors.primaryTextColor}]}
             weight={'700'}
             size={TextSize.LEVEL_5}
@@ -48,6 +49,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
           />
           <View>
             <AppText
+              align="justify"
               style={[styles.description, {color: colors.primaryTextColor}]}
               weight={'500'}
               size={TextSize.LEVEL_4}

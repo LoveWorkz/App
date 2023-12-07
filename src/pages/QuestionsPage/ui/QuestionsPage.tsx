@@ -195,7 +195,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
             />
           )}
         </View>
-        <View>
+        <View style={styles.categoryNameWrapper}>
           <AppText
             style={{color: colors.primaryTextColor}}
             weight={'500'}
@@ -249,13 +249,16 @@ const styles = StyleSheet.create({
   categoryWrapper: {
     position: 'absolute',
   },
+  categoryNameWrapper: {
+    marginLeft: 'auto',
+  },
   rubricAndQuestionsCountBlock: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginTop: verticalScale(55),
+    marginBottom: verticalScale(10),
   },
   rubricNameWrapper: {
     width: '80%',
+    position: 'absolute',
   },
   rubricText: {
     textTransform: 'capitalize',

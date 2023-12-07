@@ -18,6 +18,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {sessionStore} from '@src/entities/Session';
 import {QuestionCardTypes} from '../model/types/questionTypes';
 
 interface QuestionCardProps {
@@ -50,6 +51,8 @@ const QuestionCard = (props: QuestionCardProps) => {
     navigation.navigate(TabRoutesNames.CHALLENGES, {challenge: challenge});
   };
 
+  const sessionChallenge = sessionStore.sessionChallenge;
+
   return (
     <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
       <FastImage
@@ -63,7 +66,11 @@ const QuestionCard = (props: QuestionCardProps) => {
           ]}
           weight={'600'}
           size={questionTextSize}
-          text={translatedQuestion}
+          text={
+            isTypeChallange
+              ? sessionChallenge?.title[language] || ''
+              : translatedQuestion
+          }
         />
 
         {isTypeChallange && (

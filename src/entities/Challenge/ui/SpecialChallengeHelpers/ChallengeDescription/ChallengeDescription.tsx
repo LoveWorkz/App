@@ -19,6 +19,7 @@ const ChallengeDescription = (props: ChallengeDescriptionProps) => {
     return (
       <View style={{marginBottom: isMarginBottom ? verticalScale(10) : 'auto'}}>
         <AppText
+          align="justify"
           weight={'500'}
           size={TextSize.LEVEL_3}
           text={number ? `${number}. ${description}` : description}
@@ -35,7 +36,7 @@ const ChallengeDescription = (props: ChallengeDescriptionProps) => {
 
   return (
     <View style={{marginBottom: isMarginBottom ? verticalScale(10) : 'auto'}}>
-      <Text>
+      <Text style={styles.text}>
         <TouchableOpacity>
           <GradientText
             style={styles.gradient}
@@ -45,12 +46,7 @@ const ChallengeDescription = (props: ChallengeDescriptionProps) => {
           />
         </TouchableOpacity>
 
-        <AppText
-          align={'justify'}
-          weight={'500'}
-          size={TextSize.LEVEL_3}
-          text={secondPart}
-        />
+        <AppText weight={'500'} size={TextSize.LEVEL_3} text={secondPart} />
       </Text>
     </View>
   );
@@ -61,5 +57,8 @@ export default memo(ChallengeDescription);
 export const styles = StyleSheet.create({
   gradient: {
     top: verticalScale(4),
+  },
+  text: {
+    textAlign: 'justify',
   },
 });

@@ -1,6 +1,7 @@
 import React, {memo} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
+
 import {
   AppText,
   TextSize,
@@ -24,7 +25,7 @@ export const GradientText = memo((props: GradientTextProps) => {
         colors={['#83C0F8', '#847AED']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}>
-        <AppText {...props} style={{opacity: 0}} />
+        <AppText align="justify" {...props} style={{opacity: 0}} />
       </LinearGradient>
     </MaskedView>
   );

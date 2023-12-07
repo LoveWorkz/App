@@ -34,6 +34,7 @@ export interface ButtonCoordinates {
 }
 
 export const popupWidth = horizontalScale(280);
+const iconPadding = horizontalScale(10);
 
 const InformationBlock = (props: InformationBlockProps) => {
   const {text, title} = props;
@@ -51,8 +52,8 @@ const InformationBlock = (props: InformationBlockProps) => {
     if (buttonRef.current) {
       buttonRef.current.measureInWindow((x, y, width, height) => {
         setModalPosition({
-          top: y + height + verticalScale(10),
-          left: x + 10 - popupWidth,
+          top: y - iconPadding + height + verticalScale(10),
+          left: x + 10 + iconPadding - popupWidth,
         });
 
         setVisible(true);
@@ -63,7 +64,7 @@ const InformationBlock = (props: InformationBlockProps) => {
   return (
     <View style={styles.container}>
       <View ref={buttonRef} collapsable={false}>
-        <TouchableOpacity onPress={onPressHandler}>
+        <TouchableOpacity style={styles.button} onPress={onPressHandler}>
           <SvgXml
             xml={InformationIcon}
             style={styles.icon}
@@ -92,6 +93,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  button: {
+    padding: iconPadding,
   },
   icon: {
     height: horizontalScale(16),
