@@ -18,6 +18,9 @@ interface CarouselProps {
   isTopPagination?: boolean;
   itemStyle?: StyleType;
   itemWidth?: number;
+  initialIndex?: number;
+  contentContainerStyle?: StyleType;
+  paginationStyle?: StyleType;
 }
 
 export const Carousel = (props: CarouselProps) => {
@@ -29,6 +32,9 @@ export const Carousel = (props: CarouselProps) => {
     isTopPagination = false,
     itemStyle,
     itemWidth,
+    initialIndex,
+    contentContainerStyle,
+    paginationStyle,
   } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,11 +56,15 @@ export const Carousel = (props: CarouselProps) => {
     <SafeAreaView>
       <View>
         {isTopPagination && itemWidth && (
-          <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+          <View style={paginationStyle}>
+            <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+          </View>
         )}
       </View>
       <FlatList
+        contentContainerStyle={contentContainerStyle}
         horizontal
+        initialScrollIndex={initialIndex}
         showsHorizontalScrollIndicator={false}
         data={data}
         pagingEnabled
@@ -76,7 +86,9 @@ export const Carousel = (props: CarouselProps) => {
         ref={slidesRef}
       />
       {isBottomPagination && itemWidth && (
-        <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+        <View style={paginationStyle}>
+          <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+        </View>
       )}
     </SafeAreaView>
   );

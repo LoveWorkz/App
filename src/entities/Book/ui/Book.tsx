@@ -23,21 +23,22 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {BookType} from '../model/types';
+import {BookType, BookImage} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
-
-interface BookPreview {
-  image: string;
-}
 
 const bookPreviewheight = 210;
 const bookPreviewWidth = horizontalScale(150);
 
 const borderRadius = moderateScale(5);
 
+interface BookPreview {
+  image: string;
+  fullImage: BookImage;
+}
+
 const BookPreview = memo((props: BookPreview) => {
-  const {image} = props;
+  const {image, fullImage} = props;
   const {theme} = useTheme();
 
   const [isBookModalVisible, setIsBookModalVisible] = useState(false);
@@ -69,6 +70,7 @@ const BookPreview = memo((props: BookPreview) => {
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
       <BookPreviewModal
         image={image}
+        fullImage={fullImage}
         visible={isBookModalVisible}
         onClose={onModalCloseHandler}
       />
@@ -159,7 +161,7 @@ export const Book = (props: BookProps) => {
             isTopPagination
             data={bookCarouselData}
             Component={({bookImage}: {bookImage: string}) => {
-              return <BookPreview image={bookImage} />;
+              return <BookPreview image={bookImage} fullImage={image} />;
             }}
           />
         </View>
