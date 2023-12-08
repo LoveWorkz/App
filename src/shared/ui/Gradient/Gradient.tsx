@@ -15,7 +15,7 @@ export enum GradientSize {
 }
 
 interface GradientProps {
-  children?: ReactElement;
+  children?: ReactElement | ReactElement[];
   style?: StyleType;
   size?: GradientSize;
 }

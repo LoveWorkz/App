@@ -15,10 +15,12 @@
   "you_are_offline": "You are offline",
   "search": "Suchen",
   "year": "jahr",
+  "month": "monat",
   "ok": "Ok",
   "got_it": "Habe es",
   "start_game": "Spiel beginnen",
   "loading": "laden",
   "yes": "Ja",
-  "no": "Nein"
+  "no": "Nein",
+  "only": "nur"
 }

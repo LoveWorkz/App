@@ -6,6 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Favourites} from '@src/widgets/Favourites';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {favoriteStore} from '@src/entities/Favorite';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
@@ -52,17 +53,19 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      {!!(favorites && favorites.questions.length) && (
-        <View style={styles.favouritesWrapper}>
-          <Favourites isLoading={isLoading} />
+    <WithInAppPurchase>
+      <View style={styles.container}>
+        {!!(favorites && favorites.questions.length) && (
+          <View style={styles.favouritesWrapper}>
+            <Favourites isLoading={isLoading} />
+          </View>
+        )}
+        <Categories isLoading={isLoading} />
+        <View style={styles.rubricsWrapper}>
+          <Rubrics isLoading={isLoading} />
         </View>
-      )}
-      <Categories isLoading={isLoading} />
-      <View style={styles.rubricsWrapper}>
-        <Rubrics isLoading={isLoading} />
       </View>
-    </View>
+    </WithInAppPurchase>
   );
 };
 

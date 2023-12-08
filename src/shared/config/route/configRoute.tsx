@@ -18,7 +18,7 @@ import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
-import {Layout} from '@src/app/providers/layout';
+import {Layout} from '@src/widgets/layout';
 import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 import {SessionsPage} from '@src/pages/SessionsPage';
 import {ChallengeCardsPage} from '@src/pages/SpecialChallengeDetailsPage';

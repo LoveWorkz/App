@@ -22,6 +22,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {CategoryKey} from '@src/entities/Category';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
+import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 
 type ChallengeCategorySize = 'large' | 'small';
 
@@ -87,7 +88,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
 
   const onPressHandler = useCallback(() => {
     if (isBlocked) {
-      navigation.navigate(TabRoutesNames.SHOP);
+      inAppPurchaseStore.setIsInAppPurchaseModalVisible(true);
       return;
     }
 

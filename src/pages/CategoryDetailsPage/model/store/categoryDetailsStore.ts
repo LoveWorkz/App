@@ -7,8 +7,8 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {categoryStore} from '@src/entities/Category';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 
 class CategoryDetailsStore {
   isCategoryDetailsPageLoading: boolean = true;
@@ -59,7 +59,7 @@ class CategoryDetailsStore {
       }
 
       if (isContentLocked) {
-        navigation.navigate(TabRoutesNames.SHOP);
+        inAppPurchaseStore.setIsInAppPurchaseModalVisible(true);
         return;
       }
 

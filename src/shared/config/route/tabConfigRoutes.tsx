@@ -3,12 +3,11 @@ import {ParamListBase} from '@react-navigation/native';
 
 import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
-import {ShopPage} from '@src/pages/ShopPage';
 import {CategoriesPage} from '@src/pages/CategoriesPage';
 import {BooksPage} from '@src/pages/BooksPage';
 import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
 import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
-import {Layout} from '@src/app/providers/layout';
+import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
 
 export enum TabRoutesNames {
@@ -16,7 +15,6 @@ export enum TabRoutesNames {
   CATEGORIES = 'categories',
   BOOKS = 'books',
   CHALLENGES = 'challenges',
-  SHOP = 'shop',
 }
 
 export const tabRoutePaths: Record<TabRoutesNames, string> = {
@@ -24,7 +22,6 @@ export const tabRoutePaths: Record<TabRoutesNames, string> = {
   [TabRoutesNames.CATEGORIES]: 'categories',
   [TabRoutesNames.BOOKS]: 'books',
   [TabRoutesNames.CHALLENGES]: 'challenges',
-  [TabRoutesNames.SHOP]: 'shop',
 };
 
 type NewRouteProps = {
@@ -109,24 +106,6 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       );
     },
     headerTitle: 'books.title',
-    headerShown: true,
-    HeaderLeft: TabHeaderLeft,
-  },
-  [TabRoutesNames.SHOP]: {
-    name: tabRoutePaths.shop,
-    tabName: 'Shop',
-    Element: (props: ParamListBase) => {
-      return (
-        <Layout
-          isPageScrolling={false}
-          deleteBottomPadding={false}
-          deleteTopPadding={true}
-          isTabBar>
-          <ShopPage {...props} />
-        </Layout>
-      );
-    },
-    headerTitle: 'shop.title',
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },

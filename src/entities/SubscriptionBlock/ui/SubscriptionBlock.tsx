@@ -1,15 +1,16 @@
 import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {
   horizontalScale,
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {FireIcon} from '@src/shared/assets/icons/FireIcon';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -29,6 +30,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
     setSubscriptionType,
   } = props;
 
+  const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
   const isActive = subscriptionType === chosenSubscriptionType;
@@ -45,14 +47,20 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
         styles.SubscriptionBlock,
         {...getShadowOpacity(theme).shadowOpacity_level_2},
       ]}>
-      <View
-        style={[
-          styles.percentage,
-          {backgroundColor: colors.bgQuaternaryColor},
-        ]}>
-        <SvgXml xml={FireIcon} style={[styles.fireIcon]} />
-        <GradientText size={TextSize.LEVEL_2} text={'80% Off'} />
-      </View>
+      {isYearly && (
+        <Gradient
+          style={[
+            styles.percentage,
+            {backgroundColor: colors.bgQuaternaryColor},
+          ]}>
+          <SvgXml xml={FireIcon} style={[styles.fireIcon]} />
+          <AppText
+            style={{color: colors.white}}
+            size={TextSize.LEVEL_2}
+            text={'Popular'}
+          />
+        </Gradient>
+      )}
 
       <GradientOutline
         borderWeight={isActive ? 1.5 : 0}
@@ -68,51 +76,45 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
           },
         ]}>
         <>
-          <AppText
-            style={styles.title}
-            text={isYearly ? 'Yearly' : 'Monthly'}
-          />
+          <View style={styles.titleWrapper}>
+            <AppText
+              size={TextSize.LEVEL_4}
+              text={isYearly ? 'Yearly' : 'Monthly'}
+            />
+          </View>
 
           <View style={styles.costWrapper}>
             <AppText
-              style={[styles.cost, {color: colors.secondaryError}]}
-              size={TextSize.LEVEL_4}
+              style={{color: colors.secondaryError}}
+              size={TextSize.LEVEL_3}
               weight={'bold'}
               text={'$1.49'}
             />
-            <AppText
-              style={styles.discount}
-              size={TextSize.LEVEL_3}
-              weight={'200'}
-              text={'$1.99'}
-            />
-            <AppText
-              style={styles.type}
-              size={TextSize.LEVEL_4}
-              weight={'bold'}
-              text={isYearly ? '/ year' : '/ month'}
-            />
+            <View style={styles.costRightWrapper}>
+              <AppText
+                style={styles.discount}
+                size={TextSize.LEVEL_3}
+                weight={'200'}
+                text={'$1.99'}
+              />
+              <AppText
+                size={TextSize.LEVEL_3}
+                weight={'bold'}
+                text={isYearly ? ` / ${t('year')}` : ` / ${t('month')}`}
+              />
+            </View>
           </View>
           <AppText
             style={[{color: colors.purchaseDescriptionColor}]}
             size={TextSize.LEVEL_1}
             text={
               isYearly
-                ? 'All categories with no adss + all challenges inside'
-                : 'All categories with no adss + bronze, silver and gold challenges'
+                ? `${t('shop.yearly_description')} (${t('only')} 4,99 $/ ${t(
+                    'month',
+                  )})`
+                : t('shop.monthly_description')
             }
           />
-          <View
-            style={[
-              styles.billedType,
-              {backgroundColor: colors.purchaseButtonColor},
-            ]}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_2}
-              text={isYearly ? 'Billed yearly' : 'Billed monthly'}
-            />
-          </View>
         </>
       </GradientOutline>
     </TouchableOpacity>
@@ -123,10 +125,13 @@ export default memo(SubscriptionBlock);
 
 const styles = StyleSheet.create({
   SubscriptionBlock: {
-    width: '46%',
+    width: '47%',
   },
   contentWrapper: {
-    minHeight: verticalScale(187),
+    minHeight: verticalScale(150),
+  },
+  costRightWrapper: {
+    flexDirection: 'row',
   },
   fireIcon: {
     height: verticalScale(13),
@@ -134,8 +139,10 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(3),
   },
   content: {
-    justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  titleWrapper: {
+    marginBottom: verticalScale(6),
   },
   percentage: {
     position: 'absolute',
@@ -149,23 +156,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...globalStyles.subscriptionPercentageZIndex,
   },
-  title: {},
   costWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    marginBottom: verticalScale(6),
   },
-  cost: {},
-  type: {},
   discount: {
     textDecorationLine: 'line-through',
-  },
-  billedType: {
-    width: '100%',
-    borderRadius: 10,
-    height: verticalScale(40),
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });

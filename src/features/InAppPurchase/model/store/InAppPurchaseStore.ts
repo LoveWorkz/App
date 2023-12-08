@@ -10,12 +10,17 @@ import {SubscriptionsIds} from '../types/inAppPurchaseType';
 
 class InAppPurchaseStore {
   subscriptions: any = [];
+  isInAppPurchaseModalVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setSubscriptions = async (products: any) => {
+  setIsInAppPurchaseModalVisible = (visible: boolean) => {
+    this.isInAppPurchaseModalVisible = visible;
+  };
+
+  setSubscriptions = (products: any) => {
     this.subscriptions = products;
   };
 

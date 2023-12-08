@@ -6,6 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {challengeFilterItems, ChallengesList} from '@src/entities/Challenge';
+import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import ChallengeCategories from './ChallengeCategories/ChallengeCategories';
@@ -54,21 +55,23 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   );
 
   return (
-    <View style={styles.container}>
-      <ChallengeCategories
-        isLoading={isLoading}
-        defaultChallengeId={defaultChallengeId}
-      />
-      <View style={styles.FilterItemsWrapper}>
-        <ChallengesFilterItems isLoading={isLoading} />
+    <WithInAppPurchase>
+      <View style={styles.container}>
+        <ChallengeCategories
+          isLoading={isLoading}
+          defaultChallengeId={defaultChallengeId}
+        />
+        <View style={styles.FilterItemsWrapper}>
+          <ChallengesFilterItems isLoading={isLoading} />
+        </View>
+        <ChallengesList
+          challengesList={challanges}
+          specialChallangesList={specialChallanges}
+          isChallengesLoading={isChallengesLoading}
+          isLoading={isLoading}
+        />
       </View>
-      <ChallengesList
-        challengesList={challanges}
-        specialChallangesList={specialChallanges}
-        isChallengesLoading={isChallengesLoading}
-        isLoading={isLoading}
-      />
-    </View>
+    </WithInAppPurchase>
   );
 };
 
