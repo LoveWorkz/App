@@ -8,6 +8,10 @@ import React, {
 } from 'react';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import {StyleSheet, View} from 'react-native';
+import {
+  GestureHandlerStateChangeEvent,
+  State,
+} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
@@ -26,6 +30,8 @@ interface HorizontalSlideProps {
   spead?: number;
 }
 
+type SwipeDirectionType = 'right' | 'left';
+
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const {
     Component,
@@ -42,41 +48,85 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const viewCount = 5;
   const defaultIndex = getDefaultIndexForCarousel(defaultElement);
 
+  const previousProgress = useRef(0);
+  const swipeDirection = useRef<SwipeDirectionType>('right');
+  const currentElementIndex = useRef(defaultIndex);
+
   const carouselRef = useRef() as MutableRefObject<ICarouselInstance>;
   const newSwapIndex = useRef(defaultIndex);
   const swipeStartStatus = useRef(false) as MutableRefObject<boolean>;
 
-  const onProgressChange = useCallback(() => {
-    // the logic should start working when user start swiping
+  const checkAndSetSwipeDirection = (progress: number, total: number) => {
+    const currentIndex = Math.round(progress * (total - 1));
 
-    if (!swipeStartStatus.current) {
-      swipeStartStatus.current = true;
-
-      return;
+    if (currentIndex > previousProgress.current) {
+      swipeDirection.current = 'right';
+    } else if (currentIndex < previousProgress.current) {
+      swipeDirection.current = 'left';
     }
 
-    const index = carouselRef.current?.getCurrentIndex();
+    previousProgress.current = currentIndex;
+  };
 
-    if (newSwapIndex.current !== index) {
-      newSwapIndex.current = index;
-      let timeoutId: ReturnType<typeof setTimeout>;
+  const onProgressChange = useCallback(
+    (progress: number, total: number) => {
+      // the logic should start working when user start swiping
+      if (!swipeStartStatus.current) {
+        swipeStartStatus.current = true;
 
-      timeoutId = setTimeout(() => {
-        const currentElementInfo = data.find((_, i) => i === index);
-        const itemNumber = index + 1;
+        return;
+      }
 
-        currentElementInfo && onSwipeHandler?.(currentElementInfo, itemNumber);
+      checkAndSetSwipeDirection(progress, total);
 
-        if (timeoutId) {
-          clearTimeout(timeoutId);
-        }
-      }, spead);
+      const index = carouselRef.current?.getCurrentIndex();
+
+      if (newSwapIndex.current !== index) {
+        newSwapIndex.current = index;
+        let timeoutId: ReturnType<typeof setTimeout>;
+
+        timeoutId = setTimeout(() => {
+          const currentElementInfo = data.find((_, i) => i === index);
+          const itemNumber = index + 1;
+          currentElementIndex.current = index;
+
+          currentElementInfo &&
+            onSwipeHandler?.(currentElementInfo, itemNumber);
+
+          if (timeoutId) {
+            clearTimeout(timeoutId);
+          }
+        }, spead);
+      }
+    },
+    [onSwipeHandler, data, spead],
+  );
+  const onGestureEvent = (event: GestureHandlerStateChangeEvent) => {
+    const isUserLiftFinger = event.nativeEvent.state === State.END;
+
+    if (isUserLiftFinger) {
+      const isFirstElement = currentElementIndex.current === 0;
+      const isLastElement = currentElementIndex.current === data.length - 1;
+
+      if (isFirstElement || isLastElement) {
+        return;
+      }
+
+      if (swipeDirection.current === 'right') {
+        carouselRef.current?.prev({count: 0});
+      } else {
+        carouselRef.current?.next({count: 0});
+      }
     }
-  }, [onSwipeHandler, data, spead]);
+  };
 
   return (
     <>
       <Carousel
+        panGestureHandlerProps={{
+          // @ts-ignore:
+          onHandlerStateChange: onGestureEvent,
+        }}
         ref={carouselRef}
         onProgressChange={onProgressChange}
         onScrollEnd={onScrollEnd}
