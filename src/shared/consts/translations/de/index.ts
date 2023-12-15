@@ -15,6 +15,7 @@ import splash from './splash.json';
 import error from './error.json';
 import rubricFilterItem from './rubricFilterItem.json';
 import sessions from './sessions.json';
+import notifications from './notifications.json';
 
 export const de = {
   ...common,
@@ -34,4 +35,5 @@ export const de = {
   ...error,
   ...rubricFilterItem,
   ...sessions,
+  ...notifications,
 };

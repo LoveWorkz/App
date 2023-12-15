@@ -26,6 +26,8 @@ interface SelectProps {
   isScrolling?: boolean;
   isLoading?: boolean;
   closingTime?: number;
+  setIsPopupVisible?: (isVisible: boolean) => void;
+  isPopupVisible?: boolean;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -41,6 +43,8 @@ export const Select = memo((props: SelectProps) => {
     isScrolling = false,
     isLoading = false,
     closingTime,
+    isPopupVisible,
+    setIsPopupVisible,
   } = props;
 
   const itemHeight = verticalScale(40);
@@ -79,8 +83,14 @@ export const Select = memo((props: SelectProps) => {
   }, [visible, flatlistRef]);
 
   const onCloseHandler = useCallback(() => {
+    if (setIsPopupVisible) {
+      setIsPopupVisible(false);
+
+      return;
+    }
+
     setIsVisible(false);
-  }, []);
+  }, [setIsPopupVisible]);
 
   const onSelectHandler = useCallback(
     (itemValue: string) => {
@@ -131,15 +141,19 @@ export const Select = memo((props: SelectProps) => {
 
   return (
     <View>
-      <TouchableComponent
-        isLoading={isLoading}
-        selectedDisplayValue={selectedDisplayValue || ''}
-        theme={Theme}
-        label={label}
-        onSelectOpenHandler={onSelectOpenHandler}
-        selectedValueStyle={selectedValueStyle}
-      />
-      <PageSelect onClose={onCloseHandler} prompt={prompt} visible={visible}>
+      {Theme === SelectTheme.OUTLINE && (
+        <TouchableComponent
+          isLoading={isLoading}
+          selectedDisplayValue={selectedDisplayValue || ''}
+          label={label}
+          onSelectOpenHandler={onSelectOpenHandler}
+          selectedValueStyle={selectedValueStyle}
+        />
+      )}
+      <PageSelect
+        onClose={onCloseHandler}
+        prompt={prompt}
+        visible={isPopupVisible ?? visible}>
         {isScrolling ? (
           <FlatList
             initialScrollIndex={0}

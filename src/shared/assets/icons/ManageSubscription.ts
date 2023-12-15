@@ -1,0 +1,4 @@
+export const ManageSubscriptionIcon = `<svg viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 5V12.0276C1 12.7301 1.3686 13.3812 1.97101 13.7426L7.4 17M1 5L6.35613 1.65242C6.99627 1.25233 7.80715 1.24676 8.45273 1.63802L10.7 3M1 5L4.2 6.92M15.5 6L14 5M7.4 17L13.0058 13.7385C13.6213 13.3803 14 12.7219 14 12.0098V8.68M7.4 17V9M14 5L7.4 9M14 5L10.7 3M7.4 9L4.2 6.92M10.7 3L4.2 6.92M4.2 6.92V11" stroke="#395180" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+`;

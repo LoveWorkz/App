@@ -6,7 +6,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {HeartIcon} from '@src/shared/assets/icons/Heart';
+import {HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {favoriteStore} from '@src/entities/Favorite';
@@ -52,14 +52,14 @@ export const QuestionsHeaderRight = () => {
       <Button onPress={toggleFavorite}>
         {isQuestionFavorite ? (
           <SvgXml
-            xml={HeartIcon}
+            xml={HeartIconWithoutColor}
             stroke={'red'}
             style={styles.HeartIcon}
             fill={'red'}
           />
         ) : (
           <SvgXml
-            xml={HeartIcon}
+            xml={HeartIconWithoutColor}
             stroke={colors.primaryTextColor}
             style={styles.HeartIcon}
           />

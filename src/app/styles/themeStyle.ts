@@ -26,7 +26,8 @@ export type Colors =
   | 'bgForgotPasswordPopupColor'
   | 'bgPopup'
   | 'bgLayout'
-  | 'specialChallengeBgColor';
+  | 'specialChallengeBgColor'
+  | 'settingItemColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -68,6 +69,9 @@ const light: ColorType = {
   // icons colors
   appleIconColor: '#1B1B1B',
 
+  // border colors
+  settingItemColor: '#D9D8F0',
+
   ...commonColor,
 };
 
@@ -99,6 +103,9 @@ const dark: ColorType = {
 
   // icons colors
   appleIconColor: '#FFFFFF',
+
+  // border colors
+  settingItemColor: '#D9D8F0',
 
   ...commonColor,
 };

@@ -1,39 +1,63 @@
-import React, {memo, useCallback} from 'react';
-import {StyleSheet, View, Pressable} from 'react-native';
+import React, {memo, ReactNode, useCallback} from 'react';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 
 interface SettingItem {
   Icon: string;
   text: string;
   path?: AppRouteNames;
+  onPress?: () => void;
+  RightSideComponent?: ReactNode;
+  isPressable?: boolean;
 }
 
 const SettingItem = (props: SettingItem) => {
-  const {Icon, text, path} = props;
+  const {
+    Icon,
+    text,
+    path,
+    onPress,
+    RightSideComponent,
+    isPressable = true,
+  } = props;
   const colors = useColors();
 
   const onPressHandler = useCallback(() => {
     path && navigation.navigate(path);
-  }, [path]);
+    onPress?.();
+  }, [path, onPress]);
 
   return (
-    <Pressable style={styles.settingItem} onPress={onPressHandler}>
-      <View>
+    <TouchableOpacity
+      disabled={!isPressable}
+      style={[styles.settingItem, {borderBottomColor: colors.settingItemColor}]}
+      onPress={onPressHandler}>
+      <View style={styles.leftSide}>
         <SvgXml xml={Icon} style={[styles.icon]} />
-      </View>
-      <View style={styles.textWrapper}>
         <AppText
-          style={{color: colors.primaryTextColor}}
+          style={[styles.text, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_4}
+          weight={'600'}
           text={text}
         />
       </View>
-    </Pressable>
+      {RightSideComponent ? (
+        RightSideComponent
+      ) : (
+        <SvgXml
+          xml={SmallArrowRightIcon}
+          stroke={colors.primaryTextColor}
+          style={styles.arrowRightIcon}
+        />
+      )}
+    </TouchableOpacity>
   );
 };
 
@@ -43,17 +67,25 @@ const styles = StyleSheet.create({
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'relative',
-    marginBottom: 24,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    paddingVertical: 16,
+  },
+  leftSide: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   icon: {
-    height: 22,
-    width: 22,
+    height: horizontalScale(18),
+    width: horizontalScale(18),
   },
-  textWrapper: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: 30,
+  text: {
+    left: horizontalScale(15),
+    bottom: verticalScale(2),
+  },
+  arrowRightIcon: {
+    height: horizontalScale(12),
+    width: horizontalScale(12),
   },
 });

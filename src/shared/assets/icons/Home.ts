@@ -22,6 +22,13 @@ const HomeIconWithGradient = `
 </svg>
 `;
 
+export const HomeIconOutline = `
+<svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.16726 6.13935V10.0102C1.13186 11.5331 2.33693 12.7967 3.85976 12.8335H10.1414C11.6643 12.7967 12.8693 11.5331 12.8339 10.0102V6.13935C12.8357 4.99725 12.3028 3.92014 11.3939 3.22852L8.84393 1.68268C7.71106 0.994607 6.2893 0.994607 5.15643 1.68268L2.60726 3.22852C1.69838 3.92014 1.16554 4.99725 1.16726 6.13935Z" stroke="#395180" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.79557 9.65271C8.37481 10.2223 7.7087 10.5584 7.00057 10.5584C6.29243 10.5584 5.62633 10.2223 5.20557 9.65271" stroke="#395180" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+`;
+
 export const getHomeIcon = ({isGradient = false, isDarkMode = false}) => {
   if (isGradient) {
     return HomeIconWithGradient;

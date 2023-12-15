@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {InstagramIcon} from '@src/shared/assets/icons/Instagram';
+import {InstagramIconWithoutColor} from '@src/shared/assets/icons/Instagram';
 import {LocationIcon} from '@src/shared/assets/icons/Location';
 import {PhoneIcon} from '@src/shared/assets/icons/Phone';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -17,7 +17,11 @@ const getItemsData = (color: string) => {
     },
     {
       Icon: () => (
-        <SvgXml xml={InstagramIcon} style={styles.icon} stroke={color} />
+        <SvgXml
+          xml={InstagramIconWithoutColor}
+          style={styles.icon}
+          stroke={color}
+        />
       ),
       text: 'instagram.com/lovenough',
     },

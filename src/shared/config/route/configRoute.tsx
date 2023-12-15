@@ -23,6 +23,9 @@ import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 import {SessionsPage} from '@src/pages/SessionsPage';
 import {ChallengeCardsPage} from '@src/pages/SpecialChallengeDetailsPage';
 import {CoreChallengeDetailsPage} from '@src/pages/CoreChallengeDetailsPage';
+import {NotificationsPage} from '@src/pages/NotificationsPage';
+import {AboutMyRelationshipPage} from '@src/pages/AboutMyRelationshipPage';
+import {YourGoalsPage} from '@src/pages/YourGoalsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -46,6 +49,9 @@ export enum AppRouteNames {
   SESSIONS = 'sessions',
   SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
   CORE_CHALLENGE_CARDS = 'coreChallengeCards',
+  NOTIFICATIONS = 'notifications',
+  ABOUT_MY_RELATIONSHIP = 'aboutMyRelationship',
+  YOUR_GOALS = 'yourGoals',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -70,6 +76,9 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.SESSIONS]: 'sessions',
   [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
   [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
+  [AppRouteNames.NOTIFICATIONS]: 'notifications',
+  [AppRouteNames.ABOUT_MY_RELATIONSHIP]: 'aboutMyRelationship',
+  [AppRouteNames.YOUR_GOALS]: 'yourGoals',
 };
 
 type NewRouteProps = {
@@ -124,7 +133,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.title',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteBottomPadding={true} isPageScrolling={true}>
+        <Layout
+          deleteBottomPadding={true}
+          deleteTopPadding={true}
+          isPageScrolling={true}>
           <SettingsPage {...props} />
         </Layout>
       );
@@ -133,7 +145,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.PROFILE]: {
     name: appRoutePaths.profile,
     headerShown: true,
-    headerTitle: 'settings.profile',
+    headerTitle: 'settings.about_me',
     HeaderRight: ProfileHeaderRight,
     Element: (props: ParamListBase) => {
       return (
@@ -299,6 +311,42 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <CoreChallengeDetailsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.NOTIFICATIONS]: {
+    name: appRoutePaths.notifications,
+    headerShown: true,
+    headerTitle: 'notifications.title',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <NotificationsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.ABOUT_MY_RELATIONSHIP]: {
+    name: appRoutePaths.aboutMyRelationship,
+    headerShown: true,
+    headerTitle: 'settings.about_my_relationship',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <AboutMyRelationshipPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.YOUR_GOALS]: {
+    name: appRoutePaths.yourGoals,
+    headerShown: true,
+    headerTitle: 'settings.your_goals',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <YourGoalsPage {...props} />
         </Layout>
       );
     },

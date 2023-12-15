@@ -26,7 +26,14 @@ const getLanguages = (
   ];
 };
 
-const LanguageSwitcher = () => {
+interface LanguageSwitcherProps {
+  isLanguagePopupVisible: boolean;
+  setIsLanguagePopupVisible: (isVisible: boolean) => void;
+}
+
+const LanguageSwitcher = (props: LanguageSwitcherProps) => {
+  const {isLanguagePopupVisible, setIsLanguagePopupVisible} = props;
+
   const {t, i18n} = useTranslation();
   const languages = getLanguages(t);
 
@@ -44,6 +51,8 @@ const LanguageSwitcher = () => {
   return (
     <View>
       <Select
+        setIsPopupVisible={setIsLanguagePopupVisible}
+        isPopupVisible={isLanguagePopupVisible}
         selectedValueStyle={mode}
         Theme={SelectTheme.CLEAR}
         prompt={t('settings.language') || ''}

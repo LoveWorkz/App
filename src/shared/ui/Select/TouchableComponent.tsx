@@ -13,13 +13,11 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {SelectTheme} from './Select';
 import Skeleton from '../Skeleton/Skeleton';
 interface TouchableComponentProps {
   onSelectOpenHandler: () => void;
   selectedValueStyle?: StyleType;
   label?: string;
-  theme?: SelectTheme;
   selectedDisplayValue: string;
   isLoading: boolean;
   placeholder?: string;
@@ -33,14 +31,12 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     onSelectOpenHandler,
     selectedValueStyle,
     label,
-    theme = SelectTheme.CLEAR,
     selectedDisplayValue,
     isLoading,
     placeholder,
   } = props;
   const colors = useColors();
-  const {theme: appTheme} = useTheme();
-  const isClear = theme === SelectTheme.CLEAR;
+  const {theme} = useTheme();
   const isValueLarge = selectedDisplayValue.length >= 35;
 
   if (isLoading) {
@@ -70,7 +66,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     </View>
   );
 
-  if (isClear && label) {
+  if (label) {
     content = (
       <View>
         <AppText style={selectedValueStyle} text={label} />
@@ -89,11 +85,8 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
   }
 
   return (
-    <SafeAreaView
-      style={
-        isClear ? {} : {...getShadowOpacity(appTheme).shadowOpacity_level_1}
-      }>
-      {!isClear && label && (
+    <SafeAreaView style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
+      {label && (
         <AppText
           style={[styles.label, {...selectedValueStyle}]}
           size={TextSize.LEVEL_2}
@@ -104,9 +97,8 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
       <Pressable
         style={[
           styles.wrapper,
-          styles[theme],
           {
-            backgroundColor: isClear ? colors.bgColor : colors.bgTertiaryColor,
+            backgroundColor: colors.bgTertiaryColor,
           },
         ]}
         onPress={onSelectOpenHandler}>
@@ -122,17 +114,14 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 });
 
 const styles = StyleSheet.create<Record<string, any>>({
-  outline: {
-    height: height,
-    borderRadius: borderRadius,
-    paddingHorizontal: horizontalScale(20),
-    alignItems: 'center',
-  },
   wrapper: {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     paddingVertical: verticalScale(8),
+    height: height,
+    borderRadius: borderRadius,
+    paddingHorizontal: horizontalScale(20),
   },
   label: {
     marginBottom: verticalScale(5),
