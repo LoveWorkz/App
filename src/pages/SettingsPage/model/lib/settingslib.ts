@@ -1,10 +1,6 @@
 import {TFunction} from 'i18next';
 
-import {getProfileIcon} from '@src/shared/assets/icons/Profile';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {HeartIcon} from '@src/shared/assets/icons/Heart';
-import {InvitePartnerIcon} from '@src/shared/assets/icons/InvitePartner';
-import {YourGoalsIcon} from '@src/shared/assets/icons/YourGoals';
 import {RestorePurchaseIcon} from '@src/shared/assets/icons/RestorePurchase';
 import {ManageSubscriptionIcon} from '@src/shared/assets/icons/ManageSubscription';
 import {getAboutIcon} from '@src/shared/assets/icons/About';
@@ -14,36 +10,6 @@ import {InstagramIcon} from '@src/shared/assets/icons/Instagram';
 import {HomeIconOutline} from '@src/shared/assets/icons/Home';
 import {PrivacyPolicyIcon} from '@src/shared/assets/icons/PrivacyPolicy';
 import {SettingItemType} from '../types/settingsType';
-
-export const getAccountItems = ({
-  t,
-  isDarkMode,
-}: {
-  t: TFunction;
-  isDarkMode: boolean;
-}): SettingItemType[] => {
-  return [
-    {
-      Icon: getProfileIcon(isDarkMode),
-      text: t('settings.about_me'),
-      path: AppRouteNames.PROFILE,
-    },
-    {
-      Icon: HeartIcon,
-      text: t('settings.about_my_relationship'),
-      path: AppRouteNames.ABOUT_MY_RELATIONSHIP,
-    },
-    {
-      Icon: InvitePartnerIcon,
-      text: t('settings.invite_partner'),
-    },
-    {
-      Icon: YourGoalsIcon,
-      text: t('settings.your_goals'),
-      path: AppRouteNames.YOUR_GOALS,
-    },
-  ];
-};
 
 export const getSubscriptionItems = (t: TFunction): SettingItemType[] => {
   return [

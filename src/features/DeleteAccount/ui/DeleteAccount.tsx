@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {Wrapper as DeleteAccountModal} from './DeleteAccountModal/DeleteAccountModal';
+import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal';
 
 const DeleteAccount = () => {
   const {t} = useTranslation();
@@ -34,7 +34,7 @@ const DeleteAccount = () => {
   );
 };
 
-export const Wrapper = memo(DeleteAccount);
+export default memo(DeleteAccount);
 
 const styles = StyleSheet.create({
   deleteText: {

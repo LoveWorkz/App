@@ -14,12 +14,17 @@ import {ThemeIcon} from '@src/shared/assets/icons/Theme';
 import {NotificationIcon} from '@src/shared/assets/icons/Notification';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {LogOut} from '@src/features/LogOut';
+import {InvitePartnerModal} from '@src/features/InvitePartner';
+import {getProfileIcon} from '@src/shared/assets/icons/Profile';
+import {YourGoalsIcon} from '@src/shared/assets/icons/YourGoals';
+import {InvitePartnerIcon} from '@src/shared/assets/icons/InvitePartner';
+import {HeartIcon} from '@src/shared/assets/icons/Heart';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import SettingGroup from './SettingGroup/SettingGroup';
 import ShareUs from './ShareUs/ShareUs';
 import {SettingItemType} from '../model/types/settingsType';
 import {
   getAboutLoveWorkzItems,
-  getAccountItems,
   getMoreItems,
   getSubscriptionItems,
 } from '../model/lib/settingslib';
@@ -29,14 +34,16 @@ const SettingsPage = () => {
   const navbarHeaderHeight = useHeaderHeight();
 
   const {t} = useTranslation();
+  const {theme} = useTheme();
+  const isDarkMode = theme === Theme.Dark;
 
   const [isLanguagePopupVisible, setIsLanguagePopupVisible] = useState(false);
+  const [isPartnerPopupVisible, setIsPartnerPopupVisible] = useState(false);
 
   const navbarHeight = isPlatformIos
     ? navbarHeaderHeight
     : navbarHeaderHeight + statusBarHeight;
 
-  const accountItems = getAccountItems({t, isDarkMode: false});
   const subscriptionItems = getSubscriptionItems(t);
   const aboutLoveWorkzItems = getAboutLoveWorkzItems({t, isDarkMode: false});
   const moreItems = getMoreItems({t, isDarkMode: false});
@@ -63,6 +70,33 @@ const SettingsPage = () => {
       },
     ];
   }, [t]);
+
+  const accountItems = useMemo<SettingItemType[]>(() => {
+    return [
+      {
+        Icon: getProfileIcon(isDarkMode),
+        text: t('settings.about_me'),
+        path: AppRouteNames.PROFILE,
+      },
+      {
+        Icon: HeartIcon,
+        text: t('settings.about_my_relationship'),
+        path: AppRouteNames.ABOUT_MY_RELATIONSHIP,
+      },
+      {
+        Icon: InvitePartnerIcon,
+        text: t('settings.invite_partner'),
+        onPress: () => {
+          setIsPartnerPopupVisible(true);
+        },
+      },
+      {
+        Icon: YourGoalsIcon,
+        text: t('settings.your_goals'),
+        path: AppRouteNames.YOUR_GOALS,
+      },
+    ];
+  }, [isDarkMode, t]);
 
   return (
     <View
@@ -108,6 +142,10 @@ const SettingsPage = () => {
         <View style={styles.logoutWrapper}>
           <LogOut />
         </View>
+        <InvitePartnerModal
+          visible={isPartnerPopupVisible}
+          setVisible={setIsPartnerPopupVisible}
+        />
       </View>
     </View>
   );

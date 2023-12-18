@@ -16,6 +16,7 @@ import error from './error.json';
 import rubricFilterItem from './rubricFilterItem.json';
 import sessions from './sessions.json';
 import notifications from './notifications.json';
+import partner from './partner.json';
 
 export const pt = {
   ...common,
@@ -36,4 +37,5 @@ export const pt = {
   ...rubricFilterItem,
   ...sessions,
   ...notifications,
+  ...partner,
 };

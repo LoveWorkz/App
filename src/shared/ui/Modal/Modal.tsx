@@ -56,7 +56,7 @@ export const Modal = (props: ModalProps) => {
             style={[
               styles.content,
               {
-                backgroundColor: colors.bgQuaternaryColor,
+                backgroundColor: colors.bgColor,
               },
               isThemeBottom && styles.button,
               contentStyle,

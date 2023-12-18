@@ -96,7 +96,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
   );
 };
 
-export const Wrapper = memo(observer(DeleteAccountModal));
+export default memo(observer(DeleteAccountModal));
 
 const styles = StyleSheet.create({
   content: {

@@ -18,7 +18,6 @@ import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/widgets/layout';
-import {PartnerEditPage} from '@src/pages/PartnerEditPage';
 import {SessionsPage} from '@src/pages/SessionsPage';
 import {ChallengeCardsPage} from '@src/pages/SpecialChallengeDetailsPage';
 import {CoreChallengeDetailsPage} from '@src/pages/CoreChallengeDetailsPage';
@@ -44,7 +43,6 @@ export enum AppRouteNames {
   BOOK_DETAILS = 'bookDetails',
   CATEGORY_DETAILS = 'categoryDetails',
   QUESTIONS = 'questions',
-  PARTNER_EDIT = 'partnerEdit',
   SESSIONS = 'sessions',
   SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
   CORE_CHALLENGE_CARDS = 'coreChallengeCards',
@@ -71,7 +69,6 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
   [AppRouteNames.QUESTIONS]: 'questions',
-  [AppRouteNames.PARTNER_EDIT]: 'partnerEdit',
   [AppRouteNames.SESSIONS]: 'sessions',
   [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
   [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
@@ -259,18 +256,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteTopPadding={true}>
           <QuestionsPage {...props} />
-        </Layout>
-      );
-    },
-  },
-  [AppRouteNames.PARTNER_EDIT]: {
-    name: appRoutePaths.partnerEdit,
-    headerShown: true,
-    headerTitle: 'profile.partner',
-    Element: (props: ParamListBase) => {
-      return (
-        <Layout>
-          <PartnerEditPage {...props} />
         </Layout>
       );
     },
