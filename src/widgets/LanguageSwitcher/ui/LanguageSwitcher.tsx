@@ -16,12 +16,12 @@ const getLanguages = (
       value: 'en',
     },
     {
-      label: t('settings.portuguese'),
-      value: 'pt',
-    },
-    {
       label: t('settings.german'),
       value: 'de',
+    },
+    {
+      label: t('settings.portuguese'),
+      value: 'pt',
     },
   ];
 };

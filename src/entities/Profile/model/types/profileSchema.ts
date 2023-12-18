@@ -3,19 +3,19 @@ import {PartnerType} from '@src/entities/Partner';
 export interface Profile {
   photo: string;
   name: string;
-  age: string;
   country: string;
-  relationshipStatus: string;
   preferences: string[];
   partner: PartnerType;
+  gender: string;
+  email: string;
 }
 
 export interface ProfileErrorInfo {
   nameError: string;
-  ageError: string;
   countryError: string;
-  relationshipStatusError: string;
   preferenceError: string;
+  emailError: string;
+  genderError: string;
 }
 
 export enum ProfilePhotoActionType {

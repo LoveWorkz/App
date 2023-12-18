@@ -15,7 +15,6 @@ import {HowToUsePage} from '@src/pages/HowToUsePage';
 import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
-import {ProfileHeaderRight} from '@src/widgets/headers/ProfileHeaderRight';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/widgets/layout';
@@ -146,7 +145,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.profile,
     headerShown: true,
     headerTitle: 'settings.about_me',
-    HeaderRight: ProfileHeaderRight,
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling={true}>

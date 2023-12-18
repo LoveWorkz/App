@@ -103,7 +103,6 @@ export const AppText = memo((props: AppTextProps) => {
 });
 
 const styles = StyleSheet.create<Record<string, any>>({
-  primary: {},
   size_1: {
     ...globalStyles.size_1,
   },

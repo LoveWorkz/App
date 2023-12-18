@@ -12,10 +12,11 @@ interface CountrySelectProps {
   changeCountry: (country: string) => void;
   initialValue?: string;
   isLoading: boolean;
+  error?: string | null;
 }
 
 const CountrySelect = (props: CountrySelectProps) => {
-  const {changeCountry, country, initialValue, isLoading} = props;
+  const {changeCountry, country, initialValue, isLoading, error} = props;
   const {t, i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
 
@@ -42,6 +43,7 @@ const CountrySelect = (props: CountrySelectProps) => {
         value={country}
         isScrolling
         onSelect={onChangeHandler}
+        error={error}
       />
     </SafeAreaView>
   );

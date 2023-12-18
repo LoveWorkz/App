@@ -5,11 +5,10 @@ import {useTranslation} from 'react-i18next';
 
 import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
-import {RelationshipStatusSelect} from '@src/entities/RelationshipStatus';
-import {PartnerSelect} from '@src/entities/Partner';
+import {Gender} from '@src/entities/Gender';
 import {userStore} from '@src/entities/User';
+import {DateOfBirth} from '@src/entities/DateOfBirth';
 import profileStore from '../../model/store/profileStore';
-import Preferences from '../Preferences/Preferences';
 
 interface ProfileFormProps {
   isSetup?: boolean;
@@ -19,7 +18,6 @@ interface ProfileFormProps {
 const ProfileForm = (props: ProfileFormProps) => {
   const {isSetup = false, isLoading = false} = props;
   const profileData = profileStore.profileData;
-  const partner = profileStore.partner;
   const user = userStore.user;
 
   // if the user is trying to set the profile for the first time, chose the account name (google, apple)
@@ -31,20 +29,16 @@ const ProfileForm = (props: ProfileFormProps) => {
     profileStore.setName(value);
   }, []);
 
-  const onAgeChangeHandler = useCallback((value: string) => {
-    profileStore.setAge(value);
+  const onGenderChangeHandler = useCallback((value: string) => {
+    profileStore.setGender(value);
+  }, []);
+
+  const onEmailChangeHandler = useCallback((value: string) => {
+    profileStore.setEmail(value);
   }, []);
 
   const onCountryChangeHandler = useCallback((value: string) => {
     profileStore.setCountry(value);
-  }, []);
-
-  const onStatusChangeHandler = useCallback((value: string) => {
-    profileStore.setRelationshipStatus(value);
-  }, []);
-
-  const onPreferenceChangeHandler = useCallback((value: string) => {
-    profileStore.setPreferences(value);
   }, []);
 
   return (
@@ -53,27 +47,31 @@ const ProfileForm = (props: ProfileFormProps) => {
         <Input
           isLoading={isLoading}
           isSpaceAllowed
-          initialValue={userName || ''}
-          label={t('profile.name') || ''}
+          initialValue={userName}
+          label={t('profile.name')}
           value={profileStore.profileForm.name}
           onChange={onNameChangeHandler}
-          placeholder={t('profile.enter_name') || ''}
-          error={t(profileStore.errorInfo.nameError) || ''}
+          placeholder={t('profile.enter_name')}
+          error={t(profileStore.errorInfo.nameError)}
         />
       </View>
       <View style={styles.item}>
         <Input
           isLoading={isLoading}
-          keyboardType={'numeric'}
-          initialValue={profileData?.age}
-          label={t('profile.age') || ''}
-          value={profileStore.profileForm.age}
-          onChange={onAgeChangeHandler}
-          placeholder={t('profile.enter_age') || ''}
-          error={
-            profileStore.errorInfo.ageError &&
-            t(`${profileStore.errorInfo.ageError}`)
-          }
+          initialValue={profileData?.email}
+          label={t('auth.email')}
+          value={profileStore.profileForm.email}
+          onChange={onEmailChangeHandler}
+          placeholder={t('auth.enter_email')}
+          error={t(profileStore.errorInfo.emailError)}
+        />
+      </View>
+      <View style={styles.item}>
+        <DateOfBirth
+          isLoading={isLoading}
+          initialValue={''}
+          country={''}
+          changeCountry={() => {}}
         />
       </View>
       <View style={styles.item}>
@@ -82,27 +80,16 @@ const ProfileForm = (props: ProfileFormProps) => {
           initialValue={profileData?.country}
           country={profileStore.profileForm.country}
           changeCountry={onCountryChangeHandler}
+          error={t(profileStore.errorInfo.countryError)}
         />
       </View>
       <View style={styles.item}>
-        <RelationshipStatusSelect
+        <Gender
           isLoading={isLoading}
-          initialValue={profileData?.relationshipStatus}
-          status={profileStore.profileForm.relationshipStatus}
-          changeStatus={onStatusChangeHandler}
-        />
-      </View>
-      {!isSetup && (
-        <View style={styles.item}>
-          <PartnerSelect isLoading={isLoading} partner={partner} />
-        </View>
-      )}
-      <View style={styles.preferences}>
-        <Preferences
-          isLoading={isLoading}
-          error={t(profileStore.errorInfo.preferenceError) || ''}
-          changePreference={onPreferenceChangeHandler}
-          selectedPreferences={profileStore.profileForm.preferences || []}
+          initialValue={profileData?.gender}
+          gender={profileStore.profileForm.gender}
+          changeGender={onGenderChangeHandler}
+          error={t(profileStore.errorInfo.genderError)}
         />
       </View>
     </SafeAreaView>
@@ -117,8 +104,5 @@ const styles = StyleSheet.create({
   },
   item: {
     marginBottom: 15,
-  },
-  preferences: {
-    marginTop: 15,
   },
 });

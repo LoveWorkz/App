@@ -5,13 +5,11 @@ import {SvgXml} from 'react-native-svg';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {CloseIcon} from '@src/shared/assets/icons/Close';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
 import {Button} from '../Button/Button';
+import {moderateScale} from '@src/shared/lib/Metrics';
 
-export enum Animation {
-  BOUNCEIN = 'bounceIn',
-  SLIDEIN_UP = 'slideInUp',
-}
+type ModalTheme = 'center' | 'bottom';
 
 interface ModalProps {
   visible: boolean;
@@ -19,9 +17,9 @@ interface ModalProps {
   contentStyle?:
     | Record<string, string | number>[]
     | Record<string, string | number>;
-  animationIn?: Animation;
   onClose?: () => void;
   isCloseIcon?: boolean;
+  theme?: ModalTheme;
 }
 
 export const Modal = (props: ModalProps) => {
@@ -29,12 +27,15 @@ export const Modal = (props: ModalProps) => {
     visible,
     children,
     contentStyle,
-    animationIn = Animation.BOUNCEIN,
     onClose,
     isCloseIcon = false,
+    theme = 'center',
   } = props;
 
   const colors = useColors();
+  const isThemeBottom = theme === 'bottom';
+
+  const animationType = isThemeBottom ? 'slideInUp' : 'bounceIn';
 
   const onCancelHandler = useCallback(() => {
     onClose?.();
@@ -48,13 +49,16 @@ export const Modal = (props: ModalProps) => {
           onBackdropPress={onCancelHandler}
           statusBarTranslucent
           animationInTiming={300}
-          animationIn={animationIn}
+          animationIn={animationType}
           backdropColor={colors.bgPopup}
           isVisible={visible}>
           <View
             style={[
               styles.content,
-              {backgroundColor: colors.bgQuaternaryColor},
+              {
+                backgroundColor: colors.bgQuaternaryColor,
+              },
+              isThemeBottom && styles.button,
               contentStyle,
             ]}>
             {isCloseIcon && (
@@ -83,6 +87,15 @@ const styles = StyleSheet.create({
     width: '100%',
     minHeight: 240,
     padding: 30,
+  },
+  button: {
+    position: 'absolute',
+    bottom: -20,
+    left: -20,
+    width: windowWidth,
+    borderRadius: 0,
+    borderTopRightRadius: moderateScale(20),
+    borderTopLeftRadius: moderateScale(20),
   },
   closeIconWrapper: {
     position: 'absolute',

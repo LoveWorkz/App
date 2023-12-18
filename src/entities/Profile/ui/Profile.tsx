@@ -90,15 +90,15 @@ const Profile = (props: ProfileProps) => {
         <View style={styles.uploadPhotoWrapper}>
           <Skeleton width={uploadPhotoWidth} height={40} borderRadius={10} />
         </View>
+
+        <View style={styles.profileFormWrapper}>
+          <ProfileForm isLoading={isLoading} />
+        </View>
         {isAuthMethodEmail && (
           <View style={styles.changePasswordWrapper}>
             <Skeleton width={100} height={20} />
           </View>
         )}
-        <View style={styles.profileFormWrapper}>
-          <ProfileForm isLoading={isLoading} />
-        </View>
-
         <View style={styles.btns}>
           <View style={styles.btnSkeleton}>
             <Button isLoading={isLoading}>
@@ -126,14 +126,16 @@ const Profile = (props: ProfileProps) => {
           isDeletingPhoto={profileStore.isDeletingPhoto}
         />
       </View>
+
+      <View style={styles.profileFormWrapper}>
+        <ProfileForm />
+      </View>
+
       {isAuthMethodEmail && (
         <View style={styles.changePasswordWrapper}>
           <ChangePassword />
         </View>
       )}
-      <View style={styles.profileFormWrapper}>
-        <ProfileForm />
-      </View>
 
       <View style={styles.btns}>
         <Button
@@ -163,13 +165,13 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(-20),
   },
   changePasswordWrapper: {
-    marginTop: verticalScale(30),
-    marginBottom: verticalScale(30),
+    marginTop: verticalScale(15),
+    marginBottom: verticalScale(15),
     width: '100%',
   },
   profileFormWrapper: {
     width: '100%',
-    marginBottom: verticalScale(20),
+    marginTop: verticalScale(20),
   },
   deleteUserWrapper: {
     width: '100%',

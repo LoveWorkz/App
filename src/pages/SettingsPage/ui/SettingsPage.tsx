@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   bottomBlock: {
     width: '100%',
     position: 'absolute',
-    bottom: verticalScale(50),
+    bottom: verticalScale(70),
   },
   shareUs: {
     marginBottom: verticalScale(25),

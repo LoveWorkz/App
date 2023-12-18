@@ -8,7 +8,8 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {horizontalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {ChangePasswordIcon} from '@src/shared/assets/icons/ChangePassword';
 
 const ChangePassword = () => {
   const {t} = useTranslation();
@@ -17,24 +18,26 @@ const ChangePassword = () => {
   const onPressHandler = useCallback(() => {
     navigation.navigate(AppRouteNames.CHANGE_PASSWORD);
   }, []);
-
+  ChangePasswordIcon;
   return (
     <Pressable onPress={onPressHandler} style={styles.changePassword}>
-      <View>
+      <View style={styles.leftSide}>
+        <SvgXml
+          stroke={colors.primaryTextColor}
+          xml={ChangePasswordIcon}
+          style={styles.changePasswordIcon}
+        />
         <AppText
           style={{color: colors.primaryTextColor}}
           size={TextSize.LEVEL_5}
           text={t('settings.change_password')}
         />
       </View>
-      <View>
-        <SvgXml
-          stroke={colors.primaryTextColor}
-          xml={SmallArrowRightIcon}
-          style={styles.icon}
-        />
-        <View />
-      </View>
+      <SvgXml
+        stroke={colors.primaryTextColor}
+        xml={SmallArrowRightIcon}
+        style={styles.icon}
+      />
     </Pressable>
   );
 };
@@ -48,8 +51,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  changePasswordIcon: {
+    height: horizontalScale(18),
+    marginRight: horizontalScale(10),
+    width: horizontalScale(18),
+    top: verticalScale(2),
+  },
   icon: {
-    height: horizontalScale(16),
-    width: horizontalScale(16),
+    height: horizontalScale(14),
+    width: horizontalScale(14),
+  },
+  leftSide: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

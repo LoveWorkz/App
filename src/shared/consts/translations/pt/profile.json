@@ -3,7 +3,6 @@
    "profile.name": "Nome",
    "profile.enter_name": "Insira o nome",
    "profile.enter_age": "Inserir idade",
-   "profile.age": "Idade",
    "profile.country": "País",
    "profile.relationship_status": "Status de Relacionamento",
    "profile.preferences": "Preferências",
@@ -15,5 +14,13 @@
    "profile.increase_intimacy_level": "Aumentar nosso nível de relacionamento",
    "profile.increase_appreciation_and_respect": "Aumentar a apreciação e o respeito",
    "profile.add_partner": "Adicionar parceiro",
-   "profile.partner": "Parceiro"
+   "profile.partner": "Parceiro",
+   "profile.date_of_birth": "Data de Nascimento",
+   "profile.gender": "Gênero",
+   "profile.male": "Masculino",
+   "profile.female": "Feminino",
+   "profile.non_binary": "Não binário",
+   "profile.transgender": "Transgênero",
+   "profile.prefer_not_to_say": "Prefiro não dizer",
+   "profile.other": "Outro"
 }

@@ -1,13 +1,11 @@
 import React, {ReactElement} from 'react';
-import {Modal, SafeAreaView, StyleSheet, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 
-import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {AppText, TextSize} from '../AppText/AppText';
-import {Button} from '../Button/Button';
+import {Modal} from '../Modal/Modal';
 
 interface PageSelectProps {
   visible: boolean;
@@ -28,10 +26,13 @@ export const PageSelect = (props: PageSelectProps) => {
 
   return (
     <Modal
-      animationType="slide"
-      transparent={true}
       visible={visible}
-      onRequestClose={() => {
+      contentStyle={[
+        styles.modalContentStyle,
+        {backgroundColor: colors.bgColor},
+      ]}
+      theme={'bottom'}
+      onClose={() => {
         onClose();
       }}>
       <SafeAreaView
@@ -43,13 +44,13 @@ export const PageSelect = (props: PageSelectProps) => {
               height: navbarHeaderHeight,
             },
           ]}>
-          <Button style={styles.iconWrapper} onPress={onClose}>
+          {/* <Button style={styles.iconWrapper} onPress={onClose}>
             <SvgXml
               fill={colors.primaryTextColor}
               style={styles.arrowLeft}
               xml={ArrowLeftIcon}
             />
-          </Button>
+          </Button> */}
 
           {prompt && (
             <AppText
@@ -67,17 +68,24 @@ export const PageSelect = (props: PageSelectProps) => {
 };
 
 const styles = StyleSheet.create<Record<string, any>>({
+  selectPage: {
+    flex: 1,
+    width: '100%',
+  },
   content: {
     paddingLeft: horizontalScale(15),
     paddingTop: verticalScale(20),
+    maxHeight: verticalScale(400),
   },
-  selectPage: {
-    flex: 1,
+  modalContentStyle: {
+    alignItems: 'flex-start',
+    padding: 20,
   },
   header: {
     alignItems: 'center',
     flexDirection: 'row',
     paddingLeft: horizontalScale(15),
+    justifyContent: 'center',
   },
   iconWrapper: {
     marginRight: horizontalScale(15),

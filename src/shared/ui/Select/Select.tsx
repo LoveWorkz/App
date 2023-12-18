@@ -6,7 +6,6 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {TouchableComponent} from './TouchableComponent';
 import {PageSelect} from './PageSelect';
 import {RenderItem} from './RenderItem';
-import {RadioGroup} from '../Radio/RadioGroup';
 
 export enum SelectTheme {
   CLEAR = 'clear',
@@ -28,6 +27,7 @@ interface SelectProps {
   closingTime?: number;
   setIsPopupVisible?: (isVisible: boolean) => void;
   isPopupVisible?: boolean;
+  error?: string | null;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -45,9 +45,10 @@ export const Select = memo((props: SelectProps) => {
     closingTime,
     isPopupVisible,
     setIsPopupVisible,
+    error,
   } = props;
 
-  const itemHeight = verticalScale(40);
+  const itemHeight = verticalScale(60);
 
   const [visible, setIsVisible] = useState(false);
   const [flatlistRef, setFlatlistRef] = useState<null | FlatList>(null);
@@ -123,8 +124,12 @@ export const Select = memo((props: SelectProps) => {
 
   const renderItem = useCallback(
     ({item}: {item: SelectOption}) => {
+      const lastElement = options[options.length - 1];
+      const isLastItem = lastElement.value === item.value;
+
       return (
         <RenderItem
+          isLastItem={isLastItem}
           item={item}
           onSelectHandler={onSelectHandler}
           selectedValue={value}
@@ -132,7 +137,7 @@ export const Select = memo((props: SelectProps) => {
         />
       );
     },
-    [onSelectHandler, value, itemHeight],
+    [onSelectHandler, value, itemHeight, options],
   );
 
   const onSelectOpenHandler = useCallback(() => {
@@ -143,6 +148,7 @@ export const Select = memo((props: SelectProps) => {
     <View>
       {Theme === SelectTheme.OUTLINE && (
         <TouchableComponent
+          error={error}
           isLoading={isLoading}
           selectedDisplayValue={selectedDisplayValue || ''}
           label={label}
@@ -163,14 +169,22 @@ export const Select = memo((props: SelectProps) => {
             data={options}
             renderItem={renderItem}
             keyExtractor={item => `${item.value}`}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
-          <RadioGroup
-            style={styles.selectItem}
-            value={value}
+          <FlatList
+            scrollEnabled={false}
+            style={styles.body}
             data={options}
-            onChange={onSelectHandler}
+            renderItem={renderItem}
+            keyExtractor={item => `${item.value}`}
           />
+          // <RadioGroup
+          //   style={styles.selectItem}
+          //   value={value}
+          //   data={options}
+          //   onChange={onSelectHandler}
+          // />
         )}
       </PageSelect>
     </View>

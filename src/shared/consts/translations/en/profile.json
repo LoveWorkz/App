@@ -2,7 +2,6 @@
    "profile.save_changes": "Save changes",
    "profile.name": "Name",
    "profile.enter_name": "Enter Name",
-   "profile.age": "Age",
    "profile.enter_age": "Enter Age",
    "profile.country": "Country",
    "profile.relationship_status": "Relationship status",
@@ -15,5 +14,13 @@
    "profile.increase_intimacy_level": "Increase our intimacy level",
    "profile.increase_appreciation_and_respect": "Increase appreciation and respect",
    "profile.add_partner": "Add Partner",
-   "profile.partner": "Partner"
+   "profile.partner": "Partner",
+   "profile.date_of_birth": "Date of Birth",
+   "profile.gender": "Gender",
+   "profile.male": "Male",
+   "profile.female": "Female",
+   "profile.non_binary": "Non-Binary",
+   "profile.transgender": "Transgender",
+   "profile.prefer_not_to_say": "Prefer Not to Say",
+   "profile.other": "Other"
 }

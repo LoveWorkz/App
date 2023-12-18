@@ -1,10 +1,9 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, useWindowDimensions} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {useTranslation} from 'react-i18next';
 
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {Animation, Modal} from '@src/shared/ui/Modal/Modal';
+import {Modal} from '@src/shared/ui/Modal/Modal';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {UploadPhotoType} from '../../model/types/uploadPhoto';
@@ -21,8 +20,6 @@ const UploadModal = (props: UploadModalProps) => {
   const {visible, setVisible, setPhtotData, setConfirmModalVisible} = props;
   const {t} = useTranslation();
   const colors = useColors();
-
-  const {width} = useWindowDimensions();
 
   const onPressHandler = async (type: UploadPhotoType) => {
     try {
@@ -53,11 +50,7 @@ const UploadModal = (props: UploadModalProps) => {
   };
 
   return (
-    <Modal
-      onClose={onCancelHandler}
-      animationIn={Animation.SLIDEIN_UP}
-      visible={visible}
-      contentStyle={[styles.content, {width}]}>
+    <Modal onClose={onCancelHandler} theme={'bottom'} visible={visible}>
       <AppText
         style={{color: colors.primaryTextColor}}
         size={TextSize.LEVEL_6}
@@ -94,14 +87,3 @@ const UploadModal = (props: UploadModalProps) => {
 };
 
 export default memo(UploadModal);
-
-const styles = StyleSheet.create({
-  content: {
-    position: 'absolute',
-    bottom: -20,
-    left: -20,
-    borderRadius: 0,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-  },
-});

@@ -16,16 +16,18 @@ import {
 } from '../types/profileSchema';
 import {validateFields} from '../services/validation/validateFields';
 
+const errorInitData: ProfileErrorInfo = {
+  countryError: '',
+  nameError: '',
+  preferenceError: '',
+  emailError: '',
+  genderError: '',
+};
+
 class ProfileStore {
   profileData = null as Profile | null;
   profileForm = {} as Profile;
-  errorInfo: ProfileErrorInfo = {
-    ageError: '',
-    countryError: '',
-    nameError: '',
-    relationshipStatusError: '',
-    preferenceError: '',
-  };
+  errorInfo = errorInitData;
   avatar: string = '';
   tempAvatar: string = '';
   partner: PartnerType | null = null;
@@ -42,8 +44,12 @@ class ProfileStore {
     this.profileForm.name = name;
   }
 
-  setAge(age: string) {
-    this.profileForm.age = age;
+  setGender(gender: string) {
+    this.profileForm.gender = gender;
+  }
+
+  setEmail(email: string) {
+    this.profileForm.email = email;
   }
 
   setCountry(country: string) {
@@ -52,10 +58,6 @@ class ProfileStore {
 
   setPartner(partner: PartnerType) {
     this.partner = partner;
-  }
-
-  setRelationshipStatus(staus: string) {
-    this.profileForm.relationshipStatus = staus;
   }
 
   setPreferences(preference: string) {
@@ -101,13 +103,7 @@ class ProfileStore {
   }
 
   clearErrors() {
-    this.setValidationError({
-      ageError: '',
-      countryError: '',
-      nameError: '',
-      relationshipStatusError: '',
-      preferenceError: '',
-    });
+    this.setValidationError(errorInitData);
   }
 
   profilePhotoAction = async (type: ProfilePhotoActionType) => {
@@ -231,10 +227,10 @@ class ProfileStore {
 
       const newProfileData = {
         name: profileForm.name,
-        age: profileForm.age,
         country: profileForm.country,
-        relationshipStatus: profileForm.relationshipStatus,
         preferences: profileForm.preferences,
+        gender: profileForm.gender,
+        email: profileForm.email,
       };
 
       // deleting await if user is offline

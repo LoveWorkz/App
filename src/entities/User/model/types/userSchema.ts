@@ -10,9 +10,7 @@ export interface User {
   name: string;
   emailVerified: boolean;
   isAuth: boolean;
-  age: number;
   country: string;
-  relationshipStatus: string;
   preferences: string[];
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
@@ -23,6 +21,7 @@ export interface User {
   partner: PartnerType;
   hasUserRated: boolean;
   hasUserSubscription: boolean;
+  gender: string;
 }
 
 export enum AuthMethod {

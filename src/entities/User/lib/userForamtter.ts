@@ -9,9 +9,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.name = userInfo.displayName || '';
   formatedUser.emailVerified = userInfo.emailVerified;
   formatedUser.photo = userInfo.photoURL || '';
-  formatedUser.age = 0;
   formatedUser.country = '';
-  formatedUser.relationshipStatus = '';
   formatedUser.preferences = [];
   formatedUser.category = {
     currentCategory: CategoryKey.Starter,
@@ -40,6 +38,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
 
   formatedUser.hasUserRated = false;
   formatedUser.hasUserSubscription = true;
+  formatedUser.gender = '';
 
   return formatedUser;
 };

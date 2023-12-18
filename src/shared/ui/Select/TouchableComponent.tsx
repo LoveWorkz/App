@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {Pressable, View, StyleSheet, SafeAreaView} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
@@ -14,6 +14,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import Skeleton from '../Skeleton/Skeleton';
+
 interface TouchableComponentProps {
   onSelectOpenHandler: () => void;
   selectedValueStyle?: StyleType;
@@ -21,6 +22,7 @@ interface TouchableComponentProps {
   selectedDisplayValue: string;
   isLoading: boolean;
   placeholder?: string;
+  error?: string | null;
 }
 
 const height = 40;
@@ -34,6 +36,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     selectedDisplayValue,
     isLoading,
     placeholder,
+    error,
   } = props;
   const colors = useColors();
   const {theme} = useTheme();
@@ -66,23 +69,15 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
     </View>
   );
 
-  if (label) {
-    content = (
-      <View>
-        <AppText style={selectedValueStyle} text={label} />
-      </View>
-    );
-  } else if (selectedDisplayValue) {
-    content = (
-      <View>
-        <AppText
-          size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
-          style={selectedValueStyle}
-          text={selectedDisplayValue}
-        />
-      </View>
-    );
-  }
+  content = (
+    <View>
+      <AppText
+        size={isValueLarge ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
+        style={selectedValueStyle}
+        text={selectedDisplayValue}
+      />
+    </View>
+  );
 
   return (
     <SafeAreaView style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
@@ -109,6 +104,16 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
           style={styles.icon}
         />
       </Pressable>
+
+      {error && (
+        <AppText
+          size={TextSize.LEVEL_1}
+          weight={'500'}
+          type={TextType.ERROR}
+          style={[styles.errorText, {color: colors.secondaryError}]}
+          text={error}
+        />
+      )}
     </SafeAreaView>
   );
 });
@@ -129,5 +134,9 @@ const styles = StyleSheet.create<Record<string, any>>({
   icon: {
     height: horizontalScale(12),
     width: horizontalScale(12),
+  },
+  errorText: {
+    position: 'absolute',
+    bottom: -14,
   },
 });
