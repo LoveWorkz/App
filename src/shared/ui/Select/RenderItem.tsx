@@ -25,7 +25,7 @@ export const RenderItem = memo((props: RenderItemProps) => {
   const isSelected = value === selectedValue;
   const borderBottomColor = isLastItem
     ? 'transparent'
-    : colors.settingItemColor;
+    : colors.borderBottomColor;
 
   const onChange = useCallback(
     () => onSelectHandler(value),
@@ -45,7 +45,7 @@ export const RenderItem = memo((props: RenderItemProps) => {
         {
           borderBottomColor,
         },
-        isSelected ? styles.active : {},
+        isSelected ? [styles.active, {backgroundColor: colors.white}] : {},
       ]}>
       <AppText size={TextSize.LEVEL_4} weight={'600'} text={label} />
 
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   },
   active: {
     borderRadius: moderateScale(10),
-    backgroundColor: 'white',
     borderBottomColor: 'transparent',
   },
 });

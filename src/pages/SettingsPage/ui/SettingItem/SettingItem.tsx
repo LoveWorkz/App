@@ -37,7 +37,10 @@ const SettingItem = (props: SettingItem) => {
   return (
     <TouchableOpacity
       disabled={!isPressable}
-      style={[styles.settingItem, {borderBottomColor: colors.settingItemColor}]}
+      style={[
+        styles.settingItem,
+        {borderBottomColor: colors.borderBottomColor},
+      ]}
       onPress={onPressHandler}>
       <View style={styles.leftSide}>
         <SvgXml xml={Icon} style={[styles.icon]} />

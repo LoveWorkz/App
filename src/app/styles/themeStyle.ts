@@ -27,7 +27,7 @@ export type Colors =
   | 'bgPopup'
   | 'bgLayout'
   | 'specialChallengeBgColor'
-  | 'settingItemColor';
+  | 'borderBottomColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -70,7 +70,7 @@ const light: ColorType = {
   appleIconColor: '#1B1B1B',
 
   // border colors
-  settingItemColor: '#D9D8F0',
+  borderBottomColor: '#D9D8F0',
 
   ...commonColor,
 };
@@ -105,7 +105,7 @@ const dark: ColorType = {
   appleIconColor: '#FFFFFF',
 
   // border colors
-  settingItemColor: '#D9D8F0',
+  borderBottomColor: '#D9D8F0',
 
   ...commonColor,
 };

@@ -1,3 +1,11 @@
 {
-   "notifications.title": "Preferências de Notificação"
+   "notifications.title": "Preferências de Notificação",
+   "notifications.news_more": "Notícias & Mais",
+   "notifications.news_more_description": "Novos recursos e atualizações de produto",
+   "notifications.daily_quotes": "Citações Diárias",
+   "notifications.daily_quotes_description": "Citações diárias de nossa literatura recomendada e terapeutas líderes.",
+   "notifications.newsletter": "Newsletter",
+   "notifications.newsletter_description": "Conteúdo exclusivo sobre relacionamentos, rotinas saudáveis e ideias para encontros, atividades etc., literatura e principais terapeutas.",
+   "notifications.promotions": "Promoções",
+   "notifications.promotions_description": "Nossas melhores ofertas e descontos em especiais e LoveWorkz Premium."
 }

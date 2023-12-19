@@ -52,7 +52,6 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
           style={[styles.description, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_4}
           text={t('partner.description')}
-          weight={'600'}
         />
         <View style={styles.emailWrapper}>
           <PartnerEmail />
