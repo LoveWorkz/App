@@ -47,7 +47,7 @@ export const getAboutLoveWorkzItems = ({
     {
       Icon: getOurSpecialistIcon(isDarkMode),
       text: t('settings.our_specialists'),
-      isPressable: false,
+      path: AppRouteNames.PARTNERS,
     },
   ];
 };

@@ -168,7 +168,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.partners',
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout isPageScrolling>
           <PartnersPage {...props} />
         </Layout>
       );

@@ -43,8 +43,6 @@ const HeaderLeft = (props: HeaderLeftProps) => {
               paddingRight: isTitleLarge ? horizontalScale(20) : 0,
             },
           ]}
-          ellipsizeMode={'tail'}
-          numberOfLines={1}
           size={TextSize.LEVEL_6}
           weight={'500'}
           text={t(title || headerTitle || '')}
@@ -60,7 +58,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   headerLeft: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     flexWrap: 'wrap',
     height: '100%',
   },
