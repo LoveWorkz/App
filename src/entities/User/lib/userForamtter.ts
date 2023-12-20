@@ -10,7 +10,6 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.emailVerified = userInfo.emailVerified;
   formatedUser.photo = userInfo.photoURL || '';
   formatedUser.country = '';
-  formatedUser.preferences = [];
   formatedUser.category = {
     currentCategory: CategoryKey.Starter,
   };
@@ -30,15 +29,10 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.isWowThatWasFastModalForbidden = false;
   formatedUser.hasUserSwipedAnyQuestion = false;
 
-  formatedUser.partner = {
-    name: '',
-    email: '',
-    age: 0,
-  };
-
   formatedUser.hasUserRated = false;
   formatedUser.hasUserSubscription = true;
   formatedUser.gender = '';
+  formatedUser.selectedGoalsIds = [];
 
   return formatedUser;
 };

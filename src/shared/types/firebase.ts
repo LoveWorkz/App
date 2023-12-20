@@ -17,6 +17,7 @@ export enum Collections {
   USER_RUBRICS = 'User_Rubrics',
   SPECIAL_DAYS = 'special_days',
   SPECIAL_CHALLENGES = 'special_challenges',
+  GOALS = 'goals',
 
   CATEGORIES_2 = 'Categories_2',
   SESSIONS = 'sessions',

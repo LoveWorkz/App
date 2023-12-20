@@ -328,7 +328,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.your_goals',
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout isPageScrolling>
           <YourGoalsPage {...props} />
         </Layout>
       );

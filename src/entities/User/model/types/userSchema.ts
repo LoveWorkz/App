@@ -1,7 +1,6 @@
 import {CurrentCategory} from '@src/entities/Category';
 import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {FavoriteType} from '@src/entities/Favorite';
-import {PartnerType} from '@src/entities/Partner';
 
 export interface User {
   id: string;
@@ -11,17 +10,16 @@ export interface User {
   emailVerified: boolean;
   isAuth: boolean;
   country: string;
-  preferences: string[];
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
   favorites: FavoriteType;
   quote: QuoeType;
   isWowThatWasFastModalForbidden: boolean;
   hasUserSwipedAnyQuestion: boolean;
-  partner: PartnerType;
   hasUserRated: boolean;
   hasUserSubscription: boolean;
   gender: string;
+  selectedGoalsIds: string[];
 }
 
 export enum AuthMethod {

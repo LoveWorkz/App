@@ -27,7 +27,8 @@ export type Colors =
   | 'bgPopup'
   | 'bgLayout'
   | 'specialChallengeBgColor'
-  | 'borderBottomColor';
+  | 'borderBottomColor'
+  | 'goalIconBgColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -38,6 +39,7 @@ const commonColor = {
   authPageAgreementText: '#9A9AA5',
   secondaryError: '#E1437C',
   specialChallengeBgColor: '#39518080',
+  goalIconBgColor: '#83C0F833',
 };
 
 const light: ColorType = {

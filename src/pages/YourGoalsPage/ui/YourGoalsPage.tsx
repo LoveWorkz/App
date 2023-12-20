@@ -1,14 +1,12 @@
 import React, {memo} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-interface YourGoalsPageProps {}
+import {GoalsList} from '@src/entities/Goal';
 
-const YourGoalsPage = (props: YourGoalsPageProps) => {
-  const {} = props;
-
+const YourGoalsPage = () => {
   return (
     <View style={styles.YourGoalsPage}>
-      <Text>YourGoalsPage</Text>
+      <GoalsList />
     </View>
   );
 };
@@ -16,5 +14,7 @@ const YourGoalsPage = (props: YourGoalsPageProps) => {
 export default memo(YourGoalsPage);
 
 const styles = StyleSheet.create({
-  YourGoalsPage: {},
+  YourGoalsPage: {
+    flex: 1,
+  },
 });
