@@ -9,14 +9,20 @@ interface PaginationProps {
   data: Record<string, string | number>[];
   scrollX: Animated.Value;
   itemWidth: number;
+  isSmallDotPagination?: boolean;
 }
 
 const Pagination = (props: PaginationProps) => {
-  const {data, scrollX, itemWidth} = props;
+  const {data, scrollX, itemWidth, isSmallDotPagination} = props;
   const colors = useColors();
 
-  const width = 6;
-  const activeWidth = 25;
+  let width = 18;
+  let activeWidth = 20;
+
+  if (isSmallDotPagination) {
+    width = 6;
+    activeWidth = 25;
+  }
 
   return (
     <SafeAreaView style={styles.pegination}>
@@ -39,15 +45,25 @@ const Pagination = (props: PaginationProps) => {
           extrapolate: Extrapolate.CLAMP,
         });
 
+        const backgroundColor = scrollX.interpolate({
+          inputRange,
+          outputRange: [
+            colors.primaryTextColor,
+            isSmallDotPagination ? colors.primaryTextColor : 'red',
+            colors.primaryTextColor,
+          ],
+          extrapolate: Extrapolate.CLAMP,
+        });
+
         return (
           <Animated.View
             key={i.toString()}
             style={[
               styles.dot,
               {
-                height: width,
+                height: isSmallDotPagination ? width : 5,
                 width: dotWidth,
-                backgroundColor: colors.primaryTextColor,
+                backgroundColor,
                 opacity,
               },
             ]}
@@ -63,7 +79,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   dot: {
-    borderRadius: moderateScale(5),
+    borderRadius: moderateScale(10),
     marginHorizontal: horizontalScale(3),
   },
 });

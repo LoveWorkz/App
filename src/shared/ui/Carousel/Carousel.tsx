@@ -21,6 +21,7 @@ interface CarouselProps {
   initialIndex?: number;
   contentContainerStyle?: StyleType;
   paginationStyle?: StyleType;
+  isSmallDotPagination?: boolean;
 }
 
 export const Carousel = (props: CarouselProps) => {
@@ -35,6 +36,7 @@ export const Carousel = (props: CarouselProps) => {
     initialIndex,
     contentContainerStyle,
     paginationStyle,
+    isSmallDotPagination = true,
   } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,7 +59,12 @@ export const Carousel = (props: CarouselProps) => {
       <View>
         {isTopPagination && itemWidth && (
           <View style={paginationStyle}>
-            <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+            <Pagination
+              isSmallDotPagination={isSmallDotPagination}
+              itemWidth={itemWidth}
+              scrollX={scrollX}
+              data={data}
+            />
           </View>
         )}
       </View>
@@ -87,7 +94,12 @@ export const Carousel = (props: CarouselProps) => {
       />
       {isBottomPagination && itemWidth && (
         <View style={paginationStyle}>
-          <Pagination itemWidth={itemWidth} scrollX={scrollX} data={data} />
+          <Pagination
+            isSmallDotPagination={isSmallDotPagination}
+            itemWidth={itemWidth}
+            scrollX={scrollX}
+            data={data}
+          />
         </View>
       )}
     </SafeAreaView>

@@ -1,28 +1,24 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {Carousel} from '@src/shared/ui/Carousel/Carousel';
+import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
+import {AboutItem} from './AboutItem/AboutItem';
+import {data} from '../lib/howToUse';
 
 const AboutPage = () => {
-  const colors = useColors();
-
   return (
-    <View style={styles.about}>
-      <AppText
-        style={[styles.title, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_7}
-        text={'Lorem ipsum dolor sit'}
+    <SafeAreaView style={styles.about}>
+      <Carousel
+        itemWidth={windowWidthMinusPaddings}
+        isBottomPagination
+        data={data}
+        Component={AboutItem}
+        paginationStyle={styles.paginationStyle}
+        isSmallDotPagination={false}
       />
-      <AppText
-        style={[styles.text, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temporincididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'
-        }
-      />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -31,11 +27,9 @@ export const Wrapper = memo(AboutPage);
 const styles = StyleSheet.create({
   about: {
     flex: 1,
-    justifyContent: 'center',
-    textAlign: 'left',
   },
-  title: {
-    marginBottom: verticalScale(40),
+  paginationStyle: {
+    alignItems: 'center',
+    marginTop: verticalScale(60),
   },
-  text: {},
 });
