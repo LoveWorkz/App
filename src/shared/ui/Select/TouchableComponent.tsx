@@ -7,7 +7,7 @@ import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {SmallArrowRightIcon} from '@src/shared/assets/icons/SmallArrowRight';
+import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {
   horizontalScale,
   moderateScale,
@@ -99,7 +99,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
         onPress={onSelectOpenHandler}>
         {content}
         <SvgXml
-          xml={SmallArrowRightIcon}
+          xml={ArrowDownIcon}
           stroke={colors.primaryTextColor}
           style={styles.icon}
         />

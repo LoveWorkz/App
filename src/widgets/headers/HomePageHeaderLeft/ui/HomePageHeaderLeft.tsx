@@ -3,7 +3,7 @@ import {StyleSheet, View, Pressable} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 
-import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
+import {Avatar} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -59,7 +59,7 @@ const HomePageHeaderLeft = () => {
   return (
     <View style={styles.headerLeft}>
       <Pressable onPress={onProfilePressHandler}>
-        <Avatar theme={AvatarTheme.SMALL} imageUrl={user.photo || ''} />
+        <Avatar size={40} imageUrl={user.photo || ''} />
       </Pressable>
       <Pressable onPress={onProfilePressHandler}>
         <View style={styles.nameWrapper}>

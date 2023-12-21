@@ -12,7 +12,7 @@ import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {goalIconBgDark} from '@src/shared/assets/images';
+import {goalBackgroundImage, goalIconBgDark} from '@src/shared/assets/images';
 
 interface GoalProps {
   isSelected: boolean;
@@ -50,47 +50,56 @@ const Goal = (props: GoalProps) => {
     <TouchableOpacity
       onPress={onPressHandler}
       style={[
-        styles.Goal,
+        styles.container,
         {
           ...getShadowOpacity(theme).shadowOpacity_level_2,
           backgroundColor: colors.white,
         },
       ]}>
-      <AppText
-        style={[styles.name, {color: colors.primaryTextColor}]}
-        weight={'600'}
-        size={TextSize.LEVEL_4}
-        text={name[language]}
-      />
-      {isSelected ? (
-        <View
-          style={[
-            styles.iconWrapper,
-            {
-              backgroundColor: colors.white,
-            },
-          ]}>
-          {IconContent}
+      <FastImage
+        style={styles.Goal}
+        source={isSelected ? goalBackgroundImage : undefined}>
+        <AppText
+          style={[styles.name, {color: colors.primaryTextColor}]}
+          weight={'600'}
+          size={TextSize.LEVEL_4}
+          text={name[language]}
+        />
+        {isSelected ? (
+          <View
+            style={[
+              styles.iconWrapper,
+              {
+                backgroundColor: colors.white,
+              },
+            ]}>
+            {IconContent}
 
-          <View style={styles.checkbox}>
-            <CustomCheckBox disabled={true} checked={true} />
+            <View style={styles.checkbox}>
+              <CustomCheckBox disabled={true} checked={true} />
+            </View>
           </View>
-        </View>
-      ) : (
-        <FastImage source={goalIconBgDark} style={[styles.iconWrapper]}>
-          {IconContent}
-        </FastImage>
-      )}
+        ) : (
+          <FastImage source={goalIconBgDark} style={[styles.iconWrapper]}>
+            {IconContent}
+          </FastImage>
+        )}
+      </FastImage>
     </TouchableOpacity>
   );
 };
 
 export default memo(Goal);
 
+const borderRadius = 20;
+
 const styles = StyleSheet.create({
+  container: {
+    borderRadius,
+  },
   Goal: {
     minHeight: 92,
-    borderRadius: 20,
+    borderRadius,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

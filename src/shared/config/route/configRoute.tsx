@@ -85,6 +85,7 @@ type NewRouteProps = {
   headerTitle?: string;
   HeaderRight?: ComponentType;
   isTitleLarge?: boolean;
+  isAboutMyRelationshipPage?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -313,6 +314,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.ABOUT_MY_RELATIONSHIP]: {
     name: appRoutePaths.aboutMyRelationship,
     headerShown: true,
+    isAboutMyRelationshipPage: true,
     headerTitle: 'settings.about_my_relationship',
     Element: (props: ParamListBase) => {
       return (

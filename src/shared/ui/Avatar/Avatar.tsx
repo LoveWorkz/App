@@ -7,30 +7,21 @@ import {
   defaultAvatarImageDark,
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import Skeleton from '../Skeleton/Skeleton';
 
-export enum AvatarTheme {
-  SMALL = 'small',
-  LARGE = 'large',
-}
+type Size = 130 | 170 | 200 | 40;
 
 interface AvatarProps {
-  theme?: AvatarTheme;
   style?: Record<string, string | number>;
   imageUrl: string;
   borderRadius?: number;
   isLoading?: boolean;
+  size?: Size;
 }
-
-const smallWidth = horizontalScale(40);
-const largeWidth = horizontalScale(200);
-const smallBorderRadius = moderateScale(50);
-const largeBorderRadius = moderateScale(100);
 
 export const Avatar = memo((props: AvatarProps) => {
   const {
-    theme = AvatarTheme.SMALL,
+    size = 40,
     style,
     imageUrl,
     borderRadius = 50,
@@ -48,8 +39,8 @@ export const Avatar = memo((props: AvatarProps) => {
   }, [isLoading]);
 
   const mode = useMemo(() => {
-    return [styles.Avatar, style, styles[theme]];
-  }, [theme, style]);
+    return [styles.Avatar, style, {width: size, height: size}];
+  }, [style, size]);
 
   const image = useMemo(() => {
     return {uri: imageUrl};
@@ -75,19 +66,7 @@ export const Avatar = memo((props: AvatarProps) => {
     <View style={mode}>
       {isSkeleton && (
         <View style={styles.loader}>
-          {AvatarTheme.SMALL === theme ? (
-            <Skeleton
-              width={smallWidth}
-              height={smallWidth}
-              borderRadius={smallBorderRadius}
-            />
-          ) : (
-            <Skeleton
-              width={largeWidth + 1}
-              height={largeWidth + 1}
-              borderRadius={largeBorderRadius}
-            />
-          )}
+          <Skeleton width={size} height={size} borderRadius={borderRadius} />
         </View>
       )}
       <FastImage
@@ -102,22 +81,12 @@ export const Avatar = memo((props: AvatarProps) => {
 
 const styles = StyleSheet.create<Record<string, any>>({
   Avatar: {
-    borderRadius: smallBorderRadius,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  small: {
-    height: smallWidth,
-    width: smallWidth,
   },
   image: {
     height: '100%',
     width: '100%',
-  },
-  large: {
-    height: largeWidth,
-    width: largeWidth,
-    borderRadius: largeBorderRadius,
   },
   loader: {
     position: 'absolute',

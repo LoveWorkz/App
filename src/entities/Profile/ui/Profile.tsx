@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {Asset} from 'react-native-image-picker';
 import {useTranslation} from 'react-i18next';
 
-import {Avatar, AvatarTheme} from '@src/shared/ui/Avatar/Avatar';
+import {Avatar} from '@src/shared/ui/Avatar/Avatar';
 import {UploadPhoto} from '@src/widgets/UploadPhoto';
 import {DeleteAccount} from '@src/features/DeleteAccount';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -82,10 +82,9 @@ const Profile = (props: ProfileProps) => {
     return (
       <View style={styles.profile}>
         <Avatar
-          isLoading={isLoading}
-          theme={AvatarTheme.LARGE}
           imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
           borderRadius={100}
+          size={200}
         />
         <View style={styles.uploadPhotoWrapper}>
           <Skeleton width={uploadPhotoWidth} height={40} borderRadius={10} />
@@ -114,7 +113,7 @@ const Profile = (props: ProfileProps) => {
   return (
     <View style={styles.profile}>
       <Avatar
-        theme={AvatarTheme.LARGE}
+        size={200}
         imageUrl={profileStore.tempAvatar || profileStore.avatar || ''}
         borderRadius={100}
       />
@@ -146,7 +145,7 @@ const Profile = (props: ProfileProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
-            text={t('profile.save_changes')}
+            text={t('save')}
           />
         </Button>
         <DeleteAccount />

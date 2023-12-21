@@ -9,3 +9,15 @@ export const HeartsIcon = `
 </defs>
 </svg>
 `;
+
+export const GradientHeartsIcon = `
+<svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M9.99968 17.3214L6.10234 13.3214L2.23568 9.32145C0.143771 7.11077 0.143771 3.65079 2.23568 1.44011C3.26 0.455666 4.64739 -0.0587816 6.06591 0.0198562C7.48442 0.0984941 8.80645 0.763143 9.71568 1.85478L9.99968 2.13345L10.281 1.84278C11.1902 0.751143 12.5123 0.0864941 13.9308 0.00785625C15.3493 -0.0707816 16.7367 0.443666 17.761 1.42811C19.8529 3.63879 19.8529 7.09877 17.761 9.30945L13.8943 13.3094L9.99968 17.3214Z" fill="url(#paint0_linear_1275_899)"/>
+<defs>
+<linearGradient id="paint0_linear_1275_899" x1="0.666748" y1="8.66072" x2="19.3299" y2="8.66072" gradientUnits="userSpaceOnUse">
+<stop stop-color="#83C0F8"/>
+<stop offset="1" stop-color="#847AED"/>
+</linearGradient>
+</defs>
+</svg>
+`;

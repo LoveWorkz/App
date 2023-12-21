@@ -17,6 +17,7 @@ import rubricFilterItem from './rubricFilterItem.json';
 import sessions from './sessions.json';
 import notifications from './notifications.json';
 import partner from './partner.json';
+import myRelationship from './myRelationship.json';
 
 export const en = {
   ...common,
@@ -38,4 +39,5 @@ export const en = {
   ...sessions,
   ...notifications,
   ...partner,
+  ...myRelationship,
 };

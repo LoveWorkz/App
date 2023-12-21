@@ -65,6 +65,8 @@ export const AppRoute = () => {
 };
 
 const Routes = memo(() => {
+  const colors = useColors();
+
   return (
     <Stack.Navigator
       initialRouteName={AppRouteNames.SPLASH}
@@ -80,10 +82,16 @@ const Routes = memo(() => {
           headerTitle,
           HeaderRight,
           isTitleLarge,
+          isAboutMyRelationshipPage,
         }) => {
           return (
             <Stack.Screen
               options={({route}) => ({
+                headerStyle: {
+                  backgroundColor: isAboutMyRelationshipPage
+                    ? colors.bgHomePageHeaderColor
+                    : colors.bgColor,
+                },
                 headerShown: headerShown,
                 title: '',
                 headerRight: HeaderRight

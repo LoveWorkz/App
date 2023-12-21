@@ -89,3 +89,5 @@ export {default as challengeIntroCard} from './challengeIntroCard.png';
 export {default as SpecialChallengeImg} from './SpecialChallengeImg.png';
 export {default as goalIconBgDark} from './dark/goalIconBg.png';
 export {default as goalIconBg} from './light/goalIconBg.png';
+
+export {default as goalBackgroundImage} from './light/goalBackgroundImage.png';
