@@ -33,6 +33,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.hasUserSubscription = true;
   formatedUser.gender = '';
   formatedUser.selectedGoalsIds = [];
+  formatedUser.birthDate = '';
 
   return formatedUser;
 };

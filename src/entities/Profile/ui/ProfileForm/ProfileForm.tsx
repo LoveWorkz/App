@@ -7,7 +7,7 @@ import {Input} from '@src/shared/ui/Input/Input';
 import {CountrySelect} from '@src/entities/Country';
 import {Gender} from '@src/entities/Gender';
 import {userStore} from '@src/entities/User';
-import {DateOfBirth} from '@src/entities/DateOfBirth';
+import {CustomDatePicker} from '@src/shared/ui/CustomDatePicker/CustomDatePicker';
 import profileStore from '../../model/store/profileStore';
 
 interface ProfileFormProps {
@@ -41,6 +41,10 @@ const ProfileForm = (props: ProfileFormProps) => {
     profileStore.setCountry(value);
   }, []);
 
+  const onBirthDateChangeHandler = useCallback((date: string) => {
+    profileStore.setBirthDate(date);
+  }, []);
+
   return (
     <SafeAreaView style={styles.profileForm}>
       <View style={styles.item}>
@@ -67,11 +71,12 @@ const ProfileForm = (props: ProfileFormProps) => {
         />
       </View>
       <View style={styles.item}>
-        <DateOfBirth
+        <CustomDatePicker
+          label={t('profile.date_of_birth')}
           isLoading={isLoading}
-          initialValue={''}
-          country={''}
-          changeCountry={() => {}}
+          selectedDate={profileStore.profileForm.birthDate}
+          setSelectedDate={onBirthDateChangeHandler}
+          error={t(profileStore.errorInfo.birthDateError) || ''}
         />
       </View>
       <View style={styles.item}>

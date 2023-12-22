@@ -20,6 +20,7 @@ export interface User {
   hasUserSubscription: boolean;
   gender: string;
   selectedGoalsIds: string[];
+  birthDate: string;
 }
 
 export enum AuthMethod {

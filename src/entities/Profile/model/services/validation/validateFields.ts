@@ -7,7 +7,7 @@ export const validateFields = (formData: Profile) => {
 
   let errorInfo = {} as ProfileErrorInfo;
 
-  const {name, email, gender, country} = formData;
+  const {name, email, gender, country, birthDate} = formData;
 
   if (!name) {
     errorInfo.nameError = ValidationErrorCodes.FIELD_IS_REQUIRED;
@@ -21,6 +21,11 @@ export const validateFields = (formData: Profile) => {
 
   if (!country) {
     errorInfo.countryError = ValidationErrorCodes.FIELD_IS_REQUIRED;
+    isError = true;
+  }
+
+  if (!birthDate) {
+    errorInfo.birthDateError = ValidationErrorCodes.FIELD_IS_REQUIRED;
     isError = true;
   }
 

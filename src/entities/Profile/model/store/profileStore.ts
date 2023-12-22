@@ -8,7 +8,6 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {StorageServices} from '@src/shared/lib/firebase/storageServices';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {PartnerType} from '@src/entities/Partner';
 import {
   Profile,
   ProfileErrorInfo,
@@ -30,7 +29,6 @@ class ProfileStore {
   errorInfo = errorInitData;
   avatar: string = '';
   tempAvatar: string = '';
-  partner: PartnerType | null = null;
 
   isLoading: boolean = false;
   isFetchingProfile: boolean = true;
@@ -56,8 +54,8 @@ class ProfileStore {
     this.profileForm.country = country;
   }
 
-  setPartner(partner: PartnerType) {
-    this.partner = partner;
+  setBirthDate(date: string) {
+    this.profileForm.birthDate = date;
   }
 
   setPreferences(preference: string) {
@@ -189,7 +187,6 @@ class ProfileStore {
           this.setProfileData(user);
           this.setProfileForm(user);
           this.setAvatar(user.photo);
-          this.setPartner(user.partner);
         });
       }
     } catch (e) {
@@ -228,9 +225,9 @@ class ProfileStore {
       const newProfileData = {
         name: profileForm.name,
         country: profileForm.country,
-        preferences: profileForm.preferences,
         gender: profileForm.gender,
         email: profileForm.email,
+        birthDate: profileForm.birthDate,
       };
 
       // deleting await if user is offline
