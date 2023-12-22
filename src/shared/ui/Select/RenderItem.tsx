@@ -1,6 +1,7 @@
 import React, {memo, useCallback, useMemo} from 'react';
 import {SvgXml} from 'react-native-svg';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import Flag from 'react-native-flags';
 
 import {SelectOption} from '@src/shared/types/types';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
@@ -14,10 +15,18 @@ interface RenderItemProps {
   selectedValue: string;
   itemHeight: number;
   isLastItem: boolean;
+  isCountry?: boolean;
 }
 
 export const RenderItem = memo((props: RenderItemProps) => {
-  const {item, onSelectHandler, selectedValue, itemHeight, isLastItem} = props;
+  const {
+    item,
+    onSelectHandler,
+    selectedValue,
+    itemHeight,
+    isLastItem,
+    isCountry = false,
+  } = props;
 
   const colors = useColors();
 
@@ -47,7 +56,16 @@ export const RenderItem = memo((props: RenderItemProps) => {
         },
         isSelected ? [styles.active, {backgroundColor: colors.white}] : {},
       ]}>
-      <AppText size={TextSize.LEVEL_4} weight={'600'} text={label} />
+      {isCountry ? (
+        <View style={styles.flagWrapper}>
+          <Flag code={value} size={32} />
+          <View style={styles.text}>
+            <AppText size={TextSize.LEVEL_4} weight={'600'} text={label} />
+          </View>
+        </View>
+      ) : (
+        <AppText size={TextSize.LEVEL_4} weight={'600'} text={label} />
+      )}
 
       {isSelected && (
         <SvgXml
@@ -75,5 +93,12 @@ const styles = StyleSheet.create({
   active: {
     borderRadius: moderateScale(10),
     borderBottomColor: 'transparent',
+  },
+  flagWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    left: horizontalScale(15),
   },
 });

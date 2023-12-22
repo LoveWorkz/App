@@ -28,6 +28,7 @@ interface SelectProps {
   setIsPopupVisible?: (isVisible: boolean) => void;
   isPopupVisible?: boolean;
   error?: string | null;
+  isCountry?: boolean;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -45,6 +46,7 @@ export const Select = memo((props: SelectProps) => {
     closingTime,
     isPopupVisible,
     setIsPopupVisible,
+    isCountry,
     error,
   } = props;
 
@@ -129,6 +131,7 @@ export const Select = memo((props: SelectProps) => {
 
       return (
         <RenderItem
+          isCountry={isCountry}
           isLastItem={isLastItem}
           item={item}
           onSelectHandler={onSelectHandler}
@@ -137,7 +140,7 @@ export const Select = memo((props: SelectProps) => {
         />
       );
     },
-    [onSelectHandler, value, itemHeight, options],
+    [onSelectHandler, value, itemHeight, options, isCountry],
   );
 
   const onSelectOpenHandler = useCallback(() => {
@@ -179,12 +182,6 @@ export const Select = memo((props: SelectProps) => {
             renderItem={renderItem}
             keyExtractor={item => `${item.value}`}
           />
-          // <RadioGroup
-          //   style={styles.selectItem}
-          //   value={value}
-          //   data={options}
-          //   onChange={onSelectHandler}
-          // />
         )}
       </PageSelect>
     </View>

@@ -34,6 +34,7 @@ const CountrySelect = (props: CountrySelectProps) => {
   return (
     <SafeAreaView>
       <Select
+        isCountry
         isLoading={isLoading}
         Theme={SelectTheme.OUTLINE}
         prompt={'Country'}

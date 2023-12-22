@@ -44,6 +44,7 @@
     "react-native": "0.70.6",
     "react-native-date-picker": "^4.3.5",
     "react-native-fast-image": "^8.6.3",
+    "react-native-flags": "^1.0.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-google-mobile-ads": "^10.0.1",
     "react-native-iap": "^12.10.5",
