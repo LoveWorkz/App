@@ -2,7 +2,6 @@ export interface Profile {
   photo: string;
   name: string;
   country: string;
-  preferences: string[];
   gender: string;
   email: string;
   birthDate: string;
@@ -11,7 +10,6 @@ export interface Profile {
 export interface ProfileErrorInfo {
   nameError: string;
   countryError: string;
-  preferenceError: string;
   emailError: string;
   genderError: string;
   birthDateError: string;

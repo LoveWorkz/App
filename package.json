@@ -11,7 +11,8 @@
     "ios:14:pro": "react-native run-ios --simulator='iPhone 14 Pro'",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "generate:slice": "node ./scripts/createSlice/index.js"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.2.2",

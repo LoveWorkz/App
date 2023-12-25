@@ -18,9 +18,9 @@ import {validateFields} from '../services/validation/validateFields';
 const errorInitData: ProfileErrorInfo = {
   countryError: '',
   nameError: '',
-  preferenceError: '',
   emailError: '',
   genderError: '',
+  birthDateError: '',
 };
 
 class ProfileStore {
@@ -56,17 +56,6 @@ class ProfileStore {
 
   setBirthDate(date: string) {
     this.profileForm.birthDate = date;
-  }
-
-  setPreferences(preference: string) {
-    const preferences = this.profileForm.preferences || [];
-    if (preferences.includes(preference)) {
-      this.profileForm.preferences = preferences.filter(
-        item => item !== preference,
-      );
-    } else {
-      this.profileForm.preferences = [...preferences, preference];
-    }
   }
 
   setValidationError(errorInfo: ProfileErrorInfo) {
