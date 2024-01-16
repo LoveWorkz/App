@@ -1,15 +1,15 @@
-import React, {memo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {StyleSheet, View, Platform, ActivityIndicator} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
-// import {
-//   endConnection,
-//   PurchaseError,
-//   purchaseErrorListener,
-//   purchaseUpdatedListener,
-//   SubscriptionPurchase,
-//   ProductPurchase,
-// } from 'react-native-iap';
+import {
+  endConnection,
+  PurchaseError,
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+  SubscriptionPurchase,
+  ProductPurchase,
+} from 'react-native-iap';
 import {observer} from 'mobx-react-lite';
 
 import {
@@ -26,84 +26,88 @@ import {
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-// import {isPlatformIos} from '@src/shared/consts/common';
-// import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
-// import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
+import {isPlatformIos} from '@src/shared/consts/common';
+import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
+import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
 
-// const subscriptionsIds = Platform.select({
-//   ios: [],
-//   android: [SubscriptionsIds.YEARYL, SubscriptionsIds.MONTHLY],
-// });
-
-// let purchaseUpdateSubscription: any;
-// let purchaseErrorSubscription: any;
+const subscriptionsIds = Platform.select({
+  ios: [],
+  android: [SubscriptionsIds.YEARLY, SubscriptionsIds.MONTHLY],
+}) as string[];
 
 const InAppPurchase = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
-  // const subscriptions = inAppPurchaseStore.subscriptions;
-  // const {yearly, monthly} =
-  //   inAppPurchaseStore.getYearlyAndMonthlySubscriptions(subscriptions);
+
+  const {yearly, monthly} =
+    inAppPurchaseStore.getYearlyAndMonthlySubscriptions();
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.MONTHLY,
   );
 
-  // useEffect(() => {
-  //   inAppPurchaseStore.init(subscriptionsIds as string[]);
+  useEffect(() => {
+    // Initialize the in-app purchase store with subscription IDs
+    inAppPurchaseStore.init(subscriptionsIds);
 
-  //   purchaseUpdateSubscription = purchaseUpdatedListener(
-  //     (purchase: SubscriptionPurchase | ProductPurchase) => {
-  //       console.log('purchaseUpdatedListener', purchase);
+    // Listener for purchase updates
+    const purchaseUpdateSubscription = purchaseUpdatedListener(
+      (purchase: SubscriptionPurchase | ProductPurchase) => {
+        const receipt = purchase.transactionReceipt;
+        if (receipt) {
+          console.log('Transaction Receipt:', receipt);
+        }
+      },
+    );
 
-  //       const receipt = purchase.transactionReceipt;
-  //       if (receipt) {
-  //         console.log(receipt);
-  //       }
-  //     },
-  //   );
+    // Listener for purchase errors
+    const purchaseErrorSubscription = purchaseErrorListener(
+      (error: PurchaseError) => {
+        console.warn('purchaseErrorListener', error);
+      },
+    );
 
-  //   purchaseErrorSubscription = purchaseErrorListener(
-  //     (error: PurchaseError) => {
-  //       console.warn('purchaseErrorListener', error);
-  //     },
-  //   );
+    const cleanupListeners = () => {
+      purchaseUpdateSubscription.remove();
+      purchaseErrorSubscription.remove();
+    };
 
-  //   return () => {
-  //     if (purchaseUpdateSubscription) {
-  //       purchaseUpdateSubscription.remove();
-  //       purchaseUpdateSubscription = null;
-  //     }
+    return () => {
+      cleanupListeners();
+      endConnection();
+    };
+  }, []);
 
-  //     if (purchaseErrorSubscription) {
-  //       purchaseErrorSubscription.remove();
-  //       purchaseErrorSubscription = null;
-  //     }
-
-  //     endConnection();
-  //   };
-  // }, []);
-
-  // if (!(yearly && monthly)) {
-  //   return <></>;
-  // }
+  if (!(yearly && monthly)) {
+    return <ActivityIndicator />;
+  }
 
   const onPressHandler = () => {
-    // if (isPlatformIos) {
-    //   return;
-    // }
-    // let productId = yearly.productId;
-    // let offerToken = yearly.subscriptionOfferDetails?.[0]?.offerToken;
-    // const isMonthly = subscriptionType === SubscriptionType.MONTHLY;
-    // if (isMonthly) {
-    //   productId = monthly.productId;
-    //   offerToken = monthly.subscriptionOfferDetails?.[0]?.offerToken;
-    // }
-    // if (productId && offerToken) {
-    //   inAppPurchaseStore.subscribe({productId, offerToken});
-    // }
+    if (isPlatformIos) {
+      return;
+    }
+
+    switch (subscriptionType) {
+      case SubscriptionType.YEARLY:
+        const yearlyOfferToken =
+          yearly.subscriptionOfferDetails?.[0]?.offerToken;
+
+        inAppPurchaseStore.subscribe({
+          productId: yearly.productI,
+          offerToken: yearlyOfferToken,
+        });
+        break;
+      default:
+        const monthlyOfferToken =
+          monthly.subscriptionOfferDetails?.[0]?.offerToken;
+
+        inAppPurchaseStore.subscribe({
+          productId: monthly.productId,
+          offerToken: monthlyOfferToken,
+        });
+    }
   };
 
   return (

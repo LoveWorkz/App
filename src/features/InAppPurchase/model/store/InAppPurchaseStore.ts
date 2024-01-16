@@ -6,10 +6,12 @@ import {
 } from 'react-native-iap';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {SubscriptionsIds} from '../types/inAppPurchaseType';
+import {ProductMapType, SubscriptionsIds} from '../types/inAppPurchaseType';
+import {normaliseProducts} from '../lib/inAppPurchaseLib';
 
 class InAppPurchaseStore {
-  subscriptions: any = [];
+  products: any[] = [];
+  productsMap: ProductMapType = {};
   isInAppPurchaseModalVisible: boolean = false;
 
   constructor() {
@@ -20,27 +22,30 @@ class InAppPurchaseStore {
     this.isInAppPurchaseModalVisible = visible;
   };
 
-  setSubscriptions = (products: any) => {
-    this.subscriptions = products;
+  setProducts = (products: any[]) => {
+    this.products = products;
+  };
+
+  SetProductsMap = (products: any[]) => {
+    this.productsMap = normaliseProducts(products);
   };
 
   init = async (items: string[]) => {
     try {
       await initConnection();
-      const subscriptions = await getSubscriptions({skus: items});
-      this.setSubscriptions(subscriptions);
+
+      const products = await getSubscriptions({skus: items});
+      this.setProducts(products);
+      this.SetProductsMap(products);
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  getYearlyAndMonthlySubscriptions = (products: any[]) => {
-    const monthly = products.find(
-      (product: any) => product.productId === SubscriptionsIds.MONTHLY,
-    );
-    const yearly = products.find(
-      (product: any) => product.productId === SubscriptionsIds.YEARYL,
-    );
+  getYearlyAndMonthlySubscriptions = () => {
+    const productsMap = this.productsMap;
+    const monthly = productsMap[SubscriptionsIds.MONTHLY];
+    const yearly = productsMap[SubscriptionsIds.YEARLY];
 
     return {monthly: monthly || null, yearly: yearly || null};
   };
