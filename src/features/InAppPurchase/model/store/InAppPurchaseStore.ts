@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 import {
   getSubscriptions,
   initConnection,
@@ -6,48 +6,57 @@ import {
 } from 'react-native-iap';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {ProductMapType, SubscriptionsIds} from '../types/inAppPurchaseType';
+import {ProductMapType, SubscriptionWithoutAmazon, SubscriptionsType} from '../types/inAppPurchaseType';
 import {normaliseProducts} from '../lib/inAppPurchaseLib';
 
 class InAppPurchaseStore {
-  products: any[] = [];
+  products: SubscriptionWithoutAmazon[] = [];
   productsMap: ProductMapType = {};
   isInAppPurchaseModalVisible: boolean = false;
+  isFetching: boolean = true;
+  monthly: SubscriptionWithoutAmazon | null = null;
+  yearly: SubscriptionWithoutAmazon | null = null;
+  quarterly: SubscriptionWithoutAmazon | null = null;
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setIsFetching = (isFetching: boolean) => {
+    this.isFetching = isFetching;
   }
 
   setIsInAppPurchaseModalVisible = (visible: boolean) => {
     this.isInAppPurchaseModalVisible = visible;
   };
 
-  setProducts = (products: any[]) => {
+  setProducts = (products: SubscriptionWithoutAmazon[]) => {
     this.products = products;
-  };
-
-  SetProductsMap = (products: any[]) => {
-    this.productsMap = normaliseProducts(products);
   };
 
   init = async (items: string[]) => {
     try {
+      this.setIsFetching(true);
+
       await initConnection();
 
       const products = await getSubscriptions({skus: items});
-      this.setProducts(products);
-      this.SetProductsMap(products);
+      const productsMap = normaliseProducts(products as SubscriptionWithoutAmazon[]);
+
+      runInAction(() => {
+        this.monthly = productsMap[SubscriptionsType.MONTHLY];
+        this.yearly = productsMap[SubscriptionsType.YEARLY];
+        this.quarterly = productsMap[SubscriptionsType.QUARTERLY];
+
+        this.productsMap = productsMap;
+      });
+
+      this.setProducts(products as SubscriptionWithoutAmazon[]);
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      this.setIsFetching(false);
     }
-  };
-
-  getYearlyAndMonthlySubscriptions = () => {
-    const productsMap = this.productsMap;
-    const monthly = productsMap[SubscriptionsIds.MONTHLY];
-    const yearly = productsMap[SubscriptionsIds.YEARLY];
-
-    return {monthly: monthly || null, yearly: yearly || null};
   };
 
   subscribe = async ({

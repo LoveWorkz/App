@@ -28,11 +28,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
-import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
+import {SubscriptionsType} from '../model/types/inAppPurchaseType';
 
 const subscriptionsIds = Platform.select({
   ios: [],
-  android: [SubscriptionsIds.YEARLY, SubscriptionsIds.MONTHLY],
+  android: [SubscriptionsType.YEARLY, SubscriptionsType.MONTHLY, SubscriptionsType.QUARTERLY],
 }) as string[];
 
 const InAppPurchase = () => {
@@ -40,9 +40,9 @@ const InAppPurchase = () => {
   const colors = useColors();
   const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
-
-  const {yearly, monthly} =
-    inAppPurchaseStore.getYearlyAndMonthlySubscriptions();
+  const yearly = inAppPurchaseStore.yearly;
+  const monthly = inAppPurchaseStore.monthly;
+  const isFetching = inAppPurchaseStore.isFetching;
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.MONTHLY,
@@ -65,7 +65,7 @@ const InAppPurchase = () => {
     // Listener for purchase errors
     const purchaseErrorSubscription = purchaseErrorListener(
       (error: PurchaseError) => {
-        console.warn('purchaseErrorListener', error);
+        console.log('purchaseErrorListener', error);
       },
     );
 
@@ -80,7 +80,7 @@ const InAppPurchase = () => {
     };
   }, []);
 
-  if (!(yearly && monthly)) {
+  if (isFetching || !(yearly && monthly)) {
     return <ActivityIndicator />;
   }
 
@@ -92,16 +92,18 @@ const InAppPurchase = () => {
     switch (subscriptionType) {
       case SubscriptionType.YEARLY:
         const yearlyOfferToken =
-          yearly.subscriptionOfferDetails?.[0]?.offerToken;
+        yearly.subscriptionOfferDetails[0].offerToken;
 
         inAppPurchaseStore.subscribe({
-          productId: yearly.productI,
+          productId: yearly.productId,
           offerToken: yearlyOfferToken,
         });
+
+
         break;
       default:
         const monthlyOfferToken =
-          monthly.subscriptionOfferDetails?.[0]?.offerToken;
+          monthly.subscriptionOfferDetails[0].offerToken;
 
         inAppPurchaseStore.subscribe({
           productId: monthly.productId,
@@ -134,11 +136,13 @@ const InAppPurchase = () => {
         </View>
         <View style={[styles.subscriptionBlocks]}>
           <SubscriptionBlock
+            price={monthly.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice}
             subscriptionType={SubscriptionType.MONTHLY}
             chosenSubscriptionType={subscriptionType}
             setSubscriptionType={setSubscriptionType}
           />
           <SubscriptionBlock
+             price={yearly.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0].formattedPrice}
             subscriptionType={SubscriptionType.YEARLY}
             chosenSubscriptionType={subscriptionType}
             setSubscriptionType={setSubscriptionType}

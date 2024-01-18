@@ -21,6 +21,7 @@ interface SubscriptionBlockProps {
   subscriptionType: SubscriptionType;
   chosenSubscriptionType?: SubscriptionType;
   setSubscriptionType?: (subscriptionType: SubscriptionType) => void;
+  price: string;
 }
 
 const SubscriptionBlock = (props: SubscriptionBlockProps) => {
@@ -28,6 +29,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
     subscriptionType,
     chosenSubscriptionType = SubscriptionType.MONTHLY,
     setSubscriptionType,
+    price,
   } = props;
 
   const {t} = useTranslation();
@@ -88,7 +90,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
               style={{color: colors.secondaryError}}
               size={TextSize.LEVEL_3}
               weight={'bold'}
-              text={'$1.49'}
+              text={price}
             />
             <View style={styles.costRightWrapper}>
               <AppText

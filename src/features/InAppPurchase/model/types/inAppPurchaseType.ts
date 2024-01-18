@@ -1,10 +1,11 @@
-export enum SubscriptionsIds {
-  YEARYL1 = 'rniap_14_99_1y',
-  MONTHLY1 = 'rniap_1_49_1m',
+import {SubscriptionAndroid} from 'react-native-iap';
+
+export enum SubscriptionsType {
   YEARLY = 'bline_sub_1y',
   MONTHLY = 'bline_sub_1m',
+  QUARTERLY = 'bline_sub_3m',
 }
 
-export interface ProductType {}
+export type SubscriptionWithoutAmazon = SubscriptionAndroid;
 
-export type ProductMapType = Record<string, any>;
+export type ProductMapType = Record<string, SubscriptionWithoutAmazon>;
