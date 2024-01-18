@@ -6,17 +6,17 @@ import {
 } from 'react-native-iap';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {ProductMapType, SubscriptionWithoutAmazon, SubscriptionsType} from '../types/inAppPurchaseType';
-import {normaliseProducts} from '../lib/inAppPurchaseLib';
+import {
+  FormattedProductType,
+  SubscriptionType,
+} from '@src/entities/SubscriptionBlock';
+import {formatProducts} from '../lib/inAppPurchaseLib';
 
 class InAppPurchaseStore {
-  products: SubscriptionWithoutAmazon[] = [];
-  productsMap: ProductMapType = {};
   isInAppPurchaseModalVisible: boolean = false;
   isFetching: boolean = true;
-  monthly: SubscriptionWithoutAmazon | null = null;
-  yearly: SubscriptionWithoutAmazon | null = null;
-  quarterly: SubscriptionWithoutAmazon | null = null;
+
+  formattedProducts: FormattedProductType | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -24,14 +24,10 @@ class InAppPurchaseStore {
 
   setIsFetching = (isFetching: boolean) => {
     this.isFetching = isFetching;
-  }
+  };
 
   setIsInAppPurchaseModalVisible = (visible: boolean) => {
     this.isInAppPurchaseModalVisible = visible;
-  };
-
-  setProducts = (products: SubscriptionWithoutAmazon[]) => {
-    this.products = products;
   };
 
   init = async (items: string[]) => {
@@ -41,17 +37,11 @@ class InAppPurchaseStore {
       await initConnection();
 
       const products = await getSubscriptions({skus: items});
-      const productsMap = normaliseProducts(products as SubscriptionWithoutAmazon[]);
+      const formattedProducts = formatProducts(products);
 
       runInAction(() => {
-        this.monthly = productsMap[SubscriptionsType.MONTHLY];
-        this.yearly = productsMap[SubscriptionsType.YEARLY];
-        this.quarterly = productsMap[SubscriptionsType.QUARTERLY];
-
-        this.productsMap = productsMap;
+        this.formattedProducts = formattedProducts;
       });
-
-      this.setProducts(products as SubscriptionWithoutAmazon[]);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -59,14 +49,29 @@ class InAppPurchaseStore {
     }
   };
 
-  subscribe = async ({
-    productId,
-    offerToken,
-  }: {
-    productId: string;
-    offerToken: string;
-  }) => {
+  subscribe = async (subscriptionType: SubscriptionType) => {
     try {
+      let productId;
+      let offerToken;
+
+      const formattedProducts = this.formattedProducts;
+      if (!formattedProducts) {
+        return;
+      }
+
+      switch (subscriptionType) {
+        case SubscriptionType.YEARLY:
+          const formattedYearly = formattedProducts.formattedYearly;
+          productId = formattedYearly.productId;
+          offerToken = formattedYearly.offerToken;
+
+          break;
+        default:
+          const formattedMonthly = formattedProducts.formattedMonthly;
+          productId = formattedMonthly.productId;
+          offerToken = formattedMonthly.offerToken;
+      }
+
       await requestSubscription({
         sku: productId,
         ...(offerToken && {

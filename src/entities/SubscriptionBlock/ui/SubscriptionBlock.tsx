@@ -15,13 +15,16 @@ import {FireIcon} from '@src/shared/assets/icons/FireIcon';
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {GradientOutline} from '@src/shared/ui/Gradient/GradientOutline';
-import {SubscriptionType} from '../model/types/subscriptionTypes';
+import {
+  FormattedProductValueType,
+  SubscriptionType,
+} from '../model/types/subscriptionTypes';
 
 interface SubscriptionBlockProps {
   subscriptionType: SubscriptionType;
   chosenSubscriptionType?: SubscriptionType;
   setSubscriptionType?: (subscriptionType: SubscriptionType) => void;
-  price: string;
+  productDetails: FormattedProductValueType;
 }
 
 const SubscriptionBlock = (props: SubscriptionBlockProps) => {
@@ -29,7 +32,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
     subscriptionType,
     chosenSubscriptionType = SubscriptionType.MONTHLY,
     setSubscriptionType,
-    price,
+    productDetails,
   } = props;
 
   const {t} = useTranslation();
@@ -90,7 +93,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
               style={{color: colors.secondaryError}}
               size={TextSize.LEVEL_3}
               weight={'bold'}
-              text={price}
+              text={productDetails.localisedPrice}
             />
             <View style={styles.costRightWrapper}>
               <AppText
