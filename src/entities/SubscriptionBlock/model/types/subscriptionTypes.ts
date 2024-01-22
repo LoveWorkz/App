@@ -14,4 +14,8 @@ export interface FormattedProductType {
   formattedMonthly: FormattedProductValueType;
   formattedQuarterly: FormattedProductValueType;
   formattedYearly: FormattedProductValueType;
+
+  formattedMonthlyPromo: FormattedProductValueType;
+  formattedQuarterlyPromo: FormattedProductValueType;
+  formattedYearlyPromo: FormattedProductValueType;
 }

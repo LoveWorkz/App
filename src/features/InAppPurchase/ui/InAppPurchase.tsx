@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {StyleSheet, View, Platform, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {
@@ -26,18 +26,8 @@ import {
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {isPlatformIos} from '@src/shared/consts/common';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
-import {SubscriptionsIds} from '../model/types/inAppPurchaseType';
-
-const subscriptionsIds = Platform.select({
-  ios: [],
-  android: [
-    SubscriptionsIds.YEARLY,
-    SubscriptionsIds.MONTHLY,
-    SubscriptionsIds.QUARTERLY,
-  ],
-}) as string[];
+import {subscriptionsIds} from '../model/lib/inAppPurchaseLib';
 
 const InAppPurchase = () => {
   const {t} = useTranslation();
@@ -46,18 +36,15 @@ const InAppPurchase = () => {
   const isDark = theme === Theme.Dark;
   const isFetching = inAppPurchaseStore.isFetching;
   const formattedProducts = inAppPurchaseStore.formattedProducts;
+  const isPromo = inAppPurchaseStore.isPromo;
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.MONTHLY,
   );
 
   useEffect(() => {
-    if (isPlatformIos) {
-      return;
-    }
-
     // Initialize the in-app purchase store with subscription IDs
-    inAppPurchaseStore.init(subscriptionsIds);
+    inAppPurchaseStore.init(subscriptionsIds as string[]);
 
     // Listener for purchase updates
     const purchaseUpdateSubscription = purchaseUpdatedListener(
@@ -118,18 +105,30 @@ const InAppPurchase = () => {
           />
         </View>
         <View style={[styles.subscriptionBlocks]}>
-          <SubscriptionBlock
-            productDetails={formattedProducts.formattedMonthly}
-            subscriptionType={SubscriptionType.MONTHLY}
-            chosenSubscriptionType={subscriptionType}
-            setSubscriptionType={setSubscriptionType}
-          />
-          <SubscriptionBlock
-            productDetails={formattedProducts.formattedYearly}
-            subscriptionType={SubscriptionType.YEARLY}
-            chosenSubscriptionType={subscriptionType}
-            setSubscriptionType={setSubscriptionType}
-          />
+          {formattedProducts.formattedMonthly && (
+            <SubscriptionBlock
+              productDetails={
+                isPromo
+                  ? formattedProducts.formattedMonthlyPromo
+                  : formattedProducts.formattedMonthly
+              }
+              subscriptionType={SubscriptionType.MONTHLY}
+              chosenSubscriptionType={subscriptionType}
+              setSubscriptionType={setSubscriptionType}
+            />
+          )}
+          {formattedProducts.formattedYearly && (
+            <SubscriptionBlock
+              productDetails={
+                isPromo
+                  ? formattedProducts.formattedYearlyPromo
+                  : formattedProducts.formattedYearly
+              }
+              subscriptionType={SubscriptionType.YEARLY}
+              chosenSubscriptionType={subscriptionType}
+              setSubscriptionType={setSubscriptionType}
+            />
+          )}
         </View>
         <Button
           onPress={onPressHandler}

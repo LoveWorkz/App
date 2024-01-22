@@ -1,12 +1,60 @@
 import {SubscriptionAndroid, SubscriptionIOS} from 'react-native-iap';
+import {Platform} from 'react-native';
 
 import {FormattedProductValueType} from '@src/entities/SubscriptionBlock';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {normaliseData} from '@src/shared/lib/common';
 import {
-  SubscriptionsIds,
+  SubscriptionIdsKey,
+  SubscriptionIdsType,
   SubscriptionWithoutAmazon,
 } from '../types/inAppPurchaseType';
+
+export const subscriptionsIosIds: SubscriptionIdsType = {
+  MONTHLY: 'bline_sub_1m_normal',
+  YEARLY: 'bline_sub_1y_normal',
+  QUARTERLY: 'bline_sub_3m_normal',
+  MONTHLY_PROMO: 'bline_sub_1m_promo',
+  YEARLY_PROMO: 'bline_sub_1y_promo',
+  QUARTERLY_PROMO: 'bline_sub_3m_promo',
+};
+
+export const subscriptionsAndroidIds: SubscriptionIdsType = {
+  MONTHLY: 'bline_sub_1m',
+  YEARLY: 'bline_sub_1y',
+  QUARTERLY: 'bline_sub_3m',
+  MONTHLY_PROMO: 'bline_sub_1m_promo',
+  YEARLY_PROMO: 'bline_sub_1y_promo',
+  QUARTERLY_PROMO: 'bline_sub_3m_promo',
+};
+
+export const subscriptionsIds = Platform.select({
+  ios: [
+    subscriptionsIosIds.YEARLY,
+    subscriptionsIosIds.MONTHLY,
+    subscriptionsIosIds.QUARTERLY,
+    subscriptionsIosIds.YEARLY_PROMO,
+    subscriptionsIosIds.MONTHLY_PROMO,
+    subscriptionsIosIds.QUARTERLY_PROMO,
+  ],
+  android: [
+    subscriptionsAndroidIds.YEARLY,
+    subscriptionsAndroidIds.MONTHLY,
+    subscriptionsAndroidIds.QUARTERLY,
+    subscriptionsAndroidIds.YEARLY_PROMO,
+    subscriptionsAndroidIds.MONTHLY_PROMO,
+    subscriptionsAndroidIds.QUARTERLY_PROMO,
+  ],
+});
+
+const formattedKeyMap: Record<string, string> = {
+  MONTHLY: 'formattedMonthly',
+  QUARTERLY: 'formattedQuarterly',
+  YEARLY: 'formattedYearly',
+  MONTHLY_PROMO: 'formattedMonthlyPromo',
+  QUARTERLY_PROMO: 'formattedQuarterlyPromo',
+  YEARLY_PROMO: 'formattedYearlyPromo',
+};
 
 export const normaliseProducts = <T extends {productId: string}>(data: T[]) => {
   const newDataWithId = data.map(item => {
@@ -18,40 +66,47 @@ export const normaliseProducts = <T extends {productId: string}>(data: T[]) => {
 
 export const formatProducts = (products: SubscriptionWithoutAmazon[]) => {
   if (isPlatformIos) {
-    return getIosProducts(products as SubscriptionIOS[]);
+    return getProducts<SubscriptionIOS>(
+      products,
+      subscriptionsIosIds,
+      getIosMainProductInfo,
+    );
   }
 
-  return getAndroidProducts(products as SubscriptionAndroid[]);
+  return getProducts<SubscriptionAndroid>(
+    products,
+    subscriptionsAndroidIds,
+    getAndroidMainProductInfo,
+  );
 };
 
-const getIosProducts = (products: SubscriptionIOS[]) => {
-  const productsMap = getProductsMap(products);
+const getProducts = <T>(
+  products: SubscriptionWithoutAmazon[],
+  subscriptionIds: SubscriptionIdsType,
+  getMainProductInfo: (products: T) => FormattedProductValueType,
+) => {
+  const productsMap = normaliseProducts(products);
 
-  return {
-    formattedMonthly: getIosMainProductInfo(productsMap.monthly),
-    formattedQuarterly: getIosMainProductInfo(productsMap.quarterly),
-    formattedYearly: getIosMainProductInfo(productsMap.yearly),
-  };
-};
+  if (!subscriptionIds) {
+    return null;
+  }
 
-const getAndroidProducts = (products: SubscriptionAndroid[]) => {
-  const productsMap = getProductsMap(products);
+  const formattedProducts = Object.keys(subscriptionIds).reduce(
+    (result: any, key) => {
+      const productKey = subscriptionIds[key as SubscriptionIdsKey];
+      const product = productsMap[productKey] || null;
 
-  return {
-    formattedMonthly: getAndroidMainProductInfo(productsMap.monthly),
-    formattedQuarterly: getAndroidMainProductInfo(productsMap.quarterly),
-    formattedYearly: getAndroidMainProductInfo(productsMap.yearly),
-  };
-};
+      if (product) {
+        const formattedKey = formattedKeyMap[key];
+        result[formattedKey] = getMainProductInfo(product as T);
+      }
 
-const getProductsMap = <T extends {productId: string}>(products: T[]) => {
-  const productsMap = normaliseProducts<T>(products);
+      return result;
+    },
+    {},
+  );
 
-  const monthly = productsMap[SubscriptionsIds.MONTHLY] || null;
-  const yearly = productsMap[SubscriptionsIds.YEARLY] || null;
-  const quarterly = productsMap[SubscriptionsIds.QUARTERLY] || null;
-
-  return {yearly, monthly, quarterly};
+  return formattedProducts;
 };
 
 const getAndroidMainProductInfo = (

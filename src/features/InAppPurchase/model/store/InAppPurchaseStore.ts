@@ -17,6 +17,7 @@ class InAppPurchaseStore {
   isFetching: boolean = true;
 
   formattedProducts: FormattedProductType | null = null;
+  isPromo: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -30,13 +31,13 @@ class InAppPurchaseStore {
     this.isInAppPurchaseModalVisible = visible;
   };
 
-  init = async (items: string[]) => {
+  init = async (subscriptionsIds: string[]) => {
     try {
       this.setIsFetching(true);
 
       await initConnection();
 
-      const products = await getSubscriptions({skus: items});
+      const products = await getSubscriptions({skus: subscriptionsIds});
       const formattedProducts = formatProducts(products);
 
       runInAction(() => {
