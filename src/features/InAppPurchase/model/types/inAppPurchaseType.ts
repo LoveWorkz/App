@@ -1,4 +1,4 @@
-import {Subscription} from 'react-native-iap';
+import { Subscription } from 'react-native-iap';
 
 export type SubscriptionIdsKey =
   | 'MONTHLY'
@@ -14,3 +14,17 @@ export type SubscriptionWithoutAmazon = Omit<
   Subscription,
   'SubscriptionAmazon'
 >;
+
+export interface PromoCodeResponse {
+  message: string;
+  valid: boolean;
+}
+
+export interface IosValidationSendingDataType {
+  'receipt-data': string;
+  password: string;
+}
+
+export interface ValidationResponseType {
+  valid: boolean;
+}

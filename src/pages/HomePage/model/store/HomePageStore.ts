@@ -1,24 +1,25 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {categoriesStore} from '@src/pages/CategoriesPage';
-import {challengesStore} from '@src/pages/ChallengesPage';
-import {booksStore} from '@src/pages/BooksPage';
-import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {quotesStore} from '@src/widgets/Quotes';
-import {shareStore} from '@src/features/Share';
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {DocumentType} from '@src/shared/types/types';
-import {userStore} from '@src/entities/User';
-import {sessionStore} from '@src/entities/Session';
-import {questionsStore} from '@src/pages/QuestionsPage';
-import {Theme} from '@src/app/providers/themeProvider';
-import {getPercentageFromNumber} from '@src/shared/lib/common';
-import {specialDayStore} from '@src/entities/SpecialDay';
-import {getProgressBarImageGroups} from '../lib/homePage';
+import { categoriesStore } from '@src/pages/CategoriesPage';
+import { challengesStore } from '@src/pages/ChallengesPage';
+import { booksStore } from '@src/pages/BooksPage';
+import { CategoryKey, categoryStore, CategoryType } from '@src/entities/Category';
+import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
+import { quotesStore } from '@src/widgets/Quotes';
+import { shareStore } from '@src/features/Share';
+import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { navigation } from '@src/shared/lib/navigation/navigation';
+import { AppRouteNames } from '@src/shared/config/route/configRoute';
+import { DocumentType } from '@src/shared/types/types';
+import { userStore } from '@src/entities/User';
+import { sessionStore } from '@src/entities/Session';
+import { questionsStore } from '@src/pages/QuestionsPage';
+import { Theme } from '@src/app/providers/themeProvider';
+import { getPercentageFromNumber } from '@src/shared/lib/common';
+import { specialDayStore } from '@src/entities/SpecialDay';
+import { inAppPurchaseStore } from '@src/features/InAppPurchase';
+import { getProgressBarImageGroups } from '../lib/homePage';
 
 class HomePageStore {
   isHomePageLoading: boolean = true;
@@ -53,6 +54,7 @@ class HomePageStore {
       const promise4 = this.fetchHomePageSessions();
       const promise5 = questionsStore.fetchAllQuestionsInfo();
       const promise6 = specialDayStore.fetchSpecialDays();
+      const promise7 = inAppPurchaseStore.checkIfUserHasSubscription();
 
       await Promise.all([
         promise1,
@@ -61,11 +63,12 @@ class HomePageStore {
         promise4,
         promise5,
         promise6,
+        promise7,
       ]);
 
       shareStore.shareQuestionHandler(language);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     } finally {
       runInAction(() => {
         this.isHomePageLoading = false;
@@ -92,7 +95,7 @@ class HomePageStore {
       await this.fetchHomePageCategories(language);
       await this.fetchHomePageSessions();
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     } finally {
       runInAction(() => {
         this.isHomePageLoading = false;
@@ -174,7 +177,7 @@ class HomePageStore {
         this.homePageCategory = homePageCategory;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -218,7 +221,7 @@ class HomePageStore {
         });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -244,7 +247,7 @@ class HomePageStore {
         this.progressBarImg = progressBarImgGroups[imgKey];
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 

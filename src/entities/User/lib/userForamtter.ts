@@ -1,5 +1,5 @@
-import {CategoryKey} from '@src/entities/Category';
-import {User, InitlUserInfo} from '../model/types/userSchema';
+import { CategoryKey } from '@src/entities/Category';
+import { User, InitlUserInfo } from '../model/types/userSchema';
 
 export const userFormatter = (userInfo: InitlUserInfo): User => {
   const formatedUser = {} as User;
@@ -30,7 +30,6 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.hasUserSwipedAnyQuestion = false;
 
   formatedUser.hasUserRated = false;
-  formatedUser.hasUserSubscription = true;
   formatedUser.gender = '';
   formatedUser.selectedGoalsIds = [];
   formatedUser.birthDate = '';

@@ -1,29 +1,29 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-import {InterstitialAd} from 'react-native-google-mobile-ads';
+import { InterstitialAd } from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {Collections, DocsType} from '@src/shared/types/firebase';
-import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
-import {rubricStore} from '@src/entities/Rubric';
-import {favoriteStore} from '@src/entities/Favorite';
+import { Collections, DocsType } from '@src/shared/types/firebase';
+import { CategoryKey, categoryStore, CategoryType } from '@src/entities/Category';
+import { rubricStore } from '@src/entities/Rubric';
+import { favoriteStore } from '@src/entities/Favorite';
 import {
   QuestionsMapType,
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
-import {userStore} from '@src/entities/User';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {categoriesStore} from '@src/pages/CategoriesPage';
-import {userRubricStore} from '@src/entities/UserRubric';
-import {userCategoryStore} from '@src/entities/UserCategory';
-import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
-import {DocumentType} from '@src/shared/types/types';
-import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {sessionStore, SessionType} from '@src/entities/Session';
-import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
-import {challengeStore} from '@src/entities/Challenge';
+import { userStore } from '@src/entities/User';
+import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
+import { categoriesStore } from '@src/pages/CategoriesPage';
+import { userRubricStore } from '@src/entities/UserRubric';
+import { userCategoryStore } from '@src/entities/UserCategory';
+import { wowThatWasFastModalStore } from '@src/widgets/WowThatWasFastModal';
+import { DocumentType } from '@src/shared/types/types';
+import { getNextElementById, getNumbersDiff } from '@src/shared/lib/common';
+import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { sessionStore, SessionType } from '@src/entities/Session';
+import { userChallengeCategoryStore } from '@src/entities/UserChallengeCategory';
+import { challengeStore } from '@src/entities/Challenge';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -68,7 +68,7 @@ class QuestionsStore {
       await this.getQuestionsPageInfo(param);
       await sessionStore.fetchSessionChallenge();
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     } finally {
       runInAction(() => {
         this.questionsPageloading = false;
@@ -117,7 +117,7 @@ class QuestionsStore {
 
           // if a user opened a shared link
           if (sharedQuestionId) {
-            categoryStore.getAndSetCategory({id});
+            categoryStore.getAndSetCategory({ id });
           }
           await this.fetchSpecificQuestions({
             key: DocumentType.CATEGORY,
@@ -147,7 +147,7 @@ class QuestionsStore {
           });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -162,7 +162,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Swiping question.');
 
-      const {question, questionNumber, interstitial, key, documentId} =
+      const { question, questionNumber, interstitial, key, documentId } =
         swipeData;
       const sessionId = sessionStore.session?.id;
 
@@ -184,7 +184,7 @@ class QuestionsStore {
 
       switch (key) {
         case DocumentType.CATEGORY:
-          this.categorySwipeLogic({...swipeData, sessionId});
+          this.categorySwipeLogic({ ...swipeData, sessionId });
           break;
         case DocumentType.RUBRIC:
           this.rubricSwipeLogic(swipeData);
@@ -195,7 +195,7 @@ class QuestionsStore {
         default:
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -208,7 +208,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Swiping category questions.');
 
-      const {question, language, sessionId} = categorySwipeParam;
+      const { question, language, sessionId } = categorySwipeParam;
 
       const currentCategory = categoryStore.category;
       if (!currentCategory) {
@@ -233,7 +233,7 @@ class QuestionsStore {
         sessionId,
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -245,7 +245,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Swiping rubric questions.');
 
-      const {question, language} = rubricSwipeParam;
+      const { question, language } = rubricSwipeParam;
 
       rubricStore.getQuestionSwipeInfoForRubric({
         questionId: question.id,
@@ -259,7 +259,7 @@ class QuestionsStore {
         field: 'currentQuestion',
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -270,7 +270,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Swiping favorites questions.');
 
-      const {question, language} = favoritesSwipeParam;
+      const { question, language } = favoritesSwipeParam;
 
       favoriteStore.getQuestionSwipeInfoForFavorites({
         id: question.id,
@@ -283,7 +283,7 @@ class QuestionsStore {
         data: question.id,
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -323,7 +323,7 @@ class QuestionsStore {
         this.questionsSize = questions.length;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -337,7 +337,7 @@ class QuestionsStore {
         this.allQuestionsMap = allQuestionsMap;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -350,16 +350,16 @@ class QuestionsStore {
 
     const promise1 = firestore()
       .collection(Collections.ORDINARY_QUESTIONS)
-      .get({source});
+      .get({ source });
     const promise2 = firestore()
       .collection(Collections.WILD_QUESTIONS)
-      .get({source});
+      .get({ source });
     // const promise3 = firestore()
     // .collection(Collections.CHALLENGE_QUESTIONS)
     // .get({source});
     const promise4 = firestore()
       .collection(Collections.RUBRIC_QUESTIONS)
-      .get({source});
+      .get({ source });
 
     const data = await Promise.all([promise1, promise2, promise4]);
     const allQuestions: DocsType = [];
@@ -399,7 +399,7 @@ class QuestionsStore {
         this.questionsSize = favoritesQuestions.length;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -458,7 +458,7 @@ class QuestionsStore {
     try {
       crashlytics().log('Checking are all questions swiped.');
 
-      const {questionId, sessionId} = param;
+      const { questionId, sessionId } = param;
 
       const questionInfo = questionStore.getQuestionInfo({
         questionId,
@@ -489,7 +489,7 @@ class QuestionsStore {
       });
 
       if (isLastSession) {
-        const hasUserSubscription = userStore.checkIfUserHasSubscription();
+        const hasUserSubscription = userStore.getUserHasSubscription();
         if (!hasUserSubscription) {
           return;
         }
@@ -533,7 +533,7 @@ class QuestionsStore {
         category,
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -590,15 +590,15 @@ class QuestionsStore {
         });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
-  loadAds = (param: {questionNumber: number; interstitial: InterstitialAd}) => {
+  loadAds = (param: { questionNumber: number; interstitial: InterstitialAd }) => {
     try {
       crashlytics().log('loading ads.');
 
-      const {questionNumber, interstitial} = param;
+      const { questionNumber, interstitial } = param;
 
       const diff = getNumbersDiff(questionNumber, this.breakPointForShowingAds);
 
@@ -608,7 +608,7 @@ class QuestionsStore {
         this.breakPointForShowingAds = questionNumber;
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 }

@@ -1,23 +1,22 @@
-import React, {memo, useEffect} from 'react';
-import {StyleSheet, TextStyle, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
-import {observer} from 'mobx-react-lite';
-import Spinner from 'react-native-loading-spinner-overlay';
-import {useTranslation} from 'react-i18next';
+import React, { memo, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
-import {useColors} from '@src/app/providers/colorsProvider';
-import {HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
-import {ShareIcon} from '@src/shared/assets/icons/Share';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {favoriteStore} from '@src/entities/Favorite';
-import {questionStore} from '@src/entities/QuestionCard';
-import {Button} from '@src/shared/ui/Button/Button';
-import {shareStore} from '@src/features/Share';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import { useColors } from '@src/app/providers/colorsProvider';
+import { HeartIconWithoutColor } from '@src/shared/assets/icons/Heart';
+import { ShareIcon } from '@src/shared/assets/icons/Share';
+import { horizontalScale, verticalScale } from '@src/shared/lib/Metrics';
+import { favoriteStore } from '@src/entities/Favorite';
+import { questionStore } from '@src/entities/QuestionCard';
+import { Button } from '@src/shared/ui/Button/Button';
+import { shareStore } from '@src/features/Share';
+import { Spinner } from '@src/shared/ui/Spinner/Spinner';
 
 export const QuestionsHeaderRight = () => {
   const colors = useColors();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const question = questionStore.question;
   const isQuestionFavorite = favoriteStore.isQuestionFavorite;
@@ -65,16 +64,7 @@ export const QuestionsHeaderRight = () => {
           />
         )}
       </Button>
-      <Spinner
-        visible={isUploadingQuestionImageToStorage}
-        textContent={`${t('loading')}...`}
-        textStyle={
-          [
-            styles.spinnerTextStyle,
-            {color: colors.primaryTextColor},
-          ] as TextStyle
-        }
-      />
+      <Spinner visible={isUploadingQuestionImageToStorage} />
     </View>
   );
 };
@@ -95,10 +85,5 @@ const styles = StyleSheet.create({
   HeartIcon: {
     height: verticalScale(18),
     width: horizontalScale(20),
-  },
-
-  spinnerTextStyle: {
-    ...globalStyles.textFont,
-    ...globalStyles.size_6,
   },
 });

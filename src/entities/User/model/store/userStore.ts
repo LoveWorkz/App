@@ -1,38 +1,38 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import NetInfo from '@react-native-community/netinfo';
 import appleAuth from '@invertase/react-native-apple-authentication';
-import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {t} from 'i18next';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { t } from 'i18next';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
+import { AppRouteNames } from '@src/shared/config/route/configRoute';
+import { navigation } from '@src/shared/lib/navigation/navigation';
+import { authStorage } from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   RATE_TYPE_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
-import {profileStore} from '@src/entities/Profile';
-import {Collections, FirebaseErrorCodes} from '@src/shared/types/firebase';
-import {ProfilePhotoActionType} from '@src/entities/Profile/model/types/profileSchema';
-import {userRubricStore} from '@src/entities/UserRubric';
-import {userCategoryStore} from '@src/entities/UserCategory';
-import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
-import {challengesStore} from '@src/pages/ChallengesPage';
-import {favoriteStore} from '@src/entities/Favorite';
-import {goalStore} from '@src/entities/Goal';
-import {quotesStore} from '@src/widgets/Quotes';
-import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
-import {CurrentCategory} from '@src/entities/Category';
-import {User, AuthMethod, AuthUserInfo} from '../types/userSchema';
+import { profileStore } from '@src/entities/Profile';
+import { Collections, FirebaseErrorCodes } from '@src/shared/types/firebase';
+import { ProfilePhotoActionType } from '@src/entities/Profile/model/types/profileSchema';
+import { userRubricStore } from '@src/entities/UserRubric';
+import { userCategoryStore } from '@src/entities/UserCategory';
+import { userChallengeCategoryStore } from '@src/entities/UserChallengeCategory';
+import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { themeStorage } from '@src/shared/lib/storage/adapters/themeAdapter';
+import { ToastType } from '@src/shared/ui/Toast/Toast';
+import { challengesStore } from '@src/pages/ChallengesPage';
+import { favoriteStore } from '@src/entities/Favorite';
+import { goalStore } from '@src/entities/Goal';
+import { quotesStore } from '@src/widgets/Quotes';
+import { wowThatWasFastModalStore } from '@src/widgets/WowThatWasFastModal';
+import { CurrentCategory } from '@src/entities/Category';
+import { User, AuthMethod, AuthUserInfo } from '../types/userSchema';
 
 class UserStore {
   user: null | User = null;
@@ -42,6 +42,7 @@ class UserStore {
   isFirstUserVisit: boolean = true;
   isAccountDeleted: boolean = false;
   currentCategory: CurrentCategory | null = null;
+  hasUserSubscription: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -58,6 +59,10 @@ class UserStore {
     this.currentCategory = category;
   }
 
+  setHasUserSubscription(hasUserSubscription: boolean) {
+    this.hasUserSubscription = hasUserSubscription;
+  }
+
   toggleDialog = (isOpen: boolean) => {
     this.isDialogOpen = isOpen;
   };
@@ -66,13 +71,8 @@ class UserStore {
     this.isFirstUserVisit = isFirstUserVisit;
   };
 
-  checkIfUserHasSubscription = () => {
-    const user = this.user;
-    if (!user) {
-      return false;
-    }
-
-    return user.hasUserSubscription;
+  getUserHasSubscription = () => {
+    return this.hasUserSubscription;
   };
 
   initAuthUser = async () => {
@@ -84,7 +84,7 @@ class UserStore {
         await auth().currentUser?.reload();
       }
 
-      await this.checkAndSetUserVisitStatus({isSplash: true});
+      await this.checkAndSetUserVisitStatus({ isSplash: true });
 
       const user = auth().currentUser;
       if (!user) {
@@ -116,7 +116,7 @@ class UserStore {
         const data = await firestore()
           .collection(Collections.USERS)
           .doc(userId)
-          .get({source});
+          .get({ source });
 
         runInAction(() => {
           const user = data.data() as User;
@@ -137,7 +137,7 @@ class UserStore {
         });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -191,11 +191,11 @@ class UserStore {
         this.setIsFirstUserVisit(false);
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
-  setAuthUserInfo({userId, authMethod}: AuthUserInfo) {
+  setAuthUserInfo({ userId, authMethod }: AuthUserInfo) {
     try {
       runInAction(() => {
         this.userId = userId;
@@ -204,7 +204,7 @@ class UserStore {
 
       authStorage.setAuthData(AUTH_METHOD_STORAGE_KEY, authMethod);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   }
 
@@ -215,7 +215,7 @@ class UserStore {
       const network = await NetInfo.fetch();
       return !network.isConnected;
     } catch (e: unknown) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -231,7 +231,7 @@ class UserStore {
       }
       return isOffline;
     } catch (e: unknown) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
 
       return false;
     }
@@ -243,7 +243,7 @@ class UserStore {
       const source = isOffline ? 'cache' : 'server';
       return source;
     } catch (e: unknown) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
 
       return 'server';
     }
@@ -275,7 +275,7 @@ class UserStore {
       navigation.navigate(AppRouteNames.AUTH);
       this.toggleDialog(true);
     } else {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -310,7 +310,7 @@ class UserStore {
             requestedOperation: appleAuth.Operation.LOGIN,
             requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
           });
-          const {identityToken, nonce} = appleAuthRequestResponse;
+          const { identityToken, nonce } = appleAuthRequestResponse;
           credential = auth.AppleAuthProvider.credential(identityToken, nonce);
       }
 
@@ -340,7 +340,7 @@ class UserStore {
 
       await this.setDocuments(userId);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -353,7 +353,7 @@ class UserStore {
 
       await Promise.all([document1, document2, document3]);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -372,7 +372,7 @@ class UserStore {
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await themeStorage.removeTheme(RATE_TYPE_KEY);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -388,11 +388,11 @@ class UserStore {
 
       await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
-  updateUser = async ({data, field}: {data: any; field: string}) => {
+  updateUser = async ({ data, field }: { data: any; field: string }) => {
     try {
       crashlytics().log('Updating user data.');
 
@@ -418,7 +418,7 @@ class UserStore {
           });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 }

@@ -1,57 +1,57 @@
 {
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-    },
-    "eslint.validate": [
-        "javascript"
-    ],
-    "i18n-ally.localesPaths": [
-        "ios/Pods/RCT-Folly/folly/lang",
-        "ios/Pods/boost/boost/locale",
-        "ios/Pods/boost/boost/predef/language"
-    ],
-    "folderTemplates.structures": [
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "i18n-ally.localesPaths": [
+    "ios/Pods/RCT-Folly/folly/lang",
+    "ios/Pods/boost/boost/locale",
+    "ios/Pods/boost/boost/predef/language"
+  ],
+  "folderTemplates.structures": [
+    {
+      "name": "Component",
+      "omitParentDirectory": false,
+      "structure": [
         {
-            "name": "Component",
-            "omitParentDirectory": false,
-            "structure": [
-              {
-                "fileName": "ui/<FTName>.tsx",
-                "template": "component"
-              },
-              {
-                "fileName": "index.ts",
-                "template": "index"
-              },
-            ]
-          },
-      ],
-    "folderTemplates.fileTemplates" : {
-        "component": [
-          "import React, {memo} from 'react';",
-          "import {StyleSheet, View, Text} from 'react-native';",
-          "",
-          "interface [FTName]Props {}",
-          "",
-          "const [FTName] = (props: [FTName]Props) => {",
-          "  const {} = props;",
-          "",
-          "  return (",
-          "    <View style={styles.[FTName]}>",
-          "      <Text>[FTName]</Text>",
-          "    </View>",
-          "  );",
-          "}",
-          "",
-          "export default memo([FTName]);",
-          "",
-          "const styles = StyleSheet.create({",
-          "  [FTName]: {},",
-          "});",
-        ],
-        "index": [
-            "export {default as [FTName]} from './ui/[FTName]';"
-        ]
-      },
+          "fileName": "ui/<FTName>.tsx",
+          "template": "component"
+        },
+        {
+          "fileName": "index.ts",
+          "template": "index"
+        },
+      ]
+    },
+  ],
+  "folderTemplates.fileTemplates": {
+    "component": [
+      "import React, {memo} from 'react';",
+      "import {StyleSheet, View, Text} from 'react-native';",
+      "",
+      "interface [FTName]Props {}",
+      "",
+      "const [FTName] = (props: [FTName]Props) => {",
+      "  const {} = props;",
+      "",
+      "  return (",
+      "    <View style={styles.[FTName]}>",
+      "      <Text>[FTName]</Text>",
+      "    </View>",
+      "  );",
+      "}",
+      "",
+      "export default memo([FTName]);",
+      "",
+      "const styles = StyleSheet.create({",
+      "  [FTName]: {},",
+      "});",
+    ],
+    "index": [
+      "export {default as [FTName]} from './ui/[FTName]';"
+    ]
+  },
 }

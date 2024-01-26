@@ -1,6 +1,6 @@
-import {CurrentCategory} from '@src/entities/Category';
-import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
-import {FavoriteType} from '@src/entities/Favorite';
+import { CurrentCategory } from '@src/entities/Category';
+import { CurrentChallengeCategoryType } from '@src/entities/ChallengeCategory';
+import { FavoriteType } from '@src/entities/Favorite';
 
 export interface User {
   id: string;
@@ -17,7 +17,6 @@ export interface User {
   isWowThatWasFastModalForbidden: boolean;
   hasUserSwipedAnyQuestion: boolean;
   hasUserRated: boolean;
-  hasUserSubscription: boolean;
   gender: string;
   selectedGoalsIds: string[];
   birthDate: string;

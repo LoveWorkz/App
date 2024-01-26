@@ -1,21 +1,21 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {Collections, DocsType} from '@src/shared/types/firebase';
-import {challengeCard, QuestionType} from '@src/entities/QuestionCard';
-import {userStore} from '@src/entities/User';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {DocumentType} from '@src/shared/types/types';
-import {categoryStore, CategoryType} from '@src/entities/Category';
-import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
-import {getNextElementById} from '@src/shared/lib/common';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {inAppReviewStore} from '@src/features/InAppReview';
+import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { Collections, DocsType } from '@src/shared/types/firebase';
+import { challengeCard, QuestionType } from '@src/entities/QuestionCard';
+import { userStore } from '@src/entities/User';
+import { navigation } from '@src/shared/lib/navigation/navigation';
+import { AppRouteNames } from '@src/shared/config/route/configRoute';
+import { DocumentType } from '@src/shared/types/types';
+import { categoryStore, CategoryType } from '@src/entities/Category';
+import { UserCategory, userCategoryStore } from '@src/entities/UserCategory';
+import { getNextElementById } from '@src/shared/lib/common';
+import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
+import { inAppReviewStore } from '@src/features/InAppReview';
 import {
   challengeStore,
   ChallengeType,
@@ -91,7 +91,7 @@ class SessionStore {
             : Collections.CHALLENGES,
         )
         .doc(sessionChallengeInfo.challengeId)
-        .get({source});
+        .get({ source });
 
       const sessionChallenge = challenge.data() as
         | ChallengeType
@@ -101,7 +101,7 @@ class SessionStore {
         this.sessionChallenge = sessionChallenge;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -114,7 +114,7 @@ class SessionStore {
     this.markedSessionsMap = markedSessionsMap;
   };
 
-  updateMarkedSessionsMap = ({key, value}: {key: string; value: boolean}) => {
+  updateMarkedSessionsMap = ({ key, value }: { key: string; value: boolean }) => {
     this.markedSessionsMap[key] = value;
   };
 
@@ -123,14 +123,14 @@ class SessionStore {
   };
 
   getUserSessionsCount = () => {
-    const hasUserSubscription = userStore.checkIfUserHasSubscription();
+    const hasUserSubscription = userStore.getUserHasSubscription();
 
     return hasUserSubscription
       ? sessionsCountWithSubscription
       : sessionsCountWithoutSubscription;
   };
 
-  selectSession = ({session}: {session: SessionType}) => {
+  selectSession = ({ session }: { session: SessionType }) => {
     const categoryId = categoryStore.category?.id;
     if (!categoryId) {
       return;
@@ -144,7 +144,7 @@ class SessionStore {
   };
 
   filterSessionsBySubscription = (sessions: SessionType[]) => {
-    const hasUserSubscription = userStore.checkIfUserHasSubscription();
+    const hasUserSubscription = userStore.getUserHasSubscription();
     if (!hasUserSubscription) {
       return (sessions = sessions.slice(0, 4));
     }
@@ -181,7 +181,7 @@ class SessionStore {
           .collection(Collections.CATEGORIES_2)
           .doc(category.id)
           .collection(Collections.SESSIONS)
-          .get({source});
+          .get({ source });
 
         promises.push(data);
       });
@@ -224,7 +224,7 @@ class SessionStore {
         this.allSessionsFromAllCategories = allSessionsFromAllCategories;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -243,7 +243,7 @@ class SessionStore {
         .collection(Collections.CATEGORIES_2)
         .doc(categoryId)
         .collection(Collections.SESSIONS)
-        .get({source});
+        .get({ source });
 
       let sessions = this.formSessions({
         docs: data.docs,
@@ -266,7 +266,7 @@ class SessionStore {
 
       this.setAllSessions(allSessions);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -298,7 +298,7 @@ class SessionStore {
     // merge default and user sessions together
     const sessions = docs.map(doc => {
       const docId = doc.id.trim();
-      return {...doc.data(), ...userSessions[docId], id: docId};
+      return { ...doc.data(), ...userSessions[docId], id: docId };
     }) as SessionType[];
 
     const sortedSessions = this.sortSessions(sessions);
@@ -367,7 +367,7 @@ class SessionStore {
 
       const newMarkedValue = !isMarked;
 
-      this.updateMarkedSessionsMap({key: sessionId, value: newMarkedValue});
+      this.updateMarkedSessionsMap({ key: sessionId, value: newMarkedValue });
 
       await userCategoryStore.updateUserCategory({
         id: categoryId,
@@ -375,7 +375,7 @@ class SessionStore {
         field: `sessions.${sessionId}.isMarked`,
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -412,9 +412,9 @@ class SessionStore {
       }
 
       await this.checkSessionsAndShowRatePopup(category);
-      await this.updateSessionsData({categoryId, nextSession, currentSession});
+      await this.updateSessionsData({ categoryId, nextSession, currentSession });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 

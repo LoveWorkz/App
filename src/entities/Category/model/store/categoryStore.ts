@@ -1,21 +1,21 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {categoriesStore} from '@src/pages/CategoriesPage';
-import {Collections} from '@src/shared/types/firebase';
-import {questionStore, QuestionType} from '@src/entities/QuestionCard';
-import {rubricStore} from '@src/entities/Rubric';
-import {userStore} from '@src/entities/User';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {userCategoryStore} from '@src/entities/UserCategory';
-import {DocumentType} from '@src/shared/types/types';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {getNextElementById} from '@src/shared/lib/common';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {specialDayStore} from '@src/entities/SpecialDay';
-import {CategoryKey, CategoryType} from '../types/categoryTypes';
+import { categoriesStore } from '@src/pages/CategoriesPage';
+import { Collections } from '@src/shared/types/firebase';
+import { questionStore, QuestionType } from '@src/entities/QuestionCard';
+import { rubricStore } from '@src/entities/Rubric';
+import { userStore } from '@src/entities/User';
+import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
+import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { userCategoryStore } from '@src/entities/UserCategory';
+import { DocumentType } from '@src/shared/types/types';
+import { navigation } from '@src/shared/lib/navigation/navigation';
+import { getNextElementById } from '@src/shared/lib/common';
+import { AppRouteNames } from '@src/shared/config/route/configRoute';
+import { specialDayStore } from '@src/entities/SpecialDay';
+import { CategoryKey, CategoryType } from '../types/categoryTypes';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -69,11 +69,11 @@ class CategoryStore {
         } as CategoryType;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
-  fetchCategory = async ({id}: {id: string}) => {
+  fetchCategory = async ({ id }: { id: string }) => {
     try {
       crashlytics().log('Fetching Category.');
 
@@ -87,12 +87,12 @@ class CategoryStore {
       const categoryData = await firestore()
         .collection(Collections.CATEGORIES_2)
         .doc(id)
-        .get({source});
+        .get({ source });
       // user custom category
       const userCategoryData = await firestore()
         .collection(Collections.USER_CATEGORIES)
         .doc(userId)
-        .get({source});
+        .get({ source });
 
       const userCategory = userCategoryData.data();
       if (!userCategory) {
@@ -112,11 +112,11 @@ class CategoryStore {
       this.setCategory(category);
       return category;
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
-  getAndSetCategory = ({id}: {id: string}) => {
+  getAndSetCategory = ({ id }: { id: string }) => {
     try {
       const category = this.getCategory(id);
       if (!category) {
@@ -125,7 +125,7 @@ class CategoryStore {
 
       this.setCategory(category);
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -162,7 +162,7 @@ class CategoryStore {
         return;
       }
 
-      this.getAndSetCategory({id: categoryId});
+      this.getAndSetCategory({ id: categoryId });
 
       if (isCategoryDetailsVisible) {
         navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
@@ -176,7 +176,7 @@ class CategoryStore {
         });
       }
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -196,7 +196,7 @@ class CategoryStore {
         return category.name === name;
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
@@ -248,7 +248,7 @@ class CategoryStore {
       if (!questionInfo) {
         return;
       }
-      const {currentQuestion, currentQuestionNumber} = questionInfo;
+      const { currentQuestion, currentQuestionNumber } = questionInfo;
 
       questionStore.setQuestion(currentQuestion);
 
@@ -276,13 +276,13 @@ class CategoryStore {
         questionNumber: currentQuestionNumber,
       });
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
     }
   };
 
   checkContentLock = (categoryKey: CategoryKey) => {
     try {
-      const hasUserSubscription = userStore.checkIfUserHasSubscription();
+      const hasUserSubscription = userStore.getUserHasSubscription();
       const isStarterOrAllInOneCategory =
         categoryKey === CategoryKey.Starter ||
         categoryKey === CategoryKey.All_In_One;
@@ -294,7 +294,7 @@ class CategoryStore {
       const isContentLocked = !hasUserSubscription;
       return isContentLocked;
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({ error: e });
       return false;
     }
   };
@@ -321,7 +321,7 @@ class CategoryStore {
         });
       }
     } catch (error) {
-      errorHandler({error});
+      errorHandler({ error });
     }
   };
 
@@ -342,7 +342,7 @@ class CategoryStore {
 
     const newCategories = categories.map(category => {
       if (category.id === categoryId) {
-        return {...category, isBlocked};
+        return { ...category, isBlocked };
       }
 
       return category;
