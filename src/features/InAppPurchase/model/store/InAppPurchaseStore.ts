@@ -5,6 +5,7 @@ import {
   initConnection,
   requestSubscription,
   getPurchaseHistory,
+  PurchaseError,
 } from 'react-native-iap';
 
 import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
@@ -18,7 +19,7 @@ import { ValidationErrorCodes } from '@src/shared/types/validation';
 import { userStore } from '@src/entities/User';
 import { formatProducts, subscriptionsIds } from '../lib/inAppPurchaseLib';
 import { checkPromoCode, validateAndroid, validateIos } from '../services/api';
-import { IosValidationSendingDataType, ValidationResponseType } from '../types/inAppPurchaseType';
+import { IosValidationSendingDataType } from '../types/inAppPurchaseType';
 
 class InAppPurchaseStore {
   isInAppPurchaseModalVisible: boolean = false;
@@ -90,14 +91,20 @@ class InAppPurchaseStore {
 
       switch (subscriptionType) {
         case SubscriptionType.YEARLY:
-          const formattedYearlyKey = isPromo ? 'formattedYearlyPromo' : 'formattedYearly';
+          const formattedYearlyKey = isPromo
+            ? 'formattedYearlyPromo'
+            : 'formattedYearly';
+
           const formattedYearly = formattedProducts[formattedYearlyKey];
           productId = formattedYearly.productId;
           offerToken = formattedYearly.offerToken;
 
           break;
         default:
-          const formattedMonthlyKey = isPromo ? 'formattedMonthlyPromo' : 'formattedMonthly'
+          const formattedMonthlyKey = isPromo
+            ? 'formattedMonthlyPromo'
+            : 'formattedMonthly';
+
           const formattedMonthly = formattedProducts[formattedMonthlyKey];
           productId = formattedMonthly.productId;
           offerToken = formattedMonthly.offerToken;
@@ -109,9 +116,9 @@ class InAppPurchaseStore {
           subscriptionOffers: [{ sku: productId, offerToken }],
         }),
       });
-    } catch (e) {
-      errorHandler({ error: e });
-    }
+    } catch (e: any) {
+      this.purchaseErrorHandler(e);
+    };
   };
 
   checkPromoCode = async () => {
@@ -139,41 +146,26 @@ class InAppPurchaseStore {
     }
   }
 
-  purchaseUpdatedListener = async (token: string) => {
+  purchaseUpdatedHandler = async (token: string) => {
     try {
       const result = await this.validate(token);
-      this.handleValidationResult(result);
-      this.setIsInAppPurchaseModalVisible(false);
-    } catch (e) {
-      errorHandler({ error: e });
-    }
-  }
 
-  validate = async (token: string) => {
-    try {
-      if (isPlatformIos) {
-        const sendingData: IosValidationSendingDataType = {
-          "receipt-data": token,
-          password: IOS_SUBSCRIPTINON_SECRET_KEY,
-        }
-
-        const result = await validateIos(sendingData);
-        return result;
+      if (result.isExpired) {
+        userStore.setHasUserSubscription(false);
+      } else {
+        userStore.setHasUserSubscription(true);
+        this.setIsInAppPurchaseModalVisible(false);
       }
-
-      const result = await validateAndroid(token);
-      return result;
     } catch (e) {
       errorHandler({ error: e });
-      return { valid: false }
     }
   }
 
-  handleValidationResult = ({ valid }: ValidationResponseType) => {
-    if (valid) {
-      userStore.setHasUserSubscription(true);
-    } else {
-      userStore.setHasUserSubscription(false);
+  purchaseErrorHandler = async (error: PurchaseError) => {
+    const code = error.code;
+
+    if (!(code === 'E_USER_CANCELLED')) {
+      errorHandler({ error });
     }
   }
 
@@ -183,8 +175,43 @@ class InAppPurchaseStore {
     const receipt = purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
     if (receipt) {
       const result = await this.validate(receipt);
-      this.handleValidationResult(result);
+
+      if (result.isExpired) {
+        userStore.setHasUserSubscription(false);
+      } else {
+        userStore.setHasUserSubscription(true);
+      }
     }
+  }
+
+  validate = async (token: string) => {
+    try {
+      if (isPlatformIos) {
+        const result = await this.validateIos(token);
+        return result;
+      }
+
+      const result = await this.validateAndroid(token);
+      return result;
+    } catch (e) {
+      errorHandler({ error: e });
+      return { isExpired: true }
+    }
+  }
+
+  validateIos = async (token: string) => {
+    const sendingData: IosValidationSendingDataType = {
+      "receipt-data": token,
+      password: IOS_SUBSCRIPTINON_SECRET_KEY,
+    }
+
+    const result = await validateIos(sendingData);
+    return result;
+  }
+
+  validateAndroid = async (token: string) => {
+    const result = await validateAndroid(token);
+    return result;
   }
 }
 

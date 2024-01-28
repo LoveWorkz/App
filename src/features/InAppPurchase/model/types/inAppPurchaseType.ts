@@ -26,5 +26,5 @@ export interface IosValidationSendingDataType {
 }
 
 export interface ValidationResponseType {
-  valid: boolean;
+  isExpired: boolean;
 }

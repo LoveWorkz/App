@@ -43,24 +43,20 @@ const InAppPurchase = () => {
   );
 
   useEffect(() => {
-    // Initialize the in-app purchase store with subscription IDs
     inAppPurchaseStore.init();
 
-    // Listener for purchase updates
     const purchaseUpdateSubscription = purchaseUpdatedListener(
       (purchase: SubscriptionPurchase | ProductPurchase) => {
         const receipt = purchase.transactionReceipt;
         if (receipt) {
-          console.log('Transaction Receipt:', receipt);
-          inAppPurchaseStore.purchaseUpdatedListener(receipt);
+          inAppPurchaseStore.purchaseUpdatedHandler(receipt);
         }
       },
     );
 
-    // Listener for purchase errors
     const purchaseErrorSubscription = purchaseErrorListener(
       (error: PurchaseError) => {
-        console.log('purchaseErrorListener', error);
+        inAppPurchaseStore.purchaseErrorHandler(error);
       },
     );
 
