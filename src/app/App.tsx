@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { Toast } from '@src/shared/ui/Toast/Toast';
+import { PushNotifications } from '@src/features/PushNotifications';
 import { initAdmob } from './config/admobConfig';
 import { configureGoogleSignin } from './config/firebaseConfig';
 import { ColorsProvider } from './providers/colorsProvider';
@@ -21,6 +22,7 @@ const App = () => {
         <ColorsProvider>
           <AppRoute />
           <Toast />
+          <PushNotifications />
         </ColorsProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

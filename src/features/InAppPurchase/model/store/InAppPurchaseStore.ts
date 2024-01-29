@@ -170,6 +170,8 @@ class InAppPurchaseStore {
   }
 
   checkIfUserHasSubscription = async () => {
+    if (__DEV__) return;
+
     const purchaseHistory = await getPurchaseHistory();
 
     const receipt = purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
