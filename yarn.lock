@@ -1440,6 +1440,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-18.8.0.tgz#527943aad284d2c7736aaa2b0daa569f2d48e399"
   integrity sha512-RSxpBdnO478oZUr1R1V2DGq3ffaMyzcCRCNCXBQEYG9zFjwNMz3e/Af0saj5fkEk0mCGcgvIsyKraHnyt2dcgg==
 
+"@react-native-firebase/messaging@^18.8.0":
+  version "18.8.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-18.8.0.tgz#96fb7ab88e1057bbfb6034585e09686172d10d4a"
+  integrity sha512-MJVJ4dvczCEdPWER1vF7rhBMI78HpuMmGg7qsahERfho3dETNroust82DNqBSawsGTz4vVMOFpDSzs0Kt2WgSQ==
+
 "@react-native-firebase/storage@^17.0.0":
   version "17.0.0"
   resolved "https://registry.npmjs.org/@react-native-firebase/storage/-/storage-17.0.0.tgz"

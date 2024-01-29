@@ -660,6 +660,9 @@ PODS:
   - Firebase/Functions (10.3.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 10.3.0)
+  - Firebase/Messaging (10.3.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 10.3.0)
   - Firebase/Storage (10.3.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.3.0)
@@ -731,6 +734,15 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (10.3.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Reachability (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseMessagingInterop (10.20.0)
   - FirebaseSharedSwift (10.19.0)
   - FirebaseStorage (10.3.0):
@@ -1225,6 +1237,11 @@ PODS:
     - Firebase/Functions (= 10.3.0)
     - React-Core
     - RNFBApp
+  - RNFBMessaging (18.8.0):
+    - Firebase/Messaging (= 10.3.0)
+    - FirebaseCoreExtension (= 10.3.0)
+    - React-Core
+    - RNFBApp
   - RNFBStorage (17.0.0):
     - Firebase/Storage (= 10.3.0)
     - React-Core
@@ -1345,6 +1362,7 @@ DEPENDENCIES:
   - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
+  - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNGoogleMobileAds (from `../node_modules/react-native-google-mobile-ads`)
@@ -1378,6 +1396,7 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseFunctions
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseMessagingInterop
     - FirebaseSharedSwift
     - FirebaseStorage
@@ -1515,6 +1534,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/firestore"
   RNFBFunctions:
     :path: "../node_modules/@react-native-firebase/functions"
+  RNFBMessaging:
+    :path: "../node_modules/@react-native-firebase/messaging"
   RNFBStorage:
     :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
@@ -1567,6 +1588,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 244f71ff14ef44f39e00b44d356eac708ce03103
   FirebaseFunctions: d8415d2237cc807d05fa0a921d645f50a0d9d803
   FirebaseInstallations: c58489c9caacdbf27d1da60891a87318e20218e0
+  FirebaseMessaging: e345b219fd15d325f0cf2fef28cb8ce00d851b3f
   FirebaseMessagingInterop: ffbbd63321f6a1e21dc724d382c22805c95671a0
   FirebaseSharedSwift: f34eeb7d3ea87a34497629b6ca41657beadef76a
   FirebaseStorage: 0efbff0ac978981866d89804191688ae50d64033
@@ -1636,6 +1658,7 @@ SPEC CHECKSUMS:
   RNFBDynamicLinks: 96da2b61a55fe7b7e05b125904a69ee251b18a41
   RNFBFirestore: 9cd3d02bf57c184ad1ac0b6fdf1e320f126db33c
   RNFBFunctions: 67617d20864665d0e0d1cee2eb13a15e0fcf5665
+  RNFBMessaging: 8bdfb10a8ce3f53c48f9e19f6964d4a1ad89a1eb
   RNFBStorage: 4f69283aa9273d8fa5bc2484b9facaabec7cb0df
   RNGestureHandler: 4279931048471f17faf46d912b2e96e10f1da99b
   RNGoogleMobileAds: d19cad1a07bf49793c8b83a7e6d7c692dd258bb0
