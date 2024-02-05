@@ -170,7 +170,7 @@ class QuestionsStore {
         return;
       }
 
-      // this.loadAds({questionNumber, interstitial});
+      // this.loadAds({ questionNumber, interstitial });
 
       if (key !== DocumentType.FAVORITE && documentId) {
         wowThatWasFastModalStore.wowThatWasFastLogic({
@@ -221,6 +221,8 @@ class QuestionsStore {
         language,
         sessionId,
       });
+
+      this.checkAndResetNotificationDate();
 
       await userCategoryStore.updateUserCategory({
         id: currentCategory.id,
@@ -426,11 +428,10 @@ class QuestionsStore {
     isLastCategory: boolean;
   }) => {
     const sessionsCount = sessionStore.getUserSessionsCount();
-
     let lastSessionNumber = sessionsCount;
-    const unlockedCategories = categoriesStore.unlockedCategories;
 
     if (isLastCategory) {
+      const unlockedCategories = categoriesStore.unlockedCategories;
       lastSessionNumber = sessionsCount * unlockedCategories.length;
     }
 
@@ -450,6 +451,34 @@ class QuestionsStore {
       !isLastCategory
     );
   };
+
+  checkAndResetNotificationDate = async () => {
+    const user = userStore.user;
+    const currentCategory = categoryStore.category;
+    const currentSession = sessionStore.session;
+
+    if (!(user && currentCategory && currentSession)) {
+      return;
+    };
+
+    const lastSessionDate = user.notification.lastSessionDate;
+    if (!lastSessionDate) {
+      return;
+    };
+
+    // if user opened already passed category then we should not reset lastSessionDate field
+    const lastPassedCategoryName = user.category.currentCategory;
+    if (lastPassedCategoryName !== currentCategory.name) {
+      return;
+    }
+
+    // if user opened already passed session then we should not reset lastSessionDate field
+    const lastPassedSessionId = currentCategory.currentSession;
+    if (currentSession.id != lastPassedSessionId) {
+      return;
+    }
+    userStore.setNotification({ field: 'lastSessionDate', value: '' });
+  }
 
   checkIfAllQuestionsSwiped = async (param: {
     questionId: string;
@@ -489,10 +518,6 @@ class QuestionsStore {
       });
 
       if (isLastSession) {
-        const hasUserSubscription = userStore.getUserHasSubscription();
-        if (!hasUserSubscription) {
-          return;
-        }
 
         if (category.name === CategoryKey.Intimate) {
           if (session.challenge.isChallengeSpecial) {
@@ -559,28 +584,31 @@ class QuestionsStore {
         currentCategory: nextCategory.name,
       });
 
-      await userCategoryStore.updateUserCategory({
+      const promise1 = userCategoryStore.updateUserCategory({
         id: categoryId,
         field: 'isAllSessionsPassed',
         data: true,
       });
 
-      await userCategoryStore.updateUserCategory({
+      const promise2 = userCategoryStore.updateUserCategory({
         id: nextCategory.id,
         field: 'isBlocked',
         data: false,
       });
 
-      await userStore.updateUser({
+      const promise3 = userStore.updateUser({
         field: 'category.currentCategory',
         data: nextCategory.name,
       });
 
-      await userChallengeCategoryStore.updateUserChallengeCategory({
+      const promise4 = userChallengeCategoryStore.updateUserChallengeCategory({
         field: 'isBlocked',
         data: false,
         challengeCategoryName: nextCategory.name,
       });
+
+      // after completing a session, set a finish date
+      const promise5 = userStore.setNotification({ field: 'lastSessionDate', value: new Date() });
 
       if (session.challenge.isChallengeSpecial) {
         await challengeStore.updateSpecialChallenge({
@@ -589,6 +617,9 @@ class QuestionsStore {
           field: 'isBlocked',
         });
       }
+
+      await Promise.all([promise1, promise2, promise3, promise4, promise5]);
+
     } catch (e) {
       errorHandler({ error: e });
     }

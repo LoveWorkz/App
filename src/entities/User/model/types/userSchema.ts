@@ -20,6 +20,12 @@ export interface User {
   gender: string;
   selectedGoalsIds: string[];
   birthDate: string;
+  notification: Notification;
+}
+
+export interface Notification {
+  lastSessionDate: string | Date;
+  fcmToken: string;
 }
 
 export enum AuthMethod {

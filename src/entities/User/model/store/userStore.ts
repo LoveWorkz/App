@@ -32,7 +32,7 @@ import { goalStore } from '@src/entities/Goal';
 import { quotesStore } from '@src/widgets/Quotes';
 import { wowThatWasFastModalStore } from '@src/widgets/WowThatWasFastModal';
 import { CurrentCategory } from '@src/entities/Category';
-import { User, AuthMethod, AuthUserInfo } from '../types/userSchema';
+import { User, AuthMethod, AuthUserInfo, Notification } from '../types/userSchema';
 
 class UserStore {
   user: null | User = null;
@@ -43,6 +43,7 @@ class UserStore {
   isAccountDeleted: boolean = false;
   currentCategory: CurrentCategory | null = null;
   hasUserSubscription: boolean = false;
+  inited: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -55,13 +56,33 @@ class UserStore {
     });
   };
 
-  setCurrentCategory(category: CurrentCategory) {
+  setCurrentCategory = (category: CurrentCategory) => {
     this.currentCategory = category;
-  }
+  };
 
-  setHasUserSubscription(hasUserSubscription: boolean) {
+  setInited = (inited: boolean) => {
+    if (!this.inited) {
+      this.inited = inited;
+    }
+  };
+
+  setNotification = async ({ field, value }: { field: keyof Notification, value: string | Date }) => {
+    if (this.user) {
+      await this.updateUser({
+        field: `notification.${field}`,
+        data: value,
+      });
+
+      this.user.notification = {
+        ...this.user.notification,
+        [field]: value,
+      }
+    }
+  };
+
+  setHasUserSubscription = (hasUserSubscription: boolean) => {
     this.hasUserSubscription = hasUserSubscription;
-  }
+  };
 
   toggleDialog = (isOpen: boolean) => {
     this.isDialogOpen = isOpen;

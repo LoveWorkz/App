@@ -7,6 +7,7 @@ import {
   getPurchaseHistory,
   PurchaseError,
 } from 'react-native-iap';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
 import { IOS_SUBSCRIPTINON_SECRET_KEY } from '@src/app/config/appConfig/config/appConfig';
@@ -19,7 +20,7 @@ import { ValidationErrorCodes } from '@src/shared/types/validation';
 import { userStore } from '@src/entities/User';
 import { formatProducts, subscriptionsIds } from '../lib/inAppPurchaseLib';
 import { checkPromoCode, validateAndroid, validateIos } from '../services/api';
-import { IosValidationSendingDataType } from '../types/inAppPurchaseType';
+import { AndroidValidationSendingDataType, IosValidationSendingDataType } from '../types/inAppPurchaseType';
 
 class InAppPurchaseStore {
   isInAppPurchaseModalVisible: boolean = false;
@@ -61,6 +62,8 @@ class InAppPurchaseStore {
 
   init = async () => {
     try {
+      crashlytics().log('Init subscription popup');
+
       this.setIsFetching(true);
 
       await initConnection();
@@ -80,6 +83,8 @@ class InAppPurchaseStore {
 
   subscribe = async (subscriptionType: SubscriptionType) => {
     try {
+      crashlytics().log('Subscribe');
+
       let productId;
       let offerToken;
       const isPromo = this.isPromo;
@@ -123,6 +128,8 @@ class InAppPurchaseStore {
 
   checkPromoCode = async () => {
     try {
+      crashlytics().log('Checking user promo code');
+
       const promoCode = this.promoCode;
       if (!promoCode) {
         this.setPromoCodeErrorMessage(t(ValidationErrorCodes.FIELD_IS_REQUIRED));
@@ -170,10 +177,13 @@ class InAppPurchaseStore {
   }
 
   checkIfUserHasSubscription = async () => {
+    if (userStore.inited) return;
+
     if (__DEV__) return;
 
-    const purchaseHistory = await getPurchaseHistory();
+    crashlytics().log('Checking if user has subscription');
 
+    const purchaseHistory = await getPurchaseHistory();
     const receipt = purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
     if (receipt) {
       const result = await this.validate(receipt);
@@ -202,6 +212,8 @@ class InAppPurchaseStore {
   }
 
   validateIos = async (token: string) => {
+    crashlytics().log('Validating ios receipt token');
+
     const sendingData: IosValidationSendingDataType = {
       "receipt-data": token,
       password: IOS_SUBSCRIPTINON_SECRET_KEY,
@@ -212,7 +224,17 @@ class InAppPurchaseStore {
   }
 
   validateAndroid = async (token: string) => {
-    const result = await validateAndroid(token);
+    crashlytics().log('Validating android receipt token');
+
+    const productId = JSON.parse(token)['productId'];
+    const purchaseToken = JSON.parse(token)['purchaseToken'];
+
+    const sendingData: AndroidValidationSendingDataType = {
+      productId,
+      purchaseToken,
+    }
+
+    const result = await validateAndroid(sendingData);
     return result;
   }
 }

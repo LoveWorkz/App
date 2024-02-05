@@ -2,9 +2,11 @@ import { makeAutoObservable } from 'mobx';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { isPlatformIos } from '@src/shared/consts/common';
 import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
+import { User, userStore } from '@src/entities/User';
 
 class PushNotificationsStore {
     constructor() {
@@ -13,16 +15,29 @@ class PushNotificationsStore {
 
     init = async () => {
         try {
-            const hasPermission = await this.requestUserPermission();
+            crashlytics().log('Init push notifications');
 
-            if (hasPermission) {
-                const token = await this.getToken();
-                console.log('token', token)
-                await messaging().subscribeToTopic('allUsers');
+            const user = userStore.user;
+            if (!user) {
+                return;
             }
 
+            const hasPermission = await this.requestUserPermission();
+            if (hasPermission) {
+                await messaging().subscribeToTopic('allUsers');
+                this.getAndSetFcmToken(user);
+            }
         } catch (e) {
             errorHandler({ error: e });
+        }
+    };
+
+    getAndSetFcmToken = async (user: User) => {
+        const newToken = await this.getToken();
+        const fcmToken = user.notification.fcmToken;
+
+        if (newToken !== fcmToken) {
+            userStore.setNotification({ field: 'fcmToken', value: newToken });
         }
     };
 
@@ -30,7 +45,8 @@ class PushNotificationsStore {
         Toast.show({
             type: 'info',
             text1: notification.title,
-            text2: notification.body
+            text2: notification.body,
+            visibilityTime: 5000,
         });
     }
 
@@ -50,6 +66,8 @@ class PushNotificationsStore {
     };
 
     requestUserAndroidPermission = async () => {
+        crashlytics().log('Request permissions for android');
+
         if (Platform.Version >= 33) {
             const result = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
@@ -66,6 +84,8 @@ class PushNotificationsStore {
     };
 
     requestUserIosPermission = async () => {
+        crashlytics().log('Request permissions for ios');
+
         const authStatus = await messaging().requestPermission();
         const enabled =
             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -75,6 +95,8 @@ class PushNotificationsStore {
     }
 
     getToken = async () => {
+        crashlytics().log('Getting fcmToken');
+
         const fcmToken = await messaging().getToken();
         return fcmToken;
     };

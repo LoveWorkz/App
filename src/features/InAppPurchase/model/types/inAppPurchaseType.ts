@@ -25,6 +25,11 @@ export interface IosValidationSendingDataType {
   password: string;
 }
 
+export interface AndroidValidationSendingDataType {
+  productId: string;
+  purchaseToken: string;
+}
+
 export interface ValidationResponseType {
   isExpired: boolean;
 }

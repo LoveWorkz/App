@@ -1,5 +1,5 @@
 import axios from "axios"
-import { IosValidationSendingDataType, PromoCodeResponse, ValidationResponseType } from "../types/inAppPurchaseType";
+import { AndroidValidationSendingDataType, IosValidationSendingDataType, PromoCodeResponse, ValidationResponseType } from "../types/inAppPurchaseType";
 
 export const checkPromoCode = async (promoCode: string) => {
     const result = await axios.get<PromoCodeResponse>(`https://checkpromocode-znqlwk3rsq-uc.a.run.app?promoCode=${promoCode}`);
@@ -13,9 +13,9 @@ export const validateIos = async (data: IosValidationSendingDataType) => {
     return result.data;
 }
 
-export const validateAndroid = async (token: string) => {
-    const result = await axios.post<ValidationResponseType>(`https://validateadnroid-znqlwk3rsq-uc.a.run.app`, {
-        requestData: JSON.stringify(token)
+export const validateAndroid = async (data: AndroidValidationSendingDataType) => {
+    const result = await axios.post<ValidationResponseType>(`https://validateandroid-znqlwk3rsq-uc.a.run.app`, {
+        requestData: data
     });
     return result.data;
 }

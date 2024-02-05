@@ -67,6 +67,7 @@ class HomePageStore {
       ]);
 
       shareStore.shareQuestionHandler(language);
+      userStore.setInited(true);
     } catch (e) {
       errorHandler({ error: e });
     } finally {

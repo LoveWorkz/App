@@ -451,6 +451,9 @@ class SessionStore {
       data: nextSession.sessionNumber,
     });
 
+    // after completing a session, set a finish date
+    const promise5 = userStore.setNotification({ field: 'lastSessionDate', value: new Date() });
+
     if (currentSession.challenge.isChallengeSpecial) {
       await challengeStore.updateSpecialChallenge({
         id: currentSession.challenge.challengeId,
@@ -459,7 +462,7 @@ class SessionStore {
       });
     }
 
-    await Promise.all([promise1, promise2, promise3, promise4]);
+    await Promise.all([promise1, promise2, promise3, promise4, promise5]);
   };
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {

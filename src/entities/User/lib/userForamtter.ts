@@ -33,6 +33,10 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.gender = '';
   formatedUser.selectedGoalsIds = [];
   formatedUser.birthDate = '';
+  formatedUser.notification = {
+    lastSessionDate: '',
+    fcmToken: ''
+  }
 
   return formatedUser;
 };
