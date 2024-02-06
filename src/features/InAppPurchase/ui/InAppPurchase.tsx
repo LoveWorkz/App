@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useState } from 'react';
-import { StyleSheet, View, ActivityIndicator, Alert } from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {StyleSheet, View, ActivityIndicator, Alert} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {
   endConnection,
   PurchaseError,
@@ -10,29 +10,29 @@ import {
   SubscriptionPurchase,
   ProductPurchase,
 } from 'react-native-iap';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 
 import {
   shopTopBackground,
   shopTopBackgroundDark,
 } from '@src/shared/assets/images';
-import { horizontalScale, verticalScale } from '@src/shared/lib/Metrics';
-import { globalPadding, windowWidth } from '@src/app/styles/GlobalStyle';
-import { AppText, TextSize } from '@src/shared/ui/AppText/AppText';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
   SubscriptionBlock,
   SubscriptionType,
 } from '@src/entities/SubscriptionBlock';
-import { Button, ButtonTheme } from '@src/shared/ui/Button/Button';
-import { useColors } from '@src/app/providers/colorsProvider';
-import { Theme, useTheme } from '@src/app/providers/themeProvider';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
 import PromoCode from './PromoCode';
 
 const InAppPurchase = () => {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const colors = useColors();
-  const { theme } = useTheme();
+  const {theme} = useTheme();
   const isDark = theme === Theme.Dark;
   const isFetching = inAppPurchaseStore.isFetching;
   const formattedProducts = inAppPurchaseStore.formattedProducts;
@@ -135,7 +135,7 @@ const InAppPurchase = () => {
           style={styles.btn}
           theme={ButtonTheme.GRADIENT}>
           <AppText
-            style={{ color: colors.bgQuinaryColor }}
+            style={{color: colors.bgQuinaryColor}}
             weight={'700'}
             size={TextSize.LEVEL_3}
             text={t('buy_now')}
@@ -182,6 +182,6 @@ const styles = StyleSheet.create({
     bottom: verticalScale(5),
   },
   promoCode: {
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });

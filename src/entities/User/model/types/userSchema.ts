@@ -1,6 +1,6 @@
-import { CurrentCategory } from '@src/entities/Category';
-import { CurrentChallengeCategoryType } from '@src/entities/ChallengeCategory';
-import { FavoriteType } from '@src/entities/Favorite';
+import {CurrentCategory} from '@src/entities/Category';
+import {CurrentChallengeCategoryType} from '@src/entities/ChallengeCategory';
+import {FavoriteType} from '@src/entities/Favorite';
 
 export interface User {
   id: string;

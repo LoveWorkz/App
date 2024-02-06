@@ -5,8 +5,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {categoriesStore} from '@src/pages/CategoriesPage';
-import {RubricType} from '@src/entities/Rubric';
+import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {userRubricInitData} from '../lib/userRubric';
 import {UserRubric} from '../types/userRubricType';
 
@@ -44,7 +43,7 @@ class UserRubricStore {
     try {
       crashlytics().log('Setting User Rubrics.');
 
-      const defaultRubrics = await categoriesStore.fetchDefaultRubrics();
+      const defaultRubrics = await rubricStore.fetchDefaultRubrics();
       if (!defaultRubrics) {
         return;
       }

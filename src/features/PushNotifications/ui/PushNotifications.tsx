@@ -1,16 +1,17 @@
-import React, { memo, useEffect } from 'react';
+import React, {memo, useEffect} from 'react';
 import messaging from '@react-native-firebase/messaging';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 
-import { userStore } from '@src/entities/User';
+import {userStore} from '@src/entities/User';
 import pushNotificationsStore from '../model/store/pushNotificationsStore';
 
 const PushNotifications = () => {
-
   const inited = userStore.inited;
 
   useEffect(() => {
-    if (!inited) return;
+    if (!inited) {
+      return;
+    }
 
     pushNotificationsStore.init();
 
@@ -23,12 +24,10 @@ const PushNotifications = () => {
 
     return () => {
       unsubscribe();
-    }
+    };
   }, [inited]);
 
-  return (
-    <></>
-  );
-}
+  return <></>;
+};
 
 export default memo(observer(PushNotifications));

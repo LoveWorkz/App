@@ -1,11 +1,11 @@
-import { AppRegistry } from 'react-native';
+import {AppRegistry} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 import '@src/shared/config/i18next/i18next';
 import App from './src/app/App';
-import { name as appName } from './app.json';
+import {name as appName} from './app.json';
 
 // Register background handler for Push notifications
-messaging().setBackgroundMessageHandler(async remoteMessage => { });
+messaging().setBackgroundMessageHandler(async remoteMessage => {});
 
 AppRegistry.registerComponent(appName, () => App);

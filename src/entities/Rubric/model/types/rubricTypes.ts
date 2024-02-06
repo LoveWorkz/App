@@ -12,4 +12,5 @@ export interface RubricType {
   swipedQuestionsPercentage: number;
   displayName: DisplayText;
   createdDate: string;
+  image: string;
 }

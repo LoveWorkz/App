@@ -28,7 +28,8 @@ export type Colors =
   | 'bgLayout'
   | 'specialChallengeBgColor'
   | 'borderBottomColor'
-  | 'goalIconBgColor';
+  | 'goalIconBgColor'
+  | 'topicDescriptionColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -45,7 +46,7 @@ const commonColor = {
 const light: ColorType = {
   // bg colors
   bgColor: '#F4F6FA',
-  bgSecondaryColor: '#F1F3FF',
+  bgSecondaryColor: '#FFFFFF',
   bgTertiaryColor: '#FFFFFF',
   bgQuaternaryColor: '#FFFFFF',
   bgQuinaryColor: '#FFFFFF',
@@ -57,6 +58,7 @@ const light: ColorType = {
   skeletonHighlightColor: '#F2F8FC',
   bgPopup: '#3951804D',
   bgLayout: 'rgba(57, 81, 128, 0.5)',
+  bgForgotPasswordPopupColor: '#F4F6FA',
 
   // text colors
   primaryTextColor: '#395180',
@@ -66,7 +68,7 @@ const light: ColorType = {
   challengeCategoryNameColor: '#B6B6BD',
   categoryAndFavoritesTextColor: '#395180',
   purchaseDescriptionColor: '#8698BB',
-  bgForgotPasswordPopupColor: '#F4F6FA',
+  topicDescriptionColor: '#8989C1',
 
   // icons colors
   appleIconColor: '#1B1B1B',
@@ -102,6 +104,7 @@ const dark: ColorType = {
   challengeCategoryNameColor: '#C0C3CF',
   categoryAndFavoritesTextColor: '#1F232C',
   purchaseDescriptionColor: '#565F77',
+  topicDescriptionColor: '#C0C3CF',
 
   // icons colors
   appleIconColor: '#FFFFFF',

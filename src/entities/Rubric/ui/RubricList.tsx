@@ -1,0 +1,64 @@
+import {View, StyleSheet, Pressable} from 'react-native';
+import React, {memo} from 'react';
+import {observer} from 'mobx-react-lite';
+
+import {Rubric, rubricExample, RubricType} from '@src/entities/Rubric';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {DocumentType} from '@src/shared/types/types';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
+import rubricStore from '../model/store/rubricStore';
+
+interface RubricListProps {
+  isLoading: boolean;
+}
+
+const RubricList = (props: RubricListProps) => {
+  const {isLoading} = props;
+
+  const rubrics = rubricStore.rubrics;
+
+  const onRubricPressHandlerCreator = (id: string) => {
+    return () => {
+      navigation.navigate(AppRouteNames.QUESTIONS, {
+        type: DocumentType.RUBRIC,
+        id,
+      });
+    };
+  };
+
+  let content = rubrics.map(rubric => {
+    return rubric.questions.length ? (
+      <Pressable
+        onPress={onRubricPressHandlerCreator(rubric.id)}
+        key={rubric.id}
+        style={styles.rubricWrapper}>
+        <Rubric rubric={rubric} isLoading={isLoading} />
+      </Pressable>
+    ) : null;
+  });
+
+  if (isLoading) {
+    const skeletonRubrics = getEntityExampleDataForSkeleton({
+      entity: rubricExample,
+      count: 8,
+    }) as RubricType[];
+
+    content = skeletonRubrics.map((rubric, i) => (
+      <View key={i.toString()} style={styles.rubricWrapper}>
+        <Rubric rubric={rubric} isLoading={isLoading} />
+      </View>
+    ));
+  }
+
+  return <>{content}</>;
+};
+
+export default memo(observer(RubricList));
+
+const styles = StyleSheet.create({
+  rubricWrapper: {
+    marginTop: verticalScale(15),
+  },
+});

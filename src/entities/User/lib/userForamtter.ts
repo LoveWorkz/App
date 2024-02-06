@@ -1,5 +1,5 @@
-import { CategoryKey } from '@src/entities/Category';
-import { User, InitlUserInfo } from '../model/types/userSchema';
+import {CategoryKey} from '@src/entities/Category';
+import {User, InitlUserInfo} from '../model/types/userSchema';
 
 export const userFormatter = (userInfo: InitlUserInfo): User => {
   const formatedUser = {} as User;
@@ -35,8 +35,8 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
   formatedUser.birthDate = '';
   formatedUser.notification = {
     lastSessionDate: '',
-    fcmToken: ''
-  }
+    fcmToken: '',
+  };
 
   return formatedUser;
 };

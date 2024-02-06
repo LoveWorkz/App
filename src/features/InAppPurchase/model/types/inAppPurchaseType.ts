@@ -1,4 +1,4 @@
-import { Subscription } from 'react-native-iap';
+import {Subscription} from 'react-native-iap';
 
 export type SubscriptionIdsKey =
   | 'MONTHLY'

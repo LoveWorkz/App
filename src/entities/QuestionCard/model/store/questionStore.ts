@@ -1,7 +1,7 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import {makeAutoObservable, runInAction} from 'mobx';
 
-import { errorHandler } from '@src/shared/lib/errorHandler/errorHandler';
-import { QuestionPreviewType, QuestionType } from '../types/questionTypes';
+import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {QuestionPreviewType, QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
   question: null | QuestionType = null;
@@ -26,7 +26,7 @@ class QuestionStore {
         };
       });
     } catch (e) {
-      errorHandler({ error: e });
+      errorHandler({error: e});
     }
   };
   setQuestionCardScreenshot = (url: string) => {
@@ -57,9 +57,9 @@ class QuestionStore {
         return;
       }
 
-      return { currentQuestion, currentQuestionNumber: currentQuestionIndex + 1 };
+      return {currentQuestion, currentQuestionNumber: currentQuestionIndex + 1};
     } catch (e) {
-      errorHandler({ error: e });
+      errorHandler({error: e});
     }
   };
 
@@ -81,7 +81,7 @@ class QuestionStore {
 
       return currentQuestion;
     } catch (e) {
-      errorHandler({ error: e });
+      errorHandler({error: e});
     }
   };
 
@@ -95,7 +95,7 @@ class QuestionStore {
     try {
       return questions.findIndex(question => question.id === questionId);
     } catch (e) {
-      errorHandler({ error: e });
+      errorHandler({error: e});
     }
   };
 }

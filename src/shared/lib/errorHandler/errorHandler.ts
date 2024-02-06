@@ -30,6 +30,7 @@ export const errorHandler = ({
     Toast.show({
       type: ToastType.ERROR,
       text1: messageText,
+      topOffset: 60,
     });
   }
 };
