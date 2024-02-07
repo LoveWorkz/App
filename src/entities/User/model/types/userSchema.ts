@@ -12,7 +12,6 @@ export interface User {
   country: string;
   category: CurrentCategory;
   challengeCategory: CurrentChallengeCategoryType;
-  favorites: FavoriteType;
   quote: QuoeType;
   isWowThatWasFastModalForbidden: boolean;
   hasUserSwipedAnyQuestion: boolean;

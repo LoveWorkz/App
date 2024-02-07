@@ -18,6 +18,7 @@ import sessions from './sessions.json';
 import notifications from './notifications.json';
 import partner from './partner.json';
 import myRelationship from './myRelationship.json';
+import favorites from './favorites.json';
 
 export const en = {
   ...common,
@@ -40,4 +41,5 @@ export const en = {
   ...notifications,
   ...partner,
   ...myRelationship,
+  ...favorites,
 };

@@ -17,10 +17,6 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     currentChallengeCategory: CategoryKey.Starter,
     currentChallengeCategoryId: '',
   };
-  formatedUser.favorites = {
-    currentQuestion: '',
-    questions: [],
-  };
   formatedUser.quote = {
     bookId: '',
     isQuoteVisible: true,

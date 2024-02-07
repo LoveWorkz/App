@@ -3,8 +3,6 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {Favourites} from '@src/widgets/Favourites';
-import {verticalScale} from '@src/shared/lib/Metrics';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {favoriteStore} from '@src/entities/Favorite';
@@ -54,11 +52,6 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   return (
     <WithInAppPurchase>
       <View style={styles.container}>
-        {!!(favorites && favorites.questions.length) && (
-          <View style={styles.favouritesWrapper}>
-            <Favourites isLoading={isLoading} />
-          </View>
-        )}
         <Categories isLoading={isLoading} />
       </View>
     </WithInAppPurchase>
@@ -70,8 +63,5 @@ export default memo(observer(CategoriesPage));
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  favouritesWrapper: {
-    marginBottom: verticalScale(37),
   },
 });

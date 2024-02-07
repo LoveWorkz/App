@@ -280,8 +280,8 @@ class QuestionsStore {
         language,
       });
 
-      await userStore.updateUser({
-        field: 'favorites.currentQuestion',
+      await userRubricStore.updateUserRubricFavorites({
+        field: 'currentQuestion',
         data: question.id,
       });
     } catch (e) {
@@ -474,7 +474,7 @@ class QuestionsStore {
 
     // if user opened already passed session then we should not reset lastSessionDate field
     const lastPassedSessionId = currentCategory.currentSession;
-    if (currentSession.id != lastPassedSessionId) {
+    if (currentSession.id !== lastPassedSessionId) {
       return;
     }
     userStore.setNotification({field: 'lastSessionDate', value: ''});

@@ -4,3 +4,8 @@ export const userRubricInitData = {
   questionSwipeStartDate: '',
   swipedQuestionsPercentage: 0,
 };
+
+export const favorites = {
+  currentQuestion: '',
+  questions: [],
+};

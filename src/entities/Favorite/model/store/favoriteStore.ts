@@ -7,6 +7,7 @@ import {rubricStore} from '@src/entities/Rubric';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {userRubricStore} from '@src/entities/UserRubric';
 import {FavoriteType} from '../types/favoriteType';
 
 class FavoriteStore {
@@ -56,22 +57,22 @@ class FavoriteStore {
     try {
       crashlytics().log('Adding question to favorites.');
 
-      if (!this.favorites) {
+      const favorites = this.favorites;
+      if (!favorites) {
         return;
       }
 
-      const questionsIds = this.favorites.questions;
+      const questionsIds = favorites.questions;
       const newQuestionsIds = [...questionsIds, questionId];
 
-      await userStore.updateUser({
-        field: 'favorites.questions',
+      await userRubricStore.updateUserRubricFavorites({
+        field: 'questions',
         data: newQuestionsIds,
       });
 
-      await userStore.fetchUser();
-
       runInAction(() => {
         this.isQuestionFavorite = true;
+        this.favorites = {...favorites, questions: newQuestionsIds};
       });
     } catch (e) {
       errorHandler({error: e});
@@ -82,10 +83,6 @@ class FavoriteStore {
     try {
       crashlytics().log('Delleting question from favorites.');
 
-      const userId = userStore.userId;
-      if (!userId) {
-        return;
-      }
       if (!this.favorites) {
         return;
       }
@@ -116,15 +113,13 @@ class FavoriteStore {
         };
       }
 
-      await userStore.updateUser({
-        field: 'favorites',
+      await userRubricStore.updateUserRubricFavorites({
         data: favorites,
       });
 
-      await userStore.fetchUser();
-
       runInAction(() => {
         this.isQuestionFavorite = false;
+        this.favorites = favorites;
       });
     } catch (e) {
       errorHandler({error: e});

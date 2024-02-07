@@ -6,7 +6,6 @@ import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {favorites} from '@src/shared/assets/images';
 import {
   horizontalScale,
@@ -25,7 +24,7 @@ interface FavouriteProps {
   isLoading: boolean;
 }
 
-const height = 100;
+const height = 90;
 const borderRadius = moderateScale(20);
 
 export const Favorite = (props: FavouriteProps) => {
@@ -41,42 +40,27 @@ export const Favorite = (props: FavouriteProps) => {
   }
 
   if (isLoading) {
-    return (
-      <View>
-        <View style={styles.titleSkeleton}>
-          <Skeleton width={100} height={18} />
-        </View>
-        <Skeleton height={height} borderRadius={borderRadius} />
-      </View>
-    );
+    return <Skeleton height={height} borderRadius={borderRadius} />;
   }
 
   return (
     <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
-      <View>
-        <AppText
-          style={{color: colors.primaryTextColor}}
-          weight={'500'}
-          size={TextSize.LEVEL_5}
-          text={t('categories.favourites')}
-        />
-      </View>
       <FastImage
         style={[styles.favoritesFolder, {width: windowWidthMinusPaddings}]}
         resizeMode={'stretch'}
         source={favorites}>
-        <Gradient style={styles.titleWrapper} size={GradientSize.SMALL}>
+        <View style={[styles.titleWrapper, {backgroundColor: colors.white}]}>
           <AppText
-            style={{color: colors.white}}
+            style={[styles.title, {color: colors.primaryTextColor}]}
             text={`${favorite.questions.length} ${t('questions.questions')}`}
           />
-        </Gradient>
+        </View>
         <View>
           <AppText
-            style={[styles.text, {color: colors.categoryAndFavoritesTextColor}]}
+            style={[styles.text, {color: colors.white}]}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={t('questions.my_questions')}
+            text={t('favorites.title')}
           />
         </View>
       </FastImage>
@@ -86,25 +70,23 @@ export const Favorite = (props: FavouriteProps) => {
 
 export default memo(observer(Favorite));
 
-const marginTop = verticalScale(20);
-
 const styles = StyleSheet.create({
   favoritesFolder: {
-    marginTop: marginTop,
-    height: height,
     borderRadius: borderRadius,
-    paddingVertical: verticalScale(20),
-    paddingHorizontal: horizontalScale(20),
+    paddingVertical: verticalScale(15),
+    paddingHorizontal: horizontalScale(15),
   },
   titleWrapper: {
     paddingVertical: verticalScale(4),
+    paddingHorizontal: verticalScale(10),
+    borderRadius: moderateScale(8),
+    alignSelf: 'flex-start',
+  },
+  title: {
+    textTransform: 'capitalize',
   },
   text: {
-    marginTop: 13,
-    textTransform: 'uppercase',
-  },
-
-  titleSkeleton: {
-    marginBottom: marginTop,
+    marginTop: verticalScale(13),
+    textTransform: 'capitalize',
   },
 });

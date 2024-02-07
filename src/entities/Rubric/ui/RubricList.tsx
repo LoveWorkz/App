@@ -28,12 +28,14 @@ const RubricList = (props: RubricListProps) => {
     };
   };
 
-  let content = rubrics.map(rubric => {
+  let content = rubrics.map((rubric, i) => {
+    const isFirstElement = i === 0;
+
     return rubric.questions.length ? (
       <Pressable
         onPress={onRubricPressHandlerCreator(rubric.id)}
         key={rubric.id}
-        style={styles.rubricWrapper}>
+        style={isFirstElement ? {} : styles.rubricWrapper}>
         <Rubric rubric={rubric} isLoading={isLoading} />
       </Pressable>
     ) : null;
@@ -45,11 +47,17 @@ const RubricList = (props: RubricListProps) => {
       count: 8,
     }) as RubricType[];
 
-    content = skeletonRubrics.map((rubric, i) => (
-      <View key={i.toString()} style={styles.rubricWrapper}>
-        <Rubric rubric={rubric} isLoading={isLoading} />
-      </View>
-    ));
+    content = skeletonRubrics.map((rubric, i) => {
+      const isFirstElement = i === 0;
+
+      return (
+        <View
+          key={i.toString()}
+          style={isFirstElement ? {} : styles.rubricWrapper}>
+          <Rubric rubric={rubric} isLoading={isLoading} />
+        </View>
+      );
+    });
   }
 
   return <>{content}</>;

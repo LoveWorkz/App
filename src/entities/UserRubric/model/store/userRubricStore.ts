@@ -6,7 +6,8 @@ import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
-import {userRubricInitData} from '../lib/userRubric';
+import {favoriteStore, FavoriteType} from '@src/entities/Favorite';
+import {favorites, userRubricInitData} from '../lib/userRubric';
 import {UserRubric} from '../types/userRubricType';
 
 class UserRubricStore {
@@ -31,8 +32,11 @@ class UserRubricStore {
         .doc(userId)
         .get({source});
 
+      const userRubrics = data.data() as UserRubric;
+
       runInAction(() => {
-        this.userRubric = data.data() as UserRubric;
+        this.userRubric = userRubrics;
+        favoriteStore.setFavorites(userRubrics.favorites);
       });
     } catch (e) {
       errorHandler({error: e});
@@ -56,10 +60,15 @@ class UserRubricStore {
         };
       });
 
+      const userRubric = {
+        rubrics: userRubrics,
+        favorites: favorites,
+      };
+
       await firestore()
         .collection(Collections.USER_RUBRICS)
         .doc(userId)
-        .set({rubrics: userRubrics});
+        .set(userRubric);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -96,6 +105,42 @@ class UserRubricStore {
           .doc(userId)
           .update({
             [`rubrics.${id}.${field}`]: data,
+          });
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  updateUserRubricFavorites = async ({
+    field,
+    data,
+  }: {
+    field?: string;
+    data: string | string[] | FavoriteType;
+  }) => {
+    try {
+      crashlytics().log('Updating User Rubric Favorites.');
+
+      const isOffline = await userStore.getIsUserOffline();
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_RUBRICS)
+          .doc(userId)
+          .update({
+            [`favorites${field ? `.${field}` : ''}`]: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_RUBRICS)
+          .doc(userId)
+          .update({
+            [`favorites${field ? `.${field}` : ''}`]: data,
           });
       }
     } catch (e) {

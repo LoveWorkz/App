@@ -27,7 +27,6 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {favoriteStore} from '@src/entities/Favorite';
 import {goalStore} from '@src/entities/Goal';
 import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
@@ -160,7 +159,6 @@ class UserStore {
 
           this.setCurrentCategory(user.category);
           challengesStore.setChallengeCategory(user.challengeCategory);
-          favoriteStore.setFavorites(user.favorites);
           quotesStore.setIsQuoteInfo(user.quote);
           goalStore.setSelectedGoalIds(user.selectedGoalsIds);
           wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
