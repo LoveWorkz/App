@@ -577,7 +577,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bline2/Bline2Debug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Bline2/Info.plist;
@@ -611,7 +611,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bline2/Bline2Release.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				INFOPLIST_FILE = Bline2/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = bline;

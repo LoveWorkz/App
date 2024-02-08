@@ -6,7 +6,6 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
-import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import ChallengeItem from '../ChallengeItem/ChallengeItem';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
 import {challengeExample} from '../../model/lib/challenge';
@@ -33,16 +32,6 @@ export const CoreChallengesList = (props: CoreChallengesListProps) => {
 
   return (
     <>
-      {isLoading ? (
-        <Skeleton width={150} height={20} />
-      ) : (
-        <AppText
-          style={[styles.title, {color: colors.primaryTextColor}]}
-          text={t('challenge.coreChallengeTitle')}
-          weight={'500'}
-          size={TextSize.LEVEL_5}
-        />
-      )}
       {coreChallengesList.length ? (
         coreChallengesList.map(challange => {
           return (
@@ -70,9 +59,6 @@ export const CoreChallengesList = (props: CoreChallengesListProps) => {
 export default memo(CoreChallengesList);
 
 const styles = StyleSheet.create({
-  title: {
-    marginBottom: verticalScale(5),
-  },
   challengeItem: {
     marginTop: verticalScale(10),
   },

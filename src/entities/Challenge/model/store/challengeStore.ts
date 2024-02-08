@@ -70,16 +70,6 @@ class ChallengeStore {
   };
 
   updateLocalChallenge = (id: string) => {
-    const newFilteredChallenges = challengesStore.filteredChallengesList.map(
-      challenge => {
-        if (challenge.id === id) {
-          return {...challenge, isChecked: !challenge.isChecked};
-        }
-
-        return {...challenge};
-      },
-    );
-
     const newChallenges = challengesStore.challenges.map(challenge => {
       if (challenge.id === id) {
         return {...challenge, isChecked: !challenge.isChecked};
@@ -89,7 +79,6 @@ class ChallengeStore {
     });
 
     runInAction(() => {
-      challengesStore.filteredChallengesList = newFilteredChallenges;
       challengesStore.challenges = newChallenges;
     });
   };
@@ -101,16 +90,6 @@ class ChallengeStore {
     id: string;
     newValue: boolean;
   }) => {
-    const newFilteredChallenges = challengesStore.filteredSpecialChallenges.map(
-      challenge => {
-        if (challenge.id === id) {
-          return {...challenge, isSelected: newValue};
-        }
-
-        return {...challenge};
-      },
-    );
-
     const newSpecialChallenges = challengesStore.specialChallenges.map(
       challenge => {
         if (challenge.id === id) {
@@ -122,7 +101,6 @@ class ChallengeStore {
     );
 
     runInAction(() => {
-      challengesStore.filteredSpecialChallenges = newFilteredChallenges;
       challengesStore.specialChallenges = newSpecialChallenges;
     });
   };

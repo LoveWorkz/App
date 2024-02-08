@@ -77,9 +77,9 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout
-          isPageScrolling={true}
+          isPageScrolling={false}
           deleteBottomPadding={false}
-          deleteTopPadding={false}
+          deleteTopPadding={true}
           isTabBar>
           <ChallengesPage {...props} />
         </Layout>

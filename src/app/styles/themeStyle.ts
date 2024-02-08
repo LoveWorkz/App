@@ -29,7 +29,8 @@ export type Colors =
   | 'specialChallengeBgColor'
   | 'borderBottomColor'
   | 'goalIconBgColor'
-  | 'topicDescriptionColor';
+  | 'topicDescriptionColor'
+  | 'bgTabViewColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -59,6 +60,7 @@ const light: ColorType = {
   bgPopup: '#3951804D',
   bgLayout: 'rgba(57, 81, 128, 0.5)',
   bgForgotPasswordPopupColor: '#F4F6FA',
+  bgTabViewColor: '#94ABFD',
 
   // text colors
   primaryTextColor: '#395180',
@@ -95,6 +97,7 @@ const dark: ColorType = {
   bgForgotPasswordPopupColor: '#242832',
   bgPopup: '#000000',
   bgLayout: 'rgba(0, 0, 0, 0.5)',
+  bgTabViewColor: '#94ABFD',
 
   // text colors
   primaryTextColor: '#C0C3CF',

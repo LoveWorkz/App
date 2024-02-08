@@ -1,3 +1,5 @@
+import {NavigationState, SceneRendererProps} from 'react-native-tab-view';
+
 export interface SelectOption {
   value: string;
   label: string;
@@ -26,3 +28,7 @@ export type TabName =
   | 'Books'
   | 'Shop'
   | 'Home';
+
+export type RenderSceneType = SceneRendererProps & {
+  navigationState: NavigationState<any>;
+};
