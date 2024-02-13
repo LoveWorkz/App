@@ -289,9 +289,6 @@ class ChallengesStore {
         data: newChallengeCategory,
       });
 
-      // reset filter
-      this.clearChallengesInfo();
-
       runInAction(() => {
         this.setChallengeCategory(newChallengeCategory);
         this.updateLocalChallengeCategory({id});
@@ -323,10 +320,6 @@ class ChallengesStore {
     } catch (e) {
       errorHandler({error: e});
     }
-  };
-
-  clearChallengesInfo = () => {
-    rubricFilterItemStore.clearFilteredInfo();
   };
 
   checkIfAllChallengesSelected = async () => {

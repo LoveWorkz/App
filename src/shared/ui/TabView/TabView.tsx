@@ -37,7 +37,7 @@ const RenderTabBar = (props: RenderSceneType) => {
       }}
     />
   );
-}
+};
 
 interface TabViewProps {
   renderScene: (props: any) => JSX.Element;

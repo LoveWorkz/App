@@ -69,10 +69,10 @@ class ChallengeStore {
     }
   };
 
-  updateLocalChallenge = (id: string) => {
+  updateLocalChallenge = (id: string, newValue: boolean) => {
     const newChallenges = challengesStore.challenges.map(challenge => {
       if (challenge.id === id) {
-        return {...challenge, isChecked: !challenge.isChecked};
+        return {...challenge, isChecked: newValue};
       }
 
       return {...challenge};
@@ -105,12 +105,12 @@ class ChallengeStore {
     });
   };
 
-  selectChallenge = async ({id}: {id: string}) => {
+  selectChallenge = async ({id, newValue}: {id: string; newValue: boolean}) => {
     try {
       crashlytics().log('Selecting challenge.');
 
       await this.updateChallenge(id);
-      this.updateLocalChallenge(id);
+      this.updateLocalChallenge(id, newValue);
     } catch (e) {
       errorHandler({error: e});
     }

@@ -1,27 +1,101 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import {ScrollView} from 'react-native-gesture-handler';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import ChallengeItem from '../ChallengeItem/ChallengeItem';
-import {ChallengeType} from '../../model/types/ChallengeTypes';
+import {
+  ChallengeGroupType,
+  ChallengeType,
+  SpecialChallengeType,
+} from '../../model/types/ChallengeTypes';
 import {challengeExample} from '../../model/lib/challenge';
+import ChallengeGroup from '../ChallengeGroup/ChallengeGroup';
 
 interface CoreChallengesListProps {
   isLoading: boolean;
   isChallengesLoading: boolean;
-  challengesList: ChallengeType[];
+  challengeList: ChallengeType[];
 }
 
-export const CoreChallengesList = (props: CoreChallengesListProps) => {
-  const {isLoading, challengesList, isChallengesLoading} = props;
+export const renderChallenges = ({
+  item,
+  index,
+  isCore,
+}: {
+  item: ChallengeType | SpecialChallengeType;
+  index: number;
+  isCore: boolean;
+}) => {
+  const isFirstElement = index === 0;
+
+  if (isCore) {
+    const challenge = item as ChallengeType;
+
+    return (
+      <View
+        key={challenge.id}
+        style={isFirstElement ? {} : styles.challengeItem}>
+        <ChallengeItem
+          challenge={challenge}
+          text={challenge.description}
+          id={challenge.id}
+          isChecked={challenge.isChecked}
+        />
+      </View>
+    );
+  }
+
+  const specailChallenge = item as SpecialChallengeType;
+
+  return (
+    <View
+      key={specailChallenge.id}
+      style={isFirstElement ? {} : styles.challengeItem}>
+      <ChallengeItem
+        specailChallenge={specailChallenge}
+        text={specailChallenge.description}
+        id={specailChallenge.id}
+        isChecked={specailChallenge.isSelected}
+      />
+    </View>
+  );
+};
+
+export const renderChallengeGroups = ({
+  item,
+  isLoading,
+  isCore = false,
+}: {
+  item: ChallengeGroupType<ChallengeType[] | SpecialChallengeType[]>;
+  isLoading: boolean;
+  isCore?: boolean;
+}) => {
+  const list = item.challenges;
+
+  return (
+    <View style={styles.challengeGroupItem} key={item.id}>
+      <ChallengeGroup
+        isLoading={isLoading}
+        title={item.name}
+        description={item.description}>
+        {list.length &&
+          list.map((item, i) => renderChallenges({isCore, item, index: i}))}
+      </ChallengeGroup>
+    </View>
+  );
+};
+
+const CoreChallengesList = (props: CoreChallengesListProps) => {
+  const {isLoading, isChallengesLoading, challengeList} = props;
   const colors = useColors();
   const {t} = useTranslation();
 
-  let coreChallengesList = challengesList;
+  let coreChallengesList = challengeList;
 
   if (isLoading) {
     coreChallengesList = getEntityExampleDataForSkeleton({
@@ -30,19 +104,33 @@ export const CoreChallengesList = (props: CoreChallengesListProps) => {
     }) as ChallengeType[];
   }
 
+  const coreChallengesGroupList: ChallengeGroupType<ChallengeType[]>[] = [
+    {
+      id: 'id_1',
+      challenges: coreChallengesList,
+      name: 'Routines 1',
+      description: 'description 1',
+    },
+    {
+      id: 'id_2',
+      challenges: coreChallengesList,
+      name: 'Routines 2',
+      description: 'description 2',
+    },
+  ];
+
   return (
-    <>
-      {coreChallengesList.length ? (
-        coreChallengesList.map(challange => {
-          return (
-            <View style={styles.challengeItem} key={challange.id}>
-              <ChallengeItem
-                isLoading={isLoading || isChallengesLoading}
-                challenge={challange}
-              />
-            </View>
-          );
-        })
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      {coreChallengesGroupList.length ? (
+        coreChallengesGroupList.map(item =>
+          renderChallengeGroups({
+            item,
+            isLoading: isLoading || isChallengesLoading,
+            isCore: true,
+          }),
+        )
       ) : (
         <View style={styles.noResults}>
           <AppText
@@ -52,13 +140,16 @@ export const CoreChallengesList = (props: CoreChallengesListProps) => {
           />
         </View>
       )}
-    </>
+    </ScrollView>
   );
 };
 
 export default memo(CoreChallengesList);
 
 const styles = StyleSheet.create({
+  challengeGroupItem: {
+    marginBottom: verticalScale(20),
+  },
   challengeItem: {
     marginTop: verticalScale(10),
   },

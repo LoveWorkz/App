@@ -1,49 +1,66 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {observer} from 'mobx-react-lite';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
-import {SpecialChallengeType} from '../../model/types/ChallengeTypes';
+import {
+  ChallengeGroupType,
+  SpecialChallengeType,
+} from '../../model/types/ChallengeTypes';
 import {specialChallengeExample} from '../../model/lib/challenge';
-import SpecialChallengeItem from '../ChallengeItem/SpecialChallengeItem';
+import {renderChallengeGroups} from '../CoreChallengesList/CoreChallengesList';
 
 interface SpecialChallengesListProps {
   isLoading: boolean;
   isChallengesLoading: boolean;
-  challengesList: SpecialChallengeType[];
+  challengeList: SpecialChallengeType[];
 }
 
-export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
-  const {isLoading, challengesList, isChallengesLoading} = props;
+const SpecialChallengesList = (props: SpecialChallengesListProps) => {
+  const {isLoading, isChallengesLoading, challengeList} = props;
   const colors = useColors();
   const {t} = useTranslation();
 
-  let challenges = challengesList;
+  let specailChallenges = challengeList;
 
   if (isLoading) {
-    challenges = getEntityExampleDataForSkeleton({
+    specailChallenges = getEntityExampleDataForSkeleton({
       entity: specialChallengeExample as SpecialChallengeType,
       count: 5,
     }) as SpecialChallengeType[];
   }
 
+  const specailChallengesGroupList: ChallengeGroupType<
+    SpecialChallengeType[]
+  >[] = [
+    {
+      id: 'id_1',
+      challenges: specailChallenges,
+      name: 'Routines 1',
+      description: 'description 1',
+    },
+    {
+      id: 'id_2',
+      challenges: specailChallenges,
+      name: 'Routines 2',
+      description: 'description 2',
+    },
+  ];
+
   return (
-    <View>
-      {challenges.length ? (
-        challenges.map(challange => {
-          return (
-            <View style={styles.SpecialChallengesList} key={challange.id}>
-              <SpecialChallengeItem
-                isLoading={isLoading || isChallengesLoading}
-                challenge={challange}
-              />
-            </View>
-          );
-        })
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}>
+      {specailChallengesGroupList.length ? (
+        specailChallengesGroupList.map(item =>
+          renderChallengeGroups({
+            item,
+            isLoading: isLoading || isChallengesLoading,
+          }),
+        )
       ) : (
         <View style={styles.noResults}>
           <AppText
@@ -53,11 +70,11 @@ export const SpecialChallengesList = (props: SpecialChallengesListProps) => {
           />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
-export default memo(observer(SpecialChallengesList));
+export default memo(SpecialChallengesList);
 
 const styles = StyleSheet.create({
   SpecialChallengesList: {

@@ -107,7 +107,6 @@ const ChallengeCategory = (props: ChallangeProps) => {
   const uri = useMemo(() => {
     return {
       uri: image,
-      resizeMode: FastImage.resizeMode.contain,
     };
   }, [image]);
 

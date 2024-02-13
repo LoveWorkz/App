@@ -36,3 +36,10 @@ export enum SpecialChallengeEnum {
   EFFECTIVE_APOLOGIES = 'effectiveApologies',
   RAPID_CALMING = 'rapidCalming',
 }
+
+export interface ChallengeGroupType<C> {
+  id: string;
+  challenges: C;
+  name: string;
+  description: string;
+}

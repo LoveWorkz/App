@@ -1,41 +1,6 @@
 import {TFunction} from 'i18next';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 
-export const challengeFilterItems = [
-  {
-    name: 'exercise',
-    active: false,
-  },
-  {
-    name: 'activity',
-    active: false,
-  },
-  {
-    name: 'routine',
-    active: false,
-  },
-  {
-    name: 'self_reflection',
-    active: false,
-  },
-  {
-    name: 'dreams',
-    active: false,
-  },
-  {
-    name: 'friendship',
-    active: false,
-  },
-  {
-    name: 'personal_growth',
-    active: false,
-  },
-  {
-    name: 'conflict_management',
-    active: false,
-  },
-];
-
 export const challengeExample: ChallengeType = {
   title: {
     en: '',
