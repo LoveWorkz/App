@@ -1,10 +1,9 @@
 import React, {memo} from 'react';
-import {StyleSheet} from 'react-native';
+import {Modal} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
-import {Modal} from '@src/shared/ui/Modal/Modal';
-import {verticalScale} from '@src/shared/lib/Metrics';
 import {InAppPurchase} from '@src/features/InAppPurchase';
+import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 
 interface InAppPurchaseModalProps {
   visible: boolean;
@@ -20,19 +19,14 @@ const InAppPurchaseModal = (props: InAppPurchaseModalProps) => {
 
   return (
     <Modal
-      contentStyle={styles.content}
+      animationType="slide"
       visible={visible}
-      onClose={onCancelHandler}>
-      <InAppPurchase />
+      onRequestClose={onCancelHandler}>
+      <ScrollViewWithoutIndicator>
+        <InAppPurchase onCancelHandler={onCancelHandler} />
+      </ScrollViewWithoutIndicator>
     </Modal>
   );
 };
 
 export default memo(observer(InAppPurchaseModal));
-
-const styles = StyleSheet.create({
-  content: {
-    minHeight: verticalScale(188),
-    paddingHorizontal: 0,
-  },
-});

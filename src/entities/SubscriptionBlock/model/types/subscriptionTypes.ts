@@ -19,3 +19,11 @@ export interface FormattedProductType {
   formattedQuarterlyPromo: FormattedProductValueType;
   formattedYearlyPromo: FormattedProductValueType;
 }
+
+export interface SubscriptionBlockContentType {
+  duration: string;
+  description: string;
+  cost: string;
+  promoCost: string;
+  subscriptionType: SubscriptionType;
+}

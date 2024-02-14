@@ -46,7 +46,7 @@ class UserStore {
   isFirstUserVisit: boolean = true;
   isAccountDeleted: boolean = false;
   currentCategory: CurrentCategory | null = null;
-  hasUserSubscription: boolean = true;
+  hasUserSubscription: boolean = false;
   inited: boolean = false;
 
   constructor() {

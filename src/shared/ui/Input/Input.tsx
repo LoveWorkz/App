@@ -39,6 +39,7 @@ interface InputProps {
   isSpaceAllowed?: boolean;
   StartIcon?: React.ComponentType<any>;
   isLoading?: boolean;
+  placeholderTextColor?: string;
 }
 
 const height = 40;
@@ -59,6 +60,7 @@ export const Input = memo((props: InputProps) => {
     isSpaceAllowed = false,
     StartIcon,
     isLoading = false,
+    placeholderTextColor,
     ...rest
   } = props;
   const colors = useColors();
@@ -147,7 +149,9 @@ export const Input = memo((props: InputProps) => {
           onChangeText={onChangeTextHandler}
           value={value}
           placeholder={placeholder || undefined}
-          placeholderTextColor={colors.secondaryTextColor}
+          placeholderTextColor={
+            placeholderTextColor || colors.secondaryTextColor
+          }
           {...rest}
         />
         {secureTextEntry && (

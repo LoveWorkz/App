@@ -1,7 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {useTranslation} from 'react-i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -16,30 +15,32 @@ import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {GradientOutline} from '@src/shared/ui/Gradient/GradientOutline';
 import {
-  FormattedProductValueType,
+  SubscriptionBlockContentType,
   SubscriptionType,
 } from '../model/types/subscriptionTypes';
 
 interface SubscriptionBlockProps {
-  subscriptionType: SubscriptionType;
   chosenSubscriptionType?: SubscriptionType;
   setSubscriptionType?: (subscriptionType: SubscriptionType) => void;
-  productDetails: FormattedProductValueType;
+  subscriptionBlockContent: SubscriptionBlockContentType;
 }
 
 const SubscriptionBlock = (props: SubscriptionBlockProps) => {
   const {
-    subscriptionType,
-    chosenSubscriptionType = SubscriptionType.MONTHLY,
+    chosenSubscriptionType = SubscriptionType.YEARLY,
     setSubscriptionType,
-    productDetails,
+    subscriptionBlockContent,
   } = props;
 
-  const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
+
+  const {description, duration, cost, promoCost, subscriptionType} =
+    subscriptionBlockContent;
+
   const isActive = subscriptionType === chosenSubscriptionType;
   const isYearly = SubscriptionType.YEARLY === subscriptionType;
+  const textColor = isActive ? colors.white : colors.primaryTextColor;
 
   const onSubscriptionHandler = () => {
     setSubscriptionType?.(subscriptionType);
@@ -48,10 +49,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
   return (
     <TouchableOpacity
       onPress={onSubscriptionHandler}
-      style={[
-        styles.SubscriptionBlock,
-        {...getShadowOpacity(theme).shadowOpacity_level_2},
-      ]}>
+      style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
       {isYearly && (
         <Gradient
           style={[
@@ -68,59 +66,60 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
       )}
 
       <GradientOutline
-        borderWeight={isActive ? 1.5 : 0}
-        radius={20}
+        borderWeight={1.5}
+        radius={moderateScale(15)}
         style={styles.contentWrapper}
         contentStyle={[
-          styles.content,
           {
             ...getShadowOpacity(theme).shadowOpacity_level_2,
-            backgroundColor: colors.bgSecondaryColor,
-            paddingVertical: verticalScale(isActive ? 8 : 9.5),
-            paddingHorizontal: horizontalScale(isActive ? 8 : 9.5),
+            backgroundColor: isActive ? 'transparent' : colors.bgSecondaryColor,
           },
         ]}>
-        <>
-          <View style={styles.titleWrapper}>
+        <View style={styles.content}>
+          <View style={styles.leftSide}>
             <AppText
-              size={TextSize.LEVEL_4}
-              text={isYearly ? 'Yearly' : 'Monthly'}
+              size={TextSize.LEVEL_6}
+              text={duration}
+              weight={'700'}
+              style={[styles.subscriptionPeriod, {color: textColor}]}
+            />
+            <AppText
+              style={{color: textColor}}
+              size={TextSize.LEVEL_2}
+              text={description}
             />
           </View>
-
-          <View style={styles.costWrapper}>
-            <AppText
-              style={{color: colors.secondaryError}}
-              size={TextSize.LEVEL_3}
-              weight={'bold'}
-              text={productDetails.localisedPrice}
-            />
-            <View style={styles.costRightWrapper}>
+          <View>
+            <View style={styles.costWrapper}>
               <AppText
-                style={styles.discount}
-                size={TextSize.LEVEL_3}
-                weight={'200'}
-                text={'$1.99'}
+                style={[styles.mainCost, {color: textColor}]}
+                size={TextSize.LEVEL_4}
+                text={cost}
+                weight={'400'}
               />
               <AppText
+                style={{color: textColor}}
+                weight={'600'}
+                size={TextSize.LEVEL_6}
+                text={promoCost}
+              />
+            </View>
+            <View style={styles.perWeekWrapper}>
+              <AppText
+                style={[styles.perWeekCost, {color: textColor}]}
                 size={TextSize.LEVEL_3}
-                weight={'bold'}
-                text={isYearly ? ` / ${t('year')}` : ` / ${t('month')}`}
+                text={'1,33 $'}
+                weight={'500'}
+              />
+              <AppText
+                style={{color: textColor}}
+                weight={'500'}
+                size={TextSize.LEVEL_3}
+                text={'per week'}
               />
             </View>
           </View>
-          <AppText
-            style={[{color: colors.purchaseDescriptionColor}]}
-            size={TextSize.LEVEL_1}
-            text={
-              isYearly
-                ? `${t('shop.yearly_description')} (${t('only')} 4,99 $/ ${t(
-                    'month',
-                  )})`
-                : t('shop.monthly_description')
-            }
-          />
-        </>
+        </View>
       </GradientOutline>
     </TouchableOpacity>
   );
@@ -128,15 +127,17 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
 
 export default memo(SubscriptionBlock);
 
+const marginBottom = verticalScale(6);
+
 const styles = StyleSheet.create({
-  SubscriptionBlock: {
-    width: '47%',
-  },
   contentWrapper: {
-    minHeight: verticalScale(150),
+    minHeight: verticalScale(110),
   },
-  costRightWrapper: {
-    flexDirection: 'row',
+  leftSide: {
+    width: '55%',
+  },
+  subscriptionPeriod: {
+    marginBottom: marginBottom,
   },
   fireIcon: {
     height: verticalScale(13),
@@ -144,18 +145,17 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(3),
   },
   content: {
-    alignItems: 'center',
-  },
-  titleWrapper: {
-    marginBottom: verticalScale(6),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: horizontalScale(20),
   },
   percentage: {
     position: 'absolute',
     top: verticalScale(-15),
-    right: 0,
+    right: horizontalScale(20),
     height: verticalScale(25),
     width: horizontalScale(76),
-    borderRadius: moderateScale(10),
+    borderRadius: moderateScale(5),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -163,12 +163,16 @@ const styles = StyleSheet.create({
   },
   costWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    marginBottom: verticalScale(6),
+    marginBottom: marginBottom,
   },
-  discount: {
+  mainCost: {
+    right: horizontalScale(5),
     textDecorationLine: 'line-through',
+  },
+  perWeekWrapper: {
+    marginLeft: 'auto',
+  },
+  perWeekCost: {
+    marginLeft: 'auto',
   },
 });

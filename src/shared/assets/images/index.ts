@@ -72,9 +72,6 @@ export {default as splashScreenImage} from './splashScreenImage.png';
 export {default as defaultAvatarImage} from './light/defaultAvatarImage.png';
 export {default as defaultAvatarImageDark} from './dark/defaultAvatarImageDark.png';
 
-export {default as shopTopBackground} from './light/shopTopBackground.png';
-export {default as shopTopBackgroundDark} from './dark/shopTopBackground.png';
-
 export {default as lockedImage} from './lockedImage.png';
 
 // sessions images
@@ -91,3 +88,11 @@ export {default as goalIconBgDark} from './dark/goalIconBg.png';
 export {default as goalIconBg} from './light/goalIconBg.png';
 
 export {default as goalBackgroundImage} from './light/goalBackgroundImage.png';
+
+// shop images
+
+export {default as shopImage1} from './shopImages/shopImage1.png';
+export {default as shopImage2} from './shopImages/shopImage2.png';
+export {default as shopImage3} from './shopImages/shopImage3.png';
+export {default as shopImage4} from './shopImages/shopImage4.png';
+export {default as shopImage5} from './shopImages/shopImage5.png';

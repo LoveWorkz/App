@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
 import {StyleSheet, View} from 'react-native';
 
@@ -7,6 +7,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Spinner} from '@src/shared/ui/Spinner/Spinner';
+import {moderateScale} from '@src/shared/lib/Metrics';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
 
 const PromoCode = () => {
@@ -23,12 +24,17 @@ const PromoCode = () => {
     inAppPurchaseStore.checkPromoCode();
   };
 
+  const inputStyles = useMemo(() => {
+    return [styles.input, {borderColor: '#D9D9D9'}];
+  }, []);
+
   return (
     <View style={styles.PromoCode}>
       <Input
         error={promoCodeErrorMessage}
-        style={styles.input}
-        label={'Promo code'}
+        style={inputStyles}
+        placeholderTextColor={colors.primaryTextColor}
+        placeholder={'Promo code'}
         value={promoCode}
         onChange={onPromoCodeChangeHandler}
       />
@@ -56,11 +62,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    width: '80%',
+    width: '82%',
+    borderWidth: 1,
+    borderRadius: moderateScale(10),
   },
   btn: {
     width: '15%',
-    top: 5,
   },
 });
 
