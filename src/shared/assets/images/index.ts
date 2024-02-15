@@ -63,7 +63,6 @@ export {default as IntimateDarkImage} from './dark/progressBar/intimate/Intimate
 export {default as CHALLENGE_CARD} from './CHALLENGE_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';
 
-export {default as favorites} from './favorites.png';
 export {default as homeCategoryImage} from './light/homeCategoryImage.png';
 export {default as HomepageBackground} from './light/HomepageBackground.png';
 export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
@@ -96,3 +95,8 @@ export {default as shopImage2} from './shopImages/shopImage2.png';
 export {default as shopImage3} from './shopImages/shopImage3.png';
 export {default as shopImage4} from './shopImages/shopImage4.png';
 export {default as shopImage5} from './shopImages/shopImage5.png';
+
+// favorites
+
+export {default as questionFavourites} from './favorites/questionFavourites.png';
+export {default as challengeFavourites} from './favorites/challengeFavourites.png';

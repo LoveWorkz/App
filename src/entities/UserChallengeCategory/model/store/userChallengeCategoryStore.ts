@@ -8,6 +8,7 @@ import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {CategoryKey} from '@src/entities/Category';
 import userStore from '@src/entities/User/model/store/userStore';
+import {favorites, favoriteStore, FavoriteType} from '@src/entities/Favorite';
 import {userChallengeCategoryInitData} from '../lib/userChallengeCategory';
 import {UserChallengeCategoryType} from '../types/userChallengeCategoryType';
 
@@ -50,6 +51,8 @@ class UserChallengeCategoryStore {
         ];
 
       runInAction(() => {
+        favoriteStore.setFavorites(userChallengeCategory.favorites);
+
         this.userChallengeCategory = userChallengeCategory;
         challengesStore.setIsAllChallengesSelected(
           currenetChallengeCategory.isAllChallengesSelected,
@@ -94,7 +97,10 @@ class UserChallengeCategoryStore {
       await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
-        .set({challengeCategory: userChallengeCategories});
+        .set({
+          challengeCategory: userChallengeCategories,
+          favorites: favorites,
+        });
     } catch (e) {
       errorHandler({error: e});
     }
@@ -148,6 +154,41 @@ class UserChallengeCategoryStore {
       errorHandler({error: e});
     }
   };
+
+  updateUserChallengeFavorites = async ({
+    data,
+  }: {
+    data: string | string[] | FavoriteType;
+  }) => {
+    try {
+      crashlytics().log('Updating User challenge Favorites.');
+
+      const isOffline = await userStore.getIsUserOffline();
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            ['favorites.ids']: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            ['favorites.ids']: data,
+          });
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
   deleteUserChallengeCategory = async (userId: string) => {
     try {
       crashlytics().log('Deleting User Challenge Category.');

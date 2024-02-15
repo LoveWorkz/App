@@ -10,7 +10,6 @@ import {
   getNextChallengeCategory,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
-import {rubricFilterItemStore} from '@src/entities/RubricFilterItem';
 import {
   userChallengeCategoryStore,
   UserSpecialChallenge,
@@ -23,6 +22,7 @@ class ChallengesStore {
   challenges: ChallengeType[] = [];
   specialChallenges: SpecialChallengeType[] = [];
   selectedChallengesIds: string[] = [];
+  favoriteChallengesList: ChallengeType[] = [];
   selectedSpecialChallengesIds: Record<string, UserSpecialChallenge> | null =
     null;
   isAllChallengesSelected: boolean = false;
@@ -57,6 +57,10 @@ class ChallengesStore {
 
   setChallengeCategory = (challengeCategory: CurrentChallengeCategoryType) => {
     this.challengeCategory = challengeCategory;
+  };
+
+  setFavoriteChallengesList = (favoriteChallengesList: ChallengeType[]) => {
+    this.favoriteChallengesList = favoriteChallengesList;
   };
 
   setSelectedChallengesIds = (selectedChallengesIds: string[]) => {

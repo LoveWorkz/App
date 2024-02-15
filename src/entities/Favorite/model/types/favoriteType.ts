@@ -1,4 +1,9 @@
 export interface FavoriteType {
-  currentQuestion: string;
-  questions: string[];
+  ids: string[];
 }
+
+export interface QuestionFavoriteType extends FavoriteType {
+  currentQuestion: string;
+}
+
+export type FavoriteKey = 'question' | 'challenge';

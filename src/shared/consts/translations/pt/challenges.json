@@ -4,5 +4,6 @@
     "challenge.tab_core": "Núcleo",
     "challenge.tab_special": "Especial",
     "challenge.lockedPopupTitle": "Desculpe, estes desafios ainda estão bloqueados.",
-    "challenge.lockedPopupText": "Para desbloquear a próxima etapa, você precisa responder e dominar completamente as perguntas e desafios do passo atual. Esta abordagem (4 Passos para o Amor) é projetada para garantir que você não avance prematuramente, para que possa obter o máximo efeito terapêutico de cada estágio."
+    "challenge.lockedPopupText": "Para desbloquear a próxima etapa, você precisa responder e dominar completamente as perguntas e desafios do passo atual. Esta abordagem (4 Passos para o Amor) é projetada para garantir que você não avance prematuramente, para que possa obter o máximo efeito terapêutico de cada estágio.",
+    "challenge.favourite_Challenges": "Favourite Challenges"
 }

@@ -6,8 +6,12 @@ import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
-import {favoriteStore, FavoriteType} from '@src/entities/Favorite';
-import {favorites, userRubricInitData} from '../lib/userRubric';
+import {
+  favoriteStore,
+  FavoriteType,
+  questionFavorites,
+} from '@src/entities/Favorite';
+import {userRubricInitData} from '../lib/userRubric';
 import {UserRubric} from '../types/userRubricType';
 
 class UserRubricStore {
@@ -62,7 +66,7 @@ class UserRubricStore {
 
       const userRubric = {
         rubrics: userRubrics,
-        favorites: favorites,
+        favorites: questionFavorites,
       };
 
       await firestore()

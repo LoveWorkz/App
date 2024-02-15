@@ -1,10 +1,13 @@
 import React, {memo} from 'react';
 import {Pressable} from 'react-native';
+import {observer} from 'mobx-react-lite';
+import {useTranslation} from 'react-i18next';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {Favorite} from '@src/entities/Favorite';
+import {Favorite, favoriteStore} from '@src/entities/Favorite';
 import {DocumentType} from '@src/shared/types/types';
+import {questionFavourites} from '@src/shared/assets/images';
 
 interface FavouritesProps {
   isLoading: boolean;
@@ -12,6 +15,7 @@ interface FavouritesProps {
 
 export const Favourites = (props: FavouritesProps) => {
   const {isLoading} = props;
+  const {t} = useTranslation();
 
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.QUESTIONS, {
@@ -19,11 +23,20 @@ export const Favourites = (props: FavouritesProps) => {
     });
   };
 
+  const favorite = favoriteStore.favorites;
+  if (!favorite) {
+    return null;
+  }
+
   return (
     <Pressable onPress={onPressHandler}>
-      <Favorite isLoading={isLoading} />
+      <Favorite
+        image={questionFavourites}
+        text={`${favorite.ids.length} ${t('questions.questions')}`}
+        isLoading={isLoading}
+      />
     </Pressable>
   );
 };
 
-export default memo(Favourites);
+export default memo(observer(Favourites));

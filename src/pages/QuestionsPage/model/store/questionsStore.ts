@@ -413,7 +413,7 @@ class QuestionsStore {
 
     const allQuestionsMap = this.allQuestionsMap;
 
-    const favoritesQuestions = favorites.questions.map(
+    const favoritesQuestions = favorites.ids.map(
       questionId => allQuestionsMap[questionId],
     );
 

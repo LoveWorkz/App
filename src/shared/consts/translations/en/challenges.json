@@ -4,6 +4,7 @@
     "challenge.tab_core": "Core",
     "challenge.tab_special": "Special",
     "challenge.lockedPopupTitle": "Sorry, these challenges are still locked",
-    "challenge.lockedPopupText": "In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don't move forward prematurely, so you can get the maximum therapeutic effect from each stage"
+    "challenge.lockedPopupText": "In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don't move forward prematurely, so you can get the maximum therapeutic effect from each stage",
+    "challenge.favourite_Challenges": "Favourite Challenges"
 }
 

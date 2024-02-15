@@ -17,7 +17,7 @@ export const QuestionsHeaderRight = () => {
   const colors = useColors();
 
   const question = questionStore.question;
-  const isQuestionFavorite = favoriteStore.isQuestionFavorite;
+  const isQuestionFavorite = favoriteStore.isFavorite;
   const isUploadingQuestionImageToStorage =
     shareStore.isUploadingQuestionImageToStorage;
 
@@ -26,11 +26,12 @@ export const QuestionsHeaderRight = () => {
       return;
     }
 
-    favoriteStore.setIsQuestionFavorite(question.id);
+    favoriteStore.setIsFavorite(question.id);
   }, [question]);
 
   const toggleFavorite = () => {
-    favoriteStore.toggleFavorite();
+    const id = question?.id;
+    id && favoriteStore.toggleFavorite(id, 'question');
   };
 
   const onShareHandler = async () => {

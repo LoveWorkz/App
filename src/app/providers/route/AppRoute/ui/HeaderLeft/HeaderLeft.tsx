@@ -57,6 +57,7 @@ export default memo(HeaderLeft);
 const styles = StyleSheet.create<Record<string, any>>({
   headerLeft: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     height: '100%',

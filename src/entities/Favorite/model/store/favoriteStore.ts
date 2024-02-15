@@ -1,83 +1,142 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {userStore} from '@src/entities/User';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {rubricStore} from '@src/entities/Rubric';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userRubricStore} from '@src/entities/UserRubric';
-import {FavoriteType} from '../types/favoriteType';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {
+  FavoriteKey,
+  FavoriteType,
+  QuestionFavoriteType,
+} from '../types/favoriteType';
 
 class FavoriteStore {
   favorites: FavoriteType | null = null;
-  isQuestionFavorite = false;
+  isFavorite = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setIsQuestionFavorite = (questionId: string) => {
-    this.isQuestionFavorite = this.checkIsQuestionFavorite(questionId);
-  };
-
-  checkIsQuestionFavorite = (questionId: string) => {
-    if (!this.favorites) {
-      return false;
-    }
-
-    return this.favorites.questions.includes(questionId);
-  };
-
-  toggleFavorite = async () => {
-    try {
-      crashlytics().log('Switching favorites questions.');
-
-      const currentQuestion = questionStore.question;
-      if (!currentQuestion) {
-        return;
-      }
-
-      if (this.isQuestionFavorite) {
-        await this.deleteQuestionFromFavorites(currentQuestion.id);
-      } else {
-        this.addQuestionToFavorites(currentQuestion.id);
-      }
-    } catch (e) {
-      errorHandler({error: e});
-    }
+  setIsFavorite = (id: string) => {
+    this.isFavorite = this.checkIsFavorite(id);
   };
 
   setFavorites = (favorites: FavoriteType) => {
     this.favorites = favorites;
   };
 
-  addQuestionToFavorites = async (questionId: string) => {
+  checkIsFavorite = (id: string) => {
+    if (!this.favorites) {
+      return false;
+    }
+
+    return this.favorites.ids.includes(id);
+  };
+
+  toggleFavorite = async (id: string, key: FavoriteKey) => {
     try {
-      crashlytics().log('Adding question to favorites.');
+      crashlytics().log('Switching favorites.');
+
+      if (this.isFavorite) {
+        await this.deleteFromFavorites(id, key);
+      } else {
+        this.addToFavorites(id, key);
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  addToFavorites = async (id: string, key: FavoriteKey) => {
+    try {
+      crashlytics().log('Adding to favorites.');
 
       const favorites = this.favorites;
       if (!favorites) {
         return;
       }
 
-      const questionsIds = favorites.questions;
-      const newQuestionsIds = [...questionsIds, questionId];
+      const ids = favorites.ids;
+      const newIds = [...ids, id];
 
-      await userRubricStore.updateUserRubricFavorites({
-        field: 'questions',
-        data: newQuestionsIds,
-      });
+      await this.updateFavorites(newIds, key);
 
       runInAction(() => {
-        this.isQuestionFavorite = true;
-        this.favorites = {...favorites, questions: newQuestionsIds};
+        this.isFavorite = true;
+        this.favorites = {...favorites, ids: newIds};
       });
     } catch (e) {
       errorHandler({error: e});
     }
   };
+
+  deleteFromFavorites = async (id: string, key: FavoriteKey) => {
+    switch (key) {
+      case 'question':
+        await this.deleteQuestionFromFavorites(id);
+        break;
+      case 'challenge':
+        await this.deleteChallengeFromFavorites(id);
+        break;
+      default:
+    }
+  };
+
+  updateFavorites = async (newIds: string[], key: FavoriteKey) => {
+    try {
+      switch (key) {
+        case 'question':
+          await userRubricStore.updateUserRubricFavorites({
+            field: 'ids',
+            data: newIds,
+          });
+          break;
+        case 'challenge':
+          await userChallengeCategoryStore.updateUserChallengeFavorites({
+            data: newIds,
+          });
+          break;
+        default:
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  deleteChallengeFromFavorites = async (currentId: string) => {
+    try {
+      if (!this.favorites) {
+        return;
+      }
+
+      const ids = this.favorites.ids;
+      const newIds = ids.filter(id => {
+        return id !== currentId;
+      });
+
+      const favorites: FavoriteType = {
+        ids: newIds,
+      };
+
+      await userChallengeCategoryStore.updateUserChallengeFavorites({
+        data: newIds,
+      });
+
+      runInAction(() => {
+        this.isFavorite = false;
+        this.favorites = favorites;
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  // question favorite logic
 
   deleteQuestionFromFavorites = async (questionId: string) => {
     try {
@@ -87,8 +146,8 @@ class FavoriteStore {
         return;
       }
 
-      const questionsIds = this.favorites.questions;
-      let favorites: FavoriteType;
+      const questionsIds = this.favorites.ids;
+      let favorites: QuestionFavoriteType;
       const isOnlyOneFavoriteQuestion = questionsIds.length === 1;
 
       const newQuestionsIds = questionsIds.filter(id => {
@@ -99,7 +158,7 @@ class FavoriteStore {
       if (isOnlyOneFavoriteQuestion) {
         favorites = {
           currentQuestion: '',
-          questions: [],
+          ids: [],
         };
       } else {
         const prevQuestionId = this.getPrevFavoriteQuestionId({
@@ -109,7 +168,7 @@ class FavoriteStore {
 
         favorites = {
           currentQuestion: prevQuestionId,
-          questions: newQuestionsIds,
+          ids: newQuestionsIds,
         };
       }
 
@@ -118,7 +177,7 @@ class FavoriteStore {
       });
 
       runInAction(() => {
-        this.isQuestionFavorite = false;
+        this.isFavorite = false;
         this.favorites = favorites;
       });
     } catch (e) {
@@ -154,10 +213,10 @@ class FavoriteStore {
     currentQuestionId: string;
     questionsIds: string[];
   }) => {
-    const isQuestionFavorite = this.checkIsQuestionFavorite(currentQuestionId);
+    const isFavorite = this.checkIsFavorite(currentQuestionId);
 
     // when we removing chosen question from favorites we should reset swipe history
-    if (!isQuestionFavorite) {
+    if (!isFavorite) {
       return questionsIds[0];
     }
 
@@ -181,12 +240,14 @@ class FavoriteStore {
         return;
       }
 
+      const questionFavorites = this.favorites as QuestionFavoriteType;
+
       if (!id) {
         // initial logic
 
         questionId = this.getInitialQuestionId({
-          questionsIds: this.favorites.questions,
-          currentQuestionId: this.favorites.currentQuestion,
+          questionsIds: questionFavorites.ids,
+          currentQuestionId: questionFavorites.currentQuestion,
         });
       }
 

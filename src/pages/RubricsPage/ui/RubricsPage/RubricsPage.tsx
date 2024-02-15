@@ -21,7 +21,7 @@ export const RubricsPage = () => {
 
   return (
     <View style={styles.RubricsPage}>
-      {!!(favorites && favorites.questions.length) && (
+      {!!(favorites && favorites.ids.length) && (
         <View style={styles.favouritesWrapper}>
           <Favourites isLoading={isLoading} />
         </View>

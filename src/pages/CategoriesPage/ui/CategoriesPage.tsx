@@ -5,7 +5,6 @@ import {useFocusEffect} from '@react-navigation/native';
 
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
-import {favoriteStore} from '@src/entities/Favorite';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
 import categoriesStore from '../model/store/categoriesStore';
@@ -21,7 +20,6 @@ interface CategoriesPageProps {
 
 const CategoriesPage = (props: CategoriesPageProps) => {
   const {route} = props;
-  const favorites = favoriteStore.favorites;
 
   const isPreviousScreenSessions =
     route?.params?.prevRouteName === AppRouteNames.SESSIONS;
