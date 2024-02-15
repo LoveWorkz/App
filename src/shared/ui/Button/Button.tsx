@@ -17,6 +17,7 @@ export enum ButtonTheme {
   OUTLINED = 'outlined',
   GRADIENT = 'gradient',
   OUTLINED_GRADIENT = 'outlinedGradient',
+  NORMAL = 'normal',
 }
 
 interface ButtonProps {
@@ -29,6 +30,7 @@ interface ButtonProps {
   disabled?: boolean;
   squar?: boolean;
   isLoading?: boolean;
+  backgroundColor?: string;
 }
 
 const height = verticalScale(40);
@@ -43,6 +45,7 @@ export const Button = (props: ButtonProps) => {
     disabled,
     squar,
     isLoading = false,
+    backgroundColor,
   } = props;
   const colors = useColors();
 
@@ -52,9 +55,10 @@ export const Button = (props: ButtonProps) => {
       styles[theme],
       disabled ? styles.disabled : '',
       squar ? styles.squar : '',
+      {backgroundColor},
       style,
     ];
-  }, [disabled, theme, style, squar]);
+  }, [disabled, theme, style, squar, backgroundColor]);
 
   if (isLoading) {
     return (
@@ -110,6 +114,11 @@ const styles = StyleSheet.create<Record<string, any>>({
     borderColor: 'black',
     borderStyle: 'solid',
     borderRadius: borderRadius,
+  },
+  normal: {
+    backgroundColor: 'transparent',
+    borderRadius: borderRadius,
+    paddingHorizontal: horizontalScale(10),
   },
   disabled: {
     opacity: 0.4,

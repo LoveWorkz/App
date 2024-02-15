@@ -16,6 +16,7 @@ interface LayoutProps {
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
   isTabBar?: boolean;
+  isSecondaryBackground?: boolean;
 }
 
 export const Layout = (props: LayoutProps) => {
@@ -25,11 +26,16 @@ export const Layout = (props: LayoutProps) => {
     deleteBottomPadding,
     deleteTopPadding,
     isTabBar = false,
+    isSecondaryBackground = false,
   } = props;
   const scrollViewRef = useRef<ScrollView>(null);
   const colors = useColors();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
+
+  const backgroundColor = isSecondaryBackground
+    ? colors.themeSecondaryBackground
+    : colors.bgColor;
 
   useFocusEffect(
     useCallback(() => {
@@ -43,7 +49,7 @@ export const Layout = (props: LayoutProps) => {
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        style={{height: windowHeight, backgroundColor: colors.bgColor}}>
+        style={{height: windowHeight, backgroundColor}}>
         <View
           style={[
             styles.layout,
@@ -63,7 +69,7 @@ export const Layout = (props: LayoutProps) => {
       style={[
         styles.layout,
         {
-          backgroundColor: colors.bgColor,
+          backgroundColor,
           paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
           paddingTop: marginTop,
         },

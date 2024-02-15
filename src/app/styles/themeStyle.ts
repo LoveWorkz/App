@@ -31,7 +31,8 @@ export type Colors =
   | 'goalIconBgColor'
   | 'topicDescriptionColor'
   | 'bgTabViewColor'
-  | 'lightGreyColor';
+  | 'lightGreyColor'
+  | 'themeSecondaryBackground';
 
 export type ColorType = Record<Colors, string>;
 
@@ -44,6 +45,7 @@ const commonColor = {
   specialChallengeBgColor: '#39518080',
   goalIconBgColor: '#83C0F833',
   lightGreyColor: '#D9D9D9',
+  themeSecondaryBackground: '#665ec2',
 };
 
 const light: ColorType = {

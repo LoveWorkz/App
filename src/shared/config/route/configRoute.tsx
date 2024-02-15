@@ -26,6 +26,7 @@ import {AboutMyRelationshipPage} from '@src/pages/AboutMyRelationshipPage';
 import {YourGoalsPage} from '@src/pages/YourGoalsPage';
 import {ChallengesHeaderRight} from '@src/widgets/headers/ChallengesHeaderRight';
 import {FavoritesChallengesPage} from '@src/pages/ChallengesPage';
+import ChallengeTypeInfoPage from '@src/pages/ChallengeTypeInfoPage/ui/ChallengeTypeInfoPage/ChallengeTypeInfoPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -52,6 +53,7 @@ export enum AppRouteNames {
   ABOUT_MY_RELATIONSHIP = 'aboutMyRelationship',
   YOUR_GOALS = 'yourGoals',
   FAVORITES_CHALLENGES = 'favoritesChallenges',
+  CHALLENGE_TYPE_INFO = 'challengeTypeInfo',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -79,6 +81,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.ABOUT_MY_RELATIONSHIP]: 'aboutMyRelationship',
   [AppRouteNames.YOUR_GOALS]: 'yourGoals',
   [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
+  [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
 };
 
 type NewRouteProps = {
@@ -90,6 +93,7 @@ type NewRouteProps = {
   HeaderRight?: ComponentType;
   isTitleLarge?: boolean;
   isAboutMyRelationshipPage?: boolean;
+  isSecondaryBackground?: boolean;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -354,6 +358,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       );
     },
     headerTitle: 'challenge.favourite_Challenges',
+    headerShown: true,
+  },
+  [AppRouteNames.CHALLENGE_TYPE_INFO]: {
+    name: appRoutePaths.challengeTypeInfo,
+    isSecondaryBackground: true,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout isSecondaryBackground>
+          <ChallengeTypeInfoPage {...props} />
+        </Layout>
+      );
+    },
+    headerTitle: 'challenge.title',
     headerShown: true,
   },
 

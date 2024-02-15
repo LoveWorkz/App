@@ -14,12 +14,20 @@ interface HeaderLeftProps {
   headerTitle?: string;
   title?: string;
   isTitleLarge?: Boolean;
+  isSecondaryBackground?: boolean;
 }
 
 const HeaderLeft = (props: HeaderLeftProps) => {
-  const {headerTitle, title, isTitleLarge} = props;
+  const {
+    headerTitle,
+    title,
+    isTitleLarge,
+    isSecondaryBackground = false,
+  } = props;
   const colors = useColors();
   const {t} = useTranslation();
+
+  const color = isSecondaryBackground ? colors.white : colors.primaryTextColor;
 
   const onPressHandler = () => {
     navigation.goBack();
@@ -28,17 +36,13 @@ const HeaderLeft = (props: HeaderLeftProps) => {
   return (
     <View style={styles.headerLeft}>
       <Button onPress={onPressHandler}>
-        <SvgXml
-          fill={colors.primaryTextColor}
-          style={styles.icon}
-          xml={ArrowLeftIcon}
-        />
+        <SvgXml fill={color} style={styles.icon} xml={ArrowLeftIcon} />
       </Button>
       {(headerTitle || title) && (
         <AppText
           style={[
             {
-              color: colors.primaryTextColor,
+              color: color,
               width: isTitleLarge ? '88%' : 'auto',
               paddingRight: isTitleLarge ? horizontalScale(20) : 0,
             },

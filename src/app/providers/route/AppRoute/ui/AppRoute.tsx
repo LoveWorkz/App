@@ -83,14 +83,21 @@ const Routes = memo(() => {
           HeaderRight,
           isTitleLarge,
           isAboutMyRelationshipPage,
+          isSecondaryBackground,
         }) => {
+          let backgroundColor = colors.bgColor;
+
+          if (isSecondaryBackground) {
+            backgroundColor = colors.themeSecondaryBackground;
+          } else if (isAboutMyRelationshipPage) {
+            backgroundColor = colors.bgHomePageHeaderColor;
+          }
+
           return (
             <Stack.Screen
               options={({route}) => ({
                 headerStyle: {
-                  backgroundColor: isAboutMyRelationshipPage
-                    ? colors.bgHomePageHeaderColor
-                    : colors.bgColor,
+                  backgroundColor,
                 },
                 headerShown: headerShown,
                 title: '',
@@ -103,6 +110,7 @@ const Routes = memo(() => {
                         {...route.params}
                         headerTitle={headerTitle}
                         isTitleLarge={isTitleLarge}
+                        isSecondaryBackground={isSecondaryBackground}
                       />
                     )
                   : undefined,
