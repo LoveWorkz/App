@@ -19,6 +19,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {CloseIcon} from '@src/shared/assets/icons/Close';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {windowHeight} from '@src/app/styles/GlobalStyle';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
 import PromoCode from './PromoCode';
 import SubscriptionMethods from './SubscriptionMethods';
@@ -71,7 +72,11 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
   }, []);
 
   if (isFetching || !formattedProducts) {
-    return <ActivityIndicator />;
+    return (
+      <View style={styles.indicatorWrapper}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
   }
 
   const onPressHandler = () => {
@@ -209,5 +214,11 @@ const styles = StyleSheet.create({
   },
   startForFree: {
     textDecorationLine: 'underline',
+  },
+  indicatorWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: windowHeight,
   },
 });

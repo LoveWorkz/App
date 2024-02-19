@@ -90,7 +90,10 @@ class UserChallengeCategoryStore {
         userChallengeCategories[challengeCategory.name] = {
           ...userChallengeCategoryInitData,
           isBlocked:
-            challengeCategory.name === CategoryKey.Starter ? false : true,
+            challengeCategory.name === CategoryKey.Starter ||
+            challengeCategory.name === CategoryKey.All_In_One
+              ? false
+              : true,
         };
       });
 

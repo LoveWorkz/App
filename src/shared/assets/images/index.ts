@@ -100,3 +100,6 @@ export {default as shopImage5} from './shopImages/shopImage5.png';
 
 export {default as questionFavourites} from './favorites/questionFavourites.png';
 export {default as challengeFavourites} from './favorites/challengeFavourites.png';
+
+export {default as challengeImage} from './challengeImage.png';
+export {default as leaves} from './leaves.png';

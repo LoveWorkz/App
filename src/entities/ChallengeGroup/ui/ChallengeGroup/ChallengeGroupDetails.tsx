@@ -18,7 +18,7 @@ interface ChallengeGroupProps {
   description: string;
 }
 
-export const ChallengeGroupDetails = (props: ChallengeGroupProps) => {
+const ChallengeGroupDetails = (props: ChallengeGroupProps) => {
   const {title, description} = props;
   const {t} = useTranslation();
 

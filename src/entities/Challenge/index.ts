@@ -3,8 +3,6 @@ export type {
   SpecialChallengeType,
 } from './model/types/ChallengeTypes';
 export {default as challengeStore} from './model/store/challengeStore';
-export {challengeExample} from './model/lib/challenge';
-export {specialChallengesList} from './model/lib/specialChallengesList';
 export {SpecialChallengeEnum} from './model/types/ChallengeTypes';
 export {ChallengeIntroCard} from './ui/ChallengeCards/ChallengeIntroCard';
 export {ChallengeCard} from './ui/ChallengeCards/ChallengeCard';
@@ -13,4 +11,4 @@ export {default as ChallengeDescriptionList} from './ui/SpecialChallengeHelpers/
 export {default as ChallengeDetailsColumns} from './ui/SpecialChallengeHelpers/ChallengeDetailsColumns/ChallengeDetailsColumns';
 export {default as CoreChallengesList} from './ui/CoreChallengesList/CoreChallengesList';
 export {default as SpecialChallengesList} from './ui/SpecialChallengesList/SpecialChallengesList';
-export {default as ChallengeGroup} from './ui/ChallengeGroup/ChallengeGroup';
+export {default as ChallengeGroup} from '../ChallengeGroup/ui/ChallengeGroup/ChallengeGroup';

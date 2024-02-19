@@ -1,1 +1,1 @@
-export {ChallengeTypeInfoPage} from './ui/ChallengeTypeInfoPage/ChallengeTypeInfoPage';
+export {default as ChallengeTypeInfoPage} from './ui/ChallengeTypeInfoPage/ChallengeTypeInfoPage';

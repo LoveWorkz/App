@@ -1,64 +1,81 @@
-import React, {memo} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {memo, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
+import { observer } from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
+import { challengesStore } from '@src/pages/ChallengesPage';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import { challengeGroupStore } from '@src/entities/ChallengeGroup';
+import { getChallengeGroupsFromUnlockedCategories } from '../../model/lib/challenge';
+import {renderChallengeGroups} from '../CoreChallengesList/CoreChallengesList';
 import {
-  ChallengeGroupType,
   SpecialChallengeType,
 } from '../../model/types/ChallengeTypes';
-import {specialChallengeExample} from '../../model/lib/challenge';
-import {renderChallengeGroups} from '../CoreChallengesList/CoreChallengesList';
 
 interface SpecialChallengesListProps {
   isLoading: boolean;
-  isChallengesLoading: boolean;
   challengeList: SpecialChallengeType[];
 }
 
 const SpecialChallengesList = (props: SpecialChallengesListProps) => {
-  const {isLoading, isChallengesLoading, challengeList} = props;
+  const {isLoading, challengeList} = props;
   const colors = useColors();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
+  const unlockedChallengeCategoryIds =
+  challengesStore.unlockedChallengeCategoriesIds;
 
-  let specailChallenges = challengeList;
+  const activeChallengesCount = challengeList.filter(
+    item => item.isSelected,
+  ).length
+
+  const specailChallengesGroupList = challengeGroupStore.specialChallengeGroups;
+
+  const formattedSpecialChallengesGroupList = useMemo(() => {
+    return getChallengeGroupsFromUnlockedCategories(
+      specailChallengesGroupList,
+      unlockedChallengeCategoryIds,
+    );
+  }, [specailChallengesGroupList, unlockedChallengeCategoryIds]);
+
+  const specialChallengesList = useMemo(() => {
+    return formattedSpecialChallengesGroupList.map(group => {
+      const challenges = challengeList.filter(
+        item => item.groupId === group.id,
+      );
+
+      return {
+        ...group,
+        challenges,
+      };
+    });
+  }, [formattedSpecialChallengesGroupList, challengeList]);
 
   if (isLoading) {
-    specailChallenges = getEntityExampleDataForSkeleton({
-      entity: specialChallengeExample as SpecialChallengeType,
-      count: 5,
-    }) as SpecialChallengeType[];
+    return (
+      <>
+        {[1, 2, 3, 4].map(item => (
+          <View key={item} style={styles.skeleton}>
+            <Skeleton width={'100%'} height={120} borderRadius={20} />
+          </View>
+        ))}
+      </>
+    );
   }
 
-  const specailChallengesGroupList: ChallengeGroupType<
-    SpecialChallengeType[]
-  >[] = [
-    {
-      id: 'id_1',
-      challenges: specailChallenges,
-      name: 'Routines 1',
-      description: 'description 1',
-    },
-    {
-      id: 'id_2',
-      challenges: specailChallenges,
-      name: 'Routines 2',
-      description: 'description 2',
-    },
-  ];
-
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}>
-      {specailChallengesGroupList.length ? (
-        specailChallengesGroupList.map(item =>
+    <ScrollViewWithoutIndicator>
+      {specialChallengesList.length ? (
+        specialChallengesList.map(item =>
           renderChallengeGroups({
             item,
-            isLoading: isLoading || isChallengesLoading,
+            activeChallengesCount,
+            language,
           }),
         )
       ) : (
@@ -70,11 +87,11 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
           />
         </View>
       )}
-    </ScrollView>
+    </ScrollViewWithoutIndicator>
   );
 };
 
-export default memo(SpecialChallengesList);
+export default memo(observer(SpecialChallengesList));
 
 const styles = StyleSheet.create({
   SpecialChallengesList: {
@@ -83,5 +100,8 @@ const styles = StyleSheet.create({
   noResults: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  skeleton: {
+    marginBottom: verticalScale(10),
   },
 });

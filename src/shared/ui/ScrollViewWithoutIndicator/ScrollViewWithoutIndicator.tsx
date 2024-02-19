@@ -2,7 +2,7 @@ import React, {memo, ReactElement} from 'react';
 import {ScrollView} from 'react-native';
 
 interface ScrollViewWithoutIndicatorProps {
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   showsVerticalScrollIndicator?: boolean;
   showsHorizontalScrollIndicator?: boolean;
 }

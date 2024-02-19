@@ -1,6 +1,8 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import {SvgXml} from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -16,6 +18,8 @@ import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {DisplayText} from '@src/shared/types/types';
+import {leaves} from '@src/shared/assets/images';
+import {ChallengeHeartIcon} from '@src/shared/assets/icons/ChallengeHeart';
 import {
   ChallengeType,
   SpecialChallengeType,
@@ -72,6 +76,12 @@ const ChallengeItem = (props: ChallengeItemProps) => {
             ...getShadowOpacity(theme).shadowOpacity_level_1,
           },
         ]}>
+        <FastImage style={styles.img} resizeMode={'stretch'} source={leaves} />
+        <SvgXml
+          xml={ChallengeHeartIcon}
+          fill={colors.white}
+          style={styles.challengeHeartIcon}
+        />
         <CustomCheckBox checked={isChecked} onChange={onChangeHandler} />
 
         <View style={styles.line} />
@@ -108,5 +118,18 @@ const styles = StyleSheet.create({
   },
   textWrapper: {
     maxWidth: '90%',
+  },
+  img: {
+    height: horizontalScale(80),
+    width: horizontalScale(80),
+    position: 'absolute',
+    bottom: 0,
+  },
+  challengeHeartIcon: {
+    height: horizontalScale(20),
+    width: horizontalScale(20),
+    position: 'absolute',
+    top: 10,
+    left: horizontalScale(50),
   },
 });

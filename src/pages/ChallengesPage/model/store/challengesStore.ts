@@ -16,6 +16,7 @@ import {
 } from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {CategoryKey} from '@src/entities/Category';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -30,6 +31,8 @@ class ChallengesStore {
   isCongratsModalVisible: boolean = false;
   isChallengesLoading: boolean = false;
   isChallengePageLoading: boolean = true;
+
+  unlockedChallengeCategoriesIds: string[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -46,6 +49,7 @@ class ChallengesStore {
       await userStore.fetchUser();
       await this.fetchChallengeCategories();
       await this.fetchCoreAndSpecialChallenges();
+      await challengeGroupStore.fetchCoreAndSpecialChallengesGroups();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -100,7 +104,6 @@ class ChallengesStore {
 
       const data = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
-        .orderBy('createdDate')
         .get({source});
 
       const challengeCategories = data.docs.map(challengeCategory => {
@@ -150,8 +153,20 @@ class ChallengesStore {
         },
       );
 
+      const unlockedChallengeCategoriesIds = challengeCategories
+        .filter(category => {
+          // if this is All in one we should skip it
+          if (category.id === 'challenge_category_1') {
+            return false;
+          }
+
+          return !category.isBlocked;
+        })
+        .map(item => item.id);
+
       runInAction(() => {
         this.challengeCategories = challengeCategories;
+        this.unlockedChallengeCategoriesIds = unlockedChallengeCategoriesIds;
       });
     } catch (e) {
       errorHandler({error: e});
@@ -210,8 +225,6 @@ class ChallengesStore {
       }
 
       const data = await firestore()
-        .collection(Collections.CHALLENGE_CATEGORIES)
-        .doc(categoryId)
         .collection(Collections.SPECIAL_CHALLENGES)
         .get({source});
 
@@ -243,9 +256,7 @@ class ChallengesStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const challengesData = await firestore()
-        .collection(Collections.CHALLENGE_CATEGORIES)
-        .doc(categoryId)
-        .collection(Collections.CHALLENGES)
+        .collection(Collections.CORE_CHALLENGES)
         .get({source});
 
       // merge default challenges and user custom challenges together
@@ -255,7 +266,6 @@ class ChallengesStore {
         return {
           ...challenge,
           isChecked: this.selectedChallengesIds.includes(challenge.id),
-          nomer: `${i + 1}`,
         };
       });
 
@@ -301,6 +311,7 @@ class ChallengesStore {
       await userChallengeCategoryStore.fetchUserChallengeCategory();
       // fetchig challenges for new challengeCategory
       await this.fetchCoreAndSpecialChallenges();
+      await challengeGroupStore.fetchCoreAndSpecialChallengesGroups(id);
     } catch (e) {
       errorHandler({error: e});
     } finally {

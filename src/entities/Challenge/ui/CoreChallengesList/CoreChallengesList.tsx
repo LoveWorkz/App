@@ -1,24 +1,29 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {ScrollView} from 'react-native-gesture-handler';
+import {observer} from 'mobx-react-lite';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
+import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
+import {
+  ChallengeGroup,
+  challengeGroupStore,
+  ChallengeGroupType,
+} from '@src/entities/ChallengeGroup';
+import {challengesStore} from '@src/pages/ChallengesPage';
 import ChallengeItem from '../ChallengeItem/ChallengeItem';
 import {
-  ChallengeGroupType,
   ChallengeType,
   SpecialChallengeType,
 } from '../../model/types/ChallengeTypes';
-import {challengeExample} from '../../model/lib/challenge';
-import ChallengeGroup from '../ChallengeGroup/ChallengeGroup';
+import {getChallengeGroupsFromUnlockedCategories} from '../../model/lib/challenge';
 
 interface CoreChallengesListProps {
   isLoading: boolean;
-  isChallengesLoading: boolean;
   challengeList: ChallengeType[];
 }
 
@@ -42,7 +47,7 @@ export const renderChallenges = ({
         style={isFirstElement ? {} : styles.challengeItem}>
         <ChallengeItem
           challenge={challenge}
-          text={challenge.description}
+          text={challenge.title}
           id={challenge.id}
           isChecked={challenge.isChecked}
         />
@@ -58,7 +63,7 @@ export const renderChallenges = ({
       style={isFirstElement ? {} : styles.challengeItem}>
       <ChallengeItem
         specailChallenge={specailChallenge}
-        text={specailChallenge.description}
+        text={specailChallenge.title}
         id={specailChallenge.id}
         isChecked={specailChallenge.isSelected}
       />
@@ -68,22 +73,25 @@ export const renderChallenges = ({
 
 export const renderChallengeGroups = ({
   item,
-  isLoading,
   isCore = false,
+  language,
+  activeChallengesCount,
 }: {
   item: ChallengeGroupType<ChallengeType[] | SpecialChallengeType[]>;
-  isLoading: boolean;
   isCore?: boolean;
+  language: LanguageValueType;
+  activeChallengesCount: number;
 }) => {
   const list = item.challenges;
 
   return (
     <View style={styles.challengeGroupItem} key={item.id}>
       <ChallengeGroup
-        isLoading={isLoading}
-        title={item.name}
-        description={item.description}>
-        {list.length &&
+        activeChallengesCount={activeChallengesCount}
+        challengesCount={list.length}
+        title={item.displayName[language]}
+        description={item.description[language]}>
+        {!!list.length &&
           list.map((item, i) => renderChallenges({isCore, item, index: i}))}
       </ChallengeGroup>
     </View>
@@ -91,44 +99,60 @@ export const renderChallengeGroups = ({
 };
 
 const CoreChallengesList = (props: CoreChallengesListProps) => {
-  const {isLoading, isChallengesLoading, challengeList} = props;
+  const {isLoading, challengeList} = props;
   const colors = useColors();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const language = i18n.language as LanguageValueType;
+  const activeChallengesCount = challengeList.filter(
+    item => item.isChecked,
+  ).length;
+  const unlockedChallengeCategoryIds =
+    challengesStore.unlockedChallengeCategoriesIds;
 
-  let coreChallengesList = challengeList;
+  const coreChallengesGroupList: ChallengeGroupType<ChallengeType[]>[] =
+    challengeGroupStore.coreChallengeGroups;
+
+  const formattedCoreChallengesGroupList = useMemo(() => {
+    return getChallengeGroupsFromUnlockedCategories(
+      coreChallengesGroupList,
+      unlockedChallengeCategoryIds,
+    );
+  }, [coreChallengesGroupList, unlockedChallengeCategoryIds]);
+
+  const coreChallengesList = useMemo(() => {
+    return formattedCoreChallengesGroupList.map(group => {
+      const challenges = challengeList.filter(
+        item => item.groupId === group.id,
+      );
+
+      return {
+        ...group,
+        challenges,
+      };
+    });
+  }, [formattedCoreChallengesGroupList, challengeList]);
 
   if (isLoading) {
-    coreChallengesList = getEntityExampleDataForSkeleton({
-      entity: challengeExample,
-      count: 5,
-    }) as ChallengeType[];
+    return (
+      <>
+        {[1, 2, 3, 4].map(item => (
+          <View key={item} style={styles.skeleton}>
+            <Skeleton width={'100%'} height={120} borderRadius={20} />
+          </View>
+        ))}
+      </>
+    );
   }
 
-  const coreChallengesGroupList: ChallengeGroupType<ChallengeType[]>[] = [
-    {
-      id: 'id_1',
-      challenges: coreChallengesList,
-      name: 'Routines 1',
-      description: 'description 1',
-    },
-    {
-      id: 'id_2',
-      challenges: coreChallengesList,
-      name: 'Routines 2',
-      description: 'description 2',
-    },
-  ];
-
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}>
-      {coreChallengesGroupList.length ? (
-        coreChallengesGroupList.map(item =>
+    <ScrollViewWithoutIndicator>
+      {challengeList.length ? (
+        coreChallengesList.map(item =>
           renderChallengeGroups({
             item,
-            isLoading: isLoading || isChallengesLoading,
             isCore: true,
+            language,
+            activeChallengesCount,
           }),
         )
       ) : (
@@ -140,11 +164,11 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
           />
         </View>
       )}
-    </ScrollView>
+    </ScrollViewWithoutIndicator>
   );
 };
 
-export default memo(CoreChallengesList);
+export default memo(observer(CoreChallengesList));
 
 const styles = StyleSheet.create({
   challengeGroupItem: {
@@ -157,5 +181,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: verticalScale(20),
+  },
+  skeleton: {
+    marginBottom: verticalScale(10),
   },
 });

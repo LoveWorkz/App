@@ -4,6 +4,7 @@ import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
+import {BlurView} from '@react-native-community/blur';
 
 import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {
@@ -164,7 +165,11 @@ const ChallengeCategory = (props: ChallangeProps) => {
           </View>
           {isBlocked && (
             <>
-              <View style={[styles.layout]} />
+              <BlurView
+                style={styles.layout}
+                blurType="xlight"
+                blurAmount={1}
+              />
               <View style={[styles.lockIconWrapper]}>
                 <SvgXml
                   xml={LockedIcon}
@@ -219,12 +224,11 @@ const styles = StyleSheet.create<Record<string, any>>({
   name: {
     marginVertical: verticalScale(5),
   },
-
   layout: {
     position: 'absolute',
-    opacity: 0.2,
     width: '100%',
     height: '100%',
+    opacity: 0.8,
     borderRadius: borderRadius,
     ...globalStyles.challengeLayoutZIndex,
   },

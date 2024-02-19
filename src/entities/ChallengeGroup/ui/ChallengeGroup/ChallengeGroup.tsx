@@ -1,7 +1,8 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useFocusEffect} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -12,19 +13,21 @@ import {
 } from '@src/shared/lib/Metrics';
 import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {challengeImage} from '@src/shared/assets/images';
 
 interface ChallengeGroupProps {
   title: string;
   children: any;
   description: string;
-  isLoading: boolean;
+  challengesCount: number;
+  activeChallengesCount: number;
 }
 
 const borderRadius = moderateScale(20);
 
 const ChallengeGroup = (props: ChallengeGroupProps) => {
-  const {title, description, isLoading, children} = props;
+  const {title, description, children, challengesCount, activeChallengesCount} =
+    props;
 
   const colors = useColors();
   const [isActive, setIsActive] = useState(false);
@@ -35,10 +38,6 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
     }, []),
   );
 
-  if (isLoading) {
-    return <Skeleton width={'100%'} height={120} borderRadius={borderRadius} />;
-  }
-
   const onPressHandler = () => {
     setIsActive(!isActive);
   };
@@ -47,8 +46,10 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
     <View>
       <TouchableOpacity onPress={onPressHandler}>
         <View style={[styles.ChallengeGroup, {backgroundColor: colors.white}]}>
-          <View
-            style={[styles.iconWrapper, {backgroundColor: colors.bgColor}]}
+          <FastImage
+            style={styles.img}
+            resizeMode={'stretch'}
+            source={challengeImage}
           />
           <View style={styles.textWrapper}>
             <AppText
@@ -71,7 +72,7 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
               <GradientText
                 weight={'500'}
                 size={TextSize.LEVEL_3}
-                text={`${'10'}/${'100'}`}
+                text={`${activeChallengesCount || 0}/${challengesCount || 0}`}
               />
             </View>
             <SvgXml
@@ -98,16 +99,13 @@ const styles = StyleSheet.create({
     borderRadius,
     padding,
   },
+  img: {
+    height: horizontalScale(70),
+    width: horizontalScale(70),
+    left: -5,
+  },
   listWrapper: {
     marginTop: verticalScale(10),
-  },
-  iconWrapper: {
-    height: horizontalScale(60),
-    width: horizontalScale(60),
-    borderRadius: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: horizontalScale(20),
   },
   textWrapper: {
     width: horizontalScale(220),

@@ -8,7 +8,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 ${interfaceConst} ${componentName}Props {}
 
-export const ${componentName} = (props: ${componentName}Props) => {
+const ${componentName} = (props: ${componentName}Props) => {
     const {} = props;
     const {t} = useTranslation();
     

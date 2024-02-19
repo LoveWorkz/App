@@ -1,11 +1,11 @@
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {memo} from 'react';
+import {renderChallenges} from '@src/entities/Challenge/ui/CoreChallengesList/CoreChallengesList';
+import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
+import {favoriteStore} from '@src/entities/Favorite';
 
-import {
-  CoreChallengesList,
-  SpecialChallengesList,
-} from '@src/entities/Challenge';
+import {CoreChallengesList, SpecialChallengesList} from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import challengesStore from '../../model/store/challengesStore';
 import ChallengeCategories from '../ChallengeCategories/ChallengeCategories';
@@ -25,18 +25,28 @@ const ComponentScreen = (props: ComponentScreenProps) => {
   const isChallengesLoading = challengesStore.isChallengesLoading;
 
   if (isFavortePage) {
+    const favorite = favoriteStore.favorites;
+    const ids = favorite?.ids;
+
+    const favoriteChallengesList = challenges.filter(challenge =>
+      (ids || []).includes(challenge.id),
+    );
+
     return (
       <View style={styles.ComponentScreen}>
         <ChallengeCategories isLoading={isLoading} />
         <View style={styles.line} />
         {isCore ? (
-          <></>
+          <ScrollViewWithoutIndicator>
+            <View style={styles.favoriteChallenges}>
+              {!!favoriteChallengesList.length &&
+                favoriteChallengesList.map((item, i) =>
+                  renderChallenges({isCore, item, index: i}),
+                )}
+            </View>
+          </ScrollViewWithoutIndicator>
         ) : (
-          <SpecialChallengesList
-            isLoading={isLoading}
-            isChallengesLoading={isChallengesLoading}
-            challengeList={specialChallenges}
-          />
+          <></>
         )}
       </View>
     );
@@ -46,19 +56,15 @@ const ComponentScreen = (props: ComponentScreenProps) => {
     <View style={styles.ComponentScreen}>
       <ChallengeCategories isLoading={isLoading} />
       <View style={styles.line} />
-      <View style={styles.favorites}>
-        <Favorites />
-      </View>
+      <Favorites />
       {isCore ? (
         <CoreChallengesList
-          isLoading={isLoading}
-          isChallengesLoading={isChallengesLoading}
+          isLoading={isLoading || isChallengesLoading}
           challengeList={challenges}
         />
       ) : (
         <SpecialChallengesList
-          isLoading={isLoading}
-          isChallengesLoading={isChallengesLoading}
+          isLoading={isLoading || isChallengesLoading}
           challengeList={specialChallenges}
         />
       )}
@@ -75,11 +81,11 @@ const styles = StyleSheet.create({
   line: {
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
+    marginBottom: verticalScale(15),
     marginTop: verticalScale(15),
   },
-  favorites: {
+  favoriteChallenges: {
     marginTop: verticalScale(20),
-    marginBottom: verticalScale(15),
   },
 });
 

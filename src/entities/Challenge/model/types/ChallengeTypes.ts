@@ -6,6 +6,7 @@ export interface ChallengeType {
   description: DisplayText;
   isChecked: boolean;
   rubrics: string[];
+  groupId: string;
   id: string;
   nomer: string;
   isChallengeSpecial: boolean;
@@ -19,7 +20,7 @@ export interface SpecialChallengeType extends UserSpecialChallenge {
     part2: DisplayText;
     part3: DisplayText;
   };
-  rubrics: string[];
+  groupId: string;
   id: string;
   isChallengeSpecial: boolean;
   specialChallengeType: string;
@@ -35,11 +36,4 @@ export enum SpecialChallengeEnum {
   TEN_DAYS_CHALLENGE = 'tenDaysChallenge',
   EFFECTIVE_APOLOGIES = 'effectiveApologies',
   RAPID_CALMING = 'rapidCalming',
-}
-
-export interface ChallengeGroupType<C> {
-  id: string;
-  challenges: C;
-  name: string;
-  description: string;
 }
