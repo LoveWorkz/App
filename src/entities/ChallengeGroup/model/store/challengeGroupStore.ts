@@ -22,15 +22,19 @@ class challengeGroupStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const user = userStore.user;
-      if(!user) return;
+      if (!user) {
+        return;
+      }
 
-      const id = categoryId || user.challengeCategory.currentChallengeCategoryId || 'challenge_category_2';
+      const id =
+        categoryId ||
+        user.challengeCategory.currentChallengeCategoryId ||
+        'challenge_category_2';
 
       let promise1;
       let promise2;
 
-      const isAllInOneCategory =
-        !id || id === 'challenge_category_1';
+      const isAllInOneCategory = !id || id === 'challenge_category_1';
 
       if (isAllInOneCategory) {
         // if selected category is All in one get all groups

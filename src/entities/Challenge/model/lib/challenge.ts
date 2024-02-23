@@ -10,7 +10,9 @@ export const getChallengesLockedPopupContent = (t: TFunction) => {
 };
 
 export const getChallengeGroupsFromUnlockedCategories = (
-  coreChallengeGroups: ChallengeGroupType<ChallengeType[] | SpecialChallengeType[]>[],
+  coreChallengeGroups: ChallengeGroupType<
+    ChallengeType[] | SpecialChallengeType[]
+  >[],
   challengeCategoryIds: string[],
 ) => {
   return coreChallengeGroups.filter(group => {
@@ -18,4 +20,17 @@ export const getChallengeGroupsFromUnlockedCategories = (
       challengeCategoryIds.includes(id),
     );
   });
+};
+
+export const getActiveChallengesCount = (
+  list: ChallengeType[] | SpecialChallengeType[],
+  isCore: boolean,
+) => {
+  if (isCore) {
+    const challenges = list as ChallengeType[];
+    return challenges.filter(item => item.isChecked).length;
+  } else {
+    const challenges = list as SpecialChallengeType[];
+    return challenges.filter(item => item.isSelected).length;
+  }
 };

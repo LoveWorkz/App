@@ -188,7 +188,7 @@ class InAppPurchaseStore {
       return;
     }
 
-    if (__DEV__) {
+    if (__DEV__ || !isPlatformIos) {
       return;
     }
 
@@ -218,7 +218,7 @@ class InAppPurchaseStore {
       const result = await this.validateAndroid(token);
       return result;
     } catch (e) {
-      errorHandler({error: e});
+      errorHandler({error: e, withToast: false});
       return {isExpired: true};
     }
   };

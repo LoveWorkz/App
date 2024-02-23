@@ -281,14 +281,6 @@ class ChallengesStore {
     try {
       crashlytics().log('Selecting challenge category.');
 
-      let currentChallengeCategoryId =
-        this.challengeCategory?.currentChallengeCategoryId;
-
-      // return if user pressed already chosen challenge category
-      if (currentChallengeCategoryId === id) {
-        return;
-      }
-
       runInAction(() => {
         this.isChallengesLoading = true;
       });

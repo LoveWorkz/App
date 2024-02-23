@@ -1,8 +1,13 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useEffect, useMemo, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import {
+  StandardThemes,
+  Theme,
+  useTheme,
+} from '@src/app/providers/themeProvider';
 import {useColors} from '@src/app/providers/colorsProvider';
 
 interface DatePickerModalProps {
@@ -14,7 +19,15 @@ interface DatePickerModalProps {
 
 const DatePickerModal = (props: DatePickerModalProps) => {
   const {visible, setVisible, setSelectedDate, initialValue} = props;
+  const {theme} = useTheme();
   const colors = useColors();
+
+  const themeMap = useMemo<Record<Theme, StandardThemes>>(() => {
+    return {
+      [Theme.Dark]: 'dark',
+      [Theme.LIGHT]: 'light',
+    };
+  }, []);
 
   const [date, setDate] = useState(new Date());
 
@@ -31,7 +44,7 @@ const DatePickerModal = (props: DatePickerModalProps) => {
 
   return (
     <Modal
-      contentStyle={[styles.content, {backgroundColor: colors.white}]}
+      contentStyle={styles.content}
       visible={visible}
       onClose={onCancelHandler}>
       <DatePicker
@@ -41,6 +54,8 @@ const DatePickerModal = (props: DatePickerModalProps) => {
         locale={'en'}
         maximumDate={new Date()}
         androidVariant="iosClone"
+        theme={themeMap[theme]}
+        fadeToColor={colors.bgColor}
       />
     </Modal>
   );

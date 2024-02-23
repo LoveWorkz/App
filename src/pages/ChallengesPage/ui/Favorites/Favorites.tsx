@@ -4,10 +4,10 @@ import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 
 import {Favorite, favoriteStore} from '@src/entities/Favorite';
-import {challengeFavourites} from '@src/shared/assets/images';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {questionFavourites} from '@src/shared/assets/images';
 import challengesStore from '../../model/store/challengesStore';
 
 const Favorites = () => {
@@ -31,8 +31,7 @@ const Favorites = () => {
     <Pressable onPress={onPressHandler}>
       <View style={styles.favorites}>
         <Favorite
-          isChallenge
-          image={challengeFavourites}
+          image={questionFavourites}
           text={`${favorite.ids.length} ${t('challenge.title')}`}
           isLoading={isLoading}
         />

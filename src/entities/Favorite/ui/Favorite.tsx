@@ -50,7 +50,7 @@ export const Favorite = (props: FavouriteProps) => {
       style={{...getShadowOpacity(theme).shadowOpacity_level_1, borderRadius}}>
       <FastImage
         style={[styles.favoritesFolder, {width: windowWidthMinusPaddings}]}
-        resizeMode={isChallenge ? 'center' : 'stretch'}
+        resizeMode={'stretch'}
         source={image}>
         {isChallenge ? (
           <Gradient

@@ -20,7 +20,7 @@ import {
   ChallengeType,
   SpecialChallengeType,
 } from '../../model/types/ChallengeTypes';
-import {getChallengeGroupsFromUnlockedCategories} from '../../model/lib/challenge';
+import {getActiveChallengesCount, getChallengeGroupsFromUnlockedCategories} from '../../model/lib/challenge';
 
 interface CoreChallengesListProps {
   isLoading: boolean;
@@ -75,14 +75,13 @@ export const renderChallengeGroups = ({
   item,
   isCore = false,
   language,
-  activeChallengesCount,
 }: {
   item: ChallengeGroupType<ChallengeType[] | SpecialChallengeType[]>;
   isCore?: boolean;
   language: LanguageValueType;
-  activeChallengesCount: number;
 }) => {
   const list = item.challenges;
+  const activeChallengesCount = getActiveChallengesCount(list, isCore);
 
   return (
     <View style={styles.challengeGroupItem} key={item.id}>
@@ -103,9 +102,6 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
   const colors = useColors();
   const {t, i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
-  const activeChallengesCount = challengeList.filter(
-    item => item.isChecked,
-  ).length;
   const unlockedChallengeCategoryIds =
     challengesStore.unlockedChallengeCategoriesIds;
 
@@ -152,7 +148,6 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
             item,
             isCore: true,
             language,
-            activeChallengesCount,
           }),
         )
       ) : (

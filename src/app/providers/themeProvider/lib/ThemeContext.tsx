@@ -5,6 +5,8 @@ export enum Theme {
   Dark = 'app_dark',
 }
 
+export type StandardThemes = 'light' | 'dark' | 'auto';
+
 export interface ThemeContextProps {
   theme?: Theme;
   setTheme?: (theme: Theme) => void;

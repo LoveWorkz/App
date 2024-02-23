@@ -165,11 +165,13 @@ const ChallengeCategory = (props: ChallangeProps) => {
           </View>
           {isBlocked && (
             <>
-              <BlurView
-                style={styles.layout}
-                blurType="xlight"
-                blurAmount={1}
-              />
+              <View style={styles.layout}>
+                <BlurView
+                  style={styles.layout}
+                  blurType="xlight"
+                  blurAmount={1}
+                />
+              </View>
               <View style={[styles.lockIconWrapper]}>
                 <SvgXml
                   xml={LockedIcon}
@@ -230,6 +232,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     height: '100%',
     opacity: 0.8,
     borderRadius: borderRadius,
+    overflow: 'hidden',
     ...globalStyles.challengeLayoutZIndex,
   },
   lockIconWrapper: {

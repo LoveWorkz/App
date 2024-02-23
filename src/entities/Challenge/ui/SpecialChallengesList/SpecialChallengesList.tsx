@@ -1,6 +1,6 @@
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -8,14 +8,12 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
-import { challengesStore } from '@src/pages/ChallengesPage';
+import {challengesStore} from '@src/pages/ChallengesPage';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import { challengeGroupStore } from '@src/entities/ChallengeGroup';
-import { getChallengeGroupsFromUnlockedCategories } from '../../model/lib/challenge';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {getChallengeGroupsFromUnlockedCategories} from '../../model/lib/challenge';
 import {renderChallengeGroups} from '../CoreChallengesList/CoreChallengesList';
-import {
-  SpecialChallengeType,
-} from '../../model/types/ChallengeTypes';
+import {SpecialChallengeType} from '../../model/types/ChallengeTypes';
 
 interface SpecialChallengesListProps {
   isLoading: boolean;
@@ -28,11 +26,11 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
   const {t, i18n} = useTranslation();
   const language = i18n.language as LanguageValueType;
   const unlockedChallengeCategoryIds =
-  challengesStore.unlockedChallengeCategoriesIds;
+    challengesStore.unlockedChallengeCategoriesIds;
 
   const activeChallengesCount = challengeList.filter(
     item => item.isSelected,
-  ).length
+  ).length;
 
   const specailChallengesGroupList = challengeGroupStore.specialChallengeGroups;
 

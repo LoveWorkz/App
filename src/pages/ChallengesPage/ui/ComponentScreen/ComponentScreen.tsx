@@ -1,11 +1,14 @@
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {memo} from 'react';
+
 import {renderChallenges} from '@src/entities/Challenge/ui/CoreChallengesList/CoreChallengesList';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {favoriteStore} from '@src/entities/Favorite';
-
-import {CoreChallengesList, SpecialChallengesList} from '@src/entities/Challenge';
+import {
+  CoreChallengesList,
+  SpecialChallengesList,
+} from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import challengesStore from '../../model/store/challengesStore';
 import ChallengeCategories from '../ChallengeCategories/ChallengeCategories';
@@ -38,12 +41,12 @@ const ComponentScreen = (props: ComponentScreenProps) => {
         <View style={styles.line} />
         {isCore ? (
           <ScrollViewWithoutIndicator>
-            <View style={styles.favoriteChallenges}>
+            <>
               {!!favoriteChallengesList.length &&
                 favoriteChallengesList.map((item, i) =>
                   renderChallenges({isCore, item, index: i}),
                 )}
-            </View>
+            </>
           </ScrollViewWithoutIndicator>
         ) : (
           <></>
@@ -83,9 +86,6 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgrey',
     marginBottom: verticalScale(15),
     marginTop: verticalScale(15),
-  },
-  favoriteChallenges: {
-    marginTop: verticalScale(20),
   },
 });
 

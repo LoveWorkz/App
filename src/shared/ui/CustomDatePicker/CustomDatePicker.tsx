@@ -1,6 +1,6 @@
-import {formatDateString} from '@src/shared/lib/date/date';
 import React, {memo, useCallback, useState} from 'react';
 
+import {formatDateString} from '@src/shared/lib/date/date';
 import {TouchableComponent} from '../Select/TouchableComponent';
 import DatePickerModal from './DatePickerModal';
 
