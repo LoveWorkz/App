@@ -14,10 +14,12 @@ interface SubscriptionMethodsProps {
   formattedProducts: FormattedProductType;
   subscriptionType: SubscriptionType;
   setSubscriptionType: (value: SubscriptionType) => void;
+  isPromo: boolean;
 }
 
 const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
-  const {formattedProducts, subscriptionType, setSubscriptionType} = props;
+  const {formattedProducts, subscriptionType, setSubscriptionType, isPromo} =
+    props;
 
   const {t} = useTranslation();
 
@@ -75,6 +77,7 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
               subscriptionBlockContent={item}
               chosenSubscriptionType={subscriptionType}
               setSubscriptionType={setSubscriptionType}
+              isPromo={isPromo}
             />
           </View>
         );

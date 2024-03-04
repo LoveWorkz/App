@@ -110,6 +110,16 @@ class InAppPurchaseStore {
           offerToken = formattedYearly.offerToken;
 
           break;
+        case SubscriptionType.QUARTERLY:
+          const formattedQuarterlyKey = isPromo
+            ? 'formattedQuarterlyPromo'
+            : 'formattedQuarterly';
+
+          const formattedQuarterly = formattedProducts[formattedQuarterlyKey];
+          productId = formattedQuarterly.productId;
+          offerToken = formattedQuarterly.offerToken;
+
+          break;
         default:
           const formattedMonthlyKey = isPromo
             ? 'formattedMonthlyPromo'

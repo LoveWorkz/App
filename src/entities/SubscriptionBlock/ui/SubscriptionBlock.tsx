@@ -23,6 +23,7 @@ interface SubscriptionBlockProps {
   chosenSubscriptionType?: SubscriptionType;
   setSubscriptionType?: (subscriptionType: SubscriptionType) => void;
   subscriptionBlockContent: SubscriptionBlockContentType;
+  isPromo: boolean;
 }
 
 const SubscriptionBlock = (props: SubscriptionBlockProps) => {
@@ -30,6 +31,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
     chosenSubscriptionType = SubscriptionType.YEARLY,
     setSubscriptionType,
     subscriptionBlockContent,
+    isPromo,
   } = props;
 
   const colors = useColors();
@@ -91,18 +93,29 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
           </View>
           <View>
             <View style={styles.costWrapper}>
-              <AppText
-                style={[styles.mainCost, {color: textColor}]}
-                size={TextSize.LEVEL_4}
-                text={cost}
-                weight={'400'}
-              />
-              <AppText
-                style={{color: textColor}}
-                weight={'600'}
-                size={TextSize.LEVEL_6}
-                text={promoCost}
-              />
+              {isPromo ? (
+                <>
+                  <AppText
+                    style={[styles.mainCost, {color: textColor}]}
+                    size={TextSize.LEVEL_4}
+                    text={cost}
+                    weight={'400'}
+                  />
+                  <AppText
+                    style={{color: textColor}}
+                    weight={'600'}
+                    size={TextSize.LEVEL_6}
+                    text={promoCost}
+                  />
+                </>
+              ) : (
+                <AppText
+                  style={{color: textColor}}
+                  weight={'600'}
+                  size={TextSize.LEVEL_6}
+                  text={cost}
+                />
+              )}
             </View>
             <View style={styles.perWeekWrapper}>
               <AppText

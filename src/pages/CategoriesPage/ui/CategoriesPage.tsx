@@ -4,7 +4,6 @@ import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
 import categoriesStore from '../model/store/categoriesStore';
@@ -48,11 +47,9 @@ const CategoriesPage = (props: CategoriesPageProps) => {
   }, []);
 
   return (
-    <WithInAppPurchase>
-      <View style={styles.container}>
-        <Categories isLoading={isLoading} />
-      </View>
-    </WithInAppPurchase>
+    <View style={styles.container}>
+      <Categories isLoading={isLoading} />
+    </View>
   );
 };
 

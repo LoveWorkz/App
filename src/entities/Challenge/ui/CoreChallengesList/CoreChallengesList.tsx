@@ -20,7 +20,10 @@ import {
   ChallengeType,
   SpecialChallengeType,
 } from '../../model/types/ChallengeTypes';
-import {getActiveChallengesCount, getChallengeGroupsFromUnlockedCategories} from '../../model/lib/challenge';
+import {
+  getActiveChallengesCount,
+  getChallengeGroupsFromUnlockedCategories,
+} from '../../model/lib/challenge';
 
 interface CoreChallengesListProps {
   isLoading: boolean;

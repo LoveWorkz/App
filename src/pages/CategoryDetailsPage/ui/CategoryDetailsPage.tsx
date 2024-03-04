@@ -26,6 +26,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {LockedPopup} from '@src/widgets/LockedPopup';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 import {getCategoryDetailsLockedPopupContent} from '../model/lib/categoryDetailsLib';
@@ -78,81 +79,87 @@ export const CategoryDetailsPage = () => {
   };
 
   return (
-    <View
-      style={[
-        styles.CategoryDetailsPage,
-        {
-          minHeight: windowHeightMinusPaddings - navbarHeight,
-        },
-      ]}>
+    <WithInAppPurchase>
       <View
         style={[
-          styles.CategoryDetails,
+          styles.CategoryDetailsPage,
           {
-            backgroundColor: colors.bgTertiaryColor,
-            ...getShadowOpacity(theme).shadowOpacity_level_2,
+            minHeight: windowHeightMinusPaddings - navbarHeight,
           },
         ]}>
-        <View>
-          {isContentLocked && (
-            <>
-              <View
-                style={[styles.layout, {backgroundColor: colors.bgLayout}]}
-              />
-              <View style={[styles.lockIconWrapper]}>
-                <SvgXml xml={LockIcon} fill={'white'} style={styles.lockIcon} />
-              </View>
-            </>
-          )}
-          <FastImage style={styles.image} source={uri}>
-            {category.isBlocked && (
-              <SvgXml xml={LockedIcon} style={[styles.lockedIcon]} />
+        <View
+          style={[
+            styles.CategoryDetails,
+            {
+              backgroundColor: colors.bgTertiaryColor,
+              ...getShadowOpacity(theme).shadowOpacity_level_2,
+            },
+          ]}>
+          <View>
+            {isContentLocked && (
+              <>
+                <View
+                  style={[styles.layout, {backgroundColor: colors.bgLayout}]}
+                />
+                <View style={[styles.lockIconWrapper]}>
+                  <SvgXml
+                    xml={LockIcon}
+                    fill={'white'}
+                    style={styles.lockIcon}
+                  />
+                </View>
+              </>
             )}
-          </FastImage>
-        </View>
-        <View>
-          <AppText
-            style={styles.title}
-            weight={'500'}
-            size={TextSize.LEVEL_7}
-            text={`${category.displayName[language]} package`}
-          />
-          <AppText
-            size={TextSize.LEVEL_4}
-            text={category.description[language]}
-          />
-        </View>
-      </View>
-      <View style={styles.btnWrapper}>
-        <Button
-          onPress={onPressHandler}
-          style={styles.btn}
-          theme={ButtonTheme.GRADIENT}>
-          <AppText
-            style={{color: colors.bgQuinaryColor}}
-            weight={'700'}
-            size={TextSize.LEVEL_4}
-            text={isContentLocked ? t('buy_now') : t('start')}
-          />
-        </Button>
-        {!category.isBlocked && !isContentLocked && (
-          <Button onPress={dontShowAgainHandler}>
+            <FastImage style={styles.image} source={uri}>
+              {category.isBlocked && (
+                <SvgXml xml={LockedIcon} style={[styles.lockedIcon]} />
+              )}
+            </FastImage>
+          </View>
+          <View>
             <AppText
-              style={styles.dontShowAgain}
-              weight={'600'}
+              style={styles.title}
+              weight={'500'}
+              size={TextSize.LEVEL_7}
+              text={`${category.displayName[language]} package`}
+            />
+            <AppText
               size={TextSize.LEVEL_4}
-              text={t('dont_show_again')}
+              text={category.description[language]}
+            />
+          </View>
+        </View>
+        <View style={styles.btnWrapper}>
+          <Button
+            onPress={onPressHandler}
+            style={styles.btn}
+            theme={ButtonTheme.GRADIENT}>
+            <AppText
+              style={{color: colors.bgQuinaryColor}}
+              weight={'700'}
+              size={TextSize.LEVEL_4}
+              text={isContentLocked ? t('buy_now') : t('start')}
             />
           </Button>
-        )}
-        <LockedPopup
-          title={categoryDetailsLockedPopupContent.title}
-          text={categoryDetailsLockedPopupContent.text}
-          visible={isLockedPopupVisible}
-          setVisible={setIsLockedPopupVisible}
-        />
+          {!category.isBlocked && !isContentLocked && (
+            <Button onPress={dontShowAgainHandler}>
+              <AppText
+                style={styles.dontShowAgain}
+                weight={'600'}
+                size={TextSize.LEVEL_4}
+                text={t('dont_show_again')}
+              />
+            </Button>
+          )}
+          <LockedPopup
+            title={categoryDetailsLockedPopupContent.title}
+            text={categoryDetailsLockedPopupContent.text}
+            visible={isLockedPopupVisible}
+            setVisible={setIsLockedPopupVisible}
+          />
+        </View>
       </View>
-    </View>
+    </WithInAppPurchase>
   );
 };
 

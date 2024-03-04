@@ -28,10 +28,6 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
   const unlockedChallengeCategoryIds =
     challengesStore.unlockedChallengeCategoriesIds;
 
-  const activeChallengesCount = challengeList.filter(
-    item => item.isSelected,
-  ).length;
-
   const specailChallengesGroupList = challengeGroupStore.specialChallengeGroups;
 
   const formattedSpecialChallengesGroupList = useMemo(() => {
@@ -72,8 +68,7 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
         specialChallengesList.map(item =>
           renderChallengeGroups({
             item,
-            activeChallengesCount,
-            language,
+            language
           }),
         )
       ) : (

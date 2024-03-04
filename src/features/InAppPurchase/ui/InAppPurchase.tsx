@@ -20,6 +20,8 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {CloseIcon} from '@src/shared/assets/icons/Close';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {windowHeight} from '@src/app/styles/GlobalStyle';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
 import PromoCode from './PromoCode';
 import SubscriptionMethods from './SubscriptionMethods';
@@ -37,6 +39,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
   const colors = useColors();
   const isFetching = inAppPurchaseStore.isFetching;
   const formattedProducts = inAppPurchaseStore.formattedProducts;
+  const isPromo = inAppPurchaseStore.isPromo;
 
   const [subscriptionType, setSubscriptionType] = useState<SubscriptionType>(
     SubscriptionType.YEARLY,
@@ -83,6 +86,11 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
     inAppPurchaseStore.subscribe(subscriptionType);
   };
 
+  const onPrivacyPolicyHandler = () => {
+    onCancelHandler();
+    navigation.navigate(AppRouteNames.PRIVACY_POLICY);
+  };
+
   return (
     <View style={styles.InAppPurchase}>
       <View style={styles.images}>
@@ -116,6 +124,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
         subscriptionType={subscriptionType}
         setSubscriptionType={setSubscriptionType}
         formattedProducts={formattedProducts}
+        isPromo={isPromo}
       />
 
       <View style={styles.cancelationInfo}>
@@ -156,7 +165,9 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           lineHeight={20}
         />
       </Button>
-      <Button style={styles.termsAndPolicyWrapper}>
+      <Button
+        onPress={onPrivacyPolicyHandler}
+        style={styles.termsAndPolicyWrapper}>
         <GradientText
           size={TextSize.LEVEL_3}
           weight={'500'}

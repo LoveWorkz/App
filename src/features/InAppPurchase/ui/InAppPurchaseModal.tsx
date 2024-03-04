@@ -1,6 +1,5 @@
 import React, {memo} from 'react';
 import {Modal} from 'react-native';
-import {observer} from 'mobx-react-lite';
 
 import {InAppPurchase} from '@src/features/InAppPurchase';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
@@ -29,4 +28,4 @@ const InAppPurchaseModal = (props: InAppPurchaseModalProps) => {
   );
 };
 
-export default memo(observer(InAppPurchaseModal));
+export default memo(InAppPurchaseModal);
