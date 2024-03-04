@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, View, Pressable} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -15,7 +15,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {windowHeightMinusPaddings} from '@src/app/styles/GlobalStyle';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {HaveAnAccount} from '@src/widgets/HaveAnAccount';
 import OrLine from './OrLine/OrLine';
 
 const AuthPage = () => {
@@ -29,13 +29,13 @@ const AuthPage = () => {
 
   const [isSignIn, setISignIn] = useState(true);
 
-  const toggleSignIn = () => {
+  const toggleSignIn = useCallback(() => {
     setISignIn(true);
-  };
+  }, []);
 
-  const toggleSignUp = () => {
+  const toggleSignUp = useCallback(() => {
     setISignIn(false);
-  };
+  }, []);
 
   const actionAfterRegistration = () => {
     setISignIn(true);
@@ -108,35 +108,17 @@ const AuthPage = () => {
         </Button>
         <View style={styles.toggleAuthMethod}>
           {isSignIn ? (
-            <View style={styles.haveEnAccountWrapper}>
-              <AppText
-                style={styles.haveEnAccount}
-                size={TextSize.LEVEL_4}
-                text={t('auth.dont_have_an_acount')}
-              />
-              <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-                <GradientText
-                  style={styles.changeFormBtn}
-                  size={TextSize.LEVEL_4}
-                  text={t('auth.signup')}
-                />
-              </Pressable>
-            </View>
+            <HaveAnAccount
+              text={t('auth.dont_have_an_acount')}
+              type={t('auth.signup')}
+              onPressHandler={isSignIn ? toggleSignUp : toggleSignIn}
+            />
           ) : (
-            <View style={styles.haveEnAccountWrapper}>
-              <AppText
-                style={styles.haveEnAccount}
-                size={TextSize.LEVEL_4}
-                text={t('auth.already_have_an_account')}
-              />
-              <Pressable onPress={isSignIn ? toggleSignUp : toggleSignIn}>
-                <GradientText
-                  style={styles.changeFormBtn}
-                  size={TextSize.LEVEL_4}
-                  text={t('auth.login')}
-                />
-              </Pressable>
-            </View>
+            <HaveAnAccount
+              text={t('auth.already_have_an_account')}
+              type={t('auth.login')}
+              onPressHandler={isSignIn ? toggleSignUp : toggleSignIn}
+            />
           )}
         </View>
       </View>
@@ -186,14 +168,5 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     bottom: verticalScale(isPlatformIos ? 10 : 25),
-  },
-  haveEnAccountWrapper: {
-    flexDirection: 'row',
-  },
-  haveEnAccount: {
-    marginRight: horizontalScale(5),
-  },
-  changeFormBtn: {
-    textDecorationLine: 'underline',
   },
 });

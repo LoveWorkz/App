@@ -19,6 +19,7 @@ import notifications from './notifications.json';
 import partner from './partner.json';
 import myRelationship from './myRelationship.json';
 import favorites from './favorites.json';
+import onboarding from './onboarding.json';
 
 export const pt = {
   ...common,
@@ -42,4 +43,5 @@ export const pt = {
   ...partner,
   ...myRelationship,
   ...favorites,
+  ...onboarding,
 };

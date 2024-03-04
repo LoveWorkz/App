@@ -22,7 +22,7 @@ export enum ButtonTheme {
 
 interface ButtonProps {
   onPress?: () => void;
-  children: ReactElement;
+  children: ReactElement | ReactElement[];
   theme?: ButtonTheme;
   style?:
     | Record<string, string | number | object>

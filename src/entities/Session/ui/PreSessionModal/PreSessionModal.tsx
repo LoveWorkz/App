@@ -1,5 +1,6 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -19,6 +20,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
   const {visible, setVisible, onConfirm, onCancel} = props;
 
   const colors = useColors();
+  const {t} = useTranslation();
 
   const onCancelHandler = () => {
     if (onCancel) {
@@ -85,7 +87,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             weight={'700'}
-            text={'Lets do this'}
+            text={t('lets_do_this')}
           />
         </Button>
       </View>

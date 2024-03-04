@@ -26,7 +26,8 @@ import {AboutMyRelationshipPage} from '@src/pages/AboutMyRelationshipPage';
 import {YourGoalsPage} from '@src/pages/YourGoalsPage';
 import {ChallengesHeaderRight} from '@src/widgets/headers/ChallengesHeaderRight';
 import {FavoritesChallengesPage} from '@src/pages/ChallengesPage';
-import ChallengeTypeInfoPage from '@src/pages/ChallengeTypeInfoPage/ui/ChallengeTypeInfoPage/ChallengeTypeInfoPage';
+import {WelcomePage} from '@src/pages/Onboarding/WelcomePage';
+import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -54,6 +55,7 @@ export enum AppRouteNames {
   YOUR_GOALS = 'yourGoals',
   FAVORITES_CHALLENGES = 'favoritesChallenges',
   CHALLENGE_TYPE_INFO = 'challengeTypeInfo',
+  WELCOME = 'welcome',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -82,6 +84,9 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.YOUR_GOALS]: 'yourGoals',
   [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
   [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
+
+  // onboarding
+  [AppRouteNames.WELCOME]: 'welcome',
 };
 
 type NewRouteProps = {
@@ -372,6 +377,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     },
     headerTitle: 'challenge.title',
     headerShown: true,
+  },
+
+  // onboarding
+  [AppRouteNames.WELCOME]: {
+    name: appRoutePaths.welcome,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <WelcomePage {...props} />
+        </Layout>
+      );
+    },
+    headerShown: false,
   },
 
   // tab routes

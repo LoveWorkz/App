@@ -69,7 +69,10 @@ export const getNextElementById = <T extends {id: string}>({
   return nextItem;
 };
 
-export const normaliseData = <T extends {id: string, [key: string]: any}>(data: T[], field?: string) => {
+export const normaliseData = <T extends {id: string; [key: string]: any}>(
+  data: T[],
+  field?: string,
+) => {
   const map: Record<string, T> = {};
 
   data.forEach(item => {

@@ -68,7 +68,7 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
         specialChallengesList.map(item =>
           renderChallengeGroups({
             item,
-            language
+            language,
           }),
         )
       ) : (
