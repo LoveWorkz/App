@@ -28,6 +28,7 @@ import {ChallengesHeaderRight} from '@src/widgets/headers/ChallengesHeaderRight'
 import {FavoritesChallengesPage} from '@src/pages/ChallengesPage';
 import {WelcomePage} from '@src/pages/Onboarding/WelcomePage';
 import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
+import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -56,6 +57,7 @@ export enum AppRouteNames {
   FAVORITES_CHALLENGES = 'favoritesChallenges',
   CHALLENGE_TYPE_INFO = 'challengeTypeInfo',
   WELCOME = 'welcome',
+  ONBOARDING_GOALS = 'onboardingGoals',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -87,9 +89,10 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
+  [AppRouteNames.ONBOARDING_GOALS]: 'onboardingGoals',
 };
 
-type NewRouteProps = {
+export type NewRouteProps = {
   authOnly?: boolean;
   name: string;
   Element: ComponentType;
@@ -344,7 +347,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.your_goals',
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling>
+        <Layout>
           <YourGoalsPage {...props} />
         </Layout>
       );
@@ -386,6 +389,17 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <WelcomePage {...props} />
+        </Layout>
+      );
+    },
+    headerShown: false,
+  },
+  [AppRouteNames.ONBOARDING_GOALS]: {
+    name: appRoutePaths.onboardingGoals,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <GoalsPage {...props} />
         </Layout>
       );
     },

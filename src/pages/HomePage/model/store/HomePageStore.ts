@@ -20,6 +20,7 @@ import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 import {rubricStore} from '@src/entities/Rubric';
+import {goalStore} from '@src/entities/Goal';
 import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
@@ -69,6 +70,7 @@ class HomePageStore {
 
       shareStore.shareQuestionHandler(language);
       userStore.setInited(true);
+      goalStore.initSelectedGoalsIds();
     } catch (e) {
       errorHandler({error: e});
     } finally {

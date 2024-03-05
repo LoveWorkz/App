@@ -56,16 +56,16 @@ const Goal = (props: GoalProps) => {
           backgroundColor: colors.white,
         },
       ]}>
-      <FastImage
-        style={styles.Goal}
-        source={isSelected ? goalBackgroundImage : undefined}>
-        <AppText
-          style={[styles.name, {color: colors.primaryTextColor}]}
-          weight={'600'}
-          size={TextSize.LEVEL_4}
-          text={name[language]}
-        />
-        {isSelected ? (
+      {isSelected ? (
+        <FastImage
+          style={styles.Goal}
+          source={isSelected ? goalBackgroundImage : undefined}>
+          <AppText
+            style={[styles.name, {color: colors.primaryTextColor}]}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={name[language]}
+          />
           <View
             style={[
               styles.iconWrapper,
@@ -74,17 +74,25 @@ const Goal = (props: GoalProps) => {
               },
             ]}>
             {IconContent}
-
             <View style={styles.checkbox}>
               <CustomCheckBox disabled={true} checked={true} />
             </View>
           </View>
-        ) : (
+        </FastImage>
+      ) : (
+        <View style={styles.Goal}>
+          <AppText
+            style={[styles.name, {color: colors.primaryTextColor}]}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={name[language]}
+          />
+
           <FastImage source={goalIconBgDark} style={[styles.iconWrapper]}>
             {IconContent}
           </FastImage>
-        )}
-      </FastImage>
+        </View>
+      )}
     </TouchableOpacity>
   );
 };

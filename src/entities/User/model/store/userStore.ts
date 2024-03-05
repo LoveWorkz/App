@@ -14,6 +14,7 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   RATE_TYPE_KEY,
+  SELECTED_GOALS_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
@@ -27,10 +28,10 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {themeStorage} from '@src/shared/lib/storage/adapters/themeAdapter';
 import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {goalStore} from '@src/entities/Goal';
 import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
+import {goalsStorage} from '@src/shared/lib/storage/adapters/goalsAdapter';
 import {
   User,
   AuthMethod,
@@ -130,7 +131,7 @@ class UserStore {
         authMethod: authMethod || '',
       });
 
-      navigation.replace(AppRouteNames.TAB_ROUTE);
+      navigation.replace(AppRouteNames.ONBOARDING_GOALS);
     } catch (e: unknown) {
       this.errorHandler(e);
     }
@@ -160,7 +161,6 @@ class UserStore {
           this.setCurrentCategory(user.category);
           challengesStore.setChallengeCategory(user.challengeCategory);
           quotesStore.setIsQuoteInfo(user.quote);
-          goalStore.setSelectedGoalIds(user.selectedGoalsIds);
           wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
             user.isWowThatWasFastModalForbidden,
           );
@@ -401,6 +401,7 @@ class UserStore {
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await themeStorage.removeTheme(RATE_TYPE_KEY);
+      await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

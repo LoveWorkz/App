@@ -5,6 +5,8 @@ import firestore from '@react-native-firebase/firestore';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections} from '@src/shared/types/firebase';
+import {goalsStorage} from '@src/shared/lib/storage/adapters/goalsAdapter';
+import {SELECTED_GOALS_KEY} from '@src/shared/consts/storage';
 import {GoalType} from '../types/goalTypes';
 
 class GoalStore {
@@ -16,6 +18,60 @@ class GoalStore {
     makeAutoObservable(this);
   }
 
+  initSelectedGoalsIds = async () => {
+    try {
+      crashlytics().log('Init selected goals Ids.');
+
+      const user = userStore.user;
+      if (!user) {
+        return;
+      }
+
+      let selectedGoalsIds = user.selectedGoalsIds;
+
+      const valueFromStorage = await goalsStorage.getSelectedGoals(
+        SELECTED_GOALS_KEY,
+      );
+
+      // If a user has selected some goals during the onboarding process, add them to the database
+      if (valueFromStorage) {
+        selectedGoalsIds = JSON.parse(valueFromStorage);
+        await this.updateUserSelectedGoalIds(selectedGoalsIds);
+        await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
+
+        return;
+      }
+
+      this.setSelectedGoalIds(selectedGoalsIds);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  init = async () => {
+    try {
+      crashlytics().log('Init goals.');
+
+      this.setIsFetching(true);
+
+      const selectedGoalsIds = this.selectedGoalsIds;
+
+      await this.fetchGoals(selectedGoalsIds);
+
+      // If it's onboarding process, selected goals IDs should not be saved
+      const valueFromStorage = await goalsStorage.getSelectedGoals(
+        SELECTED_GOALS_KEY,
+      );
+      if (valueFromStorage) {
+        await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    } finally {
+      this.setIsFetching(false);
+    }
+  };
+
   setIsFetching = (isFetching: boolean) => {
     this.isFetching = isFetching;
   };
@@ -24,15 +80,11 @@ class GoalStore {
     this.selectedGoalsIds = selectedGoalsIds;
   };
 
-  fetchGoals = async () => {
+  fetchGoals = async (selectedGoalsIds: string[]) => {
     try {
       crashlytics().log('Fetching goals.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
-
-      this.setIsFetching(true);
-
-      const selectedGoalsIds = this.selectedGoalsIds;
 
       const data = await firestore()
         .collection(Collections.GOALS)
@@ -51,8 +103,6 @@ class GoalStore {
       });
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      this.setIsFetching(false);
     }
   };
 
@@ -89,6 +139,21 @@ class GoalStore {
   };
 
   updateSelectedGoalIds = async (newSelectedGoalsIds: string[]) => {
+    const user = userStore.user;
+
+    if (user) {
+      await this.updateUserSelectedGoalIds(newSelectedGoalsIds);
+      return;
+    }
+
+    await goalsStorage.setSelectedGoals(
+      SELECTED_GOALS_KEY,
+      JSON.stringify(newSelectedGoalsIds),
+    );
+    this.setSelectedGoalIds(newSelectedGoalsIds);
+  };
+
+  updateUserSelectedGoalIds = async (newSelectedGoalsIds: string[]) => {
     await userStore.updateUser({
       field: 'selectedGoalsIds',
       data: newSelectedGoalsIds,

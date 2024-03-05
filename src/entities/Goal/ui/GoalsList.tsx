@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import goalStore from '../model/store/goalStore';
@@ -11,7 +11,7 @@ const GoalsList = () => {
   const isFetching = goalStore.isFetching;
 
   useEffect(() => {
-    goalStore.fetchGoals();
+    goalStore.init();
   }, []);
 
   const onChangeGoalStatus = useCallback((id: string) => {
@@ -20,31 +20,35 @@ const GoalsList = () => {
 
   if (isFetching) {
     return (
-      <>
-        {Array.from({length: 6}, (_, i) => i + 1).map(item => {
-          return (
-            <View key={item} style={styles.item}>
-              <Skeleton width={'100%'} height={92} borderRadius={20} />
-            </View>
-          );
-        })}
-      </>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={Array.from({length: 6}, (_, i) => i + 1)}
+        renderItem={({item}) => (
+          <View key={item} style={styles.item}>
+            <Skeleton width={'100%'} height={92} borderRadius={20} />
+          </View>
+        )}
+        keyExtractor={item => item.toString()}
+      />
     );
   }
 
   return (
     <>
-      {goals.map(goal => {
-        return (
-          <View style={styles.item} key={goal.id}>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={goals}
+        renderItem={({item}) => (
+          <View style={styles.item}>
             <Goal
-              {...goal}
-              keyName={goal.key}
+              {...item}
+              keyName={item.key}
               onChangeGoalStatus={onChangeGoalStatus}
             />
           </View>
-        );
-      })}
+        )}
+        keyExtractor={item => item.id}
+      />
     </>
   );
 };
