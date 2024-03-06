@@ -14,7 +14,6 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   RATE_TYPE_KEY,
-  SELECTED_GOALS_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
@@ -31,7 +30,6 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
-import {goalsStorage} from '@src/shared/lib/storage/adapters/goalsAdapter';
 import {
   User,
   AuthMethod,
@@ -131,7 +129,7 @@ class UserStore {
         authMethod: authMethod || '',
       });
 
-      navigation.replace(AppRouteNames.ONBOARDING_GOALS);
+      navigation.replace(AppRouteNames.WELCOME);
     } catch (e: unknown) {
       this.errorHandler(e);
     }
@@ -401,7 +399,6 @@ class UserStore {
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await themeStorage.removeTheme(RATE_TYPE_KEY);
-      await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

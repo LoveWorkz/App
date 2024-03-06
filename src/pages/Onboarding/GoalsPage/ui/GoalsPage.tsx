@@ -14,7 +14,7 @@ const GoalsPage = () => {
   const {t} = useTranslation();
 
   const onProceedHandler = useCallback(() => {
-    navigation.navigate(AppRouteNames.TAB_ROUTE);
+    navigation.navigate(AppRouteNames.ONBOARDING_NOTIFICATIONS);
   }, []);
 
   return (
@@ -29,7 +29,7 @@ const GoalsPage = () => {
       <AppText
         size={TextSize.LEVEL_5}
         weight={'500'}
-        text={t('goal.description')}
+        text={t('onboarding.goal.description')}
       />
       <View style={styles.listWrapper}>
         <GoalsList />

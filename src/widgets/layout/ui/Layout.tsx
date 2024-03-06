@@ -9,6 +9,7 @@ import {
 } from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {BgColor} from '@src/shared/config/route/configRoute';
 
 interface LayoutProps {
   children: ReactElement;
@@ -16,7 +17,7 @@ interface LayoutProps {
   deleteBottomPadding?: boolean;
   deleteTopPadding?: boolean;
   isTabBar?: boolean;
-  isSecondaryBackground?: boolean;
+  bgColor?: BgColor;
 }
 
 export const Layout = (props: LayoutProps) => {
@@ -26,16 +27,26 @@ export const Layout = (props: LayoutProps) => {
     deleteBottomPadding,
     deleteTopPadding,
     isTabBar = false,
-    isSecondaryBackground = false,
+    bgColor,
   } = props;
+
   const scrollViewRef = useRef<ScrollView>(null);
   const colors = useColors();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
 
-  const backgroundColor = isSecondaryBackground
-    ? colors.themeSecondaryBackground
-    : colors.bgColor;
+  let backgroundColor;
+
+  switch (bgColor) {
+    case 'secondaryBackground':
+      backgroundColor = colors.themeSecondaryBackground;
+      break;
+    case 'white':
+      backgroundColor = colors.white;
+      break;
+    default:
+      backgroundColor = colors.bgColor;
+  }
 
   useFocusEffect(
     useCallback(() => {

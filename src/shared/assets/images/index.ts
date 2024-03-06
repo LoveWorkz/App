@@ -102,4 +102,8 @@ export {default as questionFavourites} from './favorites/questionFavourites.png'
 
 export {default as challengeImage} from './challengeImage.png';
 export {default as leaves} from './leaves.png';
+
+// onboarding
 export {default as WelcomPageImage} from './WelcomPageImage.png';
+export {default as onboardingBg} from './onboardingBg.png';
+export {default as notificationsImage} from './notificationsImage.png';

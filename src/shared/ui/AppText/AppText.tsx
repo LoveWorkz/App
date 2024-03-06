@@ -37,7 +37,7 @@ export enum TextType {
   PRIMARY = 'primary',
   ERROR = 'error',
 }
-type AlignType = 'left' | 'right' | 'center' | 'justify';
+export type AlignType = 'left' | 'right' | 'center' | 'justify';
 
 interface AppTextProps {
   text: string;

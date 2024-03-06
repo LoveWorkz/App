@@ -21,6 +21,7 @@ import {specialDayStore} from '@src/entities/SpecialDay';
 import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 import {rubricStore} from '@src/entities/Rubric';
 import {goalStore} from '@src/entities/Goal';
+import {notificationStore} from '@src/entities/Notification';
 import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
@@ -83,6 +84,9 @@ class HomePageStore {
   fetchBooksAndCheckQuotesShownStatus = async () => {
     // fetching books for quotes modal
     const books = await booksStore.fetchBooks();
+    // receive notifications from the storage and place them in the database
+    await notificationStore.initUserNotifications();
+
     quotesStore.checkQuotesShownStatus(books);
   };
 

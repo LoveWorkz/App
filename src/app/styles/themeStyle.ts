@@ -32,7 +32,8 @@ export type Colors =
   | 'topicDescriptionColor'
   | 'bgTabViewColor'
   | 'lightGreyColor'
-  | 'themeSecondaryBackground';
+  | 'themeSecondaryBackground'
+  | 'bgnboardingColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -65,6 +66,7 @@ const light: ColorType = {
   bgLayout: 'rgba(57, 81, 128, 0.5)',
   bgForgotPasswordPopupColor: '#F4F6FA',
   bgTabViewColor: '#94ABFD',
+  bgnboardingColor: '#FBFCFF',
 
   // text colors
   primaryTextColor: '#395180',
@@ -102,6 +104,7 @@ const dark: ColorType = {
   bgPopup: '#000000',
   bgLayout: 'rgba(0, 0, 0, 0.5)',
   bgTabViewColor: '#94ABFD',
+  bgnboardingColor: '#FBFCFF',
 
   // text colors
   primaryTextColor: '#C0C3CF',

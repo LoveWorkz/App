@@ -29,6 +29,7 @@ import {FavoritesChallengesPage} from '@src/pages/ChallengesPage';
 import {WelcomePage} from '@src/pages/Onboarding/WelcomePage';
 import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
 import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
+import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotificationsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -58,6 +59,7 @@ export enum AppRouteNames {
   CHALLENGE_TYPE_INFO = 'challengeTypeInfo',
   WELCOME = 'welcome',
   ONBOARDING_GOALS = 'onboardingGoals',
+  ONBOARDING_NOTIFICATIONS = 'onboardingNotifications',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -90,7 +92,10 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
   [AppRouteNames.ONBOARDING_GOALS]: 'onboardingGoals',
+  [AppRouteNames.ONBOARDING_NOTIFICATIONS]: 'onboardingNotifications',
 };
+
+export type BgColor = 'secondaryBackground' | 'white';
 
 export type NewRouteProps = {
   authOnly?: boolean;
@@ -101,7 +106,7 @@ export type NewRouteProps = {
   HeaderRight?: ComponentType;
   isTitleLarge?: boolean;
   isAboutMyRelationshipPage?: boolean;
-  isSecondaryBackground?: boolean;
+  bgColor?: BgColor;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -370,10 +375,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.CHALLENGE_TYPE_INFO]: {
     name: appRoutePaths.challengeTypeInfo,
-    isSecondaryBackground: true,
+    bgColor: 'secondaryBackground',
     Element: (props: ParamListBase) => {
       return (
-        <Layout isSecondaryBackground>
+        <Layout bgColor="secondaryBackground">
           <ChallengeTypeInfoPage {...props} />
         </Layout>
       );
@@ -385,9 +390,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   // onboarding
   [AppRouteNames.WELCOME]: {
     name: appRoutePaths.welcome,
+    bgColor: 'white',
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout bgColor="white">
           <WelcomePage {...props} />
         </Layout>
       );
@@ -400,6 +406,17 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <GoalsPage {...props} />
+        </Layout>
+      );
+    },
+    headerShown: false,
+  },
+  [AppRouteNames.ONBOARDING_NOTIFICATIONS]: {
+    name: appRoutePaths.onboardingNotifications,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <OnboardingNotificationsPage {...props} />
         </Layout>
       );
     },

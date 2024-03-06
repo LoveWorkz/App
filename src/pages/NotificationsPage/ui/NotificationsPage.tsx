@@ -5,7 +5,7 @@ import {useTranslation} from 'react-i18next';
 
 import {quotesStore} from '@src/widgets/Quotes';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import NotificationItem from './NotificationItem/NotificationItem';
+import {Notification} from '@src/entities/Notification';
 
 const NotificationsPage = () => {
   const {t} = useTranslation();
@@ -22,25 +22,25 @@ const NotificationsPage = () => {
 
   return (
     <View style={styles.NotificationsPage}>
-      <NotificationItem
+      <Notification
         title={t('notifications.news_more')}
         description={t('notifications.news_more_description')}
         value={false}
         onChange={onNewsHandler}
       />
-      <NotificationItem
+      <Notification
         title={t('notifications.daily_quotes')}
         description={t('notifications.daily_quotes_description')}
         value={quotesStore.quoteInfo.isQuoteVisible}
         onChange={onQuoteHandler}
       />
-      <NotificationItem
+      <Notification
         title={t('notifications.newsletter')}
         description={t('notifications.newsletter_description')}
         value={false}
         onChange={onNewsletterHandler}
       />
-      <NotificationItem
+      <Notification
         title={t('notifications.promotions')}
         description={t('notifications.promotions_description')}
         value={false}

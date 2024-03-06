@@ -1,5 +1,10 @@
 {
-    "welcome.title": "Bom, que você está aqui!",
-    "goal.description": "Aonde devemos acompanhar você?",
-    "welcome.description": "Viva conosco uma nova, revolucionária, fácil e divertida jornada para mais proximidade e intimidade no seu relacionamento"
+    "onboarding.welcome.title": "Bom, que você está aqui!",
+    "onboarding.goal.description": "Aonde devemos acompanhar você?",
+    "onboarding.welcome.description": "Viva conosco uma nova, revolucionária, fácil e divertida jornada para mais proximidade e intimidade no seu relacionamento",
+    "onboarding.notification.description": "Nossa notificação ajudará você a manter o curso!",
+    "onboarding.notification.description2": "\"O caminho do amor verdadeiro nunca foi suave\"",
+    "onboarding.notification.description3": "William Shakespeare",
+    "onboarding.notification.perhaps_later": "Talvez mais tarde",
+    "onboarding.notification.allow_notifications": "Permitir notificações"
 }

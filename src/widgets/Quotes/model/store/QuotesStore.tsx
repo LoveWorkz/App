@@ -7,6 +7,7 @@ import {datediff} from '@src/shared/lib/date';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {BookType} from '@src/entities/Book';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {notificationStore} from '@src/entities/Notification';
 import {QuotesModalInfoType} from '../types/quotesType';
 
 class QuotesStore {
@@ -39,9 +40,15 @@ class QuotesStore {
     try {
       crashlytics().log('Toggling quotes.');
 
-      await userStore.updateUser({
-        field: 'quote.isQuoteVisible',
-        data: visible,
+      const user = userStore.user;
+      if (user) {
+        await this.updateQuotesVisible(visible);
+        return;
+      }
+
+      await notificationStore.updateNotificationsStorage({
+        visible,
+        field: 'quotes',
       });
       runInAction(() => {
         this.quoteInfo.isQuoteVisible = visible;
@@ -49,6 +56,17 @@ class QuotesStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  updateQuotesVisible = async (visible: boolean) => {
+    await userStore.updateUser({
+      field: 'quote.isQuoteVisible',
+      data: visible,
+    });
+
+    runInAction(() => {
+      this.quoteInfo.isQuoteVisible = visible;
+    });
   };
 
   checkQuotesShownStatus = (books: BookType[]) => {
@@ -59,7 +77,6 @@ class QuotesStore {
       if (!this.quoteInfo.isQuoteVisible) {
         return;
       }
-
       if (!this.quoteInfo.quoteCheckingDate) {
         // only works the first time when user enter the system
         this.getAndSetQuotesModalInfo(books);

@@ -37,7 +37,7 @@ const WelcomePage = () => {
           style={[styles.title, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_7}
           weight={'700'}
-          text={t('welcome.title')}
+          text={t('onboarding.welcome.title')}
           lineHeight={31}
         />
         <View style={styles.descriptionWrapper}>
@@ -47,7 +47,7 @@ const WelcomePage = () => {
             weight={'500'}
             lineHeight={24}
             align="center"
-            text={t('welcome.description')}
+            text={t('onboarding.welcome.description')}
           />
         </View>
       </View>

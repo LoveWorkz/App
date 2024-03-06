@@ -6,14 +6,14 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {verticalScale} from '@src/shared/lib/Metrics';
 
-interface NotificationItemProps {
+interface NotificationProps {
   onChange: (visible: boolean) => void;
   value: boolean;
   title: string;
   description: string;
 }
 
-const NotificationItem = (props: NotificationItemProps) => {
+const Notification = (props: NotificationProps) => {
   const {onChange, value, title, description} = props;
 
   const colors = useColors();
@@ -21,10 +21,10 @@ const NotificationItem = (props: NotificationItemProps) => {
   return (
     <View
       style={[
-        styles.NotificationItem,
+        styles.Notification,
         {borderBottomColor: colors.borderBottomColor},
       ]}>
-      <View>
+      <View style={styles.textWrapper}>
         <AppText
           style={[styles.title, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_5}
@@ -50,10 +50,10 @@ const NotificationItem = (props: NotificationItemProps) => {
   );
 };
 
-export default memo(NotificationItem);
+export default memo(Notification);
 
 const styles = StyleSheet.create({
-  NotificationItem: {
+  Notification: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
 
+  textWrapper: {
+    top: verticalScale(5),
+  },
   title: {
     marginBottom: verticalScale(6),
   },

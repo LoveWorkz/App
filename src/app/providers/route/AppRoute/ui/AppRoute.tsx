@@ -83,9 +83,10 @@ const Routes = memo(() => {
           HeaderRight,
           isTitleLarge,
           isAboutMyRelationshipPage,
-          isSecondaryBackground,
+          bgColor,
         }) => {
           let backgroundColor = colors.bgColor;
+          const isSecondaryBackground = bgColor === 'secondaryBackground';
 
           if (isSecondaryBackground) {
             backgroundColor = colors.themeSecondaryBackground;

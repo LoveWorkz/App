@@ -7,6 +7,7 @@ import {
   TextSize,
   TextWeight,
   TextType,
+  AlignType,
 } from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
 
@@ -16,6 +17,7 @@ interface GradientTextProps {
   weight?: TextWeight;
   type?: TextType;
   style?: StyleType;
+  align?: AlignType;
 }
 
 export const GradientText = memo((props: GradientTextProps) => {

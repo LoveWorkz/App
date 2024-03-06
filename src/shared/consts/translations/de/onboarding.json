@@ -1,5 +1,10 @@
 {
-    "welcome.title": "Gut, dass du hier bist!",
-    "goal.description": "Wohin sollen wir Sie begleiten?",
-    "welcome.description": "Erleben Sie mit uns eine neue, revolutionäre, einfache und spielerische Reise zu mehr Nähe und Intimität in Ihrer Beziehung"
+    "onboarding.welcome.title": "Gut, dass du hier bist!",
+    "onboarding.goal.description": "Wohin sollen wir Sie begleiten?",
+    "onboarding.welcome.description": "Erleben Sie mit uns eine neue, revolutionäre, einfache und spielerische Reise zu mehr Nähe und Intimität in Ihrer Beziehung",
+    "onboarding.notification.description": "Unsere Benachrichtigung wird Ihnen helfen, den Kurs zu halten!",
+    "onboarding.notification.description2": "\"Der Lauf wahrer Liebe verlief niemals glatt\"",
+    "onboarding.notification.description3": "William Shakespeare",
+    "onboarding.notification.perhaps_later": "Vielleicht später",
+    "onboarding.notification.allow_notifications": "Benachrichtigungen zulassen"
 }

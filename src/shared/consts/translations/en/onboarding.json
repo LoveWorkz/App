@@ -1,5 +1,10 @@
 {
-    "welcome.title": "Good, that you are here!",
-    "goal.description": "Where shall we accompany you?",
-    "welcome.description": "Experience with us a new, revolutionary, easy & playfully journey to more closeness and intimacy in your relationship"
+    "onboarding.welcome.title": "Good, that you are here!",
+    "onboarding.goal.description": "Where shall we accompany you?",
+    "onboarding.welcome.description": "Experience with us a new, revolutionary, easy & playfully journey to more closeness and intimacy in your relationship",
+    "onboarding.notification.description": "Our notification will help you to keep the course!",
+    "onboarding.notification.description2": "\"The course of true love never did run smooth\"",
+    "onboarding.notification.description3": "William Shakespeare",
+    "onboarding.notification.perhaps_later": "Perhaps later",
+    "onboarding.notification.allow_notifications": "Allow notifications"
 }
