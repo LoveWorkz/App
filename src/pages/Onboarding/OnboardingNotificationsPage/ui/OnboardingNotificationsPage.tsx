@@ -1,47 +1,43 @@
-import React, {memo, useCallback, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
+import FastImage from 'react-native-fast-image';
 
-import {windowWidth, globalPadding} from '@src/app/styles/GlobalStyle';
-import {notificationsImage, onboardingBg} from '@src/shared/assets/images';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
 import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {onboardingBg} from '@src/shared/assets/images';
+import {notificationsImage} from '@src/shared/assets/images';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {useColors} from '@src/app/providers/colorsProvider';
 import {onboardingStyles} from '../../styles';
+import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
 
 const OnboardingNotificationsPage = () => {
   const {t} = useTranslation();
-  const colors = useColors();
 
   const onAllowNotificationsPressHandler = useCallback(() => {
     navigation.navigate(AppRouteNames.NOTIFICATIONS);
   }, []);
 
   const onPerhapsLaterPressHandler = () => {
-    navigation.navigate(AppRouteNames.TAB_ROUTE);
+    navigation.navigate(AppRouteNames.ONBOARDING_STATISTIC);
   };
+
+  const image = (
+    <FastImage
+      resizeMode="contain"
+      source={notificationsImage}
+      style={styles.img}
+    />
+  );
 
   return (
     <View style={styles.OnboardingNotificationsPage}>
-      <View
-        style={[styles.imgWrapper, {backgroundColor: colors.bgnboardingColor}]}>
-        <FastImage
-          resizeMode="cover"
-          source={onboardingBg}
-          style={styles.bgImg}>
-          <FastImage
-            resizeMode="contain"
-            source={notificationsImage}
-            style={styles.img}
-          />
-        </FastImage>
-
+      <OnboardingContainer bgImage={onboardingBg} imageChildren={image}>
         <View style={styles.contentWrapper}>
           <AppText
             style={styles.description1}
@@ -66,7 +62,7 @@ const OnboardingNotificationsPage = () => {
             align="center"
           />
         </View>
-      </View>
+      </OnboardingContainer>
 
       <View style={styles.bottomSide}>
         <Button
@@ -97,18 +93,6 @@ export default memo(OnboardingNotificationsPage);
 const styles = StyleSheet.create({
   OnboardingNotificationsPage: {
     flex: 1,
-  },
-  imgWrapper: {
-    height: verticalScale(690),
-    width: windowWidth,
-    left: -globalPadding,
-    top: -globalPadding,
-    alignItems: 'center',
-  },
-  bgImg: {
-    width: '100%',
-    height: verticalScale(520),
-    alignItems: 'center',
   },
   img: {
     height: verticalScale(450),

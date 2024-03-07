@@ -4,7 +4,6 @@ import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {HaveAnAccount} from '@src/widgets/HaveAnAccount';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -14,7 +13,6 @@ import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientAr
 import {onboardingStyles, onboardingWidth} from '../../styles';
 
 const WelcomePage = () => {
-  const colors = useColors();
   const {t} = useTranslation();
 
   const onLoginPressHandler = useCallback(() => {
@@ -34,7 +32,7 @@ const WelcomePage = () => {
           resizeMode={'contain'}
         />
         <AppText
-          style={[styles.title, {color: colors.primaryTextColor}]}
+          style={styles.title}
           size={TextSize.LEVEL_7}
           weight={'700'}
           text={t('onboarding.welcome.title')}
@@ -42,7 +40,6 @@ const WelcomePage = () => {
         />
         <View style={styles.descriptionWrapper}>
           <AppText
-            style={{color: colors.primaryTextColor}}
             size={TextSize.LEVEL_5}
             weight={'500'}
             lineHeight={24}

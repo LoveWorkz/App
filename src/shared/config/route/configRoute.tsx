@@ -30,6 +30,7 @@ import {WelcomePage} from '@src/pages/Onboarding/WelcomePage';
 import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
 import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
 import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotificationsPage';
+import {OnboardingStatisticPage} from '@src/pages/Onboarding/Statistic';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -60,6 +61,7 @@ export enum AppRouteNames {
   WELCOME = 'welcome',
   ONBOARDING_GOALS = 'onboardingGoals',
   ONBOARDING_NOTIFICATIONS = 'onboardingNotifications',
+  ONBOARDING_STATISTIC = 'onboardingStatistic',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -93,6 +95,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.WELCOME]: 'welcome',
   [AppRouteNames.ONBOARDING_GOALS]: 'onboardingGoals',
   [AppRouteNames.ONBOARDING_NOTIFICATIONS]: 'onboardingNotifications',
+  [AppRouteNames.ONBOARDING_STATISTIC]: 'onboardingStatistic',
 };
 
 export type BgColor = 'secondaryBackground' | 'white';
@@ -417,6 +420,17 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout>
           <OnboardingNotificationsPage {...props} />
+        </Layout>
+      );
+    },
+    headerShown: false,
+  },
+  [AppRouteNames.ONBOARDING_STATISTIC]: {
+    name: appRoutePaths.onboardingStatistic,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout deleteGlobalPadding>
+          <OnboardingStatisticPage {...props} />
         </Layout>
       );
     },

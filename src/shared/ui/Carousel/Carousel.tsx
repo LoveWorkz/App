@@ -22,6 +22,8 @@ interface CarouselProps {
   contentContainerStyle?: StyleType;
   paginationStyle?: StyleType;
   isSmallDotPagination?: boolean;
+  style?: StyleType;
+  paginationColor?: string;
 }
 
 export const Carousel = (props: CarouselProps) => {
@@ -37,6 +39,8 @@ export const Carousel = (props: CarouselProps) => {
     contentContainerStyle,
     paginationStyle,
     isSmallDotPagination = true,
+    style,
+    paginationColor,
   } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -55,11 +59,12 @@ export const Carousel = (props: CarouselProps) => {
   }, [getCurrentPage, currentIndex]);
 
   return (
-    <SafeAreaView>
+    <>
       <View>
         {isTopPagination && itemWidth && (
           <View style={paginationStyle}>
             <Pagination
+              paginationColor={paginationColor}
               isSmallDotPagination={isSmallDotPagination}
               itemWidth={itemWidth}
               scrollX={scrollX}
@@ -68,33 +73,36 @@ export const Carousel = (props: CarouselProps) => {
           </View>
         )}
       </View>
-      <FlatList
-        contentContainerStyle={contentContainerStyle}
-        horizontal
-        initialScrollIndex={initialIndex}
-        showsHorizontalScrollIndicator={false}
-        data={data}
-        pagingEnabled
-        renderItem={({item}) => (
-          <SafeAreaView style={[itemStyle, {width: itemWidth}]}>
-            <Component {...item} />
-          </SafeAreaView>
-        )}
-        bounces={false}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {
-            useNativeDriver: false,
-          },
-        )}
-        scrollEventThrottle={32}
-        onViewableItemsChanged={viewableItemsChanged}
-        viewabilityConfig={viewConfig}
-        ref={slidesRef}
-      />
+      <View style={style}>
+        <FlatList
+          contentContainerStyle={contentContainerStyle}
+          horizontal
+          initialScrollIndex={initialIndex}
+          showsHorizontalScrollIndicator={false}
+          data={data}
+          pagingEnabled
+          renderItem={({item, index}) => (
+            <SafeAreaView style={[itemStyle, {width: itemWidth}]}>
+              <Component {...item} index={index} />
+            </SafeAreaView>
+          )}
+          bounces={false}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {
+              useNativeDriver: false,
+            },
+          )}
+          scrollEventThrottle={32}
+          onViewableItemsChanged={viewableItemsChanged}
+          viewabilityConfig={viewConfig}
+          ref={slidesRef}
+        />
+      </View>
       {isBottomPagination && itemWidth && (
         <View style={paginationStyle}>
           <Pagination
+            paginationColor={paginationColor}
             isSmallDotPagination={isSmallDotPagination}
             itemWidth={itemWidth}
             scrollX={scrollX}
@@ -102,6 +110,6 @@ export const Carousel = (props: CarouselProps) => {
           />
         </View>
       )}
-    </SafeAreaView>
+    </>
   );
 };

@@ -10,10 +10,12 @@ interface PaginationProps {
   scrollX: Animated.Value;
   itemWidth: number;
   isSmallDotPagination?: boolean;
+  paginationColor?: string;
 }
 
 const Pagination = (props: PaginationProps) => {
-  const {data, scrollX, itemWidth, isSmallDotPagination} = props;
+  const {data, scrollX, itemWidth, isSmallDotPagination, paginationColor} =
+    props;
   const colors = useColors();
 
   let width = 18;
@@ -49,7 +51,9 @@ const Pagination = (props: PaginationProps) => {
           inputRange,
           outputRange: [
             colors.primaryTextColor,
-            isSmallDotPagination ? colors.primaryTextColor : 'red',
+            isSmallDotPagination
+              ? colors.primaryTextColor
+              : paginationColor || colors.red,
             colors.primaryTextColor,
           ],
           extrapolate: Extrapolate.CLAMP,

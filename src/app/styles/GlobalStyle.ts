@@ -88,6 +88,9 @@ export const globalStyles = StyleSheet.create({
   inputStartIconZIndex: {
     zIndex: 2,
   },
+  statisticButtonZIndex: {
+    zIndex: 2,
+  },
 
   //font Sizes
   size_1: {

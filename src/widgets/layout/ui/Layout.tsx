@@ -18,6 +18,7 @@ interface LayoutProps {
   deleteTopPadding?: boolean;
   isTabBar?: boolean;
   bgColor?: BgColor;
+  deleteGlobalPadding?: boolean;
 }
 
 export const Layout = (props: LayoutProps) => {
@@ -28,6 +29,7 @@ export const Layout = (props: LayoutProps) => {
     deleteTopPadding,
     isTabBar = false,
     bgColor,
+    deleteGlobalPadding = false,
   } = props;
 
   const scrollViewRef = useRef<ScrollView>(null);
@@ -67,6 +69,7 @@ export const Layout = (props: LayoutProps) => {
             {
               paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
               marginTop,
+              padding: deleteGlobalPadding ? 0 : globalPadding,
             },
           ]}>
           {children}
@@ -83,6 +86,7 @@ export const Layout = (props: LayoutProps) => {
           backgroundColor,
           paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
           paddingTop: marginTop,
+          padding: deleteGlobalPadding ? 0 : globalPadding,
         },
       ]}>
       {children}
@@ -92,7 +96,6 @@ export const Layout = (props: LayoutProps) => {
 
 const styles = StyleSheet.create({
   layout: {
-    padding: globalPadding,
     flex: 1,
     justifyContent: 'center',
     width: '100%',

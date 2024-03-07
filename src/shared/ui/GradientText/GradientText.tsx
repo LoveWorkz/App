@@ -18,6 +18,7 @@ interface GradientTextProps {
   type?: TextType;
   style?: StyleType;
   align?: AlignType;
+  lineHeight?: number;
 }
 
 export const GradientText = memo((props: GradientTextProps) => {

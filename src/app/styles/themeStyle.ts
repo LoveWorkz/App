@@ -33,7 +33,9 @@ export type Colors =
   | 'bgTabViewColor'
   | 'lightGreyColor'
   | 'themeSecondaryBackground'
-  | 'bgnboardingColor';
+  | 'bgOnboardingColor'
+  | 'red'
+  | 'lavenderBlue';
 
 export type ColorType = Record<Colors, string>;
 
@@ -47,6 +49,8 @@ const commonColor = {
   goalIconBgColor: '#83C0F833',
   lightGreyColor: '#D9D9D9',
   themeSecondaryBackground: '#665ec2',
+  red: 'red',
+  lavenderBlue: '#847AED',
 };
 
 const light: ColorType = {
@@ -66,7 +70,7 @@ const light: ColorType = {
   bgLayout: 'rgba(57, 81, 128, 0.5)',
   bgForgotPasswordPopupColor: '#F4F6FA',
   bgTabViewColor: '#94ABFD',
-  bgnboardingColor: '#FBFCFF',
+  bgOnboardingColor: '#FBFCFF',
 
   // text colors
   primaryTextColor: '#395180',
@@ -104,7 +108,7 @@ const dark: ColorType = {
   bgPopup: '#000000',
   bgLayout: 'rgba(0, 0, 0, 0.5)',
   bgTabViewColor: '#94ABFD',
-  bgnboardingColor: '#FBFCFF',
+  bgOnboardingColor: '#FBFCFF',
 
   // text colors
   primaryTextColor: '#C0C3CF',

@@ -104,6 +104,10 @@ export {default as challengeImage} from './challengeImage.png';
 export {default as leaves} from './leaves.png';
 
 // onboarding
-export {default as WelcomPageImage} from './WelcomPageImage.png';
-export {default as onboardingBg} from './onboardingBg.png';
-export {default as notificationsImage} from './notificationsImage.png';
+export {default as WelcomPageImage} from './light/onboarding/WelcomPageImage.png';
+export {default as onboardingBg} from './light/onboarding/onboardingBg.png';
+export {default as notificationsImage} from './light/onboarding/notificationsImage.png';
+export {default as onboardingBgWithLine} from './light/onboarding/onboardingBgWithLine.png';
+export {default as statisticImage1} from './light/onboarding/statisticImage1.png';
+export {default as statisticImage2} from './light/onboarding/statisticImage2.png';
+export {default as statisticImage3} from './light/onboarding/statisticImage3.png';

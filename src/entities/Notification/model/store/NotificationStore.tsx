@@ -21,7 +21,7 @@ class NotificationStore {
           JSON.parse(valueFromStorage);
 
         const quotes = notificationsFromStorage.quotes;
-        if(typeof quotes === 'boolean') {
+        if (typeof quotes === 'boolean') {
           await quotesStore.updateQuotesVisible(quotes);
         }
 

@@ -11,14 +11,16 @@ import {Button, ButtonTheme} from '../Button/Button';
 interface GradientArrowButtonProps {
   onPressHandler: () => void;
   text: string;
+  activeOpacity?: number;
 }
 
 export const GradientArrowButton = memo((props: GradientArrowButtonProps) => {
-  const {onPressHandler, text} = props;
+  const {onPressHandler, text, activeOpacity} = props;
   const colors = useColors();
 
   return (
     <Button
+      activeOpacity={activeOpacity}
       onPress={onPressHandler}
       style={styles.btn}
       theme={ButtonTheme.GRADIENT}>

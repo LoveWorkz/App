@@ -31,6 +31,7 @@ interface ButtonProps {
   squar?: boolean;
   isLoading?: boolean;
   backgroundColor?: string;
+  activeOpacity?: number;
 }
 
 const height = verticalScale(40);
@@ -46,6 +47,7 @@ export const Button = (props: ButtonProps) => {
     squar,
     isLoading = false,
     backgroundColor,
+    activeOpacity = 0.6,
   } = props;
   const colors = useColors();
 
@@ -72,7 +74,11 @@ export const Button = (props: ButtonProps) => {
 
   if (theme === ButtonTheme.GRADIENT) {
     return (
-      <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
+      <TouchableOpacity
+        activeOpacity={activeOpacity}
+        style={mode}
+        disabled={disabled}
+        onPress={onPress}>
         <Gradient style={[...mode, styles.contentWrapper]}>{children}</Gradient>
       </TouchableOpacity>
     );
@@ -80,7 +86,11 @@ export const Button = (props: ButtonProps) => {
 
   if (theme === ButtonTheme.OUTLINED_GRADIENT) {
     return (
-      <TouchableOpacity style={mode} disabled={disabled} onPress={onPress}>
+      <TouchableOpacity
+        activeOpacity={activeOpacity}
+        style={mode}
+        disabled={disabled}
+        onPress={onPress}>
         <GradientOutline
           borderWeight={1}
           radius={10}
@@ -96,7 +106,11 @@ export const Button = (props: ButtonProps) => {
   }
 
   return (
-    <TouchableOpacity disabled={disabled} style={mode} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={activeOpacity}
+      disabled={disabled}
+      style={mode}
+      onPress={onPress}>
       {children}
     </TouchableOpacity>
   );
