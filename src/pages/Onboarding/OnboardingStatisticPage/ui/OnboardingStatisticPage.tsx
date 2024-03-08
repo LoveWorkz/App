@@ -9,7 +9,7 @@ import {
   windowWidth,
 } from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
-import StatisticWrapper from '../../StatisticWrapper';
+import StatisticWrapper from './StatisticWrapper';
 
 const OnboardingStatisticPage = () => {
   const colors = useColors();

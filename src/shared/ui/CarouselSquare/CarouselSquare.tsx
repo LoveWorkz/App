@@ -18,6 +18,9 @@ interface CarousalSquareProps {
   itemStyle?: StyleType;
   carouselHeight?: number;
   withPagination?: boolean;
+  loop?: boolean;
+  paginationStyle?: StyleType;
+  paginationDotColor?: string;
 }
 
 export const CarouselSquare = memo((props: CarousalSquareProps) => {
@@ -28,6 +31,9 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
     itemStyle,
     carouselHeight,
     withPagination = false,
+    loop = true,
+    paginationStyle,
+    paginationDotColor,
   } = props;
 
   const isScrolling = useRef(false);
@@ -53,10 +59,11 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
     <GestureHandlerRootView>
       <View style={[styles.container]}>
         {!!progressValue && withPagination && (
-          <View style={styles.paginationWrapper}>
+          <View style={[styles.paginationWrapper, paginationStyle]}>
             {data.map((_, index) => {
               return (
                 <Pagination
+                  dotColor={paginationDotColor}
                   animValue={progressValue}
                   index={index}
                   key={index}
@@ -69,7 +76,7 @@ export const CarouselSquare = memo((props: CarousalSquareProps) => {
         <Carousel
           {...baseOptions}
           onProgressChange={onProgressChange}
-          loop
+          loop={loop}
           style={{
             width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
             height: carouselHeight || undefined,

@@ -9,10 +9,10 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
-import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {onboardingStyles, onboardingWidth} from '../../styles';
+import {onboardingStyles, onboardingWidth} from '../../../styles';
+import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 
 const Screen4 = () => {
   const {t} = useTranslation();

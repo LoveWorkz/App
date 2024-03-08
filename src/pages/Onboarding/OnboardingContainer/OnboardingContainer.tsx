@@ -1,4 +1,4 @@
-import React, {memo, ReactElement} from 'react';
+import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -33,7 +33,7 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
   );
 };
 
-export default memo(OnboardingContainer);
+export default OnboardingContainer;
 
 const styles = StyleSheet.create({
   imgWrapper: {

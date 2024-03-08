@@ -13,10 +13,11 @@ interface PaginationProps {
   index: number;
   length: number;
   animValue: Animated.SharedValue<number>;
+  dotColor?: string;
 }
 
 const Pagination = (props: PaginationProps) => {
-  const {animValue, index, length} = props;
+  const {animValue, index, length, dotColor} = props;
   const colors = useColors();
 
   const width = 6;
@@ -57,7 +58,7 @@ const Pagination = (props: PaginationProps) => {
         style={[
           styles.dot,
           {
-            backgroundColor: colors.primaryTextColor,
+            backgroundColor: dotColor || colors.primaryTextColor,
           },
           animStyle,
         ]}

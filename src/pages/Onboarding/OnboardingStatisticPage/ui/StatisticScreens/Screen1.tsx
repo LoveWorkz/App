@@ -7,7 +7,7 @@ import {onboardingBgWithLine, statisticImage1} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
+import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 
 const Screen1 = () => {
   const {t} = useTranslation();

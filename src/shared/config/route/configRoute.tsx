@@ -30,7 +30,7 @@ import {WelcomePage} from '@src/pages/Onboarding/WelcomePage';
 import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
 import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
 import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotificationsPage';
-import {OnboardingStatisticPage} from '@src/pages/Onboarding/Statistic';
+import {OnboardingStatisticPage} from '@src/pages/Onboarding/OnboardingStatisticPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
