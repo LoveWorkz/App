@@ -12,6 +12,7 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {onboardingBg} from '@src/shared/assets/images';
 import {notificationsImage} from '@src/shared/assets/images';
+import { isPlatformIos } from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {onboardingStyles} from '../../styles';
 import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
@@ -37,14 +38,13 @@ const OnboardingNotificationsPage = () => {
 
   return (
     <View style={styles.OnboardingNotificationsPage}>
-      <OnboardingContainer bgImage={onboardingBg} imageChildren={image}>
+      <OnboardingContainer bgImage={onboardingBg} imageChildren={image} isNotification>
         <View style={styles.contentWrapper}>
           <AppText
             style={styles.description1}
             size={TextSize.LEVEL_5}
             weight={'500'}
             text={t('onboarding.notification.description')}
-            lineHeight={31}
             align="center"
           />
           <GradientText
@@ -58,7 +58,6 @@ const OnboardingNotificationsPage = () => {
             size={TextSize.LEVEL_5}
             weight={'700'}
             text={t('onboarding.notification.description3')}
-            lineHeight={31}
             align="center"
           />
         </View>
@@ -93,22 +92,23 @@ export default memo(OnboardingNotificationsPage);
 const styles = StyleSheet.create({
   OnboardingNotificationsPage: {
     flex: 1,
+    top: verticalScale(isPlatformIos ? 0 : -20),
   },
   img: {
-    height: verticalScale(450),
+    height: verticalScale(500),
     width: windowWidth,
-    top: verticalScale(-10),
+    top: verticalScale(-50),
   },
   contentWrapper: {
     width: '80%',
     alignItems: 'center',
-    top: verticalScale(-70),
+    top: verticalScale(-80),
   },
   description1: {
-    marginBottom: verticalScale(15),
+    marginBottom: verticalScale(20),
   },
   description3: {
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(20),
   },
   perhapsLaterBtn: {
     marginBottom: verticalScale(8),
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
   bottomSide: {
     ...onboardingStyles.bottomSide,
     width: '100%',
+    bottom: verticalScale(isPlatformIos ? 15 : -15),
   },
   btnWrapper: {
     ...onboardingStyles.btnWrapper,

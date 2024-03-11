@@ -10,10 +10,11 @@ interface OnboardingContainerProps {
   children: ReactElement | ReactElement[];
   bgImage: number;
   imageChildren?: ReactElement;
+  isNotification?: boolean;
 }
 
 const OnboardingContainer = (props: OnboardingContainerProps) => {
-  const {children, bgImage, imageChildren} = props;
+  const {children, bgImage, imageChildren, isNotification = false} = props;
 
   const colors = useColors();
 
@@ -22,7 +23,7 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
       <View
         style={[
           styles.imgWrapper,
-          {backgroundColor: colors.bgOnboardingColor},
+          {backgroundColor: colors.bgOnboardingColor, left: isNotification ? -globalPadding : 0},
         ]}>
         <FastImage resizeMode="cover" source={bgImage} style={styles.bgImg}>
           {imageChildren}

@@ -9,8 +9,8 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import { setOnboardingStatusAndNavigate } from '@src/pages/Onboarding/lib/onboardingLib';
+import { isPlatformIos } from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../../styles';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 
@@ -19,11 +19,11 @@ const Screen4 = () => {
   const colors = useColors();
 
   const onLetsStartPressHandler = useCallback(() => {
-    navigation.replace(AppRouteNames.TAB_ROUTE);
+    setOnboardingStatusAndNavigate();
   }, []);
 
   const image = (
-    <>
+    <View style={styles.topPart}>
       <FastImage
         resizeMode="contain"
         source={statisticImage3}
@@ -34,10 +34,9 @@ const Screen4 = () => {
         size={TextSize.LEVEL_6}
         weight={'700'}
         text={t('onboarding.statistic.screen_4_description')}
-        lineHeight={31}
         align="center"
       />
-    </>
+    </View>
   );
 
   return (
@@ -48,14 +47,12 @@ const Screen4 = () => {
             size={TextSize.LEVEL_7}
             weight={'700'}
             text={'9/10'}
-            lineHeight={35}
             align="center"
           />
           <GradientText
             size={TextSize.LEVEL_7}
             weight={'700'}
             text={t('onboarding.statistic.screen_4_description2')}
-            lineHeight={35}
             align="center"
           />
         </View>
@@ -75,22 +72,31 @@ const Screen4 = () => {
 
 export default memo(Screen4);
 
+const bottom = verticalScale(isPlatformIos ? -100 : -115);
+
 const styles = StyleSheet.create({
+  topPart: {
+    top: verticalScale(20), 
+    width: '100%',
+    alignItems: 'center',
+    height: verticalScale(350),
+  },
   img: {
     height: verticalScale(350),
     width: '70%',
   },
   title: {
-    top: verticalScale(-60),
+    top: verticalScale(-70),
+    width: '80%',
   },
   contentWrapper: {
     width: '80%',
     alignItems: 'center',
-    top: verticalScale(-60),
+    top: verticalScale(-50),
   },
   bottomSide: {
     ...onboardingStyles.bottomSide,
-    bottom: verticalScale(-100),
+    bottom,
   },
   btnWrapper: {
     width: onboardingWidth,

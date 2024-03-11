@@ -1,6 +1,6 @@
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {notificationsStorage} from '@src/shared/lib/storage/adapters/notificationsAdapter';
+import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {NOTIFICATIONS_KEY} from '@src/shared/consts/storage';
 import {NotificationsPreferencesType} from '@src/entities/Notification';
 import {quotesStore} from '@src/widgets/Quotes';
@@ -11,7 +11,7 @@ class NotificationStore {
     try {
       crashlytics().log('Init user notifications.');
 
-      const valueFromStorage = await notificationsStorage.getNotifications(
+      const valueFromStorage = await onboardingStorage.getOnboardingData(
         NOTIFICATIONS_KEY,
       );
 
@@ -25,7 +25,7 @@ class NotificationStore {
           await quotesStore.updateQuotesVisible(quotes);
         }
 
-        notificationsStorage.removeNotifications(NOTIFICATIONS_KEY);
+        onboardingStorage.removeOnboardingData(NOTIFICATIONS_KEY);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -41,7 +41,7 @@ class NotificationStore {
   }) => {
     crashlytics().log('Update user notifications inside storage.');
 
-    const valueFromStorage = await notificationsStorage.getNotifications(
+    const valueFromStorage = await onboardingStorage.getOnboardingData(
       NOTIFICATIONS_KEY,
     );
 
@@ -50,7 +50,7 @@ class NotificationStore {
       [field]: visible,
     };
 
-    await notificationsStorage.setNotifications(
+    await onboardingStorage.setOnboardingData(
       NOTIFICATIONS_KEY,
       JSON.stringify(notifications),
     );

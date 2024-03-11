@@ -27,7 +27,6 @@ const Screen2 = () => {
           size={TextSize.LEVEL_7}
           weight={'700'}
           text={t('onboarding.statistic.screen_2_description')}
-          lineHeight={35}
           align="center"
         />
       </View>

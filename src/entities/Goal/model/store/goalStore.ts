@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections} from '@src/shared/types/firebase';
-import {goalsStorage} from '@src/shared/lib/storage/adapters/goalsAdapter';
+import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {SELECTED_GOALS_KEY} from '@src/shared/consts/storage';
 import {GoalType} from '../types/goalTypes';
 
@@ -29,7 +29,7 @@ class GoalStore {
 
       let selectedGoalsIds = user.selectedGoalsIds;
 
-      const valueFromStorage = await goalsStorage.getSelectedGoals(
+      const valueFromStorage = await onboardingStorage.getOnboardingData(
         SELECTED_GOALS_KEY,
       );
 
@@ -37,7 +37,7 @@ class GoalStore {
       if (valueFromStorage) {
         selectedGoalsIds = JSON.parse(valueFromStorage);
         await this.updateUserSelectedGoalIds(selectedGoalsIds);
-        await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
+        await onboardingStorage.removeOnboardingData(SELECTED_GOALS_KEY);
 
         return;
       }
@@ -59,11 +59,11 @@ class GoalStore {
       await this.fetchGoals(selectedGoalsIds);
 
       // If it's onboarding process, selected goals IDs should not be saved
-      const valueFromStorage = await goalsStorage.getSelectedGoals(
+      const valueFromStorage = await onboardingStorage.getOnboardingData(
         SELECTED_GOALS_KEY,
       );
       if (valueFromStorage) {
-        await goalsStorage.removeSelectedGoals(SELECTED_GOALS_KEY);
+        await onboardingStorage.removeOnboardingData(SELECTED_GOALS_KEY);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -146,7 +146,7 @@ class GoalStore {
       return;
     }
 
-    await goalsStorage.setSelectedGoals(
+    await onboardingStorage.setOnboardingData(
       SELECTED_GOALS_KEY,
       JSON.stringify(newSelectedGoalsIds),
     );

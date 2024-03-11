@@ -27,7 +27,6 @@ const Screen1 = () => {
           style={styles.title}
           size={TextSize.LEVEL_5}
           weight={'500'}
-          lineHeight={24}
           align="center"
           text={t('onboarding.statistic.playful_effective')}
         />
@@ -36,7 +35,6 @@ const Screen1 = () => {
           size={TextSize.LEVEL_7}
           weight={'700'}
           text={t('onboarding.statistic.screen_1_description')}
-          lineHeight={35}
           align="center"
         />
       </View>

@@ -13,6 +13,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
+  HAS_COMPLETED_ONBOARDING_KEY,
   RATE_TYPE_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
@@ -30,6 +31,7 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
+import { onboardingStorage } from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {
   User,
   AuthMethod,
@@ -116,12 +118,16 @@ class UserStore {
 
       await this.checkAndSetUserVisitStatus({isSplash: true});
 
+      const hasCompletedOnboarding = await this.checkOnboardingStatus();
+      if(!hasCompletedOnboarding) {
+        return navigation.replace(AppRouteNames.WELCOME);
+      }
+
       const user = auth().currentUser;
       if (!user) {
         return navigation.replace(AppRouteNames.AUTH);
       }
 
-      // const formattedUser = userFormatter(user as InitlUserInfo);
       const authMethod = await authStorage.getAuthData(AUTH_METHOD_STORAGE_KEY);
 
       this.setAuthUserInfo({
@@ -129,11 +135,24 @@ class UserStore {
         authMethod: authMethod || '',
       });
 
-      navigation.replace(AppRouteNames.WELCOME);
+      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e: unknown) {
       this.errorHandler(e);
     }
   };
+
+  checkOnboardingStatus = async () => {
+    const valueFromStorage = await onboardingStorage.getOnboardingData(HAS_COMPLETED_ONBOARDING_KEY);
+    if(!valueFromStorage) {
+      return false;
+    }
+    
+    if(JSON.parse(valueFromStorage)) {
+      return true;
+    }
+
+    return false;
+  }
 
   fetchUser = async () => {
     try {

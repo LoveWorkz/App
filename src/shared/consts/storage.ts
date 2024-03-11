@@ -5,3 +5,4 @@ export const USER_VISITED_STATUS = 'isUserVisitFirstTime';
 export const RATE_TYPE_KEY = 'rateType';
 export const SELECTED_GOALS_KEY = 'selectedGoalsIds';
 export const NOTIFICATIONS_KEY = 'notifications';
+export const HAS_COMPLETED_ONBOARDING_KEY = 'hasCompletedOnboarding';

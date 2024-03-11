@@ -10,13 +10,15 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {WelcomPageImage} from '@src/shared/assets/images';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
+import { isPlatformIos } from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../styles';
+import { setOnboardingStatusAndNavigate } from '../../lib/onboardingLib';
 
 const WelcomePage = () => {
   const {t} = useTranslation();
 
   const onLoginPressHandler = useCallback(() => {
-    navigation.navigate(AppRouteNames.AUTH);
+    setOnboardingStatusAndNavigate();
   }, []);
 
   const letsDoThisPressHandler = useCallback(() => {
@@ -65,6 +67,8 @@ const WelcomePage = () => {
   );
 };
 
+const top = verticalScale(isPlatformIos ? 100 : 50);
+
 export default memo(WelcomePage);
 
 const styles = StyleSheet.create({
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    top: verticalScale(100),
+    top,
     width: onboardingWidth,
     alignItems: 'center',
   },
