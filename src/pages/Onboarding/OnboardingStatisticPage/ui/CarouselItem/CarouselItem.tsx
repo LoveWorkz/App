@@ -2,10 +2,14 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
-import {horizontalScale, moderateScale, verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import { OnboardingCommentType } from '../../model/types/types';
+import {OnboardingCommentType} from '../../model/types/types';
 
 const CarouselItem = (props: OnboardingCommentType) => {
   const {rate, comment, author} = props;
@@ -14,7 +18,7 @@ const CarouselItem = (props: OnboardingCommentType) => {
 
   return (
     <View style={[styles.CarouselItem, {backgroundColor: colors.white}]}>
-      <StarRatings bgColor={colors.white} size={5} count={rate} imageSize={moderateScale(25)} />
+      <StarRatings imageSize={25} count={rate} />
       <AppText
         style={styles.comment}
         weight={'500'}
@@ -22,11 +26,7 @@ const CarouselItem = (props: OnboardingCommentType) => {
         text={comment}
         lineHeight={25}
       />
-      <AppText
-        weight={'700'}
-        size={TextSize.LEVEL_5}
-        text={author}
-      />
+      <AppText weight={'700'} size={TextSize.LEVEL_5} text={author} />
     </View>
   );
 };

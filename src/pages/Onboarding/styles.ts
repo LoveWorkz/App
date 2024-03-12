@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 
 export const onboardingWidth = '90%';
 
@@ -23,5 +23,5 @@ export const onboardingStyles = StyleSheet.create({
   },
   onboardingTop: {
     top: verticalScale(-40),
-  }
+  },
 });

@@ -9,9 +9,9 @@ import {
   windowWidth,
 } from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import StatisticWrapper from './StatisticWrapper';
-import { onboardingStyles } from '../../styles';
+import {onboardingStyles} from '../../styles';
 
 const OnboardingStatisticPage = () => {
   const colors = useColors();
@@ -34,7 +34,7 @@ const OnboardingStatisticPage = () => {
 
 export default memo(OnboardingStatisticPage);
 
-const bottom = verticalScale( isPlatformIos ? 75 : 100);
+const bottom = verticalScale(isPlatformIos ? 75 : 100);
 
 const styles = StyleSheet.create({
   OnboardingStatisticPage: {

@@ -52,7 +52,6 @@ const DatePickerModal = (props: DatePickerModalProps) => {
         onDateChange={setDate}
         mode="date"
         locale={'en'}
-        maximumDate={new Date()}
         androidVariant="iosClone"
         theme={themeMap[theme]}
         fadeToColor={colors.bgColor}

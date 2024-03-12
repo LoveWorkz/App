@@ -31,7 +31,7 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
-import { onboardingStorage } from '@src/shared/lib/storage/adapters/onboardingAdapter';
+import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {
   User,
   AuthMethod,
@@ -119,7 +119,7 @@ class UserStore {
       await this.checkAndSetUserVisitStatus({isSplash: true});
 
       const hasCompletedOnboarding = await this.checkOnboardingStatus();
-      if(!hasCompletedOnboarding) {
+      if (!hasCompletedOnboarding) {
         return navigation.replace(AppRouteNames.WELCOME);
       }
 
@@ -142,17 +142,19 @@ class UserStore {
   };
 
   checkOnboardingStatus = async () => {
-    const valueFromStorage = await onboardingStorage.getOnboardingData(HAS_COMPLETED_ONBOARDING_KEY);
-    if(!valueFromStorage) {
+    const valueFromStorage = await onboardingStorage.getOnboardingData(
+      HAS_COMPLETED_ONBOARDING_KEY,
+    );
+    if (!valueFromStorage) {
       return false;
     }
-    
-    if(JSON.parse(valueFromStorage)) {
+
+    if (JSON.parse(valueFromStorage)) {
       return true;
     }
 
     return false;
-  }
+  };
 
   fetchUser = async () => {
     try {

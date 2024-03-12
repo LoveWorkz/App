@@ -6,11 +6,11 @@ import {onboardingBgWithLine} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import { useColors } from '@src/app/providers/colorsProvider';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 import CarouselItem from '../CarouselItem/CarouselItem';
-import { comments } from '../../model/lib/onboardingStatisticLib';
+import {comments} from '../../model/lib/onboardingStatisticLib';
 
 const Screen3 = () => {
   const {t} = useTranslation();
@@ -32,7 +32,9 @@ const Screen3 = () => {
   );
 
   return (
-    <OnboardingContainer bgImage={onboardingBgWithLine} imageChildren={imageChildren}>
+    <OnboardingContainer
+      bgImage={onboardingBgWithLine}
+      imageChildren={imageChildren}>
       <View style={styles.contentWrapper}>
         <GradientText
           size={TextSize.LEVEL_7}
@@ -59,6 +61,6 @@ const styles = StyleSheet.create({
   paginationStyle: {
     top: verticalScale(25),
     width: '100%',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

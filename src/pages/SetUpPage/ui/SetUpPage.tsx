@@ -1,14 +1,21 @@
 import React, {memo} from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {Profile} from '@src/entities/Profile';
+import {windowHeight} from '@src/app/styles/GlobalStyle';
 
 const SetUpPage = () => {
   return (
-    <View>
+    <View style={styles.SetUpPage}>
       <Profile isSetUp={true} />
     </View>
   );
 };
 
-export const Wrapper = memo(SetUpPage);
+const styles = StyleSheet.create({
+  SetUpPage: {
+    height: windowHeight * 0.9,
+  },
+});
+
+export default memo(SetUpPage);

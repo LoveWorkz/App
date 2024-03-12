@@ -11,10 +11,11 @@ interface NotificationProps {
   value: boolean;
   title: string;
   description: string;
+  disabled?: boolean;
 }
 
 const Notification = (props: NotificationProps) => {
-  const {onChange, value, title, description} = props;
+  const {onChange, value, title, description, disabled = false} = props;
 
   const colors = useColors();
 
@@ -45,6 +46,7 @@ const Notification = (props: NotificationProps) => {
         ios_backgroundColor="#3e3e3e"
         onValueChange={onChange}
         value={value}
+        disabled={disabled}
       />
     </View>
   );

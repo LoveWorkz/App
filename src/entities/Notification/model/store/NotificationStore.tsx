@@ -32,22 +32,11 @@ class NotificationStore {
     }
   };
 
-  updateNotificationsStorage = async ({
-    visible,
-    field,
-  }: {
-    visible: boolean;
-    field: keyof NotificationsPreferencesType;
-  }) => {
-    crashlytics().log('Update user notifications inside storage.');
+  allowNotifications = async () => {
+    crashlytics().log('Allow user notifications.');
 
-    const valueFromStorage = await onboardingStorage.getOnboardingData(
-      NOTIFICATIONS_KEY,
-    );
-
-    let notifications: NotificationsPreferencesType = {
-      ...(valueFromStorage ? JSON.parse(valueFromStorage) : {}),
-      [field]: visible,
+    const notifications: NotificationsPreferencesType = {
+      quotes: true,
     };
 
     await onboardingStorage.setOnboardingData(

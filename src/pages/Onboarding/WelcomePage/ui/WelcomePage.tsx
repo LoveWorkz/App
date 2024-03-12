@@ -10,15 +10,15 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {WelcomPageImage} from '@src/shared/assets/images';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../styles';
-import { setOnboardingStatusAndNavigate } from '../../lib/onboardingLib';
+import onboardingStore from '../../model/onboardingStore';
 
 const WelcomePage = () => {
   const {t} = useTranslation();
 
   const onLoginPressHandler = useCallback(() => {
-    setOnboardingStatusAndNavigate();
+    onboardingStore.setOnboardingStatusAndNavigate();
   }, []);
 
   const letsDoThisPressHandler = useCallback(() => {

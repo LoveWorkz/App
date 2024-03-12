@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   closeIconWrapper: {
     position: 'absolute',
     right: horizontalScale(30),
-    top: verticalScale(50),
+    top: verticalScale(70),
   },
   image: {
     borderRadius: moderateScale(5),

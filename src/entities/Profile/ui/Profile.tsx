@@ -12,6 +12,7 @@ import {AuthMethod, userStore} from '@src/entities/User';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import { isPlatformIos } from '@src/shared/consts/common';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
@@ -154,11 +155,12 @@ const Profile = (props: ProfileProps) => {
   );
 };
 
-export const Wrapper = memo(observer(Profile));
+export default memo(observer(Profile));
 
 const styles = StyleSheet.create({
   profile: {
     alignItems: 'center',
+    flex:1
   },
   uploadPhotoWrapper: {
     marginTop: verticalScale(-20),
@@ -187,7 +189,8 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     width: '100%',
-    marginTop: verticalScale(20),
+    position: 'absolute',
+    bottom: verticalScale(isPlatformIos ? 0 : 10),
   },
   uploadPhoto: {
     width: horizontalScale(180),

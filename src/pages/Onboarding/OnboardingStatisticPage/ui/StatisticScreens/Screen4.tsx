@@ -9,17 +9,17 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
-import { setOnboardingStatusAndNavigate } from '@src/pages/Onboarding/lib/onboardingLib';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../../styles';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
+import onboardingStore from '../../../model/onboardingStore';
 
 const Screen4 = () => {
   const {t} = useTranslation();
   const colors = useColors();
 
   const onLetsStartPressHandler = useCallback(() => {
-    setOnboardingStatusAndNavigate();
+    onboardingStore.setOnboardingStatusAndNavigate();
   }, []);
 
   const image = (
@@ -76,7 +76,7 @@ const bottom = verticalScale(isPlatformIos ? -100 : -115);
 
 const styles = StyleSheet.create({
   topPart: {
-    top: verticalScale(20), 
+    top: verticalScale(20),
     width: '100%',
     alignItems: 'center',
     height: verticalScale(350),

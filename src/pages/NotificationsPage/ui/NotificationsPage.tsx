@@ -27,6 +27,7 @@ const NotificationsPage = () => {
         description={t('notifications.news_more_description')}
         value={false}
         onChange={onNewsHandler}
+        disabled
       />
       <Notification
         title={t('notifications.daily_quotes')}
@@ -39,12 +40,14 @@ const NotificationsPage = () => {
         description={t('notifications.newsletter_description')}
         value={false}
         onChange={onNewsletterHandler}
+        disabled
       />
       <Notification
         title={t('notifications.promotions')}
         description={t('notifications.promotions_description')}
         value={false}
         onChange={onPromotionsHandler}
+        disabled
       />
     </View>
   );

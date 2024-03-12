@@ -12,16 +12,17 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {onboardingBg} from '@src/shared/assets/images';
 import {notificationsImage} from '@src/shared/assets/images';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {onboardingStyles} from '../../styles';
 import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
+import onboardingStore from '../../model/onboardingStore';
 
 const OnboardingNotificationsPage = () => {
   const {t} = useTranslation();
 
   const onAllowNotificationsPressHandler = useCallback(() => {
-    navigation.navigate(AppRouteNames.NOTIFICATIONS);
+    onboardingStore.allowNotificationsAndNavigate();
   }, []);
 
   const onPerhapsLaterPressHandler = () => {
@@ -38,7 +39,10 @@ const OnboardingNotificationsPage = () => {
 
   return (
     <View style={styles.OnboardingNotificationsPage}>
-      <OnboardingContainer bgImage={onboardingBg} imageChildren={image} isNotification>
+      <OnboardingContainer
+        bgImage={onboardingBg}
+        imageChildren={image}
+        isNotification>
         <View style={styles.contentWrapper}>
           <AppText
             style={styles.description1}

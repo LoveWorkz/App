@@ -7,12 +7,11 @@ import {datediff} from '@src/shared/lib/date';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {BookType} from '@src/entities/Book';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {notificationStore} from '@src/entities/Notification';
 import {QuotesModalInfoType} from '../types/quotesType';
 
 class QuotesStore {
   quoteInfo: QuoeType = {
-    isQuoteVisible: true,
+    isQuoteVisible: false,
     quoteCheckingDate: '',
     bookId: '',
   };
@@ -46,10 +45,6 @@ class QuotesStore {
         return;
       }
 
-      await notificationStore.updateNotificationsStorage({
-        visible,
-        field: 'quotes',
-      });
       runInAction(() => {
         this.quoteInfo.isQuoteVisible = visible;
       });

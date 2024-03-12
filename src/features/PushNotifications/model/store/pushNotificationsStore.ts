@@ -69,6 +69,9 @@ class PushNotificationsStore {
   requestUserAndroidPermission = async () => {
     crashlytics().log('Request permissions for android');
 
+    // fix this
+    return true;
+
     if (Platform.Version >= 33) {
       const result = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,

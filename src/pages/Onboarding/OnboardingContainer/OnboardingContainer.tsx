@@ -23,7 +23,10 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
       <View
         style={[
           styles.imgWrapper,
-          {backgroundColor: colors.bgOnboardingColor, left: isNotification ? -globalPadding : 0},
+          {
+            backgroundColor: colors.bgOnboardingColor,
+            left: isNotification ? -globalPadding : 0,
+          },
         ]}>
         <FastImage resizeMode="cover" source={bgImage} style={styles.bgImg}>
           {imageChildren}

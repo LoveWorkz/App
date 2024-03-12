@@ -6,4 +6,4 @@ const ProfilePage = () => {
   return <Profile />;
 };
 
-export const Wrapper = memo(ProfilePage);
+export default memo(ProfilePage);

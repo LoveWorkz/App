@@ -8,7 +8,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../styles';
 
 const GoalsPage = () => {
@@ -47,7 +47,7 @@ const GoalsPage = () => {
 
 export default memo(GoalsPage);
 
-const paddingTop = verticalScale(isPlatformIos ? 60 : 10)
+const paddingTop = verticalScale(isPlatformIos ? 60 : 10);
 
 const styles = StyleSheet.create({
   GoalsPage: {
