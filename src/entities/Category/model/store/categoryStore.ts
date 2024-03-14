@@ -57,12 +57,19 @@ class CategoryStore {
         field: `sessions.${sessionId}.currentQuestion`,
         data: firstQuestion.id,
       });
+
+      const currentCategory = this.category;
+      if (!currentCategory) {
+        return;
+      }
+
       runInAction(() => {
         this.category = {
-          ...this.category,
-          currentQuestion: firstQuestion.id,
+          ...currentCategory,
           sessions: {
+            ...currentCategory.sessions,
             [sessionId]: {
+              ...(currentCategory.sessions?.[sessionId] || {}),
               currentQuestion: firstQuestion.id,
             },
           },

@@ -88,7 +88,7 @@ class SessionStore {
         .collection(
           sessionChallengeInfo.isChallengeSpecial
             ? Collections.SPECIAL_CHALLENGES
-            : Collections.CHALLENGES,
+            : Collections.CORE_CHALLENGES,
         )
         .doc(sessionChallengeInfo.challengeId)
         .get({source});

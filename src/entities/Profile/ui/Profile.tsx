@@ -12,7 +12,7 @@ import {AuthMethod, userStore} from '@src/entities/User';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
@@ -160,7 +160,7 @@ export default memo(observer(Profile));
 const styles = StyleSheet.create({
   profile: {
     alignItems: 'center',
-    flex:1
+    flex: 1,
   },
   uploadPhotoWrapper: {
     marginTop: verticalScale(-20),

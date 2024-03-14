@@ -29,8 +29,8 @@ export const Skeleton = (props: SkeletonProps) => {
   return (
     <View>
       <SkeletonPlaceholder
-        backgroundColor={highlightColor || colors.skeletonColor}
-        highlightColor={backgroundColor || colors.skeletonHighlightColor}
+        backgroundColor={backgroundColor || colors.skeletonColor}
+        highlightColor={highlightColor || colors.skeletonHighlightColor}
         borderRadius={moderateScale(SkeletonPlaceholderBorderRadius || 4)}>
         <View
           style={{

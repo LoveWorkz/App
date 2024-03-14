@@ -5,9 +5,9 @@ import {SvgXml} from 'react-native-svg';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {CloseIcon} from '@src/shared/assets/icons/Close';
+import {moderateScale} from '@src/shared/lib/Metrics';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
 import {Button} from '../Button/Button';
-import {moderateScale} from '@src/shared/lib/Metrics';
 
 type ModalTheme = 'center' | 'bottom';
 

@@ -19,7 +19,7 @@ import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
-import {getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
+import {delay, getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore, SessionType} from '@src/entities/Session';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
@@ -67,6 +67,9 @@ class QuestionsStore {
 
       await this.getQuestionsPageInfo(param);
       await sessionStore.fetchSessionChallenge();
+
+      // added this delay for fixing gray overlay error
+      await delay(1000);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -119,7 +122,7 @@ class QuestionsStore {
           if (sharedQuestionId) {
             categoryStore.getAndSetCategory({id});
           }
-          await this.fetchSpecificQuestions({
+          this.fetchSpecificQuestions({
             key: DocumentType.CATEGORY,
             sharedQuestionId,
           });
@@ -289,7 +292,7 @@ class QuestionsStore {
     }
   };
 
-  fetchSpecificQuestions = async ({
+  fetchSpecificQuestions = ({
     key,
     sharedQuestionId,
   }: {
