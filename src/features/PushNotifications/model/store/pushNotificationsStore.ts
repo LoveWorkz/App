@@ -1,6 +1,5 @@
 import {makeAutoObservable} from 'mobx';
 import messaging from '@react-native-firebase/messaging';
-import {PermissionsAndroid, Platform} from 'react-native';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import crashlytics from '@react-native-firebase/crashlytics';
 
@@ -69,22 +68,7 @@ class PushNotificationsStore {
   requestUserAndroidPermission = async () => {
     crashlytics().log('Request permissions for android');
 
-    // fix this
     return true;
-
-    if (Platform.Version >= 33) {
-      const result = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      );
-
-      if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return true;
-    }
   };
 
   requestUserIosPermission = async () => {

@@ -13,6 +13,8 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import StatisticWrapper from './StatisticWrapper';
 import {onboardingStyles} from '../../styles';
 
+const data = [{}, {}, {}, {}];
+
 const OnboardingStatisticPage = () => {
   const colors = useColors();
 
@@ -22,7 +24,7 @@ const OnboardingStatisticPage = () => {
         style={styles.carouselStyle}
         itemWidth={windowWidth}
         isBottomPagination
-        data={[{}, {}, {}, {}]}
+        data={data}
         Component={StatisticWrapper}
         paginationStyle={styles.paginationStyle}
         isSmallDotPagination={false}
