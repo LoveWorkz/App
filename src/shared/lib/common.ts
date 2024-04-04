@@ -82,8 +82,8 @@ export const normaliseData = <T extends {id: string; [key: string]: any}>(
   return map;
 };
 
- export const delay = (milliseconds: number) => {
+export const delay = (milliseconds: number) => {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
-}
+};

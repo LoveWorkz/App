@@ -5,8 +5,6 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
-import {categoryStore} from '@src/entities/Category';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
@@ -135,16 +133,13 @@ class RubricStore {
 
   getQuestionSwipeInfoForRubric = async ({
     questionId,
-    language,
     questions,
   }: {
-    language: LanguageValueType;
     questionId?: string;
     questions: QuestionType[];
   }) => {
     try {
       let currentquestionId = questionId;
-      let rubricName: string | undefined;
       const isInitialSetUp = !questionId;
 
       // it's working only for the first time
@@ -155,7 +150,6 @@ class RubricStore {
         }
 
         currentquestionId = rubric.currentQuestion;
-        rubricName = rubric.displayName[language];
       }
       if (!currentquestionId) {
         return;
@@ -171,24 +165,11 @@ class RubricStore {
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
 
-      questionStore.setQuestion(currentQuestion);
-
-      const currentCategory = categoryStore.getCategory(
-        currentQuestion?.categoryId,
-      );
-
       if (isInitialSetUp) {
-        questionStore.setQuestionPreviewInfo({
-          ...questionStore.questionPreviewInfo,
-          defaultQuestionNumber: currentQuestionNumber,
-        });
+        questionStore.setDefaultQuestionNumber(currentQuestionNumber);
       }
 
-      questionStore.setQuestionPreviewInfo({
-        categoryName: currentCategory?.displayName[language] || '',
-        rubricName: rubricName || questionStore.questionPreviewInfo.rubricName,
-        questionNumber: currentQuestionNumber,
-      });
+      questionStore.setQuestion(currentQuestion);
     } catch (e) {
       errorHandler({error: e});
     }

@@ -5,32 +5,38 @@ import React, {
   MutableRefObject,
   useCallback,
   useRef,
+  useState,
 } from 'react';
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
-import {StyleSheet, View} from 'react-native';
-import {
-  GestureHandlerStateChangeEvent,
-  State,
-} from 'react-native-gesture-handler';
+import {StyleSheet} from 'react-native';
+import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
+
+type Item = Record<string, any>;
 
 interface HorizontalSlideProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
   snapDirection?: 'left' | 'right';
   itemStyle?: StyleType;
   onSwipeHandler?: (param: any, itemNumber: number) => void;
-  data: Array<Record<string, any>>;
+  data: Array<Item>;
   defaultElement?: number;
   isSlideEnabled?: boolean;
   onScrollEnd?: () => void;
   spead?: number;
+  itemWidth?: number;
 }
 
-type SwipeDirectionType = 'right' | 'left';
+const AnimatedView = Animated.View;
+const animationDuration = 40;
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const {
@@ -43,90 +49,135 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     isSlideEnabled = true,
     onScrollEnd,
     spead = 50,
+    itemWidth = 0,
   } = props;
 
   const viewCount = 5;
   const defaultIndex = getDefaultIndexForCarousel(defaultElement);
 
   const previousProgress = useRef(0);
-  const swipeDirection = useRef<SwipeDirectionType>('right');
-  const currentElementIndex = useRef(defaultIndex);
 
   const carouselRef = useRef() as MutableRefObject<ICarouselInstance>;
   const newSwapIndex = useRef(defaultIndex);
   const swipeStartStatus = useRef(false) as MutableRefObject<boolean>;
 
+  const [currentIndex, setCurrentIndex] = useState(defaultIndex);
+
   const checkAndSetSwipeDirection = (progress: number, total: number) => {
-    const currentIndex = Math.round(progress * (total - 1));
+    const currentIndex2 = Math.round(progress * (total - 1));
 
-    if (currentIndex > previousProgress.current) {
-      swipeDirection.current = 'right';
-    } else if (currentIndex < previousProgress.current) {
-      swipeDirection.current = 'left';
-    }
-
-    previousProgress.current = currentIndex;
+    previousProgress.current = currentIndex2;
   };
+
+  const renderItem = useCallback(
+    ({item, index}: {item: Item; index: number}) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const animatedStyles = useAnimatedStyle(() => {
+        const isCurrent = index === currentIndex;
+        const isSecondCard = index === currentIndex + 1;
+        const isPreviousCard = index === currentIndex - 1;
+        const isThirdCard = index === currentIndex + 2;
+
+        let rotateZ = '0deg';
+        let top = 0;
+        let left = 0;
+        let zIndex = 30;
+        let backgroundColor = '#a0a0a0';
+
+        if (isCurrent) {
+          // Styles for the current card
+          rotateZ = '0deg';
+          top = 0;
+          left = 0;
+          zIndex = 50;
+          backgroundColor = '#ffffff';
+        } else if (isPreviousCard) {
+          // Styles for the previous card
+          rotateZ = '0deg';
+          backgroundColor = '#ffffff';
+        } else if (isSecondCard) {
+          // styles for the second card
+          rotateZ = '0deg';
+        } else if (isThirdCard) {
+          // styles for the third card
+          rotateZ = withTiming('6deg', {duration: animationDuration});
+          top = withTiming(verticalScale(-25), {duration: animationDuration});
+        } else {
+          // Styles for all other cards with animation
+          rotateZ = withTiming('8deg', {duration: animationDuration});
+          top = withTiming(verticalScale(25), {duration: animationDuration});
+          left = withTiming(horizontalScale(10), {duration: animationDuration});
+        }
+
+        return {
+          transform: [{rotateZ}],
+          top,
+          left,
+          zIndex,
+          backgroundColor,
+        };
+      }, [currentIndex, index]);
+
+      return (
+        <AnimatedView style={[styles.wrapper]}>
+          <AnimatedView
+            style={[
+              animatedStyles,
+              {
+                width: horizontalScale(itemWidth),
+                borderRadius: moderateScale(25),
+              },
+            ]}>
+            <Component {...item} />
+          </AnimatedView>
+        </AnimatedView>
+      );
+    },
+    [currentIndex, Component, itemWidth],
+  );
 
   const onProgressChange = useCallback(
     (progress: number, total: number) => {
-      // the logic should start working when user start swiping
+      // Initially, when the user starts swiping, set `swipeStartStatus.current` to true.
+      // This ensures that the logic within this block runs only after the user begins interacting with the carousel.
       if (!swipeStartStatus.current) {
         swipeStartStatus.current = true;
-
         return;
       }
 
+      // Calculate and set current index based on swipe progress
       checkAndSetSwipeDirection(progress, total);
 
+      // Get current index from carousel
       const index = carouselRef.current?.getCurrentIndex();
 
+      // Update component's state if the index has changed
       if (newSwapIndex.current !== index) {
-        newSwapIndex.current = index;
+        newSwapIndex.current = index; // Update swap index
+        setCurrentIndex(index); // Update current index to trigger re-render
+
+        // Delay handling of swipe to allow for animations or debounce rapid swipes
         let timeoutId: ReturnType<typeof setTimeout>;
-
         timeoutId = setTimeout(() => {
+          // Find data for the newly centered item and call the swipe handler
           const currentElementInfo = data.find((_, i) => i === index);
-          const itemNumber = index + 1;
-          currentElementIndex.current = index;
+          if (currentElementInfo) {
+            onSwipeHandler?.(currentElementInfo, index + 1); // +1 adjusts for 0-based index
+          }
 
-          currentElementInfo &&
-            onSwipeHandler?.(currentElementInfo, itemNumber);
-
+          // Clean up timeout to avoid unwanted side effects
           if (timeoutId) {
             clearTimeout(timeoutId);
           }
         }, spead);
       }
     },
-    [onSwipeHandler, data, spead],
+    [onSwipeHandler, data, spead], // Dependencies for useCallback
   );
-  const onGestureEvent = (event: GestureHandlerStateChangeEvent) => {
-    const isUserLiftFinger = event.nativeEvent.state === State.END;
-
-    if (isUserLiftFinger) {
-      const isFirstElement = currentElementIndex.current === 0;
-      const isLastElement = currentElementIndex.current === data.length - 1;
-
-      if (isFirstElement || isLastElement) {
-        return;
-      }
-
-      if (swipeDirection.current === 'right') {
-        carouselRef.current?.prev({count: 0});
-      } else {
-        carouselRef.current?.next({count: 0});
-      }
-    }
-  };
 
   return (
     <>
       <Carousel
-        panGestureHandlerProps={{
-          // @ts-ignore:
-          onHandlerStateChange: onGestureEvent,
-        }}
         ref={carouselRef}
         onProgressChange={onProgressChange}
         onScrollEnd={onScrollEnd}
@@ -145,17 +196,13 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         loop={false}
         data={data}
         modeConfig={{
-          showLength: 2,
+          showLength: 5,
           snapDirection,
           stackInterval: 6,
           rotateZDeg: 20,
         }}
         customConfig={() => ({type: 'positive', viewCount})}
-        renderItem={({item}) => (
-          <View style={styles.wrapper}>
-            <Component {...item} data={item} />
-          </View>
-        )}
+        renderItem={renderItem}
       />
     </>
   );
@@ -165,5 +212,6 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     marginTop: verticalScale(30),
+    left: horizontalScale(-2),
   },
 });

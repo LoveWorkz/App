@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {getShadowOpacity, windowWidth} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {
   horizontalScale,
   moderateScale,
@@ -20,6 +20,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {sessionStore} from '@src/entities/Session';
 import {QuestionCardTypes} from '../model/types/questionTypes';
+import {questionCardHeight, questionCardWidth} from '../lib/questionLib';
 
 interface QuestionCardProps {
   question: DisplayText;
@@ -99,8 +100,8 @@ const QuestionCard = (props: QuestionCardProps) => {
 
 const styles = StyleSheet.create({
   questionCard: {
-    height: verticalScale(450),
-    width: windowWidth * 0.88,
+    height: verticalScale(questionCardHeight),
+    width: horizontalScale(questionCardWidth),
     borderRadius: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',

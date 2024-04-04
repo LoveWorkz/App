@@ -19,7 +19,11 @@ import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
-import {delay, getNextElementById, getNumbersDiff} from '@src/shared/lib/common';
+import {
+  delay,
+  getNextElementById,
+  getNumbersDiff,
+} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore, SessionType} from '@src/entities/Session';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
@@ -82,13 +86,11 @@ class QuestionsStore {
   getQuestionsPageInfo = async ({
     id,
     key,
-    language,
     sharedQuestionId,
     sessionId,
   }: {
     id?: string;
     key: DocumentType;
-    language: LanguageValueType;
     sharedQuestionId?: string;
     sessionId?: string;
   }) => {
@@ -109,7 +111,6 @@ class QuestionsStore {
           });
           // init questions page info
           rubricStore.getQuestionSwipeInfoForRubric({
-            language,
             questions: this.questions,
           });
           break;
@@ -137,7 +138,6 @@ class QuestionsStore {
           categoryStore.getQuestionSwipeInfoForCategory({
             sharedQuestionId,
             questions: this.questions,
-            language,
             sessionId,
           });
 
@@ -145,7 +145,6 @@ class QuestionsStore {
         default:
           await this.fetchFavoritesQuestions();
           favoriteStore.getQuestionSwipeInfoForFavorites({
-            language,
             questions: this.questions,
           });
       }
@@ -205,13 +204,12 @@ class QuestionsStore {
   categorySwipeLogic = async (categorySwipeParam: {
     question: QuestionType;
     key: DocumentType;
-    language: LanguageValueType;
     sessionId: string;
   }) => {
     try {
       crashlytics().log('Swiping category questions.');
 
-      const {question, language, sessionId} = categorySwipeParam;
+      const {question, sessionId} = categorySwipeParam;
 
       const currentCategory = categoryStore.category;
       if (!currentCategory) {
@@ -221,7 +219,6 @@ class QuestionsStore {
       categoryStore.getQuestionSwipeInfoForCategory({
         questionId: question.id,
         questions: this.questions,
-        language,
         sessionId,
       });
 
@@ -245,17 +242,15 @@ class QuestionsStore {
   rubricSwipeLogic = async (rubricSwipeParam: {
     question: QuestionType;
     key: DocumentType;
-    language: LanguageValueType;
   }) => {
     try {
       crashlytics().log('Swiping rubric questions.');
 
-      const {question, language} = rubricSwipeParam;
+      const {question} = rubricSwipeParam;
 
       rubricStore.getQuestionSwipeInfoForRubric({
         questionId: question.id,
         questions: this.questions,
-        language,
       });
 
       await userRubricStore.updateUserRubric({
@@ -270,17 +265,15 @@ class QuestionsStore {
 
   favoritesSwipeLogic = async (favoritesSwipeParam: {
     question: QuestionType;
-    language: LanguageValueType;
   }) => {
     try {
       crashlytics().log('Swiping favorites questions.');
 
-      const {question, language} = favoritesSwipeParam;
+      const {question} = favoritesSwipeParam;
 
       favoriteStore.getQuestionSwipeInfoForFavorites({
         id: question.id,
         questions: this.questions,
-        language,
       });
 
       await userRubricStore.updateUserRubricFavorites({

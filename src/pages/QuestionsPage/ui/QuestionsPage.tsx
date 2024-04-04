@@ -5,23 +5,13 @@ import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 import {AdEventType} from 'react-native-google-mobile-ads';
 
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '@src/shared/lib/Metrics';
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {useColors} from '@src/app/providers/colorsProvider';
-import {
-  getShadowOpacity,
-  globalStyles,
-  windowWidth,
-} from '@src/app/styles/GlobalStyle';
+import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
+import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {
   QuestionCard,
+  questionCardHeight,
+  questionCardWidth,
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
@@ -52,12 +42,10 @@ interface QuestionsPageProps {
 
 const interstitial = initInterstitialAd();
 
-const questionCardHeight = verticalScale(450);
 const questionCardBorderRadius = moderateScale(20);
 
 const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
-  const colors = useColors();
   const {i18n} = useTranslation();
   const {theme} = useTheme();
 
@@ -73,7 +61,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const isSliideEnabled = !sharedQuestionId;
 
   const questions = questionsStore.questions;
-  const questionsPageInfo = questionStore.questionPreviewInfo;
+  const defaultQuestionNumber = questionStore.defaultQuestionNumber;
   const language = i18n.language as LanguageValueType;
   const isLoading = questionsStore.questionsPageloading;
   const sharedSessionId = route?.params.sessionId;
@@ -151,13 +139,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   if (isLoading) {
     return (
       <View style={styles.QuestionsPage}>
-        <View style={styles.categoryWrapper}>
-          <Skeleton width={100} height={40} borderRadius={10} />
-        </View>
-        <View style={styles.rubricAndQuestionsCountBlock}>
-          <Skeleton width={60} height={18} />
-          <Skeleton width={60} height={18} />
-        </View>
         <View style={styles.questionCardSkeleton}>
           <Skeleton
             height={questionCardHeight}
@@ -170,40 +151,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
-      <View style={styles.categoryWrapper}>
-        {questionsPageInfo.categoryName ? (
-          <Gradient size={GradientSize.SMALL}>
-            <AppText
-              style={{color: colors.white}}
-              weight={'700'}
-              size={TextSize.LEVEL_5}
-              text={questionsPageInfo.categoryName}
-            />
-          </Gradient>
-        ) : (
-          <View />
-        )}
-      </View>
-      <View style={styles.rubricAndQuestionsCountBlock}>
-        <View style={styles.rubricNameWrapper}>
-          {questionsPageInfo.rubricName && (
-            <GradientText
-              style={styles.rubricText}
-              weight={'700'}
-              size={TextSize.LEVEL_4}
-              text={questionsPageInfo.rubricName}
-            />
-          )}
-        </View>
-        <View style={styles.categoryNameWrapper}>
-          <AppText
-            style={{color: colors.primaryTextColor}}
-            weight={'500'}
-            size={TextSize.LEVEL_5}
-            text={`${questionsPageInfo.questionNumber}/${questionsStore.questionsSize}`}
-          />
-        </View>
-      </View>
       <View style={styles.question}>
         <HorizontalSlide
           isSlideEnabled={isSliideEnabled}
@@ -211,19 +158,8 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           data={formattedQuestions}
           itemStyle={styles.slideItemStyle}
           Component={QuestionCard}
-          defaultElement={questionsPageInfo.defaultQuestionNumber}
-        />
-        <View
-          style={[
-            styles.questionsCard,
-            {
-              ...styles.questionsCardBack,
-              ...getShadowOpacity(theme).shadowOpacity_level_1,
-            },
-            {
-              backgroundColor: colors.questionCardBackColor,
-            },
-          ]}
+          defaultElement={defaultQuestionNumber}
+          itemWidth={questionCardWidth}
         />
       </View>
       <WowThatWasFast />
@@ -246,38 +182,8 @@ const styles = StyleSheet.create({
   QuestionsPage: {
     flex: 1,
   },
-  categoryWrapper: {
-    position: 'absolute',
-  },
-  categoryNameWrapper: {
-    marginLeft: 'auto',
-  },
-  rubricAndQuestionsCountBlock: {
-    marginTop: verticalScale(55),
-    marginBottom: verticalScale(10),
-  },
-  rubricNameWrapper: {
-    width: '80%',
-    position: 'absolute',
-  },
-  rubricText: {
-    textTransform: 'capitalize',
-  },
   question: {
     width: '100%',
-  },
-  questionsCard: {
-    height: questionCardHeight,
-    width: windowWidth * 0.88,
-    borderRadius: questionCardBorderRadius,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: horizontalScale(40),
-  },
-  questionsCardBack: {
-    position: 'absolute',
-    right: 0,
-    top: verticalScale(40),
   },
   slideItemStyle: {
     ...globalStyles.slideItemZindex,

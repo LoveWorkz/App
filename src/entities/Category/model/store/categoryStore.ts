@@ -5,9 +5,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
-import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
@@ -209,12 +207,10 @@ class CategoryStore {
 
   getQuestionSwipeInfoForCategory = ({
     questionId,
-    language,
     questions,
     sharedQuestionId,
     sessionId,
   }: {
-    language: LanguageValueType;
     questions: QuestionType[];
     questionId?: string;
     sharedQuestionId?: string;
@@ -222,7 +218,6 @@ class CategoryStore {
   }) => {
     try {
       let currentquestionId = questionId;
-      let categoryName: string | undefined;
       let isInitialSetUp = !questionId;
 
       // if a user opened a shared link
@@ -240,7 +235,6 @@ class CategoryStore {
 
         currentquestionId =
           sharedQuestionId || category.sessions[sessionId].currentQuestion;
-        categoryName = category.displayName[language as LanguageValueType];
       }
 
       if (!currentquestionId) {
@@ -257,6 +251,10 @@ class CategoryStore {
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
 
+      if (isInitialSetUp) {
+        questionStore.setDefaultQuestionNumber(currentQuestionNumber);
+      }
+
       questionStore.setQuestion(currentQuestion);
 
       // if a user swipe some question show quick start block in the home page
@@ -266,22 +264,6 @@ class CategoryStore {
           data: true,
         });
       }
-
-      const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-
-      if (isInitialSetUp) {
-        questionStore.setQuestionPreviewInfo({
-          ...questionStore.questionPreviewInfo,
-          defaultQuestionNumber: currentQuestionNumber,
-        });
-      }
-
-      questionStore.setQuestionPreviewInfo({
-        categoryName:
-          categoryName || questionStore.questionPreviewInfo.categoryName,
-        rubricName: currentRubric?.displayName[language] || '',
-        questionNumber: currentQuestionNumber,
-      });
     } catch (e) {
       errorHandler({error: e});
     }

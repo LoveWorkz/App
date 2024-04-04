@@ -2,9 +2,6 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
-import {rubricStore} from '@src/entities/Rubric';
-import {categoryStore} from '@src/entities/Category';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
@@ -225,10 +222,8 @@ class FavoriteStore {
 
   getQuestionSwipeInfoForFavorites = async ({
     id,
-    language,
     questions,
   }: {
-    language: LanguageValueType;
     id?: string;
     questions: QuestionType[];
   }) => {
@@ -264,26 +259,11 @@ class FavoriteStore {
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
 
-      questionStore.setQuestion(currentQuestion);
-
-      const currentRubric = rubricStore.getRubric(currentQuestion.rubricId);
-
-      const currentCategory = categoryStore.getCategory(
-        currentQuestion.categoryId,
-      );
-
       if (isInitialSetUp) {
-        questionStore.setQuestionPreviewInfo({
-          ...questionStore.questionPreviewInfo,
-          defaultQuestionNumber: currentQuestionNumber,
-        });
+        questionStore.setDefaultQuestionNumber(currentQuestionNumber);
       }
 
-      questionStore.setQuestionPreviewInfo({
-        categoryName: currentCategory?.displayName[language] || '',
-        rubricName: currentRubric?.displayName[language] || '',
-        questionNumber: currentQuestionNumber,
-      });
+      questionStore.setQuestion(currentQuestion);
     } catch (e) {
       errorHandler({error: e});
     }

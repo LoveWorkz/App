@@ -1,36 +1,23 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import {makeAutoObservable} from 'mobx';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {QuestionPreviewType, QuestionType} from '../types/questionTypes';
+import {QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
   question: null | QuestionType = null;
-  questionPreviewInfo: QuestionPreviewType = {
-    categoryName: '',
-    rubricName: '',
-    questionNumber: 0,
-    defaultQuestionNumber: 0,
-  };
+  defaultQuestionNumber: number = 0;
   questionCardScreenshot: string = '';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setQuestionPreviewInfo = (questionPreviewInfo: QuestionPreviewType) => {
-    try {
-      runInAction(() => {
-        this.questionPreviewInfo = this.questionPreviewInfo = {
-          ...this.questionPreviewInfo,
-          ...questionPreviewInfo,
-        };
-      });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
   setQuestionCardScreenshot = (url: string) => {
     this.questionCardScreenshot = url;
+  };
+
+  setDefaultQuestionNumber = (number: number) => {
+    this.defaultQuestionNumber = number;
   };
 
   getQuestionInfo = ({

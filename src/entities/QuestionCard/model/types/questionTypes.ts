@@ -18,11 +18,4 @@ export interface QuestionType {
   challenge?: string;
 }
 
-export interface QuestionPreviewType {
-  categoryName: string;
-  rubricName: string;
-  questionNumber: number;
-  defaultQuestionNumber?: number;
-}
-
 export type QuestionsMapType = Record<string, QuestionType>;

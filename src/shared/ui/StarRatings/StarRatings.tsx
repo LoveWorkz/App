@@ -18,8 +18,13 @@ const renderStar = (index: number, count: number, imageSize: number) => {
   const size = horizontalScale(imageSize);
 
   return (
-    <View style={{marginHorizontal: horizontalScale(size / 6)}} key={index.toString()}>
-      <FastImage style={[styles.image, {height: size, width: size}]} source={starImage} />
+    <View
+      style={{marginHorizontal: horizontalScale(size / 6)}}
+      key={index.toString()}>
+      <FastImage
+        style={[styles.image, {height: size, width: size}]}
+        source={starImage}
+      />
     </View>
   );
 };
