@@ -19,6 +19,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
+import CardFooter from './CardFooter';
 
 type Item = Record<string, any>;
 
@@ -36,7 +37,7 @@ interface HorizontalSlideProps {
 }
 
 const AnimatedView = Animated.View;
-const animationDuration = 40;
+const animationDuration = 100;
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const {
@@ -101,12 +102,12 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         } else if (isThirdCard) {
           // styles for the third card
           rotateZ = withTiming('6deg', {duration: animationDuration});
-          top = withTiming(verticalScale(-25), {duration: animationDuration});
+          top = withTiming(-25, {duration: animationDuration});
         } else {
           // Styles for all other cards with animation
           rotateZ = withTiming('8deg', {duration: animationDuration});
-          top = withTiming(verticalScale(25), {duration: animationDuration});
-          left = withTiming(horizontalScale(10), {duration: animationDuration});
+          top = withTiming(25, {duration: animationDuration});
+          left = withTiming(10, {duration: animationDuration});
         }
 
         return {
@@ -174,7 +175,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     },
     [onSwipeHandler, data, spead], // Dependencies for useCallback
   );
-
+  
   return (
     <>
       <Carousel
@@ -193,7 +194,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         pagingEnabled={true}
         overscrollEnabled={false}
         mode={'horizontal-stack'}
-        loop={false}
+        loop={false} 
         data={data}
         modeConfig={{
           showLength: 5,
@@ -204,7 +205,8 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-    </>
+        <CardFooter count={data.length} currentIndex={currentIndex}/>
+      </>
   );
 });
 
