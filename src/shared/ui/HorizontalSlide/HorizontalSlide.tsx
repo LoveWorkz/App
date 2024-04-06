@@ -34,6 +34,7 @@ interface HorizontalSlideProps {
   onScrollEnd?: () => void;
   spead?: number;
   itemWidth?: number;
+  isGradient?: boolean;
 }
 
 const AnimatedView = Animated.View;
@@ -51,6 +52,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     onScrollEnd,
     spead = 50,
     itemWidth = 0,
+    isGradient,
   } = props;
 
   const viewCount = 5;
@@ -205,7 +207,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-        <CardFooter count={data.length} currentIndex={currentIndex}/>
+        <CardFooter count={data.length} currentIndex={currentIndex} isGradient={isGradient}/>
       </>
   );
 });

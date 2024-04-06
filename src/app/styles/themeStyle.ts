@@ -35,7 +35,8 @@ export type Colors =
   | 'themeSecondaryBackground'
   | 'bgOnboardingColor'
   | 'red'
-  | 'lavenderBlue';
+  | 'lavenderBlue'
+  | 'skyBlue';
 
 export type ColorType = Record<Colors, string>;
 
@@ -51,6 +52,7 @@ const commonColor = {
   themeSecondaryBackground: '#665ec2',
   red: 'red',
   lavenderBlue: '#847AED',
+  skyBlue: '#83C0F8',
 };
 
 const light: ColorType = {

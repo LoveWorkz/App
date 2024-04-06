@@ -10,6 +10,8 @@ import {
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {BgColor} from '@src/shared/config/route/configRoute';
+import {useGradient} from '@src/app/providers/GradientProvider';
+import AdaptiveLayout from './AdaptiveLayout';
 
 interface LayoutProps {
   children: ReactElement;
@@ -56,6 +58,8 @@ export const Layout = (props: LayoutProps) => {
     }, []),
   );
 
+  const {isGradient} = useGradient();
+
   if (isPageScrolling) {
     return (
       <ScrollView
@@ -65,7 +69,7 @@ export const Layout = (props: LayoutProps) => {
         style={{height: windowHeight, backgroundColor}}>
         <View
           style={[
-            styles.layout,
+            layoutStyles.layout,
             {
               paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
               marginTop,
@@ -79,22 +83,20 @@ export const Layout = (props: LayoutProps) => {
   }
 
   return (
-    <View
-      style={[
-        styles.layout,
-        {
-          backgroundColor,
-          paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
-          paddingTop: marginTop,
-          padding: deleteGlobalPadding ? 0 : globalPadding,
-        },
-      ]}>
-      {children}
-    </View>
+    <AdaptiveLayout 
+      isGradient={isGradient} 
+      children={children} 
+      backgroundColor={backgroundColor}
+      deleteBottomPadding={deleteBottomPadding}
+      paddingBottom={paddingBottom} 
+      marginTop={marginTop} 
+      deleteGlobalPadding={deleteGlobalPadding}
+      globalPadding={globalPadding} 
+    />
   );
 };
 
-const styles = StyleSheet.create({
+export const layoutStyles = StyleSheet.create({
   layout: {
     flex: 1,
     justifyContent: 'center',

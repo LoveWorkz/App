@@ -13,12 +13,14 @@ import React, {
   interface CardFooterProps {
     count: number;
     currentIndex: number;
+    isGradient?: boolean;
   }
   
 const CardFooter = (props: CardFooterProps) => {
     const {
         count,
-        currentIndex
+        currentIndex,
+        isGradient,
     } = props;
 
     const [hideSwipeIcon, setHideSwipeIcon] = useState(false);
@@ -40,7 +42,7 @@ const CardFooter = (props: CardFooterProps) => {
   
     return (
         <View style={[styles.footer, {bottom: verticalScale(hideSwipeIcon ?  80 : 10) }]}>
-          <Pagination isFirstElement={!hideSwipeIcon} currentIndex={currentIndex} count={count} />
+          <Pagination isGradient={isGradient} isFirstElement={!hideSwipeIcon} currentIndex={currentIndex} count={count} />
          {!hideSwipeIcon && <SwipeToProceed />}
         </View>
     );

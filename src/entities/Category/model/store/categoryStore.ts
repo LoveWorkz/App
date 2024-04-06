@@ -210,11 +210,13 @@ class CategoryStore {
     questions,
     sharedQuestionId,
     sessionId,
+    setIsGradient,
   }: {
     questions: QuestionType[];
     questionId?: string;
     sharedQuestionId?: string;
     sessionId: string;
+    setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
       let currentquestionId = questionId;
@@ -250,6 +252,10 @@ class CategoryStore {
         return;
       }
       const {currentQuestion, currentQuestionNumber} = questionInfo;
+
+      // Check if the current question is of type 'WILD_CARD'. If so, enable the gradient background.
+      const isTypeWild = currentQuestion.type === 'WILD_CARD';
+      setIsGradient(isTypeWild)
 
       if (isInitialSetUp) {
         questionStore.setDefaultQuestionNumber(currentQuestionNumber);

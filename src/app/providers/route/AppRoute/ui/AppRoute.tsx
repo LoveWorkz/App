@@ -15,6 +15,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {Theme} from '@src/app/providers/themeProvider';
+import { useGradient } from '@src/app/providers/GradientProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
 import HeaderLeft from './HeaderLeft/HeaderLeft';
 
@@ -66,6 +67,7 @@ export const AppRoute = () => {
 
 const Routes = memo(() => {
   const colors = useColors();
+  const {isGradient} = useGradient();
 
   return (
     <Stack.Navigator
@@ -92,6 +94,8 @@ const Routes = memo(() => {
             backgroundColor = colors.themeSecondaryBackground;
           } else if (isAboutMyRelationshipPage) {
             backgroundColor = colors.bgHomePageHeaderColor;
+          } else if(isGradient) {
+            backgroundColor = colors.skyBlue;
           }
 
           return (

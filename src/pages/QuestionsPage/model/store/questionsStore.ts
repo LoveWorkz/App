@@ -61,6 +61,7 @@ class QuestionsStore {
     language: LanguageValueType;
     sharedQuestionId?: string;
     sessionId?: string;
+    setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
       crashlytics().log('Fetching questions page');
@@ -88,11 +89,13 @@ class QuestionsStore {
     key,
     sharedQuestionId,
     sessionId,
+    setIsGradient,
   }: {
     id?: string;
     key: DocumentType;
     sharedQuestionId?: string;
     sessionId?: string;
+    setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
       switch (key) {
@@ -139,6 +142,7 @@ class QuestionsStore {
             sharedQuestionId,
             questions: this.questions,
             sessionId,
+            setIsGradient,
           });
 
           break;
@@ -160,6 +164,7 @@ class QuestionsStore {
     documentId?: string;
     interstitial: InterstitialAd;
     questionNumber: number;
+    setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
       crashlytics().log('Swiping question.');
@@ -205,11 +210,12 @@ class QuestionsStore {
     question: QuestionType;
     key: DocumentType;
     sessionId: string;
+    setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
       crashlytics().log('Swiping category questions.');
 
-      const {question, sessionId} = categorySwipeParam;
+      const {question, sessionId, setIsGradient} = categorySwipeParam;
 
       const currentCategory = categoryStore.category;
       if (!currentCategory) {
@@ -220,6 +226,7 @@ class QuestionsStore {
         questionId: question.id,
         questions: this.questions,
         sessionId,
+        setIsGradient
       });
 
       this.checkAndResetNotificationDate();

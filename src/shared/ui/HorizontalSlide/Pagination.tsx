@@ -10,17 +10,24 @@ import { SvgXml } from 'react-native-svg';
     verticalScale,
   } from '@src/shared/lib/Metrics';
   import { useColors } from '@src/app/providers/colorsProvider';
-import { StarGradientIcon } from '@src/shared/assets/icons/StarGradient';
+import { getStarIcon } from '@src/shared/assets/icons/StarGradient';
+import { ColorType } from '@src/app/styles/themeStyle';
 import { AppText } from '../AppText/AppText';
 
   interface PaginationDotsProps {
     currentIndex: number, 
     count: number;
     isFirstElement: boolean;
+    isGradient?: boolean;
   }
 
+  const getColor = (currentIndex: number, index: number, colors: ColorType, isGradient?: boolean) => {
+    if (isGradient) return colors.white;
+    return currentIndex === index ? colors.lavenderBlue : colors.primaryTextColor;
+  };
+
     const Pagination = (props: PaginationDotsProps) => {
-      const {count, currentIndex, isFirstElement} = props;
+      const {count, currentIndex, isFirstElement, isGradient} = props;
       const activeOpacity = 1; 
       const inactiveOpacity = 0.2; 
       const colors = useColors();
@@ -29,17 +36,17 @@ import { AppText } from '../AppText/AppText';
       <View style={styles.pagination}>
         {
           isFirstElement ?  <AppText
-          style={[
-          ]}
           weight={'500'}
           text={`${currentIndex + 1}/${count}`}
         /> : 
         <AppText
-        style={[
-        ]}
+        style={{
+          color: isGradient ? colors.white : colors.primaryTextColor
+        }}
         weight={'500'}
         text={`${currentIndex + 1}/${count} - You’re great! Proceed`}
-      />
+      /> 
+
         }
       <View style={styles.dotsWrapper}>
         {Array.from({ length: count }, (_, index) => {
@@ -51,7 +58,7 @@ import { AppText } from '../AppText/AppText';
               style={[
                 styles.dot,
                 { 
-                  backgroundColor: currentIndex === index ? colors.lavenderBlue : colors.primaryTextColor,
+                  backgroundColor: getColor(currentIndex, index, colors, isGradient),
                   opacity: opacity
                 },
               ]}
@@ -59,7 +66,7 @@ import { AppText } from '../AppText/AppText';
           );
         })}
          <SvgXml
-          xml={StarGradientIcon}
+          xml={getStarIcon(isGradient)}
           style={styles.icon}
         />
       </View>

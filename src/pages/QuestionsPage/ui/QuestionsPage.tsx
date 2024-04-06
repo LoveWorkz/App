@@ -24,6 +24,7 @@ import {PresSessionModal, sessionStore} from '@src/entities/Session';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import { useGradient } from '@src/app/providers/GradientProvider';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 import QuestionPageCongratsModal from './QuestionPageCongratsModal/QuestionPageCongratsModal';
@@ -48,6 +49,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {route} = props;
   const {i18n} = useTranslation();
   const {theme} = useTheme();
+  const {setIsGradient, isGradient} = useGradient();
 
   const showPreSessionPopup = route?.params.showPreSessionPopup;
 
@@ -70,6 +72,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   useFocusEffect(
     useCallback(() => {
       questionsStore.clearQuestionsInfo();
+      return () => setIsGradient(false);
     }, []),
   );
 
@@ -95,6 +98,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       language,
       sharedQuestionId,
       sessionId,
+      setIsGradient,
     });
   }, [key, id, language, sharedQuestionId, sessionId]);
 
@@ -131,6 +135,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         documentId: id,
         interstitial,
         questionNumber,
+        setIsGradient
       });
     },
     [key, id, language],
@@ -153,6 +158,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     <View style={styles.QuestionsPage}>
       <View style={styles.question}>
         <HorizontalSlide
+          isGradient={isGradient}
           isSlideEnabled={isSliideEnabled}
           onSwipeHandler={onSwipeHandler}
           data={formattedQuestions}

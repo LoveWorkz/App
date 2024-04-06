@@ -12,9 +12,11 @@ import {questionStore} from '@src/entities/QuestionCard';
 import {Button} from '@src/shared/ui/Button/Button';
 import {shareStore} from '@src/features/Share';
 import {Spinner} from '@src/shared/ui/Spinner/Spinner';
+import { useGradient } from '@src/app/providers/GradientProvider';
 
-export const QuestionsHeaderRight = () => {
+const QuestionsHeaderRight = () => {
   const colors = useColors();
+  const {isGradient} = useGradient();
 
   const question = questionStore.question;
   const isQuestionFavorite = favoriteStore.isFavorite;
@@ -43,7 +45,7 @@ export const QuestionsHeaderRight = () => {
       <Button onPress={onShareHandler}>
         <SvgXml
           xml={ShareIcon}
-          stroke={colors.primaryTextColor}
+          stroke={isGradient ? colors.white : colors.primaryTextColor}
           style={styles.shareIcon}
         />
       </Button>
@@ -58,7 +60,7 @@ export const QuestionsHeaderRight = () => {
         ) : (
           <SvgXml
             xml={HeartIconWithoutColor}
-            stroke={colors.primaryTextColor}
+            stroke={isGradient ? colors.white : colors.primaryTextColor}
             style={styles.HeartIcon}
           />
         )}

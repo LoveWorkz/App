@@ -9,6 +9,7 @@ import {configureGoogleSignin} from './config/firebaseConfig';
 import {ColorsProvider} from './providers/colorsProvider';
 import {AppRoute} from './providers/route/AppRoute';
 import {ThemeProvider} from './providers/themeProvider';
+import { GradientProvider } from './providers/GradientProvider';
 
 const App = () => {
   useEffect(() => {
@@ -20,9 +21,11 @@ const App = () => {
     <GestureHandlerRootView style={styles.App}>
       <ThemeProvider>
         <ColorsProvider>
-          <AppRoute />
-          <Toast />
-          <PushNotifications />
+          <GradientProvider>
+            <AppRoute />
+            <Toast />
+            <PushNotifications />
+          </GradientProvider>
         </ColorsProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
