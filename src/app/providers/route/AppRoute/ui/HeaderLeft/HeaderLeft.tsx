@@ -9,7 +9,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Button} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import { useGradient } from '@src/app/providers/GradientProvider';
+import {useGradient} from '@src/app/providers/GradientProvider';
 
 interface HeaderLeftProps {
   headerTitle?: string;
@@ -29,9 +29,10 @@ const HeaderLeft = (props: HeaderLeftProps) => {
   const {t} = useTranslation();
   const {isGradient} = useGradient();
 
-  const color = isSecondaryBackground || isGradient 
-    ? colors.white 
-    : colors.primaryTextColor;
+  const color =
+    isSecondaryBackground || isGradient
+      ? colors.white
+      : colors.primaryTextColor;
 
   const onPressHandler = () => {
     navigation.goBack();

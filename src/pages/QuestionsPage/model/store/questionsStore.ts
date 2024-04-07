@@ -226,7 +226,7 @@ class QuestionsStore {
         questionId: question.id,
         questions: this.questions,
         sessionId,
-        setIsGradient
+        setIsGradient,
       });
 
       this.checkAndResetNotificationDate();
@@ -323,7 +323,7 @@ class QuestionsStore {
         if (!questions) {
           return;
         }
-
+        
         this.questions = questions;
         this.questionsSize = questions.length;
       });

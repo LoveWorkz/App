@@ -9,7 +9,7 @@ import {configureGoogleSignin} from './config/firebaseConfig';
 import {ColorsProvider} from './providers/colorsProvider';
 import {AppRoute} from './providers/route/AppRoute';
 import {ThemeProvider} from './providers/themeProvider';
-import { GradientProvider } from './providers/GradientProvider';
+import {GradientProvider} from './providers/GradientProvider';
 
 const App = () => {
   useEffect(() => {

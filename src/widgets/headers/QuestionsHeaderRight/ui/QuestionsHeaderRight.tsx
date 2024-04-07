@@ -12,7 +12,7 @@ import {questionStore} from '@src/entities/QuestionCard';
 import {Button} from '@src/shared/ui/Button/Button';
 import {shareStore} from '@src/features/Share';
 import {Spinner} from '@src/shared/ui/Spinner/Spinner';
-import { useGradient } from '@src/app/providers/GradientProvider';
+import {useGradient} from '@src/app/providers/GradientProvider';
 
 const QuestionsHeaderRight = () => {
   const colors = useColors();

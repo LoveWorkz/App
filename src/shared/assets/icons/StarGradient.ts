@@ -1,11 +1,11 @@
 export const getStarIcon = (isGradient?: boolean) => {
-    if (isGradient) {
-        return `<svg viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+  if (isGradient) {
+    return `<svg viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4.5 0L5.57151 1.41314L7.32843 1.17157L7.08686 2.92849L8.5 4L7.08686 5.07151L7.32843 6.82843L5.57151 6.58686L4.5 8L3.42849 6.58686L1.67157 6.82843L1.91314 5.07151L0.5 4L1.91314 2.92849L1.67157 1.17157L3.42849 1.41314L4.5 0Z" fill="white"/>
-        </svg>`
-    }
+        </svg>`;
+  }
 
-    return `
+  return `
     <svg viewBox="0 0 9 8" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M4.5 0L5.57151 1.41314L7.32843 1.17157L7.08686 2.92849L8.5 4L7.08686 5.07151L7.32843 6.82843L5.57151 6.58686L4.5 8L3.42849 6.58686L1.67157 6.82843L1.91314 5.07151L0.5 4L1.91314 2.92849L1.67157 1.17157L3.42849 1.41314L4.5 0Z" fill="url(#paint0_linear_5172_6447)"/>
     <defs>
@@ -15,5 +15,5 @@ export const getStarIcon = (isGradient?: boolean) => {
     </linearGradient>
     </defs>
     </svg>
-    `
-}
+    `;
+};

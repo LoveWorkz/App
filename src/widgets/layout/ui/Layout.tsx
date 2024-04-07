@@ -83,15 +83,15 @@ export const Layout = (props: LayoutProps) => {
   }
 
   return (
-    <AdaptiveLayout 
-      isGradient={isGradient} 
-      children={children} 
+    <AdaptiveLayout
+      isGradient={isGradient}
+      children={children}
       backgroundColor={backgroundColor}
       deleteBottomPadding={deleteBottomPadding}
-      paddingBottom={paddingBottom} 
-      marginTop={marginTop} 
+      paddingBottom={paddingBottom}
+      marginTop={marginTop}
       deleteGlobalPadding={deleteGlobalPadding}
-      globalPadding={globalPadding} 
+      globalPadding={globalPadding}
     />
   );
 };

@@ -1,9 +1,13 @@
 import React, {ReactElement, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { Gradient } from '@src/shared/ui/Gradient/Gradient';
-import { layoutStyles } from './Layout';
+import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {layoutStyles} from './Layout';
 
 interface AdaptiveLayoutProps {
   isGradient: boolean;
@@ -17,7 +21,16 @@ interface AdaptiveLayoutProps {
 }
 
 const AdaptiveLayout = (props: AdaptiveLayoutProps) => {
-  const { isGradient, children, backgroundColor, deleteBottomPadding, paddingBottom, marginTop, deleteGlobalPadding, globalPadding } = props;
+  const {
+    isGradient,
+    children,
+    backgroundColor,
+    deleteBottomPadding,
+    paddingBottom,
+    marginTop,
+    deleteGlobalPadding,
+    globalPadding,
+  } = props;
 
   // Shared value for opacity
   const opacity = useSharedValue(0);

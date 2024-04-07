@@ -1,5 +1,5 @@
 import React, {ReactElement, useState} from 'react';
-import { GradientContext } from '../lib/GradientContext';
+import {GradientContext} from '../lib/GradientContext';
 
 interface GradientProviderProps {
   children: ReactElement | ReactElement[];
@@ -11,6 +11,8 @@ export const GradientProvider = (props: GradientProviderProps) => {
   const [isGradient, setIsGradient] = useState(false);
 
   return (
-    <GradientContext.Provider value={{isGradient, setIsGradient}}>{children}</GradientContext.Provider>
+    <GradientContext.Provider value={{isGradient, setIsGradient}}>
+      {children}
+    </GradientContext.Provider>
   );
 };

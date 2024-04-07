@@ -255,7 +255,7 @@ class CategoryStore {
 
       // Check if the current question is of type 'WILD_CARD'. If so, enable the gradient background.
       const isTypeWild = currentQuestion.type === 'WILD_CARD';
-      setIsGradient(isTypeWild)
+      setIsGradient(isTypeWild);
 
       if (isInitialSetUp) {
         questionStore.setDefaultQuestionNumber(currentQuestionNumber);

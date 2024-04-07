@@ -23,26 +23,28 @@ interface GradientProps {
 export const Gradient = (props: GradientProps) => {
   const {children, style, size = GradientSize.LARGE} = props;
 
-const gradientColors = ['#847AED', '#83C0F8'];
+  const gradientColors = ['#847AED', '#83C0F8'];
 
-if(!children) {
-  return <LinearGradient
-  colors={gradientColors}
-  style={{flex: 1}}
-  start={{x: 1, y: 1}}
-  end={{x: 1, y: 0}}
-/>
-}
+  if (!children) {
+    return (
+      <LinearGradient
+        colors={gradientColors}
+        style={{flex: 1}}
+        start={{x: 1, y: 1}}
+        end={{x: 1, y: 0}}
+      />
+    );
+  }
 
-return (
-  <LinearGradient
-    style={[styles.gradient, styles[size], style]}
-    colors={gradientColors}
-    start={{x: 1, y: 1}}
-    end={{x: 1, y: 0}}>
-    {children}
-  </LinearGradient>
-);
+  return (
+    <LinearGradient
+      style={[styles.gradient, styles[size], style]}
+      colors={gradientColors}
+      start={{x: 1, y: 1}}
+      end={{x: 1, y: 0}}>
+      {children}
+    </LinearGradient>
+  );
 };
 
 const styles = StyleSheet.create<Record<string, any>>({

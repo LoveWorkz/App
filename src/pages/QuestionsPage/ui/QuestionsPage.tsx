@@ -24,7 +24,7 @@ import {PresSessionModal, sessionStore} from '@src/entities/Session';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import { useGradient } from '@src/app/providers/GradientProvider';
+import {useGradient} from '@src/app/providers/GradientProvider';
 import questionsStore from '../model/store/questionsStore';
 import {getFormattedQuestionsWrapper} from '../model/lib/questions';
 import QuestionPageCongratsModal from './QuestionPageCongratsModal/QuestionPageCongratsModal';
@@ -135,7 +135,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         documentId: id,
         interstitial,
         questionNumber,
-        setIsGradient
+        setIsGradient,
       });
     },
     [key, id, language],
