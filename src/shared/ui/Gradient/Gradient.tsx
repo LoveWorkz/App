@@ -18,18 +18,19 @@ interface GradientProps {
   children?: ReactElement | ReactElement[];
   style?: StyleType;
   size?: GradientSize;
+  isFlex?: boolean;
 }
 
 export const Gradient = (props: GradientProps) => {
-  const {children, style, size = GradientSize.LARGE} = props;
+  const {children, style, size = GradientSize.LARGE, isFlex = false} = props;
 
   const gradientColors = ['#847AED', '#83C0F8'];
 
-  if (!children) {
+  if (isFlex) {
     return (
       <LinearGradient
         colors={gradientColors}
-        style={{flex: 1}}
+        style={[styles[size], style, {flex: 1}]}
         start={{x: 1, y: 1}}
         end={{x: 1, y: 0}}
       />

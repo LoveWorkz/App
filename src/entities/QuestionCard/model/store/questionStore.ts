@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {QuestionType} from '../types/questionTypes';
+import {EnrichQuestionsParams, QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
   question: null | QuestionType = null;
@@ -84,6 +84,23 @@ class QuestionStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  enrichQuestionsWithDetails = ({
+    questions,
+    categoriesMap = {},
+    rubricsMap = {},
+  }: EnrichQuestionsParams): QuestionType[] => {
+    return questions.map(question => {
+      const category = categoriesMap[question.categoryId];
+      const rubric = rubricsMap[question.rubricId];
+
+      return {
+        ...question,
+        category: category ?? null,
+        rubric: rubric ?? null,
+      };
+    });
   };
 }
 

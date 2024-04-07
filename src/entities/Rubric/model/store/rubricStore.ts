@@ -6,6 +6,7 @@ import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Collections} from '@src/shared/types/firebase';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
+import {normaliseData} from '@src/shared/lib/common';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {questionsStore} from '@src/pages/QuestionsPage';
@@ -14,6 +15,7 @@ import {RubricType} from '../types/rubricTypes';
 class RubricStore {
   rubric: null | RubricType = null;
   rubrics: RubricType[] = [];
+  rubricsMap: Record<string, RubricType> = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -219,12 +221,19 @@ class RubricStore {
         };
       });
 
-      runInAction(() => {
-        this.rubrics = rubrics as RubricType[];
-      });
+      this.setRubrics(rubrics);
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  setRubrics = (rubrics: RubricType[]) => {
+    const normalisedRubrics = normaliseData<RubricType>(rubrics);
+
+    runInAction(() => {
+      this.rubrics = rubrics;
+      this.rubricsMap = normalisedRubrics;
+    });
   };
 
   fetchDefaultRubrics = async () => {

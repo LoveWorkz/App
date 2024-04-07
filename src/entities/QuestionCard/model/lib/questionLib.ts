@@ -12,6 +12,8 @@ export const goodMoodQuestionCard: QuestionType = {
   id: '',
   createdDate: '',
   difficulty: 0,
+  rubric: null,
+  category: null,
 };
 
 export const challengeCard: QuestionType = {
@@ -26,4 +28,6 @@ export const challengeCard: QuestionType = {
   id: 'challenge_question',
   createdDate: '',
   difficulty: 1,
+  rubric: null,
+  category: null,
 };

@@ -9,7 +9,7 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 interface IconItemProps {
   name: string;
   focused: boolean;
-  icon: (param: {isGradient: boolean; isDarkMode: boolean}) => any;
+  icon: (param: {isGradient: boolean; isDarkMode: boolean}) => string;
 }
 
 const IconItem = (props: IconItemProps) => {

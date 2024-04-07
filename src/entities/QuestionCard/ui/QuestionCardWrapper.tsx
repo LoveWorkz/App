@@ -3,6 +3,7 @@ import {ImageSourcePropType} from 'react-native';
 import ViewShot from 'react-native-view-shot';
 import {observer} from 'mobx-react-lite';
 
+import {RubricType} from '@src/entities/Rubric';
 import {DisplayText} from '@src/shared/types/types';
 import questionStore from '../model/store/questionStore';
 import QuestionCard from './QuestionCard';
@@ -14,6 +15,7 @@ interface QuestionCardWrapperProps {
   type: QuestionCardTypes;
   id: string;
   challenge?: string;
+  rubric: RubricType;
 }
 
 const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {

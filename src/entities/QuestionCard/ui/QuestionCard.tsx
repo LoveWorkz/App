@@ -19,6 +19,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {sessionStore} from '@src/entities/Session';
+import {RubricType} from '@src/entities/Rubric';
 import {QuestionCardTypes} from '../model/types/questionTypes';
 import {questionCardHeight, questionCardWidth} from '../lib/questionLib';
 
@@ -27,10 +28,11 @@ interface QuestionCardProps {
   image: ImageSourcePropType;
   type: QuestionCardTypes;
   challenge?: string;
+  rubric: RubricType;
 }
 
 const QuestionCard = (props: QuestionCardProps) => {
-  const {question, image, type, challenge} = props;
+  const {question, image, type, challenge, rubric} = props;
 
   const colors = useColors();
   const {t, i18n} = useTranslation();
@@ -44,6 +46,7 @@ const QuestionCard = (props: QuestionCardProps) => {
   const isGerman = language === 'de';
 
   const translatedQuestion = question[language];
+  const topicName = rubric?.displayName?.[language] ?? null;
 
   const questionTextSize =
     translatedQuestion.length < 150 ? TextSize.LEVEL_7 : TextSize.LEVEL_5;
@@ -60,6 +63,15 @@ const QuestionCard = (props: QuestionCardProps) => {
         resizeMode="stretch"
         source={image as number} // image number
         style={styles.questionCard}>
+        {topicName && (
+          <View style={styles.topicName}>
+            <GradientText
+              weight={'600'}
+              size={TextSize.LEVEL_2}
+              text={topicName}
+            />
+          </View>
+        )}
         <AppText
           style={[
             styles.questionText,
@@ -118,6 +130,11 @@ const styles = StyleSheet.create({
   },
   btnText: {
     textAlign: 'center',
+  },
+  topicName: {
+    position: 'absolute',
+    top: horizontalScale(20),
+    left: horizontalScale(20),
   },
 });
 

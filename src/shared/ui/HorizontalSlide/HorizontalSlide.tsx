@@ -177,7 +177,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     },
     [onSwipeHandler, data, spead], // Dependencies for useCallback
   );
-  
+
   return (
     <>
       <Carousel
@@ -196,7 +196,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         pagingEnabled={true}
         overscrollEnabled={false}
         mode={'horizontal-stack'}
-        loop={false} 
+        loop={false}
         data={data}
         modeConfig={{
           showLength: 5,
@@ -207,8 +207,12 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-        <CardFooter count={data.length} currentIndex={currentIndex} isGradient={isGradient}/>
-      </>
+      <CardFooter
+        count={data.length}
+        currentIndex={currentIndex}
+        isGradient={isGradient}
+      />
+    </>
   );
 });
 

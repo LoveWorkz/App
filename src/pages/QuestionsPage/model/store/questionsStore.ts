@@ -9,6 +9,7 @@ import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {
   QuestionsMapType,
+  BasicQuestionType,
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
@@ -323,7 +324,7 @@ class QuestionsStore {
         if (!questions) {
           return;
         }
-        
+
         this.questions = questions;
         this.questionsSize = questions.length;
       });
@@ -335,10 +336,18 @@ class QuestionsStore {
   fetchAllQuestionsInfo = async () => {
     try {
       const allQuestions = await this.fetchAllQuestions();
-      const allQuestionsMap = this.getQuestionsMap(allQuestions);
+
+      // Enrich the basic questions with detailed category and rubric information.
+      const enrichedQuestions = questionStore.enrichQuestionsWithDetails({
+        questions: allQuestions,
+        rubricsMap: rubricStore.rubricsMap,
+        categoriesMap: categoriesStore.categoriesMap,
+      });
+
+      const allQuestionsMap = this.getQuestionsMap(enrichedQuestions);
 
       runInAction(() => {
-        this.allQuestions = allQuestions as QuestionType[];
+        this.allQuestions = enrichedQuestions as QuestionType[];
         this.allQuestionsMap = allQuestionsMap;
       });
     } catch (e) {
@@ -376,7 +385,7 @@ class QuestionsStore {
     const result = allQuestions.map(question => ({
       ...question.data(),
       id: question.id,
-    })) as QuestionType[];
+    })) as BasicQuestionType[];
 
     return result;
   };
