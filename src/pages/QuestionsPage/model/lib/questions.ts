@@ -1,18 +1,20 @@
-import {QuestionType} from '@src/entities/QuestionCard';
+import {isCardTypeChallenge, isCardTypeWild, isFunFact, isHotStuff, QuestionType} from '@src/entities/QuestionCard';
 import {
   CHALLENGE_CARD,
+  funFact,
+  funFactDark,
+  hotStuff,
+  hotStuffDark,
   questionImage1,
   questionImage2,
   questionImage3,
   questionImage4,
   questionImage5,
-  questionImage6,
   questionImageDark1,
   questionImageDark2,
   questionImageDark3,
   questionImageDark4,
   questionImageDark5,
-  questionImageDark6,
   WILD_CARD,
 } from '@src/shared/assets/images';
 
@@ -23,7 +25,6 @@ export const getQuestionsImages = (isDarkMode: boolean) => {
     isDarkMode ? questionImageDark3 : questionImage3,
     isDarkMode ? questionImageDark4 : questionImage4,
     isDarkMode ? questionImageDark5 : questionImage5,
-    isDarkMode ? questionImageDark6 : questionImage6,
   ];
 };
 
@@ -38,17 +39,35 @@ export const getFormattedQuestionsWrapper = ({
 
   return () => {
     return questions.map(question => {
-      if (question.type === 'CHALLENGE_CARD') {
-        return {
+      if (isCardTypeChallenge(question.type) ) {
+        return { 
           ...question,
           image: CHALLENGE_CARD,
         };
       }
 
-      if (question.type === 'WILD_CARD') {
+      if (isCardTypeWild(question.type)) {
         return {
           ...question,
           image: WILD_CARD,
+        };
+      }
+
+      if (isFunFact(question.rubric?.name)) {
+        const image = isDarkMode ? funFactDark : funFact;
+
+        return {
+          ...question,
+          image,
+        };
+      }
+
+      if (isHotStuff(question.rubric?.name)) {
+        const image = isDarkMode ? hotStuffDark : hotStuff;
+
+        return {
+          ...question,
+          image,
         };
       }
 

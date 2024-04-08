@@ -5,5 +5,14 @@ export type {
   QuestionsMapType,
   BasicQuestionType,
 } from './model/types/questionTypes';
-export {goodMoodQuestionCard, challengeCard} from './model/lib/questionLib';
-export {questionCardHeight, questionCardWidth} from './lib/questionLib';
+export {
+  goodMoodQuestionCard,
+  challengeCard,
+  questionCardHeight,
+  questionCardWidth,
+  isFunFact,
+  isHotStuff,
+  isCardTypeChallenge,
+  isCardTypeOrdinary,
+  isCardTypeWild,
+} from './model/lib/questionLib';

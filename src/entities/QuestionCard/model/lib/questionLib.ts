@@ -1,4 +1,5 @@
-import {QuestionType} from '../types/questionTypes';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
+import {QuestionCardTypes, QuestionType} from '../types/questionTypes';
 
 export const goodMoodQuestionCard: QuestionType = {
   categoryId: '',
@@ -31,3 +32,32 @@ export const challengeCard: QuestionType = {
   rubric: null,
   category: null,
 };
+
+export const isFunFact = (value?: string) => {
+  if (!value) {
+    return false;
+  }
+  return value.toLowerCase() === 'fun_fact';
+};
+
+export const isHotStuff = (value?: string) => {
+  if (!value) {
+    return false;
+  }
+  return value.toLowerCase() === 'hot_stuff';
+};
+
+export const isCardTypeWild = (type: QuestionCardTypes) => {
+  return type === 'WILD_CARD';
+};
+
+export const isCardTypeOrdinary = (type: QuestionCardTypes) => {
+  return type === 'ORDINARY_CARD';
+};
+
+export const isCardTypeChallenge = (type: QuestionCardTypes) => {
+  return type === 'CHALLENGE_CARD';
+};
+
+export const questionCardHeight = 550;
+export const questionCardWidth = windowWidth * 0.77;

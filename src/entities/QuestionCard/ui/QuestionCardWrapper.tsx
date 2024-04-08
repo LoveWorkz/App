@@ -15,7 +15,7 @@ interface QuestionCardWrapperProps {
   type: QuestionCardTypes;
   id: string;
   challenge?: string;
-  rubric: RubricType;
+  rubric?: RubricType;
 }
 
 const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {

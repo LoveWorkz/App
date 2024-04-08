@@ -4,7 +4,8 @@ export {default as questionImage2} from './light/questions/questionImage2.png';
 export {default as questionImage3} from './light/questions/questionImage3.png';
 export {default as questionImage4} from './light/questions/questionImage4.png';
 export {default as questionImage5} from './light/questions/questionImage5.png';
-export {default as questionImage6} from './light/questions/questionImage6.png';
+export {default as funFact} from './light/questions/funFact.png';
+export {default as hotStuff} from './light/questions/hotStuff.png';
 
 // questions dark
 export {default as questionImageDark1} from './dark/questions/questionImageDark1.png';
@@ -12,7 +13,8 @@ export {default as questionImageDark2} from './dark/questions/questionImageDark2
 export {default as questionImageDark3} from './dark/questions/questionImageDark3.png';
 export {default as questionImageDark4} from './dark/questions/questionImageDark4.png';
 export {default as questionImageDark5} from './dark/questions/questionImageDark5.png';
-export {default as questionImageDark6} from './dark/questions/questionImageDark6.png';
+export {default as funFactDark} from './dark/questions/funFactDark.png';
+export {default as hotStuffDark} from './dark/questions/hotStuffDark.png';
 
 // progress bar light
 

@@ -41,8 +41,8 @@ export const Gradient = (props: GradientProps) => {
     <LinearGradient
       style={[styles.gradient, styles[size], style]}
       colors={gradientColors}
-      start={{x: 1, y: 1}}
-      end={{x: 1, y: 0}}>
+      start={{x: 1, y: 0}}
+      end={{x: 1, y: 1}}>
       {children}
     </LinearGradient>
   );
