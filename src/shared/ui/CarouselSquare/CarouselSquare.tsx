@@ -1,118 +1,165 @@
+import React, {memo, useCallback, useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
-import React, {ComponentType, memo, MemoExoticComponent, useRef} from 'react';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
-import {StyleType} from '@src/shared/types/types';
 import {horizontalScale} from '@src/shared/lib/Metrics';
+import {StyleType} from '@src/shared/types/types';
 import Pagination from './Pagination';
 
-const PAGE_WIDTH = windowWidth;
+type ItemType = Record<string, any>;
 
-interface CarousalSquareProps {
-  data: Array<Record<string, any>>;
-  Component: ComponentType<any> | MemoExoticComponent<any>;
-  isLandscape?: boolean;
+interface CarouselSquareProps {
+  data: Array<ItemType>;
+  Component: React.ComponentType<any>;
+  mode?: 'expanded' | 'standard' | 'multiple';
   itemStyle?: StyleType;
   carouselHeight?: number;
   withPagination?: boolean;
+  withTopPagination?: boolean;
   loop?: boolean;
   paginationStyle?: StyleType;
   paginationDotColor?: string;
 }
 
-export const CarouselSquare = memo((props: CarousalSquareProps) => {
-  const {
+const PAGE_WIDTH = windowWidth;
+
+export const CarouselSquare = memo(
+  ({
     data,
     Component,
-    isLandscape,
-    itemStyle,
+    mode = 'standard',
+    itemStyle = {},
     carouselHeight,
     withPagination = false,
+    withTopPagination = false,
     loop = true,
-    paginationStyle,
+    paginationStyle = {},
     paginationDotColor,
-  } = props;
+  }: CarouselSquareProps) => {
+    const isScrolling = useRef(false);
+    const progressValue = useSharedValue(0);
 
-  const isScrolling = useRef(false);
+    const handleProgressChange = (_: number, absoluteProgress: number) => {
+      const decimalPart = absoluteProgress - Math.floor(absoluteProgress);
+      const value = parseFloat(decimalPart.toFixed(2));
 
-  const progressValue = useSharedValue<number>(0);
-  const baseOptions = {
-    vertical: false,
-    width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH * 0.6,
-    height: PAGE_WIDTH * 0.6,
-  };
+      isScrolling.current = value * 100 <= 90 && value * 100 >= 10;
+      progressValue.value = absoluteProgress;
+    };
 
-  const onProgressChange = (_: number, absoluteProgress: number) => {
-    const fixedAbsoluteProgress = absoluteProgress.toFixed(2);
-    const splitedProgress = String(fixedAbsoluteProgress).split('.');
-    const numberAfterDot = Number(splitedProgress[1]);
-    const value = isNaN(numberAfterDot) ? 0 : numberAfterDot;
+    const width =
+      mode === 'standard' || mode === 'expanded'
+        ? PAGE_WIDTH
+        : PAGE_WIDTH * 0.6;
 
-    isScrolling.current = value <= 90 && value >= 10;
-    progressValue.value = absoluteProgress;
-  };
+    const getModeConfig = () => {
+      switch (mode) {
+        case 'standard':
+          return {
+            parallaxScrollingScale: 0.7,
+            parallaxScrollingOffset: 120,
+            parallaxAdjacentItemScale: 0.55,
+          };
+        case 'expanded':
+          return {
+            parallaxScrollingScale: 0.9,
+            parallaxScrollingOffset: 30,
+            parallaxAdjacentItemScale: 0.9,
+          };
+        case 'multiple':
+          return {
+            parallaxScrollingScale: 0.5,
+            parallaxScrollingOffset: horizontalScale(108),
+            parallaxAdjacentItemScale: 0.38,
+          };
+        default:
+          return {
+            parallaxScrollingScale: 0.7,
+            parallaxScrollingOffset: 120,
+            parallaxAdjacentItemScale: 0.55,
+          };
+      }
+    };
 
-  return (
-    <GestureHandlerRootView>
-      <View style={[styles.container]}>
-        {!!progressValue && withPagination && (
-          <View style={[styles.paginationWrapper, paginationStyle]}>
-            {data.map((_, index) => {
-              return (
-                <Pagination
-                  dotColor={paginationDotColor}
-                  animValue={progressValue}
-                  index={index}
-                  key={index}
-                  length={data.length}
-                />
-              );
-            })}
-          </View>
-        )}
-        <Carousel
-          {...baseOptions}
-          onProgressChange={onProgressChange}
-          loop={loop}
-          style={{
-            width: isLandscape ? PAGE_WIDTH : PAGE_WIDTH,
-            height: carouselHeight || undefined,
-          }}
-          pagingEnabled={true}
-          snapEnabled={true}
-          autoPlay={false}
-          autoPlayInterval={1500}
-          mode="parallax"
-          modeConfig={{
-            parallaxScrollingScale: isLandscape ? 0.7 : 0.5,
-            parallaxScrollingOffset: isLandscape ? 120 : horizontalScale(108),
-            parallaxAdjacentItemScale: isLandscape ? 0.55 : 0.38,
-          }}
-          data={data}
-          renderItem={({item}) => {
-            return (
-              <View style={{...itemStyle}}>
-                <Component isActionDisabled={isScrolling} {...item} />
-              </View>
-            );
-          }}
+    const renderPagination = () =>
+      data.map((_, index) => (
+        <Pagination
+          dotColor={paginationDotColor}
+          animValue={progressValue}
+          index={index}
+          key={index}
+          length={data.length}
         />
-      </View>
-    </GestureHandlerRootView>
-  );
-});
+      ));
+
+    const renderItem = useCallback(
+      ({item}: {item: ItemType}) => (
+        <View style={itemStyle}>
+          <Component isActionDisabled={isScrolling} {...item} />
+        </View>
+      ),
+      [isScrolling, itemStyle],
+    );
+
+    return (
+      <GestureHandlerRootView style={styles.container}>
+        <View style={[styles.container]}>
+          {withPagination && (
+            <View style={[styles.paginationWrapper, paginationStyle]}>
+              {renderPagination()}
+            </View>
+          )}
+          <Carousel
+            width={width}
+            height={PAGE_WIDTH * 0.6}
+            style={{
+              width: PAGE_WIDTH,
+              height: carouselHeight || windowWidth * 0.6,
+            }}
+            loop={loop}
+            pagingEnabled
+            snapEnabled
+            autoPlay={false}
+            autoPlayInterval={1500}
+            mode="parallax"
+            modeConfig={getModeConfig()}
+            data={data}
+            renderItem={renderItem}
+            onProgressChange={handleProgressChange}
+          />
+          {withTopPagination && (
+            <View style={[styles.bottomPaginationWrapper, paginationStyle]}>
+              {renderPagination()}
+            </View>
+          )}
+        </View>
+      </GestureHandlerRootView>
+    );
+  },
+);
+
+const paginStyle: Record<string, string> = {
+  flexDirection: 'row',
+  position: 'absolute',
+};
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   paginationWrapper: {
-    flexDirection: 'row',
-    marginRight: 'auto',
+    ...paginStyle,
     top: 35,
+    alignSelf: 'flex-start',
+  },
+  bottomPaginationWrapper: {
+    ...paginStyle,
+    bottom: 0,
+    justifyContent: 'center',
   },
 });

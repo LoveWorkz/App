@@ -31,6 +31,7 @@ import {ChallengeTypeInfoPage} from '@src/pages/ChallengeTypeInfoPage';
 import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
 import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotificationsPage';
 import {OnboardingStatisticPage} from '@src/pages/Onboarding/OnboardingStatisticPage';
+import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -289,9 +290,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.sessions,
     headerShown: true,
     headerTitle: '',
+    HeaderRight: SessionsHeaderRight,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling>
+        <Layout isPageScrolling deleteTopPadding>
           <SessionsPage {...props} />
         </Layout>
       );

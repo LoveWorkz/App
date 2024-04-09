@@ -181,7 +181,6 @@ class CategoryStore {
       } else {
         navigation.navigate(AppRouteNames.SESSIONS, {
           type: DocumentType.CATEGORY,
-          title: displayName,
           id: categoryId,
         });
       }

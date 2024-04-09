@@ -84,7 +84,6 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
       )}
       {!!formatedCategories.length && (
         <CarouselSquare
-          isLandscape={true}
           Component={Category}
           // when loading, adding example data to make skeleton work
           data={formatedCategories}

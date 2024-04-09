@@ -36,7 +36,8 @@ export type Colors =
   | 'bgOnboardingColor'
   | 'red'
   | 'lavenderBlue'
-  | 'skyBlue';
+  | 'skyBlue' 
+  | 'periwinkleDust';
 
 export type ColorType = Record<Colors, string>;
 
@@ -53,6 +54,7 @@ const commonColor = {
   red: 'red',
   lavenderBlue: '#847AED',
   skyBlue: '#83C0F8',
+  periwinkleDust: '#c8cbee',
 };
 
 const light: ColorType = {

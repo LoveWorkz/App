@@ -65,7 +65,7 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
       {!!recommendedBooksList.length && (
         <CarouselSquare
           withPagination={!isLoading}
-          isLandscape={false}
+          mode={'multiple'}
           carouselHeight={240}
           Component={(param: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(param.id)}>

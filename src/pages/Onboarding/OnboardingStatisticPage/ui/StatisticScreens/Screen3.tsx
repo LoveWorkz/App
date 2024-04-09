@@ -20,7 +20,6 @@ const Screen3 = () => {
     <View style={styles.carouselWrapper}>
       <CarouselSquare
         withPagination
-        isLandscape={true}
         Component={CarouselItem}
         data={comments}
         carouselHeight={230}

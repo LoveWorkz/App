@@ -106,7 +106,7 @@ const Category = (props: CategoryProps) => {
     categorySize,
     colors,
     size,
-  }
+  };
 
   const renderUnlockedContentParams = {
     t,
@@ -116,7 +116,7 @@ const Category = (props: CategoryProps) => {
     sessionsCount,
     size,
     isCategoryHowToUse,
-  }
+  };
 
   const renderHeaderParams = {
     name: displayName[language],
@@ -125,7 +125,7 @@ const Category = (props: CategoryProps) => {
     isSpecialCategory,
     isBlocked,
     isContentLocked,
-  }
+  };
 
   return (
     <Pressable onPress={handleCategoryPress}>
