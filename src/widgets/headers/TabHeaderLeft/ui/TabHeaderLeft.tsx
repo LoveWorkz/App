@@ -18,9 +18,12 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
   return (
     <View style={[styles.TabHeaderRight, {paddingRight: globalPadding}]}>
       <AppText
-        weight={'500'}
+        weight={'600'}
         size={TextSize.LEVEL_6}
-        style={{paddingLeft: globalPadding, color: colors.primaryTextColor}}
+        style={[
+          styles.title,
+          {paddingLeft: globalPadding, color: colors.primaryTextColor},
+        ]}
         text={t(title)}
       />
     </View>
@@ -31,6 +34,9 @@ const styles = StyleSheet.create({
   TabHeaderRight: {
     justifyContent: 'center',
     width: windowWidth * 0.8,
+  },
+  title: {
+    textTransform: 'capitalize',
   },
 });
 

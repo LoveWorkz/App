@@ -13,10 +13,14 @@ import {DisplayText} from '@src/shared/types/types';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {RubricType} from '@src/entities/Rubric';
-import { useColors } from '@src/app/providers/colorsProvider';
+import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {QuestionCardTypes} from '../model/types/questionTypes';
-import {isCardTypeWild, questionCardHeight, questionCardWidth} from '../model/lib/questionLib';
+import {
+  isCardTypeWild,
+  questionCardHeight,
+  questionCardWidth,
+} from '../model/lib/questionLib';
 import {AppName, QuestionText, TopicName} from './HelperComponents';
 
 interface QuestionCardProps {

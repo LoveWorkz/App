@@ -63,6 +63,7 @@ export const InformationBlockPopup = (props: InformationBlockPopupProps) => {
                   text={item.boldString}
                 />
                 <AppText
+                  align={'justify'}
                   style={[styles.text, {color: colors.primaryTextColor}]}
                   weight={'400'}
                   size={TextSize.LEVEL_3}
@@ -80,7 +81,7 @@ export const InformationBlockPopup = (props: InformationBlockPopupProps) => {
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             weight={'700'}
-            text={t('got_it')}
+            text={t('ok')}
           />
         </Button>
       </View>
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     padding: horizontalScale(globalPadding),
     width: popupWidth,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     maxWidth: windowWidth - 40,
   },
   title: {
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
   text: {
     lineHeight: 17,
     marginVertical: verticalScale(10),
+    textAlign: 'justify',
   },
   btn: {
     width: '100%',

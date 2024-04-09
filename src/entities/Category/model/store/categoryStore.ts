@@ -18,6 +18,7 @@ import {CategoryKey, CategoryType} from '../types/categoryTypes';
 class CategoryStore {
   category: CategoryType | null = null;
   lastCategoryId: string = '';
+  isSpecialCategoryBlocked: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -25,6 +26,10 @@ class CategoryStore {
 
   setLastCategoryId = (categoryId: string) => {
     this.lastCategoryId = categoryId;
+  };
+
+  setIsSpecialCategoryBlocked = (isBlocked: boolean) => {
+    this.isSpecialCategoryBlocked = isBlocked;
   };
 
   initUserCategoryQuestionId = async ({
@@ -192,7 +197,7 @@ class CategoryStore {
   };
 
   getIsLastCategoryByKey = (categoryKey: CategoryKey) => {
-    return categoryKey === CategoryKey.All_In_One;
+    return categoryKey === CategoryKey.How_To_Use;
   };
 
   getCategoryByName = (name: string) => {
@@ -280,7 +285,7 @@ class CategoryStore {
       const hasUserSubscription = userStore.getUserHasSubscription();
       const isStarterOrAllInOneCategory =
         categoryKey === CategoryKey.Starter ||
-        categoryKey === CategoryKey.All_In_One;
+        categoryKey === CategoryKey.How_To_Use;
 
       if (isStarterOrAllInOneCategory) {
         return false;
@@ -303,17 +308,11 @@ class CategoryStore {
       const shouldUnlock = await this.shouldUnlockCategory(specialCategory);
 
       if (shouldBlock) {
-        this.editCategory({
-          isBlocked: true,
-          categoryId: specialCategoryId,
-        });
+        this.setIsSpecialCategoryBlocked(true);
       }
 
       if (shouldUnlock) {
-        this.editCategory({
-          isBlocked: false,
-          categoryId: specialCategoryId,
-        });
+        this.setIsSpecialCategoryBlocked(false);
       }
     } catch (error) {
       errorHandler({error});

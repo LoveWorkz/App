@@ -1,4 +1,10 @@
-import {isCardTypeChallenge, isCardTypeWild, isFunFact, isHotStuff, QuestionType} from '@src/entities/QuestionCard';
+import {
+  isCardTypeChallenge,
+  isCardTypeWild,
+  isFunFact,
+  isHotStuff,
+  QuestionType,
+} from '@src/entities/QuestionCard';
 import {
   CHALLENGE_CARD,
   funFact,
@@ -39,8 +45,8 @@ export const getFormattedQuestionsWrapper = ({
 
   return () => {
     return questions.map(question => {
-      if (isCardTypeChallenge(question.type) ) {
-        return { 
+      if (isCardTypeChallenge(question.type)) {
+        return {
           ...question,
           image: CHALLENGE_CARD,
         };

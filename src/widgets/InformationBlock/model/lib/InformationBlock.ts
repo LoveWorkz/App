@@ -58,11 +58,11 @@ export const getInformationBlockContent = (
       };
     default:
       return {
-        title: 'Question Library',
+        title: 'Session Library',
         text: [
           {
             boldString: 'You',
-            text: ' are currently in the Question Library. It gives you a perfect overview of the the sessions per category. The categories will unlock as you progress.',
+            text: ' are currently in the Session Library. It gives you a perfect overview of the the sessions per category. The categories will unlock as you progress.',
           },
         ],
       };

@@ -19,7 +19,7 @@ const SessionsPage = (props: SessionsPageProps) => {
   const {route} = props;
   const isFetching = sessionsPageStore.isFetching;
   const currentCategory = categoryStore.category;
-  const isCategoryAllInOne = currentCategory?.name === CategoryKey.All_In_One;
+  const isCategoryAllInOne = currentCategory?.name === CategoryKey.How_To_Use;
 
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;

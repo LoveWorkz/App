@@ -14,7 +14,7 @@ const sessionsIdMap: Partial<Record<CategoryKey, string>> = {
 };
 
 export const getUserCategoryInitData = (categoryKey: CategoryKey) => {
-  const allInOneCategoryKey = CategoryKey.All_In_One;
+  const allInOneCategoryKey = CategoryKey.How_To_Use;
   const isCategoryAllInOne = categoryKey === allInOneCategoryKey;
   const isBlocked = categoryKey !== CategoryKey.Starter && !isCategoryAllInOne;
   const firstSessionId = sessionsIdMap[categoryKey]

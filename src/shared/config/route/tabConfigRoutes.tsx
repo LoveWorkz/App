@@ -46,14 +46,14 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       return (
         <Layout
           isPageScrolling={true}
-          deleteBottomPadding={false}
-          deleteTopPadding={false}
+          deleteBottomPadding={true}
+          deleteTopPadding={true}
           isTabBar>
           <CategoriesPage {...props} />
         </Layout>
       );
     },
-    headerTitle: 'questions.title',
+    headerTitle: 'sessions.sessions',
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },

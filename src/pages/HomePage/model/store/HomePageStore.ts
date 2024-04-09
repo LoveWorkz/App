@@ -162,7 +162,7 @@ class HomePageStore {
 
       // Hot and All in One categories should not show up in the progress bar
       if (
-        userCurrentCategoryKey === CategoryKey.All_In_One ||
+        userCurrentCategoryKey === CategoryKey.How_To_Use ||
         userCurrentCategoryKey === CategoryKey.Specials
       ) {
         const intimateCategory = categoryStore.getCategoryByName(

@@ -109,7 +109,7 @@ class CategoriesStore {
     const unlockedCategories = categories.filter(category => {
       return (
         !category.isBlocked &&
-        category.name !== CategoryKey.All_In_One &&
+        category.name !== CategoryKey.How_To_Use &&
         category.name !== CategoryKey.Specials
       );
     });

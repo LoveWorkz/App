@@ -19,7 +19,7 @@ export enum CategoryKey {
   Deep = 'Deep',
   Intimate = 'Intimate',
   Specials = 'Specials',
-  All_In_One = 'All_In_One',
+  How_To_Use = 'How_To_Use',
 }
 
 export interface CategoryType {

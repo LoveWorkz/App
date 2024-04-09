@@ -3,13 +3,14 @@ import {Pressable, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
+import {observer} from 'mobx-react-lite';
+import {TFunction} from 'i18next';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {DisplayText, StyleType} from '@src/shared/types/types';
-import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
-import {LockIcon} from '@src/shared/assets/icons/Lock';
+import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {ColorType} from '@src/app/styles/themeStyle';
 import {
   horizontalScale,
   moderateScale,
@@ -19,6 +20,8 @@ import {sessionStore} from '@src/entities/Session';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {PremiumIcon} from '@src/shared/assets/icons/Premium';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
@@ -36,187 +39,317 @@ interface CategoryProps {
   isActionDisabled?: MutableRefObject<boolean>;
 }
 
-const sizeM = 120;
-const sizel = 210;
-const sizeXl = 200;
-const borderRadius = moderateScale(20);
+const CategorySizes = {
+  [CateorySize.M]: 120,
+  [CateorySize.L]: 210,
+  [CateorySize.XL]: 200,
+};
+
+const borderRadius = moderateScale(10);
 
 const Category = (props: CategoryProps) => {
   const {
     image,
     size = CateorySize.L,
-    isBlocked = false,
+    isBlocked,
     id,
     isCategoryDetailsVisible,
     style,
     displayName,
-    isLoading = false,
+    isLoading,
     isActionDisabled,
     name,
   } = props;
-  const colors = useColors();
-  const {theme} = useTheme();
-  const {t, i18n} = useTranslation();
 
+  const {t, i18n} = useTranslation();
+  const {theme} = useTheme();
+  const colors = useColors();
+  const language = i18n.language as LanguageValueType;
   const sessionsCount = sessionStore.getUserSessionsCount();
   const isContentLocked = categoryStore.checkContentLock(name);
+  const categorySize = CategorySizes[size] || CategorySizes[CateorySize.L];
+  const isCategoryHowToUse = name === CategoryKey.How_To_Use;
+  const isSpecialCategoryBlocked = categoryStore.isSpecialCategoryBlocked;
+  const isSpecialCategory = name === CategoryKey.Specials;
 
-  const language = i18n.language as LanguageValueType;
-  const isSizeL = size === CateorySize.L;
+  useEffect(() => {
+    if (name === CategoryKey.Specials) {
+      categoryStore.checkIfSpecialDateAndUpdateSpecialCategory(id);
+    }
+  }, [id, name]);
 
-  const onCategoryPressHandler = () => {
+  const handleCategoryPress = () => {
+    if (isCategoryHowToUse || isActionDisabled?.current) {
+      return;
+    }
     categoryStore.categoryPressHandler({
       displayName: displayName[language],
       categoryId: id,
-      isActionDisabled: isActionDisabled?.current,
       isCategoryDetailsVisible,
     });
   };
 
-  useEffect(() => {
-    if (name !== CategoryKey.Specials) {
-      return;
-    }
-
-    categoryStore.checkIfSpecialDateAndUpdateSpecialCategory(id);
-  }, [id, name]);
-
   if (isLoading) {
     return (
-      <View style={styles.carouseTopBlock}>
-        {size === CateorySize.M ? (
-          <Skeleton width={'100%'} height={sizeM} borderRadius={borderRadius} />
-        ) : size === CateorySize.L ? (
-          <Skeleton width={'100%'} height={sizel} borderRadius={borderRadius} />
-        ) : (
-          <Skeleton
-            width={'100%'}
-            height={sizeXl}
-            borderRadius={borderRadius}
-          />
-        )}
-      </View>
+      <Skeleton
+        width="100%"
+        height={categorySize}
+        borderRadius={borderRadius}
+      />
     );
   }
 
+  const renderLockedContentParams = {
+    isContentLocked,
+    isSpecialCategory,
+    isSpecialCategoryBlocked,
+    categorySize,
+    colors,
+    size,
+  }
+
+  const renderUnlockedContentParams = {
+    t,
+    colors,
+    isContentLocked,
+    isSpecialCategory,
+    sessionsCount,
+    size,
+    isCategoryHowToUse,
+  }
+
+  const renderHeaderParams = {
+    name: displayName[language],
+    size,
+    colors,
+    isSpecialCategory,
+    isBlocked,
+    isContentLocked,
+  }
+
   return (
-    <Pressable onPress={onCategoryPressHandler}>
-      {isContentLocked && (
-        <>
-          <View
-            style={[
-              styles.layout,
-              styles[size],
-              {
-                backgroundColor: colors.bgLayout,
-              },
-            ]}
-          />
-          <View style={[styles.lockIconWrapper]}>
-            <SvgXml
-              xml={LockIcon}
-              fill={colors.white}
-              height={isSizeL ? 60 : 35}
-              width={isSizeL ? 40 : 27}
-            />
-          </View>
-        </>
-      )}
+    <Pressable onPress={handleCategoryPress}>
       <View
-        style={{
-          ...getShadowOpacity(theme).shadowOpacity_level_2,
-        }}>
+        style={[
+          styles.categoryWrapper,
+          getShadowOpacity(theme).shadowOpacity_level_2,
+          {borderRadius, backgroundColor: colors.white},
+        ]}>
         <FastImage
           resizeMode="cover"
-          style={[
-            styles.category,
-            styles[size],
-            style,
-            {
-              padding: isSizeL ? 20 : 10,
-              ...getShadowOpacity(theme).shadowOpacity_level_2,
-            },
-          ]}
-          source={{
-            uri: image,
-          }}>
-          <View style={styles.headerSection}>
-            <Gradient size={GradientSize.SMALL}>
-              <AppText
-                style={{color: colors.white}}
-                weight={'500'}
-                size={isSizeL ? TextSize.LEVEL_6 : TextSize.LEVEL_3}
-                text={`${sessionsCount} ${t('sessions.sessions')}`}
-              />
-            </Gradient>
-            {isBlocked && (
-              <SvgXml
-                xml={LockedIcon}
-                style={[
-                  {
-                    width: horizontalScale(isSizeL ? 30 : 22),
-                    height: horizontalScale(isSizeL ? 40 : 26),
-                  },
-                ]}
-              />
-            )}
-          </View>
-          <AppText
-            style={[
-              styles.status,
-              {color: colors.categoryAndFavoritesTextColor},
-            ]}
-            weight={'700'}
-            size={isSizeL ? TextSize.LEVEL_7 : TextSize.LEVEL_4}
-            text={displayName[language]}
-          />
+          source={{uri: image}}
+          style={[styles.categoryImage, {height: categorySize}, style]}>
+          {renderLockedContent(renderLockedContentParams)}
+          {renderUnlockedContent(renderUnlockedContentParams)}
+          {renderHeader(renderHeaderParams)}
         </FastImage>
       </View>
     </Pressable>
   );
 };
 
-export default memo(Category);
+const renderHeader = (params: {
+  name: string;
+  size: CateorySize;
+  colors: ColorType;
+  isSpecialCategory: boolean;
+  isBlocked: boolean;
+  isContentLocked: boolean;
+}) => {
+  const {name, size, colors, isSpecialCategory, isBlocked, isContentLocked} =
+    params;
 
-const styles = StyleSheet.create<Record<string, any>>({
-  category: {
+  return (
+    <View style={styles.headerSection}>
+      <AppText
+        weight={'900'}
+        style={[styles.categoryName, {color: colors.white}]}
+        size={size === CateorySize.L ? TextSize.LEVEL_7 : TextSize.LEVEL_6}
+        text={name}
+      />
+      {!isSpecialCategory && isBlocked && !isContentLocked && (
+        <View
+          style={[styles.lockedIconWrapper, {backgroundColor: colors.white}]}>
+          <SvgXml
+            xml={LockedIcon}
+            width={horizontalScale(size === CateorySize.L ? 30 : 22)}
+            height={horizontalScale(size === CateorySize.L ? 40 : 22)}
+          />
+        </View>
+      )}
+    </View>
+  );
+};
+
+const renderLockedContent = (params: {
+  size: CateorySize;
+  colors: ColorType;
+  isSpecialCategory: boolean;
+  isContentLocked: boolean;
+  isSpecialCategoryBlocked: boolean;
+  categorySize: number;
+}) => {
+  const {
+    isContentLocked,
+    isSpecialCategory,
+    isSpecialCategoryBlocked,
+    categorySize,
+    colors,
+    size,
+  } = params;
+
+  if (isContentLocked && !isSpecialCategory) {
+    return (
+      <View
+        style={[
+          styles.lockedLayout,
+          {height: categorySize, backgroundColor: colors.bgLayout},
+        ]}>
+        <View
+          style={[
+            styles.sessionCountBlock,
+            styles.premiumBlock,
+            {backgroundColor: colors.white},
+          ]}>
+          <GradientText
+            style={styles.premiumText}
+            size={size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2}
+            text="Premium"
+          />
+          <SvgXml
+            xml={PremiumIcon}
+            width={horizontalScale(13)}
+            height={horizontalScale(13)}
+          />
+        </View>
+      </View>
+    );
+  }
+
+  if (isSpecialCategory && isSpecialCategoryBlocked) {
+    return (
+      <View
+        style={[
+          styles.lockedLayout,
+          {height: categorySize, backgroundColor: colors.bgLayout},
+        ]}>
+        {isContentLocked && (
+          <View
+            style={[
+              styles.sessionCountBlock,
+              styles.premiumBlock,
+              {backgroundColor: colors.white},
+            ]}>
+            <GradientText
+              style={styles.premiumText}
+              size={
+                size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2
+              }
+              text="Premium"
+            />
+            <SvgXml
+              xml={PremiumIcon}
+              width={horizontalScale(13)}
+              height={horizontalScale(13)}
+            />
+          </View>
+        )}
+      </View>
+    );
+  }
+};
+
+const renderUnlockedContent = (params: {
+  size: CateorySize;
+  colors: ColorType;
+  isSpecialCategory: boolean;
+  isContentLocked: boolean;
+  sessionsCount: number;
+  isCategoryHowToUse: boolean;
+  t: TFunction;
+}) => {
+  const {
+    isContentLocked,
+    isSpecialCategory,
+    sessionsCount,
+    t,
+    size,
+    isCategoryHowToUse,
+    colors,
+  } = params;
+
+  if (!isContentLocked && !isSpecialCategory) {
+    return (
+      <View style={[styles.sessionCountBlock, {backgroundColor: colors.white}]}>
+        <AppText
+          weight="600"
+          style={{color: colors.primaryTextColor}}
+          size={size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2}
+          text={
+            isCategoryHowToUse
+              ? 'Explore here'
+              : `${sessionsCount} ${t('sessions')}`
+          }
+        />
+      </View>
+    );
+  }
+};
+
+const styles = StyleSheet.create({
+  categoryWrapper: {
+    padding: horizontalScale(3),
+  },
+  categoryImage: {
     borderRadius: borderRadius,
+    justifyContent: 'flex-end',
+    padding: horizontalScale(20),
   },
-  image: {
-    borderRadius: borderRadius,
-    aspectRatio: 1 / 2,
-  },
-  status: {
-    marginTop: verticalScale(8),
-    textTransform: 'uppercase',
-  },
-  layout: {
-    position: 'absolute',
-    width: '100%',
-    borderRadius: borderRadius,
-    ...globalStyles.categoryLayoutZIndex,
-  },
-  lockIconWrapper: {
+  lockedLayout: {
+    left: 0,
+    right: 0,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100%',
-    width: '100%',
-    ...globalStyles.categoryLayoutIconZIndex,
   },
-  headerSection: {
-    justifyContent: 'space-between',
+  lockedIconWrapper: {
+    padding: horizontalScale(5),
+    borderRadius: moderateScale(20),
+    position: 'absolute',
+    right: horizontalScale(10),
+    top: horizontalScale(10),
+  },
+  premiumBlock: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-
-  size_m: {
-    height: sizeM,
+  premiumText: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  size_l: {
-    height: sizel,
+  sessionCountBlock: {
+    alignSelf: 'flex-start',
+    paddingVertical: verticalScale(2),
+    paddingHorizontal: horizontalScale(8),
+    borderRadius: moderateScale(6),
+    position: 'absolute',
+    left: horizontalScale(10),
+    bottom: horizontalScale(10),
   },
-  size_xl: {
-    height: sizeXl,
+  headerSection: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: horizontalScale(10),
+  },
+  categoryName: {
+    textTransform: 'capitalize',
+    width: '90%',
   },
 });
+
+export default memo(observer(Category));

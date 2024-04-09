@@ -9,7 +9,11 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import {RubricType} from '@src/entities/Rubric';
 import {QuestionCardTypes} from '../model/types/questionTypes';
-import {isCardTypeOrdinary, isCardTypeWild, isHotStuff} from '../model/lib/questionLib';
+import {
+  isCardTypeOrdinary,
+  isCardTypeWild,
+  isHotStuff,
+} from '../model/lib/questionLib';
 
 interface QuestionTextProps {
   type: QuestionCardTypes;
@@ -26,8 +30,9 @@ export const QuestionText = React.memo((props: QuestionTextProps) => {
   return (
     <AppText
       style={{
-        color:
-          isCardTypeOrdinary(type) ? colors.primaryTextColor : colors.white,
+        color: isCardTypeOrdinary(type)
+          ? colors.primaryTextColor
+          : colors.white,
       }}
       align={'center'}
       weight={'700'}
