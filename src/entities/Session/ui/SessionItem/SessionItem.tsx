@@ -1,46 +1,83 @@
 import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import {SvgXml} from 'react-native-svg';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {horizontalScale} from '@src/shared/lib/Metrics';
-import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
+import {getShadowOpacity, globalPadding} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {UnlockedIcon} from '@src/shared/assets/icons/Unlocked';
-import {OutlineStarIcon} from '@src/shared/assets/icons/OutlineStar';
-import {StarIcon} from '@src/shared/assets/icons/Star';
+import {EllipseIcon} from '@src/shared/assets/icons/Ellipse';
+import {PlayIcon} from '@src/shared/assets/icons/Play';
+import {LockIcon} from '@src/shared/assets/icons/Lock';
+import {HeartIcon, HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
 import {Button} from '@src/shared/ui/Button/Button';
-import {LockedIcon} from '@src/shared/assets/icons/Locked';
-import {SessionType} from '../../model/types/sessionType';
+import {ColorType} from '@src/app/styles/themeStyle';
+import {SelectedEllipseIcon} from '@src/shared/assets/icons/SelectedEllipse';
+import {SessionState, SessionType} from '../../model/types/sessionType';
 import sessionStore from '../../model/store/sessionStore';
 import PresSessionModal from '../PreSessionModal/PreSessionModal';
 
 interface SessionItemProps {
-  count: string;
   isBlocked: boolean;
   session: SessionType;
-  isLoading?: boolean;
-  isMarked: boolean;
-  sessionId: string;
+  state: SessionState;
 }
 
 const SessionItem = (props: SessionItemProps) => {
-  const {count, isBlocked, session, isMarked, sessionId} = props;
+  const {isBlocked, session, state = 'completed'} = props;
 
   const colors = useColors();
   const {theme} = useTheme();
   const {t} = useTranslation();
 
+  const [isFavorite, setIsFavorite] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  const disabled = isBlocked || state === 'upcoming';
+
+  const toggleFavorite = () => {
+    setIsFavorite(prev => !prev);
+  };
+
+  let leftIcon = EllipseIcon;
+  let rightIcon = <></>;
+  let bgColor = colors.softPeriwinkle;
+
+  switch (state) {
+    case 'completed':
+      leftIcon = SelectedEllipseIcon;
+      rightIcon = renderRightIcon({
+        state: 'completed',
+        onIconPressHandler: toggleFavorite,
+        colors,
+        isFavorite,
+      });
+
+      break;
+    case 'current':
+      leftIcon = EllipseIcon;
+      rightIcon = renderRightIcon({
+        state: 'current',
+        colors,
+      });
+
+      bgColor = colors.bgSecondaryColor;
+
+      break;
+    default:
+      leftIcon = LockIcon;
+      rightIcon = <></>;
+      bgColor = colors.disabledSessionColor;
+  }
 
   const onSessionPressHandler = () => {
     setVisible(true);
-  };
-
-  const onStarPressHandler = () => {
-    sessionStore.markSession({sessionId, isMarked});
   };
 
   const goToQuestions = useCallback(() => {
@@ -50,45 +87,41 @@ const SessionItem = (props: SessionItemProps) => {
 
   return (
     <View style={styles.wrapper}>
-      <View>
-        <SvgXml
-          xml={isBlocked ? LockedIcon : UnlockedIcon}
-          style={[styles.icon, isBlocked ? styles.lockIcon : {}]}
-        />
-      </View>
       <TouchableOpacity
-        disabled={isBlocked}
+        disabled={disabled}
         onPress={onSessionPressHandler}
         style={[
           styles.SessionItem,
           {
             ...getShadowOpacity(theme).shadowOpacity_level_2,
-            backgroundColor: colors.bgSecondaryColor,
+            backgroundColor: bgColor,
           },
         ]}>
-        <View style={styles.textWrapper}>
+        <>
+          <View style={styles.sessionNumberWrapper}>
+            <SvgXml xml={leftIcon} style={styles.leftIcon} />
+            <AppText
+              weight={'500'}
+              size={TextSize.LEVEL_2}
+              text={`${t('sessions.session')} ${session.sessionNumber}`}
+            />
+          </View>
+          <View style={styles.titleWrapper}>
+            <AppText
+              weight={'900'}
+              size={TextSize.LEVEL_5}
+              text={'Personal Growth'}
+            />
+          </View>
           <AppText
-            style={[styles.text, {color: colors.primaryTextColor}]}
             weight={'500'}
-            size={TextSize.LEVEL_5}
-            text={t('sessions.session')}
+            size={TextSize.LEVEL_2}
+            text={
+              'Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being.'
+            }
           />
-          <AppText
-            style={{color: colors.primaryTextColor}}
-            weight={'500'}
-            size={TextSize.LEVEL_5}
-            text={count}
-          />
-        </View>
-        <Button
-          disabled={isBlocked}
-          onPress={onStarPressHandler}
-          style={styles.starBtn}>
-          <SvgXml
-            xml={isMarked ? StarIcon : OutlineStarIcon}
-            style={styles.arrowIcon}
-          />
-        </Button>
+        </>
+        {rightIcon}
       </TouchableOpacity>
       <PresSessionModal
         onConfirm={goToQuestions}
@@ -99,7 +132,42 @@ const SessionItem = (props: SessionItemProps) => {
   );
 };
 
+const renderRightIcon = ({
+  state,
+  onIconPressHandler,
+  isFavorite,
+  colors,
+}: {
+  state: SessionState;
+  onIconPressHandler?: () => void;
+  isFavorite?: boolean;
+  colors: ColorType;
+}) => {
+  switch (state) {
+    case 'completed':
+      return (
+        <Button onPress={onIconPressHandler} style={styles.rightIconWrapper}>
+          <SvgXml
+            xml={isFavorite ? HeartIconWithoutColor : HeartIcon}
+            style={styles.rightIcon}
+            fill={isFavorite ? colors.red : 'none'}
+            stroke={!isFavorite ? colors.primaryTextColor : 'none'}
+          />
+        </Button>
+      );
+    default:
+      return (
+        <View style={styles.rightIconWrapper}>
+          <SvgXml xml={PlayIcon} style={styles.rightIcon} />
+        </View>
+      );
+  }
+};
+
 export default memo(SessionItem);
+
+const rightIconPadding = 10;
+const rightIconPosition = globalPadding - rightIconPadding;
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -108,33 +176,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   SessionItem: {
-    height: 60,
-    borderRadius: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: horizontalScale(20),
-    width: '88%',
+    borderRadius: moderateScale(20),
+    padding: horizontalScale(globalPadding),
+    width: '100%',
+  },
+  titleWrapper: {
+    marginVertical: verticalScale(10),
   },
   textWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  text: {
-    marginRight: horizontalScale(5),
+  sessionNumberWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  arrowIcon: {
-    height: 18,
-    width: 18,
+  leftIcon: {
+    height: horizontalScale(18),
+    width: horizontalScale(18),
+    marginRight: horizontalScale(6),
   },
-  icon: {
-    height: 25,
-    width: 25,
+  rightIconWrapper: {
+    position: 'absolute',
+    top: horizontalScale(rightIconPosition),
+    right: horizontalScale(rightIconPosition),
+    paddingHorizontal: horizontalScale(rightIconPadding),
+    paddingVertical: horizontalScale(rightIconPadding),
   },
-  lockIcon: {
-    opacity: 0.6,
-  },
-  starBtn: {
-    paddingHorizontal: horizontalScale(8),
+  rightIcon: {
+    height: horizontalScale(18),
+    width: horizontalScale(18),
   },
 });

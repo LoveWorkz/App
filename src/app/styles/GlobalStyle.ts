@@ -61,6 +61,9 @@ export const globalStyles = StyleSheet.create({
   },
 
   // z-index
+  zIndex_1: {
+    zIndex: 1,
+  },
   forgotPasswordZIndex: {
     zIndex: 1,
   },

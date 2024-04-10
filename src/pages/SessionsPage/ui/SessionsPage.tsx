@@ -2,15 +2,13 @@ import React, {memo, useCallback, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
 
-import {Session} from '@src/entities/Session';
+import {QuadrantList} from '@src/entities/Session';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {categoryStore, CategoryKey} from '@src/entities/Category';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import { verticalScale } from '@src/shared/lib/Metrics';
 import sessionsPageStore from '../modal/store/SessionsPageStore';
 import HeaderSection from './HeaderSection/HeaderSection';
 
@@ -21,36 +19,30 @@ interface SessionsPageProps {
 const SessionsPage = (props: SessionsPageProps) => {
   const {route} = props;
   const isFetching = sessionsPageStore.isFetching;
-  const currentCategory = categoryStore.category;
-  const isCategoryAllInOne = currentCategory?.name === CategoryKey.How_To_Use;
   const categories = categoriesStore.categories;
 
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
 
-  const {i18n} = useTranslation();
-  const language = i18n.language as LanguageValueType;
-
   useFocusEffect(
     useCallback(() => {
       // if the user returns from the questions get the actual data
       if (isPreviousScreenQuestions) {
-        sessionsPageStore.init({isCategoryAllInOne, language});
+        sessionsPageStore.init();
       }
-    }, [isPreviousScreenQuestions, isCategoryAllInOne, language]),
+    }, [isPreviousScreenQuestions]),
   );
 
   useEffect(() => {
-    sessionsPageStore.init({isCategoryAllInOne, language});
-  }, [isCategoryAllInOne, language]);
+    sessionsPageStore.init();
+  }, []);
 
   return (
     <View style={styles.SessionsPage}>
       <HeaderSection categories={categories} />
-      <Session
-        isFetching={isFetching}
-        isCategoryAllInOne={isCategoryAllInOne}
-      />
+      <View style={styles.quadrantList}>
+        <QuadrantList isFetching={isFetching} />
+      </View>
     </View>
   );
 };
@@ -62,4 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -globalPadding,
   },
+  quadrantList: {
+    marginTop: verticalScale(40)
+  }
 });

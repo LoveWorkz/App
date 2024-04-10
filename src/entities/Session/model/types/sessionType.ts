@@ -14,19 +14,19 @@ export interface SessionType {
   breakPointForCheckingDate: number;
   isAllQuestionsSwiped: boolean;
   isBlocked: boolean;
-  isMarked: boolean;
   categoryId: string;
 }
 
 export type UserSessionType = Record<string, Partial<SessionType>>;
 
-export interface AllSessionsType {
-  categoryId: string;
-  categoryName: CategoryKey;
-  sessions: SessionType[];
-  categoryDisplayName: string;
-}
-
-export type MarkedSessionsMapType = Record<string, boolean>;
-
 export type SessionsMap = Record<string, SessionType>;
+
+export type SessionState = 'completed' | 'current' | 'upcoming';
+
+export interface QuadrantType {
+  id: string;
+  step: string;
+  title: string;
+  description: string;
+  sessions: SessionType[];
+}

@@ -31,7 +31,7 @@ const Carouseltem = (props: Carouseltemrops) => {
   const onPressHandler = () => {};
 
   const source = useMemo(() => {
-    return {uri: image.large}
+    return {uri: image.large};
   }, [image]);
 
   return (
@@ -55,7 +55,11 @@ const Carouseltem = (props: Carouseltemrops) => {
             />
           </View>
         </Button>
-        <View style={[styles.countWrapper, {backgroundColor: colors.periwinkleDust}]}>
+        <View
+          style={[
+            styles.countWrapper,
+            {backgroundColor: colors.periwinkleDust},
+          ]}>
           <AppText weight={'600'} size={TextSize.LEVEL_4} text={'4/20'} />
         </View>
       </View>
