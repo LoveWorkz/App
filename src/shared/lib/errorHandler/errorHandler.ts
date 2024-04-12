@@ -1,23 +1,26 @@
 import crashlytics from '@react-native-firebase/crashlytics';
-import {ToastType} from '@src/shared/ui/Toast/Toast';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {t} from 'i18next';
+
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 export const errorHandler = ({
   error,
   withCrashlytics = true,
   withToast = true,
+  message,
 }: {
   error: unknown;
   withCrashlytics?: boolean;
   withToast?: boolean;
+  message?: string;
 }) => {
   if (!(error instanceof Error)) {
     return;
   }
 
   if (__DEV__) {
-    console.log(error);
+    console.error(message, error);
   }
 
   if (withCrashlytics) {

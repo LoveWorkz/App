@@ -13,6 +13,7 @@ import {InformationIcon} from '@src/shared/assets/icons/Information';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 import {QuadrantType} from '../model/types/sessionType';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface QuadrantProps {
   isBlocked: boolean;
@@ -23,6 +24,7 @@ const Quadrant = (props: QuadrantProps) => {
   const {isBlocked = false, quadrant} = props;
 
   const colors = useColors();
+  const language = useLanguage();
 
   const bgColor = isBlocked ? colors.disabledSessionColor : colors.lilacBreeze;
 
@@ -38,14 +40,22 @@ const Quadrant = (props: QuadrantProps) => {
         />
       </Button>
 
-      <AppText weight={'500'} size={TextSize.LEVEL_2} text={quadrant.step} />
+      <AppText
+        weight={'500'}
+        size={TextSize.LEVEL_2}
+        text={quadrant.step[language]}
+      />
       <View style={styles.titleWrapper}>
-        <AppText weight={'900'} size={TextSize.LEVEL_6} text={quadrant.title} />
+        <AppText
+          weight={'900'}
+          size={TextSize.LEVEL_6}
+          text={quadrant.displayName[language]}
+        />
       </View>
       <AppText
         weight={'500'}
         size={TextSize.LEVEL_2}
-        text={quadrant.description}
+        text={quadrant.description[language]}
       />
     </View>
   );

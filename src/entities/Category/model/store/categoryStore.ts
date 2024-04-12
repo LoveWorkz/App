@@ -14,6 +14,7 @@ import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
+import {sessionStore} from '@src/entities/Session';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -42,42 +43,28 @@ class CategoryStore {
     sessionId: string;
   }) => {
     try {
-      const category = this.category;
-      if (!category) {
-        return;
-      }
-
-      // if currentQuestion is empty set initial currentQuestion
-      const currentQuestion = category.sessions[sessionId].currentQuestion;
-      if (currentQuestion) {
-        return;
-      }
-
       const firstQuestion = questions[0];
 
-      await userCategoryStore.updateUserCategory({
-        id,
-        field: `sessions.${sessionId}.currentQuestion`,
-        data: firstQuestion.id,
-      });
+      // await userCategoryStore.updateUserCategory({
+      //   id,
+      //   field: `sessions.${sessionId}.currentQuestion`,
+      //   data: firstQuestion.id,
+      // });
 
-      const currentCategory = this.category;
-      if (!currentCategory) {
-        return;
+      console.log('1111vcvcv1', sessionStore.session);
+
+      const session = sessionStore.session;
+      if (session) {
+        console.log('2222');
+        await userCategoryStore.updateSession({
+          sessionId,
+          field: 'currentQuestion',
+          data: firstQuestion.id,
+        });
+
+        const newSession = {...session, currentQuestion: firstQuestion.id};
+        sessionStore.setSession(newSession);
       }
-
-      runInAction(() => {
-        this.category = {
-          ...currentCategory,
-          sessions: {
-            ...currentCategory.sessions,
-            [sessionId]: {
-              ...(currentCategory.sessions?.[sessionId] || {}),
-              currentQuestion: firstQuestion.id,
-            },
-          },
-        } as CategoryType;
-      });
     } catch (e) {
       errorHandler({error: e});
     }
@@ -95,14 +82,22 @@ class CategoryStore {
 
       // default category
       const categoryData = await firestore()
-        .collection(Collections.CATEGORIES_2)
+        .collection(Collections.LEVELS)
         .doc(id)
         .get({source});
       // user custom category
+      // const userCategoryData = await firestore()
+      //   .collection(Collections.USER_LEVELS)
+      //   .doc(userId)
+      //   .collection()
+      //   .get({source});
+
       const userCategoryData = await firestore()
-        .collection(Collections.USER_CATEGORIES)
+        .collection(Collections.USER_LEVELS)
         .doc(userId)
-        .get({source});
+        .collection(Collections.LEVELS)
+        .doc(id)
+        .get();
 
       const userCategory = userCategoryData.data();
       if (!userCategory) {
@@ -116,7 +111,7 @@ class CategoryStore {
         ...currentCategory,
         id: categoryData.id,
         name: currentCategory.name,
-        ...userCategory.categories[id],
+        ...userCategory,
       } as CategoryType;
 
       this.setCategory(category);
@@ -235,12 +230,13 @@ class CategoryStore {
       // it's working only for the first time
       if (isInitialSetUp) {
         const category = this.category;
-        if (!category) {
+        const session = sessionStore.session;
+        if (!session) {
           return;
         }
 
-        currentquestionId =
-          sharedQuestionId || category.sessions[sessionId].currentQuestion;
+        currentquestionId = sharedQuestionId || session.currentQuestion;
+        console.log('session.currentQuestion;', session.currentQuestion);
       }
 
       if (!currentquestionId) {
@@ -325,8 +321,14 @@ class CategoryStore {
     categoryId: string;
     isBlocked: boolean;
   }) => {
-    await userCategoryStore.updateUserCategory({
-      id: categoryId,
+    // await userCategoryStore.updateUserCategory({
+    //   id: categoryId,
+    //   field: 'isBlocked',
+    //   data: isBlocked,
+    // });
+
+    await userCategoryStore.updateLevel({
+      levelId: categoryId,
       field: 'isBlocked',
       data: isBlocked,
     });
@@ -362,6 +364,11 @@ class CategoryStore {
     }
 
     return false;
+  };
+
+  getLevelNumberById = (levels: CategoryType[], id: string) => {
+    const levelNumber = levels.findIndex(level => level.id === id);
+    return levelNumber === -1 ? 1 : levelNumber + 1;
   };
 }
 

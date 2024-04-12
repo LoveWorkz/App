@@ -65,7 +65,7 @@ const Category = (props: CategoryProps) => {
   const {theme} = useTheme();
   const colors = useColors();
   const language = i18n.language as LanguageValueType;
-  const sessionsCount = sessionStore.getUserSessionsCount();
+  const sessionsCount = sessionStore.getAllSessionsCount();
   const isContentLocked = categoryStore.checkContentLock(name);
   const categorySize = CategorySizes[size] || CategorySizes[CateorySize.L];
   const isCategoryHowToUse = name === CategoryKey.How_To_Use;

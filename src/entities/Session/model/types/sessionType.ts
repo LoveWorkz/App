@@ -1,4 +1,5 @@
 import {CategoryKey} from '@src/entities/Category';
+import {DisplayText} from '@src/shared/types/types';
 
 export interface SessionType {
   challenge: {
@@ -15,9 +16,14 @@ export interface SessionType {
   isAllQuestionsSwiped: boolean;
   isBlocked: boolean;
   categoryId: string;
+  displayName: DisplayText;
+  description: DisplayText;
+  levelId: string;
+  quadrantId: string;
 }
 
 export type UserSessionType = Record<string, Partial<SessionType>>;
+export type UserQuadrantType = Record<string, Partial<QuadrantType>>;
 
 export type SessionsMap = Record<string, SessionType>;
 
@@ -25,8 +31,9 @@ export type SessionState = 'completed' | 'current' | 'upcoming';
 
 export interface QuadrantType {
   id: string;
-  step: string;
-  title: string;
-  description: string;
+  step: DisplayText;
+  displayName: DisplayText;
+  description: DisplayText;
   sessions: SessionType[];
+  isBlocked: boolean;
 }

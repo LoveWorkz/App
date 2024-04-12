@@ -181,13 +181,13 @@ class QuestionsStore {
       // this.loadAds({ questionNumber, interstitial });
 
       if (key !== DocumentType.FAVORITE && documentId) {
-        wowThatWasFastModalStore.wowThatWasFastLogic({
-          documentId,
-          type: key,
-          questions: this.questions,
-          questionId: question.id,
-          sessionId,
-        });
+        // wowThatWasFastModalStore.wowThatWasFastLogic({
+        //   documentId,
+        //   type: key,
+        //   questions: this.questions,
+        //   questionId: question.id,
+        //   sessionId,
+        // });
       }
 
       switch (key) {
@@ -232,10 +232,16 @@ class QuestionsStore {
 
       this.checkAndResetNotificationDate();
 
-      await userCategoryStore.updateUserCategory({
-        id: currentCategory.id,
+      // await userCategoryStore.updateUserCategory({
+      //   id: currentCategory.id,
+      //   data: question.id,
+      //   field: `sessions.${sessionId}.currentQuestion`,
+      // });
+
+      await userCategoryStore.updateSession({
+        sessionId: sessionId,
+        field: 'currentQuestion',
         data: question.id,
-        field: `sessions.${sessionId}.currentQuestion`,
       });
 
       this.checkIfAllQuestionsSwiped({
@@ -439,7 +445,7 @@ class QuestionsStore {
     sessionNumber: number;
     isLastCategory: boolean;
   }) => {
-    const sessionsCount = sessionStore.getUserSessionsCount();
+    const sessionsCount = sessionStore.getAllSessionsCount();
     let lastSessionNumber = sessionsCount;
 
     if (isLastCategory) {
@@ -595,14 +601,26 @@ class QuestionsStore {
         currentCategory: nextCategory.name,
       });
 
-      const promise1 = userCategoryStore.updateUserCategory({
-        id: categoryId,
+      // const promise1 = userCategoryStore.updateUserCategory({
+      //   id: categoryId,
+      //   field: 'isAllSessionsPassed',
+      //   data: true,
+      // });
+
+      const promise1 = userCategoryStore.updateLevel({
+        levelId: categoryId,
         field: 'isAllSessionsPassed',
         data: true,
       });
 
-      const promise2 = userCategoryStore.updateUserCategory({
-        id: nextCategory.id,
+      // const promise2 = userCategoryStore.updateUserCategory({
+      //   id: nextCategory.id,
+      //   field: 'isBlocked',
+      //   data: false,
+      // });
+
+      const promise2 = userCategoryStore.updateLevel({
+        levelId: nextCategory.id,
         field: 'isBlocked',
         data: false,
       });

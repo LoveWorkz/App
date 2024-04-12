@@ -64,8 +64,10 @@ class CategoriesStore {
   fetchCategories = async () => {
     try {
       crashlytics().log('Fetching Categories');
+      const userId = userStore.userId;
 
-      await userCategoryStore.fetchUserCategories();
+      await userCategoryStore.fetchUserLevels(userId);
+      // await userCategoryStore.fetchUserCategories(userId);
       await this.mergeDefaultAndUserCategories();
     } catch (e) {
       errorHandler({error: e});
@@ -77,7 +79,9 @@ class CategoriesStore {
       crashlytics().log('Merging default and user Categories.');
 
       const userCategories = userCategoryStore.userCategory;
-      if (!userCategories) {
+      const userLevels = userCategoryStore.userLevls;
+
+      if (!userLevels) {
         return;
       }
 
@@ -87,12 +91,19 @@ class CategoriesStore {
       }
 
       // merge default categories with user custom categories
+      // const categories = defaultCategories.map(defaultCategory => {
+      //   return {
+      //     ...defaultCategory,
+      //     ...(userCategories
+      //       ? userCategories.categories[defaultCategory.id]
+      //       : {}),
+      //   };
+      // });
+
       const categories = defaultCategories.map(defaultCategory => {
         return {
           ...defaultCategory,
-          ...(userCategories
-            ? userCategories.categories[defaultCategory.id]
-            : {}),
+          ...(userLevels ? userLevels[defaultCategory.id] : {}),
         };
       });
 
@@ -122,7 +133,7 @@ class CategoriesStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
-        .collection(Collections.CATEGORIES_2)
+        .collection(Collections.LEVELS)
         .orderBy('id')
         .get({source});
 
@@ -164,8 +175,14 @@ class CategoriesStore {
       const promises: Promise<void>[] = [];
 
       this.categories.map(category => {
-        const promise = userCategoryStore.updateUserCategory({
-          id: category.id,
+        // const promise = userCategoryStore.updateUserCategory({
+        //   id: category.id,
+        //   field: 'isBlocked',
+        //   data: isBlocked,
+        // });
+
+        const promise = userCategoryStore.updateLevel({
+          levelId: category.id,
           field: 'isBlocked',
           data: isBlocked,
         });

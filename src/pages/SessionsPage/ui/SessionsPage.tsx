@@ -8,7 +8,8 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import { verticalScale } from '@src/shared/lib/Metrics';
+import {verticalScale} from '@src/shared/lib/Metrics';
+import {categoryStore} from '@src/entities/Category';
 import sessionsPageStore from '../modal/store/SessionsPageStore';
 import HeaderSection from './HeaderSection/HeaderSection';
 
@@ -18,8 +19,12 @@ interface SessionsPageProps {
 
 const SessionsPage = (props: SessionsPageProps) => {
   const {route} = props;
-  const isFetching = sessionsPageStore.isFetching;
-  const categories = categoriesStore.categories;
+  const levels = categoriesStore.categories;
+  const currentLevel = categoryStore.category;
+
+  if (!currentLevel) {
+    return <></>;
+  }
 
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
@@ -39,9 +44,9 @@ const SessionsPage = (props: SessionsPageProps) => {
 
   return (
     <View style={styles.SessionsPage}>
-      <HeaderSection categories={categories} />
+      <HeaderSection levels={levels} currentLevel={currentLevel} />
       <View style={styles.quadrantList}>
-        <QuadrantList isFetching={isFetching} />
+        <QuadrantList />
       </View>
     </View>
   );
@@ -55,6 +60,6 @@ const styles = StyleSheet.create({
     marginTop: -globalPadding,
   },
   quadrantList: {
-    marginTop: verticalScale(40)
-  }
+    marginTop: verticalScale(40),
+  },
 });

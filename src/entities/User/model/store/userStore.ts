@@ -47,7 +47,7 @@ class UserStore {
   isFirstUserVisit: boolean = true;
   isAccountDeleted: boolean = false;
   currentCategory: CurrentCategory | null = null;
-  hasUserSubscription: boolean = false;
+  hasUserSubscription: boolean = true;
   inited: boolean = false;
 
   constructor() {
@@ -395,7 +395,7 @@ class UserStore {
 
   setDocuments = async (userId: string) => {
     try {
-      const document1 = userCategoryStore.setUserCategory(userId);
+      const document1 = userCategoryStore.setUserLevels(userId);
       const document2 = userRubricStore.setUserRubric(userId);
       const document3 =
         userChallengeCategoryStore.setUserChallengeCategories(userId);

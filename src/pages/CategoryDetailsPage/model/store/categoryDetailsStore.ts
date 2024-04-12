@@ -24,8 +24,14 @@ class CategoryDetailsStore {
         'User clicked the "Do not show again" button on category details page.',
       );
 
-      await userCategoryStore.updateUserCategory({
-        id,
+      // await userCategoryStore.updateUserCategory({
+      //   id,
+      //   field: 'isCategoryDetailsVisible',
+      //   data: false,
+      // });
+
+      await userCategoryStore.updateLevel({
+        levelId: id,
         field: 'isCategoryDetailsVisible',
         data: false,
       });

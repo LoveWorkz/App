@@ -120,8 +120,12 @@ class HomePageStore {
     crashlytics().log('Fetching home page Sessions');
 
     // fetching sessions for action banner
-    await sessionStore.fetchSessions();
-    this.setCurrentSession();
+    // await sessionStore.fetchSessions();
+    const level = categoryStore.category;
+    if (level) {
+      await sessionStore.fetchQuadrants(level.id);
+    }
+    // this.setCurrentSession();
   };
 
   fetchHomePageCategories = async (language: LanguageValueType) => {
@@ -235,7 +239,8 @@ class HomePageStore {
   getProgressBarImage = (theme: Theme) => {
     try {
       const progressBarCategoryKey = this.progressBarCategoryKey;
-      const sessions = sessionStore.allSessions;
+      // const sessions = sessionStore.allSessions;
+      const sessions = sessionStore.sessions;
       const unlockedSessions = sessions.filter(item => !item.isBlocked);
 
       const progressBarImgGroups = getProgressBarImageGroups({

@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {categoryStore} from '@src/entities/Category';
+// import {categoryStore} from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
@@ -11,7 +11,7 @@ import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {SessionType} from '@src/entities/Session';
+import {sessionStore, SessionType} from '@src/entities/Session';
 import {breakPoint, minute} from '../consts/wowThatWasFast';
 
 class WowThatWasFastStore {
@@ -43,8 +43,9 @@ class WowThatWasFastStore {
       let document: RubricType | SessionType | undefined;
 
       if (isCategory) {
-        const category = await categoryStore.fetchCategory({id: documentId});
-        document = category?.sessions[sessionId] as SessionType;
+        // const category = await categoryStore.fetchCategory({id: documentId});
+        const session = sessionStore.session;
+        document = session as SessionType;
       } else {
         document = await rubricStore.fetchRubric(documentId);
       }
@@ -186,9 +187,14 @@ class WowThatWasFastStore {
         }
 
         if (isCategory) {
-          await userCategoryStore.updateUserCategory({
-            id,
-            field: `sessions.${sessionId}.breakPointForCheckingDate`,
+          // await userCategoryStore.updateUserCategory({
+          //   id,
+          //   field: `sessions.${sessionId}.breakPointForCheckingDate`,
+          //   data: newCheckTime,
+          // });
+          await userCategoryStore.updateSession({
+            sessionId,
+            field: 'breakPointForCheckingDate',
             data: newCheckTime,
           });
         } else {
@@ -222,9 +228,14 @@ class WowThatWasFastStore {
       const currentDate = new Date().toJSON();
 
       if (isCategory) {
-        await userCategoryStore.updateUserCategory({
-          id,
-          field: `sessions.${sessionId}.questionSwipeStartDate`,
+        // await userCategoryStore.updateUserCategory({
+        //   id,
+        //   field: `sessions.${sessionId}.questionSwipeStartDate`,
+        //   data: currentDate,
+        // });
+        await userCategoryStore.updateSession({
+          sessionId,
+          field: 'questionSwipeStartDate',
           data: currentDate,
         });
       } else {
@@ -265,9 +276,15 @@ class WowThatWasFastStore {
       }
 
       if (isCategory) {
-        await userCategoryStore.updateUserCategory({
-          id,
-          field: `sessions.${sessionId}.swipedQuestionsPercentage`,
+        // await userCategoryStore.updateUserCategory({
+        //   id,
+        //   field: `sessions.${sessionId}.swipedQuestionsPercentage`,
+        //   data: swipedQuestionsPercentage,
+        // });
+
+        await userCategoryStore.updateSession({
+          sessionId,
+          field: 'swipedQuestionsPercentage',
           data: swipedQuestionsPercentage,
         });
       } else {

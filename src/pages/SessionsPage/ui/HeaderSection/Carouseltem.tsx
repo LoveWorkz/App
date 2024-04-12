@@ -15,18 +15,20 @@ import {
 } from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 import {DisplayText} from '@src/shared/types/types';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface Carouseltemrops {
   image: CategoryImageType;
   displayName: DisplayText;
+  sessionsCount: number;
+  currentSessionNumber: number;
 }
 
 const Carouseltem = (props: Carouseltemrops) => {
-  const {image, displayName} = props;
+  const {image, displayName, sessionsCount, currentSessionNumber} = props;
   const colors = useColors();
-  const {t, i18n} = useTranslation();
-  const language = i18n.language as LanguageValueType;
+  const {t} = useTranslation();
+  const language = useLanguage();
 
   const onPressHandler = () => {};
 
@@ -60,7 +62,11 @@ const Carouseltem = (props: Carouseltemrops) => {
             styles.countWrapper,
             {backgroundColor: colors.periwinkleDust},
           ]}>
-          <AppText weight={'600'} size={TextSize.LEVEL_4} text={'4/20'} />
+          <AppText
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={`${currentSessionNumber}/${sessionsCount}`}
+          />
         </View>
       </View>
       <View style={styles.descriptionWrapper}>

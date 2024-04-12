@@ -13,7 +13,7 @@ export enum Collections {
   CHALLENGE_CATEGORIES = 'Challenge_Categories',
   CORE_CHALLENGES = 'core_challenges',
   USER_CHALLENGE_CATEGORIES = 'User_Challenge_Categories',
-  USER_CATEGORIES = 'User_Categories',
+  USER_LEVELS = 'user_levels',
   USER_RUBRICS = 'User_Rubrics',
   SPECIAL_DAYS = 'special_days',
   SPECIAL_CHALLENGES = 'special_challenges',
@@ -21,7 +21,9 @@ export enum Collections {
   CORE_CHALLENGE_GROUPS = 'core_challenge_groups',
   SPECIAL_CHALLENGE_GROUPS = 'special_challenge_groups',
 
-  CATEGORIES_2 = 'Categories_2',
+  LEVELS = 'levels',
+  QUADRANTS = 'quadrants',
+  QUADRANTS_SESSIONS = 'quadrant_sessions',
   SESSIONS = 'sessions',
 }
 

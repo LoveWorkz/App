@@ -1,4 +1,5 @@
 import {UserSessionType} from '@src/entities/Session';
+import {UserQuadrantType} from '@src/entities/Session/model/types/sessionType';
 import {DisplayText} from '@src/shared/types/types';
 
 export enum CateorySize {
@@ -40,6 +41,7 @@ export interface CategoryType {
   ratePopUpBreakpoint: number;
   currentSessionNumber: number;
   challengeCategoryId: string;
+  quadrants: UserQuadrantType;
 }
 
 export interface CurrentCategory {

@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useRef} from 'react';
+import React, {memo, useCallback, useMemo, useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
@@ -8,6 +8,7 @@ import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {StyleType} from '@src/shared/types/types';
 import Pagination from './Pagination';
+import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
 
 type ItemType = Record<string, any>;
 
@@ -22,6 +23,8 @@ interface CarouselSquareProps {
   loop?: boolean;
   paginationStyle?: StyleType;
   paginationDotColor?: string;
+  onSwipeHandler?: (param: any, itemNumber: number) => void;
+  defaultElement?: number;
 }
 
 const PAGE_WIDTH = windowWidth;
@@ -38,9 +41,13 @@ export const CarouselSquare = memo(
     loop = true,
     paginationStyle = {},
     paginationDotColor,
+    onSwipeHandler,
+    defaultElement,
   }: CarouselSquareProps) => {
     const isScrolling = useRef(false);
     const progressValue = useSharedValue(0);
+
+    const defaultIndex = getDefaultIndexForCarousel(defaultElement);
 
     const handleProgressChange = (_: number, absoluteProgress: number) => {
       const decimalPart = absoluteProgress - Math.floor(absoluteProgress);
@@ -104,6 +111,23 @@ export const CarouselSquare = memo(
       [isScrolling, itemStyle],
     );
 
+    const onScrollEnd = useCallback(
+      (index: number) => {
+        const currentElement = data.find((_, i) => i === index);
+        if (currentElement) {
+          onSwipeHandler?.(currentElement, index);
+        }
+      },
+      [onSwipeHandler],
+    );
+
+    const style = useMemo(() => {
+      return {
+        width: PAGE_WIDTH,
+        height: carouselHeight || windowWidth * 0.6,
+      };
+    }, [carouselHeight]);
+
     return (
       <GestureHandlerRootView style={styles.container}>
         <View style={[styles.container]}>
@@ -113,17 +137,16 @@ export const CarouselSquare = memo(
             </View>
           )}
           <Carousel
+            defaultIndex={defaultIndex}
             width={width}
             height={PAGE_WIDTH * 0.6}
-            style={{
-              width: PAGE_WIDTH,
-              height: carouselHeight || windowWidth * 0.6,
-            }}
+            style={style}
             loop={loop}
             pagingEnabled
             snapEnabled
             autoPlay={false}
             autoPlayInterval={1500}
+            onScrollEnd={onScrollEnd}
             mode="parallax"
             modeConfig={getModeConfig()}
             data={data}

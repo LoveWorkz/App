@@ -10,7 +10,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {DocumentType} from '@src/shared/types/types';
 import {categoryStore, CategoryType} from '@src/entities/Category';
-import {UserCategory, userCategoryStore} from '@src/entities/UserCategory';
+import {userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {inAppReviewStore} from '@src/features/InAppReview';
 import {
@@ -18,7 +18,7 @@ import {
   ChallengeType,
   SpecialChallengeType,
 } from '@src/entities/Challenge';
-import {SessionsMap, SessionType} from '../types/sessionType';
+import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
   sessionsCountWithoutSubscription,
   sessionsCountWithSubscription,
@@ -26,33 +26,24 @@ import {
 } from '../lib/sessionLib';
 
 class SessionStore {
+  quadrants: QuadrantType[] = [];
   sessions: SessionType[] = [];
   session: SessionType | null = null;
   allSessionsFromAllCategories: SessionType[] = [];
   sessionsMap: SessionsMap = {};
   sessionChallenge?: ChallengeType | SpecialChallengeType;
-
-  allSessions: SessionType[] = [];
+  isFetching: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setSessions = (sessions: SessionType[]) => {
-    this.sessions = sessions;
+  setIsFetching = (isFetching: boolean) => {
+    this.isFetching = isFetching;
   };
 
-  setAllSessions = (allSessions: SessionType[]) => {
-    this.allSessions = allSessions;
-  };
-
-  getAndSetSessionsMap = (sessions: SessionType[]) => {
-    const sessionsMap: SessionsMap = {};
-    sessions.forEach(session => {
-      sessionsMap[session.id] = session;
-    });
-
-    this.sessionsMap = sessionsMap;
+  setQuadrants = (quadrants: QuadrantType[]) => {
+    this.quadrants = quadrants;
   };
 
   getSession = (sessionId: string) => {
@@ -104,7 +95,7 @@ class SessionStore {
     this.session = session;
   };
 
-  getUserSessionsCount = () => {
+  getAllSessionsCount = () => {
     const hasUserSubscription = userStore.getUserHasSubscription();
 
     return hasUserSubscription
@@ -125,46 +116,103 @@ class SessionStore {
     });
   };
 
-  filterSessionsBySubscription = (sessions: SessionType[]) => {
-    const hasUserSubscription = userStore.getUserHasSubscription();
-    if (!hasUserSubscription) {
-      return (sessions = sessions.slice(0, 4));
-    }
-
-    return sessions;
-  };
-
-  fetchSessions = async () => {
+  fetchQuadrants = async (levelId: string) => {
     try {
-      crashlytics().log('Fetching sessions');
+      crashlytics().log('Fetching Quadrants');
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const userCategories = userCategoryStore.userCategory;
+      const userId = userStore.userId;
+
+      await userCategoryStore.fetchUserLevel(userId, levelId);
+      const userLevel = userCategoryStore.userLevel;
+
       const categoryId = categoryStore.category?.id;
-      if (!categoryId) {
-        return;
+      if (!(userLevel && categoryId)) {
+        return [];
       }
 
+      const userQuadrants = userLevel.quadrants;
+
       const data = await firestore()
-        .collection(Collections.CATEGORIES_2)
-        .doc(categoryId)
-        .collection(Collections.SESSIONS)
+        .collection(Collections.QUADRANTS)
         .get({source});
 
-      let sessions = this.formSessions({
-        docs: data.docs,
-        userCategories,
-        categoryId,
+      const quadrants = data.docs.map(doc => {
+        return {
+          ...doc.data(),
+          ...userQuadrants[doc.id],
+          sessions: [] as SessionType[],
+        };
+      }) as QuadrantType[];
+
+      this.setQuadrants(quadrants);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchSessions = async (levelId: string) => {
+    try {
+      const userId = userStore.userId;
+
+      await userCategoryStore.fetchUserSessions(userId, levelId);
+      await this.fetchDefaultSessionsAndMergeWithUserSessions(levelId);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchDefaultSessionsAndMergeWithUserSessions = async (levelId: string) => {
+    crashlytics().log('Fetching and merge sessions');
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+    const userSessions = userCategoryStore.userSessions;
+    if (!userSessions) {
+      return [];
+    }
+
+    try {
+      const db = firestore();
+
+      const quadrants = this.quadrants;
+
+      let allSessionsCount = 0;
+
+      const quadrantSessionsPromises = quadrants.map(quadrant =>
+        db
+          .collection(Collections.LEVELS)
+          .doc(levelId)
+          .collection(Collections.QUADRANTS_SESSIONS)
+          .doc(`${quadrant.id}_sessions`)
+          .collection(Collections.SESSIONS)
+          .get({source})
+          .then(sessionSnapshot => ({
+            quadrantId: quadrant.id,
+            sessions: sessionSnapshot.docs.map(doc => {
+              allSessionsCount += 1;
+              return {
+                id: doc.id,
+                ...doc.data(),
+                ...userSessions[doc.id],
+              };
+            }),
+          })),
+      );
+
+      const quadrantSessions = await Promise.all(quadrantSessionsPromises);
+      const quadrantDetailsWithSessions = quadrants.map(quadrant => {
+        const sessions =
+          quadrantSessions.find(q => q.quadrantId === quadrant.id)?.sessions ||
+          [];
+        const sortedSessions = this.sortSessions(sessions as SessionType[]);
+
+        return {
+          ...quadrant,
+          sessions: sortedSessions,
+        };
       });
 
-      const allSessions = sessions;
-
-      const filteredSessions = this.filterSessionsBySubscription(sessions);
-
-      this.setSessions(filteredSessions);
-      this.getAndSetSessionsMap(filteredSessions);
-
-      this.setAllSessions(allSessions);
+      this.setQuadrants(quadrantDetailsWithSessions as QuadrantType[]);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -175,33 +223,6 @@ class SessionStore {
       (a, b) => a.sessionNumber - b.sessionNumber,
     );
 
-    return sortedSessions;
-  };
-
-  formSessions = ({
-    docs,
-    userCategories,
-    categoryId,
-  }: {
-    docs: DocsType;
-    userCategories: UserCategory | null;
-    categoryId: string;
-  }) => {
-    if (!userCategories) {
-      return [];
-    }
-
-    const userSessions = userCategories.categories[categoryId].sessions;
-    if (!userSessions) {
-      return [];
-    }
-    // merge default and user sessions together
-    const sessions = docs.map(doc => {
-      const docId = doc.id.trim();
-      return {...doc.data(), ...userSessions[docId], id: docId};
-    }) as SessionType[];
-
-    const sortedSessions = this.sortSessions(sessions);
     return sortedSessions;
   };
 
@@ -298,26 +319,50 @@ class SessionStore {
     currentSession: SessionType;
     nextSession: SessionType;
   }) => {
-    const promise1 = userCategoryStore.updateUserCategory({
-      id: categoryId,
-      field: `sessions.${currentSession.id}.isAllQuestionsSwiped`,
+    // const promise1 = userCategoryStore.updateUserCategory({
+    //   id: categoryId,
+    //   field: `sessions.${currentSession.id}.isAllQuestionsSwiped`,
+    //   data: true,
+    // });
+
+    const promise1 = userCategoryStore.updateSession({
+      sessionId: currentSession.id,
+      field: 'isAllQuestionsSwiped',
       data: true,
     });
 
-    const promise2 = userCategoryStore.updateUserCategory({
-      id: categoryId,
-      field: `sessions.${nextSession.id}.isBlocked`,
+    // const promise2 = userCategoryStore.updateUserCategory({
+    //   id: categoryId,
+    //   field: `sessions.${nextSession.id}.isBlocked`,
+    //   data: false,
+    // });
+
+    const promise2 = userCategoryStore.updateSession({
+      sessionId: nextSession.id,
+      field: 'isBlocked',
       data: false,
     });
 
-    const promise3 = userCategoryStore.updateUserCategory({
-      id: categoryId,
+    // const promise3 = userCategoryStore.updateUserCategory({
+    //   id: categoryId,
+    //   field: 'currentSession',
+    //   data: nextSession.id,
+    // });
+
+    const promise3 = userCategoryStore.updateLevel({
+      levelId: categoryId,
       field: 'currentSession',
       data: nextSession.id,
     });
 
-    const promise4 = userCategoryStore.updateUserCategory({
-      id: categoryId,
+    // const promise4 = userCategoryStore.updateUserCategory({
+    //   id: categoryId,
+    //   field: 'currentSessionNumber',
+    //   data: nextSession.sessionNumber,
+    // });
+
+    const promise4 = userCategoryStore.updateLevel({
+      levelId: categoryId,
       field: 'currentSessionNumber',
       data: nextSession.sessionNumber,
     });
@@ -339,6 +384,19 @@ class SessionStore {
     await Promise.all([promise1, promise2, promise3, promise4, promise5]);
   };
 
+  levelSwipeHandler = async (levelId: string) => {
+    try {
+      this.setIsFetching(true);
+
+      await this.fetchQuadrants(levelId);
+      await this.fetchSessions(levelId);
+    } catch (e) {
+      errorHandler({error: e});
+    } finally {
+      this.setIsFetching(false);
+    }
+  };
+
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {
     const user = userStore.user;
     // If the user has already rated the app, do nothing.
@@ -357,8 +415,14 @@ class SessionStore {
       const nextRatePopupSession =
         category.currentSessionNumber + SESSION_INTERVAL_FOR_RATE_PROMPT;
 
-      await userCategoryStore.updateUserCategory({
-        id: category.id,
+      // await userCategoryStore.updateUserCategory({
+      //   id: category.id,
+      //   field: 'ratePopUpBreakpoint',
+      //   data: nextRatePopupSession,
+      // });
+
+      await userCategoryStore.updateLevel({
+        levelId: category.id,
         field: 'ratePopUpBreakpoint',
         data: nextRatePopupSession,
       });

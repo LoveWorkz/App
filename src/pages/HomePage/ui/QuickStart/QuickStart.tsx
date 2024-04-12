@@ -39,7 +39,7 @@ const QuickStart = (props: QuickStartProps) => {
   const colors = useColors();
   const {theme} = useTheme();
 
-  const sessionsCount = sessionStore.getUserSessionsCount();
+  const sessionsCount = sessionStore.getAllSessionsCount();
 
   if (isLoading) {
     return (
