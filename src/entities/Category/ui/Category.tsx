@@ -20,8 +20,7 @@ import {sessionStore} from '@src/entities/Session';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {PremiumIcon} from '@src/shared/assets/icons/Premium';
+import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
@@ -205,22 +204,8 @@ const renderLockedContent = (params: {
           styles.lockedLayout,
           {height: categorySize, backgroundColor: colors.bgLayout},
         ]}>
-        <View
-          style={[
-            styles.sessionCountBlock,
-            styles.premiumBlock,
-            {backgroundColor: colors.white},
-          ]}>
-          <GradientText
-            style={styles.premiumText}
-            size={size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2}
-            text="Premium"
-          />
-          <SvgXml
-            xml={PremiumIcon}
-            width={horizontalScale(13)}
-            height={horizontalScale(13)}
-          />
+        <View style={styles.premiumBlock}>
+          <PremiumBlock />
         </View>
       </View>
     );
@@ -234,24 +219,8 @@ const renderLockedContent = (params: {
           {height: categorySize, backgroundColor: colors.bgLayout},
         ]}>
         {isContentLocked && (
-          <View
-            style={[
-              styles.sessionCountBlock,
-              styles.premiumBlock,
-              {backgroundColor: colors.white},
-            ]}>
-            <GradientText
-              style={styles.premiumText}
-              size={
-                size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2
-              }
-              text="Premium"
-            />
-            <SvgXml
-              xml={PremiumIcon}
-              width={horizontalScale(13)}
-              height={horizontalScale(13)}
-            />
+          <View style={styles.premiumBlock}>
+            <PremiumBlock />
           </View>
         )}
       </View>
@@ -319,19 +288,16 @@ const styles = StyleSheet.create({
     right: horizontalScale(10),
     top: horizontalScale(10),
   },
-  premiumBlock: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  premiumText: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   sessionCountBlock: {
     alignSelf: 'flex-start',
     paddingVertical: verticalScale(2),
     paddingHorizontal: horizontalScale(8),
     borderRadius: moderateScale(6),
+    position: 'absolute',
+    left: horizontalScale(10),
+    bottom: horizontalScale(10),
+  },
+  premiumBlock: {
     position: 'absolute',
     left: horizontalScale(10),
     bottom: horizontalScale(10),

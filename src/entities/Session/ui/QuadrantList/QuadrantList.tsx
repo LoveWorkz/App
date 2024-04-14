@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import Quadrant from '../Quadrant';
 import {
   horizontalScale,
   moderateScale,
@@ -11,6 +10,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import sessionStore from '../../model/store/sessionStore';
 import SessionsList from '../SessionsList/SessionsList';
+import Quadrant from '../Quadrant';
 
 const QuadrantList = () => {
   const sessionsCount = sessionStore.getAllSessionsCount();
@@ -40,8 +40,15 @@ const QuadrantList = () => {
       {quadrants.map(quadrant => {
         return (
           <View key={quadrant.id} style={styles.item}>
-            <Quadrant isBlocked={quadrant.isBlocked} quadrant={quadrant} />
-            <SessionsList sessions={quadrant.sessions} />
+            <Quadrant
+              isPremium={quadrant.isPremium}
+              isBlocked={quadrant.isBlocked}
+              quadrant={quadrant}
+            />
+            <SessionsList
+              isPremium={quadrant.isPremium}
+              sessions={quadrant.sessions}
+            />
           </View>
         );
       })}

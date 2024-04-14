@@ -9,10 +9,11 @@ import {SessionState, SessionType} from '../../model/types/sessionType';
 
 interface SessionsListProps {
   sessions: SessionType[];
+  isPremium: boolean;
 }
 
 const SessionsList = (props: SessionsListProps) => {
-  const {sessions} = props;
+  const {sessions, isPremium} = props;
   const currentLevel = categoryStore.category;
 
   return (
@@ -29,11 +30,7 @@ const SessionsList = (props: SessionsListProps) => {
 
         return (
           <View style={styles.item} key={i.toString()}>
-            <SessionItem
-              session={item}
-              isBlocked={item.isBlocked}
-              state={state}
-            />
+            <SessionItem session={item} state={state} isPremium={isPremium} />
           </View>
         );
       })}

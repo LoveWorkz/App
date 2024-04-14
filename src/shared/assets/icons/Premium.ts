@@ -1,4 +1,4 @@
-export const PremiumIcon = `
+const PremiumGradientIcon = `
 <svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.09488 2.43066H3.55414L1.81152 4.9714L6.09488 10.8998L9.43413 6.43386" stroke="url(#paint0_linear_5346_44094)" stroke-width="1.5" stroke-linecap="round"/>
 <path d="M9.79663 1.09961V3.88232M8.40527 2.49096H11.188" stroke="url(#paint1_linear_5346_44094)" stroke-width="1.5" stroke-linecap="round"/>
@@ -14,3 +14,16 @@ export const PremiumIcon = `
 </defs>
 </svg>
 `;
+
+const PremiumIcon = `<svg viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.59512 2.43066H3.05439L1.31177 4.9714L5.59512 10.8998L8.93437 6.43386" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M9.29712 1.09961V3.88232M7.90576 2.49096H10.6885" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>`;
+
+export const getPremiumIcon = ({isGradient}: {isGradient: boolean}) => {
+  if (isGradient) {
+    return PremiumGradientIcon;
+  }
+
+  return PremiumIcon;
+};

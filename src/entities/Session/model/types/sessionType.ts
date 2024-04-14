@@ -1,4 +1,3 @@
-import {CategoryKey} from '@src/entities/Category';
 import {DisplayText} from '@src/shared/types/types';
 
 export interface SessionType {
@@ -36,4 +35,5 @@ export interface QuadrantType {
   description: DisplayText;
   sessions: SessionType[];
   isBlocked: boolean;
+  isPremium: boolean;
 }

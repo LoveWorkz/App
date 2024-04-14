@@ -18,7 +18,11 @@ import {
   ChallengeType,
   SpecialChallengeType,
 } from '@src/entities/Challenge';
-import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
+import {
+  QuadrantType,
+  SessionsMap,
+  SessionType,
+} from '../types/sessionType';
 import {
   sessionsCountWithoutSubscription,
   sessionsCountWithSubscription,
@@ -132,15 +136,21 @@ class SessionStore {
       }
 
       const userQuadrants = userLevel.quadrants;
+      const hasUserSubscription = userStore.getUserHasSubscription();
 
       const data = await firestore()
         .collection(Collections.QUADRANTS)
         .get({source});
 
-      const quadrants = data.docs.map(doc => {
+      const quadrants = data.docs.map((doc, i) => {
+        const quadrant = doc.data() as QuadrantType;
+
+        const isPremium = i === 0 ? false : !hasUserSubscription;
+
         return {
-          ...doc.data(),
+          ...quadrant,
           ...userQuadrants[doc.id],
+          isPremium,
           sessions: [] as SessionType[],
         };
       }) as QuadrantType[];
@@ -175,11 +185,12 @@ class SessionStore {
       const db = firestore();
 
       const quadrants = this.quadrants;
+      const hasUserSubscription = userStore.getUserHasSubscription();
 
       let allSessionsCount = 0;
 
-      const quadrantSessionsPromises = quadrants.map(quadrant =>
-        db
+      const quadrantSessionsPromises = quadrants.map(quadrant => {
+        return db
           .collection(Collections.LEVELS)
           .doc(levelId)
           .collection(Collections.QUADRANTS_SESSIONS)
@@ -196,11 +207,13 @@ class SessionStore {
                 ...userSessions[doc.id],
               };
             }),
-          })),
-      );
+          }));
+      });
 
       const quadrantSessions = await Promise.all(quadrantSessionsPromises);
-      const quadrantDetailsWithSessions = quadrants.map(quadrant => {
+      const quadrantDetailsWithSessions = quadrants.map((quadrant, i) => {
+        const isPremium = i === 0 ? false : !hasUserSubscription;
+
         const sessions =
           quadrantSessions.find(q => q.quadrantId === quadrant.id)?.sessions ||
           [];
@@ -208,6 +221,7 @@ class SessionStore {
 
         return {
           ...quadrant,
+          isPremium,
           sessions: sortedSessions,
         };
       });

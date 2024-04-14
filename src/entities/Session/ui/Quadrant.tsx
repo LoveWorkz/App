@@ -12,27 +12,31 @@ import {
 import {InformationIcon} from '@src/shared/assets/icons/Information';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
-import {QuadrantType} from '../model/types/sessionType';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
+import {QuadrantType} from '../model/types/sessionType';
 
 interface QuadrantProps {
   isBlocked: boolean;
   quadrant: QuadrantType;
+  isPremium: boolean;
 }
 
 const Quadrant = (props: QuadrantProps) => {
-  const {isBlocked = false, quadrant} = props;
+  const {isBlocked = false, quadrant, isPremium} = props;
 
   const colors = useColors();
   const language = useLanguage();
 
-  const bgColor = isBlocked ? colors.disabledSessionColor : colors.lilacBreeze;
+  const disabled = isBlocked || isPremium;
+
+  const bgColor = isPremium ? colors.disabledSessionColor : colors.lilacBreeze;
 
   const onPressHandler = () => {};
 
   return (
     <View style={[styles.Quadrant, {backgroundColor: bgColor}]}>
-      <Button onPress={onPressHandler} style={styles.btn} disabled={isBlocked}>
+      <Button onPress={onPressHandler} style={styles.btn} disabled={disabled}>
         <SvgXml
           xml={InformationIcon}
           style={styles.icon}
@@ -40,11 +44,18 @@ const Quadrant = (props: QuadrantProps) => {
         />
       </Button>
 
-      <AppText
-        weight={'500'}
-        size={TextSize.LEVEL_2}
-        text={quadrant.step[language]}
-      />
+      <View style={styles.stepWrapper}>
+        <AppText
+          weight={'500'}
+          size={TextSize.LEVEL_2}
+          text={quadrant.step[language]}
+        />
+        {isPremium && (
+          <View style={styles.premiumBlock}>
+            <PremiumBlock isGradient />
+          </View>
+        )}
+      </View>
       <View style={styles.titleWrapper}>
         <AppText
           weight={'900'}
@@ -84,5 +95,12 @@ const styles = StyleSheet.create({
     top: paddings,
     right: paddings,
     paddingHorizontal: horizontalScale(10),
+  },
+  stepWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  premiumBlock: {
+    marginLeft: horizontalScale(10),
   },
 });

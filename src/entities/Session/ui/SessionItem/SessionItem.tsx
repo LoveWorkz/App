@@ -19,18 +19,19 @@ import {HeartIcon, HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
 import {Button} from '@src/shared/ui/Button/Button';
 import {ColorType} from '@src/app/styles/themeStyle';
 import {SelectedEllipseIcon} from '@src/shared/assets/icons/SelectedEllipse';
+import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
 import {SessionState, SessionType} from '../../model/types/sessionType';
 import sessionStore from '../../model/store/sessionStore';
 import PresSessionModal from '../PreSessionModal/PreSessionModal';
 
 interface SessionItemProps {
-  isBlocked: boolean;
   session: SessionType;
   state: SessionState;
+  isPremium: boolean;
 }
 
 const SessionItem = (props: SessionItemProps) => {
-  const {isBlocked, session, state = 'completed'} = props;
+  const {session, state = 'completed', isPremium} = props;
 
   const colors = useColors();
   const {theme} = useTheme();
@@ -39,7 +40,7 @@ const SessionItem = (props: SessionItemProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  const disabled = isBlocked || state === 'upcoming';
+  let isBlocked = false;
 
   const toggleFavorite = () => {
     setIsFavorite(prev => !prev);
@@ -47,7 +48,7 @@ const SessionItem = (props: SessionItemProps) => {
 
   let leftIcon = EllipseIcon;
   let rightIcon = <></>;
-  let bgColor = colors.softPeriwinkle;
+  let bgColor = isPremium ? colors.disabledSessionColor : colors.softPeriwinkle;
 
   switch (state) {
     case 'completed':
@@ -73,7 +74,7 @@ const SessionItem = (props: SessionItemProps) => {
     default:
       leftIcon = LockIcon;
       rightIcon = <></>;
-      bgColor = colors.disabledSessionColor;
+      isBlocked = true;
   }
 
   const onSessionPressHandler = () => {
@@ -88,7 +89,7 @@ const SessionItem = (props: SessionItemProps) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
-        disabled={disabled}
+        disabled={isBlocked}
         onPress={onSessionPressHandler}
         style={[
           styles.SessionItem,
@@ -97,6 +98,11 @@ const SessionItem = (props: SessionItemProps) => {
             backgroundColor: bgColor,
           },
         ]}>
+        {isPremium && (
+          <View style={styles.premiumBlock}>
+            <PremiumBlock isGradient />
+          </View>
+        )}
         <>
           <View style={styles.sessionNumberWrapper}>
             <SvgXml xml={leftIcon} style={styles.leftIcon} />
@@ -206,5 +212,10 @@ const styles = StyleSheet.create({
   rightIcon: {
     height: horizontalScale(18),
     width: horizontalScale(18),
+  },
+  premiumBlock: {
+    position: 'absolute',
+    right: horizontalScale(globalPadding),
+    top: horizontalScale(globalPadding),
   },
 });
