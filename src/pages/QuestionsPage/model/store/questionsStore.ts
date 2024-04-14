@@ -89,13 +89,11 @@ class QuestionsStore {
     id,
     key,
     sharedQuestionId,
-    sessionId,
     setIsGradient,
   }: {
     id?: string;
     key: DocumentType;
     sharedQuestionId?: string;
-    sessionId?: string;
     setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
@@ -119,7 +117,8 @@ class QuestionsStore {
           });
           break;
         case DocumentType.CATEGORY:
-          if (!(id && sessionId)) {
+          const currentSession = sessionStore.session
+          if (!(id && currentSession)) {
             return;
           }
 
@@ -127,22 +126,24 @@ class QuestionsStore {
           if (sharedQuestionId) {
             categoryStore.getAndSetCategory({id});
           }
+
           this.fetchSpecificQuestions({
             key: DocumentType.CATEGORY,
             sharedQuestionId,
           });
 
-          // init current question id for the first time
-          await categoryStore.initUserCategoryQuestionId({
-            id,
+          // Initialize the first question ID in the session. This is only done once when the session first starts
+          // to ensure the user starts with the correct question.
+          await categoryStore.initSessionQuestion({
             questions: this.questions,
-            sessionId,
+            session: currentSession,
           });
+
           // init questions page info
           categoryStore.getQuestionSwipeInfoForCategory({
             sharedQuestionId,
             questions: this.questions,
-            sessionId,
+            sessionId: currentSession.id,
             setIsGradient,
           });
 
@@ -530,6 +531,7 @@ class QuestionsStore {
       const isLastCategory = categoryStore.getIsLastCategoryByKey(
         category.name,
       );
+
       const isLastSession = this.getIsLastSession({
         sessionNumber: session.sessionNumber,
         isLastCategory,
@@ -546,7 +548,7 @@ class QuestionsStore {
           }
         }
 
-        // if the category is “All in one” || Hot || Intimate, we don't need to update the next category
+        // if the category is “All in one” || Special || Intimate, we don't need to update the next category
         const canOpenNextCategory = this.shouldProceedToNextCategory({
           category,
           isLastCategory,
@@ -567,7 +569,7 @@ class QuestionsStore {
         return;
       }
 
-      if (category.sessions[sessionId].isAllQuestionsSwiped) {
+      if (session.isAllQuestionsSwiped) {
         return;
       }
 

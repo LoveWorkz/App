@@ -18,11 +18,7 @@ import {
   ChallengeType,
   SpecialChallengeType,
 } from '@src/entities/Challenge';
-import {
-  QuadrantType,
-  SessionsMap,
-  SessionType,
-} from '../types/sessionType';
+import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
   sessionsCountWithoutSubscription,
   sessionsCountWithSubscription,
@@ -144,8 +140,12 @@ class SessionStore {
 
       const quadrants = data.docs.map((doc, i) => {
         const quadrant = doc.data() as QuadrantType;
+        const isFirstQuadrant = i === 0;
 
-        const isPremium = i === 0 ? false : !hasUserSubscription;
+        const isPremium: boolean =
+          categoryStore.isFirstLevel(levelId) && isFirstQuadrant
+            ? false
+            : !hasUserSubscription;
 
         return {
           ...quadrant,
@@ -212,7 +212,11 @@ class SessionStore {
 
       const quadrantSessions = await Promise.all(quadrantSessionsPromises);
       const quadrantDetailsWithSessions = quadrants.map((quadrant, i) => {
-        const isPremium = i === 0 ? false : !hasUserSubscription;
+        const isFirstQuadrant = i === 0;
+        const isPremium: boolean =
+          categoryStore.isFirstLevel(levelId) && isFirstQuadrant
+            ? false
+            : !hasUserSubscription;
 
         const sessions =
           quadrantSessions.find(q => q.quadrantId === quadrant.id)?.sessions ||
@@ -295,18 +299,19 @@ class SessionStore {
 
       const categoryId = category.id;
 
-      const isLastCategory = categoryStore.getIsLastCategoryByKey(
-        category.name,
-      );
-      let sessions = this.sessions;
+      // const isLastCategory = categoryStore.getIsLastCategoryByKey(
+      //   category.name,
+      // );
+
+      const sessions = this.sessions;
       const currentSession = this.session;
       if (!currentSession) {
         return;
       }
 
-      if (isLastCategory) {
-        sessions = this.allSessionsFromAllCategories;
-      }
+      // if (isLastCategory) {
+      //   sessions = this.allSessionsFromAllCategories;
+      // }
 
       const nextSession = getNextElementById<SessionType>({
         id: currentSession.id,
@@ -338,6 +343,7 @@ class SessionStore {
     //   field: `sessions.${currentSession.id}.isAllQuestionsSwiped`,
     //   data: true,
     // });
+
 
     const promise1 = userCategoryStore.updateSession({
       sessionId: currentSession.id,

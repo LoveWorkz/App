@@ -30,3 +30,5 @@ export const categoryExample: CategoryType = {
   currentSessionNumber: 1,
   challengeCategoryId: '',
 };
+
+export const FIRST_LEVEL_ID = 'level_1';

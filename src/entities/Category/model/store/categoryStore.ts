@@ -13,8 +13,9 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {specialDayStore} from '@src/entities/SpecialDay';
+import {sessionStore, SessionType} from '@src/entities/Session';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
-import {sessionStore} from '@src/entities/Session';
+import {FIRST_LEVEL_ID} from '../lib/category';
 
 class CategoryStore {
   category: CategoryType | null = null;
@@ -33,42 +34,36 @@ class CategoryStore {
     this.isSpecialCategoryBlocked = isBlocked;
   };
 
-  initUserCategoryQuestionId = async ({
+  // Initializes the current question for a session if not already set.
+  async initSessionQuestion({
     questions,
-    id,
-    sessionId,
+    session,
   }: {
     questions: QuestionType[];
-    id: string;
-    sessionId: string;
-  }) => {
+    session: SessionType;
+  }) {
     try {
       const firstQuestion = questions[0];
 
-      // await userCategoryStore.updateUserCategory({
-      //   id,
-      //   field: `sessions.${sessionId}.currentQuestion`,
-      //   data: firstQuestion.id,
-      // });
-
-      console.log('1111vcvcv1', sessionStore.session);
-
-      const session = sessionStore.session;
-      if (session) {
-        console.log('2222');
-        await userCategoryStore.updateSession({
-          sessionId,
-          field: 'currentQuestion',
-          data: firstQuestion.id,
-        });
-
-        const newSession = {...session, currentQuestion: firstQuestion.id};
-        sessionStore.setSession(newSession);
+      // Check if the current question is already set in the session.
+      if (session.currentQuestion) {
+        return;
       }
-    } catch (e) {
-      errorHandler({error: e});
+
+      // Update the session with the first question ID in the firestore.
+      await userCategoryStore.updateSession({
+        sessionId: session.id,
+        field: 'currentQuestion',
+        data: firstQuestion.id,
+      });
+
+      // Update the current session in the local store.
+      const updatedSession = {...session, currentQuestion: firstQuestion.id};
+      sessionStore.setSession(updatedSession);
+    } catch (error) {
+      errorHandler({error});
     }
-  };
+  }
 
   fetchCategory = async ({id}: {id: string}) => {
     try {
@@ -202,6 +197,10 @@ class CategoryStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  isFirstLevel = (levelId: string) => {
+    return levelId === FIRST_LEVEL_ID;
   };
 
   getQuestionSwipeInfoForCategory = ({

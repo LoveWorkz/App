@@ -115,18 +115,18 @@ export const getLevels = () => {
       currentSession: firstSessionId,
       currentSessionNumber: 1,
       ratePopUpBreakpoint: 3,
-      quadrants: getQuadrants(),
+      quadrants: getQuadrants(levelId),
     };
   });
 
   return result;
 };
 
-const getQuadrants = () => {
+const getQuadrants = (levelId: string) => {
   let result: Record<string, Partial<QuadrantType>> = {};
 
   quadrantIds.forEach(quadrantId => {
-    const isBlocked = quadrantId !== 'quadrant1';
+    const isBlocked = !(levelId === 'level_1' && quadrantId === 'quadrant1');
 
     result[quadrantId] = {
       ...result[quadrantId],

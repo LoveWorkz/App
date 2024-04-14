@@ -21,11 +21,12 @@ const SessionsList = (props: SessionsListProps) => {
       {sessions.map((item, i) => {
         let state: SessionState = 'completed';
 
-        if (item.isBlocked) {
-          state = 'upcoming';
-        }
         if (item.sessionNumber === currentLevel?.currentSessionNumber) {
           state = 'current';
+        }
+
+        if (item.isBlocked) {
+          state = 'upcoming';
         }
 
         return (
