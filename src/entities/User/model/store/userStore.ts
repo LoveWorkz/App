@@ -61,7 +61,7 @@ class UserStore {
     });
   };
 
-  setCurrentCategory = (category: CurrentCategory) => {
+  setCurrentLevel = (category: CurrentCategory) => {
     this.currentCategory = category;
   };
 
@@ -177,7 +177,7 @@ class UserStore {
 
           this.user = user;
 
-          this.setCurrentCategory(user.category);
+          this.setCurrentLevel(user.category);
           challengesStore.setChallengeCategory(user.challengeCategory);
           quotesStore.setIsQuoteInfo(user.quote);
           wowThatWasFastModalStore.setIsThatWasFastModalForbidden(

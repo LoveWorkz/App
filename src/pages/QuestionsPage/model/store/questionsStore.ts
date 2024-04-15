@@ -117,7 +117,7 @@ class QuestionsStore {
           });
           break;
         case DocumentType.CATEGORY:
-          const currentSession = sessionStore.session
+          const currentSession = sessionStore.session;
           if (!(id && currentSession)) {
             return;
           }
@@ -136,6 +136,7 @@ class QuestionsStore {
           // to ensure the user starts with the correct question.
           await categoryStore.initSessionQuestion({
             questions: this.questions,
+            levelId: id,
             session: currentSession,
           });
 
@@ -233,21 +234,18 @@ class QuestionsStore {
 
       this.checkAndResetNotificationDate();
 
-      // await userCategoryStore.updateUserCategory({
-      //   id: currentCategory.id,
-      //   data: question.id,
-      //   field: `sessions.${sessionId}.currentQuestion`,
-      // });
-
-      await userCategoryStore.updateSession({
-        sessionId: sessionId,
-        field: 'currentQuestion',
-        data: question.id,
-      });
+      await userCategoryStore.updateUserSessions([
+        {
+          sessionId: sessionId,
+          levelId: currentCategory.id,
+          updates: {
+            currentQuestion: question.id,
+          },
+        },
+      ]);
 
       this.checkIfAllQuestionsSwiped({
         questionId: question.id,
-        sessionId,
       });
     } catch (e) {
       errorHandler({error: e});
@@ -439,38 +437,6 @@ class QuestionsStore {
     return favoritesQuestions;
   };
 
-  getIsLastSession = ({
-    sessionNumber,
-    isLastCategory,
-  }: {
-    sessionNumber: number;
-    isLastCategory: boolean;
-  }) => {
-    const sessionsCount = sessionStore.getAllSessionsCount();
-    let lastSessionNumber = sessionsCount;
-
-    if (isLastCategory) {
-      const unlockedCategories = categoriesStore.unlockedCategories;
-      lastSessionNumber = sessionsCount * unlockedCategories.length;
-    }
-
-    return sessionNumber === lastSessionNumber;
-  };
-
-  shouldProceedToNextCategory = ({
-    category,
-    isLastCategory,
-  }: {
-    category: CategoryType;
-    isLastCategory: boolean;
-  }) => {
-    return (
-      category.name !== CategoryKey.Intimate &&
-      category.name !== CategoryKey.Specials &&
-      !isLastCategory
-    );
-  };
-
   checkAndResetNotificationDate = async () => {
     const user = userStore.user;
     const currentCategory = categoryStore.category;
@@ -499,164 +465,54 @@ class QuestionsStore {
     userStore.setNotification({field: 'lastSessionDate', value: ''});
   };
 
-  checkIfAllQuestionsSwiped = async (param: {
-    questionId: string;
-    sessionId: string;
-  }) => {
+  // Function to check if all questions in a session are swiped and handle the consequences.
+  async checkIfAllQuestionsSwiped(param: {questionId: string}) {
     try {
-      crashlytics().log('Checking are all questions swiped.');
+      crashlytics().log('Checking if all questions are swiped.');
 
-      const {questionId, sessionId} = param;
-
+      // Retrieve the question information from the store.
       const questionInfo = questionStore.getQuestionInfo({
-        questionId,
+        questionId: param.questionId,
         questions: this.questions,
       });
-      if (!questionInfo) {
-        return;
-      }
 
-      // if it's not last question exit
-      if (questionInfo.currentQuestionNumber !== this.questionsSize) {
+      // Exit if no question info is found or if not the last question.
+      if (
+        !questionInfo ||
+        questionInfo.currentQuestionNumber !== this.questionsSize
+      ) {
         return;
       }
 
       const category = categoryStore.category;
       const session = sessionStore.session;
 
-      if (!(category && session)) {
+      // Ensure both category and session are valid.
+      if (!category || !session) {
         return;
       }
 
-      const isLastCategory = categoryStore.getIsLastCategoryByKey(
-        category.name,
-      );
-
-      const isLastSession = this.getIsLastSession({
-        sessionNumber: session.sessionNumber,
-        isLastCategory,
-      });
-
-      if (isLastSession) {
-        if (category.name === CategoryKey.Intimate) {
-          if (session.challenge.isChallengeSpecial) {
-            await challengeStore.updateSpecialChallenge({
-              id: session.challenge.challengeId,
-              value: false,
-              field: 'isBlocked',
-            });
-          }
-        }
-
-        // if the category is “All in one” || Special || Intimate, we don't need to update the next category
-        const canOpenNextCategory = this.shouldProceedToNextCategory({
-          category,
-          isLastCategory,
-        });
-
-        // if we update a category once, we won't need to update it again
-        const isAllSessionsPassed = category.isAllSessionsPassed;
-
-        if (!canOpenNextCategory || isAllSessionsPassed) {
-          return;
-        }
-
-        this.updateUserDataAfterSwipedAllQuestions({
-          categoryId: category.id,
+      if (
+        sessionStore.isLastQuadrant() &&
+        sessionStore.isLastSessionInsideQuadrant()
+      ) {
+        // Update user data and show congrats modal if applicable.
+        categoryStore.updateUserLevelAftePassedAllSessionsAndQuadrats({
+          level: category,
           session,
         });
         this.setCongratsModalVisible(true);
-        return;
+      } else if (sessionStore.isLastSessionInsideQuadrant()) {
+        // Find and update to the next quadrant.
+        await sessionStore.findAndUpdateNextQuadrant(category);
+      } else {
+        // Update user session normally if none of the special conditions apply.
+        sessionStore.updateUserSessionAfterSwipedAllQuestions({category});
       }
-
-      if (session.isAllQuestionsSwiped) {
-        return;
-      }
-
-      sessionStore.updateUserSessionAfterSwipedAllQuestions({
-        category,
-      });
     } catch (e) {
       errorHandler({error: e});
     }
-  };
-
-  updateUserDataAfterSwipedAllQuestions = async ({
-    categoryId,
-    session,
-  }: {
-    categoryId: string;
-    session: SessionType;
-  }) => {
-    try {
-      const categories = categoriesStore.categories;
-      const nextCategory = getNextElementById<CategoryType>({
-        id: categoryId,
-        array: categories,
-      });
-
-      if (!nextCategory) {
-        return;
-      }
-
-      userStore.setCurrentCategory({
-        currentCategory: nextCategory.name,
-      });
-
-      // const promise1 = userCategoryStore.updateUserCategory({
-      //   id: categoryId,
-      //   field: 'isAllSessionsPassed',
-      //   data: true,
-      // });
-
-      const promise1 = userCategoryStore.updateLevel({
-        levelId: categoryId,
-        field: 'isAllSessionsPassed',
-        data: true,
-      });
-
-      // const promise2 = userCategoryStore.updateUserCategory({
-      //   id: nextCategory.id,
-      //   field: 'isBlocked',
-      //   data: false,
-      // });
-
-      const promise2 = userCategoryStore.updateLevel({
-        levelId: nextCategory.id,
-        field: 'isBlocked',
-        data: false,
-      });
-
-      const promise3 = userStore.updateUser({
-        field: 'category.currentCategory',
-        data: nextCategory.name,
-      });
-
-      const promise4 = userChallengeCategoryStore.updateUserChallengeCategory({
-        field: 'isBlocked',
-        data: false,
-        challengeCategoryName: nextCategory.name,
-      });
-
-      // after completing a session, set a finish date
-      const promise5 = userStore.setNotification({
-        field: 'lastSessionDate',
-        value: new Date(),
-      });
-
-      if (session.challenge.isChallengeSpecial) {
-        await challengeStore.updateSpecialChallenge({
-          id: session.challenge.challengeId,
-          value: false,
-          field: 'isBlocked',
-        });
-      }
-
-      await Promise.all([promise1, promise2, promise3, promise4, promise5]);
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
+  }
 
   loadAds = (param: {questionNumber: number; interstitial: InterstitialAd}) => {
     try {

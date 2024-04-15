@@ -131,40 +131,43 @@ const getQuadrants = (levelId: string) => {
     result[quadrantId] = {
       ...result[quadrantId],
       isBlocked,
+      isCurrent: !isBlocked,
     };
   });
 
   return result;
 };
 
-export const getSessions2 = () => {
+export const getSessions2 = (levelId: string, j: number) => {
   let result: Record<string, Partial<SessionType>> = {};
 
   let quadrantIndex = 0;
+  const initialTime = new Date(); // Capture the start time
 
-  // Loop through each level and session type
-  Object.entries(sessionsIdMap).forEach(([levelId, sessionId], j) => {
-    for (let i = 1; i <= 20; i++) {
-      const isSessionUnlocked = j === 0 && i === 1;
+  for (let i = 1; i <= 20; i++) {
+    const isSessionUnlocked = j === 0 && i === 1;
 
-      // Add the quadrant ID every 5 sessions, and rotate through the list of quadrants
-      let quadrantId = quadrantIds[quadrantIndex];
-      if (i % 5 === 0) {
-        quadrantIndex = (quadrantIndex + 1) % quadrantIds.length;
-      }
-
-      result[`${sessionId}_${i}`] = {
-        ...result[`${sessionId}_${i}`],
-        ...userSession,
-        isBlocked: !isSessionUnlocked,
-        levelId: levelId, // Append the level ID
-        quadrantId: quadrantId, // Append the quadrant ID every 5 sessions
-      };
+    // Add the quadrant ID every 5 sessions, and rotate through the list of quadrants
+    let quadrantId = quadrantIds[quadrantIndex];
+    if (i % 5 === 0) {
+      quadrantIndex = (quadrantIndex + 1) % quadrantIds.length;
     }
 
-    // Reset quadrant index for the next level
-    quadrantIndex = 0;
-  });
+    const sessionIdPrefix = sessionsIdMap[levelId];
+
+    // Calculate the createdAt date for this session
+    let createdAt = new Date(initialTime.getTime() + i * 60000); // Increase by 1 minute for each session
+
+    result[`${sessionIdPrefix}_${i}`] = {
+      ...result[`${sessionIdPrefix}_${i}`],
+      ...userSession,
+      isBlocked: !isSessionUnlocked,
+      levelId: levelId, // Append the level ID
+      quadrantId: quadrantId, // Append the quadrant ID every 5 sessions
+      createdAt: createdAt.toISOString(), // Store createdAt as an ISO string
+      isCurrent: isSessionUnlocked,
+    };
+  }
 
   return result;
 };

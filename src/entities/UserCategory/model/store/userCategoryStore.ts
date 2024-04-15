@@ -2,7 +2,7 @@ import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-import {Collections} from '@src/shared/types/firebase';
+import {Collections, FirestoreUpdateObject} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {categoriesStore} from '@src/pages/CategoriesPage';
@@ -114,12 +114,12 @@ class UserCategoryStore {
     const sessionsRef = firestore()
       .collection(Collections.USER_LEVELS)
       .doc(userId)
+      .collection(Collections.LEVELS)
+      .doc(levelId)
       .collection(Collections.SESSIONS);
 
     try {
-      const querySnapshot = await sessionsRef
-        .where('levelId', '==', levelId) // Filter sessions by levelId
-        .get();
+      const querySnapshot = await sessionsRef.get();
 
       // Iterate over each level document
       const sessions = querySnapshot.docs.map(doc => {
@@ -205,19 +205,24 @@ class UserCategoryStore {
   };
 
   setSessions = async (userId: string) => {
-    const sessions = getSessions2();
-
-    const userSessionsRef = firestore()
-      .collection(Collections.USER_LEVELS)
-      .doc(userId)
-      .collection(Collections.SESSIONS);
-
-    const sessionIds = Object.keys(sessions);
+    const levelIds = Object.keys(getLevels());
     const batch = firestore().batch();
 
-    sessionIds.forEach(sessionId => {
-      const singleSessionRef = userSessionsRef.doc(sessionId);
-      batch.set(singleSessionRef, sessions[sessionId]);
+    levelIds.forEach((levelId, i) => {
+      const userSessionsRef = firestore()
+        .collection(Collections.USER_LEVELS)
+        .doc(userId)
+        .collection(Collections.LEVELS)
+        .doc(levelId)
+        .collection(Collections.SESSIONS);
+
+      const sessions = getSessions2(levelId, i);
+      const sessionIds = Object.keys(sessions);
+
+      sessionIds.forEach(sessionId => {
+        const singleSessionRef = userSessionsRef.doc(sessionId);
+        batch.set(singleSessionRef, sessions[sessionId]);
+      });
     });
 
     try {
@@ -265,16 +270,67 @@ class UserCategoryStore {
     }
   };
 
-  updateLevel = async ({
-    levelId,
-    field,
-    data,
-  }: {
-    levelId: string;
-    field: string;
-    data: number | string | boolean;
-  }) => {
-    crashlytics().log('Updating User Levels.');
+  updateUserLevels = async (
+    updatesArray: {
+      levelId: string;
+      updates: Record<string, number | string | boolean>;
+    }[],
+  ) => {
+    const db = firestore();
+    const batch = db.batch();
+
+    const isOffline = await userStore.getIsUserOffline();
+    const userId = userStore.userId;
+
+    if (!userId) {
+      console.error('User ID not found.');
+      return;
+    }
+
+    updatesArray.forEach(update => {
+      const {levelId, updates} = update;
+      const levelRef = db
+        .collection(Collections.USER_LEVELS)
+        .doc(userId)
+        .collection(Collections.LEVELS)
+        .doc(levelId);
+
+      // Prepare update data for each level
+      const updateData = Object.entries(updates).reduce(
+        (acc: FirestoreUpdateObject, [key, value]) => {
+          acc[key] = value;
+          return acc;
+        },
+        {},
+      );
+
+      // Add update operation to batch
+      batch.update(levelRef, updateData);
+    });
+
+    // Commit the batch to perform all updates atomically
+    try {
+      // Perform the update operation based on connectivity
+      if (isOffline) {
+        batch.commit();
+      } else {
+        await batch.commit();
+      }
+      console.log('All level updates processed successfully.');
+    } catch (error) {
+      errorHandler({error: error, message: 'Error updating multiple levels:'});
+    }
+  };
+
+  updateUserQuadrants = async (
+    updates: {
+      levelId: string;
+      quadrantId: string;
+      updates: Record<string, any>;
+    }[],
+  ) => {
+    const db = firestore();
+    const batch = db.batch();
 
     const isOffline = await userStore.getIsUserOffline();
     const userId = userStore.userId;
@@ -282,82 +338,48 @@ class UserCategoryStore {
       return;
     }
 
-    const levelRef = firestore()
-      .collection(Collections.USER_LEVELS)
-      .doc(userId)
-      .collection(Collections.LEVELS)
-      .doc(levelId);
+    updates.forEach(({levelId, quadrantId, updates}) => {
+      const levelRef = db
+        .collection(Collections.USER_LEVELS)
+        .doc(userId)
+        .collection(Collections.LEVELS)
+        .doc(levelId);
+      const updatePath = `quadrants.${quadrantId}`;
 
+      const formattedUpdates = Object.keys(updates).reduce(
+        (acc: FirestoreUpdateObject, key) => {
+          acc[`${updatePath}.${key}`] = updates[key]; // create nested paths for update
+          return acc;
+        },
+        {},
+      );
+
+      // Add each update to the batch
+      batch.update(levelRef, formattedUpdates);
+    });
+
+    // Commit the batch to perform all updates atomically
     try {
-      // if offline mode use without await
+      // Perform the update operation based on connectivity
       if (isOffline) {
-        levelRef.update({
-          [`${field}`]: data,
-        });
-
-        return;
+        batch.commit();
+      } else {
+        await batch.commit();
       }
 
-      await levelRef.update({
-        [`${field}`]: data,
-      });
-    } catch (e) {
-      errorHandler({error: e, message: 'Error updating level:'});
+    } catch (error) {
+      errorHandler({error: error, message: 'Error updating quadrants:'});
+
     }
   };
 
-  updateQuadrant = async ({
-    levelId,
-    quadrantId,
-    field,
-    data,
-  }: {
-    levelId: string;
-    quadrantId: string;
-    field: string;
-    data: number | string | boolean;
-  }) => {
-    crashlytics().log('Updating User Quadrants.');
-
-    const isOffline = await userStore.getIsUserOffline();
-    const userId = userStore.userId;
-    if (!userId) {
-      return;
-    }
-
-    const levelRef = firestore()
-      .collection(Collections.USER_LEVELS)
-      .doc(userId)
-      .collection(Collections.LEVELS)
-      .doc(levelId);
-
-    try {
-      // if offline mode use without await
-      if (isOffline) {
-        levelRef.update({
-          [`quadrants.${quadrantId}.${field}`]: data,
-        });
-
-        return;
-      }
-
-      await levelRef.update({
-        [`quadrants.${quadrantId}.${field}`]: data,
-      });
-    } catch (e) {
-      errorHandler({error: e, message: 'Error updating quadrants:'});
-    }
-  };
-
-  updateSession = async ({
-    sessionId,
-    field,
-    data,
-  }: {
-    sessionId: string;
-    field: string;
-    data: number | string | boolean;
-  }) => {
+  updateUserSessions = async (
+    updatesArray: {
+      sessionId: string;
+      levelId: string;
+      updates: Record<string, number | string | boolean>;
+    }[],
+  ) => {
     crashlytics().log('Updating User Sessions.');
 
     const isOffline = await userStore.getIsUserOffline();
@@ -366,27 +388,34 @@ class UserCategoryStore {
       return;
     }
 
-    const sessionRef = firestore()
-      .collection(Collections.USER_LEVELS)
-      .doc(userId)
-      .collection(Collections.SESSIONS)
-      .doc(sessionId);
+    const db = firestore();
+    const batch = db.batch();
 
+    updatesArray.forEach(update => {
+      const {sessionId, levelId, updates} = update;
+      const sessionRef = db
+        .collection(Collections.USER_LEVELS)
+        .doc(userId)
+        .collection(Collections.LEVELS)
+        .doc(levelId)
+        .collection(Collections.SESSIONS)
+        .doc(sessionId);
+
+      // Add each update to the batch
+      batch.update(sessionRef, updates);
+    });
+
+    // Commit the batch to perform all updates atomically
     try {
-      // if offline mode use without await
+      // Perform the update operation based on connectivity
       if (isOffline) {
-        sessionRef.update({
-          [`${field}`]: data,
-        });
-
-        return;
+        batch.commit();
+      } else {
+        await batch.commit();
       }
 
-      await sessionRef.update({
-        [`${field}`]: data,
-      });
-    } catch (e) {
-      errorHandler({error: e, message: 'Error updating sessions:'});
+    } catch (error) {
+      errorHandler({error: error, message: 'Error updating sessions:'});
     }
   };
 

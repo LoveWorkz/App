@@ -1,7 +1,6 @@
 import {makeAutoObservable} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
 
-// import {categoryStore} from '@src/entities/Category';
 import {rubricStore, RubricType} from '@src/entities/Rubric';
 import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
@@ -187,16 +186,15 @@ class WowThatWasFastStore {
         }
 
         if (isCategory) {
-          // await userCategoryStore.updateUserCategory({
-          //   id,
-          //   field: `sessions.${sessionId}.breakPointForCheckingDate`,
-          //   data: newCheckTime,
-          // });
-          await userCategoryStore.updateSession({
-            sessionId,
-            field: 'breakPointForCheckingDate',
-            data: newCheckTime,
-          });
+          await userCategoryStore.updateUserSessions([
+            {
+              sessionId,
+              levelId: id,
+              updates: {
+                breakPointForCheckingDate: newCheckTime,
+              },
+            },
+          ]);
         } else {
           await userRubricStore.updateUserRubric({
             id,
@@ -228,16 +226,15 @@ class WowThatWasFastStore {
       const currentDate = new Date().toJSON();
 
       if (isCategory) {
-        // await userCategoryStore.updateUserCategory({
-        //   id,
-        //   field: `sessions.${sessionId}.questionSwipeStartDate`,
-        //   data: currentDate,
-        // });
-        await userCategoryStore.updateSession({
-          sessionId,
-          field: 'questionSwipeStartDate',
-          data: currentDate,
-        });
+        await userCategoryStore.updateUserSessions([
+          {
+            sessionId,
+            levelId: id,
+            updates: {
+              questionSwipeStartDate: currentDate,
+            },
+          },
+        ]);
       } else {
         await userRubricStore.updateUserRubric({
           id,
@@ -276,17 +273,15 @@ class WowThatWasFastStore {
       }
 
       if (isCategory) {
-        // await userCategoryStore.updateUserCategory({
-        //   id,
-        //   field: `sessions.${sessionId}.swipedQuestionsPercentage`,
-        //   data: swipedQuestionsPercentage,
-        // });
-
-        await userCategoryStore.updateSession({
-          sessionId,
-          field: 'swipedQuestionsPercentage',
-          data: swipedQuestionsPercentage,
-        });
+        await userCategoryStore.updateUserSessions([
+          {
+            sessionId,
+            levelId: id,
+            updates: {
+              swipedQuestionsPercentage: swipedQuestionsPercentage,
+            },
+          },
+        ]);
       } else {
         await userRubricStore.updateUserRubric({
           id,

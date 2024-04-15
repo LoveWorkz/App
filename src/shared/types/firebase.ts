@@ -42,3 +42,9 @@ export enum FirebaseErrorCodes {
 
 export type DocsType =
   FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>[];
+
+// Type for the updates argument which contains the fields to update
+export type UpdateData = Record<string, number | string | boolean>;
+
+// Type for the update object that will be used in the Firestore update function
+export type FirestoreUpdateObject = Record<string, number | string | boolean>;

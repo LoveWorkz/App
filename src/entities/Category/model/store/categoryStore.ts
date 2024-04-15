@@ -14,6 +14,8 @@ import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {sessionStore, SessionType} from '@src/entities/Session';
+import {challengeStore} from '@src/entities/Challenge';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 import {FIRST_LEVEL_ID} from '../lib/category';
 
@@ -38,9 +40,11 @@ class CategoryStore {
   async initSessionQuestion({
     questions,
     session,
+    levelId,
   }: {
     questions: QuestionType[];
     session: SessionType;
+    levelId: string;
   }) {
     try {
       const firstQuestion = questions[0];
@@ -51,11 +55,15 @@ class CategoryStore {
       }
 
       // Update the session with the first question ID in the firestore.
-      await userCategoryStore.updateSession({
-        sessionId: session.id,
-        field: 'currentQuestion',
-        data: firstQuestion.id,
-      });
+      await userCategoryStore.updateUserSessions([
+        {
+          sessionId: session.id,
+          levelId,
+          updates: {
+            currentQuestion: firstQuestion.id,
+          },
+        },
+      ]);
 
       // Update the current session in the local store.
       const updatedSession = {...session, currentQuestion: firstQuestion.id};
@@ -75,17 +83,10 @@ class CategoryStore {
         return;
       }
 
-      // default category
-      const categoryData = await firestore()
+      const cdefaultCtegoryData = await firestore()
         .collection(Collections.LEVELS)
         .doc(id)
         .get({source});
-      // user custom category
-      // const userCategoryData = await firestore()
-      //   .collection(Collections.USER_LEVELS)
-      //   .doc(userId)
-      //   .collection()
-      //   .get({source});
 
       const userCategoryData = await firestore()
         .collection(Collections.USER_LEVELS)
@@ -99,12 +100,12 @@ class CategoryStore {
         return;
       }
 
-      const currentCategory = categoryData.data() as CategoryType;
+      const currentCategory = cdefaultCtegoryData.data() as CategoryType;
 
       // merge default category with user custom category
       const category = {
         ...currentCategory,
-        id: categoryData.id,
+        id: cdefaultCtegoryData.id,
         name: currentCategory.name,
         ...userCategory,
       } as CategoryType;
@@ -183,10 +184,6 @@ class CategoryStore {
     return categoriesStore.categories.find(category => {
       return category.id === id;
     });
-  };
-
-  getIsLastCategoryByKey = (categoryKey: CategoryKey) => {
-    return categoryKey === CategoryKey.How_To_Use;
   };
 
   getCategoryByName = (name: string) => {
@@ -320,17 +317,14 @@ class CategoryStore {
     categoryId: string;
     isBlocked: boolean;
   }) => {
-    // await userCategoryStore.updateUserCategory({
-    //   id: categoryId,
-    //   field: 'isBlocked',
-    //   data: isBlocked,
-    // });
-
-    await userCategoryStore.updateLevel({
-      levelId: categoryId,
-      field: 'isBlocked',
-      data: isBlocked,
-    });
+    await userCategoryStore.updateUserLevels([
+      {
+        levelId: categoryId,
+        updates: {
+          isBlocked,
+        },
+      },
+    ]);
 
     const categories = categoriesStore.categories;
 
@@ -369,6 +363,135 @@ class CategoryStore {
     const levelNumber = levels.findIndex(level => level.id === id);
     return levelNumber === -1 ? 1 : levelNumber + 1;
   };
+
+  isLastLevel = (categoryKey: CategoryKey) => {
+    return categoryKey === CategoryKey.Intimate;
+  };
+
+  // Updates user data and progresses to the next level after all questions have been swiped.
+  async updateUserLevelAftePassedAllSessionsAndQuadrats({
+    level,
+    session,
+  }: {
+    level: CategoryType;
+    session: SessionType;
+  }) {
+    try {
+      crashlytics().log(
+        'Attempting to update user data after all questions are swiped.',
+      );
+
+      // Check user subscription before proceeding.
+      if (!userStore.getUserHasSubscription()) {
+        console.log('User does not have an active subscription.');
+        return;
+      }
+
+      // Special challenge handling.
+      if (session.challenge.isChallengeSpecial) {
+        await this.updateChallenge(session.challenge.challengeId);
+      }
+
+      // Early exit if no updates are necessary.
+      if (this.isLastLevel(level.name) || level.isAllSessionsPassed) {
+        console.log(
+          'No further updates required. Either last level or all sessions passed.',
+        );
+        return;
+      }
+
+      // Determine the next level to transition to.
+      const nextLevel = this.getNextLevel(level.id);
+      if (!nextLevel) {
+        console.log('No next level found.');
+        return;
+      }
+
+      // Update the current level in the user store and prepare updates.
+      userStore.setCurrentLevel({currentCategory: nextLevel.name});
+      const updates = this.prepareLevelUpdates(level, nextLevel);
+
+      // Execute all updates.
+      await Promise.all(updates);
+    } catch (error) {
+      errorHandler({
+        error: error,
+        message: 'Failed to update user data after all questions were swiped.',
+      });
+    }
+  }
+
+  // Helper to update challenge information.
+  async updateChallenge(challengeId: string) {
+    await challengeStore.updateSpecialChallenge({
+      id: challengeId,
+      value: false,
+      field: 'isBlocked',
+    });
+  }
+
+  // Helper to fetch the next level.
+  getNextLevel(currentLevelId: string): CategoryType | null {
+    const levels = categoriesStore.categories;
+    return getNextElementById<CategoryType>({
+      id: currentLevelId,
+      array: levels,
+    });
+  }
+
+  // Prepare batch updates for levels and other related information.
+  prepareLevelUpdates(
+    currentLevel: CategoryType,
+    nextLevel: CategoryType,
+  ): Promise<any>[] {
+    const updateCurrentLevel = userCategoryStore.updateUserLevels([
+      {
+        levelId: currentLevel.id,
+        updates: {isAllSessionsPassed: true},
+      },
+      {
+        levelId: nextLevel.id,
+        updates: {isBlocked: false},
+      },
+    ]);
+
+    const updateCategory = userStore.updateUser({
+      field: 'category.currentCategory',
+      data: nextLevel.name,
+    });
+
+    const updateQuadrant = sessionStore.findAndUpdateNextLevelQuadrant({
+      levelId: currentLevel.id,
+      nextLevelId: nextLevel.id,
+    });
+
+    const updateSession =
+      sessionStore.findAndUpdateFirstSessionInTheNextCategory({
+        level: currentLevel,
+        nextLevel,
+      });
+
+    const updateChallengeCategory =
+      userChallengeCategoryStore.updateUserChallengeCategory({
+        field: 'isBlocked',
+        data: false,
+        challengeCategoryName: nextLevel.name,
+      });
+
+    const setFinishDate = userStore.setNotification({
+      field: 'lastSessionDate',
+      value: new Date(),
+    });
+
+    return [
+      updateCurrentLevel,
+      updateCategory,
+      updateQuadrant,
+      updateSession,
+      updateChallengeCategory,
+      setFinishDate,
+    ];
+  }
 }
 
 export default new CategoryStore();

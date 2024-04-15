@@ -3,7 +3,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import firestore from '@react-native-firebase/firestore';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {Collections, DocsType} from '@src/shared/types/firebase';
+import {Collections} from '@src/shared/types/firebase';
 import {challengeCard, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -34,6 +34,10 @@ class SessionStore {
   sessionChallenge?: ChallengeType | SpecialChallengeType;
   isFetching: boolean = true;
 
+  currentQuadrantsSessions: SessionType[] = [];
+  currentQuadrant: QuadrantType | null = null;
+  lastQuadrant: QuadrantType | null = null;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -49,6 +53,18 @@ class SessionStore {
   getSession = (sessionId: string) => {
     const session = this.sessionsMap[sessionId];
     return session;
+  };
+
+  setCurrentQuadrantsSessions = (sessions: SessionType[]) => {
+    this.currentQuadrantsSessions = sessions;
+  };
+
+  setLastQuadrant = (lastQuadrant: QuadrantType) => {
+    this.lastQuadrant = lastQuadrant;
+  };
+
+  setCurrentQuadrant = (currentQuadrant: QuadrantType) => {
+    this.currentQuadrant = currentQuadrant;
   };
 
   fetchSessionChallenge = async () => {
@@ -147,6 +163,10 @@ class SessionStore {
             ? false
             : !hasUserSubscription;
 
+        if (quadrant.isCurrent) {
+          this.setCurrentQuadrant(quadrant);
+        }
+
         return {
           ...quadrant,
           ...userQuadrants[doc.id],
@@ -187,8 +207,6 @@ class SessionStore {
       const quadrants = this.quadrants;
       const hasUserSubscription = userStore.getUserHasSubscription();
 
-      let allSessionsCount = 0;
-
       const quadrantSessionsPromises = quadrants.map(quadrant => {
         return db
           .collection(Collections.LEVELS)
@@ -200,7 +218,6 @@ class SessionStore {
           .then(sessionSnapshot => ({
             quadrantId: quadrant.id,
             sessions: sessionSnapshot.docs.map(doc => {
-              allSessionsCount += 1;
               return {
                 id: doc.id,
                 ...doc.data(),
@@ -223,6 +240,11 @@ class SessionStore {
           [];
         const sortedSessions = this.sortSessions(sessions as SessionType[]);
 
+        if (quadrant.isCurrent) {
+          this.setCurrentQuadrantsSessions(sortedSessions);
+          this.setCurrentQuadrant(quadrant);
+        }
+
         return {
           ...quadrant,
           isPremium,
@@ -230,7 +252,10 @@ class SessionStore {
         };
       });
 
+      const lastQuadrant = quadrants[quadrants.length - 1];
+
       this.setQuadrants(quadrantDetailsWithSessions as QuadrantType[]);
+      this.setLastQuadrant(lastQuadrant);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -289,120 +314,135 @@ class SessionStore {
     return questionsWithChallengeCard;
   };
 
-  updateUserSessionAfterSwipedAllQuestions = async ({
+  /**
+   * Handles updates after all questions in a session are swiped, prepares for the next session.
+   * @param category The current category details, including sessions and other metadata.
+   */
+  async updateUserSessionAfterSwipedAllQuestions({
     category,
   }: {
     category: CategoryType;
-  }) => {
+  }) {
     try {
-      crashlytics().log('Updating user session');
+      crashlytics().log(
+        'Updating user session after all questions have been swiped',
+      );
 
-      const categoryId = category.id;
-
-      // const isLastCategory = categoryStore.getIsLastCategoryByKey(
-      //   category.name,
-      // );
-
-      const sessions = this.sessions;
+      // Retrieve current session details and verify conditions.
+      const sessions = this.currentQuadrantsSessions;
       const currentSession = this.session;
-      if (!currentSession) {
+      if (!currentSession || currentSession.isAllQuestionsSwiped) {
+        console.log('No update required or all questions already swiped.');
         return;
       }
 
-      // if (isLastCategory) {
-      //   sessions = this.allSessionsFromAllCategories;
-      // }
-
+      // Determine the next session.
       const nextSession = getNextElementById<SessionType>({
         id: currentSession.id,
         array: sessions,
       });
-
       if (!nextSession) {
+        console.log('No next session found.');
         return;
       }
 
+      // Update category store and prepare session data for the update.
+      categoryStore.setCategory({
+        ...category,
+        currentSession: nextSession.id,
+        currentSessionNumber: nextSession.sessionNumber,
+      });
+
+      await this.updateSessionsData({
+        level: category,
+        currentSession,
+        nextSession,
+      });
+
       await this.checkSessionsAndShowRatePopup(category);
-      await this.updateSessionsData({categoryId, nextSession, currentSession});
     } catch (e) {
       errorHandler({error: e});
     }
-  };
+  }
 
-  updateSessionsData = async ({
-    categoryId,
+  /**
+   * Updates session and level data in Firestore based on session progression.
+   * @param level Current category level details.
+   * @param currentSession Current active session details.
+   * @param nextSession Next session details.
+   */
+  async updateSessionsData({
+    level,
     currentSession,
     nextSession,
   }: {
-    categoryId: string;
+    level: CategoryType;
     currentSession: SessionType;
     nextSession: SessionType;
-  }) => {
-    // const promise1 = userCategoryStore.updateUserCategory({
-    //   id: categoryId,
-    //   field: `sessions.${currentSession.id}.isAllQuestionsSwiped`,
-    //   data: true,
-    // });
+  }) {
+    try {
+      const updateSessionStatus = userCategoryStore.updateUserSessions([
+        {
+          sessionId: currentSession.id,
+          levelId: level.id,
+          updates: {
+            isAllQuestionsSwiped: true,
+          },
+        },
+        {
+          sessionId: nextSession.id,
+          levelId: level.id,
+          updates: {
+            isBlocked: false,
+          },
+        },
+      ]);
 
+      // Update level details regarding the current and next session.
+      const updateLevelDetails = userCategoryStore.updateUserLevels([
+        {
+          levelId: level.id,
+          updates: {
+            currentSession: nextSession.id,
+            currentSessionNumber: nextSession.sessionNumber,
+          },
+        },
+      ]);
 
-    const promise1 = userCategoryStore.updateSession({
-      sessionId: currentSession.id,
-      field: 'isAllQuestionsSwiped',
-      data: true,
-    });
+      const newLevel = {
+        ...level,
+        currentSession: nextSession.id,
+        currentSessionNumber: nextSession.sessionNumber,
+      };
+      categoryStore.setCategory(newLevel);
 
-    // const promise2 = userCategoryStore.updateUserCategory({
-    //   id: categoryId,
-    //   field: `sessions.${nextSession.id}.isBlocked`,
-    //   data: false,
-    // });
-
-    const promise2 = userCategoryStore.updateSession({
-      sessionId: nextSession.id,
-      field: 'isBlocked',
-      data: false,
-    });
-
-    // const promise3 = userCategoryStore.updateUserCategory({
-    //   id: categoryId,
-    //   field: 'currentSession',
-    //   data: nextSession.id,
-    // });
-
-    const promise3 = userCategoryStore.updateLevel({
-      levelId: categoryId,
-      field: 'currentSession',
-      data: nextSession.id,
-    });
-
-    // const promise4 = userCategoryStore.updateUserCategory({
-    //   id: categoryId,
-    //   field: 'currentSessionNumber',
-    //   data: nextSession.sessionNumber,
-    // });
-
-    const promise4 = userCategoryStore.updateLevel({
-      levelId: categoryId,
-      field: 'currentSessionNumber',
-      data: nextSession.sessionNumber,
-    });
-
-    // after completing a session, set a finish date
-    const promise5 = userStore.setNotification({
-      field: 'lastSessionDate',
-      value: new Date(),
-    });
-
-    if (currentSession.challenge.isChallengeSpecial) {
-      await challengeStore.updateSpecialChallenge({
-        id: currentSession.challenge.challengeId,
-        value: false,
-        field: 'isBlocked',
+      // Set a finish date notification for the last session.
+      const setFinishDate = userStore.setNotification({
+        field: 'lastSessionDate',
+        value: new Date(),
       });
-    }
 
-    await Promise.all([promise1, promise2, promise3, promise4, promise5]);
-  };
+      await Promise.all([
+        updateSessionStatus,
+        updateLevelDetails,
+        setFinishDate,
+      ]);
+
+      // Optionally, update special challenge if applicable.
+      if (
+        currentSession.challenge &&
+        currentSession.challenge.isChallengeSpecial
+      ) {
+        await challengeStore.updateSpecialChallenge({
+          id: currentSession.challenge.challengeId,
+          value: false,
+          field: 'isBlocked',
+        });
+      }
+    } catch (error) {
+      errorHandler({error});
+    }
+  }
 
   levelSwipeHandler = async (levelId: string) => {
     try {
@@ -435,23 +475,199 @@ class SessionStore {
       const nextRatePopupSession =
         category.currentSessionNumber + SESSION_INTERVAL_FOR_RATE_PROMPT;
 
-      // await userCategoryStore.updateUserCategory({
-      //   id: category.id,
-      //   field: 'ratePopUpBreakpoint',
-      //   data: nextRatePopupSession,
-      // });
-
-      await userCategoryStore.updateLevel({
-        levelId: category.id,
-        field: 'ratePopUpBreakpoint',
-        data: nextRatePopupSession,
-      });
+      await userCategoryStore.updateUserLevels([
+        {
+          levelId: category.id,
+          updates: {
+            ratePopUpBreakpoint: nextRatePopupSession,
+          },
+        },
+      ]);
     }
   };
 
   showRatePopup = async (currentSessionNumber: number) => {
     // Check if it's the correct session to prompt the rate popup based on the interval.
     return currentSessionNumber % SESSION_INTERVAL_FOR_RATE_PROMPT === 0;
+  };
+
+  isLastQuadrant = () => {
+    return this.currentQuadrant?.id === this.lastQuadrant?.id;
+  };
+
+  getFirstQuadrant = () => {
+    return this.quadrants[0];
+  };
+
+  isFirstQuadrant = () => {
+    return this.currentQuadrant?.id === this.getFirstQuadrant().id;
+  };
+
+  isLastSessionInsideQuadrant = () => {
+    const currentSession = this.session;
+    const lastSession =
+      this.currentQuadrantsSessions[this.currentQuadrantsSessions.length - 1];
+    return currentSession?.id === lastSession.id;
+  };
+
+  // Function to find and update the next quadrant after the current one is completed.
+  async findAndUpdateNextQuadrant(level: CategoryType) {
+    if (!userStore.getUserHasSubscription()) {
+      console.log('User does not have a valid subscription.');
+      return;
+    }
+
+    const currentQuadrant = this.currentQuadrant;
+    if (!currentQuadrant) {
+      console.log('No current quadrant available.');
+      return;
+    }
+
+    const nextQuadrant = getNextElementById<QuadrantType>({
+      id: currentQuadrant.id,
+      array: this.quadrants,
+    });
+
+    if (!nextQuadrant) {
+      console.log('No next quadrant found.');
+      return;
+    }
+
+    // Update the quadrant state to reflect the transition to the next quadrant.
+    const updatedQuadrants = this.quadrants.map(quadrant =>
+      quadrant.id === nextQuadrant.id
+        ? {
+            ...quadrant,
+            isBlocked: false,
+            isCurrent: true,
+            sessions: quadrant.sessions.map((session, index) => ({
+              ...session,
+              isBlocked: index === 0 ? false : session.isBlocked,
+            })),
+          }
+        : {
+            ...quadrant,
+            isCurrent: false,
+          },
+    );
+
+    this.setQuadrants(updatedQuadrants);
+
+    // Update quadrant statuses in the store.
+    await userCategoryStore.updateUserQuadrants([
+      {
+        levelId: level.id,
+        quadrantId: currentQuadrant.id,
+        updates: {isCurrent: false},
+      },
+      {
+        levelId: level.id,
+        quadrantId: nextQuadrant.id,
+        updates: {isCurrent: true, isBlocked: false},
+      },
+    ]);
+
+    // Update session details in the context to reflect the change in quadrants.
+    const currentSessions = this.currentQuadrantsSessions;
+    const newSession = nextQuadrant.sessions[0];
+
+    await this.updateSessionsData({
+      currentSession: currentSessions[currentSessions.length - 1],
+      nextSession: newSession,
+      level,
+    });
+
+    // Set the new current quadrant and its sessions in the context.
+    this.setCurrentQuadrant(nextQuadrant);
+    this.setCurrentQuadrantsSessions(nextQuadrant.sessions);
+  }
+
+  findAndUpdateNextLevelQuadrant = async ({
+    levelId,
+    nextLevelId,
+  }: {
+    levelId: string;
+    nextLevelId: string;
+  }) => {
+    const nextQuadrant = this.getFirstQuadrant();
+    const currentQuadrant = this.currentQuadrant;
+    if (!(nextQuadrant && currentQuadrant)) {
+      return;
+    }
+
+    this.setCurrentQuadrant(nextQuadrant);
+
+    await userCategoryStore.updateUserQuadrants([
+      {
+        levelId,
+        quadrantId: currentQuadrant.id,
+        updates: {
+          isCurrent: false,
+        },
+      },
+      {
+        levelId: nextLevelId,
+        quadrantId: nextQuadrant.id,
+        updates: {
+          isCurrent: true,
+          isBlocked: false,
+        },
+      },
+    ]);
+  };
+
+  findAndUpdateFirstSessionInTheNextCategory = async ({
+    level,
+    nextLevel,
+  }: {
+    level: CategoryType;
+    nextLevel: CategoryType;
+  }) => {
+    try {
+      const userid = userStore.userId;
+
+      // Assume we're ordering by a 'createdAt' field to find the "first" document
+      const querySnapshot = await firestore()
+        .collection(Collections.USER_LEVELS)
+        .doc(userid)
+        .collection(Collections.LEVELS)
+        .doc(nextLevel.id)
+        .collection(Collections.SESSIONS)
+        .orderBy('createdAt')
+        .limit(1)
+        .get();
+
+      if (querySnapshot.empty) {
+        console.log('No documents found.');
+        return;
+      }
+
+      // Get the first document from the results
+      const firstDoc = querySnapshot.docs[0];
+
+      const currentSessions = this.currentQuadrantsSessions;
+      const currentSession = currentSessions[currentSessions.length - 1];
+      const nextSessionId = firstDoc.id;
+
+      await userCategoryStore.updateUserSessions([
+        {
+          sessionId: currentSession.id,
+          levelId: level.id,
+          updates: {
+            isAllQuestionsSwiped: true,
+          },
+        },
+        {
+          sessionId: nextSessionId,
+          levelId: nextLevel.id,
+          updates: {
+            isBlocked: false,
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error('Error updating document:', error);
+    }
   };
 }
 

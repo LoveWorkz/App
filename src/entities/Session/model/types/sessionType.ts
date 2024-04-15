@@ -19,6 +19,8 @@ export interface SessionType {
   description: DisplayText;
   levelId: string;
   quadrantId: string;
+  createdAt: string;
+  isCurrent: boolean;
 }
 
 export type UserSessionType = Record<string, Partial<SessionType>>;
@@ -36,4 +38,5 @@ export interface QuadrantType {
   sessions: SessionType[];
   isBlocked: boolean;
   isPremium: boolean;
+  isCurrent: boolean;
 }

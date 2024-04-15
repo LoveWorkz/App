@@ -14,6 +14,7 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
+import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {QuadrantType} from '../model/types/sessionType';
 
 interface QuadrantProps {
@@ -45,6 +46,8 @@ const Quadrant = (props: QuadrantProps) => {
       </Button>
 
       <View style={styles.stepWrapper}>
+        {isBlocked && <SvgXml xml={LockIcon} style={styles.lockIcon} />}
+
         <AppText
           weight={'500'}
           size={TextSize.LEVEL_2}
@@ -75,6 +78,7 @@ const Quadrant = (props: QuadrantProps) => {
 export default memo(Quadrant);
 
 const paddings = horizontalScale(globalPadding);
+const iconPosition = paddings - 10;
 
 const styles = StyleSheet.create({
   Quadrant: {
@@ -92,8 +96,8 @@ const styles = StyleSheet.create({
   btn: {
     ...globalStyles.zIndex_1,
     position: 'absolute',
-    top: paddings,
-    right: paddings,
+    top: iconPosition,
+    right: iconPosition,
     paddingHorizontal: horizontalScale(10),
   },
   stepWrapper: {
@@ -102,5 +106,10 @@ const styles = StyleSheet.create({
   },
   premiumBlock: {
     marginLeft: horizontalScale(10),
+  },
+  lockIcon: {
+    height: horizontalScale(18),
+    width: horizontalScale(18),
+    marginRight: horizontalScale(6),
   },
 });
