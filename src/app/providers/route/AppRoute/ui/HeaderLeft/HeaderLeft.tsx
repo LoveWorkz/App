@@ -53,7 +53,7 @@ const HeaderLeft = (props: HeaderLeftProps) => {
             },
           ]}
           size={TextSize.LEVEL_6}
-          weight={'500'}
+          weight={'600'}
           text={t(title || headerTitle || '')}
         />
       )}

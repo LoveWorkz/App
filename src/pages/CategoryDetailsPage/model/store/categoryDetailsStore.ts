@@ -7,7 +7,6 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {categoryStore} from '@src/entities/Category';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 
 class CategoryDetailsStore {
@@ -18,7 +17,7 @@ class CategoryDetailsStore {
     makeAutoObservable(this);
   }
 
-  hideCategoryDetails = async ({id, title}: {id: string; title: string}) => {
+  hideCategoryDetails = async ({id}: {id: string}) => {
     try {
       crashlytics().log(
         'User clicked the "Do not show again" button on category details page.',
@@ -37,7 +36,6 @@ class CategoryDetailsStore {
 
       navigation.replace(AppRouteNames.SESSIONS, {
         type: DocumentType.CATEGORY,
-        title,
       });
     } catch (e) {
       errorHandler({error: e});
@@ -50,10 +48,8 @@ class CategoryDetailsStore {
 
   onStartPressHandler = async ({
     isContentLocked,
-    language,
   }: {
     isContentLocked: boolean;
-    language: LanguageValueType;
   }) => {
     try {
       const category = categoryStore.category;
@@ -73,7 +69,6 @@ class CategoryDetailsStore {
 
       navigation.replace(AppRouteNames.SESSIONS, {
         type: DocumentType.CATEGORY,
-        title: category.displayName[language],
         id: category.id,
       });
     } catch (e) {

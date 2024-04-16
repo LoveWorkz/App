@@ -289,7 +289,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.SESSIONS]: {
     name: appRoutePaths.sessions,
     headerShown: true,
-    headerTitle: '',
+    headerTitle: 'sessions.sessionOverview',
     HeaderRight: SessionsHeaderRight,
     Element: (props: ParamListBase) => {
       return (

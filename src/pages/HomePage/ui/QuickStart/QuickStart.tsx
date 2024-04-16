@@ -56,9 +56,8 @@ const QuickStart = (props: QuickStartProps) => {
     );
   }
 
-  const currentSession = sessionStore.session;
   const user = userStore.user;
-  if (!(user && currentSession)) {
+  if (!user) {
     return <></>;
   }
   const isFirstUserVisit = !user.hasUserSwipedAnyQuestion;
@@ -101,9 +100,7 @@ const QuickStart = (props: QuickStartProps) => {
               />
               <GradientText
                 weight={'700'}
-                text={`${
-                  isFirstUserVisit ? 0 : currentSession.sessionNumber
-                }/${sessionsCount}`}
+                text={`${isFirstUserVisit ? 0 : 1}/${sessionsCount}`}
               />
             </View>
             <View style={styles.bottomBlock}>

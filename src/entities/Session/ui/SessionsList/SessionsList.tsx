@@ -3,7 +3,6 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {horizontalScale} from '@src/shared/lib/Metrics';
-import {categoryStore} from '@src/entities/Category';
 import SessionItem from '../SessionItem/SessionItem';
 import {SessionState, SessionType} from '../../model/types/sessionType';
 
@@ -14,14 +13,13 @@ interface SessionsListProps {
 
 const SessionsList = (props: SessionsListProps) => {
   const {sessions, isPremium} = props;
-  const currentLevel = categoryStore.category;
 
   return (
     <View>
       {sessions.map((item, i) => {
         let state: SessionState = 'completed';
 
-        if (item.sessionNumber === currentLevel?.currentSessionNumber) {
+        if (item.isCurrent) {
           state = 'current';
         }
 

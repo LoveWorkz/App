@@ -204,13 +204,11 @@ class CategoryStore {
     questionId,
     questions,
     sharedQuestionId,
-    sessionId,
     setIsGradient,
   }: {
     questions: QuestionType[];
     questionId?: string;
     sharedQuestionId?: string;
-    sessionId: string;
     setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
@@ -232,7 +230,6 @@ class CategoryStore {
         }
 
         currentquestionId = sharedQuestionId || session.currentQuestion;
-        console.log('session.currentQuestion;', session.currentQuestion);
       }
 
       if (!currentquestionId) {

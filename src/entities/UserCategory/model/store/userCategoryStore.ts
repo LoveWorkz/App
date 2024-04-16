@@ -366,10 +366,8 @@ class UserCategoryStore {
       } else {
         await batch.commit();
       }
-
     } catch (error) {
       errorHandler({error: error, message: 'Error updating quadrants:'});
-
     }
   };
 
@@ -413,7 +411,6 @@ class UserCategoryStore {
       } else {
         await batch.commit();
       }
-
     } catch (error) {
       errorHandler({error: error, message: 'Error updating sessions:'});
     }

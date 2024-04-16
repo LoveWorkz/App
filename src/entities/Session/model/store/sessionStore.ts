@@ -387,6 +387,7 @@ class SessionStore {
           levelId: level.id,
           updates: {
             isAllQuestionsSwiped: true,
+            isCurrent: false,
           },
         },
         {
@@ -394,6 +395,7 @@ class SessionStore {
           levelId: level.id,
           updates: {
             isBlocked: false,
+            isCurrent: true,
           },
         },
       ]);
@@ -444,12 +446,13 @@ class SessionStore {
     }
   }
 
-  levelSwipeHandler = async (levelId: string) => {
+  levelSwipeHandler = async (levelId: CategoryType) => {
     try {
       this.setIsFetching(true);
 
-      await this.fetchQuadrants(levelId);
-      await this.fetchSessions(levelId);
+      await this.fetchQuadrants(levelId.id);
+      await this.fetchSessions(levelId.id);
+      categoryStore.setCategory(levelId);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -543,6 +546,7 @@ class SessionStore {
             sessions: quadrant.sessions.map((session, index) => ({
               ...session,
               isBlocked: index === 0 ? false : session.isBlocked,
+              isCurrent: true,
             })),
           }
         : {
@@ -655,6 +659,7 @@ class SessionStore {
           levelId: level.id,
           updates: {
             isAllQuestionsSwiped: true,
+            isCurrent: false,
           },
         },
         {
@@ -662,6 +667,7 @@ class SessionStore {
           levelId: nextLevel.id,
           updates: {
             isBlocked: false,
+            isCurrent: true,
           },
         },
       ]);

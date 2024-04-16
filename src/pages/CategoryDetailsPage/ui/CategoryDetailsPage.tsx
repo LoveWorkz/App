@@ -22,21 +22,23 @@ import {
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {categoryStore} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {LockedPopup} from '@src/widgets/LockedPopup';
 import categoryDetailsStore from '../model/store/categoryDetailsStore';
 import {getCategoryDetailsLockedPopupContent} from '../model/lib/categoryDetailsLib';
 
 export const CategoryDetailsPage = () => {
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
   const statusBarHeight = getStatusBarHeight();
   const navbarHeaderHeight = useHeaderHeight();
+  const language = useLanguage();
+
   const isLockedPopupVisible = categoryDetailsStore.isLockedPopupVisible;
   const setIsLockedPopupVisible = categoryDetailsStore.setIsLockedPopupVisible;
 
@@ -47,7 +49,6 @@ export const CategoryDetailsPage = () => {
     ? navbarHeaderHeight
     : navbarHeaderHeight + statusBarHeight;
 
-  const language = i18n.language as LanguageValueType;
   const category = categoryStore.category;
   const categoryImage = category?.image.large;
 
@@ -65,7 +66,6 @@ export const CategoryDetailsPage = () => {
 
   const onPressHandler = () => {
     categoryDetailsStore.onStartPressHandler({
-      language,
       isContentLocked,
     });
   };
@@ -74,7 +74,6 @@ export const CategoryDetailsPage = () => {
     category?.id &&
       categoryDetailsStore.hideCategoryDetails({
         id: category.id,
-        title: category.displayName[language],
       });
   };
 

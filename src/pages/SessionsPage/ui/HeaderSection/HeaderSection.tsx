@@ -25,7 +25,7 @@ const HeaderSection = (props: HeaderSectionProps) => {
   );
 
   const onCategoryChangeHandler = useCallback((level: CategoryType) => {
-    sessionStore.levelSwipeHandler(level.id);
+    sessionStore.levelSwipeHandler(level);
   }, []);
 
   const test = levels.map(level => {

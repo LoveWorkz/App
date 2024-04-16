@@ -25,7 +25,7 @@ const SessionsHeaderRight = () => {
           weight={'600'}
           size={TextSize.LEVEL_2}
           style={styles.title}
-          text={'What is Quadrants'}
+          text={'How to use'}
         />
         <SvgXml
           xml={InformationIcon}

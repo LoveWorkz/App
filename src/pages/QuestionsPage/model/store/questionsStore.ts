@@ -4,7 +4,7 @@ import {InterstitialAd} from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections, DocsType} from '@src/shared/types/firebase';
-import {CategoryKey, categoryStore, CategoryType} from '@src/entities/Category';
+import {categoryStore} from '@src/entities/Category';
 import {rubricStore} from '@src/entities/Rubric';
 import {favoriteStore} from '@src/entities/Favorite';
 import {
@@ -18,17 +18,10 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {userRubricStore} from '@src/entities/UserRubric';
 import {userCategoryStore} from '@src/entities/UserCategory';
-import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
-import {
-  delay,
-  getNextElementById,
-  getNumbersDiff,
-} from '@src/shared/lib/common';
+import {delay, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {sessionStore, SessionType} from '@src/entities/Session';
-import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
-import {challengeStore} from '@src/entities/Challenge';
+import {sessionStore} from '@src/entities/Session';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -144,7 +137,6 @@ class QuestionsStore {
           categoryStore.getQuestionSwipeInfoForCategory({
             sharedQuestionId,
             questions: this.questions,
-            sessionId: currentSession.id,
             setIsGradient,
           });
 
@@ -228,7 +220,6 @@ class QuestionsStore {
       categoryStore.getQuestionSwipeInfoForCategory({
         questionId: question.id,
         questions: this.questions,
-        sessionId,
         setIsGradient,
       });
 
