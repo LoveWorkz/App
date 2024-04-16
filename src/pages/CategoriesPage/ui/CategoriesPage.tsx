@@ -7,6 +7,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Categories from './Categories/Categories';
 import categoriesStore from '../model/store/categoriesStore';
+import FavoriteSessions from './Favorites/Favorites';
 
 interface CategoriesPageProps {
   route?: {
@@ -48,6 +49,7 @@ const CategoriesPage = (props: CategoriesPageProps) => {
 
   return (
     <View style={styles.container}>
+      <FavoriteSessions />
       <Categories isLoading={isLoading} />
     </View>
   );

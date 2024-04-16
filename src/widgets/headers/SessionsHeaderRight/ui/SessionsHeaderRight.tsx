@@ -1,6 +1,5 @@
 import React, {memo} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {useTranslation} from 'react-i18next';
 import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -9,9 +8,14 @@ import {InformationIcon} from '@src/shared/assets/icons/Information';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 
-const SessionsHeaderRight = () => {
+interface SessionsHeaderRightProps {
+  isFavorite?: boolean;
+}
+
+const SessionsHeaderRight = (props: SessionsHeaderRightProps) => {
+  const {isFavorite = false} = props;
+
   const colors = useColors();
-  const {t} = useTranslation();
 
   const onPressHandler = () => {};
 
@@ -21,12 +25,14 @@ const SessionsHeaderRight = () => {
       style={styles.btn}
       backgroundColor={'transparent'}>
       <View style={styles.SessionsHeaderRight}>
-        <AppText
-          weight={'600'}
-          size={TextSize.LEVEL_2}
-          style={styles.title}
-          text={'How to use'}
-        />
+        {!isFavorite && (
+          <AppText
+            weight={'600'}
+            size={TextSize.LEVEL_2}
+            style={styles.title}
+            text={'How to use'}
+          />
+        )}
         <SvgXml
           xml={InformationIcon}
           style={styles.icon}
@@ -43,11 +49,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   btn: {
-    paddingHorizontal: horizontalScale(5),
+    paddingHorizontal: horizontalScale(6),
   },
   title: {
     textTransform: 'capitalize',
-    marginRight: horizontalScale(10),
+    marginRight: horizontalScale(8),
   },
   icon: {
     height: horizontalScale(16),

@@ -2,7 +2,6 @@ import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
-import {useTranslation} from 'react-i18next';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {InformationIcon} from '@src/shared/assets/icons/Information';
@@ -22,12 +21,13 @@ interface Carouseltemrops {
   displayName: DisplayText;
   sessionsCount: number;
   currentSessionNumber: number;
+  isFavorite: boolean;
 }
 
 const Carouseltem = (props: Carouseltemrops) => {
-  const {image, displayName, sessionsCount, currentSessionNumber} = props;
+  const {image, displayName, sessionsCount, currentSessionNumber, isFavorite} =
+    props;
   const colors = useColors();
-  const {t} = useTranslation();
   const language = useLanguage();
 
   const onPressHandler = () => {};
@@ -57,17 +57,21 @@ const Carouseltem = (props: Carouseltemrops) => {
             />
           </View>
         </Button>
-        <View
-          style={[
-            styles.countWrapper,
-            {backgroundColor: colors.periwinkleDust},
-          ]}>
-          <AppText
-            weight={'600'}
-            size={TextSize.LEVEL_4}
-            text={`${currentSessionNumber}/${sessionsCount}`}
-          />
-        </View>
+        {isFavorite ? (
+          <></>
+        ) : (
+          <View
+            style={[
+              styles.countWrapper,
+              {backgroundColor: colors.periwinkleDust},
+            ]}>
+            <AppText
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={`${currentSessionNumber}/${sessionsCount}`}
+            />
+          </View>
+        )}
       </View>
       <View style={styles.descriptionWrapper}>
         <AppText

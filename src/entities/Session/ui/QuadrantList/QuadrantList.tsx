@@ -1,6 +1,5 @@
 import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {observer} from 'mobx-react-lite';
 
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {
@@ -11,13 +10,19 @@ import {
 import sessionStore from '../../model/store/sessionStore';
 import SessionsList from '../SessionsList/SessionsList';
 import Quadrant from '../Quadrant';
+import {QuadrantType} from '../../model/types/sessionType';
 
-const QuadrantList = () => {
+interface QuadrantListProps {
+  quadrantList: QuadrantType[];
+  isLoading: boolean;
+}
+
+const QuadrantList = (props: QuadrantListProps) => {
+  const {quadrantList, isLoading} = props;
+
   const sessionsCount = sessionStore.getAllSessionsCount();
-  const quadrants = sessionStore.quadrants;
-  const isFetching = sessionStore.isFetching;
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <>
         {Array.from({length: sessionsCount}, (_, i) => i + 1).map(item => {
@@ -37,7 +42,7 @@ const QuadrantList = () => {
 
   return (
     <View>
-      {quadrants.map(quadrant => {
+      {quadrantList.map(quadrant => {
         return (
           <View key={quadrant.id} style={styles.item}>
             <Quadrant
@@ -56,7 +61,7 @@ const QuadrantList = () => {
   );
 };
 
-export default memo(observer(QuadrantList));
+export default memo(QuadrantList);
 
 const styles = StyleSheet.create({
   item: {

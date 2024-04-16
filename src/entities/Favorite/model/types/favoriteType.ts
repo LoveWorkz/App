@@ -6,4 +6,4 @@ export interface QuestionFavoriteType extends FavoriteType {
   currentQuestion: string;
 }
 
-export type FavoriteKey = 'question' | 'challenge';
+export type FavoriteKey = 'question' | 'challenge' | 'session';

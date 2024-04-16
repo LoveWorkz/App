@@ -5,19 +5,15 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {Collections, FirestoreUpdateObject} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {categoriesStore} from '@src/pages/CategoriesPage';
 import {CategoryType} from '@src/entities/Category';
-import {
-  getLevels,
-  getSessions2,
-  getUserCategoryInitData,
-} from '../lib/userCategory';
-import {UserCategory} from '../types/userCategoryType';
 import {SessionType, UserSessionType} from '@src/entities/Session';
+import {favoriteStore, FavoriteType} from '@src/entities/Favorite';
+import {getLevels, getSessions2} from '../lib/userCategory';
+import {UserCategory} from '../types/userCategoryType';
 
 class UserCategoryStore {
   userCategory: null | UserCategory = null;
-  userLevls: null | Record<string, CategoryType> = null;
+  userLevels: null | Record<string, CategoryType> = null;
   userLevel: null | CategoryType = null;
   userSessions: null | UserSessionType = null;
 
@@ -50,39 +46,39 @@ class UserCategoryStore {
   };
 
   fetchUserLevels = async (userId: string) => {
-    const levelsRef = firestore()
-      .collection(Collections.USER_LEVELS)
-      .doc(userId)
-      .collection(Collections.LEVELS);
-
     try {
-      // Get all the level documents for the user
-      const querySnapshot = await levelsRef.get();
-      // Iterate over each level document
-      const levels = querySnapshot.docs.map(doc => {
-        const levelData = doc.data() as CategoryType;
-        const levelId = doc.id;
+      crashlytics().log('Fetching User Levels.');
 
-        return {
-          ...levelData,
-          id: levelId,
-        };
-      });
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
 
+      const userDocRef = firestore()
+        .collection(Collections.USER_LEVELS)
+        .doc(userId);
+      const levelsRef = userDocRef.collection(Collections.LEVELS);
+
+      // Execute parallel requests to fetch user general data and specific levels
+      const [userDocSnapshot, levelsQuerySnapshot] = await Promise.all([
+        userDocRef.get({source}),
+        levelsRef.get({source}),
+      ]);
+
+      const userLevelInfo = userDocSnapshot.data();
+
+      const levels = levelsQuerySnapshot.docs.map(doc => ({
+        ...(doc.data() as CategoryType),
+        id: doc.id,
+      }));
+
+      // Build the user levels map
       const userLevelsMap: Record<string, CategoryType> = {};
-
-      levels.forEach(level => {
-        userLevelsMap[level.id] = {
-          ...userLevelsMap,
-          ...level,
-        };
-      });
+      levels.forEach(level => (userLevelsMap[level.id] = level));
 
       runInAction(() => {
-        this.userLevls = userLevelsMap;
+        this.userLevels = userLevelsMap;
+        favoriteStore.setFavorites(userLevelInfo?.favorites || []);
       });
-    } catch (e) {
-      errorHandler({error: e, message: 'Error fetching levels:'});
+    } catch (error) {
+      errorHandler({error, message: 'Error fetching user levels'});
     }
   };
 
@@ -94,6 +90,8 @@ class UserCategoryStore {
       .doc(levelId);
 
     try {
+      crashlytics().log('Fetching User Specific Level.');
+
       const docSnapshot = await levelRef.get();
 
       if (docSnapshot.exists) {
@@ -119,6 +117,8 @@ class UserCategoryStore {
       .collection(Collections.SESSIONS);
 
     try {
+      crashlytics().log('Fetching User Sessions.');
+
       const querySnapshot = await sessionsRef.get();
 
       // Iterate over each level document
@@ -151,27 +151,12 @@ class UserCategoryStore {
 
   setUserLevels = async (userId: string) => {
     try {
-      crashlytics().log('Setting User Category.');
-
-      const defaultCategories = await categoriesStore.fetchDefaultCategories();
-      if (!defaultCategories) {
-        return;
-      }
-
-      const userCategories: Record<string, Partial<CategoryType>> = {};
-
-      defaultCategories.forEach(category => {
-        const categoryId = category.id;
-
-        userCategories[categoryId] = {
-          ...getUserCategoryInitData(category.name),
-        };
-      });
+      crashlytics().log('Setting User Level.');
 
       await firestore()
         .collection(Collections.USER_LEVELS)
         .doc(userId)
-        .set({categories: userCategories});
+        .set({favorites: {ids: []}});
 
       await this.setLevels(userId);
       await this.setSessions(userId);
@@ -267,6 +252,71 @@ class UserCategoryStore {
       }
     } catch (e) {
       errorHandler({error: e});
+    }
+  };
+
+  updateUserLevelFavorites = async ({
+    data,
+  }: {
+    data: string | string[] | FavoriteType;
+  }) => {
+    try {
+      crashlytics().log('Updating User level Favorites.');
+
+      const isOffline = await userStore.getIsUserOffline();
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_LEVELS)
+          .doc(userId)
+          .update({
+            ['favorites.ids']: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_LEVELS)
+          .doc(userId)
+          .update({
+            ['favorites.ids']: data,
+          });
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  deleteSessionFromFavorites = async ({
+    sessionId,
+    favoriteIds,
+  }: {
+    sessionId: string;
+    favoriteIds: string[];
+  }) => {
+    try {
+      const ids = favoriteIds;
+      const newIds = ids.filter(id => {
+        return id !== sessionId;
+      });
+
+      const favorites: FavoriteType = {
+        ids: newIds,
+      };
+
+      await this.updateUserLevelFavorites({
+        data: newIds,
+      });
+
+      return {
+        isFavorite: false,
+        favorites,
+      };
+    } catch (e) {
+      errorHandler({error: e});
+      return null;
     }
   };
 

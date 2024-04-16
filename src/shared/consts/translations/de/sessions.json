@@ -1,5 +1,6 @@
 {
     "sessions.session": "Sitzung",
     "sessions.sessions": "sitzungen",
-    "sessions.sessionOverview": "Sitzungsübersicht"
+    "sessions.sessionOverview": "Sitzungsübersicht",
+    "sessions.favouriteSessions": "Lieblingssitzungen"
 }

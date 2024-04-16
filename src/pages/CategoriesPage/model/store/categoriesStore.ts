@@ -9,7 +9,6 @@ import {
   CateorySize,
 } from '@src/entities/Category';
 import {Collections} from '@src/shared/types/firebase';
-import {rubricStore} from '@src/entities/Rubric';
 import {FavoriteType} from '@src/entities/Favorite';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {userStore} from '@src/entities/User';
@@ -49,7 +48,6 @@ class CategoriesStore {
       });
 
       await this.fetchCategories();
-      await rubricStore.fetchRubrics();
       await userStore.fetchUser();
       await specialDayStore.fetchSpecialDays();
     } catch (e) {
@@ -78,8 +76,7 @@ class CategoriesStore {
     try {
       crashlytics().log('Merging default and user Categories.');
 
-      const userCategories = userCategoryStore.userCategory;
-      const userLevels = userCategoryStore.userLevls;
+      const userLevels = userCategoryStore.userLevels;
 
       if (!userLevels) {
         return;
@@ -89,16 +86,6 @@ class CategoriesStore {
       if (!defaultCategories) {
         return;
       }
-
-      // merge default categories with user custom categories
-      // const categories = defaultCategories.map(defaultCategory => {
-      //   return {
-      //     ...defaultCategory,
-      //     ...(userCategories
-      //       ? userCategories.categories[defaultCategory.id]
-      //       : {}),
-      //   };
-      // });
 
       const categories = defaultCategories.map(defaultCategory => {
         return {

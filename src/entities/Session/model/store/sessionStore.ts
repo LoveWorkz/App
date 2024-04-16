@@ -13,6 +13,7 @@ import {categoryStore, CategoryType} from '@src/entities/Category';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {inAppReviewStore} from '@src/features/InAppReview';
+import {favoriteStore} from '@src/entities/Favorite';
 import {
   challengeStore,
   ChallengeType,
@@ -37,6 +38,7 @@ class SessionStore {
   currentQuadrantsSessions: SessionType[] = [];
   currentQuadrant: QuadrantType | null = null;
   lastQuadrant: QuadrantType | null = null;
+  favoriteQuadrantsSessions: QuadrantType[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -48,6 +50,10 @@ class SessionStore {
 
   setQuadrants = (quadrants: QuadrantType[]) => {
     this.quadrants = quadrants;
+  };
+
+  setFavoriteQuadrantsSessions = (quadrants: QuadrantType[]) => {
+    this.favoriteQuadrantsSessions = quadrants;
   };
 
   getSession = (sessionId: string) => {
@@ -446,19 +452,72 @@ class SessionStore {
     }
   }
 
-  levelSwipeHandler = async (levelId: CategoryType) => {
+  toggleSessionFavorite = async ({
+    sessionid,
+    isFavorite,
+  }: {
+    sessionid: string;
+    isFavorite: boolean;
+  }) => {
+    if (isFavorite) {
+      await favoriteStore.deleteFromFavorites(sessionid, 'session');
+    } else {
+      await favoriteStore.addToFavorites(sessionid, 'session');
+    }
+  };
+
+  fetchQuadrantsAndSessionsForLevel = async (level: CategoryType) => {
     try {
       this.setIsFetching(true);
 
-      await this.fetchQuadrants(levelId.id);
-      await this.fetchSessions(levelId.id);
-      categoryStore.setCategory(levelId);
+      await this.fetchQuadrants(level.id);
+      await this.fetchSessions(level.id);
+      categoryStore.setCategory(level);
     } catch (e) {
       errorHandler({error: e});
     } finally {
       this.setIsFetching(false);
     }
   };
+
+  levelSwipeHandler = async (level: CategoryType) => {
+    this.fetchQuadrantsAndSessionsForLevel(level);
+  };
+
+  /**
+   * Handles the swipe action for levels, specifically updating sessions to mark favorites.
+   * @param {CategoryType} level - The level for which to handle swipe actions.
+   */
+  async levelSwipeHandlerForFavorites(level: CategoryType) {
+    try {
+      const favoriteIds = favoriteStore.favorites?.ids || [];
+
+      // keep order, call this method before filtering quadrants
+      await this.fetchQuadrantsAndSessionsForLevel(level);
+
+      // Map through quadrants to filter and flag favorite sessions
+      const favoriteQuadrantsSessions = this.quadrants.map(quadrant => {
+        // Filter sessions to find those that are marked as favorites
+        const favoriteSessions = quadrant.sessions
+          .filter(session => favoriteIds.includes(session.id))
+          .map(session => ({...session}));
+
+        return {
+          ...quadrant,
+          sessions: favoriteSessions,
+        };
+      });
+
+      // Filter out quadrants that have no favorite sessions
+      const quadrantsWithFavoriteSessions = favoriteQuadrantsSessions.filter(
+        quadrant => quadrant.sessions.length > 0,
+      );
+
+      this.setFavoriteQuadrantsSessions(quadrantsWithFavoriteSessions);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  }
 
   checkSessionsAndShowRatePopup = async (category: CategoryType) => {
     const user = userStore.user;

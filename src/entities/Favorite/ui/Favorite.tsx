@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   title: {
-    textTransform: 'capitalize',
+    textTransform: 'lowercase',
   },
   text: {
     marginTop: verticalScale(13),

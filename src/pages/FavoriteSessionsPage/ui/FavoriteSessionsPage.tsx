@@ -4,31 +4,30 @@ import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {SessionOverview, sessionStore} from '@src/entities/Session';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
 import {categoriesStore} from '@src/pages/CategoriesPage';
-import {categoryStore, CategoryType} from '@src/entities/Category';
-import sessionsPageStore from '../modal/store/SessionsPageStore';
+import {CategoryType} from '@src/entities/Category';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 
-interface SessionsPageProps {
+interface FavoriteSessionsPageProps {
   route?: {params: {prevRouteName: AppRouteNames | TabRoutesNames}};
 }
 
-const SessionsPage = (props: SessionsPageProps) => {
+const FavoriteSessionsPage = (props: FavoriteSessionsPageProps) => {
   const {route} = props;
+
   const levels = categoriesStore.categories;
-  const currentLevel = categoryStore.category;
-  const quadrantList = sessionStore.quadrants;
+  // if this is a favorites page, we always start from the first level
+  const currentLevel = levels[0];
+
+  const favoriteQuadrantsSessionsfavorite =
+    sessionStore.favoriteQuadrantsSessions;
   const isLoading = sessionStore.isFetching;
 
   if (!currentLevel) {
     return <></>;
   }
-
-  const onCategorySwipeHandlerHandler = useCallback((level: CategoryType) => {
-    sessionStore.levelSwipeHandler(level);
-  }, []);
 
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
@@ -37,32 +36,37 @@ const SessionsPage = (props: SessionsPageProps) => {
     useCallback(() => {
       // if the user returns from the questions get the actual data
       if (isPreviousScreenQuestions) {
-        sessionsPageStore.init();
+        sessionStore.levelSwipeHandlerForFavorites(currentLevel);
       }
     }, [isPreviousScreenQuestions]),
   );
 
   useEffect(() => {
-    sessionsPageStore.init();
+    sessionStore.levelSwipeHandlerForFavorites(currentLevel);
+  }, []);
+
+  const onCategorySwipeHandler = useCallback((level: CategoryType) => {
+    sessionStore.levelSwipeHandlerForFavorites(level);
   }, []);
 
   return (
-    <View style={styles.SessionsPage}>
+    <View style={styles.FavoriteSessionsPage}>
       <SessionOverview
-        isLoading={isLoading}
-        quadrantList={quadrantList}
-        swipeHandler={onCategorySwipeHandlerHandler}
+        isFavorite
+        quadrantList={favoriteQuadrantsSessionsfavorite}
+        swipeHandler={onCategorySwipeHandler}
         levels={levels}
         currentLevel={currentLevel}
+        isLoading={isLoading}
       />
     </View>
   );
 };
 
-export default memo(observer(SessionsPage));
+export default memo(observer(FavoriteSessionsPage));
 
 const styles = StyleSheet.create({
-  SessionsPage: {
+  FavoriteSessionsPage: {
     flex: 1,
     marginTop: -globalPadding,
   },

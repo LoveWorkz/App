@@ -32,6 +32,7 @@ import {GoalsPage} from '@src/pages/Onboarding/GoalsPage';
 import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotificationsPage';
 import {OnboardingStatisticPage} from '@src/pages/Onboarding/OnboardingStatisticPage';
 import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
+import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -52,6 +53,7 @@ export enum AppRouteNames {
   CATEGORY_DETAILS = 'categoryDetails',
   QUESTIONS = 'questions',
   SESSIONS = 'sessions',
+  FAVORITE_SESSIONS = 'favoriteSessions',
   SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
   CORE_CHALLENGE_CARDS = 'coreChallengeCards',
   NOTIFICATIONS = 'notifications',
@@ -84,6 +86,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
   [AppRouteNames.QUESTIONS]: 'questions',
   [AppRouteNames.SESSIONS]: 'sessions',
+  [AppRouteNames.FAVORITE_SESSIONS]: 'favoriteSessions',
   [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
   [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
   [AppRouteNames.NOTIFICATIONS]: 'notifications',
@@ -290,11 +293,24 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.sessions,
     headerShown: true,
     headerTitle: 'sessions.sessionOverview',
-    HeaderRight: SessionsHeaderRight,
+    HeaderRight: () => <SessionsHeaderRight />,
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling deleteTopPadding>
           <SessionsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.FAVORITE_SESSIONS]: {
+    name: appRoutePaths.favoriteSessions,
+    headerShown: true,
+    headerTitle: 'sessions.favouriteSessions',
+    HeaderRight: () => <SessionsHeaderRight isFavorite />,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout isPageScrolling deleteTopPadding>
+          <FavoriteSessionsPage {...props} />
         </Layout>
       );
     },

@@ -1,4 +1,4 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet} from 'react-native';
 
 import {categoryStore, CategoryType} from '@src/entities/Category';
@@ -11,10 +11,12 @@ import Carouseltem from './Carouseltem';
 interface HeaderSectionProps {
   levels: CategoryType[];
   currentLevel: CategoryType;
+  isFavorite: boolean;
+  swipeHandler: (level: CategoryType) => void;
 }
 
 const HeaderSection = (props: HeaderSectionProps) => {
-  const {levels, currentLevel} = props;
+  const {levels, currentLevel, isFavorite, swipeHandler} = props;
   const colors = useColors();
 
   const sessionsCount = sessionStore.getAllSessionsCount();
@@ -24,20 +26,16 @@ const HeaderSection = (props: HeaderSectionProps) => {
     currentLevel.id,
   );
 
-  const onCategoryChangeHandler = useCallback((level: CategoryType) => {
-    sessionStore.levelSwipeHandler(level);
-  }, []);
-
-  const test = levels.map(level => {
-    return {...level, sessionsCount};
+  const levelsWithMetaDatas = levels.map(level => {
+    return {...level, sessionsCount, isFavorite};
   });
 
   return (
     <CarouselSquare
       defaultElement={defaultElement}
-      onSwipeHandler={onCategoryChangeHandler}
+      onSwipeHandler={swipeHandler}
       Component={Carouseltem}
-      data={test}
+      data={levelsWithMetaDatas}
       carouselHeight={verticalScale(300)}
       mode={'expanded'}
       loop={false}

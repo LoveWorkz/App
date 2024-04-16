@@ -2,6 +2,7 @@ import React, {memo, useCallback, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {SvgXml} from 'react-native-svg';
+import {observer} from 'mobx-react-lite';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {
@@ -19,6 +20,7 @@ import {HeartIcon, HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
 import {Button} from '@src/shared/ui/Button/Button';
 import {ColorType} from '@src/app/styles/themeStyle';
 import {SelectedEllipseIcon} from '@src/shared/assets/icons/SelectedEllipse';
+import {favoriteStore} from '@src/entities/Favorite';
 import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
 import {SessionState, SessionType} from '../../model/types/sessionType';
 import sessionStore from '../../model/store/sessionStore';
@@ -37,13 +39,15 @@ const SessionItem = (props: SessionItemProps) => {
   const {theme} = useTheme();
   const {t} = useTranslation();
 
-  const [isFavorite, setIsFavorite] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  const favorites = favoriteStore.favorites;
+  const isFavorite = favoriteStore.checkIsFavorite(session.id, favorites);
 
   let isBlocked = false;
 
-  const toggleFavorite = () => {
-    setIsFavorite(prev => !prev);
+  const toggleFavoriteHandler = async () => {
+    sessionStore.toggleSessionFavorite({sessionid: session.id, isFavorite});
   };
 
   let leftIcon = EllipseIcon;
@@ -55,7 +59,7 @@ const SessionItem = (props: SessionItemProps) => {
       leftIcon = SelectedEllipseIcon;
       rightIcon = renderRightIcon({
         state: 'completed',
-        onIconPressHandler: toggleFavorite,
+        onIconPressHandler: toggleFavoriteHandler,
         colors,
         isFavorite,
       });
@@ -170,7 +174,7 @@ const renderRightIcon = ({
   }
 };
 
-export default memo(SessionItem);
+export default memo(observer(SessionItem));
 
 const rightIconPadding = 10;
 const rightIconPosition = globalPadding - rightIconPadding;

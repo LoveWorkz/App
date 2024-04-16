@@ -10,6 +10,7 @@ import {
   favoriteStore,
   FavoriteType,
   questionFavorites,
+  QuestionFavoriteType,
 } from '@src/entities/Favorite';
 import {userRubricInitData} from '../lib/userRubric';
 import {UserRubric} from '../types/userRubricType';
@@ -150,6 +151,77 @@ class UserRubricStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  deleteQuestionFromFavorites = async ({
+    questionId,
+    favoriteIds,
+  }: {
+    questionId: string;
+    favoriteIds: string[];
+  }) => {
+    try {
+      crashlytics().log('Delleting question from favorites.');
+
+      const questionsIds = favoriteIds;
+      let favorites: QuestionFavoriteType;
+      const isOnlyOneFavoriteQuestion = questionsIds.length === 1;
+
+      const newQuestionsIds = questionsIds.filter(id => {
+        return id !== questionId;
+      });
+
+      // if deleting last favorite question reset favorites
+      if (isOnlyOneFavoriteQuestion) {
+        favorites = {
+          currentQuestion: '',
+          ids: [],
+        };
+      } else {
+        const prevQuestionId = this.getPrevFavoriteQuestionId({
+          questionsIds,
+          currentQuestionId: questionId,
+        });
+
+        favorites = {
+          currentQuestion: prevQuestionId,
+          ids: newQuestionsIds,
+        };
+      }
+
+      await this.updateUserRubricFavorites({
+        data: favorites,
+      });
+
+      return {
+        isFavorite: false,
+        favorites: favorites,
+      };
+    } catch (e) {
+      errorHandler({error: e});
+      return null;
+    }
+  };
+
+  getPrevFavoriteQuestionId = ({
+    currentQuestionId,
+    questionsIds,
+  }: {
+    currentQuestionId: string;
+    questionsIds: string[];
+  }) => {
+    const currentFavoriteQuestionIndex = questionsIds.findIndex(
+      id => currentQuestionId === id,
+    );
+
+    const isQuestionIdFound = currentFavoriteQuestionIndex === -1;
+    const isFirstQuestionId = currentQuestionId === questionsIds[0];
+
+    if (isQuestionIdFound || isFirstQuestionId) {
+      return questionsIds[0];
+    }
+
+    return questionsIds[currentFavoriteQuestionIndex - 1];
   };
 
   deleteUserRubric = async (userId: string) => {

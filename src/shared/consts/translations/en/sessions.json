@@ -1,5 +1,6 @@
 {
     "sessions.session": "Session",
     "sessions.sessions": "sessions",
-    "sessions.sessionOverview": "Session overview"
+    "sessions.sessionOverview": "Session overview",
+    "sessions.favouriteSessions": "Favourite sessions"
 }

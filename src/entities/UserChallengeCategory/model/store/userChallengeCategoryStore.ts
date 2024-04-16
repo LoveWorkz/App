@@ -192,6 +192,37 @@ class UserChallengeCategoryStore {
     }
   };
 
+  deleteChallengeFromFavorites = async ({
+    challengeId,
+    favoriteIds,
+  }: {
+    challengeId: string;
+    favoriteIds: string[];
+  }) => {
+    try {
+      const ids = favoriteIds;
+      const newIds = ids.filter(id => {
+        return id !== challengeId;
+      });
+
+      const favorites: FavoriteType = {
+        ids: newIds,
+      };
+
+      await this.updateUserChallengeFavorites({
+        data: newIds,
+      });
+
+      return {
+        isFavorite: false,
+        favorites,
+      };
+    } catch (e) {
+      errorHandler({error: e});
+      return null;
+    }
+  };
+
   deleteUserChallengeCategory = async (userId: string) => {
     try {
       crashlytics().log('Deleting User Challenge Category.');
