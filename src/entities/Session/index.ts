@@ -1,4 +1,9 @@
-export type {SessionType, UserSessionType} from './model/types/sessionType';
+export type {
+  SessionType,
+  UserSessionType,
+  QuadrantType,
+  UserQuadrantType,
+} from './model/types/sessionType';
 export {default as sessionStore} from './model/store/sessionStore';
 export {
   userSession,

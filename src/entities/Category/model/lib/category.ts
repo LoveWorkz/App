@@ -29,6 +29,7 @@ export const categoryExample: CategoryType = {
   ratePopUpBreakpoint: 3,
   currentSessionNumber: 1,
   challengeCategoryId: '',
+  quadrants: {},
 };
 
 export const FIRST_LEVEL_ID = 'level_1';

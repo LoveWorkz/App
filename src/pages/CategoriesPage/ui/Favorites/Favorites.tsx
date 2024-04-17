@@ -14,6 +14,10 @@ const FavoriteSessions = () => {
 
   const isLoading = categoriesStore.isCategoriesPageLoading;
 
+  if (isLoading) {
+    return <Favorite image={questionFavourites} text={''} isLoading={true} />;
+  }
+
   const favorite = favoriteStore.favorites;
   if (!(favorite && favorite.ids.length)) {
     return null;

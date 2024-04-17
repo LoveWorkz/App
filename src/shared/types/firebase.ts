@@ -1,7 +1,7 @@
 import {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 
 export enum Collections {
-  USERS = 'Users',
+  USERS = 'users',
   BOOKS = 'Books',
   CATEGORIES = 'Categories',
   RUBRICS = 'Rubrics',
@@ -12,9 +12,9 @@ export enum Collections {
   RUBRIC_QUESTIONS = 'rubric_questions',
   CHALLENGE_CATEGORIES = 'Challenge_Categories',
   CORE_CHALLENGES = 'core_challenges',
-  USER_CHALLENGE_CATEGORIES = 'User_Challenge_Categories',
+  USER_CHALLENGE_CATEGORIES = 'user_Challenge_Categories',
   USER_LEVELS = 'user_levels',
-  USER_RUBRICS = 'User_Rubrics',
+  USER_RUBRICS = 'user_Rubrics',
   SPECIAL_DAYS = 'special_days',
   SPECIAL_CHALLENGES = 'special_challenges',
   GOALS = 'goals',

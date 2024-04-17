@@ -65,7 +65,6 @@ class CategoriesStore {
       const userId = userStore.userId;
 
       await userCategoryStore.fetchUserLevels(userId);
-      // await userCategoryStore.fetchUserCategories(userId);
       await this.mergeDefaultAndUserCategories();
     } catch (e) {
       errorHandler({error: e});

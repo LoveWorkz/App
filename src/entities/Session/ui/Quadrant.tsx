@@ -46,7 +46,7 @@ const Quadrant = (props: QuadrantProps) => {
       </Button>
 
       <View style={styles.stepWrapper}>
-        {isBlocked && <SvgXml xml={LockIcon} style={styles.lockIcon} />}
+        {disabled && <SvgXml xml={LockIcon} style={styles.lockIcon} />}
 
         <AppText
           weight={'500'}

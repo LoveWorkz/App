@@ -8,11 +8,9 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {CategoryType} from '@src/entities/Category';
 import {SessionType, UserSessionType} from '@src/entities/Session';
 import {favoriteStore, FavoriteType} from '@src/entities/Favorite';
-import {getLevels, getSessions2} from '../lib/userCategory';
-import {UserCategory} from '../types/userCategoryType';
+import {getLevels, getSessions} from '../lib/userCategory';
 
 class UserCategoryStore {
-  userCategory: null | UserCategory = null;
   userLevels: null | Record<string, CategoryType> = null;
   userLevel: null | CategoryType = null;
   userSessions: null | UserSessionType = null;
@@ -20,30 +18,6 @@ class UserCategoryStore {
   constructor() {
     makeAutoObservable(this);
   }
-
-  fetchUserCategories = async (userId: string) => {
-    try {
-      crashlytics().log('Fetching User Category.');
-
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-
-      const userId = userStore.userId;
-      if (!userId) {
-        return;
-      }
-
-      const data = await firestore()
-        .collection(Collections.USER_LEVELS)
-        .doc(userId)
-        .get({source});
-
-      runInAction(() => {
-        this.userCategory = data.data() as UserCategory;
-      });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
 
   fetchUserLevels = async (userId: string) => {
     try {
@@ -83,6 +57,8 @@ class UserCategoryStore {
   };
 
   fetchUserLevel = async (userId: string, levelId: string) => {
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
     const levelRef = firestore()
       .collection(Collections.USER_LEVELS)
       .doc(userId)
@@ -92,7 +68,7 @@ class UserCategoryStore {
     try {
       crashlytics().log('Fetching User Specific Level.');
 
-      const docSnapshot = await levelRef.get();
+      const docSnapshot = await levelRef.get({source});
 
       if (docSnapshot.exists) {
         const levelData = docSnapshot.data() as CategoryType;
@@ -109,6 +85,8 @@ class UserCategoryStore {
   };
 
   fetchUserSessions = async (userId: string, levelId: string) => {
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
     const sessionsRef = firestore()
       .collection(Collections.USER_LEVELS)
       .doc(userId)
@@ -119,7 +97,7 @@ class UserCategoryStore {
     try {
       crashlytics().log('Fetching User Sessions.');
 
-      const querySnapshot = await sessionsRef.get();
+      const querySnapshot = await sessionsRef.get({source});
 
       // Iterate over each level document
       const sessions = querySnapshot.docs.map(doc => {
@@ -151,7 +129,7 @@ class UserCategoryStore {
 
   setUserLevels = async (userId: string) => {
     try {
-      crashlytics().log('Setting User Level.');
+      crashlytics().log('Setting User Levels Data.');
 
       await firestore()
         .collection(Collections.USER_LEVELS)
@@ -166,6 +144,8 @@ class UserCategoryStore {
   };
 
   setLevels = async (userId: string) => {
+    crashlytics().log('Setting User Level.');
+
     const levels = getLevels();
     const levelIds = Object.keys(levels);
 
@@ -190,6 +170,8 @@ class UserCategoryStore {
   };
 
   setSessions = async (userId: string) => {
+    crashlytics().log('Setting User Sessions.');
+
     const levelIds = Object.keys(getLevels());
     const batch = firestore().batch();
 
@@ -201,7 +183,7 @@ class UserCategoryStore {
         .doc(levelId)
         .collection(Collections.SESSIONS);
 
-      const sessions = getSessions2(levelId, i);
+      const sessions = getSessions(levelId, i);
       const sessionIds = Object.keys(sessions);
 
       sessionIds.forEach(sessionId => {
@@ -214,44 +196,6 @@ class UserCategoryStore {
       await batch.commit();
     } catch (e) {
       errorHandler({error: e, message: 'Error setting sessions:'});
-    }
-  };
-
-  updateUserCategory = async ({
-    field,
-    id,
-    data,
-  }: {
-    id: string;
-    field: string;
-    data: number | string | boolean;
-  }) => {
-    try {
-      crashlytics().log('Updating User Category.');
-
-      const isOffline = await userStore.getIsUserOffline();
-      const userId = userStore.userId;
-      if (!userId) {
-        return;
-      }
-
-      if (isOffline) {
-        firestore()
-          .collection(Collections.USER_LEVELS)
-          .doc(userId)
-          .update({
-            [`categories.${id}.${field}`]: data,
-          });
-      } else {
-        await firestore()
-          .collection(Collections.USER_LEVELS)
-          .doc(userId)
-          .update({
-            [`categories.${id}.${field}`]: data,
-          });
-      }
-    } catch (e) {
-      errorHandler({error: e});
     }
   };
 
@@ -297,6 +241,8 @@ class UserCategoryStore {
     favoriteIds: string[];
   }) => {
     try {
+      crashlytics().log('Delete User level Favorites.');
+
       const ids = favoriteIds;
       const newIds = ids.filter(id => {
         return id !== sessionId;
@@ -326,6 +272,8 @@ class UserCategoryStore {
       updates: Record<string, number | string | boolean>;
     }[],
   ) => {
+    crashlytics().log('Update User levels.');
+
     const db = firestore();
     const batch = db.batch();
 
@@ -379,6 +327,8 @@ class UserCategoryStore {
       updates: Record<string, any>;
     }[],
   ) => {
+    crashlytics().log('Update User Quadrants.');
+
     const db = firestore();
     const batch = db.batch();
 

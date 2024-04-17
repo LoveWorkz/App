@@ -52,7 +52,7 @@ const SessionItem = (props: SessionItemProps) => {
 
   let leftIcon = EllipseIcon;
   let rightIcon = <></>;
-  let bgColor = isPremium ? colors.disabledSessionColor : colors.softPeriwinkle;
+  let bgColor = colors.softPeriwinkle;
 
   switch (state) {
     case 'completed':
@@ -81,6 +81,13 @@ const SessionItem = (props: SessionItemProps) => {
       isBlocked = true;
   }
 
+  // premium logic
+  if(isPremium) {
+    bgColor = colors.disabledSessionColor; 
+    leftIcon = LockIcon;
+  }
+  const disabled = isBlocked || isPremium;
+
   const onSessionPressHandler = () => {
     setVisible(true);
   };
@@ -93,7 +100,7 @@ const SessionItem = (props: SessionItemProps) => {
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
-        disabled={isBlocked}
+        disabled={disabled}
         onPress={onSessionPressHandler}
         style={[
           styles.SessionItem,
@@ -131,7 +138,7 @@ const SessionItem = (props: SessionItemProps) => {
             }
           />
         </>
-        {rightIcon}
+        {disabled ? <></> : <>{rightIcon}</>}
       </TouchableOpacity>
       <PresSessionModal
         onConfirm={goToQuestions}

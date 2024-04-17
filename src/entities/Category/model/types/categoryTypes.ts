@@ -1,5 +1,4 @@
-import {UserSessionType} from '@src/entities/Session';
-import {UserQuadrantType} from '@src/entities/Session/model/types/sessionType';
+import {UserQuadrantType, UserSessionType} from '@src/entities/Session';
 import {DisplayText} from '@src/shared/types/types';
 
 export enum CateorySize {
