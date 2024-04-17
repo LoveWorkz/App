@@ -9,9 +9,6 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {quotesStore} from '@src/widgets/Quotes';
 import {shareStore} from '@src/features/Share';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {DocumentType} from '@src/shared/types/types';
 import {userStore} from '@src/entities/User';
 import {sessionStore} from '@src/entities/Session';
 import {questionsStore} from '@src/pages/QuestionsPage';
@@ -187,50 +184,6 @@ class HomePageStore {
         this.progressBarCategoryName = progressBarCategoryName;
         this.homePageCategory = homePageCategory;
       });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
-  goToQuestionsPage = ({
-    isFirstUserVisit,
-    language,
-  }: {
-    isFirstUserVisit: boolean;
-    language: LanguageValueType;
-  }) => {
-    try {
-      crashlytics().log('User clicked quick start button.');
-
-      const homePageCategory = this.homePageCategory;
-      if (!homePageCategory) {
-        return;
-      }
-
-      if (!isFirstUserVisit) {
-        navigation.navigate(AppRouteNames.QUESTIONS, {
-          type: DocumentType.CATEGORY,
-          id: homePageCategory.id,
-          showPreSessionPopup: true,
-        });
-
-        return;
-      }
-
-      const isCategoryDetailsVisible =
-        homePageCategory.isCategoryDetailsVisible;
-
-      if (isCategoryDetailsVisible) {
-        navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
-          title: homePageCategory.displayName[language],
-        });
-      } else {
-        navigation.navigate(AppRouteNames.SESSIONS, {
-          type: DocumentType.CATEGORY,
-          title: homePageCategory.displayName[language],
-          id: homePageCategory.id,
-        });
-      }
     } catch (e) {
       errorHandler({error: e});
     }

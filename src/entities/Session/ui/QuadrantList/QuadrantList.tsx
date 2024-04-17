@@ -15,10 +15,11 @@ import {QuadrantType} from '../../model/types/sessionType';
 interface QuadrantListProps {
   quadrantList: QuadrantType[];
   isLoading: boolean;
+  withBottomSpace?: boolean;
 }
 
 const QuadrantList = (props: QuadrantListProps) => {
-  const {quadrantList, isLoading} = props;
+  const {quadrantList, isLoading, withBottomSpace = true} = props;
 
   const sessionsCount = sessionStore.getAllSessionsCount();
 
@@ -42,9 +43,19 @@ const QuadrantList = (props: QuadrantListProps) => {
 
   return (
     <View>
-      {quadrantList.map(quadrant => {
+      {quadrantList.map((quadrant, i) => {
+        const isLastElement = i === quadrantList.length - 1;
+        const marginBottom = horizontalScale(40);
+        const marginBottomForLastElement = withBottomSpace ? marginBottom : 0;
+
         return (
-          <View key={quadrant.id} style={styles.item}>
+          <View
+            key={quadrant.id}
+            style={{
+              marginBottom: isLastElement
+                ? marginBottomForLastElement
+                : marginBottom,
+            }}>
             <Quadrant
               isPremium={quadrant.isPremium}
               isBlocked={quadrant.isBlocked}
@@ -64,9 +75,6 @@ const QuadrantList = (props: QuadrantListProps) => {
 export default memo(QuadrantList);
 
 const styles = StyleSheet.create({
-  item: {
-    marginBottom: horizontalScale(40),
-  },
   skeletonItem: {
     marginBottom: horizontalScale(15),
   },

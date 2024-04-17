@@ -2,5 +2,6 @@
     "sessions.session": "Session",
     "sessions.sessions": "sessions",
     "sessions.sessionOverview": "Session overview",
-    "sessions.favouriteSessions": "Favourite sessions"
+    "sessions.favouriteSessions": "Favourite sessions",
+    "sessions.todaysSession": "Today’s session"
 }

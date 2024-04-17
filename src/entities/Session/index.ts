@@ -11,3 +11,4 @@ export {
 } from './model/lib/sessionLib';
 export {default as PresSessionModal} from './ui/PreSessionModal/PreSessionModal';
 export {default as SessionOverview} from './ui/SessionOverview/SessionOverview';
+export {default as QuadrantList} from './ui/QuadrantList/QuadrantList';

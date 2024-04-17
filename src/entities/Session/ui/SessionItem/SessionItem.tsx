@@ -82,8 +82,8 @@ const SessionItem = (props: SessionItemProps) => {
   }
 
   // premium logic
-  if(isPremium) {
-    bgColor = colors.disabledSessionColor; 
+  if (isPremium) {
+    bgColor = colors.disabledSessionColor;
     leftIcon = LockIcon;
   }
   const disabled = isBlocked || isPremium;
@@ -94,7 +94,7 @@ const SessionItem = (props: SessionItemProps) => {
 
   const goToQuestions = useCallback(() => {
     setVisible(false);
-    sessionStore.selectSession({session});
+    sessionStore.selectSessionAndNavigate({session});
   }, [session]);
 
   return (

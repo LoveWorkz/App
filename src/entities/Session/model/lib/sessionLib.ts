@@ -34,3 +34,4 @@ export const userSession = {
 };
 
 export const SESSION_INTERVAL_FOR_RATE_PROMPT = 3;
+export const FIRST_QUADRANT_ID = 'quadrant1';

@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -20,9 +20,7 @@ import {initInterstitialAd} from '@src/app/config/admobConfig';
 import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {PresSessionModal, sessionStore} from '@src/entities/Session';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {sessionStore} from '@src/entities/Session';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import questionsStore from '../model/store/questionsStore';
@@ -36,7 +34,6 @@ interface QuestionsPageProps {
       id: string;
       initialQuestionId: string;
       sessionId: string;
-      showPreSessionPopup: boolean;
     };
   };
 }
@@ -50,12 +47,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {i18n} = useTranslation();
   const {theme} = useTheme();
   const {setIsGradient, isGradient} = useGradient();
-
-  const showPreSessionPopup = route?.params.showPreSessionPopup;
-
-  const [isPreSessionPopupVisible, setIsPreSessionPopupVisible] = useState(
-    !!showPreSessionPopup,
-  );
 
   const key = route?.params.type;
   const id = route?.params.id;
@@ -101,15 +92,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       setIsGradient,
     });
   }, [key, id, language, sharedQuestionId, sessionId]);
-
-  const onPreSessionConfirmHandler = useCallback(() => {
-    setIsPreSessionPopupVisible(false);
-  }, []);
-
-  const onPreSessionCancelHandler = useCallback(() => {
-    navigation.navigate(TabRoutesNames.HOME);
-    setIsPreSessionPopupVisible(false);
-  }, []);
 
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
@@ -170,14 +152,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       </View>
       <WowThatWasFast />
       <QuestionPageCongratsModal />
-      {!!showPreSessionPopup && (
-        <PresSessionModal
-          onConfirm={onPreSessionConfirmHandler}
-          onCancel={onPreSessionCancelHandler}
-          visible={isPreSessionPopupVisible}
-          setVisible={setIsPreSessionPopupVisible}
-        />
-      )}
     </View>
   );
 };

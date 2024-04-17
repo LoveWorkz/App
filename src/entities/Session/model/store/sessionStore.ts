@@ -21,6 +21,7 @@ import {
 } from '@src/entities/Challenge';
 import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
+  FIRST_QUADRANT_ID,
   sessionsCountWithoutSubscription,
   sessionsCountWithSubscription,
   SESSION_INTERVAL_FOR_RATE_PROMPT,
@@ -125,7 +126,7 @@ class SessionStore {
       : sessionsCountWithoutSubscription;
   };
 
-  selectSession = ({session}: {session: SessionType}) => {
+  selectSessionAndNavigate = ({session}: {session: SessionType}) => {
     const categoryId = categoryStore.category?.id;
     if (!categoryId) {
       return;
@@ -162,10 +163,10 @@ class SessionStore {
 
       const quadrants = data.docs.map((doc, i) => {
         const quadrant = doc.data() as QuadrantType;
-        const isFirstQuadrant = i === 0;
 
         const isPremium: boolean =
-          categoryStore.isFirstLevel(levelId) && isFirstQuadrant
+          categoryStore.isFirstLevel(levelId) &&
+          this.isFirstQuadrant(quadrant.id)
             ? false
             : !hasUserSubscription;
 
@@ -235,9 +236,9 @@ class SessionStore {
 
       const quadrantSessions = await Promise.all(quadrantSessionsPromises);
       const quadrantDetailsWithSessions = quadrants.map((quadrant, i) => {
-        const isFirstQuadrant = i === 0;
         const isPremium: boolean =
-          categoryStore.isFirstLevel(levelId) && isFirstQuadrant
+          categoryStore.isFirstLevel(levelId) &&
+          this.isFirstQuadrant(quadrant.id)
             ? false
             : !hasUserSubscription;
 
@@ -273,6 +274,10 @@ class SessionStore {
     );
 
     return sortedSessions;
+  };
+
+  isFirstQuadrant = (quadrantId: string) => {
+    return FIRST_QUADRANT_ID === quadrantId;
   };
 
   getUnlockedCategoriesMap = (unlockedCategories: CategoryType[]) => {
@@ -561,10 +566,6 @@ class SessionStore {
     return this.quadrants[0];
   };
 
-  isFirstQuadrant = () => {
-    return this.currentQuadrant?.id === this.getFirstQuadrant().id;
-  };
-
   isLastSessionInsideQuadrant = () => {
     const currentSession = this.session;
     const lastSession =
@@ -731,8 +732,25 @@ class SessionStore {
         },
       ]);
     } catch (error) {
-      console.error('Error updating document:', error);
+      errorHandler({error});
     }
+  };
+
+  getCurrentQuadrant = (): QuadrantType | null => {
+    const quadrants = this.quadrants;
+    return quadrants.find(quadrant => quadrant.isCurrent) || null;
+  };
+
+  getCurrentQuadrantAndSession = (): QuadrantType | null => {
+    const currentQuadrant = this.getCurrentQuadrant();
+    if (!currentQuadrant) {
+      return null;
+    }
+
+    const currentSession = currentQuadrant.sessions.filter(
+      session => session.isCurrent,
+    );
+    return {...currentQuadrant, sessions: currentSession};
   };
 }
 

@@ -406,6 +406,7 @@ class CategoryStore {
 
       // Update the current level in the user store and prepare updates.
       userStore.setCurrentLevel({currentCategory: nextLevel.name});
+      this.setCategory(nextLevel);
       const updates = this.prepareLevelUpdates(level, nextLevel);
 
       // Execute all updates.

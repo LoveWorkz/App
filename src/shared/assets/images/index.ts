@@ -115,3 +115,5 @@ export {default as statisticImage2} from './light/onboarding/statisticImage2.png
 export {default as statisticImage3} from './light/onboarding/statisticImage3.png';
 export {default as selectedStar} from './selectedStar.png';
 export {default as unselectedStar} from './unselectedStar.png';
+
+export {default as preSession} from './preSession.png';

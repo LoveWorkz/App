@@ -22,6 +22,8 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {sessionStore} from '@src/entities/Session';
 import homePageStore from '../../model/store/HomePageStore';
 
@@ -63,7 +65,7 @@ const QuickStart = (props: QuickStartProps) => {
   const isFirstUserVisit = !user.hasUserSwipedAnyQuestion;
 
   const onPressHandler = () => {
-    homePageStore.goToQuestionsPage({isFirstUserVisit, language});
+    navigation.navigate(AppRouteNames.PRE_SESSION);
   };
 
   return (

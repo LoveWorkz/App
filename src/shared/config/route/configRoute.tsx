@@ -33,6 +33,7 @@ import {OnboardingNotificationsPage} from '@src/pages/Onboarding/OnboardingNotif
 import {OnboardingStatisticPage} from '@src/pages/Onboarding/OnboardingStatisticPage';
 import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
 import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
+import {PreSessionPage} from '@src/pages/PreSessionPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -65,6 +66,7 @@ export enum AppRouteNames {
   ONBOARDING_GOALS = 'onboardingGoals',
   ONBOARDING_NOTIFICATIONS = 'onboardingNotifications',
   ONBOARDING_STATISTIC = 'onboardingStatistic',
+  PRE_SESSION = 'preSession',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -94,6 +96,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.YOUR_GOALS]: 'yourGoals',
   [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
   [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
+  [AppRouteNames.PRE_SESSION]: 'preSession',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -453,6 +456,18 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       );
     },
     headerShown: false,
+  },
+  [AppRouteNames.PRE_SESSION]: {
+    name: appRoutePaths.preSession,
+    headerShown: true,
+    headerTitle: 'sessions.todaysSession',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout deleteTopPadding isPageScrolling>
+          <PreSessionPage {...props} />
+        </Layout>
+      );
+    },
   },
 
   // tab routes
