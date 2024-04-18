@@ -19,20 +19,29 @@ interface GradientProps {
   style?: StyleType;
   size?: GradientSize;
   isFlex?: boolean;
+  isSoftBluePurpleGradient?: boolean;
 }
 
 export const Gradient = (props: GradientProps) => {
-  const {children, style, size = GradientSize.LARGE, isFlex = false} = props;
+  const {
+    children,
+    style,
+    size = GradientSize.LARGE,
+    isFlex = false,
+    isSoftBluePurpleGradient = false,
+  } = props;
 
   const gradientColors = ['#847AED', '#83C0F8'];
+  const start = isSoftBluePurpleGradient ? {x: 1, y: 1} : {x: 1, y: 0};
+  const end = isSoftBluePurpleGradient ? {x: 1, y: 0} : {x: 0, y: 1};
 
   if (isFlex) {
     return (
       <LinearGradient
         colors={gradientColors}
         style={[styles[size], style, {flex: 1}]}
-        start={{x: 1, y: 1}}
-        end={{x: 1, y: 0}}
+        start={start}
+        end={end}
       />
     );
   }
@@ -41,8 +50,8 @@ export const Gradient = (props: GradientProps) => {
     <LinearGradient
       style={[styles.gradient, styles[size], style]}
       colors={gradientColors}
-      start={{x: 1, y: 0}}
-      end={{x: 1, y: 1}}>
+      start={start}
+      end={end}>
       {children}
     </LinearGradient>
   );

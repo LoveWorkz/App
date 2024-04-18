@@ -25,9 +25,9 @@ export const GradientText = memo((props: GradientTextProps) => {
   return (
     <MaskedView maskElement={<AppText {...props} />}>
       <LinearGradient
-        colors={['#83C0F8', '#847AED']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}>
+        colors={['#847AED', '#83C0F8']}
+        start={{x: 1, y: 0}}
+        end={{x: 0, y: 1}}>
         <AppText align="justify" {...props} style={{opacity: 0}} />
       </LinearGradient>
     </MaskedView>

@@ -17,11 +17,12 @@ import {
 import {categoryStore} from '@src/entities/Category';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
+import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import { GradientArrowUpIcon } from '@src/shared/assets/icons/ArrowUp';
 import {userStore} from '@src/entities/User';
 import preSessionPageStore from '../model/store/PreSessionPageStore';
 
@@ -116,7 +117,7 @@ const PreSessionPage = () => {
         <AppText
           size={TextSize.LEVEL_2}
           text={'Your current intimacy level'}
-          weight={'500'}
+          weight={'600'}
         />
 
         <AppText
@@ -139,6 +140,7 @@ const PreSessionPage = () => {
       <Button onPress={onCollapseHandler} style={styles.seeAllSessionsWrapper}>
         <GradientText
           size={TextSize.LEVEL_3}
+          weight={'600'}
           text={
             isCollapsed
               ? `See all sessions of ${currentQuadrantAndSession.displayName[language]}`
@@ -146,9 +148,8 @@ const PreSessionPage = () => {
           }
         />
         <SvgXml
-          xml={ArrowDownIcon}
+          xml={isCollapsed  ? getArrowDownIcon(true) : GradientArrowUpIcon}
           style={styles.icon}
-          stroke={colors.periwinkleDust}
         />
       </Button>
 
@@ -169,7 +170,7 @@ const PreSessionPage = () => {
           fill={colors.white}
         />
       </Button>
-      
+
       <PresSessionModal
         onConfirm={goToQuestions}
         visible={visible}
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     left: -10,
   },
   image: {
-    height: verticalScale(250),
+    height: verticalScale(240),
   },
   textWrapper: {
     alignItems: 'center',
@@ -207,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: verticalScale(10),
+    marginVertical: verticalScale(15),
   },
   btn: {
     flexDirection: 'row',

@@ -61,7 +61,7 @@ const AdaptiveLayout = (props: AdaptiveLayoutProps) => {
         },
       ]}>
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
-        <Gradient isFlex />
+        <Gradient isFlex isSoftBluePurpleGradient />
       </Animated.View>
       {children}
     </View>

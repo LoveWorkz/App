@@ -24,7 +24,7 @@ export const errorHandler = ({
   }
 
   if (withCrashlytics) {
-    crashlytics().recordError(error);
+    // crashlytics().recordError(error);
   }
 
   const messageText = t('error.title');

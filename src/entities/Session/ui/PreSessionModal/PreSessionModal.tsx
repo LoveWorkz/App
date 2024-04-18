@@ -6,7 +6,6 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {Modal} from '@src/shared/ui/Modal/Modal';
 
 interface PresSessionModalProps {
@@ -43,40 +42,49 @@ const PresSessionModal = (props: PresSessionModalProps) => {
       <AppText
         style={{color: colors.primaryTextColor}}
         size={TextSize.LEVEL_6}
-        weight={'700'}
-        text={'Pre-Session Check - in'}
+        weight={'600'}
+        text={'How are we today?'}
       />
 
       <View style={styles.textsBlock}>
         <AppText
-          style={[
-            styles.text,
-            styles.mainText,
-            {color: colors.primaryTextColor},
-          ]}
+          style={styles.mainText}
           size={TextSize.LEVEL_4}
-          weight={'400'}
+          align={'justify'}
           text={
-            'How are we today? From 10 (amazing) to 1 (leave me alone). Everything below 7: please take a break & skip the session to another day.'
+            'From 10 (feeling amazing) to 1 (leave me alone). Everything below 7: please take a break & skip the session to another day.'
           }
         />
         <AppText
-          style={[styles.text, {color: colors.primaryTextColor}]}
-          size={TextSize.LEVEL_2}
-          weight={'400'}
+          size={TextSize.LEVEL_4}
+          align={'justify'}
           text={'Ps:  Put your phone in flight mode so you are not distracted.'}
         />
+
+        <View style={styles.noteBlock}>
+          <View style={styles.note}>
+            <AppText size={TextSize.LEVEL_2} weight={'500'} text={'Note:'} />
+          </View>
+          <AppText
+            size={TextSize.LEVEL_2}
+            weight={'500'}
+            align={'justify'}
+            text={
+              "Alternate turns in asking your partner questions and listen to your partner's answers w/o interrupting. If your partner doesn't want to answer a question, just pick another card. No judgment or criticism, listen closely, and be supportive and show empathy. Alternate roles as listener & speaker. "
+            }
+          />
+        </View>
       </View>
 
       <View style={styles.btnGroup}>
         <Button
           style={styles.skipBtn}
-          theme={ButtonTheme.OUTLINED_GRADIENT}
+          theme={ButtonTheme.CLEAR}
           onPress={onCancelHandler}>
-          <GradientText
-            size={TextSize.LEVEL_4}
-            weight={'700'}
-            text={'Skip it'}
+          <AppText
+            style={styles.skipBtnText}
+            weight={'600'}
+            text={'naah not today'}
           />
         </Button>
         <Button
@@ -85,9 +93,8 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           style={styles.letsDoThisBtn}>
           <AppText
             style={{color: colors.bgQuinaryColor}}
-            size={TextSize.LEVEL_4}
             weight={'700'}
-            text={t('lets_do_this')}
+            text={'Amazing, lets do it'}
           />
         </Button>
       </View>
@@ -97,19 +104,23 @@ const PresSessionModal = (props: PresSessionModalProps) => {
 
 export default memo(PresSessionModal);
 
-const btnWidth = '45%';
-
 const styles = StyleSheet.create({
   content: {
     minHeight: verticalScale(188),
+    paddingVertical: verticalScale(40)
   },
   textsBlock: {
     marginTop: verticalScale(20),
-    marginBottom: verticalScale(35),
+    marginBottom: verticalScale(40),
   },
-  text: {
-    textAlign: 'justify',
+
+  noteBlock: {
+    marginTop: verticalScale(20),
   },
+  note: {
+    marginBottom: verticalScale(10)
+  },
+
   mainText: {
     marginBottom: verticalScale(20),
   },
@@ -119,9 +130,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   letsDoThisBtn: {
-    width: btnWidth,
+    width: '55%',
   },
   skipBtn: {
-    width: btnWidth,
+    width: '45%',
+  },
+  skipBtnText: {
+    textDecorationLine: 'underline',
   },
 });

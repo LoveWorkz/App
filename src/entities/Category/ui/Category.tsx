@@ -44,7 +44,7 @@ const CategorySizes = {
   [CateorySize.XL]: 200,
 };
 
-const borderRadius = moderateScale(10);
+const borderRadius = moderateScale(20);
 
 const Category = (props: CategoryProps) => {
   const {
@@ -78,9 +78,18 @@ const Category = (props: CategoryProps) => {
   }, [id, name]);
 
   const handleCategoryPress = () => {
-    if (isCategoryHowToUse || isActionDisabled?.current) {
+    // Early return if any of the following conditions are true:
+    // 1. The category is a 'How To Use' type.
+    // 2. The action is currently disabled.
+    // 3. The category is special and blocked.
+    if (
+      isCategoryHowToUse ||
+      isActionDisabled?.current ||
+      (isSpecialCategoryBlocked && isSpecialCategory)
+    ) {
       return;
     }
+
     categoryStore.categoryPressHandler({
       displayName: displayName[language],
       categoryId: id,
