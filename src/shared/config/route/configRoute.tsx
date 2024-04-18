@@ -34,6 +34,7 @@ import {OnboardingStatisticPage} from '@src/pages/Onboarding/OnboardingStatistic
 import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
 import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
 import {PreSessionPage} from '@src/pages/PreSessionPage';
+import {BreakPage} from '@src/pages/BreakPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -67,6 +68,7 @@ export enum AppRouteNames {
   ONBOARDING_NOTIFICATIONS = 'onboardingNotifications',
   ONBOARDING_STATISTIC = 'onboardingStatistic',
   PRE_SESSION = 'preSession',
+  BREAK = 'break',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -97,6 +99,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
   [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
   [AppRouteNames.PRE_SESSION]: 'preSession',
+  [AppRouteNames.BREAK]: 'break',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -465,6 +468,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteTopPadding isPageScrolling>
           <PreSessionPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.BREAK]: {
+    name: appRoutePaths.break,
+    headerShown: true,
+    bgColor: 'secondaryBackground',
+    headerTitle: '',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout bgColor="secondaryBackground">
+          <BreakPage {...props} />
         </Layout>
       );
     },

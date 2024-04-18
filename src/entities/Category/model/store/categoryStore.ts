@@ -152,15 +152,21 @@ class CategoryStore {
     isCategoryDetailsVisible,
     displayName,
     categoryId,
+    key,
   }: {
     isActionDisabled?: boolean;
     isCategoryDetailsVisible: Boolean;
     displayName: string;
     categoryId: string;
+    key: CategoryKey;
   }) => {
     try {
       if (isActionDisabled) {
         return;
+      }
+
+      if (key === CategoryKey.How_To_Use) {
+        navigation.navigate(AppRouteNames.HOW_TO_USE);
       }
 
       this.getAndSetCategory({id: categoryId});

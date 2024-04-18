@@ -107,7 +107,7 @@ export default memo(PresSessionModal);
 const styles = StyleSheet.create({
   content: {
     minHeight: verticalScale(188),
-    paddingVertical: verticalScale(40)
+    paddingVertical: verticalScale(40),
   },
   textsBlock: {
     marginTop: verticalScale(20),
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
   },
   note: {
-    marginBottom: verticalScale(10)
+    marginBottom: verticalScale(10),
   },
 
   mainText: {

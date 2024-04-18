@@ -94,6 +94,7 @@ const Category = (props: CategoryProps) => {
       displayName: displayName[language],
       categoryId: id,
       isCategoryDetailsVisible,
+      key: name,
     });
   };
 

@@ -17,9 +17,9 @@ export const GradientArrowDownIcon = `
 `;
 
 export const getArrowDownIcon = (isGradient = false) => {
-    if(isGradient) {
-        return GradientArrowDownIcon;
-    }
+  if (isGradient) {
+    return GradientArrowDownIcon;
+  }
 
-    return ArrowDownIcon;
-}
+  return ArrowDownIcon;
+};

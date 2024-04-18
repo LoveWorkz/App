@@ -117,3 +117,4 @@ export {default as selectedStar} from './selectedStar.png';
 export {default as unselectedStar} from './unselectedStar.png';
 
 export {default as preSession} from './preSession.png';
+export {default as ArranKennedy} from './ArranKennedy.png';

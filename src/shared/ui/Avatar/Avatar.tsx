@@ -9,11 +9,28 @@ import {
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '../Skeleton/Skeleton';
 
-type Size = 130 | 170 | 200 | 40;
+type Size = 130 | 170 | 200 | 40 | 60;
+
+const getImage = (
+  defaultImage: number,
+  imageNumber?: number,
+  imageUrl?: string,
+) => {
+  if (imageNumber) {
+    return imageNumber;
+  }
+
+  if (imageUrl) {
+    return {uri: imageUrl};
+  }
+
+  return defaultImage;
+};
 
 interface AvatarProps {
   style?: Record<string, string | number>;
-  imageUrl: string;
+  imageUrl?: string;
+  imageNumber?: number;
   borderRadius?: number;
   isLoading?: boolean;
   size?: Size;
@@ -26,6 +43,7 @@ export const Avatar = memo((props: AvatarProps) => {
     imageUrl,
     borderRadius = 50,
     isLoading = false,
+    imageNumber,
   } = props;
 
   const {theme: appTheme} = useTheme();
@@ -72,7 +90,7 @@ export const Avatar = memo((props: AvatarProps) => {
       <FastImage
         onLoadStart={onLoadStartHandler}
         onLoadEnd={onLoadEndHandler}
-        source={imageUrl ? image : defaultImage}
+        source={getImage(defaultImage, imageNumber, imageUrl)}
         style={[styles.image, {borderRadius}]}
       />
     </View>
