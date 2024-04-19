@@ -14,7 +14,7 @@ const paddings = 10;
 
 const Categories = (props: CategoriesProps) => {
   const {isLoading} = props;
-  let categories = categoriesStore.categories;
+  let categories = categoriesStore.displayedLevels;
 
   if (isLoading) {
     categories = categoriesStore.editCategories(

@@ -7,7 +7,6 @@ import {userStore} from '@src/entities/User';
 import {
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
-  getNextChallengeCategory,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {
@@ -15,7 +14,6 @@ import {
   UserSpecialChallenge,
 } from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {CategoryKey} from '@src/entities/Category';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 
 class ChallengesStore {
@@ -28,7 +26,6 @@ class ChallengesStore {
     null;
   isAllChallengesSelected: boolean = false;
   challengeCategory: null | CurrentChallengeCategoryType = null;
-  isCongratsModalVisible: boolean = false;
   isChallengesLoading: boolean = false;
   isChallengePageLoading: boolean = true;
 
@@ -79,10 +76,6 @@ class ChallengesStore {
 
   setIsAllChallengesSelected = (isAllChallengesSelected: boolean) => {
     this.isAllChallengesSelected = isAllChallengesSelected;
-  };
-
-  setIsCongratsModalVisible = (isCongratsModalVisible: boolean) => {
-    this.isCongratsModalVisible = isCongratsModalVisible;
   };
 
   fetchChallengeCategories = async () => {
@@ -324,52 +317,6 @@ class ChallengesStore {
           return {...item, isActive: false};
         });
       });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
-  checkIfAllChallengesSelected = async () => {
-    try {
-      crashlytics().log('Checking if all challenges selected.');
-
-      const isAllChallengesSelected =
-        this.challenges.length === this.selectedChallengesIds.length;
-
-      if (isAllChallengesSelected) {
-        const currentChallengeCategory = this.challengeCategory;
-        if (!currentChallengeCategory) {
-          return;
-        }
-
-        const nextChallengeCategoryName = getNextChallengeCategory(
-          currentChallengeCategory.currentChallengeCategory as CategoryKey,
-        );
-
-        if (this.isAllChallengesSelected) {
-          return;
-        }
-
-        // update data after selecting all challenges
-        await userChallengeCategoryStore.updateUserChallengeCategory({
-          field: 'isAllChallengesSelected',
-          data: true,
-        });
-        this.setIsAllChallengesSelected(true);
-        // open next challenge category
-        await userChallengeCategoryStore.updateUserChallengeCategory({
-          field: 'isBlocked',
-          challengeCategoryName: nextChallengeCategoryName,
-          data: false,
-        });
-
-        crashlytics().log('User selected all challenges.');
-
-        this.setIsCongratsModalVisible(true);
-
-        // fetching actual data after selecting all challenges
-        await this.fetchChallengeCategories();
-      }
     } catch (e) {
       errorHandler({error: e});
     }

@@ -17,6 +17,10 @@ export const Favourites = (props: FavouritesProps) => {
   const {isLoading} = props;
   const {t} = useTranslation();
 
+  if (isLoading) {
+    return <Favorite image={questionFavourites} text={''} isLoading={true} />;
+  }
+
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.QUESTIONS, {
       type: DocumentType.FAVORITE,

@@ -72,18 +72,16 @@ const Category = (props: CategoryProps) => {
   const isSpecialCategory = name === CategoryKey.Specials;
 
   useEffect(() => {
-    if (name === CategoryKey.Specials) {
+    if (isSpecialCategory) {
       categoryStore.checkIfSpecialDateAndUpdateSpecialCategory(id);
     }
-  }, [id, name]);
+  }, [id, isSpecialCategory]);
 
   const handleCategoryPress = () => {
     // Early return if any of the following conditions are true:
-    // 1. The category is a 'How To Use' type.
-    // 2. The action is currently disabled.
-    // 3. The category is special and blocked.
+    // 1. The action is currently disabled.
+    // 2. The category is special and blocked.
     if (
-      isCategoryHowToUse ||
       isActionDisabled?.current ||
       (isSpecialCategoryBlocked && isSpecialCategory)
     ) {

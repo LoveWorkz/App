@@ -7,6 +7,8 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {InformationIcon} from '@src/shared/assets/icons/Information';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 interface SessionsHeaderRightProps {
   isFavorite?: boolean;
@@ -17,7 +19,9 @@ const SessionsHeaderRight = (props: SessionsHeaderRightProps) => {
 
   const colors = useColors();
 
-  const onPressHandler = () => {};
+  const onPressHandler = () => {
+    navigation.navigate(AppRouteNames.HOW_TO_USE);
+  };
 
   return (
     <Button

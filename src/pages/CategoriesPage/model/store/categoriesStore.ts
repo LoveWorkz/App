@@ -23,20 +23,41 @@ class CategoriesStore {
   favorites: FavoriteType | null = null;
   isCategoriesPageLoading: boolean = true;
 
+  displayedLevels: CategoryType[] = [];
+  displayedLevelsMap: Record<string, CategoryType> = {};
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  setCategories = (categories: CategoryType[]) => {
-    const unlockedCategories = this.getUnlockedCategories(categories);
-    const editedCategories = this.editCategories(categories as CategoryType[]);
-    const normalisedCategories = normaliseData<CategoryType>(categories);
+  setCategories = (levels: CategoryType[]) => {
+    const editedCategories = this.editCategories(levels as CategoryType[]);
+    // delete "How To Use" and "Special" blocks because there not a levels
+    const levelsMinusHotAndSpecial =
+      this.getLevelsMinusHotAndSpecial(editedCategories);
+    const unlockedCategories = this.getUnlockedCategories(
+      levelsMinusHotAndSpecial,
+    );
+    const normalisedCategories = normaliseData<CategoryType>(
+      levelsMinusHotAndSpecial,
+    );
+    const displayedLevelsMap = normaliseData<CategoryType>(editedCategories);
 
     runInAction(() => {
-      this.categories = editedCategories;
+      this.categories = levelsMinusHotAndSpecial;
       this.unlockedCategories = unlockedCategories;
       this.categoriesMap = normalisedCategories;
+      this.displayedLevels = editedCategories;
+      this.displayedLevelsMap = displayedLevelsMap;
     });
+  };
+
+  getLevelsMinusHotAndSpecial = (levels: CategoryType[]) => {
+    return levels.filter(
+      level =>
+        level.name !== CategoryKey.Specials &&
+        level.name !== CategoryKey.How_To_Use,
+    );
   };
 
   init = async () => {
@@ -103,13 +124,9 @@ class CategoriesStore {
   };
 
   getUnlockedCategories = (categories: CategoryType[]) => {
-    const unlockedCategories = categories.filter(category => {
-      return (
-        !category.isBlocked &&
-        category.name !== CategoryKey.How_To_Use &&
-        category.name !== CategoryKey.Specials
-      );
-    });
+    const unlockedCategories = categories.filter(
+      category => !category.isBlocked,
+    );
 
     return unlockedCategories;
   };

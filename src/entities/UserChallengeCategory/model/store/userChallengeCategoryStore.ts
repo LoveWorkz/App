@@ -91,7 +91,7 @@ class UserChallengeCategoryStore {
           ...userChallengeCategoryInitData,
           isBlocked:
             challengeCategory.name === CategoryKey.Starter ||
-            challengeCategory.name === CategoryKey.How_To_Use
+            challengeCategory.name === ('All_In_One' as any)
               ? false
               : true,
         };

@@ -167,6 +167,7 @@ class CategoryStore {
 
       if (key === CategoryKey.How_To_Use) {
         navigation.navigate(AppRouteNames.HOW_TO_USE);
+        return;
       }
 
       this.getAndSetCategory({id: categoryId});
@@ -277,11 +278,9 @@ class CategoryStore {
   checkContentLock = (categoryKey: CategoryKey) => {
     try {
       const hasUserSubscription = userStore.getUserHasSubscription();
-      const isStarterOrAllInOneCategory =
-        categoryKey === CategoryKey.Starter ||
-        categoryKey === CategoryKey.How_To_Use;
+      const isStarter = categoryKey === CategoryKey.Starter;
 
-      if (isStarterOrAllInOneCategory) {
+      if (isStarter) {
         return false;
       }
 
@@ -297,7 +296,8 @@ class CategoryStore {
     specialCategoryId: string,
   ): Promise<void> => {
     try {
-      const specialCategory = categoriesStore.categoriesMap[specialCategoryId];
+      const specialCategory =
+        categoriesStore.displayedLevelsMap[specialCategoryId];
       const shouldBlock = await this.shouldBlockCategory(specialCategory);
       const shouldUnlock = await this.shouldUnlockCategory(specialCategory);
 

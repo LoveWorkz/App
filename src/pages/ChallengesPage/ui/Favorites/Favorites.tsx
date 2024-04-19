@@ -15,6 +15,13 @@ const Favorites = () => {
 
   const isLoading = challengesStore.isChallengePageLoading;
   const favorite = favoriteStore.favorites;
+
+  if (isLoading) {
+    return <View style={styles.favorites}>
+        <Favorite image={questionFavourites} text={''} isLoading={true} />
+      </View>
+  }
+
   if (!favorite) {
     return null;
   }
