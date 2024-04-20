@@ -93,7 +93,7 @@ const HomePage = (props: HomePageProps) => {
         </FastImage>
       )}
       <View style={styles.homeCategoryWrapper}>
-        <QuickStart isLoading={isLoading} language={language} />
+        <QuickStart isLoading={isLoading} />
       </View>
       <CategoriesCarousel isLoading={isLoading} />
       <View style={styles.challangesWrapper}>

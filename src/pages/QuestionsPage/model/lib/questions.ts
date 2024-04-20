@@ -3,6 +3,7 @@ import {
   isCardTypeWild,
   isFunFact,
   isHotStuff,
+  questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
 import {
@@ -95,4 +96,31 @@ export const getFormattedQuestionsWrapper = ({
       return newQuestions;
     });
   };
+};
+
+export const getDefaultIndex = ({
+  isPreviousScreenBreak,
+  defaultQuestionNumber,
+  questions,
+}: {
+  isPreviousScreenBreak: boolean;
+  defaultQuestionNumber: number;
+  questions: QuestionType[];
+}) => {
+  if (!isPreviousScreenBreak) {
+    return defaultQuestionNumber;
+  }
+
+  const questionInfo = questionStore.getQuestionInfo({
+    questionId: questions[questions.length - 1].id,
+    questions: questions,
+  });
+
+  if (!questionInfo) {
+    return defaultQuestionNumber;
+  }
+
+  return isPreviousScreenBreak
+    ? questionInfo.currentQuestionNumber
+    : defaultQuestionNumber;
 };

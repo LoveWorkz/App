@@ -6,6 +6,8 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import TherapistBlock from './TherapistBlock';
 
 const BreakPage = () => {
@@ -14,6 +16,10 @@ const BreakPage = () => {
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors]);
+
+  const letsDoThisPressHandler = () => {
+    navigation.navigate(TabRoutesNames.CHALLENGES);
+  };
 
   return (
     <View style={styles.BreakPage}>
@@ -39,21 +45,22 @@ const BreakPage = () => {
 
       <View style={styles.bottomPart}>
         <AppText
-          style={[styles.description, textStyle]}
-          size={TextSize.LEVEL_5}
+          style={textStyle}
+          size={TextSize.LEVEL_4}
           align={'center'}
           weight="500"
           text={
-            'Master the challenge now to successfully complete this session.'
+            'Master the upcoming challenge now to successfully complete this session.'
           }
         />
         <Button
+          onPress={letsDoThisPressHandler}
           theme={ButtonTheme.NORMAL}
           style={[styles.btn, {backgroundColor: colors.white}]}>
           <GradientText
             size={TextSize.LEVEL_4}
             weight={'500'}
-            text={'Let’s do this.'}
+            text={'Let’s do this challenge'}
           />
         </Button>
       </View>
@@ -63,7 +70,7 @@ const BreakPage = () => {
 
 export default memo(BreakPage);
 
-const textWidth = '88%';
+const textWidth = '90%';
 
 const styles = StyleSheet.create({
   BreakPage: {
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   topPart: {
     width: textWidth,
     alignItems: 'center',
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(40),
   },
   description: {
     marginTop: verticalScale(20),
@@ -81,8 +88,7 @@ const styles = StyleSheet.create({
   bottomPart: {
     width: textWidth,
     alignItems: 'center',
-    position: 'absolute',
-    bottom: verticalScale(20),
+    marginTop: verticalScale(25),
   },
   btn: {
     width: '96%',

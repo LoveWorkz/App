@@ -17,7 +17,7 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {Theme} from '@src/app/providers/themeProvider';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
-import HeaderLeft from './HeaderLeft/HeaderLeft';
+import AppRouteHeaderLeft from './HeaderLeft/HeaderLeft';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +83,7 @@ const Routes = memo(() => {
           headerShown,
           headerTitle,
           HeaderRight,
+          HeaderLeft,
           isTitleLarge,
           isAboutMyRelationshipPage,
           bgColor,
@@ -110,14 +111,16 @@ const Routes = memo(() => {
                   ? () => <HeaderRight {...route.params} />
                   : undefined,
                 headerLeft: headerShown
-                  ? () => (
-                      <HeaderLeft
-                        {...route.params}
-                        headerTitle={headerTitle}
-                        isTitleLarge={isTitleLarge}
-                        isSecondaryBackground={isSecondaryBackground}
-                      />
-                    )
+                  ? HeaderLeft
+                    ? () => <HeaderLeft {...route.params} />
+                    : () => (
+                        <AppRouteHeaderLeft
+                          {...route.params}
+                          headerTitle={headerTitle}
+                          isTitleLarge={isTitleLarge}
+                          isSecondaryBackground={isSecondaryBackground}
+                        />
+                      )
                   : undefined,
               })}
               name={name}

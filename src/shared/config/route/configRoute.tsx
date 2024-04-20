@@ -35,6 +35,7 @@ import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
 import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
 import {PreSessionPage} from '@src/pages/PreSessionPage';
 import {BreakPage} from '@src/pages/BreakPage';
+import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -117,6 +118,7 @@ export type NewRouteProps = {
   headerShown?: boolean;
   headerTitle?: string;
   HeaderRight?: ComponentType;
+  HeaderLeft?: ComponentType;
   isTitleLarge?: boolean;
   isAboutMyRelationshipPage?: boolean;
   bgColor?: BgColor;
@@ -166,7 +168,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout
           deleteBottomPadding={true}
-          deleteTopPadding={true}
           isPageScrolling={true}>
           <SettingsPage {...props} />
         </Layout>
@@ -302,7 +303,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     HeaderRight: () => <SessionsHeaderRight />,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling deleteTopPadding>
+        <Layout isPageScrolling >
           <SessionsPage {...props} />
         </Layout>
       );
@@ -315,7 +316,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     HeaderRight: () => <SessionsHeaderRight isFavorite />,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling deleteTopPadding>
+        <Layout isPageScrolling >
           <FavoriteSessionsPage {...props} />
         </Layout>
       );
@@ -466,7 +467,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'sessions.todaysSession',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding isPageScrolling>
+        <Layout isPageScrolling>
           <PreSessionPage {...props} />
         </Layout>
       );
@@ -477,9 +478,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     bgColor: 'secondaryBackground',
     headerTitle: '',
+    HeaderLeft: BreakHeaderLeft,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColor="secondaryBackground">
+        <Layout isPageScrolling deleteTopPadding bgColor="secondaryBackground">
           <BreakPage {...props} />
         </Layout>
       );

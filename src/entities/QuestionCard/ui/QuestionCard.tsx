@@ -17,6 +17,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {QuestionCardTypes} from '../model/types/questionTypes';
 import {
+  isCardTypeEmpty,
   isCardTypeWild,
   questionCardHeight,
   questionCardWidth,
@@ -40,6 +41,10 @@ const QuestionCard = (props: QuestionCardProps) => {
 
   const language = i18n.language as LanguageValueType;
   const translatedQuestion = question[language];
+
+  if (isCardTypeEmpty(type)) {
+    return <></>;
+  }
 
   if (isCardTypeWild(type)) {
     return (

@@ -33,6 +33,22 @@ export const challengeCard: QuestionType = {
   category: null,
 };
 
+export const emptyCard: QuestionType = {
+  categoryId: '',
+  rubricId: '',
+  type: 'EMPTY_CARD',
+  question: {
+    de: '',
+    en: '',
+    pt: '',
+  },
+  id: 'empty_card',
+  createdDate: '',
+  difficulty: 1,
+  rubric: null,
+  category: null,
+};
+
 export const isFunFact = (value?: string) => {
   if (!value) {
     return false;
@@ -57,6 +73,10 @@ export const isCardTypeOrdinary = (type: QuestionCardTypes) => {
 
 export const isCardTypeChallenge = (type: QuestionCardTypes) => {
   return type === 'CHALLENGE_CARD';
+};
+
+export const isCardTypeEmpty = (type: QuestionCardTypes) => {
+  return type === 'EMPTY_CARD';
 };
 
 export const questionCardHeight = 550;

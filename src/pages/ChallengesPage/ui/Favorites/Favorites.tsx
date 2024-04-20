@@ -17,9 +17,11 @@ const Favorites = () => {
   const favorite = favoriteStore.favorites;
 
   if (isLoading) {
-    return <View style={styles.favorites}>
+    return (
+      <View style={styles.favorites}>
         <Favorite image={questionFavourites} text={''} isLoading={true} />
       </View>
+    );
   }
 
   if (!favorite) {

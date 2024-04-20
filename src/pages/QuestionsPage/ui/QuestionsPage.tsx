@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useMemo} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -9,6 +9,7 @@ import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {
+  emptyCard,
   QuestionCard,
   questionCardHeight,
   questionCardWidth,
@@ -24,7 +25,12 @@ import {sessionStore} from '@src/entities/Session';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import questionsStore from '../model/store/questionsStore';
-import {getFormattedQuestionsWrapper} from '../model/lib/questions';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {
+  getDefaultIndex,
+  getFormattedQuestionsWrapper,
+} from '../model/lib/questions';
 import QuestionPageCongratsModal from './QuestionPageCongratsModal/QuestionPageCongratsModal';
 
 interface QuestionsPageProps {
@@ -34,6 +40,7 @@ interface QuestionsPageProps {
       id: string;
       initialQuestionId: string;
       sessionId: string;
+      prevRouteName: AppRouteNames | TabRoutesNames;
     };
   };
 }
@@ -43,6 +50,8 @@ const interstitial = initInterstitialAd();
 const questionCardBorderRadius = moderateScale(20);
 
 const QuestionsPage = (props: QuestionsPageProps) => {
+  // check share !!!!!!!!!!!!
+
   const {route} = props;
   const {i18n} = useTranslation();
   const {theme} = useTheme();
@@ -60,38 +69,43 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const sharedSessionId = route?.params.sessionId;
   const sessionId = sharedSessionId || sessionStore.session?.id;
 
+  const isPreviousScreenBreak =
+    route?.params?.prevRouteName === AppRouteNames.BREAK;
+
+  const defaultElementIndex = useMemo(() => {
+    return getDefaultIndex({
+      isPreviousScreenBreak,
+      defaultQuestionNumber,
+      questions,
+    });
+  }, [isPreviousScreenBreak, defaultQuestionNumber, questions]);
+
   useFocusEffect(
     useCallback(() => {
       questionsStore.clearQuestionsInfo();
-      return () => setIsGradient(false);
-    }, []),
+
+      const adListener = interstitial.addAdEventListener(
+        AdEventType.LOADED,
+        () => interstitial.show(),
+      );
+
+      if (key) {
+        questionsStore.init({
+          id,
+          key,
+          language,
+          sharedQuestionId,
+          sessionId,
+          setIsGradient,
+        });
+      }
+
+      return () => {
+        setIsGradient(false);
+        adListener();
+      };
+    }, [key, id, language, sharedQuestionId, sessionId, setIsGradient]),
   );
-
-  useEffect(() => {
-    const unsubscribe = interstitial.addAdEventListener(
-      AdEventType.LOADED,
-      () => {
-        interstitial.show();
-      },
-    );
-
-    return unsubscribe;
-  }, [key]);
-
-  useEffect(() => {
-    if (!key) {
-      return;
-    }
-
-    questionsStore.init({
-      id,
-      key,
-      language,
-      sharedQuestionId,
-      sessionId,
-      setIsGradient,
-    });
-  }, [key, id, language, sharedQuestionId, sessionId]);
 
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
@@ -123,6 +137,14 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     [key, id, language],
   );
 
+  const questionsWithEmptyCard = useMemo(() => {
+    if (key === DocumentType.CATEGORY) {
+      return [...formattedQuestions, emptyCard];
+    }
+
+    return formattedQuestions;
+  }, [formattedQuestions, key]);
+
   if (isLoading) {
     return (
       <View style={styles.QuestionsPage}>
@@ -143,10 +165,10 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           isGradient={isGradient}
           isSlideEnabled={isSliideEnabled}
           onSwipeHandler={onSwipeHandler}
-          data={formattedQuestions}
+          data={questionsWithEmptyCard}
           itemStyle={styles.slideItemStyle}
           Component={QuestionCard}
-          defaultElement={defaultQuestionNumber}
+          defaultElement={defaultElementIndex}
           itemWidth={questionCardWidth}
         />
       </View>
@@ -161,6 +183,7 @@ export default memo(observer(QuestionsPage));
 const styles = StyleSheet.create({
   QuestionsPage: {
     flex: 1,
+    alignItems: 'center',
   },
   question: {
     width: '100%',
@@ -170,5 +193,6 @@ const styles = StyleSheet.create({
   },
   questionCardSkeleton: {
     marginTop: verticalScale(30),
+    width: '90%',
   },
 });

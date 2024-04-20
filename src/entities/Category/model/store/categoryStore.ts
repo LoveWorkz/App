@@ -230,7 +230,6 @@ class CategoryStore {
 
       // it's working only for the first time
       if (isInitialSetUp) {
-        const category = this.category;
         const session = sessionStore.session;
         if (!session) {
           return;

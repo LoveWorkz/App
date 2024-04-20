@@ -35,19 +35,38 @@ const TherapistBlock = () => {
           style={textStyle}
           size={TextSize.LEVEL_4}
           text={
-            'Take a little break and talk about what you liked and disliked about the question part.'
+            'Take a little break and talk about what you liked and disliked. Which questions did you find difficult and which were easy? Why?'
           }
         />
       </View>
-      <View style={styles.text}>
+      <View style={[styles.text, styles.textStop]}>
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
           text={
-            'The upcoming challenge part is like a homework for you two. You may repeat them as how often you want.'
+            'Next Stop: '
+          }
+        />
+        <AppText
+          style={textStyle}
+          size={TextSize.LEVEL_4}
+          weight={'700'}
+          text={
+            'Challenges*'
           }
         />
       </View>
+
+      <View style={styles.text}>
+      <AppText
+          style={textStyle}
+          size={TextSize.LEVEL_2}
+          text={
+            '*Each Session concludes with a challenge—think of it as homework or a tool—designed to translate insights into action.'
+          }
+        />
+      </View>
+
     </View>
   );
 };
@@ -70,4 +89,7 @@ const styles = StyleSheet.create({
   text: {
     marginTop: verticalScale(20),
   },
+  textStop: {
+    flexDirection: 'row'
+  }
 });

@@ -10,9 +10,11 @@ export {
   challengeCard,
   questionCardHeight,
   questionCardWidth,
+  emptyCard,
   isFunFact,
   isHotStuff,
   isCardTypeChallenge,
   isCardTypeOrdinary,
   isCardTypeWild,
+  isCardTypeEmpty,
 } from './model/lib/questionLib';

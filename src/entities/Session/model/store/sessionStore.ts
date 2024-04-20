@@ -295,22 +295,11 @@ class SessionStore {
     if (!session) {
       return [];
     }
-    // delete this line after deleting challenge questions from firebase from firebase
-    session.questions.pop();
+
     const sessionQuestionsIds = session.questions;
 
     const questions = sessionQuestionsIds.map(questionId => {
-      const question = questionsMap[questionId];
-
-      // return {
-      //   ...question,
-      //   challenge:
-      //     question.type === 'CHALLENGE_CARD'
-      //       ? session.challenge.challengeId
-      //       : '',
-      // };
-
-      return question;
+      return questionsMap[questionId];
     });
 
     const questionsWithChallengeCard = [

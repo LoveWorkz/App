@@ -22,6 +22,8 @@ import {DocumentType} from '@src/shared/types/types';
 import {delay, getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore} from '@src/entities/Session';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -163,6 +165,13 @@ class QuestionsStore {
   }) => {
     try {
       crashlytics().log('Swiping question.');
+
+      // if the user swipes the last card, redirect to the Break page.
+      if (swipeData.question.type === 'EMPTY_CARD') {
+        navigation.navigate(AppRouteNames.BREAK);
+
+        return;
+      }
 
       const {question, questionNumber, interstitial, key, documentId} =
         swipeData;
@@ -316,13 +325,16 @@ class QuestionsStore {
         });
       }
 
+      // remove empty elements
+      const filteredQuestions = questions.filter(question => question);
+
       runInAction(() => {
-        if (!questions) {
+        if (!filteredQuestions) {
           return;
         }
 
-        this.questions = questions;
-        this.questionsSize = questions.length;
+        this.questions = filteredQuestions;
+        this.questionsSize = filteredQuestions.length;
       });
     } catch (e) {
       errorHandler({error: e});

@@ -13,35 +13,29 @@ import {
   getShadowOpacity,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {
   homeCategoryImage,
   homeCategoryImageDark,
 } from '@src/shared/assets/images';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {sessionStore} from '@src/entities/Session';
 import homePageStore from '../../model/store/HomePageStore';
 
 interface QuickStartProps {
   isLoading: boolean;
-  language: LanguageValueType;
 }
 
 const height = 92;
 const borderRadius = 20;
 
 const QuickStart = (props: QuickStartProps) => {
-  const {isLoading, language} = props;
+  const {isLoading} = props;
   const {t} = useTranslation();
   const colors = useColors();
   const {theme} = useTheme();
-
-  const sessionsCount = sessionStore.getAllSessionsCount();
 
   if (isLoading) {
     return (
@@ -99,10 +93,6 @@ const QuickStart = (props: QuickStartProps) => {
                     ? t('home.start_your_sessions_here')
                     : t('home.continue_where_you_left_off')
                 }
-              />
-              <GradientText
-                weight={'700'}
-                text={`${isFirstUserVisit ? 0 : 1}/${sessionsCount}`}
               />
             </View>
             <View style={styles.bottomBlock}>

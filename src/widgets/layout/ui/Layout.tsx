@@ -72,7 +72,7 @@ export const Layout = (props: LayoutProps) => {
             layoutStyles.layout,
             {
               paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
-              marginTop,
+              paddingTop: marginTop,
               padding: deleteGlobalPadding ? 0 : globalPadding,
             },
           ]}>

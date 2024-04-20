@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     width: moderateScale(17),
     height: moderateScale(4),
     borderRadius: moderateScale(6),
-    marginHorizontal: horizontalScale(4),
+    marginHorizontal: horizontalScale(3),
   },
   icon: {
     width: horizontalScale(10),

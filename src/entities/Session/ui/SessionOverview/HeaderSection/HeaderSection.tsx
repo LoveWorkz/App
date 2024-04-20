@@ -5,6 +5,7 @@ import {categoryStore, CategoryType} from '@src/entities/Category';
 import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {sessionStore} from '@src/entities/Session';
 import Carouseltem from './Carouseltem';
 
@@ -36,7 +37,7 @@ const HeaderSection = (props: HeaderSectionProps) => {
       onSwipeHandler={swipeHandler}
       Component={Carouseltem}
       data={levelsWithMetaDatas}
-      carouselHeight={verticalScale(300)}
+      carouselHeight={verticalScale(isPlatformIos ? 300 : 310)}
       mode={'expanded'}
       loop={false}
       paginationStyle={styles.paginationStyle}

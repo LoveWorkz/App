@@ -94,7 +94,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             weight={'700'}
-            text={'Amazing, lets do it'}
+            text={"Amazing, let's do it"}
           />
         </Button>
       </View>

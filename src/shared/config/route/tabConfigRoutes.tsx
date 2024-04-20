@@ -44,7 +44,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     tabName: 'Categories',
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling={true} deleteTopPadding={true} isTabBar>
+        <Layout isPageScrolling={true} isTabBar>
           <CategoriesPage {...props} />
         </Layout>
       );
@@ -58,7 +58,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     tabName: 'Rubrics',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding={true} isPageScrolling={true} isTabBar>
+        <Layout isPageScrolling={true} isTabBar>
           <RubricsPage {...props} />
         </Layout>
       );
