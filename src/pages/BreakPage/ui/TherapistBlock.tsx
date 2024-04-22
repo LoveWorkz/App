@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   TherapistBlock: {
     width: '100%',
     borderRadius: moderateScale(20),
-    padding: horizontalScale(46),
+    paddingHorizontal: horizontalScale(40),
+    paddingVertical: verticalScale(35),
   },
   topBlock: {
     flexDirection: 'row',

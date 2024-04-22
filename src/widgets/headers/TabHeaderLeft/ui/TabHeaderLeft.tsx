@@ -18,7 +18,7 @@ const TabHeaderLeft = (props: TabHeaderProps) => {
   return (
     <View style={[styles.TabHeaderRight, {paddingRight: globalPadding}]}>
       <AppText
-        weight={'600'}
+        weight={'700'}
         size={TextSize.LEVEL_6}
         style={[
           styles.title,

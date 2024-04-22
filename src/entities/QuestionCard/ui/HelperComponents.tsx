@@ -61,7 +61,7 @@ export const TopicName = React.memo((props: TopicNameProps) => {
       <View style={styles.topicName}>
         <AppText
           style={{color: colors.white}}
-          weight={'600'}
+          weight={'700'}
           size={TextSize.LEVEL_2}
           text={'Wild Card'}
         />
@@ -74,12 +74,12 @@ export const TopicName = React.memo((props: TopicNameProps) => {
       {isTopicHotStuff ? (
         <AppText
           style={{color: colors.red}}
-          weight={'600'}
+          weight={'700'}
           size={TextSize.LEVEL_2}
           text={topicName}
         />
       ) : (
-        <GradientText weight={'600'} size={TextSize.LEVEL_2} text={topicName} />
+        <GradientText weight={'700'} size={TextSize.LEVEL_2} text={topicName} />
       )}
     </View>
   ) : null;
@@ -100,13 +100,13 @@ export const AppName = React.memo((props: AppNameProps) => {
       {isTypeWild ? (
         <AppText
           style={{color: colors.white}}
-          weight={'600'}
+          weight={'700'}
           size={TextSize.LEVEL_2}
           text={`...${APPLICATION_NAME}`}
         />
       ) : (
         <GradientText
-          weight={'600'}
+          weight={'700'}
           size={TextSize.LEVEL_2}
           text={`...${APPLICATION_NAME}`}
         />

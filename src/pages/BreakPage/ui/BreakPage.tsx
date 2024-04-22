@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   topPart: {
     width: textWidth,
     alignItems: 'center',
-    marginBottom: verticalScale(40),
+    marginBottom: verticalScale(30),
   },
   description: {
     marginTop: verticalScale(20),

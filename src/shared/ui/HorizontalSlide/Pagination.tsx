@@ -40,13 +40,13 @@ const Pagination = (props: PaginationDotsProps) => {
   return (
     <View style={styles.pagination}>
       {isFirstElement ? (
-        <AppText weight={'500'} text={`${currentIndex + 1}/${count}`} />
+        <AppText weight={'600'} text={`${currentIndex + 1}/${count}`} />
       ) : (
         <AppText
           style={{
             color: isGradient ? colors.white : colors.primaryTextColor,
           }}
-          weight={'500'}
+          weight={'600'}
           text={`${currentIndex + 1}/${count} - You’re great! Proceed`}
         />
       )}

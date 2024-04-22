@@ -56,8 +56,11 @@ export const getShadowOpacity = (theme: Theme) => {
 };
 
 export const globalStyles = StyleSheet.create({
-  textFont: {
-    fontFamily: 'Quicksand-Bold',
+  Quicksand_Regular: {
+    fontFamily: 'Quicksand-Regular',
+  },
+  Quicksand_SemiBold: {
+    fontFamily: 'Quicksand-SemiBold',
   },
 
   // z-index

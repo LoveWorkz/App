@@ -118,7 +118,7 @@ const SessionItem = (props: SessionItemProps) => {
           <View style={styles.sessionNumberWrapper}>
             <SvgXml xml={leftIcon} style={styles.leftIcon} />
             <AppText
-              weight={'500'}
+              weight={'600'}
               size={TextSize.LEVEL_2}
               text={`${t('sessions.session')} ${session.sessionNumber}`}
             />
@@ -131,7 +131,7 @@ const SessionItem = (props: SessionItemProps) => {
             />
           </View>
           <AppText
-            weight={'500'}
+            weight={'600'}
             size={TextSize.LEVEL_2}
             text={
               'Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being.'

@@ -49,7 +49,7 @@ const Quadrant = (props: QuadrantProps) => {
         {disabled && <SvgXml xml={LockIcon} style={styles.lockIcon} />}
 
         <AppText
-          weight={'500'}
+          weight={'600'}
           size={TextSize.LEVEL_2}
           text={quadrant.step[language]}
         />
@@ -67,7 +67,7 @@ const Quadrant = (props: QuadrantProps) => {
         />
       </View>
       <AppText
-        weight={'500'}
+        weight={'600'}
         size={TextSize.LEVEL_2}
         text={quadrant.description[language]}
       />
