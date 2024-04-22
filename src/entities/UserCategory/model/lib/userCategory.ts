@@ -30,7 +30,6 @@ export const getLevels = () => {
       ...result[levelId],
       isBlocked,
       isCategoryDetailsVisible: true,
-      isAllSessionsPassed: false,
       currentSession: firstSessionId,
       currentSessionNumber: 1,
       ratePopUpBreakpoint: 3,

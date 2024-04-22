@@ -35,7 +35,6 @@ export interface CategoryType {
   createdDate: string;
   displayName: DisplayText;
   sessions: UserSessionType;
-  isAllSessionsPassed: boolean;
   currentSession: string;
   ratePopUpBreakpoint: number;
   currentSessionNumber: number;

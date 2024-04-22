@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections} from '@src/shared/types/firebase';
-import {challengeCard, QuestionType} from '@src/entities/QuestionCard';
+import {QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -40,7 +40,6 @@ class SessionStore {
   currentQuadrant: QuadrantType | null = null;
   lastQuadrant: QuadrantType | null = null;
   favoriteQuadrantsSessions: QuadrantType[] = [];
-
   constructor() {
     makeAutoObservable(this);
   }
@@ -298,20 +297,9 @@ class SessionStore {
 
     const sessionQuestionsIds = session.questions;
 
-    const questions = sessionQuestionsIds.map(questionId => {
+    return sessionQuestionsIds.map(questionId => {
       return questionsMap[questionId];
     });
-
-    const questionsWithChallengeCard = [
-      ...questions,
-      {
-        ...challengeCard,
-        challenge: session.challenge.challengeId,
-        categoryId: session.categoryId,
-      },
-    ];
-
-    return questionsWithChallengeCard;
   };
 
   /**
@@ -331,7 +319,7 @@ class SessionStore {
       // Retrieve current session details and verify conditions.
       const sessions = this.currentQuadrantsSessions;
       const currentSession = this.session;
-      if (!currentSession || currentSession.isAllQuestionsSwiped) {
+      if (!currentSession) {
         console.log('No update required or all questions already swiped.');
         return;
       }
@@ -341,17 +329,10 @@ class SessionStore {
         id: currentSession.id,
         array: sessions,
       });
-      if (!nextSession) {
-        console.log('No next session found.');
+      if (!nextSession || !nextSession.isBlocked) {
+        console.log('No need to update next session.');
         return;
       }
-
-      // Update category store and prepare session data for the update.
-      categoryStore.setCategory({
-        ...category,
-        currentSession: nextSession.id,
-        currentSessionNumber: nextSession.sessionNumber,
-      });
 
       await this.updateSessionsData({
         level: category,
@@ -386,7 +367,6 @@ class SessionStore {
           sessionId: currentSession.id,
           levelId: level.id,
           updates: {
-            isAllQuestionsSwiped: true,
             isCurrent: false,
           },
         },
@@ -416,7 +396,14 @@ class SessionStore {
         currentSession: nextSession.id,
         currentSessionNumber: nextSession.sessionNumber,
       };
+
+      // Update level store and prepare session data for the update.
       categoryStore.setCategory(newLevel);
+      categoryStore.updateLevels({
+        levelId: level.id,
+        field: 'currentSessionNumber',
+        value: nextSession.sessionNumber,
+      });
 
       // Set a finish date notification for the last session.
       const setFinishDate = userStore.setNotification({
@@ -580,8 +567,8 @@ class SessionStore {
       array: this.quadrants,
     });
 
-    if (!nextQuadrant) {
-      console.log('No next quadrant found.');
+    if (!nextQuadrant || !nextQuadrant.isBlocked) {
+      console.log('No need to update next quadrant.');
       return;
     }
 
@@ -707,7 +694,6 @@ class SessionStore {
           sessionId: currentSession.id,
           levelId: level.id,
           updates: {
-            isAllQuestionsSwiped: true,
             isCurrent: false,
           },
         },
@@ -740,6 +726,44 @@ class SessionStore {
       session => session.isCurrent,
     );
     return {...currentQuadrant, sessions: currentSession};
+  };
+
+  /**
+   * Updates a specific field in user sessions and local session data.
+   * @param {string} sessionId - The current session ID.
+   * @param {string} levelId - The ID of the current level or category.
+   * @param {string} fieldName - The name of the field to update.
+   * @param {any} fieldValue - The new value for the field.
+   */
+  updateSessionField = async ({
+    sessionId,
+    levelId,
+    fieldName,
+    fieldValue,
+  }: {
+    sessionId: string;
+    levelId: string;
+    fieldName: string;
+    fieldValue: string;
+  }) => {
+    // Update the user sessions with the new field value
+    await userCategoryStore.updateUserSessions([
+      {
+        sessionId: sessionId,
+        levelId: levelId,
+        updates: {
+          [fieldName]: fieldValue,
+        },
+      },
+    ]);
+
+    // Retrieve the current session from the session store
+    const currentSession = this.session;
+
+    // If there is a current session, update it with the new field value
+    if (currentSession) {
+      this.setSession({...currentSession, [fieldName]: fieldValue});
+    }
   };
 }
 

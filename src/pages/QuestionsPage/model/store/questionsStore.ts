@@ -17,9 +17,8 @@ import {userStore} from '@src/entities/User';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {userRubricStore} from '@src/entities/UserRubric';
-import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
-import {delay, getNumbersDiff} from '@src/shared/lib/common';
+import {getNumbersDiff} from '@src/shared/lib/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore} from '@src/entities/Session';
 import {navigation} from '@src/shared/lib/navigation/navigation';
@@ -68,9 +67,6 @@ class QuestionsStore {
 
       await this.getQuestionsPageInfo(param);
       await sessionStore.fetchSessionChallenge();
-
-      // added this delay for fixing gray overlay error
-      await delay(1000);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -195,7 +191,7 @@ class QuestionsStore {
 
       switch (key) {
         case DocumentType.CATEGORY:
-          this.categorySwipeLogic({...swipeData, sessionId});
+          this.levelSwipeLogic({...swipeData, sessionId});
           break;
         case DocumentType.RUBRIC:
           this.rubricSwipeLogic(swipeData);
@@ -210,19 +206,19 @@ class QuestionsStore {
     }
   };
 
-  categorySwipeLogic = async (categorySwipeParam: {
+  levelSwipeLogic = async (levelSwipeParam: {
     question: QuestionType;
     key: DocumentType;
     sessionId: string;
     setIsGradient: (isGradient: boolean) => void;
   }) => {
     try {
-      crashlytics().log('Swiping category questions.');
+      crashlytics().log('Swiping level questions.');
 
-      const {question, sessionId, setIsGradient} = categorySwipeParam;
+      const {question, sessionId, setIsGradient} = levelSwipeParam;
 
-      const currentCategory = categoryStore.category;
-      if (!currentCategory) {
+      const currentLevel = categoryStore.category;
+      if (!currentLevel) {
         return;
       }
 
@@ -234,15 +230,12 @@ class QuestionsStore {
 
       this.checkAndResetNotificationDate();
 
-      await userCategoryStore.updateUserSessions([
-        {
-          sessionId: sessionId,
-          levelId: currentCategory.id,
-          updates: {
-            currentQuestion: question.id,
-          },
-        },
-      ]);
+      await sessionStore.updateSessionField({
+        levelId: currentLevel.id,
+        sessionId,
+        fieldName: 'currentQuestion',
+        fieldValue: question.id,
+      });
 
       this.checkIfAllQuestionsSwiped({
         questionId: question.id,
@@ -376,9 +369,6 @@ class QuestionsStore {
     const promise2 = firestore()
       .collection(Collections.WILD_QUESTIONS)
       .get({source});
-    // const promise3 = firestore()
-    // .collection(Collections.CHALLENGE_QUESTIONS)
-    // .get({source});
     const promise4 = firestore()
       .collection(Collections.RUBRIC_QUESTIONS)
       .get({source});

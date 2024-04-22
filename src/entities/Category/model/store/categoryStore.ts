@@ -73,9 +73,9 @@ class CategoryStore {
     }
   }
 
-  fetchCategory = async ({id}: {id: string}) => {
+  fetchLevel = async ({id}: {id: string}) => {
     try {
-      crashlytics().log('Fetching Category.');
+      crashlytics().log('Fetching Level.');
 
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.userId;
@@ -83,35 +83,40 @@ class CategoryStore {
         return;
       }
 
-      const cdefaultCtegoryData = await firestore()
+      const promise1 = firestore()
         .collection(Collections.LEVELS)
         .doc(id)
         .get({source});
 
-      const userCategoryData = await firestore()
+      const promise2 = firestore()
         .collection(Collections.USER_LEVELS)
         .doc(userId)
         .collection(Collections.LEVELS)
         .doc(id)
-        .get();
+        .get({source});
 
-      const userCategory = userCategoryData.data();
-      if (!userCategory) {
+      const [defaultLevelData, userLevelData] = await Promise.all([
+        promise1,
+        promise2,
+      ]);
+
+      const userLevel = userLevelData.data();
+      if (!userLevel) {
         return;
       }
 
-      const currentCategory = cdefaultCtegoryData.data() as CategoryType;
+      const currentLevel = defaultLevelData.data() as CategoryType;
 
-      // merge default category with user custom category
-      const category = {
-        ...currentCategory,
-        id: cdefaultCtegoryData.id,
-        name: currentCategory.name,
-        ...userCategory,
+      // merge default level with user custom level
+      const level = {
+        ...currentLevel,
+        id: defaultLevelData.id,
+        name: currentLevel.name,
+        ...userLevel,
       } as CategoryType;
 
-      this.setCategory(category);
-      return category;
+      this.setCategory(level);
+      return level;
     } catch (e) {
       errorHandler({error: e});
     }
@@ -193,14 +198,18 @@ class CategoryStore {
     });
   };
 
-  getCategoryByName = (name: string) => {
-    try {
-      return categoriesStore.categories.find(category => {
-        return category.name === name;
-      });
-    } catch (e) {
-      errorHandler({error: e});
+  getCategoryByName = (name?: string): CategoryType => {
+    const levels = categoriesStore.categories;
+    const firstLevel = levels[0];
+
+    if (!name) {
+      return firstLevel;
     }
+
+    const level = levels.find(l => {
+      return l.name === name;
+    });
+    return level || firstLevel;
   };
 
   isFirstLevel = (levelId: string) => {
@@ -370,6 +379,30 @@ class CategoryStore {
     return categoryKey === CategoryKey.Intimate;
   };
 
+  updateLevels = ({
+    levelId,
+    field,
+    value,
+  }: {
+    levelId: string;
+    field: string;
+    value: string | number | boolean;
+  }) => {
+    const levels = categoriesStore.categories;
+
+    const newLevels = levels.map(level => {
+      if (level.id === levelId) {
+        return {...level, [field]: value};
+      }
+
+      return level;
+    });
+
+    runInAction(() => {
+      categoriesStore.setCategories(newLevels);
+    });
+  };
+
   // Updates user data and progresses to the next level after all questions have been swiped.
   async updateUserLevelAftePassedAllSessionsAndQuadrats({
     level,
@@ -395,23 +428,20 @@ class CategoryStore {
       }
 
       // Early exit if no updates are necessary.
-      if (this.isLastLevel(level.name) || level.isAllSessionsPassed) {
-        console.log(
-          'No further updates required. Either last level or all sessions passed.',
-        );
+      if (this.isLastLevel(level.name)) {
+        console.log('No further updates required. Either last level passed.');
         return;
       }
 
       // Determine the next level to transition to.
       const nextLevel = this.getNextLevel(level.id);
-      if (!nextLevel) {
-        console.log('No next level found.');
+      if (!nextLevel || !nextLevel.isBlocked) {
+        console.log('No need to update next level.');
         return;
       }
 
       // Update the current level in the user store and prepare updates.
       userStore.setCurrentLevel({currentCategory: nextLevel.name});
-      this.setCategory(nextLevel);
       const updates = this.prepareLevelUpdates(level, nextLevel);
 
       // Execute all updates.
@@ -448,10 +478,6 @@ class CategoryStore {
     nextLevel: CategoryType,
   ): Promise<any>[] {
     const updateCurrentLevel = userCategoryStore.updateUserLevels([
-      {
-        levelId: currentLevel.id,
-        updates: {isAllSessionsPassed: true},
-      },
       {
         levelId: nextLevel.id,
         updates: {isBlocked: false},

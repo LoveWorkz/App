@@ -43,22 +43,18 @@ const TherapistBlock = () => {
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
-          text={
-            'Next Stop: '
-          }
+          text={'Next Stop: '}
         />
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
           weight={'700'}
-          text={
-            'Challenges*'
-          }
+          text={'Challenges*'}
         />
       </View>
 
       <View style={styles.text}>
-      <AppText
+        <AppText
           style={textStyle}
           size={TextSize.LEVEL_2}
           text={
@@ -66,7 +62,6 @@ const TherapistBlock = () => {
           }
         />
       </View>
-
     </View>
   );
 };
@@ -90,6 +85,6 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
   },
   textStop: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });

@@ -22,9 +22,6 @@ const SessionsPage = (props: SessionsPageProps) => {
   const quadrantList = sessionStore.quadrants;
   const isLoading = sessionStore.isFetching;
 
-  if (!currentLevel) {
-    return <></>;
-  }
 
   const onCategorySwipeHandlerHandler = useCallback((level: CategoryType) => {
     sessionStore.levelSwipeHandler(level);
@@ -45,6 +42,10 @@ const SessionsPage = (props: SessionsPageProps) => {
   useEffect(() => {
     sessionsPageStore.init();
   }, []);
+
+  if (!currentLevel) {
+    return <></>;
+  }
 
   return (
     <View style={styles.SessionsPage}>

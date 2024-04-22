@@ -27,7 +27,6 @@ export const getSessionsImages = (key: CategoryKey) => {
 export const userSession = {
   breakPointForCheckingDate: 30,
   currentQuestion: '',
-  isAllQuestionsSwiped: false,
   isBlocked: true,
   questionSwipeStartDate: '',
   swipedQuestionsPercentage: 0,

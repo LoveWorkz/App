@@ -17,22 +17,6 @@ export const goodMoodQuestionCard: QuestionType = {
   category: null,
 };
 
-export const challengeCard: QuestionType = {
-  categoryId: '',
-  rubricId: '',
-  type: 'CHALLENGE_CARD',
-  question: {
-    de: '',
-    en: '',
-    pt: '',
-  },
-  id: 'challenge_question',
-  createdDate: '',
-  difficulty: 1,
-  rubric: null,
-  category: null,
-};
-
 export const emptyCard: QuestionType = {
   categoryId: '',
   rubricId: '',
@@ -69,10 +53,6 @@ export const isCardTypeWild = (type: QuestionCardTypes) => {
 
 export const isCardTypeOrdinary = (type: QuestionCardTypes) => {
   return type === 'ORDINARY_CARD';
-};
-
-export const isCardTypeChallenge = (type: QuestionCardTypes) => {
-  return type === 'CHALLENGE_CARD';
 };
 
 export const isCardTypeEmpty = (type: QuestionCardTypes) => {

@@ -28,7 +28,6 @@ interface QuestionCardProps {
   question: DisplayText;
   image: ImageSourcePropType;
   type: QuestionCardTypes;
-  challenge?: string;
   rubric?: RubricType;
 }
 

@@ -14,7 +14,6 @@ interface QuestionCardWrapperProps {
   image: ImageSourcePropType;
   type: QuestionCardTypes;
   id: string;
-  challenge?: string;
   rubric?: RubricType;
 }
 

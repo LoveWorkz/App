@@ -7,13 +7,11 @@ export type {
 } from './model/types/questionTypes';
 export {
   goodMoodQuestionCard,
-  challengeCard,
   questionCardHeight,
   questionCardWidth,
   emptyCard,
   isFunFact,
   isHotStuff,
-  isCardTypeChallenge,
   isCardTypeOrdinary,
   isCardTypeWild,
   isCardTypeEmpty,

@@ -283,8 +283,8 @@ class RubricStore {
     const allQuestions = questionsStore.allQuestions;
 
     const questionsFromUnlockedCategories = allQuestions.filter(question => {
-      // wild and challenge cards don't have a topics
-      if (question.type === 'CHALLENGE_CARD' || question.type === 'WILD_CARD') {
+      // wild cards don't have a topics
+      if (question.type === 'WILD_CARD') {
         return false;
       }
 

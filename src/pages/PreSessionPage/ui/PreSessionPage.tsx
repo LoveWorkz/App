@@ -36,7 +36,12 @@ const PreSessionPage = () => {
   const hasUserSubscription = userStore.getUserHasSubscription();
 
   const isLoading = preSessionPageStore.isPreSessionPageLoading;
-  const currentLevel = categoryStore.category;
+
+  // get actula level information
+  const currentLevelInfo = userStore.currentCategory;
+  const levelName = currentLevelInfo?.currentCategory;
+  const currentLevel = categoryStore.getCategoryByName(levelName);
+
   const currentQuadrantAndSession =
     preSessionPageStore.currentQuadrantAndSession;
   const currentQuadrantWithAllSessions =

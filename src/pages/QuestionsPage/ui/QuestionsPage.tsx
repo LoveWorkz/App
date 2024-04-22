@@ -104,7 +104,15 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         setIsGradient(false);
         adListener();
       };
-    }, [key, id, language, sharedQuestionId, sessionId, setIsGradient]),
+    }, [
+      key,
+      id,
+      language,
+      sharedQuestionId,
+      sessionId,
+      setIsGradient,
+      isPreviousScreenBreak,
+    ]),
   );
 
   const getFormattedQuestions = useMemo(() => {

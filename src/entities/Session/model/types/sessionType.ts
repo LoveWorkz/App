@@ -12,7 +12,6 @@ export interface SessionType {
   swipedQuestionsPercentage: number;
   questionSwipeStartDate: string;
   breakPointForCheckingDate: number;
-  isAllQuestionsSwiped: boolean;
   isBlocked: boolean;
   categoryId: string;
   displayName: DisplayText;

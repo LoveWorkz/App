@@ -130,7 +130,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: false,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling={true} deleteTopPadding={true}>
+        <Layout isPageScrolling={true}>
           <AuthPage {...props} />
         </Layout>
       );
@@ -166,9 +166,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: 'settings.title',
     Element: (props: ParamListBase) => {
       return (
-        <Layout
-          deleteBottomPadding={true}
-          isPageScrolling={true}>
+        <Layout deleteBottomPadding={true} isPageScrolling={true}>
           <SettingsPage {...props} />
         </Layout>
       );
@@ -303,7 +301,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     HeaderRight: () => <SessionsHeaderRight />,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling >
+        <Layout isPageScrolling>
           <SessionsPage {...props} />
         </Layout>
       );
@@ -316,7 +314,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     HeaderRight: () => <SessionsHeaderRight isFavorite />,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling >
+        <Layout isPageScrolling>
           <FavoriteSessionsPage {...props} />
         </Layout>
       );

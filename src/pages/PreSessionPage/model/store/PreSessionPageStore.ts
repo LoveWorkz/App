@@ -3,6 +3,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {QuadrantType, sessionStore} from '@src/entities/Session';
+import {categoryStore} from '@src/entities/Category';
 
 class PreSessionPageStore {
   isPreSessionPageLoading: boolean = false;
@@ -29,6 +30,8 @@ class PreSessionPageStore {
         this.isPreSessionPageLoading = true;
       });
 
+      // fetch and set actual level
+      await categoryStore.fetchLevel({id: currentLevelId});
       await sessionStore.fetchQuadrants(currentLevelId);
       await sessionStore.fetchSessions(currentLevelId);
 

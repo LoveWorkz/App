@@ -62,7 +62,6 @@ export {default as DeepDarkImage_90} from './dark/progressBar/deep/Deep_90.png';
 // Intimate
 export {default as IntimateDarkImage} from './dark/progressBar/intimate/Intimate.png';
 
-export {default as CHALLENGE_CARD} from './CHALLENGE_CARD.png';
 export {default as WILD_CARD} from './WILD_CARD.png';
 
 export {default as homeCategoryImage} from './light/homeCategoryImage.png';

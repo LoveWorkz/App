@@ -17,7 +17,6 @@ export const categoryExample: CategoryType = {
   },
   categorySize: 'large',
   isCategoryDetailsVisible: true,
-  isAllSessionsPassed: false,
   currentSession: '',
   createdDate: '',
   displayName: {
