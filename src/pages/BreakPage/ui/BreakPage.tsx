@@ -87,8 +87,9 @@ const styles = StyleSheet.create({
   },
   bottomPart: {
     width: textWidth,
+    position: 'absolute',
+    bottom: verticalScale(0),
     alignItems: 'center',
-    marginTop: verticalScale(25),
   },
   btn: {
     width: '96%',

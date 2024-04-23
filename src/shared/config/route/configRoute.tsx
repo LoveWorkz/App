@@ -481,7 +481,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     HeaderLeft: BreakHeaderLeft,
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling deleteTopPadding bgColor="secondaryBackground">
+        <Layout deleteTopPadding bgColor="secondaryBackground">
           <BreakPage {...props} />
         </Layout>
       );

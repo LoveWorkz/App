@@ -14,9 +14,7 @@ import {
 } from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
-import {
-  ArrowUpIcon,
-} from '@src/shared/assets/icons/ArrowUp';
+import {ArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 
 interface ChallengeIntroCardProps {}
@@ -51,9 +49,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
         />
 
         <View style={styles.categoryWrapper}>
-          <View
-            style={[styles.layout, {backgroundColor: colors.white}]}
-          />
+          <View style={[styles.layout, {backgroundColor: colors.white}]} />
 
           <AppText
             style={textStyle}
@@ -180,5 +176,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     opacity: 0.1,
-  }
+  },
 });
