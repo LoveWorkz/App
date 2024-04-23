@@ -8,7 +8,11 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {Gradient, GradientSize} from '@src/shared/ui/Gradient/Gradient';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {challengeStore, SpecialChallengeEnum} from '@src/entities/Challenge';
+import {
+  ChallengeIntroCard,
+  challengeStore,
+  SpecialChallengeEnum,
+} from '@src/entities/Challenge';
 import SelfReflection from './ChallengeDetailsLayouts/SelfReflection/SelfReflection';
 import VocabularyOfFeel from './ChallengeDetailsLayouts/VocabularyOfFeel/VocabularyOfFeel';
 import challengeCardsPageStore from '../model/store/challengeCardsPageStore';
@@ -105,15 +109,16 @@ const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
 
   return (
     <View style={styles.ChallengeCardsPage}>
-      <Gradient size={GradientSize.SMALL}>
+      {/* <Gradient size={GradientSize.SMALL}>
         <AppText
           style={[styles.categoryBlock, {color: colors.white}]}
           weight={'700'}
           size={TextSize.LEVEL_5}
           text={currenctCategoryBlock}
         />
-      </Gradient>
-      <View>{content}</View>
+      </Gradient> */}
+      {/* <View>{content}</View> */}
+      <ChallengeIntroCard />
     </View>
   );
 };

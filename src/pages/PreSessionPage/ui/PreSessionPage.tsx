@@ -23,7 +23,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {GradientArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 import {userStore} from '@src/entities/User';
 import preSessionPageStore from '../model/store/PreSessionPageStore';
 

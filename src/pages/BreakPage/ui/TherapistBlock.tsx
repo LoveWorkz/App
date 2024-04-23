@@ -10,6 +10,7 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Avatar} from '@src/shared/ui/Avatar/Avatar';
 import {ArranKennedy} from '@src/shared/assets/images';
+import {isPlatformIos} from '@src/shared/consts/common';
 
 const TherapistBlock = () => {
   const colors = useColors();
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: moderateScale(20),
     paddingHorizontal: horizontalScale(40),
-    paddingVertical: verticalScale(35),
+    paddingVertical: verticalScale(isPlatformIos ? 45 : 35),
   },
   topBlock: {
     flexDirection: 'row',

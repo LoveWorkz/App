@@ -14,7 +14,6 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import { isPlatformIos } from '@src/shared/consts/common';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
 import rubricStore from '../model/store/rubricStore';

@@ -323,11 +323,12 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: {
     name: appRoutePaths.specialChallengeCards,
     headerShown: true,
+    bgColor: 'secondaryBackground',
     headerTitle: '',
     isTitleLarge: true,
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
           <ChallengeCardsPage {...props} />
         </Layout>
       );
@@ -338,10 +339,11 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     headerTitle: '',
     isTitleLarge: true,
+    bgColor: 'secondaryBackground',
     HeaderRight: ChallengesHeaderRight,
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
           <CoreChallengeDetailsPage {...props} />
         </Layout>
       );

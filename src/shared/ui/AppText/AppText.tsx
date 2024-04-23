@@ -69,7 +69,11 @@ export const AppText = memo((props: AppTextProps) => {
 
   const mode = useMemo(() => {
     return [
-      {...(weight < '600' ? globalStyles.Quicksand_Regular : globalStyles.Quicksand_SemiBold)},
+      {
+        ...(weight < '600'
+          ? globalStyles.Quicksand_Regular
+          : globalStyles.Quicksand_SemiBold),
+      },
       {
         textAlign: align,
         fontWeight: weight,

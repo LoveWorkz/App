@@ -9,3 +9,9 @@ export const GradientArrowUpIcon = `
 </defs>
 </svg>
 `;
+
+export const ArrowUpIcon = `
+<svg viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.99999 0.928925L10 5.92892L9 7L4.99999 2.92892L1 7L0 5.92892L4.99999 0.928925Z" />
+</svg>
+`;

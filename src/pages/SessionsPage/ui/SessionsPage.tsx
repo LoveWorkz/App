@@ -22,7 +22,6 @@ const SessionsPage = (props: SessionsPageProps) => {
   const quadrantList = sessionStore.quadrants;
   const isLoading = sessionStore.isFetching;
 
-
   const onCategorySwipeHandlerHandler = useCallback((level: CategoryType) => {
     sessionStore.levelSwipeHandler(level);
   }, []);
