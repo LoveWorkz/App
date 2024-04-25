@@ -2,7 +2,7 @@ import {TabName} from '@src/shared/types/types';
 
 export interface infoTextType {
   text: string;
-  boldString: string;
+  boldString?: string;
 }
 
 interface InformationBlockContentType {

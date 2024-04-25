@@ -16,9 +16,8 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import {Avatar} from '@src/shared/ui/Avatar/Avatar';
-import {ArranKennedy} from '@src/shared/assets/images';
 import {windowHeight} from '@src/app/styles/GlobalStyle';
+import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
 
 const blockHeight = verticalScale(390);
 
@@ -74,12 +73,7 @@ const TherapistBlock = () => {
         animatedStyles,
         {backgroundColor: colors.white},
       ]}>
-      <View style={styles.topBlock}>
-        <View style={styles.avatarWrapper}>
-          <Avatar size={60} imageNumber={ArranKennedy} />
-        </View>
-        <AppText weight="900" size={TextSize.LEVEL_5} text={'Arran Kennedy'} />
-      </View>
+      <ArranKennedyBlock />
       <View style={styles.text}>
         <AppText style={textStyle} size={TextSize.LEVEL_4} text={'Nice Job,'} />
       </View>
@@ -133,13 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(40),
     justifyContent: 'center',
   },
-  topBlock: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatarWrapper: {
-    marginRight: horizontalScale(10),
-  },
+
   text: {
     marginTop: verticalScale(20),
   },

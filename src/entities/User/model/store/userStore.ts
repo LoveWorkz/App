@@ -135,7 +135,7 @@ class UserStore {
         authMethod: authMethod || '',
       });
 
-      navigation.replace(AppRouteNames.BREAK);
+      navigation.replace(AppRouteNames.TAB_ROUTE);
     } catch (e: unknown) {
       this.errorHandler(e);
     }

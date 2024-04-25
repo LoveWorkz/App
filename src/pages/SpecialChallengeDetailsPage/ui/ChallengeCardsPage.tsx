@@ -62,50 +62,50 @@ const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
     ];
   }, [specialChallenge, language]);
 
-  if (!specialChallenge) {
-    return <></>;
-  }
+  // if (!specialChallenge) {
+  //   return <></>;
+  // }
 
-  const currenctCategoryBlock =
-    challengeCardsPageStore.currenctCategoryBlock || challengeCardsData[0].type;
+  // const currenctCategoryBlock =
+  //   challengeCardsPageStore.currenctCategoryBlock || challengeCardsData[0].type;
 
-  let content;
+  // let content;
 
-  switch (specialChallengeType) {
-    case SpecialChallengeEnum.SELF_REFLECTION:
-      content = (
-        <SelfReflection
-          challengeCardsData={challengeCardsData}
-          specialChallenge={specialChallenge}
-        />
-      );
-      break;
-    case SpecialChallengeEnum.VOCABULARY_OF_FEEL:
-      content = <VocabularyOfFeel challengeCardsData={challengeCardsData} />;
-      break;
-    case SpecialChallengeEnum.WALK_OF_GRATITUDE:
-      content = <WalkOfGratitude challengeCardsData={challengeCardsData} />;
-      break;
-    case SpecialChallengeEnum.SELF_REFLECTION_MY_OWN_NEEDS:
-      content = (
-        <SelfReflectionMyOwnNeeds challengeCardsData={challengeCardsData} />
-      );
-      break;
-    case SpecialChallengeEnum.KNOW_EACH_OTHER_BETTER:
-      content = <KnowEachOtherBetter challengeCardsData={challengeCardsData} />;
-      break;
-    case SpecialChallengeEnum.TEN_DAYS_CHALLENGE:
-      content = <TenDaysChallenge challengeCardsData={challengeCardsData} />;
-      break;
-    case SpecialChallengeEnum.EFFECTIVE_APOLOGIES:
-      content = <EffectiveApologies challengeCardsData={challengeCardsData} />;
-      break;
-    case SpecialChallengeEnum.RAPID_CALMING:
-      content = <RapidCalming challengeCardsData={challengeCardsData} />;
-      break;
-    default:
-      content = <View />;
-  }
+  // switch (specialChallengeType) {
+  //   case SpecialChallengeEnum.SELF_REFLECTION:
+  //     content = (
+  //       <SelfReflection
+  //         challengeCardsData={challengeCardsData}
+  //         specialChallenge={specialChallenge}
+  //       />
+  //     );
+  //     break;
+  //   case SpecialChallengeEnum.VOCABULARY_OF_FEEL:
+  //     content = <VocabularyOfFeel challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   case SpecialChallengeEnum.WALK_OF_GRATITUDE:
+  //     content = <WalkOfGratitude challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   case SpecialChallengeEnum.SELF_REFLECTION_MY_OWN_NEEDS:
+  //     content = (
+  //       <SelfReflectionMyOwnNeeds challengeCardsData={challengeCardsData} />
+  //     );
+  //     break;
+  //   case SpecialChallengeEnum.KNOW_EACH_OTHER_BETTER:
+  //     content = <KnowEachOtherBetter challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   case SpecialChallengeEnum.TEN_DAYS_CHALLENGE:
+  //     content = <TenDaysChallenge challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   case SpecialChallengeEnum.EFFECTIVE_APOLOGIES:
+  //     content = <EffectiveApologies challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   case SpecialChallengeEnum.RAPID_CALMING:
+  //     content = <RapidCalming challengeCardsData={challengeCardsData} />;
+  //     break;
+  //   default:
+  //     content = <View />;
+  // }
 
   return (
     <View style={styles.ChallengeCardsPage}>

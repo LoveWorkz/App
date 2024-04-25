@@ -36,6 +36,7 @@ import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
 import {PreSessionPage} from '@src/pages/PreSessionPage';
 import {BreakPage} from '@src/pages/BreakPage';
 import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
+import {SpecialChallengeHeaderRight} from '@src/widgets/headers/SpecialChallengeHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -325,6 +326,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     bgColor: 'secondaryBackground',
     headerTitle: '',
+    HeaderRight: SpecialChallengeHeaderRight,
     isTitleLarge: true,
     Element: (props: ParamListBase) => {
       return (

@@ -7,10 +7,13 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {infoTextType} from '@src/widgets/InformationBlock';
 import {InformationBlockPopup} from './InformationBlockPopup';
+import {InformationChallengeBlockPopup} from './InformationChallengeBlockPopup';
 
 interface InformationBlockProps {
   text: infoTextType[];
-  title: string;
+  title?: string;
+  isChallenge?: boolean;
+  popupWidth?: number;
 }
 
 type RefWithMeasureInWindow = React.RefObject<View> & {
@@ -33,11 +36,11 @@ export interface ButtonCoordinates {
   left: number;
 }
 
-export const popupWidth = horizontalScale(280);
+export const defaultPopupWidth = horizontalScale(280);
 const iconPadding = horizontalScale(10);
 
 const InformationBlock = (props: InformationBlockProps) => {
-  const {text, title} = props;
+  const {text, title, isChallenge = false, popupWidth} = props;
 
   const colors = useColors();
   const buttonRef: RefWithMeasureInWindow = useRef(null);
@@ -53,13 +56,32 @@ const InformationBlock = (props: InformationBlockProps) => {
       buttonRef.current.measureInWindow((x, y, width, height) => {
         setModalPosition({
           top: y - iconPadding + height + verticalScale(10),
-          left: x + 10 + iconPadding - popupWidth,
+          left: x + 10 + iconPadding - (popupWidth || defaultPopupWidth),
         });
 
         setVisible(true);
       });
     }
   };
+
+  const popupContent = isChallenge ? (
+    <InformationChallengeBlockPopup
+      modalPosition={modalPosition}
+      visible={visible}
+      setVisible={setVisible}
+      text={text}
+      popupWidth={popupWidth}
+    />
+  ) : (
+    <InformationBlockPopup
+      modalPosition={modalPosition}
+      visible={visible}
+      setVisible={setVisible}
+      text={text}
+      title={title}
+      popupWidth={popupWidth}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -68,20 +90,12 @@ const InformationBlock = (props: InformationBlockProps) => {
           <SvgXml
             xml={InformationIcon}
             style={styles.icon}
-            stroke={colors.primaryTextColor}
+            stroke={isChallenge ? colors.white : colors.primaryTextColor}
           />
         </TouchableOpacity>
       </View>
 
-      {visible && (
-        <InformationBlockPopup
-          modalPosition={modalPosition}
-          visible={visible}
-          setVisible={setVisible}
-          text={text}
-          title={title}
-        />
-      )}
+      {visible && popupContent}
     </View>
   );
 };
