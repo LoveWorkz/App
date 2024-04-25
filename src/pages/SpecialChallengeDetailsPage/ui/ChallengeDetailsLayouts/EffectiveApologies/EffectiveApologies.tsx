@@ -1,21 +1,34 @@
-import React, {memo, useCallback} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
+import {observer} from 'mobx-react-lite';
 
 import {ChallengeCardsFooter} from '@src/entities/Challenge';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {CARD_WIDTH} from '@src/shared/consts/common';
+import ChallengeCard from '@src/entities/Challenge/ui/ChallengeCards/ChallengeCard';
 import challengeCardsPageStore from '../../../model/store/challengeCardsPageStore';
-import EffectiveApologiesContent from './EffectiveApologiesContent';
 
 export const EffectiveApologies = () => {
-  const onSwipeHandler = useCallback((data: {categoryBlock: string}) => {
-    challengeCardsPageStore.setCurrenctCategoryBlock(data.categoryBlock);
+  const isChallengeDoneButtonVisible =
+    challengeCardsPageStore.isChallengeDoneButtonVisible;
+  const data = challengeCardsPageStore.data;
+
+  const onSwipeHandler = useCallback(({id}: {id: number}) => {
+    challengeCardsPageStore.swipe(id);
   }, []);
+
+  const list = useMemo(() => {
+    if (!isChallengeDoneButtonVisible) {
+      return data;
+    }
+
+    return data.map(item => ({...item, showButton: true}));
+  }, [isChallengeDoneButtonVisible]);
 
   return (
     <HorizontalSlide
       onSwipeHandler={onSwipeHandler}
-      data={[{id: 1}, {id: 2}, {id: 4}, {id: 5}, {id: 6}]}
-      Component={EffectiveApologiesContent}
+      data={list}
+      Component={ChallengeCard}
       isSlideEnabled
       itemWidth={CARD_WIDTH}
       Footer={ChallengeCardsFooter}
@@ -25,4 +38,4 @@ export const EffectiveApologies = () => {
   );
 };
 
-export default memo(EffectiveApologies);
+export default memo(observer(EffectiveApologies));

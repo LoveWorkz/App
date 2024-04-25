@@ -33,35 +33,29 @@ interface ChallengeCardsPageProps {
 }
 
 const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
-  const {route} = props;
-  const specialChallengeType = route?.params?.specialChallengeType;
-  const specialChallenge = challengeStore.specialChallenge;
+  // const {route} = props;
+  // const specialChallengeType = route?.params?.specialChallengeType;
+  // const specialChallenge = challengeStore.specialChallenge;
 
-  const colors = useColors();
-  const {i18n} = useTranslation();
-  const language = i18n.language as LanguageValueType;
+  // const colors = useColors();
+  // const {i18n} = useTranslation();
+  // const language = i18n.language as LanguageValueType;
 
-  useFocusEffect(
-    useCallback(() => {
-      challengeCardsPageStore.reset();
-    }, []),
-  );
+  // const challengeCardsData = useMemo(() => {
+  //   if (!specialChallenge) {
+  //     return [];
+  //   }
 
-  const challengeCardsData = useMemo(() => {
-    if (!specialChallenge) {
-      return [];
-    }
-
-    return [
-      {
-        type: 'intro',
-        title: specialChallenge.title[language],
-        description: specialChallenge.description[language],
-        multiDescription: specialChallenge.multiDescription,
-      },
-      ...specialChallenge.challengeCardsData,
-    ];
-  }, [specialChallenge, language]);
+  //   return [
+  //     {
+  //       type: 'intro',
+  //       title: specialChallenge.title[language],
+  //       description: specialChallenge.description[language],
+  //       multiDescription: specialChallenge.multiDescription,
+  //     },
+  //     ...specialChallenge.challengeCardsData,
+  //   ];
+  // }, [specialChallenge, language]);
 
   // if (!specialChallenge) {
   //   return <></>;

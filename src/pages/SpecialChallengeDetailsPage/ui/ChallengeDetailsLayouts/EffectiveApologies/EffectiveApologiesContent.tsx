@@ -25,9 +25,11 @@ export const EffectiveApologiesContent = (
 
   switch ('data_1') {
     case 'data_1':
-      content = <ChallengeCard title='TITLE'>
-        <></>
-      </ChallengeCard>;
+      content = (
+        <ChallengeCard title="TITLE">
+          <></>
+        </ChallengeCard>
+      );
       break;
 
     default:

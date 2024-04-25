@@ -1,18 +1,29 @@
 import {makeAutoObservable} from 'mobx';
 
 class ChallengeCardsPageStore {
-  currenctCategoryBlock: string = '';
+  isChallengeDoneButtonVisible: boolean = false;
+  data = [
+    {id: 1, title: 'title', showButton: false},
+    {id: 2, title: '2 title', showButton: false},
+    {id: 4, title: 'title', showButton: false},
+    {id: 5, title: 'title', showButton: false},
+    {id: 6, title: 'title', showButton: false},
+  ];
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setCurrenctCategoryBlock = (currenctCategoryBlock: string) => {
-    this.currenctCategoryBlock = currenctCategoryBlock;
+  setIsChallengeDoneButtonVisible = (isChallengeDoneButtonVisible: boolean) => {
+    this.isChallengeDoneButtonVisible = isChallengeDoneButtonVisible;
   };
 
-  reset = () => {
-    this.setCurrenctCategoryBlock('');
+  swipe = (id: number) => {
+    const lastElement = this.data[this.data.length - 1];
+
+    if (id === lastElement.id) {
+      this.setIsChallengeDoneButtonVisible(true);
+    }
   };
 }
 

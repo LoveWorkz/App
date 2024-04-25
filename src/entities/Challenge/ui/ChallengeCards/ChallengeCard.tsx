@@ -2,7 +2,7 @@ import React, {memo, ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
-import {TextSize} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
   horizontalScale,
   moderateScale,
@@ -14,14 +14,16 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
 import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 
 interface ChallengeCardProps {
   children: ReactElement[] | ReactElement;
   title: string;
+  showButton: boolean;
 }
 
 export const ChallengeCard = (props: ChallengeCardProps) => {
-  const {children, title} = props;
+  const {children, title, showButton} = props;
   const {theme} = useTheme();
   const colors = useColors();
 
@@ -41,9 +43,25 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
         text={title}
       />
       <View style={styles.iconWrapper}>
-        <SvgXml xml={HeartsIcon} width={horizontalScale(60)} height={horizontalScale(60)} />
+        <SvgXml
+          xml={HeartsIcon}
+          width={horizontalScale(60)}
+          height={horizontalScale(60)}
+        />
       </View>
       <View style={styles.content}>{children}</View>
+      {showButton && (
+        <View style={styles.btnWrapper}>
+          <Button theme={ButtonTheme.GRADIENT} style={styles.btn}>
+            <AppText
+              style={{color: colors.white}}
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={'We’ve done the challenge'}
+            />
+          </Button>
+        </View>
+      )}
     </View>
   );
 };
@@ -55,7 +73,7 @@ const styles = StyleSheet.create({
     height: verticalScale(CARD_HEIGHT),
     width: horizontalScale(CARD_WIDTH),
     borderRadius: moderateScale(20),
-    paddingHorizontal: horizontalScale(25),
+    paddingHorizontal: horizontalScale(20),
     paddingTop: verticalScale(40),
     overflow: 'hidden',
   },
@@ -69,5 +87,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: verticalScale(-18),
     left: 0,
+  },
+  btnWrapper: {
+    width: horizontalScale(CARD_WIDTH),
+    position: 'absolute',
+    bottom: verticalScale(20),
+    alignItems: 'center',
+  },
+  btn: {
+    width: '87%',
   },
 });
