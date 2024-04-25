@@ -4,14 +4,13 @@ import {SvgXml} from 'react-native-svg';
 
 import {SwipeIcon} from '@src/shared/assets/icons/Swipe';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {AppText, TextSize} from '../AppText/AppText';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 
 const SwipeToProceed = () => {
   return (
     <View style={styles.SwipeToProceed}>
       <SvgXml xml={SwipeIcon} style={styles.icon} />
       <AppText
-        style={[]}
         weight={'700'}
         text={'Swipe to proceed'}
         size={TextSize.LEVEL_4}

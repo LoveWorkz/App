@@ -1,4 +1,3 @@
-import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {QuestionCardTypes, QuestionType} from '../types/questionTypes';
 
 export const goodMoodQuestionCard: QuestionType = {
@@ -58,6 +57,3 @@ export const isCardTypeOrdinary = (type: QuestionCardTypes) => {
 export const isCardTypeEmpty = (type: QuestionCardTypes) => {
   return type === 'EMPTY_CARD';
 };
-
-export const questionCardHeight = 550;
-export const questionCardWidth = windowWidth * 0.77;

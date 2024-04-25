@@ -19,9 +19,12 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
-import CardFooter from './CardFooter';
 
 type Item = Record<string, any>;
+interface FooterProps {
+  count: number;
+  currentIndex: number;
+}
 
 interface HorizontalSlideProps {
   Component: ComponentType<any> | MemoExoticComponent<any>;
@@ -34,7 +37,9 @@ interface HorizontalSlideProps {
   onScrollEnd?: () => void;
   spead?: number;
   itemWidth?: number;
-  isGradient?: boolean;
+  Footer?: ComponentType<FooterProps>;
+  showLength?: number;
+  opacityInterval?: number;
 }
 
 const AnimatedView = Animated.View;
@@ -52,7 +57,9 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     onScrollEnd,
     spead = 50,
     itemWidth = 0,
-    isGradient,
+    showLength,
+    opacityInterval,
+    Footer,
   } = props;
 
   const viewCount = 5;
@@ -122,7 +129,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
       }, [currentIndex, index]);
 
       return (
-        <AnimatedView style={[styles.wrapper]}>
+        <AnimatedView style={styles.wrapper}>
           <AnimatedView
             style={[
               animatedStyles,
@@ -199,19 +206,16 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         loop={false}
         data={data}
         modeConfig={{
-          showLength: 5,
+          showLength: showLength,
           snapDirection,
           stackInterval: 6,
           rotateZDeg: 20,
+          opacityInterval: opacityInterval,
         }}
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-      <CardFooter
-        count={data.length}
-        currentIndex={currentIndex}
-        isGradient={isGradient}
-      />
+      {Footer && <Footer count={data.length} currentIndex={currentIndex} />}
     </>
   );
 });

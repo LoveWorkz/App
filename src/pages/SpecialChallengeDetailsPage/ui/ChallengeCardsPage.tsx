@@ -22,6 +22,7 @@ import KnowEachOtherBetter from './ChallengeDetailsLayouts/knowEachOtherBetter/K
 import TenDaysChallenge from './ChallengeDetailsLayouts/TenDaysChallenge/TenDaysChallenge';
 import EffectiveApologies from './ChallengeDetailsLayouts/EffectiveApologies/EffectiveApologies';
 import RapidCalming from './ChallengeDetailsLayouts/RapidCalming/RapidCalming';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 
 interface ChallengeCardsPageProps {
   route?: {
@@ -118,7 +119,7 @@ const ChallengeCardsPage = (props: ChallengeCardsPageProps) => {
         />
       </Gradient> */}
       {/* <View>{content}</View> */}
-      <ChallengeIntroCard />
+      <EffectiveApologies />
     </View>
   );
 };

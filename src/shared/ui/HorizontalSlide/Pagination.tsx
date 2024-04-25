@@ -10,71 +10,54 @@ import {
 import {useColors} from '@src/app/providers/colorsProvider';
 import {getStarIcon} from '@src/shared/assets/icons/StarGradient';
 import {ColorType} from '@src/app/styles/themeStyle';
-import {AppText} from '../AppText/AppText';
 
 interface PaginationDotsProps {
   currentIndex: number;
   count: number;
-  isFirstElement: boolean;
-  isGradient?: boolean;
+  isWhite?: boolean;
+  withLastIcon?: boolean;
 }
 
 const getColor = (
   currentIndex: number,
   index: number,
   colors: ColorType,
-  isGradient?: boolean,
+  isWhite?: boolean,
 ) => {
-  if (isGradient) {
+  if (isWhite) {
     return colors.white;
   }
   return currentIndex === index ? colors.lavenderBlue : colors.primaryTextColor;
 };
 
 const Pagination = (props: PaginationDotsProps) => {
-  const {count, currentIndex, isFirstElement, isGradient} = props;
+  const {count, currentIndex, isWhite, withLastIcon = false} = props;
   const activeOpacity = 1;
   const inactiveOpacity = 0.2;
   const colors = useColors();
 
   return (
-    <View style={styles.pagination}>
-      {isFirstElement ? (
-        <AppText weight={'600'} text={`${currentIndex + 1}/${count}`} />
-      ) : (
-        <AppText
-          style={{
-            color: isGradient ? colors.white : colors.primaryTextColor,
-          }}
-          weight={'600'}
-          text={`${currentIndex + 1}/${count} - You’re great! Proceed`}
-        />
-      )}
-      <View style={styles.dotsWrapper}>
-        {Array.from({length: count}, (_, index) => {
-          const opacity =
-            currentIndex === index ? activeOpacity : inactiveOpacity;
+    <View style={styles.dotsWrapper}>
+      {Array.from({length: count}, (_, index) => {
+        const opacity =
+          currentIndex === index ? activeOpacity : inactiveOpacity;
 
-          return (
-            <View
-              key={index}
-              style={[
-                styles.dot,
-                {
-                  backgroundColor: getColor(
-                    currentIndex,
-                    index,
-                    colors,
-                    isGradient,
-                  ),
-                  opacity: opacity,
-                },
-              ]}
-            />
-          );
-        })}
-        <SvgXml xml={getStarIcon(isGradient)} style={styles.icon} />
-      </View>
+        return (
+          <View
+            key={index.toString()}
+            style={[
+              styles.dot,
+              {
+                backgroundColor: getColor(currentIndex, index, colors, isWhite),
+                opacity: opacity,
+              },
+            ]}
+          />
+        );
+      })}
+      {withLastIcon && (
+        <SvgXml xml={getStarIcon(isWhite)} style={styles.icon} />
+      )}
     </View>
   );
 };
@@ -82,9 +65,6 @@ const Pagination = (props: PaginationDotsProps) => {
 export default memo(Pagination);
 
 const styles = StyleSheet.create({
-  pagination: {
-    alignItems: 'center',
-  },
   dotsWrapper: {
     flexDirection: 'row',
     justifyContent: 'center',

@@ -12,3 +12,4 @@ export {default as ChallengeDetailsColumns} from './ui/SpecialChallengeHelpers/C
 export {default as CoreChallengesList} from './ui/CoreChallengesList/CoreChallengesList';
 export {default as SpecialChallengesList} from './ui/SpecialChallengesList/SpecialChallengesList';
 export {default as ChallengeGroup} from '../ChallengeGroup/ui/ChallengeGroup/ChallengeGroup';
+export {default as ChallengeCardsFooter} from './ui/ChallengeCardsFooter/ChallengeCardsFooter';

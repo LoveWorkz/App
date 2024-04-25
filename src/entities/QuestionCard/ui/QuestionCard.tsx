@@ -15,13 +15,9 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {RubricType} from '@src/entities/Rubric';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {QuestionCardTypes} from '../model/types/questionTypes';
-import {
-  isCardTypeEmpty,
-  isCardTypeWild,
-  questionCardHeight,
-  questionCardWidth,
-} from '../model/lib/questionLib';
+import {isCardTypeEmpty, isCardTypeWild} from '../model/lib/questionLib';
 import {AppName, QuestionText, TopicName} from './HelperComponents';
 
 interface QuestionCardProps {
@@ -80,8 +76,8 @@ const QuestionCard = (props: QuestionCardProps) => {
 
 const styles = StyleSheet.create({
   questionCard: {
-    height: verticalScale(questionCardHeight),
-    width: horizontalScale(questionCardWidth),
+    height: verticalScale(CARD_HEIGHT),
+    width: horizontalScale(CARD_WIDTH),
     borderRadius: moderateScale(20),
     justifyContent: 'center',
     alignItems: 'center',

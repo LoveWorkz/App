@@ -330,7 +330,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     isTitleLarge: true,
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
+        <Layout deleteTopPadding bgColor="secondaryBackground">
           <ChallengeCardsPage {...props} />
         </Layout>
       );

@@ -1,21 +1,24 @@
-import {verticalScale} from '@src/shared/lib/Metrics';
 import React, {memo, useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import Pagination from './Pagination';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {AppText} from '@src/shared/ui/AppText/AppText';
+import Pagination from '@src/shared/ui/HorizontalSlide/Pagination';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import SwipeToProceed from './SwipeToProceed';
 
-interface CardFooterProps {
+interface QuestionCardsFooterProps {
   count: number;
   currentIndex: number;
-  isGradient?: boolean;
+  isWhite?: boolean;
 }
 
-const CardFooter = (props: CardFooterProps) => {
-  const {count, currentIndex, isGradient} = props;
+const QuestionCardsFooter = (props: QuestionCardsFooterProps) => {
+  const {count, currentIndex, isWhite} = props;
 
   const [hideSwipeIcon, setHideSwipeIcon] = useState(false);
   const hasRenderedOnce = useRef(false);
+  const colors = useColors();
 
   useEffect(() => {
     if (hasRenderedOnce.current) {
@@ -31,26 +34,40 @@ const CardFooter = (props: CardFooterProps) => {
     }
   }, [currentIndex]);
 
+  const isFirstElement = !hideSwipeIcon;
+
   return (
     <View
       style={[styles.footer, {bottom: verticalScale(hideSwipeIcon ? 80 : 10)}]}>
+      {isFirstElement ? (
+        <AppText weight={'600'} text={`${currentIndex + 1}/${count}`} />
+      ) : (
+        <AppText
+          style={{
+            color: isWhite ? colors.white : colors.primaryTextColor,
+          }}
+          weight={'600'}
+          text={`${currentIndex + 1}/${count} - You’re great! Proceed`}
+        />
+      )}
       <Pagination
-        isGradient={isGradient}
-        isFirstElement={!hideSwipeIcon}
+        isWhite={isWhite}
         currentIndex={currentIndex}
         count={count}
+        withLastIcon
       />
-      {!hideSwipeIcon && <SwipeToProceed />}
+      {isFirstElement && <SwipeToProceed />}
     </View>
   );
 };
 
-export default memo(CardFooter);
+export default memo(QuestionCardsFooter);
 
 const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     left: 0,
     right: 0,
+    alignItems: 'center',
   },
 });

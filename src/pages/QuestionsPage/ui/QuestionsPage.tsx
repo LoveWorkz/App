@@ -11,8 +11,7 @@ import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {
   emptyCard,
   QuestionCard,
-  questionCardHeight,
-  questionCardWidth,
+  QuestionCardsFooter,
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
@@ -24,9 +23,10 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {sessionStore} from '@src/entities/Session';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useGradient} from '@src/app/providers/GradientProvider';
-import questionsStore from '../model/store/questionsStore';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
+import questionsStore from '../model/store/questionsStore';
 import {
   getDefaultIndex,
   getFormattedQuestionsWrapper,
@@ -50,8 +50,6 @@ const interstitial = initInterstitialAd();
 const questionCardBorderRadius = moderateScale(20);
 
 const QuestionsPage = (props: QuestionsPageProps) => {
-  // check share !!!!!!!!!!!!
-
   const {route} = props;
   const {i18n} = useTranslation();
   const {theme} = useTheme();
@@ -153,12 +151,25 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     return formattedQuestions;
   }, [formattedQuestions, key]);
 
+  const Footer = useCallback(
+    ({count, currentIndex}: {count: number; currentIndex: number}) => {
+      return (
+        <QuestionCardsFooter
+          count={count}
+          currentIndex={currentIndex}
+          isWhite={isGradient}
+        />
+      );
+    },
+    [isGradient],
+  );
+
   if (isLoading) {
     return (
       <View style={styles.QuestionsPage}>
         <View style={styles.questionCardSkeleton}>
           <Skeleton
-            height={questionCardHeight}
+            height={CARD_HEIGHT}
             borderRadius={questionCardBorderRadius}
           />
         </View>
@@ -170,14 +181,16 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     <View style={styles.QuestionsPage}>
       <View style={styles.question}>
         <HorizontalSlide
-          isGradient={isGradient}
           isSlideEnabled={isSliideEnabled}
           onSwipeHandler={onSwipeHandler}
           data={questionsWithEmptyCard}
           itemStyle={styles.slideItemStyle}
           Component={QuestionCard}
           defaultElement={defaultElementIndex}
-          itemWidth={questionCardWidth}
+          itemWidth={CARD_WIDTH}
+          Footer={Footer}
+          showLength={isGradient ? 4 : 5}
+          opacityInterval={isGradient ? 0.3 : 0}
         />
       </View>
       <WowThatWasFast />
