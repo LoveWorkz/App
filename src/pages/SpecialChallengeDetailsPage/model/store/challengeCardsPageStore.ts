@@ -8,6 +8,8 @@ class ChallengeCardsPageStore {
     {id: 4, title: 'title', showButton: false},
     {id: 5, title: 'title', showButton: false},
     {id: 6, title: 'title', showButton: false},
+    {id: 7, title: 'title', showButton: false},
+    {id: 8, title: 'title', showButton: false},
   ];
 
   constructor() {

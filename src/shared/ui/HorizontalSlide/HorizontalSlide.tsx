@@ -19,6 +19,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
+import { isPlatformIos } from '@src/shared/consts/common';
 
 type Item = Record<string, any>;
 interface FooterProps {
@@ -92,7 +93,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         let top = 0;
         let left = 0;
         let zIndex = 30;
-        let backgroundColor = '#a0a0a0';
+        let backgroundColor = '#ffffff';
 
         if (isCurrent) {
           // Styles for the current card
@@ -224,6 +225,6 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     marginTop: verticalScale(30),
-    left: horizontalScale(-2),
+    left: horizontalScale(isPlatformIos ? -2 : -5),
   },
 });

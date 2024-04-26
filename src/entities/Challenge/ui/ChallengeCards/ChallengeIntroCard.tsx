@@ -7,21 +7,18 @@ import FastImage from 'react-native-fast-image';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {challengeIntroCard} from '@src/shared/assets/images';
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {ArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
+import {challengeInfoPopupList} from '../../model/lib/challenge';
+import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
 
-interface ChallengeIntroCardProps {}
-
-export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
-  const {} = props;
-  const [visible, setVisible] = useState(false);
+const ChallengeIntroCard = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const colors = useColors();
 
@@ -30,7 +27,11 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
   }, []);
 
   const onChallengeBackgroundPressHandler = () => {
-    setVisible(prev => !prev);
+    setIsVisible(prev => !prev);
+  };
+
+  const LetsDoItPressHandler = () => {
+    setIsPopupVisible(true);
   };
 
   return (
@@ -48,16 +49,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
           text={'The Walk of Gratitude '}
         />
 
-        <View style={styles.categoryWrapper}>
-          <View style={[styles.layout, {backgroundColor: colors.white}]} />
-
-          <AppText
-            style={textStyle}
-            weight={'500'}
-            size={TextSize.LEVEL_2}
-            text={'Friendship'}
-          />
-        </View>
+        <ChallengeCategoryBlock text="Friendship" />
       </View>
       <FastImage
         resizeMode="stretch"
@@ -77,7 +69,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
       <Button
         style={[
           styles.challengeBackgroundWrapper,
-          {marginBottom: verticalScale(visible ? 20 : 0)},
+          {marginBottom: verticalScale(isVisible ? 20 : 0)},
         ]}
         onPress={onChallengeBackgroundPressHandler}>
         <AppText
@@ -86,7 +78,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
           style={[textStyle, styles.challengeBackgroundText]}
           text={true ? 'Challenge background' : 'Collapse'}
         />
-        {visible ? (
+        {isVisible ? (
           <SvgXml xml={ArrowUpIcon} style={styles.icon} fill={colors.white} />
         ) : (
           <SvgXml
@@ -96,7 +88,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
           />
         )}
       </Button>
-      {visible && (
+      {isVisible && (
         <AppText
           style={textStyle}
           weight={'500'}
@@ -108,6 +100,7 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
       )}
 
       <Button
+        onPress={LetsDoItPressHandler}
         theme={ButtonTheme.NORMAL}
         style={[styles.btn, {backgroundColor: colors.white}]}>
         <GradientText
@@ -116,6 +109,12 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
           text={'We’re ready. Let’s do it!'}
         />
       </Button>
+
+      <ChallengeIntroInfoPopup
+        text={challengeInfoPopupList}
+        visible={isPopupVisible}
+        setVisible={setIsPopupVisible}
+      />
     </View>
   );
 };
@@ -123,7 +122,6 @@ export const ChallengeIntroCard = (props: ChallengeIntroCardProps) => {
 export default memo(observer(ChallengeIntroCard));
 
 const width = '90%';
-const categoryBorderRadius = moderateScale(10);
 
 const styles = StyleSheet.create({
   ChallengeIntroCard: {
@@ -144,13 +142,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: horizontalScale(30),
   },
-  categoryWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: horizontalScale(15),
-    borderRadius: categoryBorderRadius,
-    height: horizontalScale(30),
-  },
   challengeBackgroundWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -167,14 +158,5 @@ const styles = StyleSheet.create({
   },
   challengeBackgroundText: {
     textDecorationLine: 'underline',
-  },
-  layout: {
-    borderRadius: categoryBorderRadius,
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    opacity: 0.1,
   },
 });

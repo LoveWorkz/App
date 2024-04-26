@@ -10,6 +10,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import InformationBlock from '@src/shared/ui/InformationBlock/InformationBlock';
 import {getInformationBlockContent} from '@src/widgets/InformationBlock';
 import {TabName} from '@src/shared/types/types';
+import {InformationBlockPopup} from '@src/shared/ui/InformationBlock/InformationBlockPopup';
 
 interface TabHeaderRightProps {
   tabName: TabName;
@@ -43,8 +44,10 @@ const TabHeaderRight = (props: TabHeaderRightProps) => {
       ) : (
         <View style={styles.TabHeaderRight}>
           <InformationBlock
-            title={informationBlockContent.title}
+            popupWidth={horizontalScale(320)}
             text={informationBlockContent.text}
+            title={informationBlockContent.title}
+            Popup={InformationBlockPopup}
           />
         </View>
       )}

@@ -1,19 +1,29 @@
-import React, {memo, useRef, useState} from 'react';
+import React, {ComponentType, memo, useRef, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View, ViewProps} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {InformationIcon} from '@src/shared/assets/icons/Information';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {InformationBlockButtonCoordinates} from '@src/shared/types/types';
+import {DEFAULT_INFORMATION_POPUP_WIDTH} from '@src/shared/consts/common';
 import {infoTextType} from '@src/widgets/InformationBlock';
-import {InformationBlockPopup} from './InformationBlockPopup';
-import {InformationChallengeBlockPopup} from './InformationChallengeBlockPopup';
+
+interface PopupProps {
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
+  modalPosition: InformationBlockButtonCoordinates;
+  text: infoTextType[];
+  title?: string;
+  popupWidth?: number;
+}
 
 interface InformationBlockProps {
   text: infoTextType[];
   title?: string;
   isChallenge?: boolean;
   popupWidth?: number;
+  Popup: ComponentType<PopupProps>;
 }
 
 type RefWithMeasureInWindow = React.RefObject<View> & {
@@ -31,57 +41,37 @@ type RefWithMeasureInWindow = React.RefObject<View> & {
     | null;
 };
 
-export interface ButtonCoordinates {
-  top: number;
-  left: number;
-}
-
-export const defaultPopupWidth = horizontalScale(280);
 const iconPadding = horizontalScale(10);
 
 const InformationBlock = (props: InformationBlockProps) => {
-  const {text, title, isChallenge = false, popupWidth} = props;
+  const {text, title, isChallenge = false, popupWidth, Popup} = props;
 
   const colors = useColors();
   const buttonRef: RefWithMeasureInWindow = useRef(null);
 
   const [visible, setVisible] = useState(false);
-  const [modalPosition, setModalPosition] = useState<ButtonCoordinates>({
-    top: 0,
-    left: 0,
-  });
+  const [modalPosition, setModalPosition] =
+    useState<InformationBlockButtonCoordinates>({
+      top: 0,
+      left: 0,
+    });
 
   const onPressHandler = () => {
     if (buttonRef.current) {
       buttonRef.current.measureInWindow((x, y, width, height) => {
         setModalPosition({
           top: y - iconPadding + height + verticalScale(10),
-          left: x + 10 + iconPadding - (popupWidth || defaultPopupWidth),
+          left:
+            x +
+            10 +
+            iconPadding -
+            (popupWidth || horizontalScale(DEFAULT_INFORMATION_POPUP_WIDTH)),
         });
 
         setVisible(true);
       });
     }
   };
-
-  const popupContent = isChallenge ? (
-    <InformationChallengeBlockPopup
-      modalPosition={modalPosition}
-      visible={visible}
-      setVisible={setVisible}
-      text={text}
-      popupWidth={popupWidth}
-    />
-  ) : (
-    <InformationBlockPopup
-      modalPosition={modalPosition}
-      visible={visible}
-      setVisible={setVisible}
-      text={text}
-      title={title}
-      popupWidth={popupWidth}
-    />
-  );
 
   return (
     <View style={styles.container}>
@@ -95,7 +85,14 @@ const InformationBlock = (props: InformationBlockProps) => {
         </TouchableOpacity>
       </View>
 
-      {visible && popupContent}
+      <Popup
+        modalPosition={modalPosition}
+        visible={visible}
+        setVisible={setVisible}
+        text={text}
+        title={title}
+        popupWidth={popupWidth}
+      />
     </View>
   );
 };

@@ -32,3 +32,8 @@ export type TabName =
 export type RenderSceneType = SceneRendererProps & {
   navigationState: NavigationState<any>;
 };
+
+export interface InformationBlockButtonCoordinates {
+  top: number;
+  left: number;
+}

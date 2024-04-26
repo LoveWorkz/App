@@ -10,15 +10,16 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
+import {DEFAULT_INFORMATION_POPUP_WIDTH} from '@src/shared/consts/common';
+import {InformationBlockButtonCoordinates} from '@src/shared/types/types';
 import {infoTextType} from '@src/widgets/InformationBlock';
-import {ButtonCoordinates, defaultPopupWidth} from './InformationBlock';
 import {AppText, TextSize} from '../AppText/AppText';
 import {Button, ButtonTheme} from '../Button/Button';
 
 interface InformationBlockPopupProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  modalPosition: ButtonCoordinates;
+  modalPosition: InformationBlockButtonCoordinates;
   text: infoTextType[];
   title?: string;
   popupWidth?: number;
@@ -35,6 +36,10 @@ export const InformationBlockPopup = memo(
       setVisible(false);
     }, [setVisible]);
 
+    if (!visible) {
+      return null;
+    }
+
     return (
       <Modal
         isVisible={visible}
@@ -48,7 +53,7 @@ export const InformationBlockPopup = memo(
             modalPosition,
             {
               backgroundColor: colors.bgQuaternaryColor,
-              width: popupWidth || defaultPopupWidth,
+              width: popupWidth || DEFAULT_INFORMATION_POPUP_WIDTH,
             },
           ]}>
           {title && (

@@ -37,6 +37,7 @@ import {PreSessionPage} from '@src/pages/PreSessionPage';
 import {BreakPage} from '@src/pages/BreakPage';
 import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
 import {SpecialChallengeHeaderRight} from '@src/widgets/headers/SpecialChallengeHeaderRight';
+import {SpecialChallengeIntroPage} from '@src/pages/SpecialChallengeIntroPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -71,6 +72,7 @@ export enum AppRouteNames {
   ONBOARDING_STATISTIC = 'onboardingStatistic',
   PRE_SESSION = 'preSession',
   BREAK = 'break',
+  SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -102,6 +104,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
   [AppRouteNames.PRE_SESSION]: 'preSession',
   [AppRouteNames.BREAK]: 'break',
+  [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -330,7 +333,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     isTitleLarge: true,
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding bgColor="secondaryBackground">
+        <Layout bgColor="secondaryBackground">
           <ChallengeCardsPage {...props} />
         </Layout>
       );
@@ -485,6 +488,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteTopPadding bgColor="secondaryBackground">
           <BreakPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: {
+    name: appRoutePaths.specialChallengeIntro,
+    headerShown: true,
+    bgColor: 'secondaryBackground',
+    headerTitle: '',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
+          <SpecialChallengeIntroPage {...props} />
         </Layout>
       );
     },
