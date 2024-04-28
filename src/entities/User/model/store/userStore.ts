@@ -15,6 +15,7 @@ import {
   AUTH_METHOD_STORAGE_KEY,
   HAS_COMPLETED_ONBOARDING_KEY,
   RATE_TYPE_KEY,
+  SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
   THEME_STORAGE_KEY,
   USER_VISITED_STATUS,
 } from '@src/shared/consts/storage';
@@ -32,6 +33,7 @@ import {quotesStore} from '@src/widgets/Quotes';
 import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
 import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
+import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {
   User,
   AuthMethod,
@@ -401,6 +403,20 @@ class UserStore {
         userChallengeCategoryStore.setUserChallengeCategories(userId);
 
       await Promise.all([document1, document2, document3]);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  clearUserInfoAfterDeletion = async (userId: string) => {
+    try {
+      crashlytics().log('clearing user info after deletion.');
+
+      await this.clearFirebaseUserInfo(userId);
+      await this.clearUserInfo();
+      await challengeInfoStorage.removeChallengeInfo(
+        SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
+      );
     } catch (e) {
       errorHandler({error: e});
     }

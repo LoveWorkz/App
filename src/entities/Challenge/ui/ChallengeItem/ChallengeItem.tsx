@@ -54,15 +54,10 @@ const ChallengeItem = (props: ChallengeItemProps) => {
   const onChallengePressHandler = () => {
     if (isCoreChallenge) {
       challengeStore.setCoreChallenge(challenge);
-      navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-        // title: title[language],
-      });
+      navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS);
     } else if (specailChallenge) {
       challengeStore.setSpecialChallenge(specailChallenge);
-      navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_CARDS, {
-        specialChallengeType: specailChallenge.specialChallengeType,
-        // title: title[language],
-      });
+      navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
     }
   };
 

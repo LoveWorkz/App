@@ -4,11 +4,15 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
+import {SPECIAL_CHALLENGE_BUTTON_STATUS_KEY} from '@src/shared/consts/storage';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
+import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
 
 class ChallengeStore {
   specialChallenge: SpecialChallengeType | null = null;
   coreChallenge: ChallengeType | null = null;
+  isChallengeDoneButtonVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,6 +24,60 @@ class ChallengeStore {
 
   setCoreChallenge = (coreChallenge: ChallengeType) => {
     this.coreChallenge = coreChallenge;
+  };
+
+  setIsChallengeDoneButtonVisible = (isChallengeDoneButtonVisible: boolean) => {
+    this.isChallengeDoneButtonVisible = isChallengeDoneButtonVisible;
+  };
+
+  // Swipes the special challenge card and updates button visibility if it's the last card
+  swipeSpecialChallengeCard = async (id: string) => {
+    try {
+      if (this.isChallengeDoneButtonVisible || !this.specialChallenge) {
+        return;
+      }
+
+      crashlytics().log(
+        'Swiping and Updating challenge button visibility status.',
+      );
+
+      const {challengeCardsData, id: challengeId} = this.specialChallenge;
+      if (isLastCard(id, challengeCardsData)) {
+        const specialChallengeInfo = await fetchChallengeButtonStatus();
+        const updatedInfo = {
+          ...specialChallengeInfo,
+          [challengeId]: {buttonStatus: true},
+        };
+
+        this.setIsChallengeDoneButtonVisible(true);
+        await challengeInfoStorage.setChallengeInfo(
+          SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
+          JSON.stringify(updatedInfo),
+        );
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  // Updates the visibility of the challenge button based on stored info
+  updateChallengeButtonVisibility = async () => {
+    try {
+      crashlytics().log('Updating challenge button visibility status.');
+
+      if (!this.specialChallenge) {
+        return;
+      }
+
+      const specialChallengeInfo = await fetchChallengeButtonStatus();
+      const buttonInfo = specialChallengeInfo[this.specialChallenge.id];
+
+      if (buttonInfo) {
+        this.setIsChallengeDoneButtonVisible(buttonInfo.buttonStatus);
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   updateChallenge = async (id: string) => {

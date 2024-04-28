@@ -10,6 +10,7 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useGradient} from '@src/app/providers/GradientProvider';
+import { windowWidth } from '@src/app/styles/GlobalStyle';
 
 interface HeaderLeftProps {
   headerTitle?: string;
@@ -39,7 +40,9 @@ const HeaderLeft = (props: HeaderLeftProps) => {
   };
 
   return (
-    <View style={styles.headerLeft}>
+    <View style={[styles.headerLeft, {
+      width: isTitleLarge ? windowWidth * 0.75 : 'auto',
+    }]}>
       <Button onPress={onPressHandler}>
         <SvgXml fill={color} style={styles.icon} xml={ArrowLeftIcon} />
       </Button>

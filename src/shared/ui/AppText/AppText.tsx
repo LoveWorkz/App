@@ -1,5 +1,10 @@
 import React, {memo, useMemo} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  Text,
+  TextLayoutEventData,
+} from 'react-native';
 
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
@@ -50,6 +55,7 @@ interface AppTextProps {
   align?: AlignType;
   ellipsizeMode?: EllipsizeMode;
   numberOfLines?: number;
+  onTextLayout?: (param: NativeSyntheticEvent<TextLayoutEventData>) => void;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -63,6 +69,7 @@ export const AppText = memo((props: AppTextProps) => {
     align = 'left',
     ellipsizeMode,
     numberOfLines,
+    onTextLayout,
   } = props;
 
   const colors = useColors();
@@ -100,6 +107,7 @@ export const AppText = memo((props: AppTextProps) => {
 
   return (
     <Text
+      onTextLayout={onTextLayout}
       ellipsizeMode={ellipsizeMode}
       numberOfLines={numberOfLines}
       style={mode}>

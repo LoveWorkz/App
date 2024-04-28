@@ -1,6 +1,7 @@
 export type {
   ChallengeType,
   SpecialChallengeType,
+  ChallengeCardType,
 } from './model/types/ChallengeTypes';
 export {default as challengeStore} from './model/store/challengeStore';
 export {SpecialChallengeEnum} from './model/types/ChallengeTypes';
@@ -13,6 +14,6 @@ export {default as CoreChallengesList} from './ui/CoreChallengesList/CoreChallen
 export {default as SpecialChallengesList} from './ui/SpecialChallengesList/SpecialChallengesList';
 export {default as ChallengeGroup} from '../ChallengeGroup/ui/ChallengeGroup/ChallengeGroup';
 export {default as ChallengeCardsFooter} from './ui/ChallengeCardsFooter/ChallengeCardsFooter';
-export {ChallengeInfoPopup} from './ui/ChallengeInfoPopup/ChallengeInfoPopup';
-export {challengeInfoPopupList} from './model/lib/challenge';
+export {default as ChallengeInfoPopup} from './ui/ChallengeInfoPopup/ChallengeInfoPopup';
+export {getChallengeInfoPopupContent} from './model/lib/challenge';
 export {default as ChallengeCategoryBlock} from './ui/ChallengeCategoryBlock/ChallengeCategoryBlock';

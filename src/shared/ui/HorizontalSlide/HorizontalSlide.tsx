@@ -19,7 +19,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
-import { isPlatformIos } from '@src/shared/consts/common';
+import {isPlatformIos} from '@src/shared/consts/common';
 
 type Item = Record<string, any>;
 interface FooterProps {

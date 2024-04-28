@@ -14,17 +14,20 @@ export interface ChallengeType {
 
 export interface SpecialChallengeType extends UserSpecialChallenge {
   title: DisplayText;
-  description: DisplayText;
-  multiDescription: {
-    part1: DisplayText;
-    part2: DisplayText;
-    part3: DisplayText;
-  };
+  description: DisplayText[];
+  background: DisplayText[];
+  popupContent: DisplayText[];
   groupId: string;
   id: string;
   isChallengeSpecial: boolean;
-  specialChallengeType: string;
-  challengeCardsData: any[];
+  challengeCardsData: ChallengeCardType[];
+}
+
+export interface ChallengeCardType {
+  title: DisplayText;
+  body: DisplayText;
+  showButton: false;
+  cardId: string;
 }
 
 export enum SpecialChallengeEnum {

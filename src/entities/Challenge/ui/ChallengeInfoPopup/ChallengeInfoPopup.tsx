@@ -4,7 +4,11 @@ import Modal from 'react-native-modal';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {horizontalScale, moderateScale, verticalScale} from '@src/shared/lib/Metrics';
+import {
+  horizontalScale,
+  moderateScale,
+  verticalScale,
+} from '@src/shared/lib/Metrics';
 import {infoTextType} from '@src/widgets/InformationBlock';
 import {InformationBlockButtonCoordinates} from '@src/shared/types/types';
 import {DEFAULT_INFORMATION_POPUP_WIDTH} from '@src/shared/consts/common';
@@ -18,7 +22,7 @@ interface ChallengeInfoPopupProps {
   popupWidth?: number;
 }
 
-export const ChallengeInfoPopup = memo((props: ChallengeInfoPopupProps) => {
+export const ChallengeInfoPopup = (props: ChallengeInfoPopupProps) => {
   const {visible, setVisible, modalPosition, text = [], popupWidth} = props;
 
   const colors = useColors();
@@ -54,7 +58,9 @@ export const ChallengeInfoPopup = memo((props: ChallengeInfoPopupProps) => {
       </View>
     </Modal>
   );
-});
+};
+
+export default memo(ChallengeInfoPopup);
 
 const styles = StyleSheet.create({
   modal: {

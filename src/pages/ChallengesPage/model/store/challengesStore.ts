@@ -218,18 +218,14 @@ class ChallengesStore {
       }
 
       const data = await firestore()
-        .collection(Collections.SPECIAL_CHALLENGES)
+        .collection(Collections.SPECIAL_CHALLENGES_2)
         .get({source});
 
       const specialChallenges = data.docs.map(doc => {
         const specialChallenge = doc.data() as SpecialChallengeType;
-        const description =
-          specialChallenge.multiDescription.part1 ||
-          specialChallenge.description;
 
         return {
           ...specialChallenge,
-          description,
           ...selectedSpecialChallengesIds[specialChallenge.id],
         };
       });

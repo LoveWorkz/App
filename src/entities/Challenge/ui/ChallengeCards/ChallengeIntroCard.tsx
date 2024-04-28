@@ -11,16 +11,20 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {ArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
-import {challengeInfoPopupList} from '../../model/lib/challenge';
 import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
+import challengeStore from '../../model/store/challengeStore';
 
 const ChallengeIntroCard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const colors = useColors();
+  const language = useLanguage();
+
+  const specialChallenge = challengeStore.specialChallenge;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -34,6 +38,10 @@ const ChallengeIntroCard = () => {
     setIsPopupVisible(true);
   };
 
+  if (!specialChallenge) {
+    return null;
+  }
+
   return (
     <View style={styles.ChallengeIntroCard}>
       <View style={styles.topPart}>
@@ -46,7 +54,7 @@ const ChallengeIntroCard = () => {
           style={[styles.text, textStyle]}
           weight={'600'}
           size={TextSize.LEVEL_6}
-          text={'The Walk of Gratitude '}
+          text={specialChallenge.title[language]}
         />
 
         <ChallengeCategoryBlock text="Friendship" />
@@ -55,15 +63,19 @@ const ChallengeIntroCard = () => {
         resizeMode="stretch"
         source={challengeIntroCard as number} // image number
         style={styles.cardBg}>
-        <AppText
-          style={textStyle}
-          weight={'500'}
-          align={'center'}
-          size={TextSize.LEVEL_5}
-          text={
-            'From the list provided, select five appreciations you would like to express toward your partner in your own words. Add an example of when your partner demonstrated each action or displayed the positive qualities you are appreciating.'
-          }
-        />
+        {specialChallenge.description.map((item, i) => {
+          return (
+            <View key={i.toString()} style={styles.descriptionItem}>
+              <AppText
+                style={textStyle}
+                weight={'500'}
+                align={'center'}
+                size={TextSize.LEVEL_5}
+                text={item[language]}
+              />
+            </View>
+          );
+        })}
       </FastImage>
 
       <Button
@@ -89,14 +101,20 @@ const ChallengeIntroCard = () => {
         )}
       </Button>
       {isVisible && (
-        <AppText
-          style={textStyle}
-          weight={'500'}
-          size={TextSize.LEVEL_4}
-          text={
-            'Conversations between partners can veer off into negative territory occasionally, often without warning. This risks a downward spiral of negative comments followed by negative responses which generate further negative comments. This dynamic rarely addresses the core issue and leaves both parties feeling hurt and helpless.'
-          }
-        />
+        <View>
+          {specialChallenge.background.map((item, i) => {
+            return (
+              <View key={i.toString()} style={styles.backgroundItem}>
+                <AppText
+                  style={textStyle}
+                  weight={'500'}
+                  size={TextSize.LEVEL_4}
+                  text={item[language]}
+                />
+              </View>
+            );
+          })}
+        </View>
       )}
 
       <Button
@@ -111,7 +129,7 @@ const ChallengeIntroCard = () => {
       </Button>
 
       <ChallengeIntroInfoPopup
-        text={challengeInfoPopupList}
+        specialChallenge={specialChallenge}
         visible={isPopupVisible}
         setVisible={setIsPopupVisible}
       />
@@ -158,5 +176,11 @@ const styles = StyleSheet.create({
   },
   challengeBackgroundText: {
     textDecorationLine: 'underline',
+  },
+  descriptionItem: {
+    marginBottom: verticalScale(20),
+  },
+  backgroundItem: {
+    marginBottom: verticalScale(15),
   },
 });

@@ -1,6 +1,12 @@
-import React, {memo, ReactElement} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useCallback, useState} from 'react';
+import {
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextLayoutEventData,
+  View,
+} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {WebView} from 'react-native-webview';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
@@ -8,24 +14,35 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
-import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
 import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {DisplayText} from '@src/shared/types/types';
 
 interface ChallengeCardProps {
-  children: ReactElement[] | ReactElement;
-  title: string;
+  title: DisplayText;
   showButton: boolean;
+  body: DisplayText;
 }
 
 export const ChallengeCard = (props: ChallengeCardProps) => {
-  const {children, title, showButton} = props;
+  const {title, showButton, body} = props;
   const {theme} = useTheme();
   const colors = useColors();
+  const language = useLanguage();
+
+  const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
+
+  const onTextLayout = useCallback(
+    (e: NativeSyntheticEvent<TextLayoutEventData>) => {
+      setNumberOfLines(e.nativeEvent.lines.length);
+    },
+    [],
+  );
 
   return (
     <View
@@ -36,11 +53,12 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
           backgroundColor: colors.white,
         },
       ]}>
-      <GradientText
-        style={styles.title}
-        size={TextSize.LEVEL_5}
-        weight={'700'}
-        text={title}
+      <AppText
+        onTextLayout={onTextLayout}
+        size={TextSize.LEVEL_6}
+        weight={'600'}
+        text={title[language]}
+        align={numberOfLines === 1 ? 'left' : 'center'}
       />
       <View style={styles.iconWrapper}>
         <SvgXml
@@ -49,7 +67,30 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
           height={horizontalScale(60)}
         />
       </View>
-      <View style={styles.content}>{children}</View>
+      <WebView
+        source={{
+          html: `
+         <!DOCTYPE html>
+         <html>
+           <head>
+             <meta name="viewport" content="initial-scale=1.0">
+             <style>
+            body {
+              margin: 0;
+              padding: 0;
+              overflow: hidden;
+            }
+          </style>
+           </head>
+           <body>
+            ${body[language]}
+           </body>
+         </html>`,
+        }}
+        style={styles.htmlStyle}
+        bounces={false}
+        scalesPageToFit={false}
+      />
       {showButton && (
         <View style={styles.btnWrapper}>
           <Button theme={ButtonTheme.GRADIENT} style={styles.btn}>
@@ -74,11 +115,8 @@ const styles = StyleSheet.create({
     width: horizontalScale(CARD_WIDTH),
     borderRadius: moderateScale(20),
     paddingHorizontal: horizontalScale(20),
-    paddingTop: verticalScale(40),
+    paddingTop: verticalScale(30),
     overflow: 'hidden',
-  },
-  title: {
-    textTransform: 'uppercase',
   },
   content: {
     marginTop: verticalScale(20),
@@ -87,14 +125,21 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: verticalScale(-18),
     left: 0,
+    ...globalStyles.zIndex_1,
   },
   btnWrapper: {
     width: horizontalScale(CARD_WIDTH),
     position: 'absolute',
     bottom: verticalScale(20),
     alignItems: 'center',
+    ...globalStyles.zIndex_1,
   },
   btn: {
     width: '87%',
+  },
+
+  htmlStyle: {
+    marginTop: verticalScale(10),
+    ...globalStyles.Quicksand_Regular,
   },
 });

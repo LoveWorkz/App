@@ -104,8 +104,7 @@ class DeleteAccountStore {
       const currentUser = auth().currentUser;
       if (currentUser) {
         await currentUser.delete();
-        await userStore.clearFirebaseUserInfo(currentUser.uid);
-        await userStore.clearUserInfo();
+        await userStore.clearUserInfoAfterDeletion(currentUser.uid);
 
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);

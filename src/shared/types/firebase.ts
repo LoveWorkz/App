@@ -24,6 +24,8 @@ export enum Collections {
   QUADRANTS = 'quadrants',
   QUADRANTS_SESSIONS = 'quadrant_sessions',
   SESSIONS = 'sessions',
+
+  SPECIAL_CHALLENGES_2 = 'special_challenges_2',
 }
 
 export enum CloudStoragePaths {
