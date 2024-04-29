@@ -88,6 +88,10 @@ class challengeGroupStore {
       errorHandler({error: e});
     }
   };
+
+  getSpecialChallengeGroupById = (groupId: string) => {
+    return this.specialChallengeGroups.find(item => item.id === groupId);
+  };
 }
 
 export default new challengeGroupStore();

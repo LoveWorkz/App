@@ -12,6 +12,7 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {ArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
 import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
@@ -42,6 +43,9 @@ const ChallengeIntroCard = () => {
     return null;
   }
 
+  const specialChallengeGroup =
+    challengeGroupStore.getSpecialChallengeGroupById(specialChallenge.groupId);
+
   return (
     <View style={styles.ChallengeIntroCard}>
       <View style={styles.topPart}>
@@ -57,7 +61,13 @@ const ChallengeIntroCard = () => {
           text={specialChallenge.title[language]}
         />
 
-        <ChallengeCategoryBlock text="Friendship" />
+        <ChallengeCategoryBlock
+          text={
+            specialChallengeGroup
+              ? specialChallengeGroup.displayName[language]
+              : ''
+          }
+        />
       </View>
       <FastImage
         resizeMode="stretch"

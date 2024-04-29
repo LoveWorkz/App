@@ -12,12 +12,18 @@ import {
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {CARD_WIDTH} from '@src/shared/consts/common';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 const ChallengeCardsPage = () => {
+  const language = useLanguage();
+
   const specialChallenge = challengeStore.specialChallenge;
 
   const isChallengeDoneButtonVisible =
     challengeStore.isChallengeDoneButtonVisible;
+  const isSelectingSpecialChallenge =
+    challengeStore.isSelectingSpecialChallenge;
 
   useFocusEffect(
     useCallback(() => {
@@ -33,34 +39,56 @@ const ChallengeCardsPage = () => {
     challengeStore.swipeSpecialChallengeCard(cardId);
   }, []);
 
-  const listWithShowButton = useMemo(() => {
+  const listWithMetadata = useMemo(() => {
     if (!specialChallenge) {
       return [];
     }
-  
-    const { challengeCardsData } = specialChallenge;
-  
+
+    const {challengeCardsData} = specialChallenge;
+
+    const listWithSpecialChallengeId = challengeCardsData.map(item => ({
+      ...item,
+      specialChallengeId: specialChallenge.id,
+      isSelectingSpecialChallenge,
+    }));
+
     // If the challenge done button is not visible, return the original data.
     if (!isChallengeDoneButtonVisible) {
-      return challengeCardsData;
+      return listWithSpecialChallengeId;
     }
-  
+
     // When the button is visible, add a `showButton: true` property to each item.
-    return challengeCardsData.map(item => ({ ...item, showButton: true }));
-  }, [isChallengeDoneButtonVisible, specialChallenge]);
+    return listWithSpecialChallengeId.map(item => ({
+      ...item,
+      showButton: true,
+    }));
+  }, [
+    isChallengeDoneButtonVisible,
+    specialChallenge,
+    isSelectingSpecialChallenge,
+  ]);
 
   if (!specialChallenge) {
     return null;
   }
 
+  const specialChallengeGroup =
+    challengeGroupStore.getSpecialChallengeGroupById(specialChallenge.groupId);
+
   return (
     <View style={styles.ChallengeCardsPage}>
       <View style={styles.topPart}>
-        <ChallengeCategoryBlock text="Friendship" />
+        <ChallengeCategoryBlock
+          text={
+            specialChallengeGroup
+              ? specialChallengeGroup.displayName[language]
+              : ''
+          }
+        />
       </View>
       <HorizontalSlide
         onSwipeHandler={onSwipeHandler}
-        data={listWithShowButton}
+        data={listWithMetadata}
         Component={ChallengeCard}
         isSlideEnabled
         itemWidth={CARD_WIDTH}
@@ -77,9 +105,10 @@ export default memo(observer(ChallengeCardsPage));
 const styles = StyleSheet.create({
   ChallengeCardsPage: {
     flex: 1,
+    marginTop: verticalScale(20),
   },
   topPart: {
     alignItems: 'center',
-    top: verticalScale(-2),
+    top: verticalScale(3),
   },
 });

@@ -14,6 +14,8 @@ class ChallengeStore {
   coreChallenge: ChallengeType | null = null;
   isChallengeDoneButtonVisible: boolean = false;
 
+  isSelectingSpecialChallenge: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -28,6 +30,10 @@ class ChallengeStore {
 
   setIsChallengeDoneButtonVisible = (isChallengeDoneButtonVisible: boolean) => {
     this.isChallengeDoneButtonVisible = isChallengeDoneButtonVisible;
+  };
+
+  setIsSelectingSpecialChallenge = (isSelectingSpecialChallenge: boolean) => {
+    this.isSelectingSpecialChallenge = isSelectingSpecialChallenge;
   };
 
   // Swipes the special challenge card and updates button visibility if it's the last card
@@ -184,6 +190,8 @@ class ChallengeStore {
     try {
       crashlytics().log('Selecting special challenge.');
 
+      this.setIsSelectingSpecialChallenge(true);
+
       await this.updateSpecialChallenge({
         id,
         value: newValue,
@@ -192,6 +200,8 @@ class ChallengeStore {
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      this.setIsSelectingSpecialChallenge(false);
     }
   };
 }

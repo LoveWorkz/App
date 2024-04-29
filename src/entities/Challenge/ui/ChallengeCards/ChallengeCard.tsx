@@ -22,15 +22,24 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {DisplayText} from '@src/shared/types/types';
+import challengeStore from '../../model/store/challengeStore';
 
 interface ChallengeCardProps {
   title: DisplayText;
   showButton: boolean;
   body: DisplayText;
+  specialChallengeId: string;
+  isSelectingSpecialChallenge: boolean;
 }
 
 export const ChallengeCard = (props: ChallengeCardProps) => {
-  const {title, showButton, body} = props;
+  const {
+    title,
+    showButton,
+    body,
+    specialChallengeId,
+    isSelectingSpecialChallenge,
+  } = props;
   const {theme} = useTheme();
   const colors = useColors();
   const language = useLanguage();
@@ -43,6 +52,14 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
     },
     [],
   );
+
+  const onPressHandler = () => {
+    specialChallengeId &&
+      challengeStore.selectSpecialChallenge({
+        id: specialChallengeId,
+        newValue: true,
+      });
+  };
 
   return (
     <View
@@ -75,7 +92,10 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
            <head>
              <meta name="viewport" content="initial-scale=1.0">
              <style>
-            body {
+            body, html {
+              -webkit-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
               margin: 0;
               padding: 0;
               overflow: hidden;
@@ -93,7 +113,11 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
       />
       {showButton && (
         <View style={styles.btnWrapper}>
-          <Button theme={ButtonTheme.GRADIENT} style={styles.btn}>
+          <Button
+            disabled={isSelectingSpecialChallenge}
+            onPress={onPressHandler}
+            theme={ButtonTheme.GRADIENT}
+            style={styles.btn}>
             <AppText
               style={{color: colors.white}}
               size={TextSize.LEVEL_4}
@@ -139,7 +163,6 @@ const styles = StyleSheet.create({
   },
 
   htmlStyle: {
-    marginTop: verticalScale(10),
     ...globalStyles.Quicksand_Regular,
   },
 });

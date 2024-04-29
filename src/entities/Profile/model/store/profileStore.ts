@@ -125,7 +125,7 @@ class ProfileStore {
 
         case ProfilePhotoActionType.DELETE:
           try {
-            await cloudStorage.detete();
+            await cloudStorage.delete();
           } catch (e) {
             errorHandler({error: e, withCrashlytics: false, withToast: false});
           }
