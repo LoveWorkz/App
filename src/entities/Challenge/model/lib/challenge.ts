@@ -35,7 +35,7 @@ export const getActiveChallengesCount = (
     return challenges.filter(item => item.isChecked).length;
   } else {
     const challenges = list as SpecialChallengeType[];
-    return challenges.filter(item => item.isSelected).length;
+    return challenges.filter(item => item.isChecked).length;
   }
 };
 

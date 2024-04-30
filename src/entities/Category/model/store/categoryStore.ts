@@ -14,7 +14,6 @@ import {getNextElementById} from '@src/shared/lib/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {sessionStore, SessionType} from '@src/entities/Session';
-import {challengeStore} from '@src/entities/Challenge';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 import {FIRST_LEVEL_ID} from '../lib/category';
@@ -422,11 +421,6 @@ class CategoryStore {
         return;
       }
 
-      // Special challenge handling.
-      if (session.challenge.isChallengeSpecial) {
-        await this.updateChallenge(session.challenge.challengeId);
-      }
-
       // Early exit if no updates are necessary.
       if (this.isLastLevel(level.name)) {
         console.log('No further updates required. Either last level passed.');
@@ -452,15 +446,6 @@ class CategoryStore {
         message: 'Failed to update user data after all questions were swiped.',
       });
     }
-  }
-
-  // Helper to update challenge information.
-  async updateChallenge(challengeId: string) {
-    await challengeStore.updateSpecialChallenge({
-      id: challengeId,
-      value: false,
-      field: 'isBlocked',
-    });
   }
 
   // Helper to fetch the next level.

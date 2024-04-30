@@ -1,4 +1,3 @@
-import {UserSpecialChallenge} from '@src/entities/UserChallengeCategory/model/types/userChallengeCategoryType';
 import {DisplayText} from '@src/shared/types/types';
 
 export interface ChallengeType {
@@ -12,7 +11,7 @@ export interface ChallengeType {
   isChallengeSpecial: boolean;
 }
 
-export interface SpecialChallengeType extends UserSpecialChallenge {
+export interface SpecialChallengeType {
   title: DisplayText;
   description: DisplayText[];
   background: DisplayText[];
@@ -21,6 +20,7 @@ export interface SpecialChallengeType extends UserSpecialChallenge {
   id: string;
   isChallengeSpecial: boolean;
   challengeCardsData: ChallengeCardType[];
+  isChecked: boolean;
 }
 
 export interface ChallengeCardType {

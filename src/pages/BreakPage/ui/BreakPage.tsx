@@ -1,4 +1,5 @@
 import React, {memo, useMemo} from 'react';
+import {observer} from 'mobx-react-lite';
 import {StyleSheet, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -6,20 +7,16 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import TherapistBlock from './TherapistBlock';
+import breakPageStore from '../model/store/breakPageStore';
 
 const BreakPage = () => {
   const colors = useColors();
+  const isLoading = breakPageStore.isLoading;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors]);
-
-  const letsDoThisPressHandler = () => {
-    navigation.navigate(TabRoutesNames.CHALLENGES);
-  };
 
   return (
     <View style={styles.BreakPage}>
@@ -54,7 +51,8 @@ const BreakPage = () => {
           }
         />
         <Button
-          onPress={letsDoThisPressHandler}
+          disabled={isLoading}
+          onPress={breakPageStore.letsDoThisPressHandler}
           theme={ButtonTheme.NORMAL}
           style={[styles.btn, {backgroundColor: colors.white}]}>
           <GradientText
@@ -68,7 +66,7 @@ const BreakPage = () => {
   );
 };
 
-export default memo(BreakPage);
+export default memo(observer(BreakPage));
 
 const textWidth = '90%';
 

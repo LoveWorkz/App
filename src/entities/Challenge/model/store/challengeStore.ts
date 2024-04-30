@@ -101,33 +101,12 @@ class ChallengeStore {
         newSelectedChallengesIds = [...selectedChallengesIds, id];
       }
 
-      challengesStore.setSelectedChallengesIds(newSelectedChallengesIds);
-
       await userChallengeCategoryStore.updateUserChallengeCategory({
         field: 'selectedChallengesIds',
         data: newSelectedChallengesIds,
       });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
 
-  updateSpecialChallenge = async ({
-    id,
-    value,
-    field,
-  }: {
-    id: string;
-    value: boolean;
-    field: string;
-  }) => {
-    try {
-      crashlytics().log('Updating special challenge.');
-
-      await userChallengeCategoryStore.updateUserChallengeCategory({
-        field: `selectedSpecialChallengesIds.${id}.${field}`,
-        data: value,
-      });
+      challengesStore.setSelectedChallengesIds(newSelectedChallengesIds);
     } catch (e) {
       errorHandler({error: e});
     }
@@ -147,6 +126,35 @@ class ChallengeStore {
     });
   };
 
+  updateSpecialChallenge = async ({id}: {id: string}) => {
+    try {
+      crashlytics().log('Updating special challenge.');
+
+      const selectedSpecialChallengesIds =
+        challengesStore.selectedSpecialChallengesIds;
+      let newSelectedSpecialChallengesIds;
+
+      if (selectedSpecialChallengesIds.includes(id)) {
+        newSelectedSpecialChallengesIds = selectedSpecialChallengesIds.filter(
+          challengesId => challengesId !== id,
+        );
+      } else {
+        newSelectedSpecialChallengesIds = [...selectedSpecialChallengesIds, id];
+      }
+
+      await userChallengeCategoryStore.updateUserChallengeCategory({
+        field: 'selectedSpecialChallengesIds',
+        data: newSelectedSpecialChallengesIds,
+      });
+
+      challengesStore.setSelectedSpecialChallengesIds(
+        newSelectedSpecialChallengesIds,
+      );
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
   updateLocalSpecialChallenge = ({
     id,
     newValue,
@@ -157,7 +165,7 @@ class ChallengeStore {
     const newSpecialChallenges = challengesStore.specialChallenges.map(
       challenge => {
         if (challenge.id === id) {
-          return {...challenge, isSelected: newValue};
+          return {...challenge, isChecked: newValue};
         }
 
         return {...challenge};
@@ -171,7 +179,7 @@ class ChallengeStore {
 
   selectChallenge = async ({id, newValue}: {id: string; newValue: boolean}) => {
     try {
-      crashlytics().log('Selecting challenge.');
+      crashlytics().log('Selecting Core challenge.');
 
       await this.updateChallenge(id);
       this.updateLocalChallenge(id, newValue);
@@ -192,11 +200,7 @@ class ChallengeStore {
 
       this.setIsSelectingSpecialChallenge(true);
 
-      await this.updateSpecialChallenge({
-        id,
-        value: newValue,
-        field: 'isSelected',
-      });
+      await this.updateSpecialChallenge({id});
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});

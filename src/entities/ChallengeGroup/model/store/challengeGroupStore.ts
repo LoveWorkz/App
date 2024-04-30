@@ -1,4 +1,4 @@
-import {makeAutoObservable, runInAction} from 'mobx';
+import {makeAutoObservable} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
@@ -16,6 +16,18 @@ class challengeGroupStore {
     makeAutoObservable(this);
   }
 
+  setCoreChallengeGroups = (
+    coreChallengeGroups: ChallengeGroupType<ChallengeType[]>[],
+  ) => {
+    this.coreChallengeGroups = coreChallengeGroups;
+  };
+
+  setSpecialChallengeGroups = (
+    specialChallengeGroups: ChallengeGroupType<SpecialChallengeType[]>[],
+  ) => {
+    this.specialChallengeGroups = specialChallengeGroups;
+  };
+
   fetchCoreAndSpecialChallengesGroups = async (categoryId?: string) => {
     try {
       crashlytics().log('Fetching special Challenge Groups.');
@@ -26,10 +38,12 @@ class challengeGroupStore {
         return;
       }
 
+      const defaultId = 'challenge_category_2';
+
       const id =
         categoryId ||
         user.challengeCategory.currentChallengeCategoryId ||
-        'challenge_category_2';
+        defaultId;
 
       let promise1;
       let promise2;
@@ -80,10 +94,58 @@ class challengeGroupStore {
         },
       );
 
-      runInAction(() => {
-        this.coreChallengeGroups = coreChallengeGroups;
-        this.specialChallengeGroups = specailChallengeGroups;
+      this.setCoreChallengeGroups(coreChallengeGroups);
+      this.setSpecialChallengeGroups(specailChallengeGroups);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchAllCoreChallengesGroups = async () => {
+    try {
+      crashlytics().log('Fetching All Core Challenge Groups.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const data = await firestore()
+        .collection(Collections.CORE_CHALLENGE_GROUPS)
+        .get({source});
+
+      const allCoreChallengeGroups = data.docs.map(doc => {
+        const group = doc.data() as ChallengeGroupType<ChallengeType[]>;
+
+        return {
+          ...group,
+          challenges: [],
+        };
       });
+
+      this.setCoreChallengeGroups(allCoreChallengeGroups);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchAllSpecialChallengesGroups = async () => {
+    try {
+      crashlytics().log('Fetching All special Challenge Groups.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const data = await firestore()
+        .collection(Collections.SPECIAL_CHALLENGE_GROUPS)
+        .get({source});
+
+      const allSpecialChallengeGroups = data.docs.map(doc => {
+        const group = doc.data() as ChallengeGroupType<SpecialChallengeType[]>;
+
+        return {
+          ...group,
+          challenges: [],
+        };
+      });
+
+      this.setSpecialChallengeGroups(allSpecialChallengeGroups);
     } catch (e) {
       errorHandler({error: e});
     }

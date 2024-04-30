@@ -68,7 +68,7 @@ export const renderChallenges = ({
         specailChallenge={specailChallenge}
         text={specailChallenge.title}
         id={specailChallenge.id}
-        isChecked={specailChallenge.isSelected}
+        isChecked={specailChallenge.isChecked}
       />
     </View>
   );

@@ -14,11 +14,7 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {inAppReviewStore} from '@src/features/InAppReview';
 import {favoriteStore} from '@src/entities/Favorite';
-import {
-  challengeStore,
-  ChallengeType,
-  SpecialChallengeType,
-} from '@src/entities/Challenge';
+import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
   FIRST_QUADRANT_ID,
@@ -74,37 +70,52 @@ class SessionStore {
   };
 
   fetchSessionChallenge = async () => {
+    crashlytics().log('Fetching session challenge');
+
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+    const currentSession = this.session;
+    if (!currentSession) {
+      return;
+    }
+
+    const coreChallengeCollection = firestore().collection(
+      Collections.CORE_CHALLENGES,
+    );
+    const specialChallengeCollection = firestore().collection(
+      Collections.SPECIAL_CHALLENGES_2,
+    );
+
+    const currentSessionChallengeId = currentSession.challenge;
+
     try {
-      crashlytics().log('Fetching session challenge');
+      const coreChallengeQuerySnapshot = await coreChallengeCollection
+        .where('id', '==', currentSessionChallengeId)
+        .get({source});
 
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
+      if (!coreChallengeQuerySnapshot.empty) {
+        const sessionChallenge = coreChallengeQuerySnapshot.docs[0].data();
 
-      const sessionChallengeInfo = this.session?.challenge;
-      const challengeCategoryId = categoryStore.category?.challengeCategoryId;
-      if (!(sessionChallengeInfo && challengeCategoryId)) {
+        runInAction(() => {
+          this.sessionChallenge = sessionChallenge as ChallengeType;
+        });
+
         return;
       }
 
-      const challenge = await firestore()
-        .collection(Collections.CHALLENGE_CATEGORIES)
-        .doc(challengeCategoryId)
-        .collection(
-          sessionChallengeInfo.isChallengeSpecial
-            ? Collections.SPECIAL_CHALLENGES
-            : Collections.CORE_CHALLENGES,
-        )
-        .doc(sessionChallengeInfo.challengeId)
+      // If an element not found, search in the second collection
+      const specialChallengeQuerySnapshot = await specialChallengeCollection
+        .where('id', '==', currentSessionChallengeId)
         .get({source});
+      if (!specialChallengeQuerySnapshot.empty) {
+        const sessionChallenge = specialChallengeQuerySnapshot.docs[0].data();
 
-      const sessionChallenge = challenge.data() as
-        | ChallengeType
-        | SpecialChallengeType;
-
-      runInAction(() => {
-        this.sessionChallenge = sessionChallenge;
-      });
-    } catch (e) {
-      errorHandler({error: e});
+        runInAction(() => {
+          this.sessionChallenge = sessionChallenge as SpecialChallengeType;
+        });
+      }
+    } catch (error) {
+      errorHandler({error});
     }
   };
 
@@ -416,18 +427,6 @@ class SessionStore {
         updateLevelDetails,
         setFinishDate,
       ]);
-
-      // Optionally, update special challenge if applicable.
-      if (
-        currentSession.challenge &&
-        currentSession.challenge.isChallengeSpecial
-      ) {
-        await challengeStore.updateSpecialChallenge({
-          id: currentSession.challenge.challengeId,
-          value: false,
-          field: 'isBlocked',
-        });
-      }
     } catch (error) {
       errorHandler({error});
     }

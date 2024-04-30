@@ -62,7 +62,7 @@ class UserChallengeCategoryStore {
           currenetChallengeCategory.selectedChallengesIds,
         );
 
-        challengesStore.setsSelectedSpecialChallengesIds(
+        challengesStore.setSelectedSpecialChallengesIds(
           currenetChallengeCategory.selectedSpecialChallengesIds,
         );
       });

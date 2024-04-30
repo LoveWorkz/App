@@ -1,10 +1,7 @@
 import {DisplayText} from '@src/shared/types/types';
 
 export interface SessionType {
-  challenge: {
-    isChallengeSpecial: boolean;
-    challengeId: string;
-  };
+  challenge: string;
   id: string;
   sessionNumber: number;
   questions: string[];

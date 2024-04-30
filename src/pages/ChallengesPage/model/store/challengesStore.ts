@@ -9,12 +9,10 @@ import {
   CurrentChallengeCategoryType,
 } from '@src/entities/ChallengeCategory';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
-import {
-  userChallengeCategoryStore,
-  UserSpecialChallenge,
-} from '@src/entities/UserChallengeCategory';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {CategoryKey} from '@src/entities/Category';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -22,8 +20,7 @@ class ChallengesStore {
   specialChallenges: SpecialChallengeType[] = [];
   selectedChallengesIds: string[] = [];
   favoriteChallengesList: ChallengeType[] = [];
-  selectedSpecialChallengesIds: Record<string, UserSpecialChallenge> | null =
-    null;
+  selectedSpecialChallengesIds: string[] = [];
   isAllChallengesSelected: boolean = false;
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isChallengesLoading: boolean = false;
@@ -68,8 +65,8 @@ class ChallengesStore {
     this.selectedChallengesIds = selectedChallengesIds;
   };
 
-  setsSelectedSpecialChallengesIds = (
-    selectedSpecialChallengesIds: Record<string, UserSpecialChallenge>,
+  setSelectedSpecialChallengesIds = (
+    selectedSpecialChallengesIds: string[],
   ) => {
     this.selectedSpecialChallengesIds = selectedSpecialChallengesIds;
   };
@@ -178,9 +175,15 @@ class ChallengesStore {
       let currentChallengeCategoryId =
         this.challengeCategory?.currentChallengeCategoryId;
 
-      // if user has not selected some category set first one
+      // if user has not selected some category set category Starter one
       if (!currentChallengeCategoryId) {
-        const firstChallengeCategory = this.challengeCategories[0];
+        const firstChallengeCategory = this.challengeCategories.find(
+          item => item.name === CategoryKey.Starter,
+        );
+        if (!firstChallengeCategory) {
+          return;
+        }
+
         this.setChallengeCategory({
           currentChallengeCategory: firstChallengeCategory.name,
           currentChallengeCategoryId: firstChallengeCategory.id,
@@ -226,7 +229,7 @@ class ChallengesStore {
 
         return {
           ...specialChallenge,
-          ...selectedSpecialChallengesIds[specialChallenge.id],
+          isChecked: selectedSpecialChallengesIds.includes(specialChallenge.id),
         };
       });
 
