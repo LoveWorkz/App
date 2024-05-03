@@ -60,7 +60,7 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
 
   const handleNext = () => {
     const nextIndex = currentIndex + 1;
-    
+
     if (nextIndex < data.length) {
       slidesRef.current?.scrollToIndex({
         index: nextIndex,

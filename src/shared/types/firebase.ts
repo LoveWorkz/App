@@ -26,6 +26,9 @@ export enum Collections {
   SESSIONS = 'sessions',
 
   SPECIAL_CHALLENGES_2 = 'special_challenges_2',
+
+  RATING_INFORMATION = 'rating_information',
+  ENTRIES = 'entries',
 }
 
 export enum CloudStoragePaths {

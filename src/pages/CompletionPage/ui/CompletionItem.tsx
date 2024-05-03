@@ -59,7 +59,7 @@ const CompletionItem = (props: CompletionItemProps) => {
   }, []);
 
   const onSendPressHandler = useCallback(() => {
-    completionPageStore.sendRatingResult();
+    completionPageStore.sendRatingResults();
   }, []);
 
   return (
@@ -162,8 +162,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(10),
   },
   feedbackWrapper: {
-    alignItems: 'center',
-    paddingHorizontal: horizontalScale(40),
+    width: horizontalScale(300),
   },
   starsWrapper: {
     alignItems: 'center',

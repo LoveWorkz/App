@@ -1,6 +1,7 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
@@ -12,7 +13,14 @@ import {ratingInformationList} from '../model/lib/completionPageLib';
 const CompletionPage = () => {
   const setRating = completionPageStore.setRating;
 
+  const isFetching = completionPageStore.isFetching;
   const sessionRatingResults = completionPageStore.sessionRatingResults;
+
+  useFocusEffect(
+    useCallback(() => {
+      completionPageStore.init();
+    }, []),
+  );
 
   const newListWithMetadata = useMemo(() => {
     return ratingInformationList.map(item => {
@@ -26,6 +34,10 @@ const CompletionPage = () => {
       };
     });
   }, [sessionRatingResults]);
+
+  if (isFetching) {
+    return null;
+  }
 
   return (
     <View style={styles.CompletionPage}>
