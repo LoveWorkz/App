@@ -5,8 +5,8 @@ import {Extrapolate} from 'react-native-reanimated';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 
-interface PaginationProps {
-  data: Record<string, string | number>[];
+interface PaginationProps<T = any> {
+  data: T[];
   scrollX: Animated.Value;
   itemWidth: number;
   isSmallDotPagination?: boolean;

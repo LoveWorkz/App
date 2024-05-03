@@ -5,14 +5,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {FlatList, SafeAreaView, Animated, View} from 'react-native';
+import {FlatList, Animated, View} from 'react-native';
 
 import {StyleType} from '@src/shared/types/types';
 import Pagination from './Pagination';
 
-interface CarouselProps {
+interface CarouselProps<T = Record<string, string | number>> {
   Component: ComponentType<any> | MemoExoticComponent<any>;
-  data: Record<string, string | number>[];
+  data: T[];
   getCurrentPage?: (currentPage: number) => void;
   isBottomPagination?: boolean;
   isTopPagination?: boolean;
@@ -26,7 +26,7 @@ interface CarouselProps {
   paginationColor?: string;
 }
 
-export const Carousel = (props: CarouselProps) => {
+export const Carousel = <T = {}>(props: CarouselProps<T>) => {
   const {
     Component,
     data,
@@ -46,7 +46,7 @@ export const Carousel = (props: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const scrollX = useRef(new Animated.Value(0)).current;
-  const slidesRef = useRef(null);
+  const slidesRef = useRef<FlatList | null>(null);
 
   const viewableItemsChanged = useRef(({viewableItems}: any) => {
     setCurrentIndex(viewableItems[0].index);
@@ -57,6 +57,18 @@ export const Carousel = (props: CarouselProps) => {
   useEffect(() => {
     getCurrentPage?.(currentIndex);
   }, [getCurrentPage, currentIndex]);
+
+  const handleNext = () => {
+    const nextIndex = currentIndex + 1;
+    
+    if (nextIndex < data.length) {
+      slidesRef.current?.scrollToIndex({
+        index: nextIndex,
+        animated: true,
+      });
+      setCurrentIndex(nextIndex);
+    }
+  };
 
   return (
     <>
@@ -75,6 +87,7 @@ export const Carousel = (props: CarouselProps) => {
       </View>
       <View style={style}>
         <FlatList
+          onScrollToIndexFailed={() => {}}
           contentContainerStyle={contentContainerStyle}
           horizontal
           initialScrollIndex={initialIndex}
@@ -82,9 +95,9 @@ export const Carousel = (props: CarouselProps) => {
           data={data}
           pagingEnabled
           renderItem={({item, index}) => (
-            <SafeAreaView style={[itemStyle, {width: itemWidth}]}>
-              <Component {...item} index={index} />
-            </SafeAreaView>
+            <View style={[itemStyle, {width: itemWidth}]}>
+              <Component {...item} index={index} handleNext={handleNext} />
+            </View>
           )}
           bounces={false}
           onScroll={Animated.event(

@@ -53,7 +53,7 @@ const commonColor = {
   specialChallengeBgColor: '#39518080',
   goalIconBgColor: '#83C0F833',
   lightGreyColor: '#D9D9D9',
-  themeSecondaryBackground: '#665ec2',
+  themeSecondaryBackground: '#695FCB',
   red: 'red',
   lavenderBlue: '#847AED',
   skyBlue: '#83C0F8',

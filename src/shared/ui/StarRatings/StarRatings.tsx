@@ -1,48 +1,136 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import {selectedStar, unselectedStar} from '@src/shared/assets/images';
-import {horizontalScale} from '@src/shared/lib/Metrics';
+import {
+  outlineStar,
+  selectedStar,
+  unselectedStar,
+} from '@src/shared/assets/images';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {AppText, TextSize} from '../AppText/AppText';
 
-const renderStar = (index: number, count: number, imageSize: number) => {
+// Function to render each star
+const renderStar = ({
+  index,
+  count,
+  imageSize,
+  onRate,
+  readOnly,
+  size,
+  horizontalPaddings,
+  prefix,
+  postfix,
+  textColor,
+}: {
+  index: number;
+  count: number;
+  imageSize: number;
+  onRate: (value: number) => void;
+  readOnly: boolean;
+  horizontalPaddings?: number;
+  size: number;
+  prefix?: string;
+  postfix?: string;
+  textColor: string;
+}) => {
   const isSelected = index < count;
+  const starImage = isSelected ? selectedStar : outlineStar;
 
-  let starImage;
-  if (isSelected) {
-    starImage = selectedStar;
-  } else {
-    starImage = unselectedStar;
-  }
-
-  const size = horizontalScale(imageSize);
+  const isFirstElement = index === 0;
+  const isLastElement = index === size - 1;
 
   return (
-    <View
-      style={{marginHorizontal: horizontalScale(size / 6)}}
-      key={index.toString()}>
-      <FastImage
-        style={[styles.image, {height: size, width: size}]}
-        source={starImage}
-      />
+    <View key={index} style={styles.starWrapper}>
+      <TouchableOpacity
+        disabled={readOnly}
+        onPress={() => onRate(index + 1)}
+        style={{
+          marginHorizontal: horizontalScale(
+            horizontalPaddings || imageSize / 6,
+          ),
+        }}>
+        <FastImage
+          style={{
+            height: horizontalScale(imageSize),
+            width: horizontalScale(imageSize),
+          }}
+          source={starImage}
+        />
+      </TouchableOpacity>
+      {isFirstElement && prefix && (
+        <AppText
+          weight="600"
+          style={[styles.text, {color: textColor}]}
+          align={'center'}
+          size={TextSize.LEVEL_4}
+          text={prefix}
+        />
+      )}
+      {isLastElement && postfix && (
+        <AppText
+          weight="600"
+          style={[styles.text, {color: textColor}]}
+          align={'center'}
+          size={TextSize.LEVEL_4}
+          text={postfix}
+        />
+      )}
     </View>
   );
 };
 
-interface AvatarProps {
+interface StarRatingsProps {
   count: number;
   size?: number;
   imageSize?: number;
+  readOnly?: boolean;
+  horizontalPaddings?: number;
+  prefix?: string;
+  postfix?: string;
+  onRate?: (value: number) => void;
 }
 
-export const StarRatings = memo((props: AvatarProps) => {
-  const {count, size = 5, imageSize = 18} = props;
+export const StarRatings = memo((props: StarRatingsProps) => {
+  const {
+    count,
+    size = 5,
+    imageSize = 18,
+    readOnly = false,
+    horizontalPaddings,
+    prefix,
+    postfix,
+    onRate,
+  } = props;
+
   const arrayFromNumber = Array.from({length: size}, (_, index) => index + 1);
+
+  const colors = useColors();
+
+  const onRateHandler = (newRating: number) => {
+    if (readOnly) {
+      return;
+    }
+
+    onRate?.(newRating);
+  };
 
   return (
     <View style={styles.Stars}>
       {arrayFromNumber.map((_, index) => {
-        return renderStar(index, count, imageSize);
+        return renderStar({
+          index,
+          count,
+          imageSize,
+          onRate: onRateHandler,
+          readOnly,
+          horizontalPaddings,
+          size,
+          prefix,
+          postfix,
+          textColor: colors.white,
+        });
       })}
     </View>
   );
@@ -51,9 +139,12 @@ export const StarRatings = memo((props: AvatarProps) => {
 const styles = StyleSheet.create({
   Stars: {
     flexDirection: 'row',
+    justifyContent: 'center',
   },
-  image: {
-    width: horizontalScale(25),
-    height: horizontalScale(25),
+  text: {
+    marginTop: verticalScale(10),
+  },
+  starWrapper: {
+    alignItems: 'center',
   },
 });

@@ -38,6 +38,7 @@ import {BreakPage} from '@src/pages/BreakPage';
 import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
 import {SpecialChallengeHeaderRight} from '@src/widgets/headers/SpecialChallengeHeaderRight';
 import {SpecialChallengeIntroPage} from '@src/pages/SpecialChallengeIntroPage';
+import {CompletionPage} from '@src/pages/CompletionPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -73,6 +74,7 @@ export enum AppRouteNames {
   PRE_SESSION = 'preSession',
   BREAK = 'break',
   SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
+  COMPLETION = 'completion',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -105,6 +107,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.PRE_SESSION]: 'preSession',
   [AppRouteNames.BREAK]: 'break',
   [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
+  [AppRouteNames.COMPLETION]: 'completion',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -501,6 +504,21 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
           <SpecialChallengeIntroPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.COMPLETION]: {
+    name: appRoutePaths.completion,
+    headerShown: false,
+    bgColor: 'secondaryBackground',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling
+          deleteGlobalPadding
+          bgColor="secondaryBackground">
+          <CompletionPage {...props} />
         </Layout>
       );
     },
