@@ -34,3 +34,9 @@ export const userSession = {
 
 export const SESSION_INTERVAL_FOR_RATE_PROMPT = 3;
 export const FIRST_QUADRANT_ID = 'quadrant1';
+
+export enum EventEndType {
+  SESSION_END = 'sessionEnd',
+  LEVEL_END = 'levelEnd',
+  QUADRANTS_END = 'quadrantEnd',
+}

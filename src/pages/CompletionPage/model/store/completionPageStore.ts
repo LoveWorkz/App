@@ -5,45 +5,93 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
-import {sessionStore} from '@src/entities/Session';
-import {RatingKeys, SessionRatingResultsType} from '../types/completionTypes';
+import {EventEndType, sessionStore} from '@src/entities/Session';
+import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
+import {EVENT_END_TYPE_KEY} from '@src/shared/consts/storage';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {CategoryKey, categoryStore} from '@src/entities/Category';
+import {RatingKeys, RatingResultsType} from '../types/completionTypes';
+import {
+  levelRatingInformationList,
+  sessionRatingList,
+} from '../lib/completionPageLib';
+import {RatingInformationItemType} from '../types/completionTypes';
+
+const initialRatingResults: RatingResultsType = {
+  question_1: 0,
+  question_2: 0,
+  question_3: 0,
+  question_4: 0,
+  feedback: '',
+};
 
 class CompletionPageStore {
-  sessionRatingResults: SessionRatingResultsType = {
-    question_1: 0,
-    question_2: 0,
-    question_3: 0,
-    question_4: 0,
-    feedback: '',
-  };
+  ratingResults = initialRatingResults;
+  ratingInformationList: RatingInformationItemType[] = [];
+
   isFetching: boolean = true;
+  isSending: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   setRating = ({field, value}: {field: RatingKeys; value: string | number}) => {
-    this.sessionRatingResults = {...this.sessionRatingResults, [field]: value};
+    this.ratingResults = {...this.ratingResults, [field]: value};
   };
 
-  setSessionRatingResults = (
-    sessionRatingResults: SessionRatingResultsType,
-  ) => {
-    this.sessionRatingResults = sessionRatingResults;
+  setRatingResults = (ratingResults: RatingResultsType) => {
+    this.ratingResults = ratingResults;
   };
 
   setIsFetching = (isFetching: boolean) => {
     this.isFetching = isFetching;
   };
 
+  setIsSending = (isSending: boolean) => {
+    this.isSending = isSending;
+  };
+
+  setRatingInformationList = (list: RatingInformationItemType[]) => {
+    this.ratingInformationList = list;
+  };
+
   init = async () => {
     try {
       this.setIsFetching(true);
       await this.fetchRatingResults();
+      await this.initRatinglist();
     } catch (error) {
       errorHandler({error});
     } finally {
       this.setIsFetching(false);
+    }
+  };
+
+  initRatinglist = async () => {
+    const eventKeyFromStorage = await eventEndStorage.getEventEndType(
+      EVENT_END_TYPE_KEY,
+    );
+
+    if (!eventKeyFromStorage) {
+      return;
+    }
+
+    const eventKey = JSON.parse(eventKeyFromStorage) as EventEndType;
+
+    switch (eventKey) {
+      case EventEndType.SESSION_END:
+        this.setRatingInformationList(sessionRatingList);
+        break;
+      case EventEndType.LEVEL_END:
+        this.setRatingInformationList(levelRatingInformationList);
+        break;
+      case EventEndType.QUADRANTS_END:
+        this.setRatingInformationList(sessionRatingList);
+        break;
+      default:
+        this.setRatingInformationList(sessionRatingList);
     }
   };
 
@@ -53,15 +101,21 @@ class CompletionPageStore {
     const userId = userStore.userId;
     const currentSession = sessionStore.session;
 
-    if (!currentSession) {
+    const eventKeyFromStorage = await eventEndStorage.getEventEndType(
+      EVENT_END_TYPE_KEY,
+    );
+
+    if (!(currentSession && eventKeyFromStorage)) {
       return;
     }
 
-    const currentSessionId = currentSession.id;
+    const eventKey = JSON.parse(eventKeyFromStorage) as EventEndType;
+
+    let documentId = this.getDocumentIds()?.[eventKey] || currentSession.id;
 
     const sessionEndDocRef = firestore()
       .collection(Collections.RATING_INFORMATION)
-      .doc('sessionEnd')
+      .doc(eventKey)
       .collection(Collections.ENTRIES)
       .doc(userId);
 
@@ -75,55 +129,113 @@ class CompletionPageStore {
           ...documentSnapshot.data(),
         };
 
-        const result = sessionRatingResults.sessions[currentSessionId];
+        const defaultField = 'sessions';
+        const field = this.getEventFields()[eventKey] || defaultField;
+        const result = sessionRatingResults[field][documentId];
 
-        result && this.setSessionRatingResults(result);
+        result && this.setRatingResults(result);
       }
     } catch (error) {
       throw error;
     }
   };
 
+  getEventFields = (): Record<EventEndType, string> => {
+    return {
+      [EventEndType.SESSION_END]: 'sessions',
+      [EventEndType.LEVEL_END]: 'levels',
+      [EventEndType.QUADRANTS_END]: 'quadrants',
+    };
+  };
+
+  getDocumentIds = (): Record<EventEndType, string> | undefined => {
+    const currentSession = sessionStore.session;
+    const currentLevel = categoryStore.category;
+    const currentQuadrant = sessionStore.currentQuadrant;
+
+    if (!(currentSession && currentLevel && currentQuadrant)) {
+      return;
+    }
+
+    return {
+      [EventEndType.SESSION_END]: currentSession.id,
+      [EventEndType.LEVEL_END]: currentLevel.id,
+      [EventEndType.QUADRANTS_END]: this.getDocumentFieldForQuadrant({
+        quadrantId: currentQuadrant.id,
+        levelKey: currentLevel.name,
+      }),
+    };
+  };
+
+  getDocumentFieldForQuadrant = ({
+    quadrantId,
+    levelKey,
+  }: {
+    quadrantId: string;
+    levelKey: CategoryKey;
+  }) => {
+    return `${levelKey}_${quadrantId}`;
+  };
+
   sendRatingResults = async () => {
     crashlytics().log('Sending Rating Information');
+
+    this.setIsSending(true);
 
     const userId = userStore.userId;
     const currentSession = sessionStore.session;
 
-    if (!currentSession) {
+    const eventKeyFromStorage = await eventEndStorage.getEventEndType(
+      EVENT_END_TYPE_KEY,
+    );
+
+    if (!(currentSession && eventKeyFromStorage)) {
       return;
     }
 
-    const currentSessionId = currentSession.id;
+    const eventKey = JSON.parse(eventKeyFromStorage) as EventEndType;
+
+    let documentId = this.getDocumentIds()?.[eventKey] || currentSession.id;
 
     const sessionEndRef = firestore()
       .collection(Collections.RATING_INFORMATION)
-      .doc('sessionEnd')
+      .doc(eventKey)
       .collection(Collections.ENTRIES)
       .doc(userId);
 
     try {
       const docSnapshot = await sessionEndRef.get();
+      const eventField = this.getEventFields()[eventKey];
+
       if (docSnapshot.exists) {
-        const keyName = `sessions.${currentSessionId}`;
+        const keyName = `${eventField}.${documentId}`;
 
         const sessionUpdate = {
-          [keyName]: this.sessionRatingResults,
+          [keyName]: this.ratingResults,
         };
 
         sessionEndRef.update(sessionUpdate);
       } else {
         const initialSessionData = {
-          sessions: {
-            [currentSessionId]: this.sessionRatingResults,
+          [eventField]: {
+            [documentId]: this.ratingResults,
           },
         };
 
         sessionEndRef.set(initialSessionData);
       }
+
+      navigation.navigate(TabRoutesNames.HOME);
     } catch (error) {
       errorHandler({error});
+    } finally {
+      this.setIsSending(false);
     }
+  };
+
+  skipHandler = () => {
+    this.setRatingResults(initialRatingResults);
+    navigation.navigate(TabRoutesNames.HOME);
   };
 }
 

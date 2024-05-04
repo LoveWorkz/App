@@ -4,6 +4,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {SPECIAL_CHALLENGE_BUTTON_STATUS_KEY} from '@src/shared/consts/storage';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
@@ -207,6 +209,16 @@ class ChallengeStore {
     } finally {
       this.setIsSelectingSpecialChallenge(false);
     }
+  };
+
+  challengeCardButtonPressHandler = (specialChallengeId: string) => {
+    specialChallengeId &&
+      this.selectSpecialChallenge({
+        id: specialChallengeId,
+        newValue: true,
+      });
+
+    navigation.navigate(AppRouteNames.COMPLETION);
   };
 }
 

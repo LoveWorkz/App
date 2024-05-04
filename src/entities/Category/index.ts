@@ -7,4 +7,8 @@ export type {
 } from './model/types/categoryTypes';
 export {CategoryKey} from './model/types/categoryTypes';
 export {default as categoryStore} from './model/store/categoryStore';
-export {categoryExample, FIRST_LEVEL_ID} from './model/lib/category';
+export {
+  categoryExample,
+  FIRST_LEVEL_ID,
+  getLevelsFinalImageUrls,
+} from './model/lib/category';

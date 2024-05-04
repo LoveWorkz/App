@@ -487,7 +487,7 @@ class QuestionsStore {
 
       if (
         sessionStore.isLastQuadrant() &&
-        sessionStore.isLastSessionInsideQuadrant()
+        sessionStore.isLastSessionInsideQuadrant(session)
       ) {
         // Update user data and show congrats modal if applicable.
         categoryStore.updateUserLevelAftePassedAllSessionsAndQuadrats({
@@ -495,7 +495,7 @@ class QuestionsStore {
           session,
         });
         this.setCongratsModalVisible(true);
-      } else if (sessionStore.isLastSessionInsideQuadrant()) {
+      } else if (sessionStore.isLastSessionInsideQuadrant(session)) {
         // Find and update to the next quadrant.
         await sessionStore.findAndUpdateNextQuadrant(category);
       } else {

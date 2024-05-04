@@ -13,6 +13,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
+  EVENT_END_TYPE_KEY,
   HAS_COMPLETED_ONBOARDING_KEY,
   RATE_TYPE_KEY,
   SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
@@ -34,6 +35,7 @@ import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 import {CurrentCategory} from '@src/entities/Category';
 import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
+import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
 import {
   User,
   AuthMethod,
@@ -436,6 +438,7 @@ class UserStore {
       await authStorage.removeAuthData(USER_VISITED_STATUS);
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await themeStorage.removeTheme(RATE_TYPE_KEY);
+      await eventEndStorage.removeEventEndType(EVENT_END_TYPE_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

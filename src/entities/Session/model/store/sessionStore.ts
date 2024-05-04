@@ -14,9 +14,12 @@ import {userCategoryStore} from '@src/entities/UserCategory';
 import {getNextElementById} from '@src/shared/lib/common';
 import {inAppReviewStore} from '@src/features/InAppReview';
 import {favoriteStore} from '@src/entities/Favorite';
+import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
+import {EVENT_END_TYPE_KEY} from '@src/shared/consts/storage';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
+  EventEndType,
   FIRST_QUADRANT_ID,
   sessionsCountWithoutSubscription,
   sessionsCountWithSubscription,
@@ -36,6 +39,7 @@ class SessionStore {
   currentQuadrant: QuadrantType | null = null;
   lastQuadrant: QuadrantType | null = null;
   favoriteQuadrantsSessions: QuadrantType[] = [];
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -124,6 +128,18 @@ class SessionStore {
     this.setSession(session);
   };
 
+  setSelectedQuadrantBySession(sessionId: string) {
+    for (const quadrant of this.quadrants) {
+      const sessionExists = quadrant.sessions.some(
+        session => session.id === sessionId,
+      );
+      if (sessionExists) {
+        this.setCurrentQuadrant(quadrant);
+        return;
+      }
+    }
+  }
+
   setSession = (session: SessionType) => {
     this.session = session;
   };
@@ -143,15 +159,46 @@ class SessionStore {
     }
 
     this.setSession(session);
+    this.setSelectedQuadrantBySession(session.id);
+    this.setEventEndType(session);
     navigation.navigate(AppRouteNames.QUESTIONS, {
       type: DocumentType.CATEGORY,
       id: categoryId,
     });
   };
 
+  setEventEndType = async (session: SessionType) => {
+    // setting level end
+    if (this.isLastSessionInsideQuadrant(session) && this.isLastQuadrant()) {
+      await eventEndStorage.setEventEndType(
+        EVENT_END_TYPE_KEY,
+        JSON.stringify(EventEndType.LEVEL_END),
+      );
+
+      return;
+    }
+
+    // setting quadrants end
+    if (this.isLastSessionInsideQuadrant(session)) {
+      await eventEndStorage.setEventEndType(
+        EVENT_END_TYPE_KEY,
+        JSON.stringify(EventEndType.QUADRANTS_END),
+      );
+
+      return;
+    }
+
+    // setting session end
+    await eventEndStorage.setEventEndType(
+      EVENT_END_TYPE_KEY,
+      JSON.stringify(EventEndType.SESSION_END),
+    );
+  };
+
   fetchQuadrants = async (levelId: string) => {
     try {
       crashlytics().log('Fetching Quadrants');
+
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const userId = userStore.userId;
@@ -181,7 +228,6 @@ class SessionStore {
             : !hasUserSubscription;
 
         if (quadrant.isCurrent) {
-          this.setCurrentQuadrant(quadrant);
         }
 
         return {
@@ -259,7 +305,6 @@ class SessionStore {
 
         if (quadrant.isCurrent) {
           this.setCurrentQuadrantsSessions(sortedSessions);
-          this.setCurrentQuadrant(quadrant);
         }
 
         return {
@@ -541,11 +586,19 @@ class SessionStore {
     return this.quadrants[0];
   };
 
-  isLastSessionInsideQuadrant = () => {
-    const currentSession = this.session;
-    const lastSession =
-      this.currentQuadrantsSessions[this.currentQuadrantsSessions.length - 1];
-    return currentSession?.id === lastSession.id;
+  isLastSessionInsideQuadrant = (currentSession: SessionType) => {
+    const quadrantsList = this.quadrants;
+
+    for (const quadrant of quadrantsList) {
+      // Find the last session in the current quadrant
+      const lastSession = quadrant.sessions[quadrant.sessions.length - 1];
+      // Check if the current session's ID matches the last session's ID in this quadrant
+      if (currentSession.id === lastSession.id) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   // Function to find and update the next quadrant after the current one is completed.
@@ -617,7 +670,6 @@ class SessionStore {
     });
 
     // Set the new current quadrant and its sessions in the context.
-    this.setCurrentQuadrant(nextQuadrant);
     this.setCurrentQuadrantsSessions(nextQuadrant.sessions);
   }
 
@@ -633,8 +685,6 @@ class SessionStore {
     if (!(nextQuadrant && currentQuadrant)) {
       return;
     }
-
-    this.setCurrentQuadrant(nextQuadrant);
 
     await userCategoryStore.updateUserQuadrants([
       {

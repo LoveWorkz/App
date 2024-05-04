@@ -6,15 +6,18 @@ import {useFocusEffect} from '@react-navigation/native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {categoryStore, getLevelsFinalImageUrls} from '@src/entities/Category';
 import CompletionItem from './CompletionItem';
 import completionPageStore from '../model/store/completionPageStore';
-import {ratingInformationList} from '../model/lib/completionPageLib';
 
 const CompletionPage = () => {
   const setRating = completionPageStore.setRating;
 
   const isFetching = completionPageStore.isFetching;
-  const sessionRatingResults = completionPageStore.sessionRatingResults;
+  const ratingResults = completionPageStore.ratingResults;
+  const ratingInformationList = completionPageStore.ratingInformationList;
+  const currentLevel = categoryStore.category;
+  const isSending = completionPageStore.isSending;
 
   useFocusEffect(
     useCallback(() => {
@@ -30,10 +33,14 @@ const CompletionPage = () => {
       return {
         ...item,
         setValue,
-        value: sessionRatingResults[item.pagekey],
+        value: ratingResults[item.pagekey],
+        image: currentLevel
+          ? getLevelsFinalImageUrls()[currentLevel.name]
+          : item.image,
+        isSending,
       };
     });
-  }, [sessionRatingResults]);
+  }, [ratingResults, ratingInformationList, currentLevel, isSending]);
 
   if (isFetching) {
     return null;

@@ -18,7 +18,7 @@ import completionPageStore from '../model/store/completionPageStore';
 interface CompletionItemProps {
   handleNext: () => void;
   id: string;
-  image: number;
+  image: string;
   pageNumber: number;
   question: string;
   prefix: string;
@@ -26,6 +26,8 @@ interface CompletionItemProps {
   setValue: (value: string | number) => void;
   value: string | number;
   pagekey: RatingKeys;
+  description: string;
+  isSending: boolean;
 }
 
 const CompletionItem = (props: CompletionItemProps) => {
@@ -39,6 +41,8 @@ const CompletionItem = (props: CompletionItemProps) => {
     setValue,
     value,
     pagekey,
+    description,
+    isSending,
   } = props;
   const colors = useColors();
 
@@ -62,9 +66,13 @@ const CompletionItem = (props: CompletionItemProps) => {
     completionPageStore.sendRatingResults();
   }, []);
 
+  const source = useMemo(() => {
+    return {uri: image};
+  }, [image]);
+
   return (
     <View>
-      <FastImage style={styles.image} resizeMode={'cover'} source={image} />
+      <FastImage style={styles.image} resizeMode={'cover'} source={source} />
       <View style={styles.content}>
         <View style={styles.contentTop}>
           <View style={styles.titleWrapper}>
@@ -80,15 +88,14 @@ const CompletionItem = (props: CompletionItemProps) => {
             align={'center'}
             style={textSize}
             size={TextSize.LEVEL_5}
-            text={
-              'You’ve finished your 1st session of 4 sessions on the Basic level'
-            }
+            text={description}
           />
         </View>
 
         {pagekey === 'feedback' ? (
           <View style={styles.feedbackWrapper}>
             <FeedbackBlock
+              isSending={isSending}
               onSendPressHandler={onSendPressHandler}
               onFeedbackChangeHandler={onFeedbackChangeHandler}
               value={value as string}

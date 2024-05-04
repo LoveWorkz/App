@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginTop: verticalScale(10),
+    textTransform: 'capitalize',
   },
   starWrapper: {
     alignItems: 'center',

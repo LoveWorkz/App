@@ -54,11 +54,7 @@ export const ChallengeCard = (props: ChallengeCardProps) => {
   );
 
   const onPressHandler = () => {
-    specialChallengeId &&
-      challengeStore.selectSpecialChallenge({
-        id: specialChallengeId,
-        newValue: true,
-      });
+    challengeStore.challengeCardButtonPressHandler(specialChallengeId);
   };
 
   return (
