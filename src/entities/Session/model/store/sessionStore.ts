@@ -793,7 +793,7 @@ class SessionStore {
     sessionId: string;
     levelId: string;
     fieldName: string;
-    fieldValue: string;
+    fieldValue: string | number;
   }) => {
     // Update the user sessions with the new field value
     await userCategoryStore.updateUserSessions([

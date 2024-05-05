@@ -6,8 +6,6 @@ import {questionStore, QuestionType} from '@src/entities/QuestionCard';
 import {userStore} from '@src/entities/User';
 import {minutesDiff} from '@src/shared/lib/date';
 import {getPercentageFromNumber} from '@src/shared/lib/common';
-import {userRubricStore} from '@src/entities/UserRubric';
-import {userCategoryStore} from '@src/entities/UserCategory';
 import {DocumentType} from '@src/shared/types/types';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore, SessionType} from '@src/entities/Session';
@@ -29,24 +27,14 @@ class WowThatWasFastStore {
     this.isThatWasFastModalForbidden = isVisible;
   };
 
-  getDocument = async ({
-    isCategory,
-    documentId,
-    sessionId,
-  }: {
-    isCategory: boolean;
-    documentId: string;
-    sessionId: string;
-  }) => {
+  getDocument = ({isCategory}: {isCategory: boolean}) => {
     try {
       let document: RubricType | SessionType | undefined;
 
       if (isCategory) {
-        // const category = await categoryStore.fetchCategory({id: documentId});
-        const session = sessionStore.session;
-        document = session as SessionType;
+        document = sessionStore.session as SessionType;
       } else {
-        document = await rubricStore.fetchRubric(documentId);
+        document = rubricStore.rubric as RubricType;
       }
 
       return document;
@@ -66,17 +54,17 @@ class WowThatWasFastStore {
     documentId: string;
     type: DocumentType;
     questions: QuestionType[];
-    sessionId: string;
+    sessionId?: string;
   }) => {
     try {
       crashlytics().log('Wow That Was Fast modal logic.');
 
       const isCategory = type === DocumentType.CATEGORY;
-      const document = await this.getDocument({
+
+      const document = this.getDocument({
         isCategory,
-        documentId,
-        sessionId,
       });
+
       if (!document) {
         return;
       }
@@ -109,7 +97,7 @@ class WowThatWasFastStore {
     questions: QuestionType[];
     isCategory: boolean;
     document: RubricType | SessionType;
-    sessionId: string;
+    sessionId?: string;
   }) => {
     try {
       const questionInfo = questionStore.getQuestionInfo({
@@ -122,6 +110,7 @@ class WowThatWasFastStore {
 
       await this.setSwipedQuestionsPercentage({
         id: documentId,
+        document,
         currentQuestionIndex: questionInfo.currentQuestionNumber,
         isCategory,
         questions,
@@ -144,16 +133,15 @@ class WowThatWasFastStore {
   }: {
     id: string;
     isCategory: boolean;
-    sessionId: string;
+    sessionId?: string;
   }) => {
     try {
       crashlytics().log('Checking if question was scrolled fast.');
 
-      const document = await this.getDocument({
+      const document = this.getDocument({
         isCategory,
-        documentId: id,
-        sessionId,
       });
+
       if (!document) {
         return;
       }
@@ -186,20 +174,21 @@ class WowThatWasFastStore {
         }
 
         if (isCategory) {
-          await userCategoryStore.updateUserSessions([
-            {
-              sessionId,
-              levelId: id,
-              updates: {
-                breakPointForCheckingDate: newCheckTime,
-              },
-            },
-          ]);
+          if (!sessionId) {
+            return;
+          }
+
+          await sessionStore.updateSessionField({
+            levelId: id,
+            sessionId,
+            fieldName: 'breakPointForCheckingDate',
+            fieldValue: newCheckTime,
+          });
         } else {
-          await userRubricStore.updateUserRubric({
+          await rubricStore.updateRubricField({
             id,
-            field: 'breakPointForCheckingDate',
-            data: newCheckTime,
+            fieldName: 'breakPointForCheckingDate',
+            fieldValue: newCheckTime,
           });
         }
 
@@ -218,7 +207,7 @@ class WowThatWasFastStore {
   }: {
     id: string;
     isCategory: boolean;
-    sessionId: string;
+    sessionId?: string;
   }) => {
     try {
       crashlytics().log('Setting swiped questions Date.');
@@ -226,20 +215,21 @@ class WowThatWasFastStore {
       const currentDate = new Date().toJSON();
 
       if (isCategory) {
-        await userCategoryStore.updateUserSessions([
-          {
-            sessionId,
-            levelId: id,
-            updates: {
-              questionSwipeStartDate: currentDate,
-            },
-          },
-        ]);
+        if (!sessionId) {
+          return;
+        }
+
+        await sessionStore.updateSessionField({
+          levelId: id,
+          sessionId,
+          fieldName: 'questionSwipeStartDate',
+          fieldValue: currentDate,
+        });
       } else {
-        await userRubricStore.updateUserRubric({
+        await rubricStore.updateRubricField({
           id,
-          field: 'questionSwipeStartDate',
-          data: currentDate,
+          fieldName: 'questionSwipeStartDate',
+          fieldValue: currentDate,
         });
       }
     } catch (e) {
@@ -249,16 +239,18 @@ class WowThatWasFastStore {
 
   setSwipedQuestionsPercentage = async ({
     id,
+    document,
     currentQuestionIndex,
     isCategory,
     questions,
     sessionId,
   }: {
     id: string;
+    document: RubricType | SessionType;
     currentQuestionIndex: number;
     isCategory: boolean;
     questions: QuestionType[];
-    sessionId: string;
+    sessionId?: string;
   }) => {
     try {
       crashlytics().log('Setting swiped questions percentage.');
@@ -272,21 +264,27 @@ class WowThatWasFastStore {
         return;
       }
 
+      // no need to update percentage if go back
+      if(document.swipedQuestionsPercentage >= swipedQuestionsPercentage) {
+        return;
+      }
+
       if (isCategory) {
-        await userCategoryStore.updateUserSessions([
-          {
-            sessionId,
-            levelId: id,
-            updates: {
-              swipedQuestionsPercentage: swipedQuestionsPercentage,
-            },
-          },
-        ]);
+        if (!sessionId) {
+          return;
+        }
+
+        await sessionStore.updateSessionField({
+          levelId: id,
+          sessionId,
+          fieldName: 'swipedQuestionsPercentage',
+          fieldValue: swipedQuestionsPercentage,
+        });
       } else {
-        await userRubricStore.updateUserRubric({
+        await rubricStore.updateRubricField({
           id,
-          field: 'swipedQuestionsPercentage',
-          data: swipedQuestionsPercentage,
+          fieldName: 'swipedQuestionsPercentage',
+          fieldValue: swipedQuestionsPercentage,
         });
       }
     } catch (e) {

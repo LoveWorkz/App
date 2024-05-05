@@ -225,6 +225,7 @@ class CompletionPageStore {
         sessionEndRef.set(initialSessionData);
       }
 
+      this.setRatingResults(initialRatingResults);
       navigation.navigate(TabRoutesNames.HOME);
     } catch (error) {
       errorHandler({error});

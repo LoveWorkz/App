@@ -21,6 +21,10 @@ class RubricStore {
     makeAutoObservable(this);
   }
 
+  setRubric = (rubric: RubricType) => {
+    this.rubric = rubric;
+  };
+
   initUserRubricQuestionId = async ({
     questions,
     id,
@@ -43,13 +47,43 @@ class RubricStore {
         data: firstQuestion.id,
       });
       runInAction(() => {
-        this.rubric = {
+        this.setRubric({
           ...this.rubric,
           currentQuestion: firstQuestion.id,
-        } as RubricType;
+        } as RubricType);
       });
     } catch (e) {
       errorHandler({error: e});
+    }
+  };
+
+  /**
+   * Updates a specific field in user rubrics and local rubric data.
+   * @param {string} id - The ID of the current rubric.
+   * @param {string} fieldName - The name of the field to update.
+   * @param {any} fieldValue - The new value for the field.
+   */
+  updateRubricField = async ({
+    id,
+    fieldName,
+    fieldValue,
+  }: {
+    id: string;
+    fieldName: string;
+    fieldValue: string | number;
+  }) => {
+    // Update the user rubrics with the new field value
+    await userRubricStore.updateUserRubric({
+      id: id,
+      field: fieldName,
+      data: fieldValue,
+    });
+
+    const currentRubric = this.rubric;
+
+    // If there is a current rubric, update it with the new field value
+    if (currentRubric) {
+      this.setRubric({...currentRubric, [fieldName]: fieldValue});
     }
   };
 
@@ -85,49 +119,8 @@ class RubricStore {
       }
 
       runInAction(() => {
-        this.rubric = rubric;
+        this.setRubric(rubric);
       });
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
-
-  fetchRubric = async (id: string) => {
-    try {
-      crashlytics().log('Fetching rubric.');
-
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
-
-      const userId = userStore.userId;
-      if (!userId) {
-        return;
-      }
-      // default rubric
-      const data = await firestore()
-        .collection(Collections.RUBRICS)
-        .doc(id)
-        .get({source});
-      // user custom rubric
-      const userRubricData = await firestore()
-        .collection(Collections.USER_RUBRICS)
-        .doc(userId)
-        .get({source});
-
-      const userRubric = userRubricData.data();
-      if (!userRubric) {
-        return;
-      }
-      // merge default rubric with user custom rubric
-      const rubric = {
-        ...data.data(),
-        id: data.id,
-        ...userRubric.rubrics[id],
-      } as RubricType;
-
-      runInAction(() => {
-        this.rubric = rubric;
-      });
-      return rubric;
     } catch (e) {
       errorHandler({error: e});
     }

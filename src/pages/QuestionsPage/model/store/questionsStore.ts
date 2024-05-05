@@ -23,6 +23,7 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {sessionStore} from '@src/entities/Session';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {wowThatWasFastModalStore} from '@src/widgets/WowThatWasFastModal';
 
 class QuestionsStore {
   questions: QuestionType[] = [];
@@ -173,24 +174,28 @@ class QuestionsStore {
         swipeData;
       const sessionId = sessionStore.session?.id;
 
-      if (!(question && sessionId)) {
+      if (!question) {
         return;
       }
 
       // this.loadAds({ questionNumber, interstitial });
 
       if (key !== DocumentType.FAVORITE && documentId) {
-        // wowThatWasFastModalStore.wowThatWasFastLogic({
-        //   documentId,
-        //   type: key,
-        //   questions: this.questions,
-        //   questionId: question.id,
-        //   sessionId,
-        // });
+        wowThatWasFastModalStore.wowThatWasFastLogic({
+          documentId,
+          type: key,
+          questions: this.questions,
+          questionId: question.id,
+          sessionId,
+        });
       }
 
       switch (key) {
         case DocumentType.CATEGORY:
+          if (!sessionId) {
+            return;
+          }
+
           this.levelSwipeLogic({...swipeData, sessionId});
           break;
         case DocumentType.RUBRIC:
