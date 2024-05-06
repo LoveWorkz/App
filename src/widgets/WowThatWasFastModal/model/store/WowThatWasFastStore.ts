@@ -265,7 +265,7 @@ class WowThatWasFastStore {
       }
 
       // no need to update percentage if go back
-      if(document.swipedQuestionsPercentage >= swipedQuestionsPercentage) {
+      if (document.swipedQuestionsPercentage >= swipedQuestionsPercentage) {
         return;
       }
 

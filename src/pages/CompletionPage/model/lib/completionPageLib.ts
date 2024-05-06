@@ -102,3 +102,56 @@ export const levelRatingInformationList: RatingInformationItemType[] = [
     description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
 ];
+
+export const quadrantRatingInformationList: RatingInformationItemType[] = [
+  {
+    id: '1',
+    pagekey: 'question_1',
+    image: '',
+    pageNumber: 1,
+    question: 'Did you find the Questions relevant to your relationship?',
+    prefix: 'Nope',
+    postfix: 'Yes',
+    description:
+      'Now that you have successfully mastered all sessions of the Personal Growth area.',
+  },
+  {
+    id: '2',
+    pagekey: 'question_2',
+    image: '',
+    pageNumber: 2,
+    question: 'How difficult would you rate the Questions of this quadrant?',
+    prefix: 'Easy',
+    postfix: 'Difficult',
+    description:
+      'Now that you have successfully mastered all sessions of the Personal Growth area.',
+  },
+  {
+    id: '3',
+    pagekey: 'question_3',
+    image: '',
+    pageNumber: 3,
+    question: 'Will the Challenges of PERSONAL GROWTH help you in future?',
+    prefix: 'not much',
+    postfix: 'a lot',
+    description:
+      'Now that you have successfully mastered all sessions of the Personal Growth area.',
+  },
+  {
+    id: '4',
+    pagekey: 'question_4',
+    image: '',
+    pageNumber: 4,
+    question: 'How much did you enjoy this quadrant: PERSONAL GROWTH?',
+    prefix: 'hated it',
+    postfix: 'awesome',
+    description:
+      'Now that you have successfully mastered all sessions of the Personal Growth area.',
+  },
+  {
+    id: '5',
+    pagekey: 'feedback',
+    image: '',
+    description: 'You can be proud of yourselfs.',
+  },
+];

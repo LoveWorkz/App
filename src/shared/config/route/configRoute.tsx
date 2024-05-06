@@ -38,7 +38,10 @@ import {BreakPage} from '@src/pages/BreakPage';
 import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
 import {SpecialChallengeHeaderRight} from '@src/widgets/headers/SpecialChallengeHeaderRight';
 import {SpecialChallengeIntroPage} from '@src/pages/SpecialChallengeIntroPage';
-import {CompletionPage} from '@src/pages/CompletionPage';
+import {
+  CompletionPage,
+  QuadrantCompletionPage,
+} from '@src/pages/CompletionPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -75,6 +78,7 @@ export enum AppRouteNames {
   BREAK = 'break',
   SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
   COMPLETION = 'completion',
+  QUADRANT_COMPLETION = 'quadrantCompletion',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -108,6 +112,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.BREAK]: 'break',
   [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
   [AppRouteNames.COMPLETION]: 'completion',
+  [AppRouteNames.QUADRANT_COMPLETION]: 'quadrantCompletion',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -519,6 +524,21 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
           deleteGlobalPadding
           bgColor="secondaryBackground">
           <CompletionPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.QUADRANT_COMPLETION]: {
+    name: appRoutePaths.quadrantCompletion,
+    headerShown: false,
+    bgColor: 'secondaryBackground',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling
+          deleteGlobalPadding
+          bgColor="secondaryBackground">
+          <QuadrantCompletionPage {...props} />
         </Layout>
       );
     },

@@ -6,17 +6,18 @@ import {useFocusEffect} from '@react-navigation/native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {categoryStore, getLevelsFinalImageUrls} from '@src/entities/Category';
+import {getQuadrantsFinalImageUrls} from '@src/entities/Session/model/lib/sessionLib';
+import {sessionStore} from '@src/entities/Session';
 import CompletionItem from './CompletionItem';
 import completionPageStore from '../model/store/completionPageStore';
 
-const CompletionPage = () => {
+const QuadrantCompletionPage = () => {
   const setRating = completionPageStore.setRating;
 
   const ratingResults = completionPageStore.ratingResults;
   const ratingInformationList = completionPageStore.ratingInformationList;
-  const currentLevel = categoryStore.category;
   const isSending = completionPageStore.isSending;
+  const currentQuadrant = sessionStore.currentQuadrant;
 
   useFocusEffect(
     useCallback(() => {
@@ -33,16 +34,17 @@ const CompletionPage = () => {
         ...item,
         setValue,
         value: ratingResults[item.pagekey],
-        image: currentLevel
-          ? getLevelsFinalImageUrls()[currentLevel.name]
+        image: currentQuadrant
+          ? getQuadrantsFinalImageUrls()[currentQuadrant.id]
           : item.image,
         isSending,
+        isQuadrant: true,
       };
     });
-  }, [ratingResults, ratingInformationList, currentLevel, isSending]);
+  }, [ratingResults, ratingInformationList, isSending, currentQuadrant]);
 
   return (
-    <View style={styles.CompletionPage}>
+    <View style={styles.QuadrantCompletionPage}>
       <Carousel
         itemWidth={windowWidth}
         data={newListWithMetadata}
@@ -52,10 +54,10 @@ const CompletionPage = () => {
   );
 };
 
-export default memo(observer(CompletionPage));
+export default memo(observer(QuadrantCompletionPage));
 
 const styles = StyleSheet.create({
-  CompletionPage: {
+  QuadrantCompletionPage: {
     flex: 1,
     top: verticalScale(-20),
   },

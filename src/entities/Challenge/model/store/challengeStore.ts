@@ -7,7 +7,12 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
-import {SPECIAL_CHALLENGE_BUTTON_STATUS_KEY} from '@src/shared/consts/storage';
+import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
+import {EventEndType} from '@src/entities/Session';
+import {
+  EVENT_END_TYPE_KEY,
+  SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
+} from '@src/shared/consts/storage';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
 
@@ -211,14 +216,32 @@ class ChallengeStore {
     }
   };
 
-  challengeCardButtonPressHandler = (specialChallengeId: string) => {
+  challengeCardButtonPressHandler = async (specialChallengeId: string) => {
     specialChallengeId &&
       this.selectSpecialChallenge({
         id: specialChallengeId,
         newValue: true,
       });
 
-    navigation.navigate(AppRouteNames.COMPLETION);
+    await this.checkEventAndNavigateToCompletionPage();
+  };
+
+  checkEventAndNavigateToCompletionPage = async () => {
+    const eventKeyFromStorage = await eventEndStorage.getEventEndType(
+      EVENT_END_TYPE_KEY,
+    );
+
+    if (!eventKeyFromStorage) {
+      return;
+    }
+
+    const eventKey = JSON.parse(eventKeyFromStorage) as EventEndType;
+
+    if (eventKey === EventEndType.QUADRANTS_END) {
+      navigation.navigate(AppRouteNames.QUADRANT_COMPLETION);
+    } else {
+      navigation.navigate(AppRouteNames.COMPLETION);
+    }
   };
 }
 

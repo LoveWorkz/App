@@ -14,6 +14,7 @@ import {CategoryKey, categoryStore} from '@src/entities/Category';
 import {RatingKeys, RatingResultsType} from '../types/completionTypes';
 import {
   levelRatingInformationList,
+  quadrantRatingInformationList,
   sessionRatingList,
 } from '../lib/completionPageLib';
 import {RatingInformationItemType} from '../types/completionTypes';
@@ -88,7 +89,7 @@ class CompletionPageStore {
         this.setRatingInformationList(levelRatingInformationList);
         break;
       case EventEndType.QUADRANTS_END:
-        this.setRatingInformationList(sessionRatingList);
+        this.setRatingInformationList(quadrantRatingInformationList);
         break;
       default:
         this.setRatingInformationList(sessionRatingList);

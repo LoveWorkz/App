@@ -10,6 +10,7 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {PillContainer} from '@src/shared/ui/PillContainer/PillContainer';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
 import {RatingKeys} from '../model/types/completionTypes';
 import FeedbackBlock from './FeedbackBlock';
@@ -28,6 +29,7 @@ interface CompletionItemProps {
   pagekey: RatingKeys;
   description: string;
   isSending: boolean;
+  isQuadrant: boolean;
 }
 
 const CompletionItem = (props: CompletionItemProps) => {
@@ -43,8 +45,11 @@ const CompletionItem = (props: CompletionItemProps) => {
     pagekey,
     description,
     isSending,
+    isQuadrant,
   } = props;
   const colors = useColors();
+
+  const isFeedbackPage = pagekey === 'feedback';
 
   const textSize = useMemo(() => {
     return {color: colors.white};
@@ -70,18 +75,44 @@ const CompletionItem = (props: CompletionItemProps) => {
     return {uri: image};
   }, [image]);
 
+  const marginBottom = isQuadrant ? 0 : verticalScale(60);
+
   return (
     <View>
-      <FastImage style={styles.image} resizeMode={'cover'} source={source} />
-      <View style={styles.content}>
-        <View style={styles.contentTop}>
+      {isQuadrant ? (
+        <FastImage
+          style={styles.quadrantImage}
+          resizeMode={'contain'}
+          source={source}
+        />
+      ) : (
+        <FastImage style={styles.image} resizeMode={'cover'} source={source} />
+      )}
+      <View style={isQuadrant ? styles.quadrantContent : styles.content}>
+        <View
+          style={[
+            styles.contentTop,
+            {
+              marginBottom,
+              top: isQuadrant ? 0 : verticalScale(-20),
+            },
+          ]}>
           <View style={styles.titleWrapper}>
-            <AppText
-              weight="900"
-              style={textSize}
-              size={TextSize.LEVEL_9}
-              text={'Fantastic!'}
-            />
+            {isQuadrant ? (
+              <AppText
+                weight="900"
+                style={textSize}
+                size={TextSize.LEVEL_9}
+                text={'Great Job!!'}
+              />
+            ) : (
+              <AppText
+                weight="900"
+                style={textSize}
+                size={TextSize.LEVEL_9}
+                text={'Fantastic!'}
+              />
+            )}
           </View>
           <AppText
             weight="500"
@@ -92,7 +123,19 @@ const CompletionItem = (props: CompletionItemProps) => {
           />
         </View>
 
-        {pagekey === 'feedback' ? (
+        {isQuadrant && !isFeedbackPage && (
+          <View style={styles.contentMiddle}>
+            <AppText
+              weight="500"
+              align={'center'}
+              style={textSize}
+              size={TextSize.LEVEL_5}
+              text={'Next Step: Friendship'}
+            />
+          </View>
+        )}
+
+        {isFeedbackPage ? (
           <View style={styles.feedbackWrapper}>
             <FeedbackBlock
               isSending={isSending}
@@ -146,13 +189,26 @@ const styles = StyleSheet.create({
   image: {
     height: verticalScale(320),
   },
+  quadrantImage: {
+    height: verticalScale(470),
+    width: windowWidth,
+  },
+
   content: {
     alignItems: 'center',
   },
-  contentTop: {
-    top: verticalScale(-20),
-    marginBottom: verticalScale(60),
+  quadrantContent: {
     alignItems: 'center',
+    top: verticalScale(-130),
+  },
+
+  contentTop: {
+    alignItems: 'center',
+    paddingHorizontal: horizontalScale(50),
+  },
+  contentMiddle: {
+    marginTop: verticalScale(70),
+    marginBottom: verticalScale(50),
     paddingHorizontal: horizontalScale(50),
   },
   titleWrapper: {
