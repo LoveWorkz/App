@@ -97,6 +97,8 @@ const Routes = memo(() => {
             backgroundColor = colors.bgHomePageHeaderColor;
           } else if (isGradient) {
             backgroundColor = colors.skyBlue;
+          } else if(bgColor) {
+            backgroundColor = bgColor;
           }
 
           return (

@@ -1,1 +1,1 @@
-export {Wrapper as HowToUsePage} from './ui/HowToUsePage';
+export {default as HowToUsePage} from './ui/HowToUsePage';

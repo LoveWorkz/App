@@ -121,7 +121,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.ONBOARDING_STATISTIC]: 'onboardingStatistic',
 };
 
-export type BgColor = 'secondaryBackground' | 'white';
+export type BgColor = 'secondaryBackground' | 'white' | '#e8ecf9';
 
 export type NewRouteProps = {
   authOnly?: boolean;
@@ -248,10 +248,11 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.HOW_TO_USE]: {
     name: appRoutePaths.howToUse,
     headerShown: true,
-    headerTitle: 'settings.how_to_use',
+    bgColor: '#e8ecf9',
+    headerTitle: 'Loveworkz',
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout deleteTopPadding isPageScrolling>
           <HowToUsePage {...props} />
         </Layout>
       );

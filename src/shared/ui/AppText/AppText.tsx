@@ -22,6 +22,7 @@ export enum TextSize {
   LEVEL_8 = 'size_8',
   LEVEL_9 = 'size_9',
   SIZE_48 = 'size_48',
+  SIZE_24 = 'size_24',
 }
 
 type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip' | undefined;
@@ -146,5 +147,8 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   size_48: {
     ...globalStyles.size_48,
+  },
+  size_24: {
+    ...globalStyles.size_24,
   },
 });
