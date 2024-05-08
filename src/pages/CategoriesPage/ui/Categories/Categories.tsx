@@ -48,7 +48,6 @@ const Categories = (props: CategoriesProps) => {
                   image={category.image.small}
                   size={category.size}
                   name={category.name}
-                  isCategoryDetailsVisible={category.isCategoryDetailsVisible}
                 />
               </View>
             );
@@ -75,7 +74,6 @@ const Categories = (props: CategoriesProps) => {
                   image={category.image.small}
                   size={category.size}
                   name={category.name}
-                  isCategoryDetailsVisible={category.isCategoryDetailsVisible}
                 />
               </View>
             );

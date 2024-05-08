@@ -9,7 +9,7 @@ import {imageUrl} from '../lib/howToUse';
 const Images = () => {
   const imageSource = useMemo(() => {
     return {uri: imageUrl};
-  }, [])
+  }, []);
 
   return (
     <View style={styles.Images}>

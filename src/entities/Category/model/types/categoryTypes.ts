@@ -31,7 +31,6 @@ export interface CategoryType {
   categorySize: 'large' | 'small';
   leftSide?: boolean;
   size?: CateorySize;
-  isCategoryDetailsVisible: boolean;
   createdDate: string;
   displayName: DisplayText;
   sessions: UserSessionType;

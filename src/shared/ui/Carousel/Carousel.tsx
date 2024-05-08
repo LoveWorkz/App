@@ -24,6 +24,8 @@ interface CarouselProps<T = Record<string, string | number>> {
   isSmallDotPagination?: boolean;
   style?: StyleType;
   paginationColor?: string;
+  onSwipeHandler?: (value: T) => void;
+  setAsWidth?: boolean;
 }
 
 export const Carousel = <T = {}>(props: CarouselProps<T>) => {
@@ -41,6 +43,8 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
     isSmallDotPagination = true,
     style,
     paginationColor,
+    onSwipeHandler,
+    setAsWidth = true,
   } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,7 +53,11 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
   const slidesRef = useRef<FlatList | null>(null);
 
   const viewableItemsChanged = useRef(({viewableItems}: any) => {
-    setCurrentIndex(viewableItems[0].index);
+    const item = viewableItems[0]?.item;
+    const index = viewableItems[0]?.index;
+
+    item && onSwipeHandler?.(item);
+    index && setCurrentIndex(index);
   }).current;
 
   const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;
@@ -95,7 +103,7 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
           data={data}
           pagingEnabled
           renderItem={({item, index}) => (
-            <View style={[itemStyle, {width: itemWidth}]}>
+            <View style={[itemStyle, {width: setAsWidth ? itemWidth : 'auto'}]}>
               <Component {...item} index={index} handleNext={handleNext} />
             </View>
           )}

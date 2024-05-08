@@ -153,14 +153,10 @@ class CategoryStore {
 
   categoryPressHandler = ({
     isActionDisabled,
-    isCategoryDetailsVisible,
-    displayName,
     categoryId,
     key,
   }: {
     isActionDisabled?: boolean;
-    isCategoryDetailsVisible: Boolean;
-    displayName: string;
     categoryId: string;
     key: CategoryKey;
   }) => {
@@ -176,16 +172,10 @@ class CategoryStore {
 
       this.getAndSetCategory({id: categoryId});
 
-      if (isCategoryDetailsVisible) {
-        navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {
-          title: displayName,
-        });
-      } else {
-        navigation.navigate(AppRouteNames.SESSIONS, {
-          type: DocumentType.CATEGORY,
-          id: categoryId,
-        });
-      }
+      navigation.navigate(AppRouteNames.SESSIONS, {
+        type: DocumentType.CATEGORY,
+        id: categoryId,
+      });
     } catch (e) {
       errorHandler({error: e});
     }

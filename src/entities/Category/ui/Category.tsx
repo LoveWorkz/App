@@ -32,7 +32,6 @@ interface CategoryProps {
   size?: CateorySize;
   isBlocked: boolean;
   id: string;
-  isCategoryDetailsVisible: boolean;
   displayName: DisplayText;
   isLoading?: boolean;
   isActionDisabled?: MutableRefObject<boolean>;
@@ -52,7 +51,6 @@ const Category = (props: CategoryProps) => {
     size = CateorySize.L,
     isBlocked,
     id,
-    isCategoryDetailsVisible,
     style,
     displayName,
     isLoading,
@@ -89,9 +87,7 @@ const Category = (props: CategoryProps) => {
     }
 
     categoryStore.categoryPressHandler({
-      displayName: displayName[language],
       categoryId: id,
-      isCategoryDetailsVisible,
       key: name,
     });
   };
