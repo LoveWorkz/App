@@ -15,6 +15,8 @@ import {
 import {Button} from '@src/shared/ui/Button/Button';
 import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 interface Carouseltemrops {
   image: CategoryImageType;
@@ -22,15 +24,24 @@ interface Carouseltemrops {
   sessionsCount: number;
   currentSessionNumber: number;
   isFavorite: boolean;
+  id: string;
 }
 
 const Carouseltem = (props: Carouseltemrops) => {
-  const {image, displayName, sessionsCount, currentSessionNumber, isFavorite} =
-    props;
+  const {
+    image,
+    displayName,
+    sessionsCount,
+    currentSessionNumber,
+    isFavorite,
+    id,
+  } = props;
   const colors = useColors();
   const language = useLanguage();
 
-  const onPressHandler = () => {};
+  const onPressHandler = () => {
+    navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {id});
+  };
 
   const source = useMemo(() => {
     return {uri: image.large};

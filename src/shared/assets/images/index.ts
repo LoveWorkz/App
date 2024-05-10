@@ -120,3 +120,5 @@ export {default as outlineStar} from './outlineStar.png';
 
 export {default as preSession} from './preSession.png';
 export {default as ArranKennedy} from './ArranKennedy.png';
+
+export {default as quadrantBg} from './quadrantBg.png';

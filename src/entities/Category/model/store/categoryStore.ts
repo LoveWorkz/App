@@ -360,8 +360,12 @@ class CategoryStore {
   };
 
   getLevelNumberById = (levels: CategoryType[], id: string) => {
+    return this.getLevelIndexById(levels, id) + 1;
+  };
+
+  getLevelIndexById = (levels: CategoryType[], id: string) => {
     const levelNumber = levels.findIndex(level => level.id === id);
-    return levelNumber === -1 ? 1 : levelNumber + 1;
+    return levelNumber === -1 ? 0 : levelNumber;
   };
 
   isLastLevel = (categoryKey: CategoryKey) => {

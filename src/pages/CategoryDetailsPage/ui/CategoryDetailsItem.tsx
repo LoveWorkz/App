@@ -26,10 +26,11 @@ interface CategoryDetailsItemProps {
   levelName: CategoryKey;
   displayName: DisplayText;
   image: CategoryImageType;
+  isBlocked: boolean;
 }
 
 const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
-  const {levelName, displayName, image} = props;
+  const {levelName, displayName, image, isBlocked} = props;
 
   const colors = useColors();
   const language = useLanguage();
@@ -45,18 +46,19 @@ const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
 
   return (
     <FastImage style={styles.image} source={uri}>
-      {isContentLocked && (
-        <>
-          <View style={[styles.layout, {backgroundColor: '#6C5DAE'}]} />
-          <View style={[styles.lockIconWrapper]}>
-            <SvgXml
-              xml={LockIconWithoutStyle}
-              fill={colors.white}
-              style={styles.lockIcon}
-            />
-          </View>
-        </>
-      )}
+      {isContentLocked ||
+        (isBlocked && (
+          <>
+            <View style={[styles.layout, {backgroundColor: '#6C5DAE'}]} />
+            <View style={[styles.lockIconWrapper]}>
+              <SvgXml
+                xml={LockIconWithoutStyle}
+                fill={colors.white}
+                style={styles.lockIcon}
+              />
+            </View>
+          </>
+        ))}
       <View style={styles.imageContent}>
         <AppText
           style={{color: colors.white}}

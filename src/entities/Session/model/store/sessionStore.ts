@@ -814,6 +814,11 @@ class SessionStore {
       this.setSession({...currentSession, [fieldName]: fieldValue});
     }
   };
+
+  getQuadrantIndexById = (quadrants: QuadrantType[], id: string) => {
+    const quadrantNumber = quadrants.findIndex(quadrant => quadrant.id === id);
+    return quadrantNumber === -1 ? 0 : quadrantNumber;
+  };
 }
 
 export default new SessionStore();

@@ -1,0 +1,1 @@
+export const QUADRANT_DETAILS_CONTENT_TOP = -100;

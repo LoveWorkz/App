@@ -9,6 +9,7 @@ export {
   userSession,
   sessionsCountWithSubscription,
   EventEndType,
+  getQuadrantsImageUrls,
 } from './model/lib/sessionLib';
 export {default as PresSessionModal} from './ui/PreSessionModal/PreSessionModal';
 export {default as SessionOverview} from './ui/SessionOverview/SessionOverview';

@@ -78,6 +78,19 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (typeof initialIndex !== 'undefined') {
+        slidesRef.current?.scrollToIndex({
+          animated: false,
+          index: initialIndex,
+        });
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [initialIndex]);
+
   return (
     <>
       <View>
@@ -95,7 +108,9 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
       </View>
       <View style={style}>
         <FlatList
-          onScrollToIndexFailed={() => {}}
+          onScrollToIndexFailed={e => {
+            console.log('scrolling error', e);
+          }}
           contentContainerStyle={contentContainerStyle}
           horizontal
           initialScrollIndex={initialIndex}

@@ -41,7 +41,7 @@ export enum EventEndType {
   QUADRANTS_END = 'quadrantEnd',
 }
 
-export const getQuadrantsFinalImageUrls = (): Record<string, string> => {
+export const getQuadrantsImageUrls = (): Record<string, string> => {
   return {
     quadrant1:
       'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/quadrants%2FPersonal_Growth.png?alt=media&token=b65a139b-add6-412c-98aa-1821015d9795',

@@ -6,8 +6,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {getQuadrantsFinalImageUrls} from '@src/entities/Session/model/lib/sessionLib';
-import {sessionStore} from '@src/entities/Session';
+import {getQuadrantsImageUrls, sessionStore} from '@src/entities/Session';
 import CompletionItem from './CompletionItem';
 import completionPageStore from '../model/store/completionPageStore';
 
@@ -35,7 +34,7 @@ const QuadrantCompletionPage = () => {
         setValue,
         value: ratingResults[item.pagekey],
         image: currentQuadrant
-          ? getQuadrantsFinalImageUrls()[currentQuadrant.id]
+          ? getQuadrantsImageUrls()[currentQuadrant.id]
           : item.image,
         isSending,
         isQuadrant: true,

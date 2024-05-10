@@ -42,6 +42,7 @@ import {
   CompletionPage,
   QuadrantCompletionPage,
 } from '@src/pages/CompletionPage';
+import {QuadrantDetailsPage} from '@src/pages/QuadrantDetailsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -79,6 +80,7 @@ export enum AppRouteNames {
   SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
   COMPLETION = 'completion',
   QUADRANT_COMPLETION = 'quadrantCompletion',
+  QUADRANT_DETAILS = 'quadrantDetails',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -113,6 +115,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
   [AppRouteNames.COMPLETION]: 'completion',
   [AppRouteNames.QUADRANT_COMPLETION]: 'quadrantCompletion',
+  [AppRouteNames.QUADRANT_DETAILS]: 'quadrantDetails',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -540,6 +543,20 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
           deleteGlobalPadding
           bgColor="secondaryBackground">
           <QuadrantCompletionPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.QUADRANT_DETAILS]: {
+    name: appRoutePaths.quadrantDetails,
+    headerShown: false,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling
+          deleteGlobalPadding
+        >
+          <QuadrantDetailsPage {...props} />
         </Layout>
       );
     },

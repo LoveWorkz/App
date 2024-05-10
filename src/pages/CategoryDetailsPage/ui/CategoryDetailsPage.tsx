@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
@@ -15,7 +15,7 @@ import {
   globalPadding,
   windowHeightMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
-import {CategoryType} from '@src/entities/Category';
+import {categoryStore, CategoryType} from '@src/entities/Category';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
@@ -24,19 +24,38 @@ import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import CategoryDetailsItem from './CategoryDetailsItem';
 
-export const CategoryDetailsPage = () => {
+interface CategoryDetailsPageProps {
+  route?: {
+    params: {
+      id: string;
+    };
+  };
+}
+
+const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
+  const {route} = props;
+
   const colors = useColors();
   const {theme} = useTheme();
   const statusBarHeight = getStatusBarHeight();
   const navbarHeaderHeight = useHeaderHeight();
   const language = useLanguage();
 
+  const levelId = route?.params?.id;
   const levels = categoriesStore.categories;
   const [currentLevel, setCurrentLevel] = useState<CategoryType>(levels[0]);
 
   const navbarHeight = isPlatformIos
     ? navbarHeaderHeight
     : navbarHeaderHeight + statusBarHeight;
+
+  const levelNumber = useMemo(() => {
+    if (!levelId) {
+      return 0;
+    }
+
+    return categoryStore.getLevelIndexById(levels, levelId);
+  }, [levels, levelId]);
 
   const swipeHandler = useCallback((level: CategoryType) => {
     setCurrentLevel(level);
@@ -53,6 +72,7 @@ export const CategoryDetailsPage = () => {
         },
       ]}>
       <Carousel
+        initialIndex={levelNumber}
         onSwipeHandler={swipeHandler}
         itemWidth={horizontalScale(333)}
         setAsWidth={false}

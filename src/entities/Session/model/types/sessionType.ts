@@ -31,6 +31,7 @@ export interface QuadrantType {
   step: DisplayText;
   displayName: DisplayText;
   description: DisplayText;
+  largeDescription: DisplayText;
   sessions: SessionType[];
   isBlocked: boolean;
   isPremium: boolean;

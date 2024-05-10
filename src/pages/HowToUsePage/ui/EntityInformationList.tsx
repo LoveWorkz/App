@@ -2,15 +2,17 @@ import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import ListItem from './Helpers/ListItem';
 
 const EntityInformationList = () => {
   const onLevelPressHandler = useCallback(() => {
-    // navigation.navigate()
+    navigation.navigate(AppRouteNames.CATEGORY_DETAILS);
   }, []);
 
   const onQuadrantPressHandler = useCallback(() => {
-    // navigation.navigate()
+    navigation.navigate(AppRouteNames.QUADRANT_DETAILS);
   }, []);
 
   return (

@@ -14,6 +14,8 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {QuadrantType} from '../model/types/sessionType';
 
@@ -33,7 +35,9 @@ const Quadrant = (props: QuadrantProps) => {
 
   const bgColor = isPremium ? colors.disabledSessionColor : colors.lilacBreeze;
 
-  const onPressHandler = () => {};
+  const onPressHandler = () => {
+    navigation.navigate(AppRouteNames.QUADRANT_DETAILS, {id: quadrant.id});
+  };
 
   return (
     <View style={[styles.Quadrant, {backgroundColor: bgColor}]}>
