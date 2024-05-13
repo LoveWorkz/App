@@ -2,14 +2,9 @@ import React, {memo} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 
-import {
-  AppText,
-  TextSize,
-  TextWeight,
-  TextType,
-  AlignType,
-} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
 import {StyleType} from '@src/shared/types/types';
+import {AlignType, TextWeight} from '@src/shared/types/textTypes';
 
 interface GradientTextProps {
   text: string;

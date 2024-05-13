@@ -9,7 +9,11 @@ import {
   SubscriptionType,
 } from '@src/entities/SubscriptionBlock';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {monthlyToWeekly, threeMonthsToWeekly, yearlyToWeekly} from '@src/shared/lib/common';
+import {
+  monthlyToWeekly,
+  threeMonthsToWeekly,
+  yearlyToWeekly,
+} from '@src/shared/lib/common';
 
 interface SubscriptionMethodsProps {
   formattedProducts: FormattedProductType;

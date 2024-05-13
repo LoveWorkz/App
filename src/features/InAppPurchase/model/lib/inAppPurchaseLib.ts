@@ -117,7 +117,7 @@ const getAndroidMainProductInfo = (
     product.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0]
       .formattedPrice;
 
-  const {currency, price} = extractCurrencyAndPrice(localisedPrice);    
+  const {currency, price} = extractCurrencyAndPrice(localisedPrice);
 
   return {
     productId: product.productId,
@@ -133,8 +133,8 @@ const getIosMainProductInfo = (
 ): FormattedProductValueType => {
   const localisedPrice = product.localizedPrice;
 
-  const {currency, price} = extractCurrencyAndPrice(localisedPrice); 
-  
+  const {currency, price} = extractCurrencyAndPrice(localisedPrice);
+
   return {
     productId: product.productId,
     localisedPrice,

@@ -10,7 +10,7 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
 import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {onboardingBg} from '@src/shared/assets/images';
+import {gradientBg} from '@src/shared/assets/images';
 import {notificationsImage} from '@src/shared/assets/images';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -40,7 +40,7 @@ const OnboardingNotificationsPage = () => {
   return (
     <View style={styles.OnboardingNotificationsPage}>
       <OnboardingContainer
-        bgImage={onboardingBg}
+        bgImage={gradientBg}
         imageChildren={image}
         isNotification>
         <View style={styles.contentWrapper}>

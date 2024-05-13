@@ -201,11 +201,11 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.ABOUT]: {
     name: appRoutePaths.about,
-    headerShown: true,
+    headerShown: false,
     headerTitle: 'settings.about',
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout deleteTopPadding deleteGlobalPadding deleteBottomPadding>
           <AboutPage {...props} />
         </Layout>
       );

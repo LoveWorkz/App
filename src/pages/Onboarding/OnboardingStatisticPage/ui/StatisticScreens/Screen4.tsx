@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 
-import {onboardingBg, statisticImage3} from '@src/shared/assets/images';
+import {gradientBg, AppIconImg} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
@@ -24,11 +24,7 @@ const Screen4 = () => {
 
   const image = (
     <View style={styles.topPart}>
-      <FastImage
-        resizeMode="contain"
-        source={statisticImage3}
-        style={styles.img}
-      />
+      <FastImage resizeMode="contain" source={AppIconImg} style={styles.img} />
       <AppText
         style={[styles.title, {color: colors.white}]}
         size={TextSize.LEVEL_6}
@@ -41,7 +37,7 @@ const Screen4 = () => {
 
   return (
     <View>
-      <OnboardingContainer bgImage={onboardingBg} imageChildren={image}>
+      <OnboardingContainer bgImage={gradientBg} imageChildren={image}>
         <View style={styles.contentWrapper}>
           <GradientText
             size={TextSize.LEVEL_7}

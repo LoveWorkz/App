@@ -10,6 +10,11 @@ import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {moderateScale} from '@src/shared/lib/Metrics';
+import {
+  AlignType,
+  EllipsizeMode,
+  TextWeight,
+} from '@src/shared/types/textTypes';
 
 export enum TextSize {
   LEVEL_1 = 'size_1',
@@ -26,26 +31,10 @@ export enum TextSize {
   SIZE_32 = 'size_32',
 }
 
-type EllipsizeMode = 'head' | 'middle' | 'tail' | 'clip' | undefined;
-
-export type TextWeight =
-  | '100'
-  | '200'
-  | '300'
-  | '400'
-  | '500'
-  | '600'
-  | '700'
-  | '800'
-  | '900'
-  | 'normal'
-  | 'bold';
-
 export enum TextType {
   PRIMARY = 'primary',
   ERROR = 'error',
 }
-export type AlignType = 'left' | 'right' | 'center' | 'justify';
 
 interface AppTextProps {
   text: string;

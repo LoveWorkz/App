@@ -103,31 +103,30 @@ export const yearlyToWeekly = (cost: number) => {
   return (cost / weeksInYear).toFixed(2);
 };
 
-
 export const extractCurrencyAndPrice = (formattedPrice: string) => {
-// Check if input is empty or undefined
-if (!formattedPrice) {
-  return { currency: undefined, price: undefined };
-}
+  // Check if input is empty or undefined
+  if (!formattedPrice) {
+    return {currency: undefined, price: undefined};
+  }
 
-// Regex to extract potential currency symbols followed by numbers
-const regex = /^([^\d]+)?(\d+(?:[,.]\d{2})?)$/;
-const match = formattedPrice.match(regex);
+  // Regex to extract potential currency symbols followed by numbers
+  const regex = /^([^\d]+)?(\d+(?:[,.]\d{2})?)$/;
+  const match = formattedPrice.match(regex);
 
-if (match) {
-  const currency = match[1] ? match[1].trim() : undefined;
-  let price = match[2];
-  
-  if (price) {
+  if (match) {
+    const currency = match[1] ? match[1].trim() : undefined;
+    let price = match[2];
+
+    if (price) {
       // Normalize decimal separator: replace comma only if it acts as a decimal separator
       price = price.replace(/,/g, '.');
       return {
-          currency,
-          price: parseFloat(price)
+        currency,
+        price: parseFloat(price),
       };
+    }
   }
-}
 
-// Return undefined if the regex does not match or if parts are missing
-return { currency: undefined, price: undefined };
-}
+  // Return undefined if the regex does not match or if parts are missing
+  return {currency: undefined, price: undefined};
+};
