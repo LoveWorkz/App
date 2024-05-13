@@ -138,7 +138,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
         <AppText
           size={TextSize.LEVEL_1}
           weight={'600'}
-          style={[styles.description, {color: colors.primaryTextColor}]}
+          style={styles.description}
           text={
             'Paired subscription automatically renews unless auto-renew is turned off at least 24 hours before current period ends. Payment is charged to your Apple ID. Manage subscriptions and turn off auto-renew in Account Settings.'
           }
@@ -160,7 +160,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
         <AppText
           size={TextSize.LEVEL_4}
           weight={'600'}
-          style={[styles.startForFree, {color: colors.primaryTextColor}]}
+          style={styles.startForFree}
           text={'Start for free'}
           lineHeight={20}
         />

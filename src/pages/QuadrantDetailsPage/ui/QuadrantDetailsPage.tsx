@@ -65,7 +65,10 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
       <Button style={styles.iconBtn} onPress={onPressHandler}>
         <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
       </Button>
-      <FastImage style={styles.bgImage} source={quadrantBg} resizeMode="stretch">
+      <FastImage
+        style={styles.bgImage}
+        source={quadrantBg}
+        resizeMode="stretch">
         <Carousel
           initialIndex={quadrantNumber}
           onSwipeHandler={swipeHandler}

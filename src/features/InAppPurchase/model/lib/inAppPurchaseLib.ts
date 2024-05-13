@@ -3,7 +3,7 @@ import {Platform} from 'react-native';
 
 import {FormattedProductValueType} from '@src/entities/SubscriptionBlock';
 import {isPlatformIos} from '@src/shared/consts/common';
-import {normaliseData} from '@src/shared/lib/common';
+import {extractCurrencyAndPrice, normaliseData} from '@src/shared/lib/common';
 import {
   SubscriptionIdsKey,
   SubscriptionIdsType,
@@ -117,10 +117,14 @@ const getAndroidMainProductInfo = (
     product.subscriptionOfferDetails[0].pricingPhases.pricingPhaseList[0]
       .formattedPrice;
 
+  const {currency, price} = extractCurrencyAndPrice(localisedPrice);    
+
   return {
     productId: product.productId,
     localisedPrice,
     offerToken,
+    price: price ? `${price}` : '',
+    currency: currency || '',
   };
 };
 
@@ -129,8 +133,12 @@ const getIosMainProductInfo = (
 ): FormattedProductValueType => {
   const localisedPrice = product.localizedPrice;
 
+  const {currency, price} = extractCurrencyAndPrice(localisedPrice); 
+  
   return {
     productId: product.productId,
     localisedPrice,
+    price: price ? `${price}` : '',
+    currency: currency || '',
   };
 };

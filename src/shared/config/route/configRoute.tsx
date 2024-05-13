@@ -552,10 +552,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: false,
     Element: (props: ParamListBase) => {
       return (
-        <Layout
-          isPageScrolling
-          deleteGlobalPadding
-        >
+        <Layout isPageScrolling deleteGlobalPadding>
           <QuadrantDetailsPage {...props} />
         </Layout>
       );

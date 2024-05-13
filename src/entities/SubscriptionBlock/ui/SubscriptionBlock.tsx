@@ -37,8 +37,14 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
   const colors = useColors();
   const {theme} = useTheme();
 
-  const {description, duration, cost, promoCost, subscriptionType} =
-    subscriptionBlockContent;
+  const {
+    description,
+    duration,
+    cost,
+    promoCost,
+    subscriptionType,
+    perWeekCost,
+  } = subscriptionBlockContent;
 
   const isActive = subscriptionType === chosenSubscriptionType;
   const isYearly = SubscriptionType.YEARLY === subscriptionType;
@@ -121,7 +127,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
               <AppText
                 style={[styles.perWeekCost, {color: textColor}]}
                 size={TextSize.LEVEL_3}
-                text={'1,33 $'}
+                text={perWeekCost}
                 weight={'500'}
               />
               <AppText

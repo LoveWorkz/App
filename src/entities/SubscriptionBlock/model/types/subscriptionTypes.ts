@@ -7,6 +7,8 @@ export enum SubscriptionType {
 export interface FormattedProductValueType {
   productId: string;
   localisedPrice: string;
+  price: string;
+  currency: string;
   offerToken?: string;
 }
 
@@ -26,4 +28,5 @@ export interface SubscriptionBlockContentType {
   cost: string;
   promoCost: string;
   subscriptionType: SubscriptionType;
+  perWeekCost: string;
 }

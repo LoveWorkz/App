@@ -9,6 +9,7 @@ import {
   SubscriptionType,
 } from '@src/entities/SubscriptionBlock';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {monthlyToWeekly, threeMonthsToWeekly, yearlyToWeekly} from '@src/shared/lib/common';
 
 interface SubscriptionMethodsProps {
   formattedProducts: FormattedProductType;
@@ -43,6 +44,11 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
         duration: `12 ${t('months')}`,
         description: t('shop.yearly_description'),
         subscriptionType: SubscriptionType.YEARLY,
+        perWeekCost: `${yearlyToWeekly(
+          +(isPromo
+            ? formattedProducts.formattedYearlyPromo.price
+            : formattedProducts.formattedYearly.price),
+        )} ${formattedProducts.formattedYearly.currency}`,
       },
       {
         cost: formattedQuarterlyPrice,
@@ -50,6 +56,11 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
         duration: `3 ${t('months')}`,
         description: t('shop.quarterly_description'),
         subscriptionType: SubscriptionType.QUARTERLY,
+        perWeekCost: `${threeMonthsToWeekly(
+          +(isPromo
+            ? formattedProducts.formattedQuarterlyPromo.price
+            : formattedProducts.formattedQuarterly.price),
+        )} ${formattedProducts.formattedQuarterly.currency}`,
       },
       {
         cost: formattedMonthlyPrice,
@@ -57,6 +68,11 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
         duration: `1 ${t('month')}`,
         description: t('shop.monthly_description'),
         subscriptionType: SubscriptionType.MONTHLY,
+        perWeekCost: `${monthlyToWeekly(
+          +(isPromo
+            ? formattedProducts.formattedMonthlyPromo.price
+            : formattedProducts.formattedMonthly.price),
+        )} ${formattedProducts.formattedMonthly.currency}`,
       },
     ];
   }, [
@@ -66,6 +82,8 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
     formattedMonthlyPromoPrice,
     formattedQuarterlyPrice,
     formattedQuarterlyPromoPrice,
+    isPromo,
+    formattedProducts,
   ]);
 
   return (
