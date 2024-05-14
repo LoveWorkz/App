@@ -276,8 +276,9 @@ class CategoryStore {
     try {
       const hasUserSubscription = userStore.getUserHasSubscription();
       const isStarter = categoryKey === CategoryKey.Starter;
+      const isHowToUse = categoryKey === CategoryKey.How_To_Use;
 
-      if (isStarter) {
+      if (isStarter || isHowToUse) {
         return false;
       }
 

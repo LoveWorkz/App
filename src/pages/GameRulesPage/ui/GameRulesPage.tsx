@@ -52,36 +52,43 @@ const GameRulesPage = () => {
             <TextSection title={title1} paragraph={descriptions1} />
           </View>
           <View style={styles.item}>
-            <AppText
-              lineHeight={25}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Step 1:'}
-            />
+            <View style={styles.step}>
+              <AppText
+                lineHeight={25}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Step 1:'}
+              />
+            </View>
             <TextSection
               title={'Create Your Ritual'}
               paragraph={descriptions2}
             />
           </View>
           <View style={styles.item}>
-            <AppText
-              lineHeight={25}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Step 2:'}
-            />
+            <View style={styles.step}>
+              <AppText
+                lineHeight={25}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Step 2:'}
+              />
+            </View>
             <TextSection
               title={'Create a Comfortable Space'}
               paragraph={descriptions3}
             />
           </View>
           <View style={styles.item}>
-            <AppText
-              lineHeight={25}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Step 3:'}
-            />
+            <View style={styles.step}>
+              <AppText
+                lineHeight={25}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Step 3:'}
+              />
+            </View>
+
             <TextSection
               title={'Dive into the App Together'}
               paragraph={descriptions4}
@@ -89,12 +96,15 @@ const GameRulesPage = () => {
           </View>
 
           <View style={styles.item}>
-            <AppText
-              lineHeight={25}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Step 4:'}
-            />
+            <View style={styles.step}>
+              <AppText
+                lineHeight={25}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Step 4:'}
+              />
+            </View>
+
             <View style={styles.title}>
               <AppText
                 size={TextSize.SIZE_24}
@@ -105,12 +115,15 @@ const GameRulesPage = () => {
             <List />
           </View>
           <View style={styles.item}>
-            <AppText
-              lineHeight={25}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Step 5:'}
-            />
+            <View style={styles.step}>
+              <AppText
+                lineHeight={25}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Step 5:'}
+              />
+            </View>
+
             <TextSection title={'Reflect Together'} paragraph={descriptions5} />
           </View>
           <View style={styles.item}>
@@ -164,5 +177,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: verticalScale(25),
+  },
+  step: {
+    marginBottom: verticalScale(5),
   },
 });

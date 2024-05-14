@@ -13,6 +13,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
+import { globalPadding } from '@src/app/styles/GlobalStyle';
 import BooksStore from '../../model/store/BooksStore';
 
 interface RecommendedBooksProps {
@@ -67,6 +68,7 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
           withPagination={!isLoading}
           mode={'multiple'}
           carouselHeight={240}
+          paginationStyle={styles.paginationStyle}
           Component={(param: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(param.id)}>
               <BookPreview isLoading={isLoading} {...param} />
@@ -90,4 +92,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     marginBottom: -40,
   },
+  paginationStyle: {
+    left: globalPadding,
+  }
 });

@@ -68,7 +68,7 @@ const Screen4 = () => {
 
 export default memo(Screen4);
 
-const bottom = isPlatformIos ? '-16%' : verticalScale(-120);
+const bottom = isPlatformIos ? '-20%' : verticalScale(-120);
 
 const styles = StyleSheet.create({
   topPart: {

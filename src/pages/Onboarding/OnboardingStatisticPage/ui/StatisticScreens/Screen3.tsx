@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
     top: verticalScale(-20),
   },
   carouselWrapper: {
-    top: verticalScale(110),
+    top: verticalScale(130),
   },
   paginationStyle: {
-    top: verticalScale(25),
+    top: verticalScale(15),
     width: '100%',
     justifyContent: 'center',
   },

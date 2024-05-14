@@ -7,8 +7,8 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {StyleType} from '@src/shared/types/types';
-import Pagination from './Pagination';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
+import Pagination from './Pagination';
 
 type ItemType = Record<string, any>;
 
@@ -171,7 +171,6 @@ const paginStyle: Record<string, string> = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

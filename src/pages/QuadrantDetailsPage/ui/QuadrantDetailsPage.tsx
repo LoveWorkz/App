@@ -20,6 +20,7 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {QUADRANT_DETAILS_CONTENT_TOP} from '../model/lib/QuadrantDetailsPageLib';
 import QuadrantDetailsItem from './QuadrantDetailsItem';
 
@@ -61,34 +62,38 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
   };
 
   return (
-    <View style={styles.wrapper}>
+    <View>
       <Button style={styles.iconBtn} onPress={onPressHandler}>
         <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
       </Button>
-      <FastImage
-        style={styles.bgImage}
-        source={quadrantBg}
-        resizeMode="stretch">
-        <Carousel
-          initialIndex={quadrantNumber}
-          onSwipeHandler={swipeHandler}
-          itemWidth={windowWidth}
-          setAsWidth={false}
-          isBottomPagination
-          data={quadrants}
-          Component={QuadrantDetailsItem}
-          paginationStyle={styles.paginationStyle}
-          isSmallDotPagination={false}
-          paginationColor={colors.white}
-        />
-      </FastImage>
-      <View style={styles.descriptionWrapper}>
-        <AppText
-          size={TextSize.LEVEL_5}
-          weight="500"
-          text={currentQuadrant.largeDescription[language]}
-        />
-      </View>
+      <ScrollViewWithoutIndicator>
+        <View style={styles.wrapper}>
+          <FastImage
+            style={styles.bgImage}
+            source={quadrantBg}
+            resizeMode="stretch">
+            <Carousel
+              initialIndex={quadrantNumber}
+              onSwipeHandler={swipeHandler}
+              itemWidth={windowWidth}
+              setAsWidth={false}
+              isBottomPagination
+              data={quadrants}
+              Component={QuadrantDetailsItem}
+              paginationStyle={styles.paginationStyle}
+              isSmallDotPagination={false}
+              paginationColor={colors.white}
+            />
+          </FastImage>
+          <View style={styles.descriptionWrapper}>
+            <AppText
+              size={TextSize.LEVEL_5}
+              weight="500"
+              text={currentQuadrant.largeDescription[language]}
+            />
+          </View>
+        </View>
+      </ScrollViewWithoutIndicator>
     </View>
   );
 };
@@ -97,14 +102,13 @@ export default memo(observer(QuadrantDetailsPage));
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingBottom: 20,
+    paddingBottom: 50,
   },
   bgImage: {
-    top: -20,
     height: 800,
     width: windowWidth,
     overflow: 'visible',
-    marginBottom: -260,
+    marginBottom: -235,
   },
   descriptionWrapper: {
     paddingHorizontal: globalPadding,
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
   iconBtn: {
     position: 'absolute',
     left: globalPadding,
-    top: verticalScale(isPlatformIos ? 35 : 0),
+    top: verticalScale(isPlatformIos ? 55 : 20),
     ...globalStyles.zIndex_1,
   },
   icon: {

@@ -90,6 +90,7 @@ interface StarRatingsProps {
   prefix?: string;
   postfix?: string;
   onRate?: (value: number) => void;
+  isCentred?: boolean;
 }
 
 export const StarRatings = memo((props: StarRatingsProps) => {
@@ -102,6 +103,7 @@ export const StarRatings = memo((props: StarRatingsProps) => {
     prefix,
     postfix,
     onRate,
+    isCentred = true,
   } = props;
 
   const arrayFromNumber = Array.from({length: size}, (_, index) => index + 1);
@@ -117,7 +119,7 @@ export const StarRatings = memo((props: StarRatingsProps) => {
   };
 
   return (
-    <View style={styles.Stars}>
+    <View style={[styles.Stars, {justifyContent: isCentred ? 'center' : 'flex-start'}]}>
       {arrayFromNumber.map((_, index) => {
         return renderStar({
           index,
@@ -139,7 +141,6 @@ export const StarRatings = memo((props: StarRatingsProps) => {
 const styles = StyleSheet.create({
   Stars: {
     flexDirection: 'row',
-    justifyContent: 'center',
   },
   text: {
     marginTop: verticalScale(10),
