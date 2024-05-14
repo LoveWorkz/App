@@ -4,7 +4,7 @@ import {StyleSheet, View} from 'react-native';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import ListItem from './Helpers/ListItem';
+import {TextListItem} from '@src/shared/ui/TextListItem/TextListItem';
 
 const EntityInformationList = () => {
   const onLevelPressHandler = useCallback(() => {
@@ -18,7 +18,8 @@ const EntityInformationList = () => {
   return (
     <View style={styles.List}>
       <View style={styles.listItem}>
-        <ListItem
+        <TextListItem
+          hideButton={false}
           onPress={onLevelPressHandler}
           prefix={'Levels:'}
           text={
@@ -27,7 +28,8 @@ const EntityInformationList = () => {
         />
       </View>
       <View style={styles.listItem}>
-        <ListItem
+        <TextListItem
+          hideButton={false}
           onPress={onQuadrantPressHandler}
           prefix={'Quadrants:'}
           text={
@@ -35,8 +37,7 @@ const EntityInformationList = () => {
           }
         />
       </View>
-      <ListItem
-        hideButton
+      <TextListItem
         prefix={'Sessions:'}
         text={
           'Every quadrant consists of 4- 5 sessions, each containing 14 carefully selected questions from over 35 relevant topics, ensuring a comprehensive exploration of each area. The sessions are designed to progressively tackle important relationship themes, facilitating deep discussions and reflections.'

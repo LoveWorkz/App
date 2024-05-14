@@ -9,6 +9,7 @@ import {getOurSpecialistIcon} from '@src/shared/assets/icons/OurSpecialist';
 import {InstagramIcon} from '@src/shared/assets/icons/Instagram';
 import {HomeIconOutline} from '@src/shared/assets/icons/Home';
 import {PrivacyPolicyIcon} from '@src/shared/assets/icons/PrivacyPolicy';
+import {GameRulesIcon} from '@src/shared/assets/icons/GameRules';
 import {SettingItemType} from '../types/settingsType';
 
 export const getSubscriptionItems = (t: TFunction): SettingItemType[] => {
@@ -43,6 +44,11 @@ export const getAboutLoveWorkzItems = ({
       Icon: getHowToUseIcon(isDarkMode),
       text: t('settings.how_to_use'),
       path: AppRouteNames.HOW_TO_USE,
+    },
+    {
+      Icon: GameRulesIcon,
+      text: t('settings.game_rules'),
+      path: AppRouteNames.GAME_RULES,
     },
     {
       Icon: getOurSpecialistIcon(isDarkMode),

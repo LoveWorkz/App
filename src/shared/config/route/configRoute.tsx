@@ -43,6 +43,7 @@ import {
   QuadrantCompletionPage,
 } from '@src/pages/CompletionPage';
 import {QuadrantDetailsPage} from '@src/pages/QuadrantDetailsPage';
+import {GameRulesPage} from '@src/pages/GameRulesPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -81,6 +82,7 @@ export enum AppRouteNames {
   COMPLETION = 'completion',
   QUADRANT_COMPLETION = 'quadrantCompletion',
   QUADRANT_DETAILS = 'quadrantDetails',
+  GAME_RULES = 'gameRules',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -116,6 +118,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.COMPLETION]: 'completion',
   [AppRouteNames.QUADRANT_COMPLETION]: 'quadrantCompletion',
   [AppRouteNames.QUADRANT_DETAILS]: 'quadrantDetails',
+  [AppRouteNames.GAME_RULES]: 'gameRules',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -554,6 +557,17 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout isPageScrolling deleteGlobalPadding>
           <QuadrantDetailsPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.GAME_RULES]: {
+    name: appRoutePaths.gameRules,
+    headerShown: false,
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout deleteGlobalPadding deleteTopPadding>
+          <GameRulesPage {...props} />
         </Layout>
       );
     },

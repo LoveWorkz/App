@@ -68,7 +68,7 @@ const HowToUsePage = () => {
 
 export default memo(HowToUsePage);
 
-const top = verticalScale(-120);
+const top = -120;
 
 const styles = StyleSheet.create({
   howToUse: {

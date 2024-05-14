@@ -28,7 +28,7 @@ interface CarouselProps<T = Record<string, string | number>> {
   setAsWidth?: boolean;
 }
 
-export const Carousel = <T = {},>(props: CarouselProps<T>) => {
+export const Carousel = <T = {}>(props: CarouselProps<T>) => {
   const {
     Component,
     data,

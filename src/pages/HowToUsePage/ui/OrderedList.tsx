@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
-import ListItem from './Helpers/ListItem';
+import {TextListItem} from '@src/shared/ui/TextListItem/TextListItem';
 
 const OrderedList = () => {
   return (
@@ -17,8 +17,7 @@ const OrderedList = () => {
       </View>
       <View style={styles.List}>
         <View style={styles.item}>
-          <ListItem
-            hideButton
+          <TextListItem
             number={1}
             prefix={'Start with The Journey:'}
             text={
@@ -27,8 +26,7 @@ const OrderedList = () => {
           />
         </View>
         <View style={styles.item}>
-          <ListItem
-            hideButton
+          <TextListItem
             number={2}
             prefix={'Engage with Challenges:'}
             text={
@@ -37,8 +35,7 @@ const OrderedList = () => {
           />
         </View>
         <View style={styles.item}>
-          <ListItem
-            hideButton
+          <TextListItem
             number={3}
             prefix={'Explore Independently:'}
             text={
@@ -46,8 +43,7 @@ const OrderedList = () => {
             }
           />
         </View>
-        <ListItem
-          hideButton
+        <TextListItem
           number={4}
           prefix={'Maintain a Positive Outlook:'}
           text={

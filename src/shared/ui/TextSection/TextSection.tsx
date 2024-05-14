@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {TextWeight} from '@src/shared/types/textTypes';
+import {StyleType} from '@src/shared/types/types';
 import {AppText, TextSize} from '../AppText/AppText';
 
 export interface TextSectionType {
@@ -10,8 +11,13 @@ export interface TextSectionType {
   textWeight?: TextWeight;
 }
 
+interface Title {
+  text: string;
+  style: StyleType;
+}
+
 interface TextSectionProps {
-  title?: string;
+  title?: string | Title;
   paragraph: TextSectionType | TextSectionType[];
 }
 
@@ -46,7 +52,16 @@ export const TextSection = memo((props: TextSectionProps) => {
     <>
       {title && (
         <View style={styles.title}>
-          <AppText size={TextSize.SIZE_24} weight="700" text={title} />
+          {typeof title === 'string' ? (
+            <AppText size={TextSize.SIZE_24} weight="700" text={title} />
+          ) : (
+            <AppText
+              size={TextSize.SIZE_24}
+              weight="700"
+              text={title.text}
+              style={title.style}
+            />
+          )}
         </View>
       )}
       {content}

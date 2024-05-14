@@ -73,6 +73,7 @@ const AboutPage = () => {
 export default memo(AboutPage);
 
 const imageHeight = 500;
+const top = isPlatformIos ? -210 : -250;
 
 const styles = StyleSheet.create({
   about: {
@@ -101,8 +102,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: globalPadding,
   },
   content: {
-    top: isPlatformIos ? -210 : -250,
+    top,
     padding: globalPadding,
+    marginBottom: top,
   },
   item: {
     marginBottom: verticalScale(25),

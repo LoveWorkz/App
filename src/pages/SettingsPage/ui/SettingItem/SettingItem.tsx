@@ -43,9 +43,9 @@ const SettingItem = (props: SettingItem) => {
       ]}
       onPress={onPressHandler}>
       <View style={styles.leftSide}>
-        <SvgXml xml={Icon} style={[styles.icon]} />
+        <SvgXml xml={Icon} style={styles.icon} />
         <AppText
-          style={[styles.text, {color: colors.primaryTextColor}]}
+          style={styles.text}
           size={TextSize.LEVEL_4}
           weight={'600'}
           text={text}

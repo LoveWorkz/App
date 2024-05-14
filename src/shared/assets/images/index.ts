@@ -122,3 +122,4 @@ export {default as preSession} from './preSession.png';
 export {default as ArranKennedy} from './ArranKennedy.png';
 
 export {default as quadrantBg} from './quadrantBg.png';
+export {default as gameRulesBg} from './gameRulesBg.png';
