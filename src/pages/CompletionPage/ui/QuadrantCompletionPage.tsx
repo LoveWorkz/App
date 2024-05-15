@@ -6,22 +6,43 @@ import {useFocusEffect} from '@react-navigation/native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {getQuadrantsImageUrls, sessionStore} from '@src/entities/Session';
+import {
+  getQuadrantsImageUrls,
+  QuadrantType,
+  sessionStore,
+} from '@src/entities/Session';
+import {getNextElementById} from '@src/shared/lib/common';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import CompletionItem from './CompletionItem';
 import completionPageStore from '../model/store/completionPageStore';
 
 const QuadrantCompletionPage = () => {
+  const language = useLanguage();
+
   const setRating = completionPageStore.setRating;
 
   const ratingResults = completionPageStore.ratingResults;
   const ratingInformationList = completionPageStore.ratingInformationList;
   const isSending = completionPageStore.isSending;
+  const quadrants = sessionStore.quadrants;
   const currentQuadrant = sessionStore.currentQuadrant;
+  const description = completionPageStore.description;
+
+  const nextQuadrant = useMemo(() => {
+    if (!currentQuadrant) {
+      return currentQuadrant;
+    }
+
+    return getNextElementById<QuadrantType>({
+      id: currentQuadrant.id,
+      array: quadrants,
+    });
+  }, [currentQuadrant, quadrants]);
 
   useFocusEffect(
     useCallback(() => {
-      completionPageStore.init();
-    }, []),
+      completionPageStore.init(language);
+    }, [language]),
   );
 
   const newListWithMetadata = useMemo(() => {
@@ -38,9 +59,19 @@ const QuadrantCompletionPage = () => {
           : item.image,
         isSending,
         isQuadrant: true,
+        nextStep: nextQuadrant?.displayName[language],
+        description: item.description || description,
       };
     });
-  }, [ratingResults, ratingInformationList, isSending, currentQuadrant]);
+  }, [
+    ratingResults,
+    ratingInformationList,
+    isSending,
+    currentQuadrant,
+    nextQuadrant,
+    language,
+    description,
+  ]);
 
   return (
     <View style={styles.QuadrantCompletionPage}>

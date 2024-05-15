@@ -179,7 +179,7 @@ export const Book = (props: BookProps) => {
             text={author}
           />
           <View style={styles.rateWrapper}>
-            <StarRatings count={rate} isCentred={false} readOnly/>
+            <StarRatings count={rate} isCentred={false} readOnly />
           </View>
           <View style={styles.rubrics}>
             {rubrics.map(rubric => {

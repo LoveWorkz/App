@@ -6,22 +6,26 @@ import {useFocusEffect} from '@react-navigation/native';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import {verticalScale} from '@src/shared/lib/Metrics';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {categoryStore, getLevelsFinalImageUrls} from '@src/entities/Category';
 import CompletionItem from './CompletionItem';
 import completionPageStore from '../model/store/completionPageStore';
 
 const CompletionPage = () => {
+  const language = useLanguage();
+
   const setRating = completionPageStore.setRating;
 
   const ratingResults = completionPageStore.ratingResults;
   const ratingInformationList = completionPageStore.ratingInformationList;
   const currentLevel = categoryStore.category;
   const isSending = completionPageStore.isSending;
+  const description = completionPageStore.description;
 
   useFocusEffect(
     useCallback(() => {
-      completionPageStore.init();
-    }, []),
+      completionPageStore.init(language);
+    }, [language]),
   );
 
   const newListWithMetadata = useMemo(() => {
@@ -37,9 +41,16 @@ const CompletionPage = () => {
           ? getLevelsFinalImageUrls()[currentLevel.name]
           : item.image,
         isSending,
+        description: item.description || description,
       };
     });
-  }, [ratingResults, ratingInformationList, currentLevel, isSending]);
+  }, [
+    ratingResults,
+    ratingInformationList,
+    currentLevel,
+    isSending,
+    description,
+  ]);
 
   return (
     <View style={styles.CompletionPage}>

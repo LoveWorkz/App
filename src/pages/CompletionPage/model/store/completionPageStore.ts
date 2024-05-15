@@ -10,9 +10,13 @@ import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter'
 import {EVENT_END_TYPE_KEY} from '@src/shared/consts/storage';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {CategoryKey, categoryStore} from '@src/entities/Category';
 import {RatingKeys, RatingResultsType} from '../types/completionTypes';
 import {
+  getLevelDescription,
+  getQuadrantDescription,
+  getSessionDescription,
   levelRatingInformationList,
   quadrantRatingInformationList,
   sessionRatingList,
@@ -30,6 +34,7 @@ const initialRatingResults: RatingResultsType = {
 class CompletionPageStore {
   ratingResults = initialRatingResults;
   ratingInformationList: RatingInformationItemType[] = [];
+  description: string = '';
 
   isFetching: boolean = true;
   isSending: boolean = false;
@@ -58,16 +63,80 @@ class CompletionPageStore {
     this.ratingInformationList = list;
   };
 
-  init = async () => {
+  setDescription = (description: string) => {
+    this.description = description;
+  };
+
+  init = async (language: LanguageValueType) => {
     try {
       this.setIsFetching(true);
       await this.fetchRatingResults();
       await this.initRatinglist();
+      await this.getAndSetDescription(language);
     } catch (error) {
       errorHandler({error});
     } finally {
       this.setIsFetching(false);
     }
+  };
+
+  getAndSetDescription = async (language: LanguageValueType) => {
+    const eventKey = await this.getEventKey();
+    const {currentLevel, nestLevel} = this.getCurrentAndNextLevels();
+
+    let description;
+
+    switch (eventKey) {
+      case EventEndType.SESSION_END:
+        const currentSession = sessionStore.session;
+        if (currentLevel && currentSession) {
+          const allSessionsCount = sessionStore.getAllSessionsCount();
+          description = getSessionDescription({
+            curreentSessionNumber: currentSession.sessionNumber,
+            allSessionsCount,
+            currentLevelName: currentLevel.displayName[language],
+          });
+        }
+        break;
+      case EventEndType.QUADRANTS_END:
+        const currentQuadrant = sessionStore.currentQuadrant;
+        if (currentQuadrant) {
+          description = getQuadrantDescription(
+            currentQuadrant.displayName[language],
+          );
+        }
+        break;
+      default:
+        if (currentLevel) {
+          description = getLevelDescription({
+            currentLevelName: currentLevel.displayName[language],
+            nextLevelName: nestLevel?.displayName[language],
+          });
+        }
+    }
+    this.setDescription(description || '');
+  };
+
+  getCurrentAndNextLevels = () => {
+    const currentLevel = categoryStore.category;
+    if (!currentLevel) {
+      return {};
+    }
+
+    const nestLevel = categoryStore.getNextLevel(currentLevel.id);
+    return {currentLevel, nestLevel};
+  };
+
+  getEventKey = async () => {
+    const eventKeyFromStorage = await eventEndStorage.getEventEndType(
+      EVENT_END_TYPE_KEY,
+    );
+
+    if (!eventKeyFromStorage) {
+      return EventEndType.SESSION_END;
+    }
+
+    return JSON.parse(eventKeyFromStorage) as EventEndType;
   };
 
   initRatinglist = async () => {

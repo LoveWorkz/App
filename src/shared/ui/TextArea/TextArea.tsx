@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     padding: horizontalScale(8),
   },
   input: {
-    height: verticalScale(160),
+    height: verticalScale(140),
     borderRadius,
     paddingHorizontal: horizontalScale(10),
   },

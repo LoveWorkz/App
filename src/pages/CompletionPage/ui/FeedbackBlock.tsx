@@ -28,7 +28,7 @@ const FeedbackBlock = (props: CompletionItemProps) => {
         placeholder={
           'Any propositions or your genuine feedback will allow us to make the experience even better for you'
         }
-        label={'Tell us what we can improve /Challenge idea?'}
+        label={'Tell us what we can improve'}
       />
       <Button
         disabled={isSending}
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   btn: {
     height: verticalScale(50),
     marginTop: verticalScale(20),
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(10),
   },
   skip: {
     textDecorationLine: 'underline',

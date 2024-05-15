@@ -10,11 +10,14 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {PillContainer} from '@src/shared/ui/PillContainer/PillContainer';
-import {windowWidth} from '@src/app/styles/GlobalStyle';
+import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
+import {StyledWordText} from '@src/shared/ui/StyledWordText/StyledWordText';
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
+import {StyleType} from '@src/shared/types/types';
 import {RatingKeys} from '../model/types/completionTypes';
 import FeedbackBlock from './FeedbackBlock';
 import completionPageStore from '../model/store/completionPageStore';
+import {keyWords} from '../model/lib/completionPageLib';
 
 interface CompletionItemProps {
   handleNext: () => void;
@@ -22,6 +25,7 @@ interface CompletionItemProps {
   image: string;
   pageNumber: number;
   question: string;
+  styledWords: string[];
   prefix: string;
   postfix: string;
   setValue: (value: string | number) => void;
@@ -30,6 +34,7 @@ interface CompletionItemProps {
   description: string;
   isSending: boolean;
   isQuadrant: boolean;
+  nextStep: string;
 }
 
 const CompletionItem = (props: CompletionItemProps) => {
@@ -46,6 +51,8 @@ const CompletionItem = (props: CompletionItemProps) => {
     description,
     isSending,
     isQuadrant,
+    styledWords,
+    nextStep,
   } = props;
   const colors = useColors();
 
@@ -75,14 +82,20 @@ const CompletionItem = (props: CompletionItemProps) => {
     return {uri: image};
   }, [image]);
 
-  const marginBottom = isQuadrant ? 0 : verticalScale(60);
+  const styledWordStyle = useMemo(() => {
+    const isKeyWord = keyWords.some(word => styledWords?.includes(word));
+    return [isKeyWord ? styles.keyWordStyle : styles.styledWordStyle, textSize];
+  }, [styledWords, textSize]);
+
+  const marginBottom =
+    !isQuadrant && !isFeedbackPage ? verticalScale(110) : verticalScale(80);
 
   return (
     <View>
       {isQuadrant ? (
         <FastImage
           style={styles.quadrantImage}
-          resizeMode={'contain'}
+          resizeMode={'cover'}
           source={source}
         />
       ) : (
@@ -130,7 +143,7 @@ const CompletionItem = (props: CompletionItemProps) => {
               align={'center'}
               style={textSize}
               size={TextSize.LEVEL_5}
-              text={'Next Step: Friendship'}
+              text={`Next Step: ${nextStep}`}
             />
           </View>
         )}
@@ -157,12 +170,12 @@ const CompletionItem = (props: CompletionItemProps) => {
             </PillContainer>
 
             <View style={styles.description}>
-              <AppText
-                weight="500"
-                align={'center'}
-                style={textSize}
-                size={TextSize.LEVEL_5}
+              <StyledWordText
+                style={styles.styledTextStyle}
+                textStyle={[styles.textStyle, textSize]}
                 text={question}
+                styledWords={styledWords}
+                styledWordStyle={styledWordStyle}
               />
             </View>
 
@@ -185,6 +198,13 @@ const CompletionItem = (props: CompletionItemProps) => {
 
 export default memo(CompletionItem);
 
+const top = verticalScale(-130);
+const styledWordStyle: StyleType = {
+  fontWeight: '900',
+  textAlign: 'center',
+  ...globalStyles.size_5,
+};
+
 const styles = StyleSheet.create({
   image: {
     height: verticalScale(320),
@@ -199,7 +219,8 @@ const styles = StyleSheet.create({
   },
   quadrantContent: {
     alignItems: 'center',
-    top: verticalScale(-130),
+    marginBottom: top,
+    top,
   },
 
   contentTop: {
@@ -207,7 +228,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(50),
   },
   contentMiddle: {
-    marginTop: verticalScale(70),
     marginBottom: verticalScale(50),
     paddingHorizontal: horizontalScale(50),
   },
@@ -230,5 +250,26 @@ const styles = StyleSheet.create({
   starsWrapper: {
     alignItems: 'center',
     paddingHorizontal: horizontalScale(50),
+  },
+
+  textStyle: {
+    alignItems: 'center',
+    paddingHorizontal: horizontalScale(50),
+    fontWeight: '500',
+    textAlign: 'center',
+    ...globalStyles.size_5,
+  },
+
+  styledTextStyle: {
+    textAlign: 'center',
+  },
+  styledWordStyle: {
+    ...styledWordStyle,
+    textTransform: 'capitalize',
+  },
+  keyWordStyle: {
+    ...styledWordStyle,
+    textTransform: 'uppercase',
+    textDecorationLine: 'underline',
   },
 });

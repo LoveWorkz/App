@@ -12,9 +12,10 @@ export interface RatingInformationItemType {
   id: string;
   pagekey: RatingKeys;
   image: string;
-  description: string;
+  description?: string;
   pageNumber?: number;
   question?: string;
   prefix?: string;
   postfix?: string;
+  styledWords?: string[];
 }

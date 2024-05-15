@@ -13,7 +13,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
-import { globalPadding } from '@src/app/styles/GlobalStyle';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 import BooksStore from '../../model/store/BooksStore';
 
 interface RecommendedBooksProps {
@@ -94,5 +94,5 @@ const styles = StyleSheet.create({
   },
   paginationStyle: {
     left: globalPadding,
-  }
+  },
 });

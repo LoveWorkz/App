@@ -1,4 +1,7 @@
+import { ordinalSuffixOf } from '@src/shared/lib/common';
 import {RatingInformationItemType} from '../types/completionTypes';
+
+export const keyWords = ['SESSION?', 'LEVEL?', 'QUADRANT?'];
 
 export const sessionRatingList: RatingInformationItemType[] = [
   {
@@ -7,10 +10,9 @@ export const sessionRatingList: RatingInformationItemType[] = [
     image: '',
     pageNumber: 1,
     question: 'Did you find the questions relevant to your relationship?',
+    styledWords: ['questions'],
     prefix: 'Nope',
     postfix: 'Yes',
-    description:
-      'You’ve finished your 1st session of 4 sessions on the Basic level',
   },
   {
     id: '2',
@@ -18,10 +20,9 @@ export const sessionRatingList: RatingInformationItemType[] = [
     image: '',
     pageNumber: 2,
     question: 'How difficult would you rate the questions of this session?',
+    styledWords: ['questions'],
     prefix: 'Easy',
     postfix: 'Difficult',
-    description:
-      'You’ve finished your 1st session of 4 sessions on the Basic level',
   },
   {
     id: '3',
@@ -29,28 +30,24 @@ export const sessionRatingList: RatingInformationItemType[] = [
     image: '',
     pageNumber: 3,
     question: 'How much, do you think will this challenge help you in future?',
+    styledWords: ['challenge'],
     prefix: 'Hated it',
     postfix: 'Awesome',
-    description:
-      'You’ve finished your 1st session of 4 sessions on the Basic level',
   },
   {
     id: '4',
     pagekey: 'question_4',
     image: '',
     pageNumber: 4,
-    question: 'How much did you enjoy this session?',
+    question: 'How much did you enjoy the whole SESSION?',
+    styledWords: ['SESSION?'],
     prefix: 'hated it',
     postfix: 'awesome',
-    description:
-      'You’ve finished your 1st session of 4 sessions on the Basic level',
   },
   {
     id: '5',
     pagekey: 'feedback',
     image: '',
-    description:
-      'You’ve finished your 1st session of 4 sessions on the Basic level',
   },
 ];
 
@@ -61,45 +58,44 @@ export const levelRatingInformationList: RatingInformationItemType[] = [
     image: '',
     pageNumber: 1,
     question: 'Did you find the questions relevant to your relationship?',
+    styledWords: ['questions'],
     prefix: 'Nope',
     postfix: 'Yes',
-    description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
   {
     id: '2',
     pagekey: 'question_2',
     image: '',
     pageNumber: 2,
-    question: 'How difficult would you rate the Questions of STARTER LEVEL?',
+    question: 'How difficult would you rate the Questions of this session?',
+    styledWords: ['questions'],
     prefix: 'Easy',
     postfix: 'Difficult',
-    description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
   {
     id: '3',
     pagekey: 'question_3',
     image: '',
     pageNumber: 3,
-    question: 'Will the Challenges of STARTER LEVEL help you in future?',
+    question: 'How much, do you think will this Challenge help you in future?',
+    styledWords: ['challenge'],
     prefix: 'not much',
     postfix: 'a lot',
-    description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
   {
     id: '4',
     pagekey: 'question_4',
     image: '',
     pageNumber: 4,
-    question: 'How much did you enjoy the Starter - Level?',
+    question: 'How much did you enjoy the whole LEVEL?',
+    styledWords: ['LEVEL?'],
     prefix: 'hated it',
     postfix: 'awesome',
-    description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
   {
     id: '5',
     pagekey: 'feedback',
     image: '',
-    description: 'You’ve finished Starter level.  Next Step -> Basic Level.',
   },
 ];
 
@@ -110,43 +106,39 @@ export const quadrantRatingInformationList: RatingInformationItemType[] = [
     image: '',
     pageNumber: 1,
     question: 'Did you find the Questions relevant to your relationship?',
+    styledWords: ['questions'],
     prefix: 'Nope',
     postfix: 'Yes',
-    description:
-      'Now that you have successfully mastered all sessions of the Personal Growth area.',
   },
   {
     id: '2',
     pagekey: 'question_2',
     image: '',
     pageNumber: 2,
-    question: 'How difficult would you rate the Questions of this quadrant?',
+    question: 'How difficult would you rate the Questions of this session?',
+    styledWords: ['questions'],
     prefix: 'Easy',
     postfix: 'Difficult',
-    description:
-      'Now that you have successfully mastered all sessions of the Personal Growth area.',
   },
   {
     id: '3',
     pagekey: 'question_3',
     image: '',
     pageNumber: 3,
-    question: 'Will the Challenges of PERSONAL GROWTH help you in future?',
+    question: 'How much, do you think will this Challenge help you in future?',
+    styledWords: ['challenge'],
     prefix: 'not much',
     postfix: 'a lot',
-    description:
-      'Now that you have successfully mastered all sessions of the Personal Growth area.',
   },
   {
     id: '4',
     pagekey: 'question_4',
     image: '',
     pageNumber: 4,
-    question: 'How much did you enjoy this quadrant: PERSONAL GROWTH?',
+    question: 'How much did you enjoy the whole QUADRANT?',
+    styledWords: ['QUADRANT?'],
     prefix: 'hated it',
     postfix: 'awesome',
-    description:
-      'Now that you have successfully mastered all sessions of the Personal Growth area.',
   },
   {
     id: '5',
@@ -155,3 +147,33 @@ export const quadrantRatingInformationList: RatingInformationItemType[] = [
     description: 'You can be proud of yourselfs.',
   },
 ];
+
+export const getSessionDescription = ({
+  currentLevelName,
+  curreentSessionNumber,
+  allSessionsCount,
+}: {
+  currentLevelName: string;
+  allSessionsCount: number;
+  curreentSessionNumber: number;
+}) => {
+  return `You’ve finished your ${ordinalSuffixOf(curreentSessionNumber)} session of ${allSessionsCount} sessions on the ${currentLevelName} level`;
+};
+
+export const getQuadrantDescription = (quadrantName: string) => {
+  return `Now that you have successfully mastered all sessions of the ${quadrantName} area.`;
+};
+
+export const getLevelDescription = ({
+  currentLevelName,
+  nextLevelName,
+}: {
+  currentLevelName: string;
+  nextLevelName?: string;
+}) => {
+  if (!nextLevelName) {
+    return 'last description text';
+  }
+
+  return `You’ve finished ${currentLevelName} level.  Next Step -> ${nextLevelName} Level.`;
+};

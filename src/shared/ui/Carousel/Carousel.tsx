@@ -57,7 +57,7 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
     const index = viewableItems[0]?.index;
 
     item && onSwipeHandler?.(item);
-    index && setCurrentIndex(index);
+    typeof index === 'number' && setCurrentIndex(index);
   }).current;
 
   const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;

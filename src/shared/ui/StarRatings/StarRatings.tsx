@@ -119,7 +119,11 @@ export const StarRatings = memo((props: StarRatingsProps) => {
   };
 
   return (
-    <View style={[styles.Stars, {justifyContent: isCentred ? 'center' : 'flex-start'}]}>
+    <View
+      style={[
+        styles.Stars,
+        {justifyContent: isCentred ? 'center' : 'flex-start'},
+      ]}>
       {arrayFromNumber.map((_, index) => {
         return renderStar({
           index,
