@@ -6,17 +6,23 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import { useLanguage } from '@src/shared/lib/hooks/useLanguage';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import TherapistBlock from './TherapistBlock';
 import breakPageStore from '../model/store/breakPageStore';
 
 const BreakPage = () => {
   const colors = useColors();
+  const language = useLanguage();
   const isLoading = breakPageStore.isLoading;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors]);
+
+  const onPressHandler = () => {
+    breakPageStore.letsDoThisPressHandler(language);
+  }
 
   return (
     <View style={styles.BreakPage}>
@@ -52,7 +58,7 @@ const BreakPage = () => {
         />
         <Button
           disabled={isLoading}
-          onPress={breakPageStore.letsDoThisPressHandler}
+          onPress={onPressHandler}
           theme={ButtonTheme.NORMAL}
           style={[styles.btn, {backgroundColor: colors.white}]}>
           <GradientText

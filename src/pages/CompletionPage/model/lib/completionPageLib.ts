@@ -1,4 +1,4 @@
-import { ordinalSuffixOf } from '@src/shared/lib/common';
+import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {RatingInformationItemType} from '../types/completionTypes';
 
 export const keyWords = ['SESSION?', 'LEVEL?', 'QUADRANT?'];
@@ -157,7 +157,9 @@ export const getSessionDescription = ({
   allSessionsCount: number;
   curreentSessionNumber: number;
 }) => {
-  return `You’ve finished your ${ordinalSuffixOf(curreentSessionNumber)} session of ${allSessionsCount} sessions on the ${currentLevelName} level`;
+  return `You’ve finished your ${ordinalSuffixOf(
+    curreentSessionNumber,
+  )} session of ${allSessionsCount} sessions on the ${currentLevelName} level`;
 };
 
 export const getQuadrantDescription = (quadrantName: string) => {

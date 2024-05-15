@@ -17,3 +17,4 @@ export {default as ChallengeCardsFooter} from './ui/ChallengeCardsFooter/Challen
 export {default as ChallengeInfoPopup} from './ui/ChallengeInfoPopup/ChallengeInfoPopup';
 export {getChallengeInfoPopupContent} from './model/lib/challenge';
 export {default as ChallengeCategoryBlock} from './ui/ChallengeCategoryBlock/ChallengeCategoryBlock';
+export {default as CoreChallengeIntroCard} from './ui/ChallengeCards/CoreChallengeIntroCard';

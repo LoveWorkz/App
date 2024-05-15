@@ -11,7 +11,8 @@ import {
   SpecialChallengeType,
 } from '@src/entities/Challenge';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
+import { categoryStore } from '@src/entities/Category';
+import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
 
 class BreakPageStore {
   isLoading: boolean = false;
@@ -24,7 +25,7 @@ class BreakPageStore {
     this.isLoading = isLoading;
   };
 
-  letsDoThisPressHandler = async () => {
+  letsDoThisPressHandler = async (language: LanguageValueType) => {
     try {
       crashlytics().log("Pressing let's do this button.");
 
@@ -48,9 +49,13 @@ class BreakPageStore {
 
       // fetch and set information for current core challenge
 
+      const currentLevel = categoryStore.category;
+
       await challengeGroupStore.fetchAllCoreChallengesGroups();
       challengeStore.setCoreChallenge(currentSessionChallenge as ChallengeType);
-      navigation.navigate(TabRoutesNames.CHALLENGES);
+      navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
+        title: currentLevel ? `${currentLevel.displayName[language]} session` : ''
+      });
     } catch (e) {
       errorHandler({error: e});
     } finally {

@@ -31,7 +31,10 @@ export const StyledWordText = memo((props: StyledWordTextProps) => {
         const key = `${part}-${index}`;
         const addSpace = index < parts.length - 1 ? ' ' : '';
         return isStyledWord(part) ? (
-          <AppText key={key} style={styledWordStyle} text={part + addSpace} />
+          <Text key={key}>
+            <AppText style={styledWordStyle} text={part} />
+            <AppText text={addSpace} />
+          </Text>
         ) : (
           <AppText key={key} style={textStyle} text={part + addSpace} />
         );

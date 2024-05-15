@@ -44,6 +44,7 @@ import {
 } from '@src/pages/CompletionPage';
 import {QuadrantDetailsPage} from '@src/pages/QuadrantDetailsPage';
 import {GameRulesPage} from '@src/pages/GameRulesPage';
+import {CoreChallengeIntroPage} from '@src/pages/CoreChallengeIntroPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -83,6 +84,7 @@ export enum AppRouteNames {
   QUADRANT_COMPLETION = 'quadrantCompletion',
   QUADRANT_DETAILS = 'quadrantDetails',
   GAME_RULES = 'gameRules',
+  CORE_CHALLENGE_INTRO = 'coreChallengeIntro',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -119,6 +121,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.QUADRANT_COMPLETION]: 'quadrantCompletion',
   [AppRouteNames.QUADRANT_DETAILS]: 'quadrantDetails',
   [AppRouteNames.GAME_RULES]: 'gameRules',
+  [AppRouteNames.CORE_CHALLENGE_INTRO]: 'coreChallengeIntro',
 
   // onboarding
   [AppRouteNames.WELCOME]: 'welcome',
@@ -568,6 +571,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout deleteGlobalPadding deleteTopPadding>
           <GameRulesPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.CORE_CHALLENGE_INTRO]: {
+    name: appRoutePaths.coreChallengeIntro,
+    headerShown: true,
+    bgColor: 'secondaryBackground',
+    headerTitle: '',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout bgColor="secondaryBackground">
+          <CoreChallengeIntroPage {...props} />
         </Layout>
       );
     },
