@@ -12,6 +12,8 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {StyledWordText} from '@src/shared/ui/StyledWordText/StyledWordText';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const CoreChallengeIntroCard = () => {
   const colors = useColors();
@@ -20,9 +22,13 @@ const CoreChallengeIntroCard = () => {
     return {color: colors.white};
   }, []);
 
-  const LetsDoItPressHandler = () => {};
+  const groupName = 'Routines';
 
-  const groupName = 'routines';
+  const LetsDoItPressHandler = () => {
+    navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+      title: groupName,
+    });
+  };
 
   return (
     <View style={styles.ChallengeIntroCard}>
@@ -73,9 +79,7 @@ const CoreChallengeIntroCard = () => {
           styledWords={['one']}
           styledWordStyle={[styles.styledWordStyle, textStyle]}
           textStyle={[styles.textStyle, textStyle]}
-          text={
-            `Choose one of the following ${groupName}, enjoy it together and remember to mark it as completed once you're finished.`
-          }
+          text={`Choose one of the following ${groupName}, enjoy it together and remember to mark it as completed once you're finished.`}
         />
       </FastImage>
 

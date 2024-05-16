@@ -11,8 +11,8 @@ import {
   SpecialChallengeType,
 } from '@src/entities/Challenge';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
-import { categoryStore } from '@src/entities/Category';
-import { LanguageValueType } from '@src/widgets/LanguageSwitcher';
+import {categoryStore} from '@src/entities/Category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 
 class BreakPageStore {
   isLoading: boolean = false;
@@ -54,7 +54,9 @@ class BreakPageStore {
       await challengeGroupStore.fetchAllCoreChallengesGroups();
       challengeStore.setCoreChallenge(currentSessionChallenge as ChallengeType);
       navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
-        title: currentLevel ? `${currentLevel.displayName[language]} session` : ''
+        title: currentLevel
+          ? `${currentLevel.displayName[language]} session`
+          : '',
       });
     } catch (e) {
       errorHandler({error: e});

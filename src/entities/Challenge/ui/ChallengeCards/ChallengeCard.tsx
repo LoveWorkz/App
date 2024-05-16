@@ -32,7 +32,7 @@ interface ChallengeCardProps {
   isSelectingSpecialChallenge: boolean;
 }
 
-export const ChallengeCard = (props: ChallengeCardProps) => {
+const ChallengeCard = (props: ChallengeCardProps) => {
   const {
     title,
     showButton,

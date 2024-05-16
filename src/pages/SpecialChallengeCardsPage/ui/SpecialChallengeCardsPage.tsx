@@ -15,7 +15,7 @@ import {CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
-const ChallengeCardsPage = () => {
+const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
 
   const specialChallenge = challengeStore.specialChallenge;
@@ -100,7 +100,7 @@ const ChallengeCardsPage = () => {
   );
 };
 
-export default memo(observer(ChallengeCardsPage));
+export default memo(observer(SpecialChallengeCardsPage));
 
 const styles = StyleSheet.create({
   ChallengeCardsPage: {

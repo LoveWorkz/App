@@ -19,8 +19,8 @@ import {QuestionsPage} from '@src/pages/QuestionsPage';
 import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/widgets/layout';
 import {SessionsPage} from '@src/pages/SessionsPage';
-import {ChallengeCardsPage} from '@src/pages/SpecialChallengeDetailsPage';
-import {CoreChallengeDetailsPage} from '@src/pages/CoreChallengeDetailsPage';
+import {SpecialChallengeCardsPage} from '@src/pages/SpecialChallengeCardsPage';
+import {CoreChallengeCardsPage} from '@src/pages/CoreChallengeCardsPage';
 import {NotificationsPage} from '@src/pages/NotificationsPage';
 import {AboutMyRelationshipPage} from '@src/pages/AboutMyRelationshipPage';
 import {YourGoalsPage} from '@src/pages/YourGoalsPage';
@@ -352,7 +352,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout bgColor="secondaryBackground">
-          <ChallengeCardsPage {...props} />
+          <SpecialChallengeCardsPage {...props} />
         </Layout>
       );
     },
@@ -361,13 +361,12 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.coreChallengeCards,
     headerShown: true,
     headerTitle: '',
-    isTitleLarge: true,
     bgColor: 'secondaryBackground',
     HeaderRight: ChallengesHeaderRight,
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
-          <CoreChallengeDetailsPage {...props} />
+        <Layout bgColor="secondaryBackground">
+          <CoreChallengeCardsPage {...props} />
         </Layout>
       );
     },

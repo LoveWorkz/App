@@ -4,12 +4,12 @@ import {StyleSheet, View} from 'react-native';
 import Pagination from '@src/shared/ui/HorizontalSlide/Pagination';
 import {verticalScale} from '@src/shared/lib/Metrics';
 
-interface QuestionCardsFooterProps {
+interface ChallengeCardsFooterProps {
   count: number;
   currentIndex: number;
 }
 
-const ChallengeCardsFooter = (props: QuestionCardsFooterProps) => {
+const ChallengeCardsFooter = (props: ChallengeCardsFooterProps) => {
   const {count, currentIndex} = props;
 
   return (

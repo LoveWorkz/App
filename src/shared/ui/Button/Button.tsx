@@ -34,7 +34,7 @@ interface ButtonProps {
   activeOpacity?: number;
 }
 
-const height = horizontalScale(50);
+const height = horizontalScale(40);
 const borderRadius = moderateScale(10);
 
 export const Button = (props: ButtonProps) => {

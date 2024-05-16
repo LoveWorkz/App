@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {CoreChallengeIntroCard} from '@src/entities/Challenge';
-import { verticalScale } from '@src/shared/lib/Metrics';
+import {verticalScale} from '@src/shared/lib/Metrics';
 
 const CoreChallengeIntroPage = () => {
   return (
