@@ -50,6 +50,7 @@ const SpecialChallengeCardsPage = () => {
       ...item,
       specialChallengeId: specialChallenge.id,
       isSelectingSpecialChallenge,
+      isChecked: specialChallenge.isChecked
     }));
 
     // If the challenge done button is not visible, return the original data.

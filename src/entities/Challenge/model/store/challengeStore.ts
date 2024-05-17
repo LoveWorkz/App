@@ -26,6 +26,7 @@ class ChallengeStore {
   specialChallenge: SpecialChallengeType | null = null;
   coreChallenge: ChallengeType | null = null;
   isChallengeDoneButtonVisible: boolean = false;
+  lockedChallengeIds: string[] = [];
 
   isSelectingSpecialChallenge: boolean = false;
 
@@ -47,6 +48,18 @@ class ChallengeStore {
 
   setIsSelectingSpecialChallenge = (isSelectingSpecialChallenge: boolean) => {
     this.isSelectingSpecialChallenge = isSelectingSpecialChallenge;
+  };
+
+  isChallengeLockedIn = (id: string) => {
+    return this.lockedChallengeIds.includes(id);
+  };
+
+  setLockedChallengeIds = (id: string) => {
+    this.lockedChallengeIds = [...this.lockedChallengeIds, id];
+  };
+
+  coreChallengeCardsSwipeHandler = (challenge: ChallengeType) => {
+    this.setCoreChallenge(challenge);
   };
 
   coreChallengePressHandler = ({
@@ -93,6 +106,22 @@ class ChallengeStore {
   }) => {
     const challengeIndex = challenges.findIndex(item => item.id === id);
     return challengeIndex === -1 ? 1 : challengeIndex + 1;
+  };
+
+  getDefaultChallengeNumberForCardsPage = ({
+    coreChallengesList,
+  }: {
+    coreChallengesList: ChallengeType[];
+  }) => {
+    const currentCoreChallenge = this.coreChallenge;
+    if (!currentCoreChallenge) {
+      return 1;
+    }
+
+    return this.getChallengeNumber({
+      challenges: coreChallengesList,
+      id: currentCoreChallenge.id,
+    });
   };
 
   // Swipes the special challenge card and updates button visibility if it's the last card
@@ -268,14 +297,34 @@ class ChallengeStore {
     }
   };
 
-  challengeCardButtonPressHandler = async (specialChallengeId: string) => {
-    specialChallengeId &&
-      this.selectSpecialChallenge({
-        id: specialChallengeId,
-        newValue: true,
-      });
+  specialChallengeCardButtonPressHandler = async (
+    specialChallengeId: string,
+    isChecked: boolean,
+  ) => {
+    try {
+      if(!isChecked && specialChallengeId) {
+        this.selectSpecialChallenge({
+          id: specialChallengeId,
+          newValue: true,
+        });
+      }
 
-    await this.checkEventAndNavigateToCompletionPage();
+      await this.checkEventAndNavigateToCompletionPage();
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  coreChallengeCardButtonPressHandler = async (coreChallengeId: string, isChecked: boolean) => {
+    try {
+      if(!isChecked && coreChallengeId) {
+        this.selectChallenge({id: coreChallengeId, newValue: true});
+      }
+
+      await this.checkEventAndNavigateToCompletionPage();
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   checkEventAndNavigateToCompletionPage = async () => {

@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -16,18 +16,27 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import challengeStore from '../../model/store/challengeStore';
 
 interface ChallengeCardProps {
   description: DisplayText;
   groupName: string;
+  id: string;
 }
 
 const CoreChallengeCard = (props: ChallengeCardProps) => {
-  const {description, groupName} = props;
+  const {description, groupName, id} = props;
   const colors = useColors();
   const language = useLanguage();
 
-  const onPressHandler = () => {};
+  const [showButton, setShowButton] = useState<boolean>(() =>
+    challengeStore.isChallengeLockedIn(id),
+  );
+
+  const onPressHandler = () => {
+    setShowButton(true);
+    challengeStore.setLockedChallengeIds(id);
+  };
 
   return (
     <FastImage
@@ -53,17 +62,31 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
         />
       </View>
       <View style={styles.btnWrapper}>
-        <Button
-          onPress={onPressHandler}
-          theme={ButtonTheme.GRADIENT}
-          style={styles.btn}>
-          <AppText
-            style={{color: colors.white}}
-            size={TextSize.LEVEL_4}
-            weight={'600'}
-            text={'Lock the challenge in'}
-          />
-        </Button>
+        {showButton ? (
+          <Button
+            onPress={onPressHandler}
+            theme={ButtonTheme.OUTLINED}
+            style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
+            <AppText
+              style={{color: colors.white}}
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={'Challenge locked'}
+            />
+          </Button>
+        ) : (
+          <Button
+            onPress={onPressHandler}
+            theme={ButtonTheme.GRADIENT}
+            style={styles.btn}>
+            <AppText
+              style={{color: colors.white}}
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={'Lock the challenge in'}
+            />
+          </Button>
+        )}
       </View>
     </FastImage>
   );
@@ -101,5 +124,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: '87%',
+    borderWidth: 0,
   },
 });

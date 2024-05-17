@@ -44,15 +44,17 @@ const CoreChallengeIntroCard = () => {
 
   return (
     <View style={styles.ChallengeIntroCard}>
-     {groupTitle && <View style={styles.topPart}>
-        <AppText
-          style={textStyle}
-          size={TextSize.SIZE_24}
-          lineHeight={30}
-          weight={'700'}
-          text={groupTitle}
-        />
-      </View>}
+      {groupTitle && (
+        <View style={styles.topPart}>
+          <AppText
+            style={textStyle}
+            size={TextSize.SIZE_24}
+            lineHeight={30}
+            weight={'700'}
+            text={groupTitle}
+          />
+        </View>
+      )}
 
       <FastImage
         resizeMode="stretch"

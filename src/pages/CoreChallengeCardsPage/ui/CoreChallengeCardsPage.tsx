@@ -1,9 +1,10 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {
   challengeStore,
+  ChallengeType,
   CoreChallengeCard,
   CoreChallengeCardsFooter,
 } from '@src/entities/Challenge';
@@ -20,13 +21,11 @@ const CoreChallengeCardsPage = () => {
   const challenges = challengesStore.challenges;
   const currentCoreChallengeGroup =
     challengeGroupStore.currentCoreChallengeGroup;
-  const currentCoreChallenge = challengeStore.coreChallenge;
 
   const coreChallengesList = useMemo(() => {
     if (!currentCoreChallengeGroup) {
       return [];
     }
-
     return challenges
       .filter(item => item.groupId === currentCoreChallengeGroup.id)
       .map(item => ({
@@ -36,19 +35,19 @@ const CoreChallengeCardsPage = () => {
   }, [currentCoreChallengeGroup, challenges, language]);
 
   const defaultChallengeNumber = useMemo(() => {
-    if (!currentCoreChallenge) {
-      return 1;
-    }
-  
-    return challengeStore.getChallengeNumber({
-      challenges: coreChallengesList,
-      id: currentCoreChallenge.id,
+    return challengeStore.getDefaultChallengeNumberForCardsPage({
+      coreChallengesList,
     });
-  }, [currentCoreChallenge, coreChallengesList]);
-  
+  }, [coreChallengesList]);
+
+  const onSwipeHandler = useCallback((challenge: ChallengeType) => {
+    challengeStore.coreChallengeCardsSwipeHandler(challenge);
+  }, []);
+
   return (
     <View style={styles.CoreChallengeDetailsPage}>
       <HorizontalSlide
+        onSwipeHandler={onSwipeHandler}
         defaultElement={defaultChallengeNumber}
         data={coreChallengesList}
         Component={CoreChallengeCard}

@@ -30,6 +30,7 @@ interface ChallengeCardProps {
   body: DisplayText;
   specialChallengeId: string;
   isSelectingSpecialChallenge: boolean;
+  isChecked: boolean;
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
@@ -39,11 +40,12 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     body,
     specialChallengeId,
     isSelectingSpecialChallenge,
+    isChecked
   } = props;
   const {theme} = useTheme();
   const colors = useColors();
   const language = useLanguage();
-
+  
   const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
 
   const onTextLayout = useCallback(
@@ -54,7 +56,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   );
 
   const onPressHandler = () => {
-    challengeStore.challengeCardButtonPressHandler(specialChallengeId);
+    challengeStore.specialChallengeCardButtonPressHandler(specialChallengeId, isChecked);
   };
 
   return (
