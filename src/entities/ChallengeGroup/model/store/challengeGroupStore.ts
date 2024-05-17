@@ -11,6 +11,7 @@ import {ChallengeGroupType} from '../types/ChallengeGroupTypes';
 class challengeGroupStore {
   coreChallengeGroups: ChallengeGroupType<ChallengeType[]>[] = [];
   specialChallengeGroups: ChallengeGroupType<SpecialChallengeType[]>[] = [];
+  currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]> | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -26,6 +27,24 @@ class challengeGroupStore {
     specialChallengeGroups: ChallengeGroupType<SpecialChallengeType[]>[],
   ) => {
     this.specialChallengeGroups = specialChallengeGroups;
+  };
+
+  setCurrentCoreChallengeGroup = (
+    currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>,
+  ) => {
+    this.currentCoreChallengeGroup = currentCoreChallengeGroup;
+  };
+
+  getChallengeGroupById = ({
+    challengeGroups,
+    id,
+  }: {
+    challengeGroups: ChallengeGroupType<
+      SpecialChallengeType[] | ChallengeType[]
+    >[];
+    id: string;
+  }) => {
+    return challengeGroups.find(group => group.id === id) || challengeGroups[0];
   };
 
   fetchCoreAndSpecialChallengesGroups = async (categoryId?: string) => {

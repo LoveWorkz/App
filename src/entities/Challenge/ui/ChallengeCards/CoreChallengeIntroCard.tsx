@@ -14,15 +14,27 @@ import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 const CoreChallengeIntroCard = () => {
   const colors = useColors();
+  const language = useLanguage();
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, []);
 
-  const groupName = 'Routines';
+  const currentCoreChallengeGroup =
+    challengeGroupStore.currentCoreChallengeGroup;
+
+  if (!currentCoreChallengeGroup) {
+    return null;
+  }
+
+  const groupName = currentCoreChallengeGroup.displayName[language];
+  const description = currentCoreChallengeGroup.largeDescription?.[language];
+  const groupTitle = currentCoreChallengeGroup.title?.[language];
 
   const LetsDoItPressHandler = () => {
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
@@ -32,15 +44,15 @@ const CoreChallengeIntroCard = () => {
 
   return (
     <View style={styles.ChallengeIntroCard}>
-      <View style={styles.topPart}>
+     {groupTitle && <View style={styles.topPart}>
         <AppText
           style={textStyle}
           size={TextSize.SIZE_24}
           lineHeight={30}
           weight={'700'}
-          text={'It’s time for a Routine!'}
+          text={groupTitle}
         />
-      </View>
+      </View>}
 
       <FastImage
         resizeMode="stretch"
@@ -56,14 +68,14 @@ const CoreChallengeIntroCard = () => {
               text={'Info'}
             />
           </View>
-          <AppText
-            style={textStyle}
-            size={TextSize.LEVEL_4}
-            lineHeight={20}
-            text={
-              'Engaging in joint activities & making beautiful memories are strengthening your bond & enhancing your intimacy to help you build a deeper connection as a couple.'
-            }
-          />
+          {description && (
+            <AppText
+              style={textStyle}
+              size={TextSize.LEVEL_4}
+              lineHeight={20}
+              text={description}
+            />
+          )}
         </View>
         <View style={styles.title}>
           <AppText
@@ -79,7 +91,7 @@ const CoreChallengeIntroCard = () => {
           styledWords={['one']}
           styledWordStyle={[styles.styledWordStyle, textStyle]}
           textStyle={[styles.textStyle, textStyle]}
-          text={`Choose one of the following ${groupName}, enjoy it together and remember to mark it as completed once you're finished.`}
+          text={`Choose one of the following ${groupName.toLowerCase()}, enjoy it together and remember to mark it as completed once you're finished.`}
         />
       </FastImage>
 

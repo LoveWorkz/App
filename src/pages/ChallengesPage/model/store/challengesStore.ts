@@ -198,14 +198,14 @@ class ChallengesStore {
         return;
       }
 
-      await this.fetchChallenges(currentChallengeCategoryId);
-      await this.fetchSpecialChallenges(currentChallengeCategoryId);
+      await this.fetchChallenges();
+      await this.fetchSpecialChallenges();
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  fetchSpecialChallenges = async (categoryId: string) => {
+  fetchSpecialChallenges = async () => {
     try {
       crashlytics().log('Fetching Special Challenges.');
 
@@ -241,7 +241,7 @@ class ChallengesStore {
     }
   };
 
-  fetchChallenges = async (categoryId: string) => {
+  fetchChallenges = async () => {
     try {
       crashlytics().log('Fetching Challenges.');
 

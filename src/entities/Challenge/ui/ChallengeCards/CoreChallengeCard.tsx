@@ -14,15 +14,18 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {questionImage1} from '@src/shared/assets/images';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
+import {DisplayText} from '@src/shared/types/types';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface ChallengeCardProps {
-  showButton: boolean;
-  isSelectingSpecialChallenge: boolean;
+  description: DisplayText;
+  groupName: string;
 }
 
 const CoreChallengeCard = (props: ChallengeCardProps) => {
-  const {showButton, isSelectingSpecialChallenge} = props;
+  const {description, groupName} = props;
   const colors = useColors();
+  const language = useLanguage();
 
   const onPressHandler = () => {};
 
@@ -32,20 +35,14 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
       source={questionImage1 as number}
       style={styles.ChallengeCard}>
       <View style={styles.groupName}>
-        <GradientText
-          size={TextSize.LEVEL_2}
-          weight={'600'}
-          text={'Self - Reflection'}
-        />
+        <GradientText size={TextSize.LEVEL_2} weight={'600'} text={groupName} />
       </View>
       <AppText
         size={TextSize.SIZE_24}
         align={'center'}
         lineHeight={30}
         weight={'700'}
-        text={
-          'Designate a weekend to disconnect from the world and enjoy your home as if it were a luxury hotel.'
-        }
+        text={description[language]}
       />
 
       <View style={styles.appNameWrapper}>
@@ -55,23 +52,19 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
           text={`...${APPLICATION_NAME}`}
         />
       </View>
-
-      {!showButton && (
-        <View style={styles.btnWrapper}>
-          <Button
-            disabled={isSelectingSpecialChallenge}
-            onPress={onPressHandler}
-            theme={ButtonTheme.GRADIENT}
-            style={styles.btn}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Lock the challenge in'}
-            />
-          </Button>
-        </View>
-      )}
+      <View style={styles.btnWrapper}>
+        <Button
+          onPress={onPressHandler}
+          theme={ButtonTheme.GRADIENT}
+          style={styles.btn}>
+          <AppText
+            style={{color: colors.white}}
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={'Lock the challenge in'}
+          />
+        </Button>
+      </View>
     </FastImage>
   );
 };

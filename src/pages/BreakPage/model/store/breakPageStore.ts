@@ -5,14 +5,11 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {sessionStore} from '@src/entities/Session';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {
-  challengeStore,
-  ChallengeType,
-  SpecialChallengeType,
-} from '@src/entities/Challenge';
+import {challengeStore, SpecialChallengeType} from '@src/entities/Challenge';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {challengesStore} from '@src/pages/ChallengesPage';
 
 class BreakPageStore {
   isLoading: boolean = false;
@@ -32,11 +29,10 @@ class BreakPageStore {
       this.setIsLoading(true);
 
       const currentSessionChallenge = sessionStore.sessionChallenge;
-      if (!currentSessionChallenge) {
-        return;
-      }
+      const coreChallengeGroup = sessionStore.coreChallengeGroup;
+      const isChallengeSpecial = sessionStore.isChallengeSpecial;
 
-      if (currentSessionChallenge.isChallengeSpecial) {
+      if (isChallengeSpecial) {
         // fetch and set information for current special challenge
 
         await challengeGroupStore.fetchAllSpecialChallengesGroups();
@@ -47,12 +43,13 @@ class BreakPageStore {
         return;
       }
 
-      // fetch and set information for current core challenge
+      // fetch and set information for current core challenge group
 
       const currentLevel = categoryStore.category;
 
-      await challengeGroupStore.fetchAllCoreChallengesGroups();
-      challengeStore.setCoreChallenge(currentSessionChallenge as ChallengeType);
+      await challengesStore.fetchChallenges();
+      coreChallengeGroup &&
+        challengeGroupStore.setCurrentCoreChallengeGroup(coreChallengeGroup);
       navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
         title: currentLevel
           ? `${currentLevel.displayName[language]} session`

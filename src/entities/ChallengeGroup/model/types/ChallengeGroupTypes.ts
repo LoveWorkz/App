@@ -8,4 +8,6 @@ export interface ChallengeGroupType<C> {
   displayName: DisplayText;
   id: string;
   key: string;
+  largeDescription?: DisplayText;
+  title?: DisplayText;
 }

@@ -17,6 +17,7 @@ import {favoriteStore} from '@src/entities/Favorite';
 import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
 import {EVENT_END_TYPE_KEY} from '@src/shared/consts/storage';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
+import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
   EventEndType,
@@ -32,7 +33,9 @@ class SessionStore {
   session: SessionType | null = null;
   allSessionsFromAllCategories: SessionType[] = [];
   sessionsMap: SessionsMap = {};
-  sessionChallenge?: ChallengeType | SpecialChallengeType;
+  sessionChallenge?: SpecialChallengeType;
+  coreChallengeGroup: null | ChallengeGroupType<ChallengeType[]> = null;
+  isChallengeSpecial: boolean = true;
   isFetching: boolean = true;
 
   currentQuadrantsSessions: SessionType[] = [];
@@ -83,8 +86,8 @@ class SessionStore {
       return;
     }
 
-    const coreChallengeCollection = firestore().collection(
-      Collections.CORE_CHALLENGES,
+    const coreChallengeGroupCollection = firestore().collection(
+      Collections.CORE_CHALLENGE_GROUPS,
     );
     const specialChallengeCollection = firestore().collection(
       Collections.SPECIAL_CHALLENGES_2,
@@ -93,15 +96,19 @@ class SessionStore {
     const currentSessionChallengeId = currentSession.challenge;
 
     try {
-      const coreChallengeQuerySnapshot = await coreChallengeCollection
+      const coreChallengeGroupQuerySnapshot = await coreChallengeGroupCollection
         .where('id', '==', currentSessionChallengeId)
         .get({source});
 
-      if (!coreChallengeQuerySnapshot.empty) {
-        const sessionChallenge = coreChallengeQuerySnapshot.docs[0].data();
+      if (!coreChallengeGroupQuerySnapshot.empty) {
+        const coreChallengeGroup =
+          coreChallengeGroupQuerySnapshot.docs[0].data();
 
         runInAction(() => {
-          this.sessionChallenge = sessionChallenge as ChallengeType;
+          this.coreChallengeGroup = coreChallengeGroup as ChallengeGroupType<
+            ChallengeType[]
+          >;
+          this.isChallengeSpecial = false;
         });
 
         return;
@@ -116,6 +123,7 @@ class SessionStore {
 
         runInAction(() => {
           this.sessionChallenge = sessionChallenge as SpecialChallengeType;
+          this.isChallengeSpecial = true;
         });
       }
     } catch (error) {

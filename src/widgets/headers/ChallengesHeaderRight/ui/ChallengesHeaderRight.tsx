@@ -11,8 +11,7 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {challengeStore} from '@src/entities/Challenge';
 import InformationBlock from '@src/shared/ui/InformationBlock/InformationBlock';
 import {InformationBlockPopup} from '@src/shared/ui/InformationBlock/InformationBlockPopup';
-import { infoTextType } from '@src/widgets/InformationBlock';
-
+import {infoTextType} from '@src/widgets/InformationBlock';
 
 const textContent: infoTextType[] = [];
 

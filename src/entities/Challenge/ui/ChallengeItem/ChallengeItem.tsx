@@ -1,6 +1,5 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
 import {SvgXml} from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
 
@@ -12,14 +11,12 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import CustomCheckBox from '@src/shared/ui/CustomCheckBox/CustomCheckBox';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {DisplayText} from '@src/shared/types/types';
 import {leaves} from '@src/shared/assets/images';
 import {ChallengeHeartIcon} from '@src/shared/assets/icons/ChallengeHeart';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {
   ChallengeType,
   SpecialChallengeType,
@@ -37,11 +34,9 @@ interface ChallengeItemProps {
 const ChallengeItem = (props: ChallengeItemProps) => {
   const {isChecked, text, id, challenge, specailChallenge} = props;
   const colors = useColors();
-  const {i18n} = useTranslation();
+  const language = useLanguage();
   const {theme} = useTheme();
   const isCoreChallenge = challenge;
-
-  const language = i18n.language as LanguageValueType;
 
   const onChangeHandler = useCallback(() => {
     if (isCoreChallenge) {
@@ -53,11 +48,9 @@ const ChallengeItem = (props: ChallengeItemProps) => {
 
   const onChallengePressHandler = () => {
     if (isCoreChallenge) {
-      challengeStore.setCoreChallenge(challenge);
-      navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS);
+      challengeStore.coreChallengePressHandler({challenge, language});
     } else if (specailChallenge) {
-      challengeStore.setSpecialChallenge(specailChallenge);
-      navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
+      challengeStore.specialChallengePressHandler(specailChallenge);
     }
   };
 

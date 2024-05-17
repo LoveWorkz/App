@@ -13,6 +13,12 @@ import {
   EVENT_END_TYPE_KEY,
   SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
 } from '@src/shared/consts/storage';
+import {
+  challengeGroupStore,
+  ChallengeGroupType,
+} from '@src/entities/ChallengeGroup';
+import {categoryStore} from '@src/entities/Category';
+import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
 
@@ -41,6 +47,52 @@ class ChallengeStore {
 
   setIsSelectingSpecialChallenge = (isSelectingSpecialChallenge: boolean) => {
     this.isSelectingSpecialChallenge = isSelectingSpecialChallenge;
+  };
+
+  coreChallengePressHandler = ({
+    challenge,
+    language,
+  }: {
+    challenge: ChallengeType;
+    language: LanguageValueType;
+  }) => {
+    // setting core challenge group info
+    const coreChallengeGroups = challengeGroupStore.coreChallengeGroups;
+    const currentCoreChallengeGroup = challengeGroupStore.getChallengeGroupById(
+      {challengeGroups: coreChallengeGroups, id: challenge.groupId},
+    );
+
+    if (!currentCoreChallengeGroup) {
+      return;
+    }
+
+    const currentLevel = categoryStore.category;
+
+    challengeGroupStore.setCurrentCoreChallengeGroup(
+      currentCoreChallengeGroup as ChallengeGroupType<ChallengeType[]>,
+    );
+    this.setCoreChallenge(challenge);
+    navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
+      title: currentLevel
+        ? `${currentLevel.displayName[language]} session`
+        : '',
+    });
+  };
+
+  specialChallengePressHandler = (specailChallenge: SpecialChallengeType) => {
+    this.setSpecialChallenge(specailChallenge);
+    navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
+  };
+
+  getChallengeNumber = ({
+    challenges,
+    id,
+  }: {
+    challenges: ChallengeType[];
+    id: string;
+  }) => {
+    const challengeIndex = challenges.findIndex(item => item.id === id);
+    return challengeIndex === -1 ? 1 : challengeIndex + 1;
   };
 
   // Swipes the special challenge card and updates button visibility if it's the last card
