@@ -21,11 +21,12 @@ import challengeStore from '../../model/store/challengeStore';
 interface ChallengeCardProps {
   description: DisplayText;
   groupName: string;
+  groupId: string;
   id: string;
 }
 
 const CoreChallengeCard = (props: ChallengeCardProps) => {
-  const {description, groupName, id} = props;
+  const {description, groupName, id, groupId} = props;
   const colors = useColors();
   const language = useLanguage();
 
@@ -35,7 +36,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
 
   const onPressHandler = () => {
     setShowButton(true);
-    challengeStore.setLockedChallengeIds(id);
+    challengeStore.setLockedChallengeIds({id, groupId});
   };
 
   return (
@@ -64,7 +65,6 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
       <View style={styles.btnWrapper}>
         {showButton ? (
           <Button
-            onPress={onPressHandler}
             theme={ButtonTheme.OUTLINED}
             style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
             <AppText

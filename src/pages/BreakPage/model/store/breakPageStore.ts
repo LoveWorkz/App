@@ -32,6 +32,9 @@ class BreakPageStore {
       const coreChallengeGroup = sessionStore.coreChallengeGroup;
       const isChallengeSpecial = sessionStore.isChallengeSpecial;
 
+      // setting this flag to redirect to the final page
+      challengeStore.setIsSessionFlow(true);
+
       if (isChallengeSpecial) {
         // fetch and set information for current special challenge
 

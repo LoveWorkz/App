@@ -8,7 +8,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
-import {EventEndType} from '@src/entities/Session';
+import {EventEndType, sessionStore} from '@src/entities/Session';
 import {
   EVENT_END_TYPE_KEY,
   SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
@@ -19,6 +19,10 @@ import {
 } from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
+import {userCategoryStore} from '@src/entities/UserCategory';
+import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
+import {removeDuplicates} from '@src/shared/lib/common';
+import {userStore} from '@src/entities/User';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
 
@@ -27,6 +31,7 @@ class ChallengeStore {
   coreChallenge: ChallengeType | null = null;
   isChallengeDoneButtonVisible: boolean = false;
   lockedChallengeIds: string[] = [];
+  isSessionFlow: boolean = false;
 
   isSelectingSpecialChallenge: boolean = false;
 
@@ -54,12 +59,73 @@ class ChallengeStore {
     return this.lockedChallengeIds.includes(id);
   };
 
-  setLockedChallengeIds = (id: string) => {
-    this.lockedChallengeIds = [...this.lockedChallengeIds, id];
+  setIds = (ids: string[]) => {
+    this.lockedChallengeIds = ids;
+  };
+
+  setLockedChallengeIds = async ({
+    id,
+    groupId,
+  }: {
+    id: string;
+    groupId: string;
+  }) => {
+    try {
+      const userId = userStore.userId;
+      const newValue = [...this.lockedChallengeIds, id];
+      const filteredIds = removeDuplicates(newValue);
+      this.setIds(filteredIds);
+
+      let data = {[groupId]: filteredIds};
+
+      const lockedChallengeIdsFromStorage =
+        await this.getLockedChallengeIdsFromStorage();
+      if (lockedChallengeIdsFromStorage) {
+        data = {...lockedChallengeIdsFromStorage, [groupId]: filteredIds};
+      }
+
+      await coreChallengeInfoStorage.setCoreChallengeInfo(
+        userId,
+        JSON.stringify(data),
+      );
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  initLockedChallengeIds = async (groupId: string) => {
+    try {
+      const lockedChallengeIdsFromStorage =
+        await this.getLockedChallengeIdsFromStorage();
+      if (lockedChallengeIdsFromStorage) {
+        const lockedChallengeIds = lockedChallengeIdsFromStorage[groupId];
+        if (!lockedChallengeIds) {
+          return;
+        }
+
+        this.setIds(lockedChallengeIds);
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  getLockedChallengeIdsFromStorage = async () => {
+    const userId = userStore.userId;
+
+    const valueFromStorage =
+      await coreChallengeInfoStorage.getCoreChallengeInfo(userId);
+    if (valueFromStorage) {
+      return JSON.parse(valueFromStorage);
+    }
   };
 
   coreChallengeCardsSwipeHandler = (challenge: ChallengeType) => {
     this.setCoreChallenge(challenge);
+  };
+
+  setIsSessionFlow = (isSessionFlow: boolean) => {
+    this.isSessionFlow = isSessionFlow;
   };
 
   coreChallengePressHandler = ({
@@ -302,26 +368,49 @@ class ChallengeStore {
     isChecked: boolean,
   ) => {
     try {
-      if(!isChecked && specialChallengeId) {
+      if (!isChecked && specialChallengeId) {
         this.selectSpecialChallenge({
           id: specialChallengeId,
           newValue: true,
         });
       }
 
-      await this.checkEventAndNavigateToCompletionPage();
+      const isSessionFlow = this.isSessionFlow;
+
+      if (isSessionFlow) {
+        await this.checkEventAndNavigateToCompletionPage();
+      }
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  coreChallengeCardButtonPressHandler = async (coreChallengeId: string, isChecked: boolean) => {
+  coreChallengeCardButtonPressHandler = async (
+    coreChallengeId: string,
+    isChecked: boolean,
+  ) => {
     try {
-      if(!isChecked && coreChallengeId) {
+      if (!isChecked && coreChallengeId) {
         this.selectChallenge({id: coreChallengeId, newValue: true});
       }
 
-      await this.checkEventAndNavigateToCompletionPage();
+      const isSessionFlow = this.isSessionFlow;
+      const session = sessionStore.session;
+      const level = categoryStore.category;
+
+      if (isSessionFlow && session && level) {
+        // after selecting core challenge for a session i need to link it with that session
+        await userCategoryStore.updateUserSessions([
+          {
+            sessionId: session.id,
+            levelId: level.id,
+            updates: {
+              linkedCoreChallenge: coreChallengeId,
+            },
+          },
+        ]);
+        await this.checkEventAndNavigateToCompletionPage();
+      }
     } catch (e) {
       errorHandler({error: e});
     }

@@ -13,6 +13,7 @@ import challengeStore from '../../model/store/challengeStore';
 interface CoreChallengeCardsFooterProps {
   count: number;
   currentIndex: number;
+  isSessionFlow?: boolean;
 }
 
 const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
@@ -26,8 +27,11 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   }
 
   const onPressHandler = () => {
-    challengeStore.coreChallengeCardButtonPressHandler(currentCoreChallenge.id, currentCoreChallenge.isChecked);
-  }
+    challengeStore.coreChallengeCardButtonPressHandler(
+      currentCoreChallenge.id,
+      currentCoreChallenge.isChecked,
+    );
+  };
 
   return (
     <View style={styles.footer}>

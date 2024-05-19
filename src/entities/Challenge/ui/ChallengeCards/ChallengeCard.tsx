@@ -40,12 +40,12 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     body,
     specialChallengeId,
     isSelectingSpecialChallenge,
-    isChecked
+    isChecked,
   } = props;
   const {theme} = useTheme();
   const colors = useColors();
   const language = useLanguage();
-  
+
   const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
 
   const onTextLayout = useCallback(
@@ -56,7 +56,10 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   );
 
   const onPressHandler = () => {
-    challengeStore.specialChallengeCardButtonPressHandler(specialChallengeId, isChecked);
+    challengeStore.specialChallengeCardButtonPressHandler(
+      specialChallengeId,
+      isChecked,
+    );
   };
 
   return (

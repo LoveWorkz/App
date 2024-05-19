@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -14,25 +14,60 @@ import {CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {sessionStore} from '@src/entities/Session';
+import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 
 const CoreChallengeCardsPage = () => {
   const language = useLanguage();
-
-  const challenges = challengesStore.challenges;
-  const currentCoreChallengeGroup =
-    challengeGroupStore.currentCoreChallengeGroup;
+  const {challenges} = challengesStore;
+  const {currentCoreChallengeGroup} = challengeGroupStore;
+  const {isSessionFlow} = challengeStore;
+  const {session} = sessionStore;
 
   const coreChallengesList = useMemo(() => {
     if (!currentCoreChallengeGroup) {
       return [];
     }
-    return challenges
-      .filter(item => item.groupId === currentCoreChallengeGroup.id)
-      .map(item => ({
-        ...item,
-        groupName: currentCoreChallengeGroup.displayName[language],
-      }));
-  }, [currentCoreChallengeGroup, challenges, language]);
+
+    let filteredChallenges = challenges.filter(
+      challenge => challenge.groupId === currentCoreChallengeGroup.id,
+    );
+
+    if (isSessionFlow) {
+      if (!session) {
+        return [];
+      }
+
+      const {isCurrent, linkedCoreChallenge} = session;
+      if (isCurrent) {
+        filteredChallenges = filteredChallenges.filter(
+          challenge => !challenge.isChecked,
+        );
+      } else {
+        const sessionChallenge = filteredChallenges.find(
+          challenge => challenge.id === linkedCoreChallenge,
+        );
+        filteredChallenges = sessionChallenge ? [sessionChallenge] : [];
+      }
+    }
+
+    return filteredChallenges.map(challenge => ({
+      ...challenge,
+      groupName: currentCoreChallengeGroup.displayName[language],
+    }));
+  }, [challenges, currentCoreChallengeGroup, language, isSessionFlow, session]);
+
+  useEffect(() => {
+    if (!currentCoreChallengeGroup) {
+      return;
+    }
+
+    coreChallengeCardsPageStore.init({
+      isSessionFlow,
+      coreChallengesList,
+      currentCoreChallengeGroupId: currentCoreChallengeGroup.id,
+    });
+  }, [coreChallengesList, isSessionFlow, currentCoreChallengeGroup]);
 
   const defaultChallengeNumber = useMemo(() => {
     return challengeStore.getDefaultChallengeNumberForCardsPage({
@@ -40,14 +75,14 @@ const CoreChallengeCardsPage = () => {
     });
   }, [coreChallengesList]);
 
-  const onSwipeHandler = useCallback((challenge: ChallengeType) => {
+  const handleSwipe = useCallback((challenge: ChallengeType) => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
   return (
     <View style={styles.CoreChallengeDetailsPage}>
       <HorizontalSlide
-        onSwipeHandler={onSwipeHandler}
+        onSwipeHandler={handleSwipe}
         defaultElement={defaultChallengeNumber}
         data={coreChallengesList}
         Component={CoreChallengeCard}

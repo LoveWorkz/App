@@ -17,6 +17,7 @@ export interface SessionType {
   quadrantId: string;
   createdAt: string;
   isCurrent: boolean;
+  linkedCoreChallenge: null;
 }
 
 export type UserSessionType = Record<string, Partial<SessionType>>;

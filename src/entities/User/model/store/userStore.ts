@@ -36,6 +36,7 @@ import {CurrentCategory} from '@src/entities/Category';
 import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
+import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
 import {
   User,
   AuthMethod,
@@ -428,6 +429,8 @@ class UserStore {
     try {
       crashlytics().log('clearing user information.');
 
+      const userId = this.userId;
+
       this.setAuthUserInfo({
         userId: '',
         authMethod: '',
@@ -439,6 +442,7 @@ class UserStore {
       await themeStorage.removeTheme(THEME_STORAGE_KEY);
       await themeStorage.removeTheme(RATE_TYPE_KEY);
       await eventEndStorage.removeEventEndType(EVENT_END_TYPE_KEY);
+      await coreChallengeInfoStorage.removeCoreChallengeInfo(userId);
     } catch (e) {
       errorHandler({error: e});
     }

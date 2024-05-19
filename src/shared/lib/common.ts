@@ -145,3 +145,7 @@ export const ordinalSuffixOf = (number: number) => {
   }
   return number + 'th';
 };
+
+export const removeDuplicates = <T>(arr: Array<T>): T[] => {
+  return Array.from(new Set(arr));
+};

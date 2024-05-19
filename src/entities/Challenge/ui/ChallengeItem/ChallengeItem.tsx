@@ -47,6 +47,9 @@ const ChallengeItem = (props: ChallengeItemProps) => {
   }, [id, isChecked]);
 
   const onChallengePressHandler = () => {
+    // setting this flag to avoid going to the final page
+    challengeStore.setIsSessionFlow(false);
+
     if (isCoreChallenge) {
       challengeStore.coreChallengePressHandler({challenge, language});
     } else if (specailChallenge) {

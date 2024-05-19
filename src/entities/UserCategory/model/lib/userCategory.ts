@@ -84,6 +84,7 @@ export const getSessions = (levelId: string, j: number) => {
       isCurrent: isSessionUnlocked,
       levelId,
       quadrantId,
+      linkedCoreChallenge: null,
     };
   }
 
