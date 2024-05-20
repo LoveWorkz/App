@@ -397,17 +397,15 @@ class CategoryStore {
     });
   };
 
-  // Updates user data and progresses to the next level after all questions have been swiped.
+  // Updates user data and progresses to the next level after completing the current level.
   async updateUserLevelAftePassedAllSessionsAndQuadrats({
     level,
-    session,
   }: {
     level: CategoryType;
-    session: SessionType;
   }) {
     try {
       crashlytics().log(
-        'Attempting to update user data after all questions are swiped.',
+        'Unlocking the next level after completing the current level.',
       );
 
       // Check user subscription before proceeding.

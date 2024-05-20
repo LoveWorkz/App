@@ -21,6 +21,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
   const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
+  const isSelectingChallenge = challengeStore.isSelectingChallenge;
 
   if (!currentCoreChallenge) {
     return null;
@@ -38,6 +39,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
       {challengeStore.isChallengeLockedIn(currentCoreChallenge.id) ||
       !isSessionFlow ? (
         <Button
+          disabled={isSelectingChallenge}
           onPress={onPressHandler}
           theme={ButtonTheme.GRADIENT}
           style={styles.btn}>

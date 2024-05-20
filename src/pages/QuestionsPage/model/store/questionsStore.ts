@@ -241,10 +241,6 @@ class QuestionsStore {
         fieldName: 'currentQuestion',
         fieldValue: question.id,
       });
-
-      this.checkIfAllQuestionsSwiped({
-        questionId: question.id,
-      });
     } catch (e) {
       errorHandler({error: e});
     }
@@ -462,55 +458,6 @@ class QuestionsStore {
     }
     userStore.setNotification({field: 'lastSessionDate', value: ''});
   };
-
-  // Function to check if all questions in a session are swiped and handle the consequences.
-  async checkIfAllQuestionsSwiped(param: {questionId: string}) {
-    try {
-      crashlytics().log('Checking if all questions are swiped.');
-
-      // Retrieve the question information from the store.
-      const questionInfo = questionStore.getQuestionInfo({
-        questionId: param.questionId,
-        questions: this.questions,
-      });
-
-      // Exit if no question info is found or if not the last question.
-      if (
-        !questionInfo ||
-        questionInfo.currentQuestionNumber !== this.questionsSize
-      ) {
-        return;
-      }
-
-      const category = categoryStore.category;
-      const session = sessionStore.session;
-
-      // Ensure both category and session are valid.
-      if (!category || !session) {
-        return;
-      }
-
-      if (
-        sessionStore.isLastQuadrant() &&
-        sessionStore.isLastSessionInsideQuadrant(session)
-      ) {
-        // Update user data and show congrats modal if applicable.
-        categoryStore.updateUserLevelAftePassedAllSessionsAndQuadrats({
-          level: category,
-          session,
-        });
-        this.setCongratsModalVisible(true);
-      } else if (sessionStore.isLastSessionInsideQuadrant(session)) {
-        // Find and update to the next quadrant.
-        await sessionStore.findAndUpdateNextQuadrant(category);
-      } else {
-        // Update user session normally if none of the special conditions apply.
-        sessionStore.updateUserSessionAfterSwipedAllQuestions({category});
-      }
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  }
 
   loadAds = (param: {questionNumber: number; interstitial: InterstitialAd}) => {
     try {

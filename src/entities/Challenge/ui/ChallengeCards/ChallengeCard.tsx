@@ -29,7 +29,7 @@ interface ChallengeCardProps {
   showButton: boolean;
   body: DisplayText;
   specialChallengeId: string;
-  isSelectingSpecialChallenge: boolean;
+  isSelectingChallenge: boolean;
   isChecked: boolean;
 }
 
@@ -39,7 +39,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     showButton,
     body,
     specialChallengeId,
-    isSelectingSpecialChallenge,
+    isSelectingChallenge,
     isChecked,
   } = props;
   const {theme} = useTheme();
@@ -115,7 +115,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
       {showButton && (
         <View style={styles.btnWrapper}>
           <Button
-            disabled={isSelectingSpecialChallenge}
+            disabled={isSelectingChallenge}
             onPress={onPressHandler}
             theme={ButtonTheme.GRADIENT}
             style={styles.btn}>

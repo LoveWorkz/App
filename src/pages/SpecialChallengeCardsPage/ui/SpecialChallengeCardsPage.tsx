@@ -22,8 +22,7 @@ const SpecialChallengeCardsPage = () => {
 
   const isChallengeDoneButtonVisible =
     challengeStore.isChallengeDoneButtonVisible;
-  const isSelectingSpecialChallenge =
-    challengeStore.isSelectingSpecialChallenge;
+  const isSelectingChallenge = challengeStore.isSelectingChallenge;
 
   useFocusEffect(
     useCallback(() => {
@@ -49,7 +48,7 @@ const SpecialChallengeCardsPage = () => {
     const listWithSpecialChallengeId = challengeCardsData.map(item => ({
       ...item,
       specialChallengeId: specialChallenge.id,
-      isSelectingSpecialChallenge,
+      isSelectingChallenge,
       isChecked: specialChallenge.isChecked,
     }));
 
@@ -63,11 +62,7 @@ const SpecialChallengeCardsPage = () => {
       ...item,
       showButton: true,
     }));
-  }, [
-    isChallengeDoneButtonVisible,
-    specialChallenge,
-    isSelectingSpecialChallenge,
-  ]);
+  }, [isChallengeDoneButtonVisible, specialChallenge, isSelectingChallenge]);
 
   if (!specialChallenge) {
     return null;

@@ -367,24 +367,25 @@ class SessionStore {
   };
 
   /**
-   * Handles updates after all questions in a session are swiped, prepares for the next session.
+   * Unlock the next session after finishing the current one.
    * @param category The current category details, including sessions and other metadata.
    */
   async updateUserSessionAfterSwipedAllQuestions({
     category,
+    currentCoreChallengeId,
   }: {
     category: CategoryType;
+    currentCoreChallengeId?: string;
   }) {
     try {
       crashlytics().log(
-        'Updating user session after all questions have been swiped',
+        'Unlocking the next session after finishing the current one',
       );
 
       // Retrieve current session details and verify conditions.
       const sessions = this.currentQuadrantsSessions;
       const currentSession = this.session;
       if (!currentSession) {
-        console.log('No update required or all questions already swiped.');
         return;
       }
 
@@ -402,6 +403,7 @@ class SessionStore {
         level: category,
         currentSession,
         nextSession,
+        currentCoreChallengeId,
       });
 
       await this.checkSessionsAndShowRatePopup(category);
@@ -420,10 +422,12 @@ class SessionStore {
     level,
     currentSession,
     nextSession,
+    currentCoreChallengeId,
   }: {
     level: CategoryType;
     currentSession: SessionType;
     nextSession: SessionType;
+    currentCoreChallengeId?: string;
   }) {
     try {
       const updateSessionStatus = userCategoryStore.updateUserSessions([
@@ -432,6 +436,11 @@ class SessionStore {
           levelId: level.id,
           updates: {
             isCurrent: false,
+
+            // linking core challenge with a session after selecting it
+            ...(currentCoreChallengeId
+              ? {linkedCoreChallenge: currentCoreChallengeId}
+              : {}),
           },
         },
         {
@@ -610,7 +619,10 @@ class SessionStore {
   };
 
   // Function to find and update the next quadrant after the current one is completed.
-  async findAndUpdateNextQuadrant(level: CategoryType) {
+  async findAndUpdateNextQuadrant(
+    level: CategoryType,
+    currentCoreChallengeId?: string,
+  ) {
     if (!userStore.getUserHasSubscription()) {
       console.log('User does not have a valid subscription.');
       return;
@@ -675,6 +687,7 @@ class SessionStore {
       currentSession: currentSessions[currentSessions.length - 1],
       nextSession: newSession,
       level,
+      currentCoreChallengeId,
     });
 
     // Set the new current quadrant and its sessions in the context.
@@ -826,6 +839,37 @@ class SessionStore {
   getQuadrantIndexById = (quadrants: QuadrantType[], id: string) => {
     const quadrantNumber = quadrants.findIndex(quadrant => quadrant.id === id);
     return quadrantNumber === -1 ? 0 : quadrantNumber;
+  };
+
+  processSessionCompletion = async (currentCoreChallengeId?: string) => {
+    try {
+      crashlytics().log('Session Completion handling');
+
+      const level = categoryStore.category;
+      const session = this.session;
+
+      // Ensure both level and session are valid.
+      if (!level || !session) {
+        return;
+      }
+
+      if (this.isLastQuadrant() && this.isLastSessionInsideQuadrant(session)) {
+        categoryStore.updateUserLevelAftePassedAllSessionsAndQuadrats({
+          level,
+        });
+      } else if (this.isLastSessionInsideQuadrant(session)) {
+        // Find and update to the next quadrant.
+        await this.findAndUpdateNextQuadrant(level, currentCoreChallengeId);
+      } else {
+        // Update user session normally if none of the special conditions apply.
+        this.updateUserSessionAfterSwipedAllQuestions({
+          category: level,
+          currentCoreChallengeId,
+        });
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 }
 

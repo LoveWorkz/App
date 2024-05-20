@@ -31,7 +31,6 @@ import {
   getDefaultIndex,
   getFormattedQuestionsWrapper,
 } from '../model/lib/questions';
-import QuestionPageCongratsModal from './QuestionPageCongratsModal/QuestionPageCongratsModal';
 
 interface QuestionsPageProps {
   route?: {
@@ -194,7 +193,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         />
       </View>
       <WowThatWasFast />
-      <QuestionPageCongratsModal />
     </View>
   );
 };

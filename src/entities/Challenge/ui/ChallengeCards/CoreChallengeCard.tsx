@@ -56,7 +56,11 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
         text={description[language]}
       />
 
-      <View style={styles.appNameWrapper}>
+      <View
+        style={[
+          styles.appNameWrapper,
+          {bottom: isSessionFlow ? verticalScale(80) : verticalScale(20)},
+        ]}>
         <GradientText
           size={TextSize.LEVEL_2}
           weight={'700'}

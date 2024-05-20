@@ -18,7 +18,6 @@ import {
   ChallengeGroupType,
 } from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
-import {userCategoryStore} from '@src/entities/UserCategory';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
 import {removeDuplicates} from '@src/shared/lib/common';
 import {userStore} from '@src/entities/User';
@@ -32,7 +31,7 @@ class ChallengeStore {
   lockedChallengeIds: string[] = [];
   isSessionFlow: boolean = false;
 
-  isSelectingSpecialChallenge: boolean = false;
+  isSelectingChallenge: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -50,8 +49,8 @@ class ChallengeStore {
     this.isChallengeDoneButtonVisible = isChallengeDoneButtonVisible;
   };
 
-  setIsSelectingSpecialChallenge = (isSelectingSpecialChallenge: boolean) => {
-    this.isSelectingSpecialChallenge = isSelectingSpecialChallenge;
+  setIsSelectingChallenge = (isSelectingChallenge: boolean) => {
+    this.isSelectingChallenge = isSelectingChallenge;
   };
 
   isChallengeLockedIn = (id: string) => {
@@ -341,14 +340,10 @@ class ChallengeStore {
     try {
       crashlytics().log('Selecting special challenge.');
 
-      this.setIsSelectingSpecialChallenge(true);
-
       await this.updateSpecialChallenge({id});
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});
-    } finally {
-      this.setIsSelectingSpecialChallenge(false);
     }
   };
 
@@ -357,20 +352,25 @@ class ChallengeStore {
     isChecked: boolean,
   ) => {
     try {
+      this.setIsSelectingChallenge(true);
+
+      const isSessionFlow = this.isSessionFlow;
+
+      if (isSessionFlow) {
+        await sessionStore.processSessionCompletion();
+        await this.checkEventAndNavigateToCompletionPage();
+      }
+
       if (!isChecked && specialChallengeId) {
         this.selectSpecialChallenge({
           id: specialChallengeId,
           newValue: true,
         });
       }
-
-      const isSessionFlow = this.isSessionFlow;
-
-      if (isSessionFlow) {
-        await this.checkEventAndNavigateToCompletionPage();
-      }
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      this.setIsSelectingChallenge(false);
     }
   };
 
@@ -379,29 +379,24 @@ class ChallengeStore {
     isChecked: boolean,
   ) => {
     try {
-      if (!isChecked && coreChallengeId) {
-        this.selectChallenge({id: coreChallengeId, newValue: true});
-      }
+      this.setIsSelectingChallenge(true);
 
       const isSessionFlow = this.isSessionFlow;
       const session = sessionStore.session;
       const level = categoryStore.category;
 
       if (isSessionFlow && session && level) {
-        // after selecting core challenge for a session i need to link it with that session
-        await userCategoryStore.updateUserSessions([
-          {
-            sessionId: session.id,
-            levelId: level.id,
-            updates: {
-              linkedCoreChallenge: coreChallengeId,
-            },
-          },
-        ]);
+        await sessionStore.processSessionCompletion(coreChallengeId);
         await this.checkEventAndNavigateToCompletionPage();
+      }
+
+      if (!isChecked && coreChallengeId) {
+        this.selectChallenge({id: coreChallengeId, newValue: true});
       }
     } catch (e) {
       errorHandler({error: e});
+    } finally {
+      this.setIsSelectingChallenge(false);
     }
   };
 
