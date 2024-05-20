@@ -13,13 +13,13 @@ import challengeStore from '../../model/store/challengeStore';
 interface CoreChallengeCardsFooterProps {
   count: number;
   currentIndex: number;
-  isSessionFlow?: boolean;
 }
 
 const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {count, currentIndex} = props;
   const colors = useColors();
 
+  const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
 
   if (!currentCoreChallenge) {
@@ -35,7 +35,8 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
   return (
     <View style={styles.footer}>
-      {challengeStore.isChallengeLockedIn(currentCoreChallenge.id) ? (
+      {challengeStore.isChallengeLockedIn(currentCoreChallenge.id) ||
+      !isSessionFlow ? (
         <Button
           onPress={onPressHandler}
           theme={ButtonTheme.GRADIENT}

@@ -18,7 +18,6 @@ import {
   ChallengeGroupType,
 } from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
-import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {userCategoryStore} from '@src/entities/UserCategory';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
 import {removeDuplicates} from '@src/shared/lib/common';
@@ -128,13 +127,7 @@ class ChallengeStore {
     this.isSessionFlow = isSessionFlow;
   };
 
-  coreChallengePressHandler = ({
-    challenge,
-    language,
-  }: {
-    challenge: ChallengeType;
-    language: LanguageValueType;
-  }) => {
+  coreChallengePressHandler = ({challenge}: {challenge: ChallengeType}) => {
     // setting core challenge group info
     const coreChallengeGroups = challengeGroupStore.coreChallengeGroups;
     const currentCoreChallengeGroup = challengeGroupStore.getChallengeGroupById(
@@ -145,16 +138,12 @@ class ChallengeStore {
       return;
     }
 
-    const currentLevel = categoryStore.category;
-
     challengeGroupStore.setCurrentCoreChallengeGroup(
       currentCoreChallengeGroup as ChallengeGroupType<ChallengeType[]>,
     );
     this.setCoreChallenge(challenge);
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
-      title: currentLevel
-        ? `${currentLevel.displayName[language]} session`
-        : '',
+      title: 'Challenges',
     });
   };
 

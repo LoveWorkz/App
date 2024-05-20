@@ -23,10 +23,11 @@ interface ChallengeCardProps {
   groupName: string;
   groupId: string;
   id: string;
+  isSessionFlow: boolean;
 }
 
 const CoreChallengeCard = (props: ChallengeCardProps) => {
-  const {description, groupName, id, groupId} = props;
+  const {description, groupName, id, groupId, isSessionFlow} = props;
   const colors = useColors();
   const language = useLanguage();
 
@@ -62,32 +63,34 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
           text={`...${APPLICATION_NAME}`}
         />
       </View>
-      <View style={styles.btnWrapper}>
-        {showButton ? (
-          <Button
-            theme={ButtonTheme.OUTLINED}
-            style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Challenge locked'}
-            />
-          </Button>
-        ) : (
-          <Button
-            onPress={onPressHandler}
-            theme={ButtonTheme.GRADIENT}
-            style={styles.btn}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={'Lock the challenge in'}
-            />
-          </Button>
-        )}
-      </View>
+      {isSessionFlow && (
+        <View style={styles.btnWrapper}>
+          {showButton ? (
+            <Button
+              theme={ButtonTheme.OUTLINED}
+              style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
+              <AppText
+                style={{color: colors.white}}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Challenge locked'}
+              />
+            </Button>
+          ) : (
+            <Button
+              onPress={onPressHandler}
+              theme={ButtonTheme.GRADIENT}
+              style={styles.btn}>
+              <AppText
+                style={{color: colors.white}}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={'Lock the challenge in'}
+              />
+            </Button>
+          )}
+        </View>
+      )}
     </FastImage>
   );
 };

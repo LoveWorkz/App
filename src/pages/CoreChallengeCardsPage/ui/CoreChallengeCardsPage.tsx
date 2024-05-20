@@ -54,6 +54,7 @@ const CoreChallengeCardsPage = () => {
     return filteredChallenges.map(challenge => ({
       ...challenge,
       groupName: currentCoreChallengeGroup.displayName[language],
+      isSessionFlow,
     }));
   }, [challenges, currentCoreChallengeGroup, language, isSessionFlow, session]);
 

@@ -51,7 +51,7 @@ const ChallengeItem = (props: ChallengeItemProps) => {
     challengeStore.setIsSessionFlow(false);
 
     if (isCoreChallenge) {
-      challengeStore.coreChallengePressHandler({challenge, language});
+      challengeStore.coreChallengePressHandler({challenge});
     } else if (specailChallenge) {
       challengeStore.specialChallengePressHandler(specailChallenge);
     }
