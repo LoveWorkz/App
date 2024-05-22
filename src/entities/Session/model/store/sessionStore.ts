@@ -532,7 +532,7 @@ class SessionStore {
    */
   async levelSwipeHandlerForFavorites(level: CategoryType) {
     try {
-      const favoriteIds = favoriteStore.favorites?.ids || [];
+      const favoriteIds = favoriteStore.sessiionFavorites?.ids || [];
 
       // keep order, call this method before filtering quadrants
       await this.fetchQuadrantsAndSessionsForLevel(level);

@@ -3,7 +3,8 @@ import {FavoriteType} from '@src/entities/Favorite';
 
 export interface UserChallengeCategoryType {
   userId: string;
-  favorites: FavoriteType;
+  coreChallengeFavorites: FavoriteType;
+  specialChallengeFavorites: FavoriteType;
   challengeCategory: Record<
     CategoryKey,
     {

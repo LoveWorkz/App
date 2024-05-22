@@ -1,7 +1,8 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useCallback} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {observer} from 'mobx-react-lite';
+import {useFocusEffect} from '@react-navigation/native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {HeartIconWithoutColor} from '@src/shared/assets/icons/Heart';
@@ -23,13 +24,15 @@ const QuestionsHeaderRight = () => {
   const isUploadingQuestionImageToStorage =
     shareStore.isUploadingQuestionImageToStorage;
 
-  useEffect(() => {
-    if (!question) {
-      return;
-    }
+  useFocusEffect(
+    useCallback(() => {
+      if (!question) {
+        return;
+      }
 
-    favoriteStore.setIsFavorite(question.id);
-  }, [question]);
+      favoriteStore.setIsFavorite({id: question.id, favoriteKey: 'question'});
+    }, [question]),
+  );
 
   const toggleFavorite = () => {
     const id = question?.id;

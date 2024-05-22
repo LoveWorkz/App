@@ -1,20 +1,22 @@
 import React, {memo} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {observer} from 'mobx-react-lite';
 
-import {Favorite, favoriteStore} from '@src/entities/Favorite';
+import {Favorite, FavoriteType} from '@src/entities/Favorite';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {questionFavourites} from '@src/shared/assets/images';
-import challengesStore from '../../model/store/challengesStore';
 
-const Favorites = () => {
+interface FavoritesProps {
+  favorites: FavoriteType | null;
+  isLoading: boolean;
+}
+
+const Favorites = (props: FavoritesProps) => {
+  const {favorites, isLoading} = props;
+
   const {t} = useTranslation();
-
-  const isLoading = challengesStore.isChallengePageLoading;
-  const favorite = favoriteStore.favorites;
 
   if (isLoading) {
     return (
@@ -24,15 +26,11 @@ const Favorites = () => {
     );
   }
 
-  if (!favorite) {
-    return null;
-  }
-
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.FAVORITES_CHALLENGES);
   };
 
-  if (!favorite.ids.length) {
+  if (!favorites?.ids.length) {
     return null;
   }
 
@@ -41,7 +39,7 @@ const Favorites = () => {
       <View style={styles.favorites}>
         <Favorite
           image={questionFavourites}
-          text={`${favorite.ids.length} ${t('challenge.title')}`}
+          text={`${favorites.ids.length} ${t('challenge.title')}`}
           isLoading={isLoading}
         />
       </View>
@@ -55,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(observer(Favorites));
+export default memo(Favorites);

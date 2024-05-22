@@ -13,27 +13,75 @@ import {
 } from '../types/favoriteType';
 
 class FavoriteStore {
-  favorites: FavoriteType | null = null;
+  coreChallengeFavorites: FavoriteType | null = null;
+  specialChallengeFavorites: FavoriteType | null = null;
+  questionFavorites: FavoriteType | null = null;
+  sessiionFavorites: FavoriteType | null = null;
+
   isFavorite = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  setIsFavorite = (id: string) => {
-    this.isFavorite = this.checkIsFavorite(id, this.favorites);
+  setIsFavorite = (param: {id: string; favoriteKey: FavoriteKey}) => {
+    this.isFavorite = this.checkIsFavorite(param);
   };
 
-  setFavorites = (favorites: FavoriteType) => {
-    this.favorites = favorites;
-  };
-
-  checkIsFavorite = (id: string, favorites: FavoriteType | null) => {
-    if (!favorites) {
-      return false;
+  setFavorites = ({
+    favoriteKey,
+    favorites,
+  }: {
+    favorites: FavoriteType;
+    favoriteKey: FavoriteKey;
+  }) => {
+    switch (favoriteKey) {
+      case 'coreChallenge':
+        this.coreChallengeFavorites = favorites;
+        break;
+      case 'specialChallenge':
+        this.specialChallengeFavorites = favorites;
+        break;
+      case 'question':
+        this.questionFavorites = favorites;
+        break;
+      case 'session':
+        this.sessiionFavorites = favorites;
+        break;
     }
+  };
 
-    return favorites.ids.includes(id);
+  checkIsFavorite = ({
+    id,
+    favoriteKey,
+  }: {
+    id: string;
+    favoriteKey: FavoriteKey;
+  }) => {
+    switch (favoriteKey) {
+      case 'coreChallenge':
+        if (this.coreChallengeFavorites) {
+          return this.coreChallengeFavorites.ids.includes(id);
+        }
+        return false;
+      case 'specialChallenge':
+        if (this.specialChallengeFavorites) {
+          return this.specialChallengeFavorites.ids.includes(id);
+        }
+        return false;
+      case 'question':
+        if (this.questionFavorites) {
+          return this.questionFavorites.ids.includes(id);
+        }
+        return false;
+      case 'session':
+        if (this.sessiionFavorites) {
+          return this.sessiionFavorites.ids.includes(id);
+        }
+        return false;
+      default:
+        return false;
+    }
   };
 
   toggleFavorite = async (id: string, key: FavoriteKey) => {
@@ -54,7 +102,25 @@ class FavoriteStore {
     try {
       crashlytics().log('Adding to favorites.');
 
-      const favorites = this.favorites;
+      let favorites: FavoriteType | null;
+
+      switch (key) {
+        case 'coreChallenge':
+          favorites = this.coreChallengeFavorites;
+          break;
+        case 'specialChallenge':
+          favorites = this.specialChallengeFavorites;
+          break;
+        case 'question':
+          favorites = this.questionFavorites;
+          break;
+        case 'session':
+          favorites = this.sessiionFavorites;
+          break;
+        default:
+          favorites = null;
+      }
+
       if (!favorites) {
         return;
       }
@@ -66,7 +132,10 @@ class FavoriteStore {
 
       runInAction(() => {
         this.isFavorite = true;
-        this.setFavorites({...favorites, ids: newIds});
+        this.setFavorites({
+          favorites: {...favorites, ids: newIds},
+          favoriteKey: key,
+        });
       });
     } catch (e) {
       errorHandler({error: e});
@@ -83,9 +152,17 @@ class FavoriteStore {
           });
 
           break;
-        case 'challenge':
+        case 'coreChallenge':
           await userChallengeCategoryStore.updateUserChallengeFavorites({
             data: newIds,
+            isCore: true,
+          });
+
+          break;
+        case 'specialChallenge':
+          await userChallengeCategoryStore.updateUserChallengeFavorites({
+            data: newIds,
+            isCore: false,
           });
 
           break;
@@ -108,40 +185,69 @@ class FavoriteStore {
         const newQuestionFavoriteData =
           await userRubricStore.deleteQuestionFromFavorites({
             questionId: id,
-            favoriteIds: this.favorites?.ids || [],
+            favoriteIds: this.questionFavorites?.ids || [],
           });
 
         if (newQuestionFavoriteData) {
           runInAction(() => {
             this.isFavorite = newQuestionFavoriteData.isFavorite;
-            this.setFavorites(newQuestionFavoriteData.favorites);
+            this.setFavorites({
+              favorites: newQuestionFavoriteData.favorites,
+              favoriteKey: 'question',
+            });
           });
         }
         break;
-      case 'challenge':
-        const newChallengeFavoriteData =
+      case 'coreChallenge':
+        const newCoreChallengeFavoriteData =
           await userChallengeCategoryStore.deleteChallengeFromFavorites({
             challengeId: id,
-            favoriteIds: this.favorites?.ids || [],
+            favoriteIds: this.coreChallengeFavorites?.ids || [],
+            isCore: true,
           });
 
-        if (newChallengeFavoriteData) {
+        if (newCoreChallengeFavoriteData) {
           runInAction(() => {
-            this.isFavorite = newChallengeFavoriteData.isFavorite;
-            this.setFavorites(newChallengeFavoriteData.favorites);
+            this.isFavorite = newCoreChallengeFavoriteData.isFavorite;
+            this.setFavorites({
+              favorites: newCoreChallengeFavoriteData.favorites,
+              favoriteKey: 'coreChallenge',
+            });
           });
         }
+        break;
+      case 'specialChallenge':
+        const newSpecialChallengeFavoriteData =
+          await userChallengeCategoryStore.deleteChallengeFromFavorites({
+            challengeId: id,
+            favoriteIds: this.specialChallengeFavorites?.ids || [],
+            isCore: false,
+          });
+
+        if (newSpecialChallengeFavoriteData) {
+          runInAction(() => {
+            this.isFavorite = newSpecialChallengeFavoriteData.isFavorite;
+            this.setFavorites({
+              favorites: newSpecialChallengeFavoriteData.favorites,
+              favoriteKey: 'specialChallenge',
+            });
+          });
+        }
+        break;
       case 'session':
         const newSessionFavoriteData =
           await userCategoryStore.deleteSessionFromFavorites({
             sessionId: id,
-            favoriteIds: this.favorites?.ids || [],
+            favoriteIds: this.sessiionFavorites?.ids || [],
           });
 
         if (newSessionFavoriteData) {
           runInAction(() => {
             this.isFavorite = newSessionFavoriteData.isFavorite;
-            this.setFavorites(newSessionFavoriteData.favorites);
+            this.setFavorites({
+              favorites: newSessionFavoriteData.favorites,
+              favoriteKey: 'session',
+            });
           });
         }
         break;
@@ -158,7 +264,10 @@ class FavoriteStore {
     currentQuestionId: string;
     questionsIds: string[];
   }) => {
-    const isFavorite = this.checkIsFavorite(currentQuestionId, this.favorites);
+    const isFavorite = this.checkIsFavorite({
+      id: currentQuestionId,
+      favoriteKey: 'question',
+    });
 
     // when we removing chosen question from favorites we should reset swipe history
     if (!isFavorite) {
@@ -179,11 +288,11 @@ class FavoriteStore {
       let questionId = id;
       const isInitialSetUp = !questionId;
 
-      if (!this.favorites) {
+      if (!this.questionFavorites) {
         return;
       }
 
-      const questionFavorites = this.favorites as QuestionFavoriteType;
+      const questionFavorites = this.questionFavorites as QuestionFavoriteType;
 
       if (!id) {
         // initial logic

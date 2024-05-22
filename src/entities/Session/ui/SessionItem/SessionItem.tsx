@@ -41,8 +41,10 @@ const SessionItem = (props: SessionItemProps) => {
 
   const [visible, setVisible] = useState(false);
 
-  const favorites = favoriteStore.favorites;
-  const isFavorite = favoriteStore.checkIsFavorite(session.id, favorites);
+  const isFavorite = favoriteStore.checkIsFavorite({
+    id: session.id,
+    favoriteKey: 'session',
+  });
 
   let isBlocked = false;
 

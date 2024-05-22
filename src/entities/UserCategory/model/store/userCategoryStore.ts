@@ -49,7 +49,10 @@ class UserCategoryStore {
 
       runInAction(() => {
         this.userLevels = userLevelsMap;
-        favoriteStore.setFavorites(userLevelInfo?.favorites || []);
+        favoriteStore.setFavorites({
+          favorites: userLevelInfo?.favorites || [],
+          favoriteKey: 'session',
+        });
       });
     } catch (error) {
       errorHandler({error, message: 'Error fetching user levels'});

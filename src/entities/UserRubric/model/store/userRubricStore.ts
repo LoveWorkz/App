@@ -41,7 +41,10 @@ class UserRubricStore {
 
       runInAction(() => {
         this.userRubric = userRubrics;
-        favoriteStore.setFavorites(userRubrics.favorites);
+        favoriteStore.setFavorites({
+          favorites: userRubrics.favorites,
+          favoriteKey: 'question',
+        });
       });
     } catch (e) {
       errorHandler({error: e});

@@ -1,14 +1,10 @@
-import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useCallback} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import {SceneMap} from 'react-native-tab-view';
 
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {TabView} from '@src/shared/ui/TabView/TabView';
 import challengesStore from '../model/store/challengesStore';
-import ComponentScreen from './ComponentScreen/ComponentScreen';
+import ChallengeTabView from './ChallengeTabView';
 
 interface ChallengesPageProps {
   route?: {
@@ -24,8 +20,6 @@ interface ChallengesPageProps {
 const ChallengesPage = (props: ChallengesPageProps) => {
   const {route} = props;
 
-  const {t} = useTranslation();
-
   const prevRouteName = route?.params?.prevRouteName;
   const isTabScreen = route?.params?.isTabScreen;
 
@@ -38,31 +32,7 @@ const ChallengesPage = (props: ChallengesPageProps) => {
     }, [isTabScreen, prevRouteName]),
   );
 
-  const renderScene = useMemo(() => {
-    return SceneMap({
-      core: () => <ComponentScreen isCore={true} />,
-      special: () => <ComponentScreen />,
-    });
-  }, []);
-
-  const tabNames = useMemo(() => {
-    return [
-      {key: 'core', title: t('challenge.tab_core')},
-      {key: 'special', title: t('challenge.tab_special')},
-    ];
-  }, []);
-
-  return (
-    <View style={styles.ChallengesPage}>
-      <TabView renderScene={renderScene} tabNames={tabNames} />
-    </View>
-  );
+  return <ChallengeTabView />;
 };
 
 export default memo(ChallengesPage);
-
-const styles = StyleSheet.create({
-  ChallengesPage: {
-    flex: 1,
-  },
-});

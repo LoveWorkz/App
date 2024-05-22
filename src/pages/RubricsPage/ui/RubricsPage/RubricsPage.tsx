@@ -11,7 +11,7 @@ import rubricsPageStore from '../../model/Store/RubricsPageStore';
 
 export const RubricsPage = () => {
   const isLoading = rubricsPageStore.isRubricsPageLoading;
-  const favorites = favoriteStore.favorites;
+  const favorites = favoriteStore.questionFavorites;
 
   useFocusEffect(
     useCallback(() => {

@@ -23,16 +23,21 @@ const ComponentScreen = (props: ComponentScreenProps) => {
   const {isCore = false, isFavortePage = false} = props;
 
   const isLoading = challengesStore.isChallengePageLoading;
+
   const challenges = challengesStore.challenges;
   const specialChallenges = challengesStore.specialChallenges;
   const isChallengesLoading = challengesStore.isChallengesLoading;
 
-  if (isFavortePage) {
-    const favorite = favoriteStore.favorites;
-    const ids = favorite?.ids;
+  const coreChallengeFavorites = favoriteStore.coreChallengeFavorites;
+  const specialChallengeFavorites = favoriteStore.specialChallengeFavorites;
 
-    const favoriteChallengesList = challenges.filter(challenge =>
-      (ids || []).includes(challenge.id),
+  if (isFavortePage) {
+    const favoriteCoreChallengesList = challenges.filter(challenge =>
+      (coreChallengeFavorites?.ids || []).includes(challenge.id),
+    );
+
+    const favoriteSpecialChallengesList = specialChallenges.filter(challenge =>
+      (specialChallengeFavorites?.ids || []).includes(challenge.id),
     );
 
     return (
@@ -42,14 +47,21 @@ const ComponentScreen = (props: ComponentScreenProps) => {
         {isCore ? (
           <ScrollViewWithoutIndicator>
             <>
-              {!!favoriteChallengesList.length &&
-                favoriteChallengesList.map((item, i) =>
-                  renderChallenges({isCore, item, index: i}),
+              {!!favoriteCoreChallengesList.length &&
+                favoriteCoreChallengesList.map((item, i) =>
+                  renderChallenges({isCore: true, item, index: i}),
                 )}
             </>
           </ScrollViewWithoutIndicator>
         ) : (
-          <></>
+          <ScrollViewWithoutIndicator>
+            <>
+              {!!favoriteSpecialChallengesList.length &&
+                favoriteSpecialChallengesList.map((item, i) =>
+                  renderChallenges({isCore: false, item, index: i}),
+                )}
+            </>
+          </ScrollViewWithoutIndicator>
         )}
       </View>
     );
@@ -59,17 +71,25 @@ const ComponentScreen = (props: ComponentScreenProps) => {
     <View style={styles.ComponentScreen}>
       <ChallengeCategories isLoading={isLoading} />
       <View style={styles.line} />
-      <Favorites />
       {isCore ? (
-        <CoreChallengesList
-          isLoading={isLoading || isChallengesLoading}
-          challengeList={challenges}
-        />
+        <>
+          <Favorites favorites={coreChallengeFavorites} isLoading={isLoading} />
+          <CoreChallengesList
+            isLoading={isLoading || isChallengesLoading}
+            challengeList={challenges}
+          />
+        </>
       ) : (
-        <SpecialChallengesList
-          isLoading={isLoading || isChallengesLoading}
-          challengeList={specialChallenges}
-        />
+        <>
+          <Favorites
+            favorites={specialChallengeFavorites}
+            isLoading={isLoading}
+          />
+          <SpecialChallengesList
+            isLoading={isLoading || isChallengesLoading}
+            challengeList={specialChallenges}
+          />
+        </>
       )}
     </View>
   );

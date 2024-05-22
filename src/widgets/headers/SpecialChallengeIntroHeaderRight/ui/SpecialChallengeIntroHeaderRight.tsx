@@ -9,43 +9,39 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {favoriteStore} from '@src/entities/Favorite';
 import {Button} from '@src/shared/ui/Button/Button';
 import {challengeStore} from '@src/entities/Challenge';
-import InformationBlock from '@src/shared/ui/InformationBlock/InformationBlock';
-import {InformationBlockPopup} from '@src/shared/ui/InformationBlock/InformationBlockPopup';
-import {infoTextType} from '@src/widgets/InformationBlock';
+import {ShareIcon} from '@src/shared/assets/icons/Share';
 
-const textContent: infoTextType[] = [];
-
-const ChallengesHeaderRight = () => {
+const SpecialChallengeIntroHeaderRight = () => {
   const colors = useColors();
 
-  const coreChallenge = challengeStore.coreChallenge;
+  const specialChallenge = challengeStore.specialChallenge;
   const isFavorite = favoriteStore.isFavorite;
 
   useEffect(() => {
-    if (!coreChallenge) {
+    if (!specialChallenge) {
       return;
     }
 
     favoriteStore.setIsFavorite({
-      id: coreChallenge.id,
-      favoriteKey: 'coreChallenge',
+      id: specialChallenge.id,
+      favoriteKey: 'specialChallenge',
     });
-  }, [coreChallenge]);
+  }, [specialChallenge]);
 
   const toggleFavorite = () => {
-    const id = coreChallenge?.id;
-    id && favoriteStore.toggleFavorite(id, 'coreChallenge');
+    const id = specialChallenge?.id;
+    id && favoriteStore.toggleFavorite(id, 'specialChallenge');
   };
 
   return (
-    <View style={styles.ChallengesHeaderRight}>
-      <InformationBlock
-        popupWidth={horizontalScale(280)}
-        isChallenge
-        text={textContent}
-        title={'Title'}
-        Popup={InformationBlockPopup}
-      />
+    <View style={styles.SpecialChallengeIntroHeaderRight}>
+      <Button>
+        <SvgXml
+          xml={ShareIcon}
+          stroke={colors.white}
+          style={styles.shareIcon}
+        />
+      </Button>
       <Button style={styles.HeartIconBtn} onPress={toggleFavorite}>
         {isFavorite ? (
           <SvgXml
@@ -66,10 +62,10 @@ const ChallengesHeaderRight = () => {
   );
 };
 
-export default memo(observer(ChallengesHeaderRight));
+export default memo(observer(SpecialChallengeIntroHeaderRight));
 
 const styles = StyleSheet.create({
-  ChallengesHeaderRight: {
+  SpecialChallengeIntroHeaderRight: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -79,5 +75,11 @@ const styles = StyleSheet.create({
   HeartIcon: {
     height: verticalScale(18),
     width: horizontalScale(20),
+  },
+
+  shareIcon: {
+    height: verticalScale(15),
+    width: horizontalScale(20),
+    marginRight: horizontalScale(10),
   },
 });

@@ -51,7 +51,11 @@ class UserChallengeCategoryStore {
         ];
 
       runInAction(() => {
-        favoriteStore.setFavorites(userChallengeCategory.favorites);
+        this.setChallengeFavorites({
+          coreChallengeFavorites: userChallengeCategory.coreChallengeFavorites,
+          specialChallengeFavorites:
+            userChallengeCategory.specialChallengeFavorites,
+        });
 
         this.userChallengeCategory = userChallengeCategory;
         challengesStore.setIsAllChallengesSelected(
@@ -69,6 +73,24 @@ class UserChallengeCategoryStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  setChallengeFavorites = ({
+    coreChallengeFavorites,
+    specialChallengeFavorites,
+  }: {
+    coreChallengeFavorites: FavoriteType;
+    specialChallengeFavorites: FavoriteType;
+  }) => {
+    favoriteStore.setFavorites({
+      favorites: coreChallengeFavorites,
+      favoriteKey: 'coreChallenge',
+    });
+
+    favoriteStore.setFavorites({
+      favorites: specialChallengeFavorites,
+      favoriteKey: 'specialChallenge',
+    });
   };
 
   setUserChallengeCategories = async (userId: string) => {
@@ -102,7 +124,8 @@ class UserChallengeCategoryStore {
         .doc(userId)
         .set({
           challengeCategory: userChallengeCategories,
-          favorites: favorites,
+          coreChallengeFavorites: favorites,
+          specialChallengeFavorites: favorites,
         });
     } catch (e) {
       errorHandler({error: e});
@@ -160,8 +183,10 @@ class UserChallengeCategoryStore {
 
   updateUserChallengeFavorites = async ({
     data,
+    isCore,
   }: {
     data: string | string[] | FavoriteType;
+    isCore: boolean;
   }) => {
     try {
       crashlytics().log('Updating User challenge Favorites.');
@@ -172,19 +197,23 @@ class UserChallengeCategoryStore {
         return;
       }
 
+      const fieldName = `${
+        isCore ? 'coreChallengeFavorites' : 'specialChallengeFavorites'
+      }.ids`;
+
       if (isOffline) {
         firestore()
           .collection(Collections.USER_CHALLENGE_CATEGORIES)
           .doc(userId)
           .update({
-            ['favorites.ids']: data,
+            [fieldName]: data,
           });
       } else {
         await firestore()
           .collection(Collections.USER_CHALLENGE_CATEGORIES)
           .doc(userId)
           .update({
-            ['favorites.ids']: data,
+            [fieldName]: data,
           });
       }
     } catch (e) {
@@ -195,9 +224,11 @@ class UserChallengeCategoryStore {
   deleteChallengeFromFavorites = async ({
     challengeId,
     favoriteIds,
+    isCore,
   }: {
     challengeId: string;
     favoriteIds: string[];
+    isCore: boolean;
   }) => {
     try {
       const ids = favoriteIds;
@@ -211,6 +242,7 @@ class UserChallengeCategoryStore {
 
       await this.updateUserChallengeFavorites({
         data: newIds,
+        isCore,
       });
 
       return {

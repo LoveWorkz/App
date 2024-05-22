@@ -8,13 +8,14 @@ import {
   CoreChallengeCard,
   CoreChallengeCardsFooter,
 } from '@src/entities/Challenge';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
-import {CARD_WIDTH} from '@src/shared/consts/common';
+import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {sessionStore} from '@src/entities/Session';
+import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 
 const CoreChallengeCardsPage = () => {
@@ -23,6 +24,7 @@ const CoreChallengeCardsPage = () => {
   const {currentCoreChallengeGroup} = challengeGroupStore;
   const {isSessionFlow} = challengeStore;
   const {session} = sessionStore;
+  const isFetching = coreChallengeCardsPageStore.isFetching;
 
   const coreChallengesList = useMemo(() => {
     if (!currentCoreChallengeGroup) {
@@ -80,6 +82,16 @@ const CoreChallengeCardsPage = () => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
+  if (isFetching) {
+    return (
+      <View style={styles.CoreChallengeDetailsPage}>
+        <View style={styles.skeletonCard}>
+          <Skeleton height={CARD_HEIGHT} borderRadius={moderateScale(20)} />
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.CoreChallengeDetailsPage}>
       <HorizontalSlide
@@ -103,5 +115,10 @@ const styles = StyleSheet.create({
   CoreChallengeDetailsPage: {
     flex: 1,
     marginTop: verticalScale(20),
+    alignItems: 'center',
+  },
+  skeletonCard: {
+    marginTop: verticalScale(30),
+    width: '90%',
   },
 });

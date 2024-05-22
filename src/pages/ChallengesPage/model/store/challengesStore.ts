@@ -25,6 +25,7 @@ class ChallengesStore {
   challengeCategory: null | CurrentChallengeCategoryType = null;
   isChallengesLoading: boolean = false;
   isChallengePageLoading: boolean = true;
+  challengeTabIndex: number = 0;
 
   unlockedChallengeCategoriesIds: string[] = [];
 
@@ -55,6 +56,10 @@ class ChallengesStore {
 
   setChallengeCategory = (challengeCategory: CurrentChallengeCategoryType) => {
     this.challengeCategory = challengeCategory;
+  };
+
+  setChallengeTabIndex = (challengeTabIndex: number) => {
+    this.challengeTabIndex = challengeTabIndex;
   };
 
   setFavoriteChallengesList = (favoriteChallengesList: ChallengeType[]) => {

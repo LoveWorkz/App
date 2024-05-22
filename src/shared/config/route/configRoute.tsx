@@ -45,6 +45,7 @@ import {
 import {QuadrantDetailsPage} from '@src/pages/QuadrantDetailsPage';
 import {GameRulesPage} from '@src/pages/GameRulesPage';
 import {CoreChallengeIntroPage} from '@src/pages/CoreChallengeIntroPage';
+import {SpecialChallengeIntroHeaderRight} from '@src/widgets/headers/SpecialChallengeIntroHeaderRight';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -514,6 +515,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     bgColor: 'secondaryBackground',
     headerTitle: '',
+    HeaderRight: SpecialChallengeIntroHeaderRight,
     Element: (props: ParamListBase) => {
       return (
         <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">

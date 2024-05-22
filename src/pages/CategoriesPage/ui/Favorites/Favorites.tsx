@@ -18,7 +18,7 @@ const FavoriteSessions = () => {
     return <Favorite image={questionFavourites} text={''} isLoading={true} />;
   }
 
-  const favorite = favoriteStore.favorites;
+  const favorite = favoriteStore.sessiionFavorites;
   if (!(favorite && favorite.ids.length)) {
     return null;
   }

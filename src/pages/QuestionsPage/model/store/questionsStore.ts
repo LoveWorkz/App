@@ -417,7 +417,7 @@ class QuestionsStore {
   };
 
   getFavoritesQuestions = () => {
-    const favorites = favoriteStore.favorites;
+    const favorites = favoriteStore.questionFavorites;
     if (!favorites) {
       return;
     }

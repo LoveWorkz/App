@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useWindowDimensions, StyleSheet} from 'react-native';
+import {useWindowDimensions, StyleSheet, View} from 'react-native';
 import {TabView as TabV, TabBar, Route} from 'react-native-tab-view';
 
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -40,29 +40,38 @@ const RenderTabBar = (props: RenderSceneType) => {
 };
 
 interface TabViewProps {
-  renderScene: (props: any) => JSX.Element;
+  renderScene: (props: any) => React.ReactNode;
   tabNames: Route[];
+  setIndex: (index: number) => void;
+  index: number;
 }
 
 export const TabView = React.memo((props: TabViewProps) => {
-  const {renderScene, tabNames} = props;
+  const {renderScene, tabNames, setIndex, index} = props;
   const layout = useWindowDimensions();
 
-  const [index, setIndex] = React.useState(0);
+  const onIndexChange = React.useCallback((newIndex: number) => {
+    setIndex(newIndex);
+  }, []);
 
   return (
-    <TabV
-      navigationState={{index, routes: tabNames}}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{width: layout.width}}
-      renderTabBar={RenderTabBar}
-      swipeEnabled={false}
-    />
+    <View style={styles.TabView}>
+      <TabV
+        navigationState={{index: index, routes: tabNames}}
+        renderScene={renderScene}
+        onIndexChange={onIndexChange}
+        initialLayout={{width: layout.width}}
+        renderTabBar={RenderTabBar}
+        swipeEnabled={false}
+      />
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
+  TabView: {
+    flex: 1,
+  },
   tabbar: {
     backgroundColor: 'transparent',
     shadowOpacity: 0,

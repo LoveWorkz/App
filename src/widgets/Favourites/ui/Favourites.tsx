@@ -27,7 +27,7 @@ export const Favourites = (props: FavouritesProps) => {
     });
   };
 
-  const favorite = favoriteStore.favorites;
+  const favorite = favoriteStore.questionFavorites;
   if (!favorite) {
     return null;
   }
