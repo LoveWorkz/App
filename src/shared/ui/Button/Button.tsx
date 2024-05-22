@@ -135,7 +135,7 @@ const styles = StyleSheet.create<Record<string, any>>({
     paddingHorizontal: horizontalScale(10),
   },
   disabled: {
-    opacity: 0.4,
+    opacity: 0.7,
   },
   squar: {
     padding: 1,

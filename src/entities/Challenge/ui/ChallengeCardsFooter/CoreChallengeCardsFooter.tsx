@@ -8,6 +8,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {CARD_WIDTH} from '@src/shared/consts/common';
+import {sessionStore} from '@src/entities/Session';
 import challengeStore from '../../model/store/challengeStore';
 
 interface CoreChallengeCardsFooterProps {
@@ -22,22 +23,40 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
+  const {session} = sessionStore;
 
   if (!currentCoreChallenge) {
     return null;
   }
 
   const onPressHandler = () => {
-    challengeStore.coreChallengeCardButtonPressHandler(
-      currentCoreChallenge.id,
-      currentCoreChallenge.isChecked,
-    );
+    challengeStore.coreChallengeCardButtonPressHandler({
+      coreChallengeId: currentCoreChallenge.id,
+      isChecked: currentCoreChallenge.isChecked,
+    });
   };
+
+  if(!isSessionFlow) {
+   return <View style={styles.footer}>
+       <Button
+          disabled={isSelectingChallenge}
+          onPress={onPressHandler}
+          theme={ButtonTheme.GRADIENT}
+          style={styles.btn}>
+          <AppText
+            style={{color: colors.white}}
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={'We’ve done the challenge'}
+          />
+        </Button>
+    </View>
+  }
 
   return (
     <View style={styles.footer}>
       {challengeStore.isChallengeLockedIn(currentCoreChallenge.id) ||
-      !isSessionFlow ? (
+      !session?.isCurrent ? (
         <Button
           disabled={isSelectingChallenge}
           onPress={onPressHandler}

@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {TextArea} from '@src/shared/ui/TextArea/TextArea';
@@ -20,6 +20,12 @@ const FeedbackBlock = (props: CompletionItemProps) => {
 
   const colors = useColors();
 
+  useEffect(() => {
+    return () => {
+      completionPageStore.clearForm();
+    };
+  }, []);
+
   return (
     <View>
       <TextArea
@@ -40,16 +46,6 @@ const FeedbackBlock = (props: CompletionItemProps) => {
           size={TextSize.LEVEL_4}
           weight={'600'}
           text={'Send'}
-        />
-      </Button>
-
-      <Button onPress={completionPageStore.skipHandler}>
-        <AppText
-          style={[styles.skip, {color: colors.white}]}
-          size={TextSize.LEVEL_4}
-          align={'center'}
-          weight={'600'}
-          text={'Let’s skip it for now'}
         />
       </Button>
     </View>

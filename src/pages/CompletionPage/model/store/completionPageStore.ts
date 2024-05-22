@@ -304,9 +304,10 @@ class CompletionPageStore {
     }
   };
 
-  skipHandler = () => {
+  clearForm = () => {
     this.setRatingResults(initialRatingResults);
-    navigation.navigate(TabRoutesNames.HOME);
+    this.setDescription('');
+    this.setRatingInformationList([]);
   };
 }
 

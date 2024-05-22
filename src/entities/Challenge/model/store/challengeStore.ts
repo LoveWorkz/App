@@ -37,11 +37,11 @@ class ChallengeStore {
     makeAutoObservable(this);
   }
 
-  setSpecialChallenge = (specialChallenge: SpecialChallengeType) => {
+  setSpecialChallenge = (specialChallenge: SpecialChallengeType | null) => {
     this.specialChallenge = specialChallenge;
   };
 
-  setCoreChallenge = (coreChallenge: ChallengeType) => {
+  setCoreChallenge = (coreChallenge: ChallengeType | null) => {
     this.coreChallenge = coreChallenge;
   };
 
@@ -72,7 +72,6 @@ class ChallengeStore {
       const userId = userStore.userId;
       const newValue = [...this.lockedChallengeIds, id];
       const filteredIds = removeDuplicates(newValue);
-      this.setIds(filteredIds);
 
       let data = {[groupId]: filteredIds};
 
@@ -86,6 +85,37 @@ class ChallengeStore {
         userId,
         JSON.stringify(data),
       );
+
+      this.setIds(filteredIds);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  removeLockedChallengeId = async ({
+    id,
+    groupId,
+  }: {
+    id: string;
+    groupId: string;
+  }) => {
+    try {
+      const userId = userStore.userId;
+      const newList = this.lockedChallengeIds.filter(item => item !== id);
+
+      const lockedChallengeIdsFromStorage =
+        await this.getLockedChallengeIdsFromStorage();
+
+      if (lockedChallengeIdsFromStorage) {
+        const data = {...lockedChallengeIdsFromStorage, [groupId]: newList};
+
+        await coreChallengeInfoStorage.setCoreChallengeInfo(
+          userId,
+          JSON.stringify(data),
+        );
+
+        this.setIds(newList);
+      }
     } catch (e) {
       errorHandler({error: e});
     }
@@ -169,7 +199,7 @@ class ChallengeStore {
   }) => {
     const currentCoreChallenge = this.coreChallenge;
     if (!currentCoreChallenge) {
-      return 1;
+      return 0;
     }
 
     return this.getChallengeNumber({
@@ -374,10 +404,13 @@ class ChallengeStore {
     }
   };
 
-  coreChallengeCardButtonPressHandler = async (
-    coreChallengeId: string,
-    isChecked: boolean,
-  ) => {
+  coreChallengeCardButtonPressHandler = async ({
+    coreChallengeId,
+    isChecked,
+  }: {
+    coreChallengeId: string;
+    isChecked: boolean;
+  }) => {
     try {
       this.setIsSelectingChallenge(true);
 
@@ -416,6 +449,12 @@ class ChallengeStore {
     } else {
       navigation.navigate(AppRouteNames.COMPLETION);
     }
+  };
+
+  clearForm = () => {
+    this.setIds([]);
+    this.setCoreChallenge(null);
+    this.setSpecialChallenge(null);
   };
 }
 

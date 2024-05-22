@@ -1,6 +1,7 @@
 import React, {memo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {observer} from 'mobx-react-lite';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
@@ -24,21 +25,44 @@ interface ChallengeCardProps {
   groupId: string;
   id: string;
   isSessionFlow: boolean;
+  isChallengeCompleted?: boolean;
 }
 
 const CoreChallengeCard = (props: ChallengeCardProps) => {
-  const {description, groupName, id, groupId, isSessionFlow} = props;
+  const {
+    description,
+    groupName,
+    id,
+    groupId,
+    isSessionFlow,
+    isChallengeCompleted,
+  } = props;
   const colors = useColors();
   const language = useLanguage();
 
-  const [showButton, setShowButton] = useState<boolean>(() =>
-    challengeStore.isChallengeLockedIn(id),
+  const lockedChallengeIds = challengeStore.lockedChallengeIds;
+
+  const [isChallengeLocked, setIsChallengeLocked] = useState<boolean>(
+    () => challengeStore.isChallengeLockedIn(id) || !!isChallengeCompleted,
   );
 
-  const onPressHandler = () => {
-    setShowButton(true);
+  const challengelockedHandler = () => {
+    if (isChallengeCompleted) {
+      return;
+    }
+
+    setIsChallengeLocked(false);
+    challengeStore.removeLockedChallengeId({id, groupId});
+  };
+
+  const lockTheChallengeInHandler = () => {
+    setIsChallengeLocked(true);
     challengeStore.setLockedChallengeIds({id, groupId});
   };
+
+  const hasEntries = lockedChallengeIds.length > 0;
+  const isNotIncluded = !lockedChallengeIds.includes(id);
+  const isDisabled = hasEntries && isNotIncluded;
 
   return (
     <FastImage
@@ -56,11 +80,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
         text={description[language]}
       />
 
-      <View
-        style={[
-          styles.appNameWrapper,
-          {bottom: isSessionFlow ? verticalScale(80) : verticalScale(20)},
-        ]}>
+      <View style={styles.appNameWrapper}>
         <GradientText
           size={TextSize.LEVEL_2}
           weight={'700'}
@@ -69,8 +89,9 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
       </View>
       {isSessionFlow && (
         <View style={styles.btnWrapper}>
-          {showButton ? (
+          {isChallengeLocked ? (
             <Button
+              onPress={challengelockedHandler}
               theme={ButtonTheme.OUTLINED}
               style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
               <AppText
@@ -82,7 +103,8 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
             </Button>
           ) : (
             <Button
-              onPress={onPressHandler}
+              disabled={isDisabled}
+              onPress={lockTheChallengeInHandler}
               theme={ButtonTheme.GRADIENT}
               style={styles.btn}>
               <AppText
@@ -99,7 +121,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
   );
 };
 
-export default memo(CoreChallengeCard);
+export default memo(observer(CoreChallengeCard));
 
 const padding = horizontalScale(20);
 
@@ -119,14 +141,13 @@ const styles = StyleSheet.create({
   },
   appNameWrapper: {
     position: 'absolute',
-    width: horizontalScale(CARD_WIDTH),
-    alignItems: 'center',
-    bottom: verticalScale(80),
+    bottom: verticalScale(20),
+    right: padding,
   },
   btnWrapper: {
     width: horizontalScale(CARD_WIDTH),
     position: 'absolute',
-    bottom: verticalScale(20),
+    bottom: verticalScale(55),
     alignItems: 'center',
   },
   btn: {

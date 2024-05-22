@@ -8,23 +8,22 @@ import {
   CoreChallengeCard,
   CoreChallengeCardsFooter,
 } from '@src/entities/Challenge';
-import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
+import {verticalScale} from '@src/shared/lib/Metrics';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
-import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
+import {CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {sessionStore} from '@src/entities/Session';
-import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 
 const CoreChallengeCardsPage = () => {
   const language = useLanguage();
+
   const {challenges} = challengesStore;
   const {currentCoreChallengeGroup} = challengeGroupStore;
   const {isSessionFlow} = challengeStore;
   const {session} = sessionStore;
-  const isFetching = coreChallengeCardsPageStore.isFetching;
 
   const coreChallengesList = useMemo(() => {
     if (!currentCoreChallengeGroup) {
@@ -57,6 +56,7 @@ const CoreChallengeCardsPage = () => {
       ...challenge,
       groupName: currentCoreChallengeGroup.displayName[language],
       isSessionFlow,
+      isChallengeCompleted: !session?.isCurrent,
     }));
   }, [challenges, currentCoreChallengeGroup, language, isSessionFlow, session]);
 
@@ -70,6 +70,10 @@ const CoreChallengeCardsPage = () => {
       coreChallengesList,
       currentCoreChallengeGroupId: currentCoreChallengeGroup.id,
     });
+
+    return () => {
+      challengeStore.clearForm();
+    };
   }, [coreChallengesList, isSessionFlow, currentCoreChallengeGroup]);
 
   const defaultChallengeNumber = useMemo(() => {
@@ -81,16 +85,6 @@ const CoreChallengeCardsPage = () => {
   const handleSwipe = useCallback((challenge: ChallengeType) => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
-
-  if (isFetching) {
-    return (
-      <View style={styles.CoreChallengeDetailsPage}>
-        <View style={styles.skeletonCard}>
-          <Skeleton height={CARD_HEIGHT} borderRadius={moderateScale(20)} />
-        </View>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.CoreChallengeDetailsPage}>
