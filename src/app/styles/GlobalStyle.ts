@@ -135,6 +135,12 @@ export const globalStyles = StyleSheet.create({
   size_32: {
     fontSize: moderateScale(32),
   },
+  size_38: {
+    fontSize: moderateScale(38),
+  },
+  size_68: {
+    fontSize: moderateScale(68),
+  },
 
   // shadow light
   shadowOpacity_level_1: {

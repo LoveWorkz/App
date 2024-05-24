@@ -36,9 +36,10 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     });
   };
 
-  if(!isSessionFlow) {
-   return <View style={styles.footer}>
-       <Button
+  if (!isSessionFlow) {
+    return (
+      <View style={styles.footer}>
+        <Button
           disabled={isSelectingChallenge}
           onPress={onPressHandler}
           theme={ButtonTheme.GRADIENT}
@@ -50,7 +51,8 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
             text={'We’ve done the challenge'}
           />
         </Button>
-    </View>
+      </View>
+    );
   }
 
   return (

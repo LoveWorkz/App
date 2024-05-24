@@ -64,9 +64,7 @@ export {default as IntimateDarkImage} from './dark/progressBar/intimate/Intimate
 
 export {default as WILD_CARD} from './WILD_CARD.png';
 
-export {default as homeCategoryImage} from './light/homeCategoryImage.png';
 export {default as HomepageBackground} from './light/HomepageBackground.png';
-export {default as homeCategoryImageDark} from './dark/homeCategoryImageDark.png';
 export {default as HomepageBackgroundDark} from './dark/HomepageBackgroundDark.png';
 export {default as splashScreenImage} from './splashScreenImage.png';
 export {default as defaultAvatarImage} from './light/defaultAvatarImage.png';
@@ -123,3 +121,5 @@ export {default as ArranKennedy} from './ArranKennedy.png';
 
 export {default as quadrantBg} from './quadrantBg.png';
 export {default as gameRulesBg} from './gameRulesBg.png';
+
+export {default as discountOfferCardBg} from './discountOfferCardBg.png';

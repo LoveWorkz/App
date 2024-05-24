@@ -1,61 +1,38 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
-import {useTranslation} from 'react-i18next';
-import FastImage from 'react-native-fast-image';
 import {observer} from 'mobx-react-lite';
 
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {
-  getShadowOpacity,
-  windowWidthMinusPaddings,
-} from '@src/app/styles/GlobalStyle';
-import {
-  homeCategoryImage,
-  homeCategoryImageDark,
-} from '@src/shared/assets/images';
-import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import homePageStore from '../../model/store/HomePageStore';
+import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 
 interface QuickStartProps {
   isLoading: boolean;
 }
 
-const height = 92;
-const borderRadius = 20;
+const borderRadius = moderateScale(20);
 
 const QuickStart = (props: QuickStartProps) => {
   const {isLoading} = props;
-  const {t} = useTranslation();
   const colors = useColors();
-  const {theme} = useTheme();
-
-  if (isLoading) {
-    return (
-      <View style={styles.QuickStart}>
-        <View style={styles.quickStartTitleSkeleton}>
-          <Skeleton width={120} height={15} />
-        </View>
-        <Skeleton
-          width={windowWidthMinusPaddings}
-          height={height}
-          borderRadius={borderRadius}
-        />
-      </View>
-    );
-  }
 
   const user = userStore.user;
-  if (!user) {
-    return <></>;
+
+  const textStyle = useMemo(() => {
+    return {color: colors.white};
+  }, []);
+
+  if (isLoading || !user) {
+    return null;
   }
+
   const isFirstUserVisit = !user.hasUserSwipedAnyQuestion;
 
   const onPressHandler = () => {
@@ -63,110 +40,82 @@ const QuickStart = (props: QuickStartProps) => {
   };
 
   return (
-    <View style={styles.QuickStart}>
-      <AppText
-        style={[styles.quickStartTitle, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={isFirstUserVisit ? t('home.start_game') : t('home.quick_start')}
-        weight={'500'}
-      />
-      <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
-        <FastImage
-          resizeMode={'cover'}
-          style={[
-            styles.container,
-            {
-              backgroundColor: colors.bgTertiaryColor,
-              ...getShadowOpacity(theme).shadowOpacity_level_2,
-            },
-          ]}
-          source={
-            theme === Theme.Dark ? homeCategoryImageDark : homeCategoryImage
-          }>
-          <View style={styles.content}>
-            <View style={styles.textWrapper}>
-              <AppText
-                style={{color: colors.homePageCategoryTitleColor}}
-                size={TextSize.LEVEL_2}
-                text={
-                  isFirstUserVisit
-                    ? t('home.start_your_sessions_here')
-                    : t('home.continue_where_you_left_off')
-                }
-              />
-            </View>
-            <View style={styles.bottomBlock}>
-              <AppText
-                style={[styles.categoryName, {color: colors.primaryTextColor}]}
-                weight={'700'}
-                size={TextSize.LEVEL_5}
-                text={
-                  isFirstUserVisit
-                    ? t('home.start_your_journey')
-                    : homePageStore.quickStartCategoryName
-                }
-              />
-              <Button
-                onPress={onPressHandler}
-                style={styles.btn}
-                theme={ButtonTheme.GRADIENT}>
-                <SvgXml
-                  xml={getArrowRightIcon({})}
-                  style={styles.arrowIcon}
-                  fill={colors.bgQuinaryColor}
-                />
-              </Button>
-            </View>
-          </View>
-        </FastImage>
+    <View style={styles.container}>
+      <View style={[styles.layout, {backgroundColor: colors.white}]} />
+
+      <View style={styles.titleWrapper}>
+        <AppText
+          size={TextSize.LEVEL_6}
+          weight={'600'}
+          text={'Start your journey now!'}
+        />
       </View>
+
+      <View style={styles.textWrapper}>
+        <AppText
+          weight={'600'}
+          size={TextSize.LEVEL_4}
+          text={'Focus: Personal growth'}
+        />
+      </View>
+
+      <Button
+        onPress={onPressHandler}
+        style={styles.btn}
+        theme={ButtonTheme.GRADIENT}>
+        <AppText
+          style={textStyle}
+          weight={'600'}
+          size={TextSize.LEVEL_4}
+          text={'Let’s dive into your session'}
+        />
+        <SvgXml
+          xml={getArrowRightIcon({})}
+          style={styles.arrowIcon}
+          fill={colors.bgQuinaryColor}
+        />
+      </Button>
     </View>
   );
 };
 
+const containerStyles = {
+  width: windowWidthMinusPaddings,
+  borderRadius: borderRadius,
+};
+
 const styles = StyleSheet.create({
-  QuickStart: {
-    width: windowWidthMinusPaddings,
-  },
   container: {
-    height: height,
-    borderRadius: borderRadius,
+    padding: horizontalScale(20),
     justifyContent: 'center',
+    alignItems: 'center',
+    ...containerStyles,
   },
-  content: {
-    padding: 15,
+  layout: {
+    opacity: 0.15,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    lef: 0,
+    right: 0,
+    ...containerStyles,
   },
-  quickStartTitle: {
-    marginBottom: 20,
+  titleWrapper: {
+    marginBottom: horizontalScale(6),
   },
   textWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  bottomBlock: {
-    marginTop: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  status: {
-    fontSize: 18,
-    fontWeight: '700',
+    marginBottom: horizontalScale(10),
   },
   btn: {
-    borderRadius: 10,
-    height: 30,
-    width: 30,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   arrowIcon: {
-    height: 15,
-    width: 15,
-  },
-  categoryName: {
-    textTransform: 'uppercase',
-  },
-
-  quickStartTitleSkeleton: {
-    marginBottom: 20,
+    height: horizontalScale(15),
+    width: horizontalScale(15),
+    marginLeft: horizontalScale(10),
   },
 });
 

@@ -29,6 +29,8 @@ export enum TextSize {
   SIZE_48 = 'size_48',
   SIZE_24 = 'size_24',
   SIZE_32 = 'size_32',
+  SIZE_38 = 'size_38',
+  SIZE_68 = 'size_68',
 }
 
 export enum TextType {
@@ -143,5 +145,11 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   size_32: {
     ...globalStyles.size_32,
+  },
+  size_38: {
+    ...globalStyles.size_38,
+  },
+  size_68: {
+    ...globalStyles.size_68,
   },
 });

@@ -30,14 +30,13 @@ const ProgressBar = () => {
   return (
     <View>
       <AppText
-        style={[styles.currentLevelText, {color: colors.primaryTextColor}]}
-        weight={'500'}
-        size={TextSize.LEVEL_4}
+        style={[styles.currentLevelText, {color: colors.white}]}
+        weight={'600'}
         text={t('home.current_level')}
       />
 
       <FastImage
-        resizeMode={'stretch'}
+        resizeMode={'cover'}
         source={progressBarImg}
         style={styles.progressImage}
       />
@@ -57,7 +56,6 @@ const ProgressBar = () => {
 export default memo(observer(ProgressBar));
 
 const styles = StyleSheet.create<Record<string, any>>({
-  ProgressBar: {},
   currentLevelText: {
     marginTop: verticalScale(isPlatformIos ? 15 : 25),
     marginBottom: verticalScale(20),
@@ -65,7 +63,7 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   progressImage: {
     width: windowWidth,
-    height: 166,
+    height: 200,
   },
 
   Starter: {

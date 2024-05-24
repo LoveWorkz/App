@@ -21,6 +21,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
+import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
@@ -35,6 +36,7 @@ interface CategoryProps {
   displayName: DisplayText;
   isLoading?: boolean;
   isActionDisabled?: MutableRefObject<boolean>;
+  isHomepage: boolean;
 }
 
 const CategorySizes = {
@@ -56,6 +58,7 @@ const Category = (props: CategoryProps) => {
     isLoading,
     isActionDisabled,
     name,
+    isHomepage,
   } = props;
 
   const {t, i18n} = useTranslation();
@@ -130,6 +133,13 @@ const Category = (props: CategoryProps) => {
     isContentLocked,
   };
 
+  const renderHomePageCategoryParams = {
+    name: displayName[language],
+    colors,
+    t,
+    sessionsCount,
+  };
+
   return (
     <Pressable onPress={handleCategoryPress}>
       <View style={getShadowOpacity(theme).shadowOpacity_level_2}>
@@ -137,12 +147,46 @@ const Category = (props: CategoryProps) => {
           resizeMode="cover"
           source={{uri: image}}
           style={[styles.categoryImage, {height: categorySize}, style]}>
-          {renderLockedContent(renderLockedContentParams)}
-          {renderUnlockedContent(renderUnlockedContentParams)}
-          {renderHeader(renderHeaderParams)}
+          {isHomepage ? (
+            <>{renderHomePageCategory(renderHomePageCategoryParams)}</>
+          ) : (
+            <>
+              {renderLockedContent(renderLockedContentParams)}
+              {renderUnlockedContent(renderUnlockedContentParams)}
+              {renderHeader(renderHeaderParams)}
+            </>
+          )}
         </FastImage>
       </View>
     </Pressable>
+  );
+};
+
+const renderHomePageCategory = (params: {
+  name: string;
+  colors: ColorType;
+  sessionsCount: number;
+  t: TFunction;
+}) => {
+  const {name, colors, t, sessionsCount} = params;
+
+  return (
+    <View style={styles.homePageCategorySection}>
+      <Gradient style={styles.homePageSessionCountBlock}>
+        <AppText
+          weight="600"
+          style={{color: colors.white}}
+          size={TextSize.LEVEL_6}
+          text={`${sessionsCount} ${t('sessions')}`}
+        />
+      </Gradient>
+      <AppText
+        weight={'900'}
+        style={styles.homePageSessionCount}
+        size={TextSize.LEVEL_7}
+        text={name}
+      />
+    </View>
   );
 };
 
@@ -311,6 +355,22 @@ const styles = StyleSheet.create({
   categoryName: {
     textTransform: 'capitalize',
     width: '90%',
+  },
+
+  homePageCategorySection: {
+    position: 'absolute',
+    top: horizontalScale(30),
+    left: horizontalScale(30),
+  },
+  homePageSessionCountBlock: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: horizontalScale(12),
+    paddingVertical: horizontalScale(5),
+    borderRadius: moderateScale(15),
+    marginBottom: horizontalScale(10),
+  },
+  homePageSessionCount: {
+    textTransform: 'uppercase',
   },
 });
 

@@ -5,7 +5,6 @@ import {HomePage} from '@src/pages/HomePage';
 import {ChallengesPage} from '@src/pages/ChallengesPage';
 import {CategoriesPage} from '@src/pages/CategoriesPage';
 import {BooksPage} from '@src/pages/BooksPage';
-import {HomePageHeaderLeft} from '@src/widgets/headers/HomePageHeaderLeft';
 import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
@@ -91,7 +90,6 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout
-          isPageScrolling={true}
           deleteBottomPadding={false}
           deleteTopPadding={true}
           isTabBar>
@@ -100,8 +98,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       );
     },
     headerTitle: '',
-    headerShown: true,
-    HeaderLeft: HomePageHeaderLeft,
+    headerShown: false,
     isHomePage: true,
   },
   [TabRoutesNames.BOOKS]: {
