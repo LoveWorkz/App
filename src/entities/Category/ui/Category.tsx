@@ -41,7 +41,7 @@ interface CategoryProps {
 
 const CategorySizes = {
   [CateorySize.M]: 120,
-  [CateorySize.L]: 210,
+  [CateorySize.L]: 220,
   [CateorySize.XL]: 200,
 };
 

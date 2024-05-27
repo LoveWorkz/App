@@ -10,10 +10,9 @@ import {quotesStore} from '@src/widgets/Quotes';
 import {shareStore} from '@src/features/Share';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {userStore} from '@src/entities/User';
-import {sessionStore} from '@src/entities/Session';
+import {QuadrantKey, QuadrantType, sessionStore} from '@src/entities/Session';
 import {questionsStore} from '@src/pages/QuestionsPage';
 import {Theme} from '@src/app/providers/themeProvider';
-import {getPercentageFromNumber} from '@src/shared/lib/common';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 import {rubricStore} from '@src/entities/Rubric';
@@ -24,9 +23,10 @@ import {getProgressBarImageGroups} from '../lib/homePage';
 class HomePageStore {
   isHomePageLoading: boolean = true;
 
-  quickStartCategoryName: string = '';
   progressBarCategoryName: string = '';
   progressBarCategoryKey: CategoryKey = CategoryKey.Starter;
+  homePageQuadrantName: string = '';
+  homePageQuadrantKey: QuadrantKey = 'personal_growth';
 
   homePageCategory: CategoryType | null = null;
   progressBarImg: number = 0;
@@ -52,7 +52,7 @@ class HomePageStore {
       const promise1 = questionsStore.fetchAllQuestionsInfo();
       const promise2 = challengesStore.fetchChallengeCategories();
       const promise3 = this.fetchBooksAndCheckQuotesShownStatus();
-      const promise4 = this.fetchHomePageSessions();
+      const promise4 = this.getHomePageQuadrants(language);
       const promise5 = specialDayStore.fetchSpecialDays();
       const promise6 = inAppPurchaseStore.checkIfUserHasSubscription();
 
@@ -97,7 +97,7 @@ class HomePageStore {
       await userStore.fetchUser();
       await this.fetchHomePageCategoryChallenges();
       await this.fetchHomePageCategories(language);
-      await this.fetchHomePageSessions();
+      await this.getHomePageQuadrants(language);
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -113,16 +113,28 @@ class HomePageStore {
     await challengesStore.fetchChallengeCategories();
   };
 
-  fetchHomePageSessions = async () => {
-    crashlytics().log('Fetching home page Sessions');
+  getHomePageQuadrants = async (language: LanguageValueType) => {
+    crashlytics().log('Fetching home page Quadrants');
 
-    // fetching sessions for action banner
-    // await sessionStore.fetchSessions();
     const level = categoryStore.category;
     if (level) {
       await sessionStore.fetchQuadrants(level.id);
+      const currentQuadrant = sessionStore.getCurrentQuadrant();
+
+      if (!currentQuadrant) {
+        return;
+      }
+
+      this.setHomePageQuadrantInfo(currentQuadrant, language);
     }
-    // this.setCurrentSession();
+  };
+
+  setHomePageQuadrantInfo = (
+    quadrant: QuadrantType,
+    language: LanguageValueType,
+  ) => {
+    this.homePageQuadrantName = quadrant.displayName[language];
+    this.homePageQuadrantKey = quadrant.key;
   };
 
   fetchHomePageCategories = async (language: LanguageValueType) => {
@@ -130,15 +142,6 @@ class HomePageStore {
 
     await categoriesStore.fetchCategories();
     this.getHomePageCategory(language);
-  };
-
-  setCurrentSession = () => {
-    const homePageCategory = this.homePageCategory;
-    if (!homePageCategory) {
-      return;
-    }
-
-    sessionStore.getAndSetSession(homePageCategory.currentSession);
   };
 
   getHomePageCategory = (language: LanguageValueType) => {
@@ -161,7 +164,7 @@ class HomePageStore {
       let progressBarCategoryName = quickStartCategoryName;
       let progressBarCategoryKey = userCurrentCategoryKey;
 
-      // Hot and All in One categories should not show up in the progress bar
+      // Hot and How To Use should not show up in the progress bar
       if (
         userCurrentCategoryKey === CategoryKey.How_To_Use ||
         userCurrentCategoryKey === CategoryKey.Specials
@@ -180,8 +183,7 @@ class HomePageStore {
 
       runInAction(() => {
         this.progressBarCategoryKey = progressBarCategoryKey;
-        this.quickStartCategoryName = quickStartCategoryName;
-        this.progressBarCategoryName = progressBarCategoryName;
+        this.progressBarCategoryName = quickStartCategoryName;
         this.homePageCategory = homePageCategory;
       });
     } catch (e) {
@@ -192,44 +194,19 @@ class HomePageStore {
   getProgressBarImage = (theme: Theme) => {
     try {
       const progressBarCategoryKey = this.progressBarCategoryKey;
-      // const sessions = sessionStore.allSessions;
-      const sessions = sessionStore.sessions;
-      const unlockedSessions = sessions.filter(item => !item.isBlocked);
+      const homePageQuadrantKey = this.homePageQuadrantKey;
 
       const progressBarImgGroups = getProgressBarImageGroups({
         category: progressBarCategoryKey,
         isDarkMode: theme === Theme.Dark,
       });
 
-      const passedSessionsPercentage = getPercentageFromNumber(
-        unlockedSessions.length,
-        sessions.length,
-      );
-
-      const imgKey = this.getImageKeyByPercentage(passedSessionsPercentage);
-
       runInAction(() => {
-        this.progressBarImg = progressBarImgGroups[imgKey];
+        this.progressBarImg = progressBarImgGroups[homePageQuadrantKey];
       });
     } catch (e) {
       errorHandler({error: e});
     }
-  };
-
-  getImageKeyByPercentage = (passedSessionsPercentage: number) => {
-    if (passedSessionsPercentage < 25) {
-      return 0;
-    }
-
-    if (passedSessionsPercentage >= 25 && passedSessionsPercentage < 50) {
-      return 1;
-    }
-
-    if (passedSessionsPercentage >= 50 && passedSessionsPercentage < 80) {
-      return 2;
-    }
-
-    return 3;
   };
 }
 

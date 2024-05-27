@@ -12,6 +12,8 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowRightIcon} from '@src/shared/assets/icons/ArrowRight';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
+import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 
 interface DiscountOfferCardProps {
   isLoading: boolean;
@@ -28,6 +30,10 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
     return {color: colors.white};
   }, []);
 
+  const onPressHandler = () => {
+    inAppPurchaseStore.setIsInAppPurchaseModalVisible(true);
+  };
+
   if (isLoading) {
     return (
       <View style={styles.DiscountOfferCard}>
@@ -37,51 +43,54 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
   }
 
   return (
-    <Gradient style={styles.DiscountOfferCard}>
-      <FastImage
-        style={styles.image}
-        resizeMode={'cover'}
-        source={discountOfferCardBg}>
-        <View style={styles.discountWrapper}>
-          <AppText
-            style={[styles.discount, textStyle]}
-            weight={'900'}
-            size={TextSize.SIZE_68}
-            text={'30%'}
-          />
-          <AppText
-            style={[styles.off, textStyle]}
-            weight={'900'}
-            size={TextSize.SIZE_38}
-            text={'OFF'}
-          />
-        </View>
-        <View style={styles.descriptionWrapper}>
-          <AppText
-            style={textStyle}
-            weight={'500'}
-            text={'Special offer when you re-subscribe to LoveWorkz Premium'}
-            align={'center'}
-          />
-        </View>
+    <WithInAppPurchase>
+      <Gradient style={styles.DiscountOfferCard}>
+        <FastImage
+          style={styles.image}
+          resizeMode={'cover'}
+          source={discountOfferCardBg}>
+          <View style={styles.discountWrapper}>
+            <AppText
+              style={[styles.discount, textStyle]}
+              weight={'900'}
+              size={TextSize.SIZE_68}
+              text={'30%'}
+            />
+            <AppText
+              style={[styles.off, textStyle]}
+              weight={'900'}
+              size={TextSize.SIZE_38}
+              text={'OFF'}
+            />
+          </View>
+          <View style={styles.descriptionWrapper}>
+            <AppText
+              style={textStyle}
+              weight={'500'}
+              text={'Special offer when you re-subscribe to LoveWorkz Premium'}
+              align={'center'}
+            />
+          </View>
 
-        <Button
-          style={[styles.btn, {backgroundColor: colors.white}]}
-          theme={ButtonTheme.OUTLINED}>
-          <GradientText
-            style={textStyle}
-            weight={'600'}
-            size={TextSize.LEVEL_4}
-            text={'Claim my offer'}
-          />
-          <SvgXml
-            xml={getArrowRightIcon({isGradient: true})}
-            style={styles.arrowIcon}
-            fill={colors.bgQuinaryColor}
-          />
-        </Button>
-      </FastImage>
-    </Gradient>
+          <Button
+            onPress={onPressHandler}
+            style={[styles.btn, {backgroundColor: colors.white}]}
+            theme={ButtonTheme.OUTLINED}>
+            <GradientText
+              style={textStyle}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={'Claim my offer'}
+            />
+            <SvgXml
+              xml={getArrowRightIcon({isGradient: true})}
+              style={styles.arrowIcon}
+              fill={colors.bgQuinaryColor}
+            />
+          </Button>
+        </FastImage>
+      </Gradient>
+    </WithInAppPurchase>
   );
 };
 

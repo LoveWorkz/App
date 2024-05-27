@@ -8,10 +8,11 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
-import {userStore} from '@src/entities/User';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
+import {userStore} from '@src/entities/User';
+import {homePageStore} from '../..';
 
 interface QuickStartProps {
   isLoading: boolean;
@@ -23,21 +24,20 @@ const QuickStart = (props: QuickStartProps) => {
   const {isLoading} = props;
   const colors = useColors();
 
-  const user = userStore.user;
+  const {hasUserCompletedAnySession} = userStore;
+  const {homePageQuadrantName} = homePageStore;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, []);
 
-  if (isLoading || !user) {
-    return null;
-  }
-
-  const isFirstUserVisit = !user.hasUserSwipedAnyQuestion;
-
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.PRE_SESSION);
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -47,7 +47,11 @@ const QuickStart = (props: QuickStartProps) => {
         <AppText
           size={TextSize.LEVEL_6}
           weight={'600'}
-          text={'Start your journey now!'}
+          text={
+            hasUserCompletedAnySession
+              ? 'See you next week?'
+              : 'Start your journey now!'
+          }
         />
       </View>
 
@@ -55,7 +59,7 @@ const QuickStart = (props: QuickStartProps) => {
         <AppText
           weight={'600'}
           size={TextSize.LEVEL_4}
-          text={'Focus: Personal growth'}
+          text={`Focus: ${homePageQuadrantName}`}
         />
       </View>
 

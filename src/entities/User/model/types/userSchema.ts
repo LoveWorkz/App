@@ -13,7 +13,6 @@ export interface User {
   challengeCategory: CurrentChallengeCategoryType;
   quote: QuoeType;
   isWowThatWasFastModalForbidden: boolean;
-  hasUserSwipedAnyQuestion: boolean;
   hasUserRated: boolean;
   gender: string;
   selectedGoalsIds: string[];

@@ -3,6 +3,7 @@ export type {
   UserSessionType,
   QuadrantType,
   UserQuadrantType,
+  QuadrantKey,
 } from './model/types/sessionType';
 export {default as sessionStore} from './model/store/sessionStore';
 export {

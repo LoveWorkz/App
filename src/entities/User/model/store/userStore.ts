@@ -54,6 +54,7 @@ class UserStore {
   currentCategory: CurrentCategory | null = null;
   hasUserSubscription: boolean = true;
   inited: boolean = false;
+  hasUserCompletedAnySession: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -74,6 +75,10 @@ class UserStore {
     if (!this.inited) {
       this.inited = inited;
     }
+  };
+
+  setHasUserCompletedAnySession = (hasUserCompletedAnySession: boolean) => {
+    this.hasUserCompletedAnySession = hasUserCompletedAnySession;
   };
 
   setNotification = async ({

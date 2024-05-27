@@ -38,6 +38,9 @@ export {default as DeepImage_90} from './light/progressBar/deep/Deep_90.png';
 
 // Intimate
 export {default as IntimateImage} from './light/progressBar/intimate/Intimate.png';
+export {default as IntimateImage_30} from './light/progressBar/intimate/Intimate_30.png';
+export {default as IntimateImage_60} from './light/progressBar/intimate/Intimate_60.png';
+export {default as IntimateImage_90} from './light/progressBar/intimate/Intimate_90.png';
 
 // progress bar dark
 

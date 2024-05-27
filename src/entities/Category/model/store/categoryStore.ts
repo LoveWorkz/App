@@ -259,14 +259,6 @@ class CategoryStore {
       }
 
       questionStore.setQuestion(currentQuestion);
-
-      // if a user swipe some question show quick start block in the home page
-      if (currentQuestionNumber > 1) {
-        userStore.updateUser({
-          field: 'hasUserSwipedAnyQuestion',
-          data: true,
-        });
-      }
     } catch (e) {
       errorHandler({error: e});
     }

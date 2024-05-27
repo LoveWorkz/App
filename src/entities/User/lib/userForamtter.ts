@@ -23,7 +23,6 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     quoteCheckingDate: '',
   };
   formatedUser.isWowThatWasFastModalForbidden = false;
-  formatedUser.hasUserSwipedAnyQuestion = false;
 
   formatedUser.hasUserRated = false;
   formatedUser.gender = '';

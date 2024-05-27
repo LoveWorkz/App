@@ -67,6 +67,10 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
     navigation.navigate(AppRouteNames.PROFILE);
   };
 
+  const onSettingsPressHandler = () => {
+    navigation.navigate(AppRouteNames.SETTINGS);
+  };
+
   const name = user.name;
   const isNameLarge = name.length >= maxNameLength;
 
@@ -100,8 +104,7 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
             </View>
           </Pressable>
         </View>
-        <Pressable
-        >
+        <Pressable onPress={onSettingsPressHandler}>
           <SvgXml
             xml={SettingsIcon}
             style={styles.icon}
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   avatarSkeleton: {
-    marginRight: horizontalScale(8)
+    marginRight: horizontalScale(8),
   },
   titleSkeleton: {
     marginBottom: horizontalScale(8),

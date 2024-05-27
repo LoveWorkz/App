@@ -1,1 +1,1 @@
-export const homepageBackgroundImgHeight = 500;
+export const homepageBackgroundImgHeight = 540;

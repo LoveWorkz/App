@@ -5,12 +5,14 @@ import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {AppText} from '@src/shared/ui/AppText/AppText';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {CategoryKey} from '@src/entities/Category';
 import {useTheme} from '@src/app/providers/themeProvider';
 import homePageStore from '../../model/store/HomePageStore';
+import LevelNameItem from './LevelNameItem';
 
 const ProgressBar = () => {
   const {t} = useTranslation();
@@ -41,14 +43,25 @@ const ProgressBar = () => {
         style={styles.progressImage}
       />
 
-      <AppText
-        style={[
-          styles[progressBarCategoryKey],
-          {color: colors.homePageCategoryTextColor},
-        ]}
-        weight={'700'}
-        size={TextSize.LEVEL_4}
-        text={progressBarCategoryName}
+      <LevelNameItem
+        progressBarCategoryKey={progressBarCategoryKey}
+        progressBarCategoryName={progressBarCategoryName}
+        baseLevelKey={CategoryKey.Starter}
+      />
+      <LevelNameItem
+        progressBarCategoryKey={progressBarCategoryKey}
+        progressBarCategoryName={progressBarCategoryName}
+        baseLevelKey={CategoryKey.Basic}
+      />
+      <LevelNameItem
+        progressBarCategoryKey={progressBarCategoryKey}
+        progressBarCategoryName={progressBarCategoryName}
+        baseLevelKey={CategoryKey.Deep}
+      />
+      <LevelNameItem
+        progressBarCategoryKey={progressBarCategoryKey}
+        progressBarCategoryName={progressBarCategoryName}
+        baseLevelKey={CategoryKey.Intimate}
       />
     </View>
   );
@@ -63,31 +76,6 @@ const styles = StyleSheet.create<Record<string, any>>({
   },
   progressImage: {
     width: windowWidth,
-    height: 200,
-  },
-
-  Starter: {
-    position: 'absolute',
-    bottom: 40,
-    left: horizontalScale(62),
-    color: '#885FFF',
-  },
-  Basic: {
-    position: 'absolute',
-    bottom: 65,
-    left: horizontalScale(205),
-    color: '#885FFF',
-  },
-  Deep: {
-    position: 'absolute',
-    bottom: 105,
-    left: horizontalScale(155),
-    color: '#885FFF',
-  },
-  Intimate: {
-    position: 'absolute',
-    bottom: 126,
-    left: horizontalScale(295),
-    color: '#885FFF',
+    height: horizontalScale(250),
   },
 });

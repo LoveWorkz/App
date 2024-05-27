@@ -26,6 +26,11 @@ export type UserQuadrantType = Record<string, Partial<QuadrantType>>;
 export type SessionsMap = Record<string, SessionType>;
 
 export type SessionState = 'completed' | 'current' | 'upcoming';
+export type QuadrantKey =
+  | 'personal_growth'
+  | 'friendship'
+  | 'communication_conflictm'
+  | 'shared_meaning';
 
 export interface QuadrantType {
   id: string;
@@ -37,4 +42,5 @@ export interface QuadrantType {
   isBlocked: boolean;
   isPremium: boolean;
   isCurrent: boolean;
+  key: QuadrantKey;
 }

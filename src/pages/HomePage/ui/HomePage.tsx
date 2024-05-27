@@ -15,7 +15,7 @@ import {
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
-import {HEADER_HEIGHT} from '@src/shared/consts/common';
+import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {Quotes} from '@src/widgets/Quotes';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -26,8 +26,9 @@ import {
   homepageBackgroundImgHeight,
   HomePageHeader,
 } from '@src/widgets/headers/HomePageHeader';
-import {DiscountOfferCard} from '@src/features/InAppPurchase';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
+import {userStore} from '@src/entities/User';
+import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import Challanges from './Challanges/Challanges';
 import QuickStart from './QuickStart/QuickStart';
@@ -43,7 +44,7 @@ interface HomePageProps {
   };
 }
 
-const contentTop = -150;
+const contentTop = horizontalScale(isPlatformIos ? -165 : -195);
 const skeletonContentTop = -20;
 
 const HomePage = (props: HomePageProps) => {
@@ -52,6 +53,8 @@ const HomePage = (props: HomePageProps) => {
   const {theme} = useTheme();
   const {i18n} = useTranslation();
 
+  const hasUserSubscription = userStore.getUserHasSubscription();
+
   const language = i18n.language as LanguageValueType;
   const prevRouteName = route?.params?.prevRouteName;
   const isTabScreen = route?.params?.isTabScreen;
@@ -59,10 +62,11 @@ const HomePage = (props: HomePageProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      // when user returns from any tab screen or question page, get actual challenges and categories data
+      // when user returns from any tab screen or completion page, get actual challenges and categories data
       if (
         isTabScreen ||
-        prevRouteName === AppRouteNames.QUESTIONS ||
+        prevRouteName === AppRouteNames.COMPLETION ||
+        prevRouteName === AppRouteNames.QUADRANT_COMPLETION ||
         prevRouteName === AppRouteNames.SESSIONS
       ) {
         homePageStore.fetchHomePageCategoriesAndChallenges(language);
@@ -120,9 +124,11 @@ const HomePage = (props: HomePageProps) => {
             <View style={styles.homeCategoryWrapper}>
               <QuickStart isLoading={isLoading} />
             </View>
-            <View style={styles.discountOfferCardWrapper}>
-              <DiscountOfferCard isLoading={isLoading} />
-            </View>
+            {!hasUserSubscription && (
+              <View style={styles.discountOfferCardWrapper}>
+                <DiscountOfferCard isLoading={isLoading} />
+              </View>
+            )}
             <CategoriesCarousel isLoading={isLoading} />
             <View style={styles.challangesWrapper}>
               <Challanges isLoading={isLoading} />
@@ -160,13 +166,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: horizontalScale(20),
   },
-  challangesWrapper: {
-    marginTop: horizontalScale(10),
-    width: '100%',
-  },
   discountOfferCardWrapper: {
     alignItems: 'center',
     marginBottom: horizontalScale(25),
+  },
+  challangesWrapper: {
+    marginTop: horizontalScale(10),
+    width: '100%',
   },
 
   progressBarSkeleton: {

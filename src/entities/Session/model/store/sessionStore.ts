@@ -853,6 +853,8 @@ class SessionStore {
         return;
       }
 
+      userStore.setHasUserCompletedAnySession(true);
+
       if (this.isLastQuadrant() && this.isLastSessionInsideQuadrant(session)) {
         categoryStore.updateUserLevelAftePassedAllSessionsAndQuadrats({
           level,

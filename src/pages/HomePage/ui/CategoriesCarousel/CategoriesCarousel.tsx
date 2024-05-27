@@ -42,18 +42,16 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   return (
     <View>
       {isLoading ? (
-        <View style={[styles.title]}>
+        <>
           <Skeleton width={200} height={20} />
-        </View>
+        </>
       ) : (
         <>
-          <View style={[styles.title]}>
-            <AppText
-              weight={'900'}
-              size={TextSize.SIZE_24}
-              text={'Want to explore more?'}
-            />
-          </View>
+          <AppText
+            weight={'900'}
+            size={TextSize.SIZE_24}
+            text={'Want to explore more?'}
+          />
           <View style={styles.text}>
             <AppText weight={'500'} text={'Levels & Sessions'} />
           </View>
@@ -77,9 +75,6 @@ export default memo(observer(CategoriesCarousel));
 const styles = StyleSheet.create({
   itemStyle: {
     borderRadius: moderateScale(20),
-  },
-  title: {
-    marginBottom: -5,
   },
   text: {
     top: horizontalScale(20),

@@ -1,5 +1,4 @@
 import React, {ReactElement} from 'react';
-import {View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {
@@ -21,12 +20,12 @@ export const WithInAppPurchase = observer((props: WithInAppPurchaseProps) => {
     inAppPurchaseStore.setIsInAppPurchaseModalVisible;
 
   return (
-    <View>
+    <>
       {children}
       <InAppPurchaseModal
         visible={isInAppPurchaseModalVisible}
         setVisible={setIsInAppPurchaseModalVisible}
       />
-    </View>
+    </>
   );
 });
