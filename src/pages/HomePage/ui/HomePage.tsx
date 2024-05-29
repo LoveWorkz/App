@@ -28,9 +28,9 @@ import {
 } from '@src/widgets/headers/HomePageHeader';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {userStore} from '@src/entities/User';
+import {TrendingList} from '@src/entities/Rubric';
 import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
-import Challanges from './Challanges/Challanges';
 import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
@@ -130,9 +130,7 @@ const HomePage = (props: HomePageProps) => {
               </View>
             )}
             <CategoriesCarousel isLoading={isLoading} />
-            <View style={styles.challangesWrapper}>
-              <Challanges isLoading={isLoading} />
-            </View>
+            <TrendingList isLoading={isLoading} />
           </View>
           <Quotes />
         </View>
@@ -146,7 +144,7 @@ export default memo(observer(HomePage));
 const styles = StyleSheet.create({
   HomePage: {
     flex: 1,
-    marginLeft: -globalPadding,
+    left: -globalPadding,
     width: windowWidth,
   },
   homepageBackground: {
@@ -170,9 +168,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: horizontalScale(25),
   },
-  challangesWrapper: {
-    marginTop: horizontalScale(10),
-    width: '100%',
+  trendingChallengeList: {
+    width: windowWidth,
+    left: horizontalScale(-10),
   },
 
   progressBarSkeleton: {

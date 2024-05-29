@@ -17,7 +17,7 @@ function HorizontalCarousel(props: HorizontalCarouselProps) {
         showsHorizontalScrollIndicator={false}
         horizontal
         data={data}
-        renderItem={({item}) => <Component {...item} />}
+        renderItem={({item, index}) => <Component {...item} index={index} />}
       />
     </View>
   );

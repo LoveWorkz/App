@@ -370,11 +370,11 @@ class QuestionsStore {
     const promise2 = firestore()
       .collection(Collections.WILD_QUESTIONS)
       .get({source});
-    const promise4 = firestore()
-      .collection(Collections.RUBRIC_QUESTIONS)
-      .get({source});
+    // const promise4 = firestore()
+    //   .collection(Collections.RUBRIC_QUESTIONS)
+    //   .get({source});
 
-    const data = await Promise.all([promise1, promise2, promise4]);
+    const data = await Promise.all([promise1, promise2]);
     const allQuestions: DocsType = [];
 
     data.forEach(element => {

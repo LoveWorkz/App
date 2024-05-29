@@ -126,3 +126,5 @@ export {default as quadrantBg} from './quadrantBg.png';
 export {default as gameRulesBg} from './gameRulesBg.png';
 
 export {default as discountOfferCardBg} from './discountOfferCardBg.png';
+
+export {default as Badge} from './Badge.png';

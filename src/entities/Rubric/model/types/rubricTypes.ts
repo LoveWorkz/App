@@ -13,4 +13,5 @@ export interface RubricType {
   displayName: DisplayText;
   createdDate: string;
   image: string;
+  totalViews: number;
 }

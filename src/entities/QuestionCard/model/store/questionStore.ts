@@ -1,6 +1,8 @@
 import {makeAutoObservable} from 'mobx';
+import firestore from '@react-native-firebase/firestore';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import {Collections} from '@src/shared/types/firebase';
 import {EnrichQuestionsParams, QuestionType} from '../types/questionTypes';
 
 class QuestionStore {
@@ -101,6 +103,19 @@ class QuestionStore {
         rubric: rubric ?? null,
       };
     });
+  };
+
+  incrementViewCount = (questionId: string) => {
+    try {
+      const questionRef = firestore()
+        .collection(Collections.ORDINARY_QUESTIONS)
+        .doc(questionId);
+      questionRef.update({
+        viewCount: firestore.FieldValue.increment(1),
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 }
 

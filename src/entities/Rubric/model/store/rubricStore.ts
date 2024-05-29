@@ -229,6 +229,15 @@ class RubricStore {
     });
   };
 
+  findTopTrendingTopics = (topics: RubricType[]) => {
+    const sortedTopics = [...topics]
+      .filter(item => item.questions.length)
+      .sort((a, b) => b.totalViews - a.totalViews);
+    const topTrendingTopics = sortedTopics.slice(0, 3);
+
+    return topTrendingTopics;
+  };
+
   fetchDefaultRubrics = async () => {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();

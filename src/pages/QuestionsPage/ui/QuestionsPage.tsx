@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -53,6 +53,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {i18n} = useTranslation();
   const {theme} = useTheme();
   const {setIsGradient, isGradient} = useGradient();
+  const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
 
   const key = route?.params.type;
   const id = route?.params.id;
@@ -111,7 +112,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       isPreviousScreenBreak,
     ]),
   );
-
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
       questions,
@@ -123,11 +123,30 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     return getFormattedQuestions();
   }, [getFormattedQuestions]);
 
+  const incrementViewCountHandler = useCallback(
+    (param: QuestionType) => {
+      // Clear any existing timer
+      if (timer) {
+        clearTimeout(timer);
+      }
+
+      // Set a new timer that increments the view count after 5 seconds
+      const newTimer = setTimeout(() => {
+        questionStore.incrementViewCount(param.id);
+      }, 5000);
+
+      setTimer(newTimer);
+    },
+    [timer],
+  );
+
   const onSwipeHandler = useCallback(
     (param: QuestionType, questionNumber: number) => {
       if (!key) {
         return;
       }
+
+      incrementViewCountHandler(param);
 
       questionsStore.swipe({
         question: param,
@@ -139,7 +158,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         setIsGradient,
       });
     },
-    [key, id, language],
+    [key, id, language, timer, incrementViewCountHandler],
   );
 
   const questionsWithEmptyCard = useMemo(() => {
