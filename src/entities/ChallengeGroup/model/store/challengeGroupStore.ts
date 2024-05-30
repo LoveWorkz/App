@@ -1,12 +1,15 @@
 import {makeAutoObservable} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
+import firebase from '@react-native-firebase/app';
 
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {ChallengeGroupType} from '../types/ChallengeGroupTypes';
+
+const db = firebase.firestore();
 
 class challengeGroupStore {
   coreChallengeGroups: ChallengeGroupType<ChallengeType[]>[] = [];
@@ -172,6 +175,44 @@ class challengeGroupStore {
 
   getSpecialChallengeGroupById = (groupId: string) => {
     return this.specialChallengeGroups.find(item => item.id === groupId);
+  };
+
+  fetchGroupsByIds = async ({
+    groupIds,
+    collectionName,
+  }: {
+    groupIds: string[];
+    collectionName: Collections;
+  }) => {
+    try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      if (!groupIds.length) {
+        return [];
+      }
+
+      const groupsRef = db.collection(collectionName);
+      const snapshot = await groupsRef
+        .where(firebase.firestore.FieldPath.documentId(), 'in', groupIds)
+        .get({source});
+
+      if (snapshot.empty) {
+        console.log('No matching groups found.');
+        return [];
+      }
+
+      const groups = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return groups as ChallengeGroupType<
+        SpecialChallengeType[] | ChallengeType[]
+      >[];
+    } catch (e) {
+      errorHandler({error: e, message: 'Error fetching groups'});
+      return [];
+    }
   };
 }
 

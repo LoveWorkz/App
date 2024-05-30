@@ -1,3 +1,4 @@
+import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {DisplayText} from '@src/shared/types/types';
 
 export interface ChallengeType {
@@ -9,6 +10,7 @@ export interface ChallengeType {
   id: string;
   nomer: string;
   isChallengeSpecial: boolean;
+  totalViews: number;
 }
 
 export interface SpecialChallengeType {
@@ -21,6 +23,7 @@ export interface SpecialChallengeType {
   isChallengeSpecial: boolean;
   challengeCardsData: ChallengeCardType[];
   isChecked: boolean;
+  totalViews: number;
 }
 
 export interface ChallengeCardType {
@@ -39,4 +42,11 @@ export enum SpecialChallengeEnum {
   TEN_DAYS_CHALLENGE = 'tenDaysChallenge',
   EFFECTIVE_APOLOGIES = 'effectiveApologies',
   RAPID_CALMING = 'rapidCalming',
+}
+
+export interface TrendingChallengeType {
+  group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]>;
+  title: DisplayText;
+  description: DisplayText;
+  isChallengeSpecial: boolean;
 }

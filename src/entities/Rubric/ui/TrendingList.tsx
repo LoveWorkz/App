@@ -25,7 +25,7 @@ const RubricWrapper = memo((props: RubricWrapperProps) => {
   return (
     <View
       style={{
-        marginLeft: horizontalScale(isFirstElement ? 20 : 10),
+        marginLeft: horizontalScale(isFirstElement ? 20 : 15),
         marginRight: horizontalScale(isLastElement ? 20 : 0),
       }}>
       {rubric && <Rubric {...props} />}
@@ -78,9 +78,8 @@ export default memo(observer(TrendingList));
 
 const styles = StyleSheet.create({
   titleWrapper: {
-    marginBottom: horizontalScale(15),
+    marginBottom: horizontalScale(10),
   },
-  title: {},
   rubricWrapper: {
     marginLeft: horizontalScale(10),
   },

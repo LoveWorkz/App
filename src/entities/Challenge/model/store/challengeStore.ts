@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import crashlytics from '@react-native-firebase/crashlytics';
+import firestore from '@react-native-firebase/firestore';
 
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {challengesStore} from '@src/pages/ChallengesPage';
@@ -20,6 +21,7 @@ import {
 import {categoryStore} from '@src/entities/Category';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
 import {removeDuplicates} from '@src/shared/lib/common';
+import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
@@ -156,7 +158,11 @@ class ChallengeStore {
     this.isSessionFlow = isSessionFlow;
   };
 
-  coreChallengePressHandler = ({challenge}: {challenge: ChallengeType}) => {
+  coreChallengePressHandler = async ({
+    challenge,
+  }: {
+    challenge: ChallengeType;
+  }) => {
     // setting core challenge group info
     const coreChallengeGroups = challengeGroupStore.coreChallengeGroups;
     const currentCoreChallengeGroup = challengeGroupStore.getChallengeGroupById(
@@ -171,13 +177,25 @@ class ChallengeStore {
       currentCoreChallengeGroup as ChallengeGroupType<ChallengeType[]>,
     );
     this.setCoreChallenge(challenge);
+
+    await this.incrementChallengeViewCount({
+      challengeId: challenge.id,
+      isCore: true,
+    });
+
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
       title: 'Challenges',
     });
   };
 
-  specialChallengePressHandler = (specailChallenge: SpecialChallengeType) => {
+  specialChallengePressHandler = async (
+    specailChallenge: SpecialChallengeType,
+  ) => {
     this.setSpecialChallenge(specailChallenge);
+    await this.incrementChallengeViewCount({
+      challengeId: specailChallenge.id,
+      isCore: false,
+    });
     navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
   };
 
@@ -389,6 +407,10 @@ class ChallengeStore {
       if (isSessionFlow) {
         await sessionStore.processSessionCompletion();
         await this.checkEventAndNavigateToCompletionPage();
+        await this.incrementChallengeViewCount({
+          challengeId: specialChallengeId,
+          isCore: false,
+        });
       }
 
       if (!isChecked && specialChallengeId) {
@@ -421,6 +443,10 @@ class ChallengeStore {
       if (isSessionFlow && session && level) {
         await sessionStore.processSessionCompletion(coreChallengeId);
         await this.checkEventAndNavigateToCompletionPage();
+        await this.incrementChallengeViewCount({
+          challengeId: coreChallengeId,
+          isCore: true,
+        });
       }
 
       if (!isChecked && coreChallengeId) {
@@ -448,6 +474,33 @@ class ChallengeStore {
       navigation.navigate(AppRouteNames.QUADRANT_COMPLETION);
     } else {
       navigation.navigate(AppRouteNames.COMPLETION);
+    }
+  };
+
+  incrementChallengeViewCount = async ({
+    challengeId,
+    isCore,
+  }: {
+    challengeId: string;
+    isCore: boolean;
+  }) => {
+    const collectionName = isCore
+      ? Collections.CORE_CHALLENGES
+      : Collections.SPECIAL_CHALLENGES_2;
+
+    const challengeRef = firestore()
+      .collection(collectionName)
+      .doc(challengeId);
+
+    try {
+      await challengeRef.update({
+        totalViews: firestore.FieldValue.increment(1),
+      });
+    } catch (e) {
+      errorHandler({
+        error: e,
+        message: `Failed to increment totalViews for challengeId: ${challengeId}`,
+      });
     }
   };
 

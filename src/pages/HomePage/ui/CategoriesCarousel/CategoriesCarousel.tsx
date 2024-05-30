@@ -43,7 +43,9 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
     <View>
       {isLoading ? (
         <>
-          <Skeleton width={200} height={20} />
+          <View style={{top: horizontalScale(10)}}>
+            <Skeleton width={200} height={20} />
+          </View>
         </>
       ) : (
         <>

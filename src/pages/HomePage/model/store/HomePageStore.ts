@@ -50,13 +50,13 @@ class HomePageStore {
 
       this.getHomePageCategory(language);
 
-      const promise2 = challengesStore.fetchChallengeCategories();
       const promise3 = this.fetchBooksAndCheckQuotesShownStatus();
       const promise4 = this.getHomePageQuadrants(language);
       const promise5 = specialDayStore.fetchSpecialDays();
       const promise6 = inAppPurchaseStore.checkIfUserHasSubscription();
+      const promise7 = challengesStore.fetchCoreAndSpecialTrendingChallenges();
 
-      await Promise.all([promise2, promise3, promise4, promise5, promise6]);
+      await Promise.all([promise3, promise4, promise5, promise6, promise7]);
 
       shareStore.shareQuestionHandler(language);
       userStore.setInited(true);

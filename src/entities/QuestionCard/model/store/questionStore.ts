@@ -105,7 +105,7 @@ class QuestionStore {
     });
   };
 
-  incrementViewCount = (questionId: string) => {
+  incrementQuestionViewCount = (questionId: string) => {
     try {
       const questionRef = firestore()
         .collection(Collections.ORDINARY_QUESTIONS)

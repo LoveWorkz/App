@@ -29,6 +29,7 @@ import {
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {userStore} from '@src/entities/User';
 import {TrendingList} from '@src/entities/Rubric';
+import {TrendingChallengeList} from '@src/entities/Challenge';
 import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import QuickStart from './QuickStart/QuickStart';
@@ -131,6 +132,9 @@ const HomePage = (props: HomePageProps) => {
             )}
             <CategoriesCarousel isLoading={isLoading} />
             <TrendingList isLoading={isLoading} />
+            <View style={styles.trendingChallengeWrapper}>
+              <TrendingChallengeList isLoading={isLoading} />
+            </View>
           </View>
           <Quotes />
         </View>
@@ -171,6 +175,9 @@ const styles = StyleSheet.create({
   trendingChallengeList: {
     width: windowWidth,
     left: horizontalScale(-10),
+  },
+  trendingChallengeWrapper: {
+    marginTop: horizontalScale(25),
   },
 
   progressBarSkeleton: {

@@ -2,6 +2,7 @@ export type {
   ChallengeType,
   SpecialChallengeType,
   ChallengeCardType,
+  TrendingChallengeType,
 } from './model/types/ChallengeTypes';
 export {default as challengeStore} from './model/store/challengeStore';
 export {SpecialChallengeEnum} from './model/types/ChallengeTypes';
@@ -20,3 +21,4 @@ export {default as ChallengeInfoPopup} from './ui/ChallengeInfoPopup/ChallengeIn
 export {getChallengeInfoPopupContent} from './model/lib/challenge';
 export {default as ChallengeCategoryBlock} from './ui/ChallengeCategoryBlock/ChallengeCategoryBlock';
 export {default as CoreChallengeIntroCard} from './ui/ChallengeCards/CoreChallengeIntroCard';
+export {default as TrendingChallengeList} from './ui/TrendingChallenge/TrendingChallengeList';

@@ -132,7 +132,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
       // Set a new timer that increments the view count after 5 seconds
       const newTimer = setTimeout(() => {
-        questionStore.incrementViewCount(param.id);
+        questionStore.incrementQuestionViewCount(param.id);
       }, 5000);
 
       setTimer(newTimer);

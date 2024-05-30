@@ -8,10 +8,17 @@ import {
   ChallengeCategoryType,
   CurrentChallengeCategoryType,
 } from '@src/entities/ChallengeCategory';
-import {ChallengeType, SpecialChallengeType} from '@src/entities/Challenge';
+import {
+  ChallengeType,
+  SpecialChallengeType,
+  TrendingChallengeType,
+} from '@src/entities/Challenge';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
-import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {
+  challengeGroupStore,
+  ChallengeGroupType,
+} from '@src/entities/ChallengeGroup';
 import {CategoryKey} from '@src/entities/Category';
 
 class ChallengesStore {
@@ -26,6 +33,7 @@ class ChallengesStore {
   isChallengesLoading: boolean = false;
   isChallengePageLoading: boolean = true;
   challengeTabIndex: number = 0;
+  trendingChallenges: TrendingChallengeType[] = [];
 
   unlockedChallengeCategoriesIds: string[] = [];
 
@@ -78,6 +86,10 @@ class ChallengesStore {
 
   setIsAllChallengesSelected = (isAllChallengesSelected: boolean) => {
     this.isAllChallengesSelected = isAllChallengesSelected;
+  };
+
+  setTrendingChallenges = (trendingChallenges: TrendingChallengeType[]) => {
+    this.trendingChallenges = trendingChallenges;
   };
 
   fetchChallengeCategories = async () => {
@@ -344,6 +356,87 @@ class ChallengesStore {
     } catch (e) {
       errorHandler({error: e});
     }
+  };
+
+  /**
+   * Fetches and maps top trending challenges to their corresponding groups,
+   * handling both core and special categories.
+   */
+  fetchCoreAndSpecialTrendingChallenges = async () => {
+    try {
+      // Fetch top 3 trending challenges for both core and special
+      const [coreChallenges, specialChallenges] = await Promise.all([
+        this.fetchTrendingChallenges(Collections.CORE_CHALLENGES),
+        this.fetchTrendingChallenges(Collections.SPECIAL_CHALLENGES_2),
+      ]);
+
+      const combinedChallenges = [...coreChallenges, ...specialChallenges];
+
+      // Sort the combined array by totalViews in descending order and take the top 3
+      const topTrendingChallenges = combinedChallenges
+        .sort((a, b) => b.totalViews - a.totalViews)
+        .slice(0, 3);
+
+      const groupIds = [
+        ...new Set(topTrendingChallenges.map(challenge => challenge.groupId)),
+      ];
+
+      // Fetch groups from both core and special groups collection
+      const [coreGroups, specialGroups] = await Promise.all([
+        challengeGroupStore.fetchGroupsByIds({
+          groupIds,
+          collectionName: Collections.CORE_CHALLENGE_GROUPS,
+        }),
+        challengeGroupStore.fetchGroupsByIds({
+          groupIds,
+          collectionName: Collections.SPECIAL_CHALLENGE_GROUPS,
+        }),
+      ]);
+
+      if (!(coreGroups.length && specialGroups.length)) {
+        return;
+      }
+
+      const groupMap = [...coreGroups, ...specialGroups].reduce(
+        (acc, group) => {
+          acc[group.id] = group;
+          return acc;
+        },
+        {} as Record<
+          string,
+          ChallengeGroupType<ChallengeType[] | SpecialChallengeType[]>
+        >,
+      );
+
+      const topTrendingChallengesWithGroups = topTrendingChallenges.map(
+        challenge => ({
+          ...challenge,
+          group: groupMap[challenge.groupId] || null,
+        }),
+      ) as TrendingChallengeType[];
+
+      this.setTrendingChallenges(topTrendingChallengesWithGroups);
+    } catch (e) {
+      errorHandler({
+        error: e,
+        message: 'Failed to fetch and map challenges with groups',
+      });
+    }
+  };
+
+  fetchTrendingChallenges = async (collectionName: Collections) => {
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+    const snapshot = await firestore()
+      .collection(collectionName)
+      .orderBy('totalViews', 'desc')
+      .limit(3)
+      .get({source});
+
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as ChallengeType[] | SpecialChallengeType[];
   };
 }
 
