@@ -20,6 +20,7 @@ export enum CategoryKey {
   Intimate = 'Intimate',
   Specials = 'Specials',
   How_To_Use = 'How_To_Use',
+  All_In_One = 'All_In_One',
 }
 
 export interface CategoryType {

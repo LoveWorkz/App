@@ -15,7 +15,7 @@ interface CategoriesCarouselProps {
 
 const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   const {isLoading} = props;
-  const categories = categoriesStore.categories;
+  const homePageLevels = categoriesStore.homePageLevels;
 
   const formatedCategories = useMemo(() => {
     if (isLoading) {
@@ -28,16 +28,16 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
       ];
     }
 
-    return categories.map(category => {
+    return homePageLevels.map(level => {
       return {
-        ...category,
-        image: category.image.middle,
+        ...level,
+        image: level.image.middle,
         size: CateorySize.L,
         isLoading: false,
         isHomepage: true,
       };
     });
-  }, [categories, isLoading]);
+  }, [homePageLevels, isLoading]);
 
   return (
     <View>

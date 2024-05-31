@@ -23,16 +23,16 @@ const PremiumBlock = (props: PremiumBlockProps) => {
   if (isGradient) {
     return (
       <Gradient style={[styles.premiumBlock, {...style}]}>
-        <SvgXml
-          xml={getPremiumIcon({isGradient: false})}
-          width={horizontalScale(13)}
-          height={horizontalScale(13)}
-        />
         <AppText
           style={[styles.premiumText, {color: colors.white}]}
           size={TextSize.LEVEL_2}
           text="Premium"
           weight="500"
+        />
+        <SvgXml
+          xml={getPremiumIcon({isGradient: false})}
+          width={horizontalScale(13)}
+          height={horizontalScale(13)}
         />
       </Gradient>
     );
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   premiumText: {
-    marginLeft: horizontalScale(3),
+    marginRight: horizontalScale(3),
   },
 });

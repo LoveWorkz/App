@@ -18,7 +18,10 @@ export {default as ChallengeGroup} from '../ChallengeGroup/ui/ChallengeGroup/Cha
 export {default as ChallengeCardsFooter} from './ui/ChallengeCardsFooter/ChallengeCardsFooter';
 export {default as CoreChallengeCardsFooter} from './ui/ChallengeCardsFooter/CoreChallengeCardsFooter';
 export {default as ChallengeInfoPopup} from './ui/ChallengeInfoPopup/ChallengeInfoPopup';
-export {getChallengeInfoPopupContent} from './model/lib/challenge';
+export {
+  getChallengeInfoPopupContent,
+  TrendingChallengeExample,
+} from './model/lib/challenge';
 export {default as ChallengeCategoryBlock} from './ui/ChallengeCategoryBlock/ChallengeCategoryBlock';
 export {default as CoreChallengeIntroCard} from './ui/ChallengeCards/CoreChallengeIntroCard';
 export {default as TrendingChallengeList} from './ui/TrendingChallenge/TrendingChallengeList';

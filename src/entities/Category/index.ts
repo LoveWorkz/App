@@ -9,6 +9,7 @@ export {CategoryKey} from './model/types/categoryTypes';
 export {default as categoryStore} from './model/store/categoryStore';
 export {
   categoryExample,
+  allInOneCategory,
   FIRST_LEVEL_ID,
   getLevelsFinalImageUrls,
 } from './model/lib/category';

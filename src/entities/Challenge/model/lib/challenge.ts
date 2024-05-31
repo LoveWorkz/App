@@ -4,7 +4,11 @@ import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {SPECIAL_CHALLENGE_BUTTON_STATUS_KEY} from '@src/shared/consts/storage';
-import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
+import {
+  ChallengeType,
+  SpecialChallengeType,
+  TrendingChallengeType,
+} from '../types/ChallengeTypes';
 
 export const getChallengesLockedPopupContent = (t: TFunction) => {
   return {
@@ -63,4 +67,19 @@ export const fetchChallengeButtonStatus = async (): Promise<any> => {
 export const isLastCard = (cardId: string, cards: any[]): boolean => {
   const lastCard = cards[cards.length - 1];
   return cardId === lastCard.cardId;
+};
+
+export const TrendingChallengeExample: TrendingChallengeType = {
+  group: null,
+  title: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  description: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  isChallengeSpecial: false,
 };

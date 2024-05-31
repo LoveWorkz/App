@@ -30,6 +30,39 @@ export const categoryExample: CategoryType = {
   quadrants: {},
 };
 
+export const allInOneCategory: CategoryType = {
+  name: CategoryKey.All_In_One,
+  id: 'allInOne',
+  image: {
+    small:
+      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_middle.png?alt=media&token=b4259ed7-db73-425c-a3d5-6d1978c8260f',
+    large:
+      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_middle.png?alt=media&token=b4259ed7-db73-425c-a3d5-6d1978c8260f',
+    middle:
+      'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_middle.png?alt=media&token=b4259ed7-db73-425c-a3d5-6d1978c8260f',
+  },
+  leftSide: true,
+  isBlocked: false,
+  description: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  categorySize: 'large',
+  currentSession: '',
+  createdDate: '',
+  displayName: {
+    en: 'All in one',
+    de: 'All in one',
+    pt: 'Tudo em um',
+  },
+  sessions: {},
+  ratePopUpBreakpoint: 3,
+  currentSessionNumber: 1,
+  challengeCategoryId: '',
+  quadrants: {},
+};
+
 export const FIRST_LEVEL_ID = 'level_1';
 
 export const getLevelsFinalImageUrls = (): Record<CategoryKey, string> => {
@@ -44,5 +77,6 @@ export const getLevelsFinalImageUrls = (): Record<CategoryKey, string> => {
       'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_Final.png?alt=media&token=27616747-c226-459e-bfea-e4bc6e308750',
     [CategoryKey.Specials]: '',
     [CategoryKey.How_To_Use]: '',
+    [CategoryKey.All_In_One]: '',
   };
 };

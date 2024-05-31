@@ -71,7 +71,11 @@ const QuickStart = (props: QuickStartProps) => {
           style={textStyle}
           weight={'600'}
           size={TextSize.LEVEL_4}
-          text={'Let’s dive into your session'}
+          text={
+            hasUserCompletedAnySession
+              ? 'Naah. Let’s do it now!'
+              : 'Let’s dive into your session'
+          }
         />
         <SvgXml
           xml={getArrowRightIcon({})}

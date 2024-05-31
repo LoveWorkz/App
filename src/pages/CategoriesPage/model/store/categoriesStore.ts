@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {
+  allInOneCategory,
   CategoryKey,
   categoryStore,
   CategoryType,
@@ -24,6 +25,7 @@ class CategoriesStore {
   isCategoriesPageLoading: boolean = true;
 
   displayedLevels: CategoryType[] = [];
+  homePageLevels: CategoryType[] = [];
   displayedLevelsMap: Record<string, CategoryType> = {};
 
   constructor() {
@@ -34,7 +36,7 @@ class CategoriesStore {
     const editedCategories = this.editCategories(levels as CategoryType[]);
     // delete "How To Use" and "Special" blocks because there not a levels
     const levelsMinusHotAndSpecial =
-      this.getLevelsMinusHotAndSpecial(editedCategories);
+      this.getLevelsMinusHowToUseAndSpecial(editedCategories);
     const unlockedCategories = this.getUnlockedCategories(
       levelsMinusHotAndSpecial,
     );
@@ -49,15 +51,22 @@ class CategoriesStore {
       this.categoriesMap = normalisedCategories;
       this.displayedLevels = editedCategories;
       this.displayedLevelsMap = displayedLevelsMap;
+      this.homePageLevels = this.getLevelsMinusSpecial(
+        levelsMinusHotAndSpecial,
+      );
     });
   };
 
-  getLevelsMinusHotAndSpecial = (levels: CategoryType[]) => {
+  getLevelsMinusHowToUseAndSpecial = (levels: CategoryType[]) => {
     return levels.filter(
       level =>
         level.name !== CategoryKey.Specials &&
         level.name !== CategoryKey.How_To_Use,
     );
+  };
+
+  getLevelsMinusSpecial = (levels: CategoryType[]) => {
+    return [...levels, allInOneCategory];
   };
 
   init = async () => {

@@ -21,8 +21,11 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
 import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
-import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {LockIconWithoutStyle} from '@src/shared/assets/icons/Lock';
+import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
 
@@ -71,6 +74,7 @@ const Category = (props: CategoryProps) => {
   const isCategoryHowToUse = name === CategoryKey.How_To_Use;
   const isSpecialCategoryBlocked = categoryStore.isSpecialCategoryBlocked;
   const isSpecialCategory = name === CategoryKey.Specials;
+  const isAllInOneCategory = name === CategoryKey.All_In_One;
 
   useEffect(() => {
     if (isSpecialCategory) {
@@ -86,6 +90,11 @@ const Category = (props: CategoryProps) => {
       isActionDisabled?.current ||
       (isSpecialCategoryBlocked && isSpecialCategory)
     ) {
+      return;
+    }
+
+    if (isAllInOneCategory) {
+      navigation.navigate(TabRoutesNames.CATEGORIES);
       return;
     }
 
@@ -138,6 +147,9 @@ const Category = (props: CategoryProps) => {
     colors,
     t,
     sessionsCount,
+    isContentLocked,
+    isBlocked,
+    isAllInOneCategory,
   };
 
   return (
@@ -167,26 +179,75 @@ const renderHomePageCategory = (params: {
   colors: ColorType;
   sessionsCount: number;
   t: TFunction;
+  isContentLocked: boolean;
+  isBlocked: boolean;
+  isAllInOneCategory: boolean;
 }) => {
-  const {name, colors, t, sessionsCount} = params;
+  const {
+    name,
+    colors,
+    t,
+    sessionsCount,
+    isContentLocked,
+    isBlocked,
+    isAllInOneCategory,
+  } = params;
+
+  if (isAllInOneCategory) {
+    return (
+      <View style={styles.homePageCategorySection}>
+        <Gradient style={styles.explore}>
+          <AppText
+            weight={'900'}
+            style={{color: colors.white}}
+            size={TextSize.LEVEL_6}
+            text={'Explore'}
+          />
+        </Gradient>
+        <AppText
+          weight={'900'}
+          style={[styles.homePageSessionCount, {color: colors.white}]}
+          size={TextSize.LEVEL_8}
+          text={name}
+        />
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.homePageCategorySection}>
-      <Gradient style={styles.homePageSessionCountBlock}>
-        <AppText
-          weight="600"
-          style={{color: colors.white}}
-          size={TextSize.LEVEL_6}
-          text={`${sessionsCount} ${t('sessions')}`}
-        />
-      </Gradient>
-      <AppText
-        weight={'900'}
-        style={styles.homePageSessionCount}
-        size={TextSize.LEVEL_7}
-        text={name}
-      />
-    </View>
+    <>
+      <View style={styles.homePageCategorySection}>
+        <View>
+          <View style={styles.homePageSessionCountBlock}>
+            {isBlocked && !isContentLocked && (
+              <View style={styles.homePageLockIcon}>
+                <SvgXml
+                  fill={colors.white}
+                  xml={LockIconWithoutStyle}
+                  width={25}
+                  height={25}
+                />
+              </View>
+            )}
+            <AppText
+              weight="500"
+              style={{color: colors.white}}
+              size={TextSize.LEVEL_6}
+              text={`${sessionsCount} ${t('sessions')}`}
+            />
+          </View>
+          <AppText
+            weight={'900'}
+            style={[styles.homePageSessionCount, {color: colors.white}]}
+            size={TextSize.LEVEL_8}
+            text={name}
+          />
+        </View>
+      </View>
+      <View style={styles.homePagePremiumBlock}>
+        {isContentLocked && <PremiumBlock isGradient />}
+      </View>
+    </>
   );
 };
 
@@ -364,13 +425,31 @@ const styles = StyleSheet.create({
   },
   homePageSessionCountBlock: {
     alignSelf: 'flex-start',
-    paddingHorizontal: horizontalScale(12),
     paddingVertical: horizontalScale(5),
     borderRadius: moderateScale(15),
     marginBottom: horizontalScale(10),
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   homePageSessionCount: {
     textTransform: 'uppercase',
+  },
+  homePageLockIcon: {
+    marginRight: horizontalScale(10),
+  },
+  homePagePremiumBlock: {
+    transform: [{scale: 1.6}],
+    position: 'absolute',
+    right: horizontalScale(50),
+    top: horizontalScale(40),
+  },
+  explore: {
+    alignSelf: 'flex-start',
+    padding: horizontalScale(7),
+    paddingHorizontal: horizontalScale(15),
+    alignItems: 'center',
+    borderRadius: moderateScale(15),
+    marginBottom: horizontalScale(10),
   },
 });
 

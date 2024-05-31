@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 
@@ -64,12 +64,23 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
             />
           </View>
           <View style={styles.descriptionWrapper}>
-            <AppText
-              style={textStyle}
-              weight={'500'}
-              text={'Special offer when you re-subscribe to LoveWorkz Premium'}
-              align={'center'}
-            />
+            <Text>
+              <AppText
+                style={textStyle}
+                size={TextSize.LEVEL_4}
+                text={'Subscribe to LoveWorkz Premium now - '}
+                align={'center'}
+              />
+              <AppText
+                style={textStyle}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={
+                  'and enjoy more than 80 weeks of transformative relationship guidance'
+                }
+                align={'center'}
+              />
+            </Text>
           </View>
 
           <Button

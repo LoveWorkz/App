@@ -1,11 +1,14 @@
 import {View, StyleSheet} from 'react-native';
-import React, {memo, useMemo} from 'react';
+import React, {memo, useCallback, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
 
 import {Rubric, rubricExample, RubricType} from '@src/entities/Rubric';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import {AppText} from '@src/shared/ui/AppText/AppText';
 import HorizontalCarousel from '@src/shared/ui/HorizontalCarousel/HorizontalCarousel';
+import {SeeAll} from '@src/shared/ui/SeeAll/SeeAll';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import rubricStore from '../model/store/rubricStore';
 
 interface RubricWrapperProps {
@@ -14,13 +17,24 @@ interface RubricWrapperProps {
   isHomeChallenge?: boolean;
   index: number;
   listLength: number;
+  isSeeAll: boolean;
 }
 
 const RubricWrapper = memo((props: RubricWrapperProps) => {
-  const {rubric, index, listLength} = props;
+  const {rubric, index, listLength, isSeeAll} = props;
 
   const isFirstElement = index === 0;
   const isLastElement = index === listLength - 1;
+
+  let content = rubric && <Rubric {...props} />;
+
+  const onPress = useCallback(() => {
+    navigation.navigate(TabRoutesNames.RUBRICS);
+  }, []);
+
+  if (isSeeAll) {
+    content = <SeeAll onPressHandler={onPress} />;
+  }
 
   return (
     <View
@@ -28,7 +42,7 @@ const RubricWrapper = memo((props: RubricWrapperProps) => {
         marginLeft: horizontalScale(isFirstElement ? 20 : 15),
         marginRight: horizontalScale(isLastElement ? 20 : 0),
       }}>
-      {rubric && <Rubric {...props} />}
+      {content}
     </View>
   );
 });
@@ -45,13 +59,18 @@ const TrendingList = (props: TrendingListProps) => {
   const list = useMemo(() => {
     const trendingTopicsLIst = rubricStore.findTopTrendingTopics(rubrics);
 
-    return trendingTopicsLIst.map((item, i) => {
+    // this empty object is needed to add a "view all" block
+    const listWithEmptyObject = [...trendingTopicsLIst, {}];
+
+    return listWithEmptyObject.map((item, i) => {
+      const isLastElement = i === listWithEmptyObject.length - 1;
       return {
         rubric: item,
         isLoading,
         isHomeChallenge: true,
         index: i,
-        listLength: trendingTopicsLIst.length,
+        listLength: listWithEmptyObject.length,
+        isSeeAll: isLastElement,
       };
     });
   }, [isLoading, rubrics]);

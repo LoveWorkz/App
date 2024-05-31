@@ -20,14 +20,11 @@ const borderRadius = moderateScale(20);
 
 const TrendingChallenge = (props: TrendingChallengeProps) => {
   const {
-    challenge: {
-      description,
-      title,
-      isChallengeSpecial,
-      group: {displayName},
-    },
+    challenge: {description, title, isChallengeSpecial, group},
     isLoading,
   } = props;
+
+  const displayName = group?.displayName;
 
   const colors = useColors();
   const languae = useLanguage();
@@ -53,12 +50,14 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
           source={challengeImage}
         />
         <View style={styles.textWrapper}>
-          <AppText
-            style={styles.title}
-            weight={'600'}
-            size={TextSize.LEVEL_2}
-            text={displayName[languae]}
-          />
+          {displayName && (
+            <AppText
+              style={styles.title}
+              weight={'600'}
+              size={TextSize.LEVEL_2}
+              text={displayName[languae]}
+            />
+          )}
           <AppText
             weight={'600'}
             text={isChallengeSpecial ? title[languae] : description[languae]}

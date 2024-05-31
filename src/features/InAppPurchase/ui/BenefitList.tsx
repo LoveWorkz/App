@@ -16,9 +16,10 @@ const BenefitList = () => {
   const colors = useColors();
 
   const data = [
-    'All therapeutic sessions from our experts.',
     'Premium content for you and your partner',
+    'All therapeutic sessions from our experts.',
     '1200+ Questions, Routines, Exercises & much more',
+    'more than 80 weeks of intensive relationship work',
     'Therapeutic tips from our experts',
   ];
 

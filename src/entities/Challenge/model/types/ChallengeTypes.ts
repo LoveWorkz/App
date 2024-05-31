@@ -45,7 +45,7 @@ export enum SpecialChallengeEnum {
 }
 
 export interface TrendingChallengeType {
-  group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]>;
+  group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]> | null;
   title: DisplayText;
   description: DisplayText;
   isChallengeSpecial: boolean;
