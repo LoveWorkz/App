@@ -63,6 +63,7 @@ export const Layout = (props: LayoutProps) => {
   if (isPageScrolling) {
     return (
       <ScrollView
+        bounces={false}
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

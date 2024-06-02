@@ -88,7 +88,7 @@ class HomePageStore {
       });
 
       await userStore.fetchUser();
-      await this.fetchHomePageCategoryChallenges();
+      await this.fetchHomePageTopics();
       await this.fetchHomePageCategories(language);
       await this.getHomePageQuadrants(language);
     } catch (e) {
@@ -100,10 +100,10 @@ class HomePageStore {
     }
   };
 
-  fetchHomePageCategoryChallenges = async () => {
-    crashlytics().log('Fetching home page Challenges');
+  fetchHomePageTopics = async () => {
+    crashlytics().log('Fetching home page Topics');
 
-    await challengesStore.fetchChallengeCategories();
+    await rubricStore.fetchRubrics();
   };
 
   getHomePageQuadrants = async (language: LanguageValueType) => {

@@ -35,7 +35,11 @@ const SessionOverview = (props: SessionOverviewProps) => {
         currentLevel={currentLevel}
       />
       <View style={styles.quadrantList}>
-        <QuadrantList quadrantList={quadrantList} isLoading={isLoading} />
+        <QuadrantList
+          allSessionsCount={currentLevel.allSessionsCount}
+          quadrantList={quadrantList}
+          isLoading={isLoading}
+        />
       </View>
     </View>
   );

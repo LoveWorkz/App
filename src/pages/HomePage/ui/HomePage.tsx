@@ -26,7 +26,6 @@ import {
   homepageBackgroundImgHeight,
   HomePageHeader,
 } from '@src/widgets/headers/HomePageHeader';
-import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {userStore} from '@src/entities/User';
 import {TrendingList} from '@src/entities/Rubric';
 import {TrendingChallengeList} from '@src/entities/Challenge';
@@ -68,7 +67,8 @@ const HomePage = (props: HomePageProps) => {
         isTabScreen ||
         prevRouteName === AppRouteNames.COMPLETION ||
         prevRouteName === AppRouteNames.QUADRANT_COMPLETION ||
-        prevRouteName === AppRouteNames.SESSIONS
+        prevRouteName === AppRouteNames.SESSIONS ||
+        prevRouteName === AppRouteNames.QUESTIONS
       ) {
         homePageStore.fetchHomePageCategoriesAndChallenges(language);
       }
@@ -86,59 +86,55 @@ const HomePage = (props: HomePageProps) => {
         {marginBottom: isLoading ? 0 : horizontalScale(-HEADER_HEIGHT)},
       ]}>
       <HomePageHeader isLoading={isLoading} />
-      <ScrollViewWithoutIndicator>
+      <View
+        style={[
+          styles.container,
+          {
+            top: isLoading
+              ? horizontalScale(10)
+              : horizontalScale(-HEADER_HEIGHT),
+          },
+        ]}>
+        {isLoading ? (
+          <View style={styles.progressBarSkeleton}>
+            <Skeleton
+              width={windowWidthMinusPaddings}
+              height={horizontalScale(250)}
+            />
+          </View>
+        ) : (
+          <FastImage
+            style={[styles.homepageBackground]}
+            source={
+              theme === Theme.Dark ? HomepageBackgroundDark : HomepageBackground
+            }>
+            <ProgressBar />
+          </FastImage>
+        )}
         <View
           style={[
-            styles.container,
+            styles.content,
             {
-              top: isLoading
-                ? horizontalScale(10)
-                : horizontalScale(-HEADER_HEIGHT),
+              top: isLoading ? skeletonContentTop : contentTop,
+              marginBottom: isLoading ? skeletonContentTop : contentTop,
             },
           ]}>
-          {isLoading ? (
-            <View style={styles.progressBarSkeleton}>
-              <Skeleton
-                width={windowWidthMinusPaddings}
-                height={horizontalScale(250)}
-              />
-            </View>
-          ) : (
-            <FastImage
-              style={[styles.homepageBackground]}
-              source={
-                theme === Theme.Dark
-                  ? HomepageBackgroundDark
-                  : HomepageBackground
-              }>
-              <ProgressBar />
-            </FastImage>
-          )}
-          <View
-            style={[
-              styles.content,
-              {
-                top: isLoading ? skeletonContentTop : contentTop,
-                marginBottom: isLoading ? skeletonContentTop : contentTop,
-              },
-            ]}>
-            <View style={styles.homeCategoryWrapper}>
-              <QuickStart isLoading={isLoading} />
-            </View>
-            {!hasUserSubscription && (
-              <View style={styles.discountOfferCardWrapper}>
-                <DiscountOfferCard isLoading={isLoading} />
-              </View>
-            )}
-            <CategoriesCarousel isLoading={isLoading} />
-            <TrendingList isLoading={isLoading} />
-            <View style={styles.trendingChallengeWrapper}>
-              <TrendingChallengeList isLoading={isLoading} />
-            </View>
+          <View style={styles.homeCategoryWrapper}>
+            <QuickStart isLoading={isLoading} />
           </View>
-          <Quotes />
+          {!hasUserSubscription && (
+            <View style={styles.discountOfferCardWrapper}>
+              <DiscountOfferCard isLoading={isLoading} />
+            </View>
+          )}
+          <CategoriesCarousel isLoading={isLoading} />
+          <TrendingList isLoading={isLoading} />
+          <View style={styles.trendingChallengeWrapper}>
+            <TrendingChallengeList isLoading={isLoading} />
+          </View>
         </View>
-      </ScrollViewWithoutIndicator>
+        <Quotes />
+      </View>
     </View>
   );
 };

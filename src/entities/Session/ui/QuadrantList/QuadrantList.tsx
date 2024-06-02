@@ -7,7 +7,6 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import sessionStore from '../../model/store/sessionStore';
 import SessionsList from '../SessionsList/SessionsList';
 import Quadrant from '../Quadrant';
 import {QuadrantType} from '../../model/types/sessionType';
@@ -16,17 +15,21 @@ interface QuadrantListProps {
   quadrantList: QuadrantType[];
   isLoading: boolean;
   withBottomSpace?: boolean;
+  allSessionsCount: number;
 }
 
 const QuadrantList = (props: QuadrantListProps) => {
-  const {quadrantList, isLoading, withBottomSpace = true} = props;
-
-  const sessionsCount = sessionStore.getAllSessionsCount();
+  const {
+    quadrantList,
+    isLoading,
+    withBottomSpace = true,
+    allSessionsCount,
+  } = props;
 
   if (isLoading) {
     return (
       <>
-        {Array.from({length: sessionsCount}, (_, i) => i + 1).map(item => {
+        {Array.from({length: allSessionsCount}, (_, i) => i + 1).map(item => {
           return (
             <View key={item} style={styles.skeletonItem}>
               <Skeleton

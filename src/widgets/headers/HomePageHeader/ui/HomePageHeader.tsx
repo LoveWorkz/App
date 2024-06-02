@@ -10,7 +10,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, globalStyles} from '@src/app/styles/GlobalStyle';
 import {userStore} from '@src/entities/User';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
@@ -119,12 +119,13 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
 export default memo(observer(HomePageHeader));
 
 const styles = StyleSheet.create({
-  homepageBackground: {
-    height: homepageBackgroundImgHeight,
-  },
   header: {
     height: HEADER_HEIGHT,
     overflow: 'hidden',
+    ...globalStyles.zIndex_1,
+  },
+  homepageBackground: {
+    height: homepageBackgroundImgHeight,
   },
   content: {
     top: -8,

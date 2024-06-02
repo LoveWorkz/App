@@ -41,6 +41,7 @@ const Categories = (props: CategoriesProps) => {
                 ]}
                 key={category.id}>
                 <Category
+                  allSessionsCount={category.allSessionsCount}
                   isLoading={isLoading}
                   displayName={category.displayName}
                   id={category.id}
@@ -67,6 +68,7 @@ const Categories = (props: CategoriesProps) => {
                 ]}
                 key={category.id}>
                 <Category
+                  allSessionsCount={category.allSessionsCount}
                   isLoading={isLoading}
                   displayName={category.displayName}
                   id={category.id}

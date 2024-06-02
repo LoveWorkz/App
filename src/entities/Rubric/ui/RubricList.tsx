@@ -1,4 +1,4 @@
-import {View, StyleSheet, Pressable} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React, {memo} from 'react';
 import {observer} from 'mobx-react-lite';
 
@@ -32,12 +32,9 @@ const RubricList = (props: RubricListProps) => {
     const isFirstElement = i === 0;
 
     return rubric.questions.length ? (
-      <Pressable
-        onPress={onRubricPressHandlerCreator(rubric.id)}
-        key={rubric.id}
-        style={isFirstElement ? {} : styles.rubricWrapper}>
+      <View key={rubric.id} style={isFirstElement ? {} : styles.rubricWrapper}>
         <Rubric rubric={rubric} isLoading={isLoading} />
-      </Pressable>
+      </View>
     ) : null;
   });
 

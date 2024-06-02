@@ -64,7 +64,7 @@ const TrendingChallengeList = (props: ChallengeGroupProps) => {
     const listWithEmptyObject = [...trendingChallenges, {}];
 
     return listWithEmptyObject.map((item, i) => {
-      const isLastElement = i === listWithEmptyObject.length - 1;
+      const isLastElement: boolean = i === listWithEmptyObject.length - 1;
 
       return {
         challenge: item,

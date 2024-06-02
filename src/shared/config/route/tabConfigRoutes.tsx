@@ -89,7 +89,11 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     tabName: 'Home',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteBottomPadding={false} deleteTopPadding={true} isTabBar>
+        <Layout
+          isPageScrolling
+          deleteBottomPadding={false}
+          deleteTopPadding={true}
+          isTabBar>
           <HomePage {...props} />
         </Layout>
       );

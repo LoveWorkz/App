@@ -8,7 +8,6 @@ export type {
 export {default as sessionStore} from './model/store/sessionStore';
 export {
   userSession,
-  sessionsCountWithSubscription,
   EventEndType,
   getQuadrantsImageUrls,
 } from './model/lib/sessionLib';

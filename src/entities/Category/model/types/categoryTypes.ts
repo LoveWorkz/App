@@ -40,6 +40,7 @@ export interface CategoryType {
   currentSessionNumber: number;
   challengeCategoryId: string;
   quadrants: UserQuadrantType;
+  allSessionsCount: number;
 }
 
 export interface CurrentCategory {

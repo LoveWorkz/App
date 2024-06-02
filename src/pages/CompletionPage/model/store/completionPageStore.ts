@@ -90,10 +90,9 @@ class CompletionPageStore {
       case EventEndType.SESSION_END:
         const currentSession = sessionStore.session;
         if (currentLevel && currentSession) {
-          const allSessionsCount = sessionStore.getAllSessionsCount();
           description = getSessionDescription({
             curreentSessionNumber: currentSession.sessionNumber,
-            allSessionsCount,
+            allSessionsCount: currentLevel.allSessionsCount,
             currentLevelName: currentLevel.displayName[language],
           });
         }

@@ -24,7 +24,7 @@ class CoreChallengeCardsPageStore {
         firstChallenge && challengeStore.setCoreChallenge(firstChallenge);
       }
 
-      await challengeStore.initLockedChallengeIds(currentCoreChallengeGroupId);
+      await challengeStore.initLockedChallengeId(currentCoreChallengeGroupId);
     } catch (e) {
       errorHandler({error: e});
     }

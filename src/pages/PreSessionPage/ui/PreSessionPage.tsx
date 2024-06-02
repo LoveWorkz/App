@@ -93,6 +93,7 @@ const PreSessionPage = () => {
           </View>
         </View>
         <QuadrantList
+          allSessionsCount={currentLevel.allSessionsCount}
           withBottomSpace={false}
           quadrantList={[]}
           isLoading={true}
@@ -134,6 +135,7 @@ const PreSessionPage = () => {
       </View>
 
       <QuadrantList
+        allSessionsCount={currentLevel.allSessionsCount}
         withBottomSpace={false}
         quadrantList={
           isCollapsed

@@ -364,10 +364,17 @@ class ChallengesStore {
    */
   fetchCoreAndSpecialTrendingChallenges = async () => {
     try {
+      this.fetchChallengeCategories;
+
       // Fetch top 3 trending challenges for both core and special
       const [coreChallenges, specialChallenges] = await Promise.all([
-        this.fetchTrendingChallenges(Collections.CORE_CHALLENGES),
-        this.fetchTrendingChallenges(Collections.SPECIAL_CHALLENGES_2),
+        this.fetchTrendingChallenges({
+          collectionName: Collections.CORE_CHALLENGES,
+        }),
+        this.fetchTrendingChallenges({
+          collectionName: Collections.SPECIAL_CHALLENGES_2,
+          isCore: false,
+        }),
       ]);
 
       const combinedChallenges = [...coreChallenges, ...specialChallenges];
@@ -390,6 +397,7 @@ class ChallengesStore {
         challengeGroupStore.fetchGroupsByIds({
           groupIds,
           collectionName: Collections.SPECIAL_CHALLENGE_GROUPS,
+          isCore: false,
         }),
       ]);
 
@@ -424,7 +432,13 @@ class ChallengesStore {
     }
   };
 
-  fetchTrendingChallenges = async (collectionName: Collections) => {
+  fetchTrendingChallenges = async ({
+    collectionName,
+    isCore = true,
+  }: {
+    collectionName: Collections;
+    isCore?: boolean;
+  }) => {
     const source = await userStore.checkIsUserOfflineAndReturnSource();
 
     const snapshot = await firestore()
@@ -433,10 +447,20 @@ class ChallengesStore {
       .limit(3)
       .get({source});
 
-    return snapshot.docs.map(doc => ({
+    const trendingChallenges = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     })) as ChallengeType[] | SpecialChallengeType[];
+
+    runInAction(() => {
+      if (isCore) {
+        this.challenges = trendingChallenges as ChallengeType[];
+      } else {
+        this.specialChallenges = trendingChallenges as SpecialChallengeType[];
+      }
+    });
+
+    return trendingChallenges;
   };
 }
 

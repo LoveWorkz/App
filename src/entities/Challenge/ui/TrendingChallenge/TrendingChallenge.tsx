@@ -10,6 +10,7 @@ import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {TrendingChallengeType} from '../../model/types/ChallengeTypes';
+import challengeStore from '../../model/store/challengeStore';
 
 interface TrendingChallengeProps {
   challenge: TrendingChallengeType;
@@ -19,16 +20,26 @@ interface TrendingChallengeProps {
 const borderRadius = moderateScale(20);
 
 const TrendingChallenge = (props: TrendingChallengeProps) => {
-  const {
-    challenge: {description, title, isChallengeSpecial, group},
-    isLoading,
-  } = props;
+  const {challenge, isLoading} = props;
+
+  const {description, title, isChallengeSpecial, group} = challenge;
 
   const displayName = group?.displayName;
 
   const colors = useColors();
   const languae = useLanguage();
 
+  const onChallengePressHandler = () => {
+    // setting this flag to avoid going to the final page
+    challengeStore.setIsSessionFlow(false);
+
+    if (isChallengeSpecial) {
+      challengeStore.specialChallengePressHandler(challenge as any);
+    } else {
+      challengeStore.coreChallengePressHandler({challenge: challenge as any});
+    }
+  };
+  
   if (isLoading) {
     return (
       <View>
@@ -42,7 +53,7 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
   }
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onChallengePressHandler}>
       <View style={[styles.TrendingChallenge, {backgroundColor: colors.white}]}>
         <FastImage
           style={styles.img}

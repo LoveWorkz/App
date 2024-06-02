@@ -9,6 +9,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {CARD_WIDTH} from '@src/shared/consts/common';
 import {sessionStore} from '@src/entities/Session';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import challengeStore from '../../model/store/challengeStore';
 
 interface CoreChallengeCardsFooterProps {
@@ -62,10 +63,9 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         <Button
           disabled={isSelectingChallenge}
           onPress={onPressHandler}
-          theme={ButtonTheme.GRADIENT}
-          style={styles.btn}>
-          <AppText
-            style={{color: colors.white}}
+          theme={ButtonTheme.OUTLINED}
+          style={[styles.btn, {backgroundColor: colors.white}]}>
+          <GradientText
             size={TextSize.LEVEL_4}
             weight={'600'}
             text={'We’ve done the challenge'}
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: verticalScale(40),
+    bottom: verticalScale(50),
     alignItems: 'center',
   },
   text: {
@@ -107,5 +107,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: horizontalScale(CARD_WIDTH),
+    borderWidth: 0,
   },
 });

@@ -1,7 +1,8 @@
-import React, {memo, useState} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {observer} from 'mobx-react-lite';
+import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {
@@ -17,6 +18,10 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {
+  OutlineLockGradientIcon,
+  OutlineLockIcon,
+} from '@src/shared/assets/icons/Lock';
 import challengeStore from '../../model/store/challengeStore';
 
 interface ChallengeCardProps {
@@ -40,29 +45,17 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
   const colors = useColors();
   const language = useLanguage();
 
-  const lockedChallengeIds = challengeStore.lockedChallengeIds;
-
-  const [isChallengeLocked, setIsChallengeLocked] = useState<boolean>(
-    () => challengeStore.isChallengeLockedIn(id) || !!isChallengeCompleted,
-  );
-
   const challengelockedHandler = () => {
     if (isChallengeCompleted) {
       return;
     }
 
-    setIsChallengeLocked(false);
-    challengeStore.removeLockedChallengeId({id, groupId});
+    challengeStore.removeLockedChallengeId({groupId});
   };
 
   const lockTheChallengeInHandler = () => {
-    setIsChallengeLocked(true);
     challengeStore.setLockedChallengeIds({id, groupId});
   };
-
-  const hasEntries = lockedChallengeIds.length > 0;
-  const isNotIncluded = !lockedChallengeIds.includes(id);
-  const isDisabled = hasEntries && isNotIncluded;
 
   return (
     <FastImage
@@ -89,13 +82,24 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
       </View>
       {isSessionFlow && (
         <View style={styles.btnWrapper}>
-          {isChallengeLocked ? (
+          {challengeStore.isChallengeLockedIn(id) || !!isChallengeCompleted ? (
             <Button
               onPress={challengelockedHandler}
               theme={ButtonTheme.OUTLINED}
-              style={[styles.btn, {backgroundColor: colors.lavenderBlue}]}>
+              style={[
+                styles.challengeLockedBtn,
+                {backgroundColor: colors.challengeCardBtnColor},
+              ]}>
+              <View style={styles.lockIcon}>
+                <SvgXml
+                  fill={colors.primaryTextColor}
+                  xml={OutlineLockIcon}
+                  width={horizontalScale(21)}
+                  height={horizontalScale(21)}
+                />
+              </View>
               <AppText
-                style={{color: colors.white}}
+                style={{color: colors.primaryTextColor}}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
                 text={'Challenge locked'}
@@ -103,16 +107,23 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
             </Button>
           ) : (
             <Button
-              disabled={isDisabled}
               onPress={lockTheChallengeInHandler}
-              theme={ButtonTheme.GRADIENT}
-              style={styles.btn}>
-              <AppText
-                style={{color: colors.white}}
-                size={TextSize.LEVEL_4}
-                weight={'600'}
-                text={'Lock the challenge in'}
-              />
+              theme={ButtonTheme.OUTLINED_GRADIENT}
+              style={styles.lockChallengeBtn}>
+              <View style={styles.lockChallengeContent}>
+                <View style={styles.lockIcon}>
+                  <SvgXml
+                    xml={OutlineLockGradientIcon}
+                    width={horizontalScale(21)}
+                    height={horizontalScale(21)}
+                  />
+                </View>
+                <GradientText
+                  size={TextSize.LEVEL_4}
+                  weight={'600'}
+                  text={'Lock the challenge in'}
+                />
+              </View>
             </Button>
           )}
         </View>
@@ -124,6 +135,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
 export default memo(observer(CoreChallengeCard));
 
 const padding = horizontalScale(20);
+const btnWidth = '87%';
 
 const styles = StyleSheet.create({
   ChallengeCard: {
@@ -147,11 +159,23 @@ const styles = StyleSheet.create({
   btnWrapper: {
     width: horizontalScale(CARD_WIDTH),
     position: 'absolute',
-    bottom: verticalScale(55),
+    bottom: verticalScale(45),
     alignItems: 'center',
   },
-  btn: {
-    width: '87%',
+  lockChallengeBtn: {
+    width: btnWidth,
+  },
+  lockChallengeContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  challengeLockedBtn: {
+    width: btnWidth,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 0,
+  },
+  lockIcon: {
+    marginRight: horizontalScale(10),
   },
 });

@@ -180,9 +180,11 @@ class challengeGroupStore {
   fetchGroupsByIds = async ({
     groupIds,
     collectionName,
+    isCore = true,
   }: {
     groupIds: string[];
     collectionName: Collections;
+    isCore?: boolean;
   }) => {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
@@ -205,6 +207,16 @@ class challengeGroupStore {
         id: doc.id,
         ...doc.data(),
       }));
+
+      if (isCore) {
+        this.setCoreChallengeGroups(
+          groups as ChallengeGroupType<ChallengeType[]>[],
+        );
+      } else {
+        this.setSpecialChallengeGroups(
+          groups as ChallengeGroupType<SpecialChallengeType[]>[],
+        );
+      }
 
       return groups as ChallengeGroupType<
         SpecialChallengeType[] | ChallengeType[]

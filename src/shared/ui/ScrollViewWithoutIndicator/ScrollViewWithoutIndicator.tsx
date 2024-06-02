@@ -14,6 +14,7 @@ export const ScrollViewWithoutIndicator = (
 
   return (
     <ScrollView
+      bounces={false}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       {...rest}>

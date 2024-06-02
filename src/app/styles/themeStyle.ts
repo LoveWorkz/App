@@ -40,7 +40,8 @@ export type Colors =
   | 'periwinkleDust'
   | 'softPeriwinkle'
   | 'lilacBreeze'
-  | 'disabledSessionColor';
+  | 'disabledSessionColor'
+  | 'challengeCardBtnColor';
 
 export type ColorType = Record<Colors, string>;
 
@@ -61,6 +62,7 @@ const commonColor = {
   softPeriwinkle: '#DCE0F5',
   lilacBreeze: '#E3E6F6',
   disabledSessionColor: '#D8DBE2',
+  challengeCardBtnColor: '#f5f6f9',
 };
 
 const light: ColorType = {

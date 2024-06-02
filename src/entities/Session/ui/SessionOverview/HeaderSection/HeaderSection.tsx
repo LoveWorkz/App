@@ -6,7 +6,6 @@ import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
-import {sessionStore} from '@src/entities/Session';
 import Carouseltem from './Carouseltem';
 
 interface HeaderSectionProps {
@@ -20,15 +19,13 @@ const HeaderSection = (props: HeaderSectionProps) => {
   const {levels, currentLevel, isFavorite, swipeHandler} = props;
   const colors = useColors();
 
-  const sessionsCount = sessionStore.getAllSessionsCount();
-
   const defaultElement = categoryStore.getLevelNumberById(
     levels,
     currentLevel.id,
   );
 
   const levelsWithMetaDatas = levels.map(level => {
-    return {...level, sessionsCount, isFavorite};
+    return {...level, sessionsCount: level.allSessionsCount, isFavorite};
   });
 
   return (

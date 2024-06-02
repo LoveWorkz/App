@@ -22,8 +22,6 @@ import {QuadrantType, SessionsMap, SessionType} from '../types/sessionType';
 import {
   EventEndType,
   FIRST_QUADRANT_ID,
-  sessionsCountWithoutSubscription,
-  sessionsCountWithSubscription,
   SESSION_INTERVAL_FOR_RATE_PROMPT,
 } from '../lib/sessionLib';
 
@@ -150,14 +148,6 @@ class SessionStore {
 
   setSession = (session: SessionType) => {
     this.session = session;
-  };
-
-  getAllSessionsCount = () => {
-    const hasUserSubscription = userStore.getUserHasSubscription();
-
-    return hasUserSubscription
-      ? sessionsCountWithSubscription
-      : sessionsCountWithoutSubscription;
   };
 
   selectSessionAndNavigate = ({session}: {session: SessionType}) => {

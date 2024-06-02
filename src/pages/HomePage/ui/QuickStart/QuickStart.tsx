@@ -12,6 +12,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {userStore} from '@src/entities/User';
+import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {homePageStore} from '../..';
 
 interface QuickStartProps {
@@ -25,7 +26,7 @@ const QuickStart = (props: QuickStartProps) => {
   const colors = useColors();
 
   const {hasUserCompletedAnySession} = userStore;
-  const {homePageQuadrantName} = homePageStore;
+  const {homePageQuadrantName, homePageCategory} = homePageStore;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -37,6 +38,15 @@ const QuickStart = (props: QuickStartProps) => {
 
   if (isLoading) {
     return null;
+  }
+
+  let textContent = '';
+  if (hasUserCompletedAnySession && homePageCategory) {
+    textContent = `For the ${ordinalSuffixOf(
+      homePageCategory.currentSessionNumber,
+    )} of ${homePageCategory.allSessionsCount} sessions`;
+  } else {
+    textContent = `Focus: ${homePageQuadrantName}`;
   }
 
   return (
@@ -56,11 +66,7 @@ const QuickStart = (props: QuickStartProps) => {
       </View>
 
       <View style={styles.textWrapper}>
-        <AppText
-          weight={'600'}
-          size={TextSize.LEVEL_4}
-          text={`Focus: ${homePageQuadrantName}`}
-        />
+        <AppText weight={'600'} size={TextSize.LEVEL_4} text={textContent} />
       </View>
 
       <Button

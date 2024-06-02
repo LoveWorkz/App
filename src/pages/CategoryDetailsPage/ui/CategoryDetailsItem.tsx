@@ -19,7 +19,6 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
-import {sessionStore} from '@src/entities/Session';
 import {isPlatformIos} from '@src/shared/consts/common';
 
 interface CategoryDetailsItemProps {
@@ -27,10 +26,11 @@ interface CategoryDetailsItemProps {
   displayName: DisplayText;
   image: CategoryImageType;
   isBlocked: boolean;
+  allSessionsCount: number;
 }
 
 const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
-  const {levelName, displayName, image, isBlocked} = props;
+  const {levelName, displayName, image, isBlocked, allSessionsCount} = props;
 
   const colors = useColors();
   const language = useLanguage();
@@ -42,7 +42,6 @@ const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
   }, [image]);
 
   const isContentLocked = categoryStore.checkContentLock(levelName);
-  const sessionsCount = sessionStore.getAllSessionsCount();
 
   return (
     <FastImage style={styles.image} source={uri}>
@@ -70,7 +69,7 @@ const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
           style={{color: colors.white}}
           weight={'700'}
           size={TextSize.LEVEL_4}
-          text={`${sessionsCount} sessions`}
+          text={`${allSessionsCount} sessions`}
         />
       </View>
     </FastImage>

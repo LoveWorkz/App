@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 
@@ -20,6 +20,9 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {Badge, challengeImage} from '@src/shared/assets/images';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {DocumentType} from '@src/shared/types/types';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
 import rubricStore from '../model/store/rubricStore';
@@ -53,6 +56,16 @@ const Rubric = (props: RubricProps) => {
       priority: FastImage.priority.normal,
     };
   }, [rubric.image]);
+
+  const onRubricPressHandlerCreator = (id: string) => {
+    return () => {
+      navigation.navigate(AppRouteNames.QUESTIONS, {
+        type: DocumentType.RUBRIC,
+        id,
+        title: displayName[language],
+      });
+    };
+  };
 
   if (isLoading) {
     return (
@@ -111,20 +124,28 @@ const Rubric = (props: RubricProps) => {
   }
 
   return (
-    <View
-      style={[
-        styles.Rubric,
-        {
-          ...getShadowOpacity(theme).shadowOpacity_level_1,
-          backgroundColor: colors.bgSecondaryColor,
-        },
-      ]}>
-      <FastImage resizeMode="contain" style={styles.badgeImg} source={Badge} />
-      <View style={styles.imageWrapper}>
-        <FastImage style={styles.image} source={challengeImage} />
+    <TouchableOpacity
+      onPress={onRubricPressHandlerCreator(rubric.id)}
+      key={rubric.id}>
+      <View
+        style={[
+          styles.Rubric,
+          {
+            ...getShadowOpacity(theme).shadowOpacity_level_1,
+            backgroundColor: colors.bgSecondaryColor,
+          },
+        ]}>
+        <FastImage
+          resizeMode="contain"
+          style={styles.badgeImg}
+          source={Badge}
+        />
+        <View style={styles.imageWrapper}>
+          <FastImage style={styles.image} source={challengeImage} />
+        </View>
+        {content}
       </View>
-      {content}
-    </View>
+    </TouchableOpacity>
   );
 };
 

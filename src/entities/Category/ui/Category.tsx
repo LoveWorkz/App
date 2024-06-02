@@ -16,7 +16,6 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {sessionStore} from '@src/entities/Session';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {LockedIcon} from '@src/shared/assets/icons/Locked';
@@ -39,7 +38,8 @@ interface CategoryProps {
   displayName: DisplayText;
   isLoading?: boolean;
   isActionDisabled?: MutableRefObject<boolean>;
-  isHomepage: boolean;
+  isHomepage?: boolean;
+  allSessionsCount: number;
 }
 
 const CategorySizes = {
@@ -62,13 +62,13 @@ const Category = (props: CategoryProps) => {
     isActionDisabled,
     name,
     isHomepage,
+    allSessionsCount,
   } = props;
 
   const {t, i18n} = useTranslation();
   const {theme} = useTheme();
   const colors = useColors();
   const language = i18n.language as LanguageValueType;
-  const sessionsCount = sessionStore.getAllSessionsCount();
   const isContentLocked = categoryStore.checkContentLock(name);
   const categorySize = CategorySizes[size] || CategorySizes[CateorySize.L];
   const isCategoryHowToUse = name === CategoryKey.How_To_Use;
@@ -128,7 +128,7 @@ const Category = (props: CategoryProps) => {
     colors,
     isContentLocked,
     isSpecialCategory,
-    sessionsCount,
+    allSessionsCount,
     size,
     isCategoryHowToUse,
   };
@@ -146,7 +146,7 @@ const Category = (props: CategoryProps) => {
     name: displayName[language],
     colors,
     t,
-    sessionsCount,
+    allSessionsCount,
     isContentLocked,
     isBlocked,
     isAllInOneCategory,
@@ -177,7 +177,7 @@ const Category = (props: CategoryProps) => {
 const renderHomePageCategory = (params: {
   name: string;
   colors: ColorType;
-  sessionsCount: number;
+  allSessionsCount: number;
   t: TFunction;
   isContentLocked: boolean;
   isBlocked: boolean;
@@ -187,7 +187,7 @@ const renderHomePageCategory = (params: {
     name,
     colors,
     t,
-    sessionsCount,
+    allSessionsCount,
     isContentLocked,
     isBlocked,
     isAllInOneCategory,
@@ -233,7 +233,7 @@ const renderHomePageCategory = (params: {
               weight="500"
               style={{color: colors.white}}
               size={TextSize.LEVEL_6}
-              text={`${sessionsCount} ${t('sessions')}`}
+              text={`${allSessionsCount} ${t('sessions')}`}
             />
           </View>
           <AppText
@@ -337,14 +337,14 @@ const renderUnlockedContent = (params: {
   colors: ColorType;
   isSpecialCategory: boolean;
   isContentLocked: boolean;
-  sessionsCount: number;
+  allSessionsCount: number;
   isCategoryHowToUse: boolean;
   t: TFunction;
 }) => {
   const {
     isContentLocked,
     isSpecialCategory,
-    sessionsCount,
+    allSessionsCount,
     t,
     size,
     isCategoryHowToUse,
@@ -361,7 +361,7 @@ const renderUnlockedContent = (params: {
           text={
             isCategoryHowToUse
               ? 'Explore here'
-              : `${sessionsCount} ${t('sessions')}`
+              : `${allSessionsCount} ${t('sessions')}`
           }
         />
       </View>

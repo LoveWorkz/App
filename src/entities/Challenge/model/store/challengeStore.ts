@@ -20,7 +20,6 @@ import {
 } from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
-import {removeDuplicates} from '@src/shared/lib/common';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
@@ -31,6 +30,7 @@ class ChallengeStore {
   coreChallenge: ChallengeType | null = null;
   isChallengeDoneButtonVisible: boolean = false;
   lockedChallengeIds: string[] = [];
+  lockedChallengeId: string = '';
   isSessionFlow: boolean = false;
 
   isSelectingChallenge: boolean = false;
@@ -56,11 +56,11 @@ class ChallengeStore {
   };
 
   isChallengeLockedIn = (id: string) => {
-    return this.lockedChallengeIds.includes(id);
+    return this.lockedChallengeId === id;
   };
 
-  setIds = (ids: string[]) => {
-    this.lockedChallengeIds = ids;
+  setLockedChallengeId = (id: string) => {
+    this.lockedChallengeId = id;
   };
 
   setLockedChallengeIds = async ({
@@ -72,68 +72,59 @@ class ChallengeStore {
   }) => {
     try {
       const userId = userStore.userId;
-      const newValue = [...this.lockedChallengeIds, id];
-      const filteredIds = removeDuplicates(newValue);
 
-      let data = {[groupId]: filteredIds};
+      let newValue = {[groupId]: id};
 
       const lockedChallengeIdsFromStorage =
         await this.getLockedChallengeIdsFromStorage();
       if (lockedChallengeIdsFromStorage) {
-        data = {...lockedChallengeIdsFromStorage, [groupId]: filteredIds};
+        newValue = {...lockedChallengeIdsFromStorage, [groupId]: id};
       }
 
       await coreChallengeInfoStorage.setCoreChallengeInfo(
         userId,
-        JSON.stringify(data),
+        JSON.stringify(newValue),
       );
 
-      this.setIds(filteredIds);
+      this.setLockedChallengeId(id);
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  removeLockedChallengeId = async ({
-    id,
-    groupId,
-  }: {
-    id: string;
-    groupId: string;
-  }) => {
+  removeLockedChallengeId = async ({groupId}: {groupId: string}) => {
     try {
       const userId = userStore.userId;
-      const newList = this.lockedChallengeIds.filter(item => item !== id);
 
       const lockedChallengeIdsFromStorage =
         await this.getLockedChallengeIdsFromStorage();
 
       if (lockedChallengeIdsFromStorage) {
-        const data = {...lockedChallengeIdsFromStorage, [groupId]: newList};
+        const data = {...lockedChallengeIdsFromStorage, [groupId]: ''};
 
         await coreChallengeInfoStorage.setCoreChallengeInfo(
           userId,
           JSON.stringify(data),
         );
 
-        this.setIds(newList);
+        this.setLockedChallengeId('');
       }
     } catch (e) {
       errorHandler({error: e});
     }
   };
 
-  initLockedChallengeIds = async (groupId: string) => {
+  initLockedChallengeId = async (groupId: string) => {
     try {
       const lockedChallengeIdsFromStorage =
         await this.getLockedChallengeIdsFromStorage();
       if (lockedChallengeIdsFromStorage) {
-        const lockedChallengeIds = lockedChallengeIdsFromStorage[groupId];
-        if (!lockedChallengeIds) {
+        const lockedChallengeId = lockedChallengeIdsFromStorage[groupId];
+        if (!lockedChallengeId) {
           return;
         }
 
-        this.setIds(lockedChallengeIds);
+        this.setLockedChallengeId(lockedChallengeId);
       }
     } catch (e) {
       errorHandler({error: e});
@@ -505,9 +496,7 @@ class ChallengeStore {
   };
 
   clearForm = () => {
-    this.setIds([]);
-    this.setCoreChallenge(null);
-    this.setSpecialChallenge(null);
+    this.setLockedChallengeId('');
   };
 }
 

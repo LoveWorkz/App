@@ -28,6 +28,7 @@ export const categoryExample: CategoryType = {
   currentSessionNumber: 1,
   challengeCategoryId: '',
   quadrants: {},
+  allSessionsCount: 0,
 };
 
 export const allInOneCategory: CategoryType = {
@@ -61,6 +62,7 @@ export const allInOneCategory: CategoryType = {
   currentSessionNumber: 1,
   challengeCategoryId: '',
   quadrants: {},
+  allSessionsCount: 0,
 };
 
 export const FIRST_LEVEL_ID = 'level_1';
