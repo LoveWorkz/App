@@ -3,9 +3,7 @@ import {StyleSheet} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {Modal} from '@src/shared/ui/Modal/Modal';
-import {navigation} from '@src/shared/lib/navigation/navigation';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
-import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {ChallengeInfoPopupContent} from './ChallengeInfoPopupContent';
 import {SpecialChallengeType} from '../../model/types/ChallengeTypes';
 import {getChallengeInfoPopupContent} from '../../model/lib/challenge';
@@ -14,23 +12,16 @@ interface ChallengeIntroInfoPopupProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
   specialChallenge: SpecialChallengeType;
+  onBtnPressHandler: () => void;
 }
 
 export const ChallengeIntroInfoPopup = memo(
   (props: ChallengeIntroInfoPopupProps) => {
-    const {visible, setVisible, specialChallenge} = props;
+    const {visible, setVisible, specialChallenge, onBtnPressHandler} = props;
 
     const language = useLanguage();
 
     const onCancelHandler = useCallback(() => {
-      setVisible(false);
-    }, [setVisible]);
-
-    const onBtnPressHandler = useCallback(() => {
-      navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_CARDS, {
-        title: specialChallenge.title[language],
-      });
-
       setVisible(false);
     }, [setVisible]);
 

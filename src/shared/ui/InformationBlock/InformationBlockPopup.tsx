@@ -1,25 +1,18 @@
 import React, {memo, useCallback} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import Modal from 'react-native-modal';
 import {useTranslation} from 'react-i18next';
 
-import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {DEFAULT_INFORMATION_POPUP_WIDTH} from '@src/shared/consts/common';
-import {InformationBlockButtonCoordinates} from '@src/shared/types/types';
 import {infoTextType} from '@src/widgets/InformationBlock';
 import {AppText, TextSize} from '../AppText/AppText';
 import {Button, ButtonTheme} from '../Button/Button';
+import {Modal} from '../Modal/Modal';
 
 interface InformationBlockPopupProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  modalPosition: InformationBlockButtonCoordinates;
   text: infoTextType[];
   title?: string;
   popupWidth?: number;
@@ -27,7 +20,7 @@ interface InformationBlockPopupProps {
 
 export const InformationBlockPopup = memo(
   (props: InformationBlockPopupProps) => {
-    const {visible, setVisible, modalPosition, text, title, popupWidth} = props;
+    const {visible, setVisible, text, title, popupWidth} = props;
 
     const colors = useColors();
     const {t} = useTranslation();
@@ -41,63 +34,53 @@ export const InformationBlockPopup = memo(
     }
 
     return (
-      <Modal
-        isVisible={visible}
-        onBackdropPress={onCancelHandler}
-        backdropColor="transparent"
-        animationIn="bounceIn"
-        style={styles.modal}>
-        <View
-          style={[
-            styles.content,
-            modalPosition,
-            {
-              backgroundColor: colors.bgQuaternaryColor,
-              width: popupWidth || DEFAULT_INFORMATION_POPUP_WIDTH,
-            },
-          ]}>
-          {title && (
-            <AppText
-              style={[styles.title, {color: colors.primaryTextColor}]}
-              weight={'700'}
-              size={TextSize.LEVEL_6}
-              text={title}
-            />
-          )}
-          <View style={styles.texts}>
-            {text.map(item => {
-              return (
-                <Text key={item.text} style={styles.textItem}>
-                  {item.boldString && (
+      <Modal visible={visible} onClose={onCancelHandler}>
+        <View>
+          <View
+            style={[
+              styles.content,
+              {
+                width: popupWidth || DEFAULT_INFORMATION_POPUP_WIDTH,
+              },
+            ]}>
+            {title && (
+              <AppText weight={'700'} size={TextSize.LEVEL_6} text={title} />
+            )}
+            <View style={styles.texts}>
+              {text.map(item => {
+                return (
+                  <Text key={item.text} style={styles.textItem}>
+                    {item.boldString && (
+                      <AppText
+                        style={[styles.text, {color: colors.primaryTextColor}]}
+                        weight={'bold'}
+                        size={TextSize.LEVEL_3}
+                        text={item.boldString}
+                      />
+                    )}
                     <AppText
+                      align={'justify'}
                       style={[styles.text, {color: colors.primaryTextColor}]}
-                      weight={'bold'}
+                      weight={'400'}
                       size={TextSize.LEVEL_3}
-                      text={item.boldString}
+                      text={item.text}
                     />
-                  )}
-                  <AppText
-                    align={'justify'}
-                    style={[styles.text, {color: colors.primaryTextColor}]}
-                    weight={'400'}
-                    size={TextSize.LEVEL_3}
-                    text={item.text}
-                  />
-                </Text>
-              );
-            })}
+                  </Text>
+                );
+              })}
+            </View>
+            <Button
+              style={styles.btn}
+              theme={ButtonTheme.GRADIENT}
+              onPress={onCancelHandler}>
+              <AppText
+                style={{color: colors.bgQuinaryColor}}
+                size={TextSize.LEVEL_4}
+                weight={'700'}
+                text={t('ok')}
+              />
+            </Button>
           </View>
-          <Button
-            style={styles.btn}
-            theme={ButtonTheme.GRADIENT}
-            onPress={onCancelHandler}>
-            <AppText
-              style={{color: colors.bgQuinaryColor}}
-              size={TextSize.LEVEL_4}
-              weight={'700'}
-              text={t('ok')}
-            />
-          </Button>
         </View>
       </Modal>
     );
@@ -109,18 +92,13 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   content: {
-    position: 'absolute',
-    borderRadius: moderateScale(20),
-    borderTopRightRadius: 0,
-    padding: horizontalScale(30),
+    paddingHorizontal: horizontalScale(20),
+    padding: verticalScale(10),
     alignItems: 'flex-start',
-    maxWidth: windowWidth - 40,
-  },
-  title: {
-    textAlign: 'center',
   },
   texts: {
     marginTop: verticalScale(20),
+    marginBottom: verticalScale(20),
   },
   textItem: {
     textAlign: 'justify',
@@ -133,5 +111,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: '100%',
+    height: verticalScale(40),
   },
 });

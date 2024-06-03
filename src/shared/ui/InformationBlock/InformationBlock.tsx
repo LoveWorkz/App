@@ -12,7 +12,6 @@ import {infoTextType} from '@src/widgets/InformationBlock';
 interface PopupProps {
   visible: boolean;
   setVisible: (visible: boolean) => void;
-  modalPosition: InformationBlockButtonCoordinates;
   text: infoTextType[];
   title?: string;
   popupWidth?: number;
@@ -86,7 +85,6 @@ const InformationBlock = (props: InformationBlockProps) => {
       </View>
 
       <Popup
-        modalPosition={modalPosition}
         visible={visible}
         setVisible={setVisible}
         text={text}

@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useState} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
@@ -12,6 +12,8 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {getArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {ArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {navigation} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
@@ -38,6 +40,14 @@ const ChallengeIntroCard = () => {
   const LetsDoItPressHandler = () => {
     setIsPopupVisible(true);
   };
+
+  const onBtnPressHandler = useCallback(() => {
+    navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_CARDS, {
+      title: specialChallenge?.title[language] || '',
+    });
+
+    setIsPopupVisible(false);
+  }, []);
 
   if (!specialChallenge) {
     return null;
@@ -142,6 +152,7 @@ const ChallengeIntroCard = () => {
         specialChallenge={specialChallenge}
         visible={isPopupVisible}
         setVisible={setIsPopupVisible}
+        onBtnPressHandler={onBtnPressHandler}
       />
     </View>
   );
