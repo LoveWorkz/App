@@ -15,6 +15,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {specialDayStore} from '@src/entities/SpecialDay';
 import {sessionStore, SessionType} from '@src/entities/Session';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {CategoryKey, CategoryType} from '../types/categoryTypes';
 import {FIRST_LEVEL_ID} from '../lib/category';
 
@@ -167,6 +168,11 @@ class CategoryStore {
 
       if (key === CategoryKey.How_To_Use) {
         navigation.navigate(AppRouteNames.HOW_TO_USE);
+        return;
+      }
+
+      if (key === CategoryKey.All_In_One) {
+        navigation.navigate(TabRoutesNames.CATEGORIES);
         return;
       }
 

@@ -15,7 +15,7 @@ export enum TabRoutesNames {
   CATEGORIES = 'categories',
   BOOKS = 'books',
   CHALLENGES = 'challenges',
-  RUBRICS = 'rubrics',
+  TOPICS = 'topics',
 }
 
 export const tabRoutePaths: Record<TabRoutesNames, string> = {
@@ -23,7 +23,7 @@ export const tabRoutePaths: Record<TabRoutesNames, string> = {
   [TabRoutesNames.CATEGORIES]: 'categories',
   [TabRoutesNames.BOOKS]: 'books',
   [TabRoutesNames.CHALLENGES]: 'challenges',
-  [TabRoutesNames.RUBRICS]: 'rubrics',
+  [TabRoutesNames.TOPICS]: 'topics',
 };
 
 type NewRouteProps = {
@@ -40,7 +40,7 @@ type NewRouteProps = {
 export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
   [TabRoutesNames.CATEGORIES]: {
     name: tabRoutePaths.categories,
-    tabName: 'Categories',
+    tabName: 'Sessions',
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling={true} isTabBar>
@@ -52,9 +52,9 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },
-  [TabRoutesNames.RUBRICS]: {
-    name: tabRoutePaths.rubrics,
-    tabName: 'Rubrics',
+  [TabRoutesNames.TOPICS]: {
+    name: tabRoutePaths.topics,
+    tabName: 'Topics',
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling={true} isTabBar>
@@ -63,24 +63,6 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       );
     },
     headerTitle: 'questions.title',
-    headerShown: true,
-    HeaderLeft: TabHeaderLeft,
-  },
-  [TabRoutesNames.CHALLENGES]: {
-    name: tabRoutePaths.challenges,
-    tabName: 'Challenges',
-    Element: (props: ParamListBase) => {
-      return (
-        <Layout
-          isPageScrolling={false}
-          deleteBottomPadding={false}
-          deleteTopPadding={true}
-          isTabBar>
-          <ChallengesPage {...props} />
-        </Layout>
-      );
-    },
-    headerTitle: 'challenge.title',
     headerShown: true,
     HeaderLeft: TabHeaderLeft,
   },
@@ -101,6 +83,24 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     headerTitle: '',
     headerShown: false,
     isHomePage: true,
+  },
+  [TabRoutesNames.CHALLENGES]: {
+    name: tabRoutePaths.challenges,
+    tabName: 'Challenges',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout
+          isPageScrolling={false}
+          deleteBottomPadding={false}
+          deleteTopPadding={true}
+          isTabBar>
+          <ChallengesPage {...props} />
+        </Layout>
+      );
+    },
+    headerTitle: 'challenge.title',
+    headerShown: true,
+    HeaderLeft: TabHeaderLeft,
   },
   [TabRoutesNames.BOOKS]: {
     name: tabRoutePaths.books,

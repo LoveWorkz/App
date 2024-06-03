@@ -23,8 +23,6 @@ import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {LockIconWithoutStyle} from '@src/shared/assets/icons/Lock';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
-import {navigation} from '@src/shared/lib/navigation/navigation';
-import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {CategoryKey, CateorySize} from '../model/types/categoryTypes';
 import categoryStore from '../model/store/categoryStore';
 
@@ -90,11 +88,6 @@ const Category = (props: CategoryProps) => {
       isActionDisabled?.current ||
       (isSpecialCategoryBlocked && isSpecialCategory)
     ) {
-      return;
-    }
-
-    if (isAllInOneCategory) {
-      navigation.navigate(TabRoutesNames.CATEGORIES);
       return;
     }
 

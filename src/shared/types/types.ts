@@ -22,8 +22,8 @@ export enum DocumentType {
 }
 
 export type TabName =
-  | 'Categories'
-  | 'Rubrics'
+  | 'Sessions'
+  | 'Topics'
   | 'Challenges'
   | 'Books'
   | 'Shop'

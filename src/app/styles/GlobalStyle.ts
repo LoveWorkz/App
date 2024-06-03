@@ -17,7 +17,7 @@ export const windowWidthHalf = windowWidth / 2;
 export const windowHeightHalf = windowHeight / 2;
 
 // heights
-export const tabBarHeight = 80;
+export const tabBarHeight = 90;
 
 export const getShadowOpacity = (theme: Theme) => {
   if (theme === Theme.Dark) {

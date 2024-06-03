@@ -21,7 +21,7 @@ const TabHeaderRight = (props: TabHeaderRightProps) => {
 
   const colors = useColors();
 
-  const hideInfoPopup = tabName === 'Home' || tabName === 'Shop';
+  const hideInfoPopup = tabName === 'Home';
 
   const onSettingsPressHandler = () => {
     navigation.navigate(AppRouteNames.SETTINGS);

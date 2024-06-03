@@ -1,9 +1,8 @@
-import {getHomeIcon} from '@src/shared/assets/icons/Home';
 import {getBooksIcon} from '@src/shared/assets/icons/Books';
 import {getCategoriesIcon} from '@src/shared/assets/icons/Categories';
 import {getChallengesIcon} from '@src/shared/assets/icons/Challenges';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {getRubricsIcon} from '@src/shared/assets/icons/Rubric';
+import {getTopicIcon} from '@src/shared/assets/icons/Topics';
 
 export const getTabIcon = (routName: string) => {
   let getIcon;
@@ -12,8 +11,8 @@ export const getTabIcon = (routName: string) => {
     case TabRoutesNames.CATEGORIES:
       getIcon = getCategoriesIcon;
       break;
-    case TabRoutesNames.RUBRICS:
-      getIcon = getRubricsIcon;
+    case TabRoutesNames.TOPICS:
+      getIcon = getTopicIcon;
       break;
     case TabRoutesNames.BOOKS:
       getIcon = getBooksIcon;
@@ -22,7 +21,7 @@ export const getTabIcon = (routName: string) => {
       getIcon = getChallengesIcon;
       break;
     default:
-      getIcon = getHomeIcon;
+      getIcon = getCategoriesIcon;
   }
 
   return getIcon;

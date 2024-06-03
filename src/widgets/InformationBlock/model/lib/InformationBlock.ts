@@ -42,7 +42,7 @@ export const getInformationBlockContent = (
           },
         ],
       };
-    case 'Rubrics':
+    case 'Topics':
       return {
         title: 'Browsing Topics!',
         text: [

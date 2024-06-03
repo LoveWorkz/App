@@ -39,7 +39,7 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
       challengeStore.coreChallengePressHandler({challenge: challenge as any});
     }
   };
-  
+
   if (isLoading) {
     return (
       <View>

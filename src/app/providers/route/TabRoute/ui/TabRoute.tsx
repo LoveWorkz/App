@@ -7,7 +7,7 @@ import {
 } from '@src/shared/config/route/tabConfigRoutes';
 import {getShadowOpacity, tabBarHeight} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import IconItem from './IconItem/IconItem';
@@ -27,11 +27,11 @@ const TabRoute = () => {
         headerShown: false,
         tabBarStyle: {
           ...getShadowOpacity(theme).shadowOpacity_level_3,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          borderTopLeftRadius: moderateScale(40),
+          borderTopRightRadius: moderateScale(40),
           height: verticalScale(tabBarHeight),
           paddingTop: 10,
-          backgroundColor: colors.bgQuaternaryColor,
+          backgroundColor: colors.whisperWhite,
           position: 'absolute',
           bottom: 0,
           borderTopColor: colors.bgQuaternaryColor,

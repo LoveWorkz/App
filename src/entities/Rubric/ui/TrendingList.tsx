@@ -29,7 +29,7 @@ const RubricWrapper = memo((props: RubricWrapperProps) => {
   let content = rubric && <Rubric {...props} />;
 
   const onPress = useCallback(() => {
-    navigation.navigate(TabRoutesNames.RUBRICS);
+    navigation.navigate(TabRoutesNames.TOPICS);
   }, []);
 
   if (isSeeAll) {
