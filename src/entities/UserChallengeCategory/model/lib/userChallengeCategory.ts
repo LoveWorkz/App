@@ -1,6 +1,4 @@
 export const userChallengeCategoryInitData = {
   isAllChallengesSelected: false,
   isBlocked: false,
-  selectedChallengesIds: [],
-  selectedSpecialChallengesIds: [],
 };

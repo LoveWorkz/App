@@ -5,13 +5,13 @@ export interface UserChallengeCategoryType {
   userId: string;
   coreChallengeFavorites: FavoriteType;
   specialChallengeFavorites: FavoriteType;
+  selectedChallengesIds: string[];
+  selectedSpecialChallengesIds: string[];
   challengeCategory: Record<
     CategoryKey,
     {
       isBlocked: boolean;
-      selectedChallengesIds: string[];
       isAllChallengesSelected: boolean;
-      selectedSpecialChallengesIds: string[];
     }
   >;
 }

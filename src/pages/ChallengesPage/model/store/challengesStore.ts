@@ -373,7 +373,6 @@ class ChallengesStore {
         }),
         this.fetchTrendingChallenges({
           collectionName: Collections.SPECIAL_CHALLENGES_2,
-          isCore: false,
         }),
       ]);
 
@@ -434,10 +433,8 @@ class ChallengesStore {
 
   fetchTrendingChallenges = async ({
     collectionName,
-    isCore = true,
   }: {
     collectionName: Collections;
-    isCore?: boolean;
   }) => {
     const source = await userStore.checkIsUserOfflineAndReturnSource();
 
@@ -452,13 +449,6 @@ class ChallengesStore {
       ...doc.data(),
     })) as ChallengeType[] | SpecialChallengeType[];
 
-    runInAction(() => {
-      if (isCore) {
-        this.challenges = trendingChallenges as ChallengeType[];
-      } else {
-        this.specialChallenges = trendingChallenges as SpecialChallengeType[];
-      }
-    });
 
     return trendingChallenges;
   };

@@ -61,7 +61,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
     <FastImage
       resizeMode="stretch"
       source={questionImage1 as number}
-      style={styles.ChallengeCard}>
+      style={[styles.ChallengeCard, {backgroundColor: colors.white}]}>
       <View style={styles.groupName}>
         <GradientText size={TextSize.LEVEL_2} weight={'600'} text={groupName} />
       </View>

@@ -13,8 +13,8 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import challengeStore from '../../model/store/challengeStore';
 
 interface CoreChallengeCardsFooterProps {
-  count: number;
-  currentIndex: number;
+  count?: number;
+  currentIndex?: number;
 }
 
 const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
@@ -43,10 +43,9 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         <Button
           disabled={isSelectingChallenge}
           onPress={onPressHandler}
-          theme={ButtonTheme.GRADIENT}
-          style={styles.btn}>
-          <AppText
-            style={{color: colors.white}}
+          theme={ButtonTheme.OUTLINED}
+          style={[styles.btn, {backgroundColor: colors.white}]}>
+          <GradientText
             size={TextSize.LEVEL_4}
             weight={'600'}
             text={'We’ve done the challenge'}
@@ -55,6 +54,8 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
       </View>
     );
   }
+
+  const showPagination = currentIndex !== undefined && count;
 
   return (
     <View style={styles.footer}>
@@ -73,19 +74,25 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         </Button>
       ) : (
         <>
-          <Pagination
-            isWhite={true}
-            currentIndex={currentIndex}
-            count={count}
-          />
-          <AppText
-            size={TextSize.LEVEL_2}
-            style={[styles.text, {color: colors.white}]}
-            align={'center'}
-            lineHeight={15}
-            weight={'600'}
-            text={'Lock one of the challenges'}
-          />
+          {showPagination ? (
+            <>
+              <Pagination
+                isWhite={true}
+                currentIndex={currentIndex}
+                count={count}
+              />
+              <AppText
+                size={TextSize.LEVEL_2}
+                style={[styles.text, {color: colors.white}]}
+                align={'center'}
+                lineHeight={15}
+                weight={'600'}
+                text={'Lock one of the challenges'}
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </>
       )}
     </View>

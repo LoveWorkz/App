@@ -22,6 +22,7 @@ import {categoryStore} from '@src/entities/Category';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
 import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
+import {removeDuplicates} from '@src/shared/lib/common';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
 
@@ -267,14 +268,25 @@ class ChallengeStore {
     }
   };
 
-  updateChallenge = async (id: string) => {
+  updateChallenge = async ({
+    id,
+    isChallengeCard,
+  }: {
+    id: string;
+    isChallengeCard: boolean;
+  }) => {
     try {
-      crashlytics().log('Updating challenge.');
+      crashlytics().log('Updating Core challenge.');
 
       const selectedChallengesIds = challengesStore.selectedChallengesIds;
       let newSelectedChallengesIds;
 
-      if (selectedChallengesIds.includes(id)) {
+      if (isChallengeCard) {
+        newSelectedChallengesIds = removeDuplicates([
+          ...selectedChallengesIds,
+          id,
+        ]);
+      } else if (selectedChallengesIds.includes(id)) {
         newSelectedChallengesIds = selectedChallengesIds.filter(
           challengesId => challengesId !== id,
         );
@@ -282,8 +294,8 @@ class ChallengeStore {
         newSelectedChallengesIds = [...selectedChallengesIds, id];
       }
 
-      await userChallengeCategoryStore.updateUserChallengeCategory({
-        field: 'selectedChallengesIds',
+      await userChallengeCategoryStore.updateUserSelectedChallenges({
+        isCore: true,
         data: newSelectedChallengesIds,
       });
 
@@ -307,7 +319,13 @@ class ChallengeStore {
     });
   };
 
-  updateSpecialChallenge = async ({id}: {id: string}) => {
+  updateSpecialChallenge = async ({
+    id,
+    isChallengeCard,
+  }: {
+    id: string;
+    isChallengeCard: boolean;
+  }) => {
     try {
       crashlytics().log('Updating special challenge.');
 
@@ -315,7 +333,12 @@ class ChallengeStore {
         challengesStore.selectedSpecialChallengesIds;
       let newSelectedSpecialChallengesIds;
 
-      if (selectedSpecialChallengesIds.includes(id)) {
+      if (isChallengeCard) {
+        newSelectedSpecialChallengesIds = removeDuplicates([
+          ...selectedSpecialChallengesIds,
+          id,
+        ]);
+      } else if (selectedSpecialChallengesIds.includes(id)) {
         newSelectedSpecialChallengesIds = selectedSpecialChallengesIds.filter(
           challengesId => challengesId !== id,
         );
@@ -323,8 +346,8 @@ class ChallengeStore {
         newSelectedSpecialChallengesIds = [...selectedSpecialChallengesIds, id];
       }
 
-      await userChallengeCategoryStore.updateUserChallengeCategory({
-        field: 'selectedSpecialChallengesIds',
+      await userChallengeCategoryStore.updateUserSelectedChallenges({
+        isCore: false,
         data: newSelectedSpecialChallengesIds,
       });
 
@@ -358,11 +381,19 @@ class ChallengeStore {
     });
   };
 
-  selectChallenge = async ({id, newValue}: {id: string; newValue: boolean}) => {
+  selectChallenge = async ({
+    id,
+    newValue,
+    isChallengeCard = false,
+  }: {
+    id: string;
+    newValue: boolean;
+    isChallengeCard?: boolean;
+  }) => {
     try {
       crashlytics().log('Selecting Core challenge.');
 
-      await this.updateChallenge(id);
+      await this.updateChallenge({id, isChallengeCard});
       this.updateLocalChallenge(id, newValue);
     } catch (e) {
       errorHandler({error: e});
@@ -372,14 +403,16 @@ class ChallengeStore {
   selectSpecialChallenge = async ({
     id,
     newValue,
+    isChallengeCard = false,
   }: {
     id: string;
     newValue: boolean;
+    isChallengeCard?: boolean;
   }) => {
     try {
       crashlytics().log('Selecting special challenge.');
 
-      await this.updateSpecialChallenge({id});
+      await this.updateSpecialChallenge({id, isChallengeCard});
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});
@@ -408,6 +441,7 @@ class ChallengeStore {
         this.selectSpecialChallenge({
           id: specialChallengeId,
           newValue: true,
+          isChallengeCard: true,
         });
       }
     } catch (e) {
@@ -441,7 +475,11 @@ class ChallengeStore {
       }
 
       if (!isChecked && coreChallengeId) {
-        this.selectChallenge({id: coreChallengeId, newValue: true});
+        this.selectChallenge({
+          id: coreChallengeId,
+          newValue: true,
+          isChallengeCard: true,
+        });
       }
     } catch (e) {
       errorHandler({error: e});

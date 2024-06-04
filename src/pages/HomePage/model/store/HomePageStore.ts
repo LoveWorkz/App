@@ -18,6 +18,7 @@ import {inAppPurchaseStore} from '@src/features/InAppPurchase';
 import {rubricStore} from '@src/entities/Rubric';
 import {goalStore} from '@src/entities/Goal';
 import {notificationStore} from '@src/entities/Notification';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
@@ -54,7 +55,7 @@ class HomePageStore {
       const promise4 = this.getHomePageQuadrants(language);
       const promise5 = specialDayStore.fetchSpecialDays();
       const promise6 = inAppPurchaseStore.checkIfUserHasSubscription();
-      const promise7 = challengesStore.fetchCoreAndSpecialTrendingChallenges();
+      const promise7 = this.fetchHomePageChallengeInfo();
 
       await Promise.all([promise3, promise4, promise5, promise6, promise7]);
 
@@ -77,6 +78,14 @@ class HomePageStore {
     await notificationStore.initUserNotifications();
 
     quotesStore.checkQuotesShownStatus(books);
+  };
+
+  fetchHomePageChallengeInfo = async () => {
+    const promise1 = challengesStore.fetchCoreAndSpecialTrendingChallenges();
+    const promise2 =
+      userChallengeCategoryStore.fetchUserChallengeFavoritesAndSelectedIds();
+
+    await Promise.all([promise1, promise2]);
   };
 
   fetchHomePageCategoriesAndChallenges = async (

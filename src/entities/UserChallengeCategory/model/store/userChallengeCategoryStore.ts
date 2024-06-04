@@ -63,11 +63,52 @@ class UserChallengeCategoryStore {
         );
         // keeping selected Challenges Ids separately for updating challenges
         challengesStore.setSelectedChallengesIds(
-          currenetChallengeCategory.selectedChallengesIds,
+          userChallengeCategory.selectedChallengesIds,
         );
 
         challengesStore.setSelectedSpecialChallengesIds(
-          currenetChallengeCategory.selectedSpecialChallengesIds,
+          userChallengeCategory.selectedSpecialChallengesIds,
+        );
+      });
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchUserChallengeFavoritesAndSelectedIds = async () => {
+    try {
+      crashlytics().log('Fetching User Challenge Favorites And Selected Ids.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      const userChallengeCategoryData = await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .get({source});
+
+      const userChallengeCategory =
+        userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+      if (!userChallengeCategory) {
+        return;
+      }
+
+      runInAction(() => {
+        this.setChallengeFavorites({
+          coreChallengeFavorites: userChallengeCategory.coreChallengeFavorites,
+          specialChallengeFavorites:
+            userChallengeCategory.specialChallengeFavorites,
+        });
+        challengesStore.setSelectedChallengesIds(
+          userChallengeCategory.selectedChallengesIds,
+        );
+        challengesStore.setSelectedSpecialChallengesIds(
+          userChallengeCategory.selectedSpecialChallengesIds,
         );
       });
     } catch (e) {
@@ -126,6 +167,8 @@ class UserChallengeCategoryStore {
           challengeCategory: userChallengeCategories,
           coreChallengeFavorites: favorites,
           specialChallengeFavorites: favorites,
+          selectedSpecialChallengesIds: [],
+          selectedChallengesIds: [],
         });
     } catch (e) {
       errorHandler({error: e});
@@ -174,6 +217,47 @@ class UserChallengeCategoryStore {
               challengeCategoryName ||
               currentChallengeCategory.currentChallengeCategory
             }.${field}`]: data,
+          });
+      }
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  updateUserSelectedChallenges = async ({
+    isCore,
+    data,
+  }: {
+    isCore: boolean;
+    data: any;
+  }) => {
+    try {
+      crashlytics().log('Updating User Selected Challenges.');
+
+      const isOffline = await userStore.getIsUserOffline();
+
+      const userId = userStore.userId;
+      if (!userId) {
+        return;
+      }
+
+      const field = isCore
+        ? 'selectedChallengesIds'
+        : 'selectedSpecialChallengesIds';
+
+      if (isOffline) {
+        firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            [field]: data,
+          });
+      } else {
+        await firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            [field]: data,
           });
       }
     } catch (e) {

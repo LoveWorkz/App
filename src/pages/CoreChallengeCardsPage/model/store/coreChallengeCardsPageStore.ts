@@ -2,29 +2,26 @@ import {makeAutoObservable} from 'mobx';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {challengeStore, ChallengeType} from '@src/entities/Challenge';
+import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
 
 class CoreChallengeCardsPageStore {
   constructor() {
     makeAutoObservable(this);
   }
 
-  init = async ({
-    isSessionFlow,
+  initSessionFlow = async ({
     coreChallengesList,
     currentCoreChallengeGroupId,
   }: {
-    isSessionFlow: boolean;
     coreChallengesList: ChallengeType[];
     currentCoreChallengeGroupId: string;
   }) => {
     try {
       const firstChallenge = coreChallengesList[0];
-
-      if (isSessionFlow) {
-        firstChallenge && challengeStore.setCoreChallenge(firstChallenge);
-      }
+      firstChallenge && challengeStore.setCoreChallenge(firstChallenge);
 
       await challengeStore.initLockedChallengeId(currentCoreChallengeGroupId);
+      await userChallengeCategoryStore.fetchUserChallengeFavoritesAndSelectedIds();
     } catch (e) {
       errorHandler({error: e});
     }
