@@ -22,6 +22,8 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {DisplayText} from '@src/shared/types/types';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import challengeStore from '../../model/store/challengeStore';
 
 interface ChallengeCardProps {
@@ -112,6 +114,13 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         bounces={false}
         scalesPageToFit={false}
       />
+      <View style={styles.appNameWrapper}>
+        <GradientText
+          size={TextSize.LEVEL_2}
+          weight={'700'}
+          text={`...${APPLICATION_NAME}`}
+        />
+      </View>
       {showButton && (
         <View style={styles.btnWrapper}>
           <Button
@@ -134,12 +143,14 @@ const ChallengeCard = (props: ChallengeCardProps) => {
 
 export default memo(ChallengeCard);
 
+const paddingHorizontal = horizontalScale(20);
+
 const styles = StyleSheet.create({
   ChallengeCard: {
     height: verticalScale(CARD_HEIGHT),
     width: horizontalScale(CARD_WIDTH),
     borderRadius: moderateScale(20),
-    paddingHorizontal: horizontalScale(20),
+    paddingHorizontal,
     paddingTop: verticalScale(30),
     overflow: 'hidden',
   },
@@ -155,7 +166,7 @@ const styles = StyleSheet.create({
   btnWrapper: {
     width: horizontalScale(CARD_WIDTH),
     position: 'absolute',
-    bottom: verticalScale(20),
+    bottom: verticalScale(45),
     alignItems: 'center',
     ...globalStyles.zIndex_1,
   },
@@ -165,5 +176,10 @@ const styles = StyleSheet.create({
 
   htmlStyle: {
     ...globalStyles.Quicksand_Regular,
+  },
+  appNameWrapper: {
+    position: 'absolute',
+    bottom: paddingHorizontal,
+    right: paddingHorizontal,
   },
 });

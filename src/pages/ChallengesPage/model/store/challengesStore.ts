@@ -449,7 +449,6 @@ class ChallengesStore {
       ...doc.data(),
     })) as ChallengeType[] | SpecialChallengeType[];
 
-
     return trendingChallenges;
   };
 }
