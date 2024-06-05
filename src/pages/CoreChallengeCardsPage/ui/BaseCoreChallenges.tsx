@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {
   challengeStore,
   ChallengeType,
-  CoreChallengeCard,
+  CoreChallengeIntroCardWrapper,
   CoreChallengeCardsFooter,
 } from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -28,7 +28,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
 
   return (
     <View style={styles.BaseCoreChallenges}>
-      <CoreChallengeCard
+      <CoreChallengeIntroCardWrapper
         isSessionFlow={false}
         id={coreChallenge.id}
         description={coreChallenge.description}

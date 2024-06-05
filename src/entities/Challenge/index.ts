@@ -8,7 +8,7 @@ export {default as challengeStore} from './model/store/challengeStore';
 export {SpecialChallengeEnum} from './model/types/ChallengeTypes';
 export {default as ChallengeIntroCard} from './ui/ChallengeCards/ChallengeIntroCard';
 export {default as ChallengeCard} from './ui/ChallengeCards/ChallengeCard';
-export {default as CoreChallengeCard} from './ui/ChallengeCards/CoreChallengeCard';
+export {default as CoreChallengeIntroCardWrapper} from './ui/ChallengeCards/CoreChallengeCardWrapper';
 export {default as ChallengeDescription} from './ui/SpecialChallengeHelpers/ChallengeDescription/ChallengeDescription';
 export {default as ChallengeDescriptionList} from './ui/SpecialChallengeHelpers/ChallengeDescriptionList/ChallengeDescriptionList';
 export {default as ChallengeDetailsColumns} from './ui/SpecialChallengeHelpers/ChallengeDetailsColumns/ChallengeDetailsColumns';

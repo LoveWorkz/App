@@ -34,6 +34,8 @@ export enum Collections {
 export enum CloudStoragePaths {
   AVATARS = 'avatars',
   QUESTIONS_SCREENSHOTS = 'questions_screenshots',
+  CORE_CHALLENGES_SCREENSHOTS = 'core_challenge_screenshots',
+  SPECIAL_CHALLENGES_SCREENSHOTS = 'special_challenge_screenshots',
 }
 
 export enum FirebaseErrorCodes {

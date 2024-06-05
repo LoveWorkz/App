@@ -33,6 +33,8 @@ class ChallengeStore {
   lockedChallengeIds: string[] = [];
   lockedChallengeId: string = '';
   isSessionFlow: boolean = false;
+  coreChallengeCardScreenshot: string = '';
+  specialChallengeCardScreenshot: string = '';
 
   isSelectingChallenge: boolean = false;
 
@@ -62,6 +64,16 @@ class ChallengeStore {
 
   setLockedChallengeId = (id: string) => {
     this.lockedChallengeId = id;
+  };
+
+  setCoreChallengeCardScreenshot = (coreChallengeCardScreenshot: string) => {
+    this.coreChallengeCardScreenshot = coreChallengeCardScreenshot;
+  };
+
+  setSpecialChallengeCardScreenshot = (
+    specialChallengeCardScreenshot: string,
+  ) => {
+    this.specialChallengeCardScreenshot = specialChallengeCardScreenshot;
   };
 
   setLockedChallengeIds = async ({
@@ -181,13 +193,26 @@ class ChallengeStore {
   };
 
   specialChallengePressHandler = async (
-    specailChallenge: SpecialChallengeType,
+    specialChallenge: SpecialChallengeType,
   ) => {
-    this.setSpecialChallenge(specailChallenge);
+    this.setSpecialChallenge(specialChallenge);
+
+    const specialChallengeGroup =
+      challengeGroupStore.getSpecialChallengeGroupById(
+        specialChallenge.groupId,
+      );
+
+    if (!specialChallengeGroup) {
+      return;
+    }
+
+    challengeGroupStore.setCurrentSpecialChallengeGroup(specialChallengeGroup);
+
     await this.incrementChallengeViewCount({
-      challengeId: specailChallenge.id,
+      challengeId: specialChallenge.id,
       isCore: false,
     });
+
     navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
   };
 
@@ -530,6 +555,42 @@ class ChallengeStore {
         error: e,
         message: `Failed to increment totalViews for challengeId: ${challengeId}`,
       });
+    }
+  };
+
+  fetchChallengeById = async ({
+    challengeId,
+    isCore,
+  }: {
+    challengeId: string;
+    isCore: boolean;
+  }) => {
+    try {
+      crashlytics().log('Fetching Challenge By Id.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const data = await firestore()
+        .collection(
+          isCore
+            ? Collections.CORE_CHALLENGES
+            : Collections.SPECIAL_CHALLENGES_2,
+        )
+        .doc(challengeId)
+        .get({source});
+
+      const challenge = data.data();
+      if (!challenge) {
+        return;
+      }
+
+      if (isCore) {
+        this.setCoreChallenge(challenge as ChallengeType);
+      } else {
+        this.setSpecialChallenge(challenge as SpecialChallengeType);
+      }
+    } catch (e) {
+      errorHandler({error: e});
     }
   };
 

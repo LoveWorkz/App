@@ -59,7 +59,11 @@ class HomePageStore {
 
       await Promise.all([promise3, promise4, promise5, promise6, promise7]);
 
+      // handling share logic
       shareStore.shareQuestionHandler(language);
+      shareStore.shareCoreChallengeHandler();
+      shareStore.shareSpecialChallengeHandler();
+
       userStore.setInited(true);
       goalStore.initSelectedGoalsIds();
     } catch (e) {

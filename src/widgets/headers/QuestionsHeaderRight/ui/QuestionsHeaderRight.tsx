@@ -21,8 +21,7 @@ const QuestionsHeaderRight = () => {
 
   const question = questionStore.question;
   const isQuestionFavorite = favoriteStore.isFavorite;
-  const isUploadingQuestionImageToStorage =
-    shareStore.isUploadingQuestionImageToStorage;
+  const isUploadingImageToStorage = shareStore.isUploadingImageToStorage;
 
   useFocusEffect(
     useCallback(() => {
@@ -68,7 +67,7 @@ const QuestionsHeaderRight = () => {
           />
         )}
       </Button>
-      <Spinner visible={isUploadingQuestionImageToStorage} />
+      <Spinner visible={isUploadingImageToStorage} />
     </View>
   );
 };

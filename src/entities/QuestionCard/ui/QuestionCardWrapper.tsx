@@ -1,10 +1,10 @@
-import React, {memo, useCallback, useEffect, useRef} from 'react';
+import React, {memo} from 'react';
 import {ImageSourcePropType} from 'react-native';
-import ViewShot from 'react-native-view-shot';
 import {observer} from 'mobx-react-lite';
 
 import {RubricType} from '@src/entities/Rubric';
 import {DisplayText} from '@src/shared/types/types';
+import {CaptureComponent} from '@src/shared/ui/CaptureComponent/CaptureComponent';
 import questionStore from '../model/store/questionStore';
 import QuestionCard from './QuestionCard';
 import {QuestionCardTypes} from '../model/types/questionTypes';
@@ -13,8 +13,8 @@ interface QuestionCardWrapperProps {
   question: DisplayText;
   image: ImageSourcePropType;
   type: QuestionCardTypes;
-  id: string;
   rubric?: RubricType;
+  id: string;
 }
 
 const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {
@@ -22,32 +22,14 @@ const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {
   const chosenQuestionId = questionStore.question?.id;
   const isChosenQuestion = id === chosenQuestionId;
 
-  const captureRef = useRef() as React.MutableRefObject<any>;
-
-  const onCapture = useCallback(() => {
-    setTimeout(() => {
-      captureRef.current?.capture().then((uri: string) => {
-        questionStore.setQuestionCardScreenshot(uri);
-      });
-      // calling capture after 500ms because there is some UI bug
-    }, 500);
-  }, []);
-
-  useEffect(() => {
-    if (isChosenQuestion) {
-      onCapture();
-    }
-  }, [onCapture, isChosenQuestion]);
+  const captureHandler = (uri: string) => {
+    questionStore.setQuestionCardScreenshot(uri);
+  };
 
   return isChosenQuestion ? (
-    <ViewShot
-      ref={captureRef}
-      options={{
-        format: 'jpg',
-        quality: 1.0,
-      }}>
+    <CaptureComponent captureHandler={captureHandler}>
       <QuestionCard {...props} />
-    </ViewShot>
+    </CaptureComponent>
   ) : (
     <QuestionCard {...props} />
   );

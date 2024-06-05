@@ -15,6 +15,9 @@ class challengeGroupStore {
   coreChallengeGroups: ChallengeGroupType<ChallengeType[]>[] = [];
   specialChallengeGroups: ChallengeGroupType<SpecialChallengeType[]>[] = [];
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]> | null = null;
+  currentSpecialChallengeGroup: ChallengeGroupType<
+    SpecialChallengeType[]
+  > | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -36,6 +39,12 @@ class challengeGroupStore {
     currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>,
   ) => {
     this.currentCoreChallengeGroup = currentCoreChallengeGroup;
+  };
+
+  setCurrentSpecialChallengeGroup = (
+    currentSpecialChallengeGroup: ChallengeGroupType<SpecialChallengeType[]>,
+  ) => {
+    this.currentSpecialChallengeGroup = currentSpecialChallengeGroup;
   };
 
   getChallengeGroupById = ({
@@ -143,6 +152,46 @@ class challengeGroupStore {
       });
 
       this.setCoreChallengeGroups(allCoreChallengeGroups);
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  };
+
+  fetchChallengeGroupById = async ({
+    groupId,
+    isCore,
+  }: {
+    groupId: string;
+    isCore: boolean;
+  }) => {
+    try {
+      crashlytics().log('Fetching Challenge Group By id.');
+
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const data = await firestore()
+        .collection(
+          isCore
+            ? Collections.CORE_CHALLENGE_GROUPS
+            : Collections.SPECIAL_CHALLENGE_GROUPS,
+        )
+        .doc(groupId)
+        .get({source});
+
+      const challengeGroup = data.data();
+      if (!challengeGroup) {
+        return;
+      }
+
+      if (isCore) {
+        this.setCurrentCoreChallengeGroup(
+          challengeGroup as ChallengeGroupType<ChallengeType[]>,
+        );
+      } else {
+        this.setCurrentSpecialChallengeGroup(
+          challengeGroup as ChallengeGroupType<SpecialChallengeType[]>,
+        );
+      }
     } catch (e) {
       errorHandler({error: e});
     }

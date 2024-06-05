@@ -12,6 +12,9 @@ import {challengeStore} from '@src/entities/Challenge';
 import InformationBlock from '@src/shared/ui/InformationBlock/InformationBlock';
 import {InformationBlockPopup} from '@src/shared/ui/InformationBlock/InformationBlockPopup';
 import {infoTextType} from '@src/widgets/InformationBlock';
+import {ShareIcon} from '@src/shared/assets/icons/Share';
+import {shareStore} from '@src/features/Share';
+import {Spinner} from '@src/shared/ui/Spinner/Spinner';
 
 const textContent: infoTextType[] = [];
 
@@ -20,6 +23,7 @@ const ChallengesHeaderRight = () => {
 
   const coreChallenge = challengeStore.coreChallenge;
   const isFavorite = favoriteStore.isFavorite;
+  const isUploadingImageToStorage = shareStore.isUploadingImageToStorage;
 
   useEffect(() => {
     if (!coreChallenge) {
@@ -35,6 +39,10 @@ const ChallengesHeaderRight = () => {
   const toggleFavorite = () => {
     const id = coreChallenge?.id;
     id && favoriteStore.toggleFavorite(id, 'coreChallenge');
+  };
+
+  const onShareHandler = async () => {
+    shareStore.shareCoreChallenge();
   };
 
   return (
@@ -62,6 +70,14 @@ const ChallengesHeaderRight = () => {
           />
         )}
       </Button>
+      <Button onPress={onShareHandler}>
+        <SvgXml
+          xml={ShareIcon}
+          stroke={colors.white}
+          style={styles.shareIcon}
+        />
+      </Button>
+      <Spinner visible={isUploadingImageToStorage} />
     </View>
   );
 };
@@ -74,10 +90,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   HeartIconBtn: {
-    marginLeft: horizontalScale(10),
+    marginRight: horizontalScale(15),
+    marginLeft: horizontalScale(8),
   },
   HeartIcon: {
     height: verticalScale(18),
+    width: horizontalScale(20),
+  },
+  shareIcon: {
+    height: verticalScale(15),
     width: horizontalScale(20),
   },
 });

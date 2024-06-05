@@ -10,12 +10,15 @@ import {favoriteStore} from '@src/entities/Favorite';
 import {Button} from '@src/shared/ui/Button/Button';
 import {challengeStore} from '@src/entities/Challenge';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
+import {shareStore} from '@src/features/Share';
+import {Spinner} from '@src/shared/ui/Spinner/Spinner';
 
 const SpecialChallengeIntroHeaderRight = () => {
   const colors = useColors();
 
   const specialChallenge = challengeStore.specialChallenge;
   const isFavorite = favoriteStore.isFavorite;
+  const isUploadingImageToStorage = shareStore.isUploadingImageToStorage;
 
   useEffect(() => {
     if (!specialChallenge) {
@@ -33,9 +36,13 @@ const SpecialChallengeIntroHeaderRight = () => {
     id && favoriteStore.toggleFavorite(id, 'specialChallenge');
   };
 
+  const onShareHandler = async () => {
+    shareStore.shareSpecialChallenge();
+  };
+
   return (
     <View style={styles.SpecialChallengeIntroHeaderRight}>
-      <Button>
+      <Button onPress={onShareHandler}>
         <SvgXml
           xml={ShareIcon}
           stroke={colors.white}
@@ -58,6 +65,8 @@ const SpecialChallengeIntroHeaderRight = () => {
           />
         )}
       </Button>
+
+      <Spinner visible={isUploadingImageToStorage} />
     </View>
   );
 };

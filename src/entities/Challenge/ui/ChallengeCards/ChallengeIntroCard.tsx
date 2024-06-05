@@ -16,6 +16,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {CaptureComponent} from '@src/shared/ui/CaptureComponent/CaptureComponent';
 import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
 import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
 import challengeStore from '../../model/store/challengeStore';
@@ -28,6 +29,8 @@ const ChallengeIntroCard = () => {
   const language = useLanguage();
 
   const specialChallenge = challengeStore.specialChallenge;
+  const specialChallengeGroup =
+    challengeGroupStore.currentSpecialChallengeGroup;
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -53,8 +56,9 @@ const ChallengeIntroCard = () => {
     return null;
   }
 
-  const specialChallengeGroup =
-    challengeGroupStore.getSpecialChallengeGroupById(specialChallenge.groupId);
+  const captureHandler = (uri: string) => {
+    challengeStore.setSpecialChallengeCardScreenshot(uri);
+  };
 
   return (
     <View style={styles.ChallengeIntroCard}>
@@ -79,24 +83,29 @@ const ChallengeIntroCard = () => {
           }
         />
       </View>
-      <FastImage
-        resizeMode="stretch"
-        source={challengeIntroCard as number} // image number
-        style={styles.cardBg}>
-        {specialChallenge.description.map((item, i) => {
-          return (
-            <View key={i.toString()} style={styles.descriptionItem}>
-              <AppText
-                style={textStyle}
-                weight={'500'}
-                align={'center'}
-                size={TextSize.LEVEL_5}
-                text={item[language]}
-              />
-            </View>
-          );
-        })}
-      </FastImage>
+      <CaptureComponent captureHandler={captureHandler}>
+        <FastImage
+          resizeMode="stretch"
+          source={challengeIntroCard as number} // image number
+          style={[
+            styles.cardBg,
+            {backgroundColor: colors.themeSecondaryBackground},
+          ]}>
+          {specialChallenge.description.map((item, i) => {
+            return (
+              <View key={i.toString()} style={styles.descriptionItem}>
+                <AppText
+                  style={textStyle}
+                  weight={'500'}
+                  align={'center'}
+                  size={TextSize.LEVEL_5}
+                  text={item[language]}
+                />
+              </View>
+            );
+          })}
+        </FastImage>
+      </CaptureComponent>
 
       <Button
         style={[
@@ -203,5 +212,11 @@ const styles = StyleSheet.create({
   },
   backgroundItem: {
     marginBottom: verticalScale(15),
+  },
+  cardBgWrapper: {
+    width: width,
+    // height: verticalScale(450),
+
+    // paddingHorizontal: horizontalScale(30),
   },
 });

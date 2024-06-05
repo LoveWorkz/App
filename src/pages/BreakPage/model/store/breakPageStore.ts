@@ -5,7 +5,7 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {sessionStore} from '@src/entities/Session';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {challengeStore, SpecialChallengeType} from '@src/entities/Challenge';
+import {challengeStore} from '@src/entities/Challenge';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -35,13 +35,21 @@ class BreakPageStore {
       // setting this flag to redirect to the final page
       challengeStore.setIsSessionFlow(true);
 
-      if (isChallengeSpecial) {
+      if (isChallengeSpecial && currentSessionChallenge) {
         // fetch and set information for current special challenge
 
         await challengeGroupStore.fetchAllSpecialChallengesGroups();
-        challengeStore.setSpecialChallenge(
-          currentSessionChallenge as SpecialChallengeType,
-        );
+        challengeStore.setSpecialChallenge(currentSessionChallenge);
+
+        const currentSpecialChallengeGroup =
+          challengeGroupStore.getSpecialChallengeGroupById(
+            currentSessionChallenge.groupId,
+          );
+        currentSpecialChallengeGroup &&
+          challengeGroupStore.setCurrentSpecialChallengeGroup(
+            currentSpecialChallengeGroup,
+          );
+
         navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
         return;
       }

@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {
   challengeStore,
   ChallengeType,
-  CoreChallengeCard,
+  CoreChallengeIntroCardWrapper,
   CoreChallengeCardsFooter,
 } from '@src/entities/Challenge';
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -91,7 +91,7 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
         onSwipeHandler={handleSwipe}
         defaultElement={defaultChallengeNumber}
         data={coreChallengesList}
-        Component={CoreChallengeCard}
+        Component={CoreChallengeIntroCardWrapper}
         isSlideEnabled
         itemWidth={CARD_WIDTH}
         Footer={CoreChallengeCardsFooter}

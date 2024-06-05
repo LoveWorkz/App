@@ -12,6 +12,7 @@ import {shareAppUrl} from '@src/app/config/shareConfig';
 
 const options = {
   message: shareAppUrl,
+  failOnCancel: false,
 };
 
 const ShareUs = () => {
