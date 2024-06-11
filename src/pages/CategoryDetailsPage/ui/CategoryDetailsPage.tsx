@@ -67,8 +67,9 @@ const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
         styles.CategoryDetails,
         {
           minHeight: windowHeightMinusPaddings - navbarHeight - globalPadding,
+          ...getShadowOpacity(theme, colors.bgTertiaryColor)
+            .shadowOpacity_level_2,
           backgroundColor: colors.bgTertiaryColor,
-          ...getShadowOpacity(theme).shadowOpacity_level_2,
         },
       ]}>
       <Carousel

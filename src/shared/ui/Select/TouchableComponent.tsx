@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {Pressable, View, StyleSheet, SafeAreaView} from 'react-native';
+import {Pressable, View, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
@@ -44,7 +44,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
 
   if (isLoading) {
     return (
-      <SafeAreaView>
+      <View>
         <View style={styles.uploadPhotoWrapper}>
           <View style={styles.label}>
             <Skeleton width={50} height={13} />
@@ -55,7 +55,7 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
             borderRadius={borderRadius}
           />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -80,7 +80,10 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
   );
 
   return (
-    <SafeAreaView style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
+    <View
+      style={{
+        ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,
+      }}>
       {label && (
         <AppText
           style={[styles.label, {...selectedValueStyle}]}
@@ -114,11 +117,11 @@ export const TouchableComponent = memo((props: TouchableComponentProps) => {
           text={error}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create<any>({
   wrapper: {
     justifyContent: 'space-between',
     alignItems: 'center',

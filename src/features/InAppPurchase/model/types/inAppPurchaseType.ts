@@ -1,4 +1,4 @@
-import {Subscription} from 'react-native-iap';
+// import {Subscription} from 'react-native-iap';
 
 export type SubscriptionIdsKey =
   | 'MONTHLY'
@@ -10,10 +10,10 @@ export type SubscriptionIdsKey =
 
 export type SubscriptionIdsType = Record<SubscriptionIdsKey, string>;
 
-export type SubscriptionWithoutAmazon = Omit<
-  Subscription,
-  'SubscriptionAmazon'
->;
+// export type SubscriptionWithoutAmazon = Omit<
+//   Subscription,
+//   'SubscriptionAmazon'
+// >;
 
 export interface PromoCodeResponse {
   message: string;

@@ -129,37 +129,35 @@ export const CarouselSquare = memo(
     }, [carouselHeight]);
 
     return (
-      <GestureHandlerRootView style={styles.container}>
-        <View style={[styles.container]}>
-          {withPagination && (
-            <View style={[styles.paginationWrapper, paginationStyle]}>
-              {renderPagination()}
-            </View>
-          )}
-          <Carousel
-            defaultIndex={defaultIndex}
-            width={width}
-            height={PAGE_WIDTH * 0.6}
-            style={style}
-            loop={loop}
-            pagingEnabled
-            snapEnabled
-            autoPlay={false}
-            autoPlayInterval={1500}
-            onScrollEnd={onScrollEnd}
-            mode="parallax"
-            modeConfig={getModeConfig()}
-            data={data}
-            renderItem={renderItem}
-            onProgressChange={handleProgressChange}
-          />
-          {withTopPagination && (
-            <View style={[styles.bottomPaginationWrapper, paginationStyle]}>
-              {renderPagination()}
-            </View>
-          )}
-        </View>
-      </GestureHandlerRootView>
+      <View style={styles.container}>
+        {withPagination && (
+          <View style={[styles.paginationWrapper, paginationStyle]}>
+            {renderPagination()}
+          </View>
+        )}
+        <Carousel
+          defaultIndex={defaultIndex}
+          width={width}
+          height={PAGE_WIDTH * 0.6}
+          style={style}
+          loop={loop}
+          pagingEnabled
+          snapEnabled
+          autoPlay={false}
+          autoPlayInterval={1500}
+          onScrollEnd={onScrollEnd}
+          mode="parallax"
+          modeConfig={getModeConfig()}
+          data={data}
+          renderItem={renderItem}
+          onProgressChange={handleProgressChange}
+        />
+        {withTopPagination && (
+          <View style={[styles.bottomPaginationWrapper, paginationStyle]}>
+            {renderPagination()}
+          </View>
+        )}
+      </View>
     );
   },
 );

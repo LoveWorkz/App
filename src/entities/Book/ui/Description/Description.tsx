@@ -66,7 +66,7 @@ const Description = (props: BookProps) => {
       style={[
         styles.description,
         {
-          ...getShadowOpacity(theme).shadowOpacity_level_3,
+          ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_3,
           height: verticalScale(descriptionHeight),
           width: windowWidth,
           left: -globalPadding,

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordWrapper: {
     position: 'absolute',
-    top: verticalScale(-10),
+    top: verticalScale(-17),
     right: 0,
     ...globalStyles.forgotPasswordZIndex,
   },

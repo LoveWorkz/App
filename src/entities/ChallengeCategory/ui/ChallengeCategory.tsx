@@ -124,7 +124,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
   const mode = useMemo(() => {
     return [
       styles.challange,
-      {...getShadowOpacity(theme).shadowOpacity_level_2},
+      {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
       styles[size],
     ];
   }, [size, theme]);

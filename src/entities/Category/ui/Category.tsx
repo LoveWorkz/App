@@ -147,7 +147,8 @@ const Category = (props: CategoryProps) => {
 
   return (
     <Pressable onPress={handleCategoryPress}>
-      <View style={getShadowOpacity(theme).shadowOpacity_level_2}>
+      <View
+        style={[styles.Category, getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2]}>
         <FastImage
           resizeMode="cover"
           source={{uri: image}}
@@ -363,6 +364,9 @@ const renderUnlockedContent = (params: {
 };
 
 const styles = StyleSheet.create({
+  Category: {
+    borderRadius: borderRadius,
+  },
   categoryImage: {
     borderRadius: borderRadius,
     justifyContent: 'flex-end',

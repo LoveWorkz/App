@@ -69,7 +69,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
       style={[
         styles.ChallengeCard,
         {
-          ...getShadowOpacity(theme).shadowOpacity_level_2,
+          ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2,
           backgroundColor: colors.white,
         },
       ]}>

@@ -29,7 +29,10 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
   }, []);
 
   return (
-    <View style={{...getShadowOpacity(theme).shadowOpacity_level_1}}>
+    <View
+      style={{
+        ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,
+      }}>
       <Input
         isLoading={isLoading}
         value={booksStore.searchBooksText}

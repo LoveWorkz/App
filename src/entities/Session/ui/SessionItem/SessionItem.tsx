@@ -107,7 +107,7 @@ const SessionItem = (props: SessionItemProps) => {
         style={[
           styles.SessionItem,
           {
-            ...getShadowOpacity(theme).shadowOpacity_level_2,
+            ...getShadowOpacity(theme, bgColor).shadowOpacity_level_2,
             backgroundColor: bgColor,
           },
         ]}>

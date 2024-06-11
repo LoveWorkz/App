@@ -19,21 +19,24 @@ export const windowHeightHalf = windowHeight / 2;
 // heights
 export const tabBarHeight = 90;
 
-export const getShadowOpacity = (theme: Theme) => {
+export const getShadowOpacity = (theme: Theme, color?: string) => {
   if (theme === Theme.Dark) {
     return {
       shadowOpacity_level_1: {
         ...globalStyles.shadowOpacity_level_1,
         shadowColor: 'rgb(66, 76, 104)',
+        backgroundColor: color,
       },
 
       shadowOpacity_level_2: {
         ...globalStyles.shadowOpacity_level_2,
         shadowColor: 'rgb(66, 76, 104)',
+        backgroundColor: color,
       },
       shadowOpacity_level_3: {
         ...globalStyles.shadowOpacity_level_3,
         shadowColor: 'rgb(66, 76, 104)',
+        backgroundColor: color,
       },
     };
   }
@@ -42,15 +45,18 @@ export const getShadowOpacity = (theme: Theme) => {
     shadowOpacity_level_1: {
       ...globalStyles.shadowOpacity_level_1,
       shadowColor: '#767672',
+      backgroundColor: color,
     },
 
     shadowOpacity_level_2: {
       ...globalStyles.shadowOpacity_level_2,
       shadowColor: '#767672',
+      backgroundColor: color,
     },
     shadowOpacity_level_3: {
       ...globalStyles.shadowOpacity_level_3,
       shadowColor: '#767672',
+      backgroundColor: color,
     },
   };
 };
@@ -150,7 +156,7 @@ export const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.18,
     shadowRadius: 1.0,
-
+    backgroundColor: 'transparent',
     elevation: 1,
   },
   shadowOpacity_level_2: {
@@ -160,6 +166,7 @@ export const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
+    backgroundColor: 'transparent',
 
     elevation: 4,
   },
@@ -170,6 +177,7 @@ export const globalStyles = StyleSheet.create({
     },
     shadowOpacity: 0.46,
     shadowRadius: 11.14,
+    backgroundColor: 'transparent',
 
     elevation: 17,
   },

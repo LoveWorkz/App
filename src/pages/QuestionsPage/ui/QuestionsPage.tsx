@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
-import {AdEventType} from 'react-native-google-mobile-ads';
+// import {AdEventType} from 'react-native-google-mobile-ads';
 
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
@@ -16,7 +16,7 @@ import {
   QuestionType,
 } from '@src/entities/QuestionCard';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
-import {initInterstitialAd} from '@src/app/config/admobConfig';
+// import {initInterstitialAd} from '@src/app/config/admobConfig';
 import {WowThatWasFast} from '@src/widgets/WowThatWasFastModal';
 import {DocumentType} from '@src/shared/types/types';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
@@ -44,7 +44,7 @@ interface QuestionsPageProps {
   };
 }
 
-const interstitial = initInterstitialAd();
+// const interstitial = initInterstitialAd();
 
 const questionCardBorderRadius = moderateScale(20);
 
@@ -82,10 +82,10 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     useCallback(() => {
       questionsStore.clearQuestionsInfo();
 
-      const adListener = interstitial.addAdEventListener(
-        AdEventType.LOADED,
-        () => interstitial.show(),
-      );
+      // const adListener = interstitial.addAdEventListener(
+      //   AdEventType.LOADED,
+      //   () => interstitial.show(),
+      // );
 
       if (key) {
         questionsStore.init({
@@ -100,7 +100,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
       return () => {
         setIsGradient(false);
-        adListener();
+        // adListener();
       };
     }, [
       key,
@@ -153,7 +153,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         key,
         language,
         documentId: id,
-        interstitial,
+        // interstitial,
         questionNumber,
         setIsGradient,
       });
@@ -197,7 +197,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
-      <View style={styles.question}>
         <HorizontalSlide
           isSlideEnabled={isSliideEnabled}
           onSwipeHandler={onSwipeHandler}
@@ -210,7 +209,6 @@ const QuestionsPage = (props: QuestionsPageProps) => {
           showLength={isGradient ? 4 : 5}
           opacityInterval={isGradient ? 0.3 : 0}
         />
-      </View>
       <WowThatWasFast />
     </View>
   );
@@ -225,6 +223,7 @@ const styles = StyleSheet.create({
   },
   question: {
     width: '100%',
+    height: '100%'
   },
   slideItemStyle: {
     ...globalStyles.slideItemZindex,

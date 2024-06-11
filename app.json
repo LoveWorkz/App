@@ -1,6 +1,6 @@
 {
-  "name": "Bline2",
-  "displayName": "Bline2",
+  "name": "blineapp.bline",
+  "displayName": "loveWorkz",
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-4287224605926771~1097563205", 
     "ios_app_id": "ca-app-pub-4287224605926771~6213270461",

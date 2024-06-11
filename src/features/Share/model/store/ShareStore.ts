@@ -3,6 +3,8 @@ import Share, {ShareOptions} from 'react-native-share';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import queryString from 'query-string';
 import crashlytics from '@react-native-firebase/crashlytics';
+import {t} from 'i18next';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 import {userStore} from '@src/entities/User';
 import {questionStore} from '@src/entities/QuestionCard';
@@ -19,6 +21,7 @@ import {CloudStoragePaths} from '@src/shared/types/firebase';
 import {sessionStore} from '@src/entities/Session';
 import {challengeStore} from '@src/entities/Challenge';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {ToastType} from '@src/shared/ui/Toast/Toast';
 
 const getOptions = (link: string) => ({
   url: link,
@@ -61,6 +64,17 @@ class shareStore {
       });
 
       const questionCardScreenshot = questionStore.questionCardScreenshot;
+
+      if(!questionCardScreenshot) {
+        Toast.show({
+          type: ToastType.ERROR,
+          text1: t('error.title'),
+          topOffset: 60,
+        });
+
+        return;
+      }
+
       const imageUrl = await this.uploadImageToFirebase({
         screenshot: questionCardScreenshot,
         folderName: CloudStoragePaths.QUESTIONS_SCREENSHOTS,
@@ -137,6 +151,7 @@ class shareStore {
 
       const specialChallengeCardScreenshot =
         challengeStore.specialChallengeCardScreenshot;
+
       const imageUrl = await this.uploadImageToFirebase({
         screenshot: specialChallengeCardScreenshot,
         folderName: CloudStoragePaths.SPECIAL_CHALLENGES_SCREENSHOTS,
@@ -310,17 +325,23 @@ class shareStore {
         const category = categoryStore.category;
         const session = sessionStore.session;
 
-        if (question && category && session) {
-          console.log(question.id, session.id);
-          link = `https://www.google.com?questionId=${question.id}&categoryId=${category.id}&sessionId=${session.id}`;
+        let questionLink = link;
+
+        if (question && category) {
+          questionLink = `https://www.google.com?questionId=${question.id}&categoryId=${category.id}`;
+        } 
+
+        if(session) {
+          questionLink = `${questionLink}&sessionId=${session.id}}`;
         }
+
+        link = questionLink;
         break;
       case 'coreChallenge':
         const coreChallenge = challengeStore.coreChallenge;
         const currentCoreChallengeGroup =
           challengeGroupStore.currentCoreChallengeGroup;
         if (coreChallenge && currentCoreChallengeGroup) {
-          console.log(coreChallenge.id, currentCoreChallengeGroup.id);
           link = `https://www.google.com?coreChallengeId=${coreChallenge.id}&coreChallengeGroupId=${currentCoreChallengeGroup.id}`;
         }
         break;
@@ -329,7 +350,6 @@ class shareStore {
         const currentSpecialChallengeGroup =
           challengeGroupStore.currentSpecialChallengeGroup;
         if (specialChallenge && currentSpecialChallengeGroup) {
-          console.log(specialChallenge.id, currentSpecialChallengeGroup.id);
           link = `https://www.google.com?specialChallengeId=${specialChallenge.id}&specialChallengeGroupId=${currentSpecialChallengeGroup.id}`;
         }
         break;

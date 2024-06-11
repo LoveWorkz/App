@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View, SafeAreaView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
@@ -34,7 +34,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.confirm}>
+    <View style={styles.confirm}>
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
@@ -78,7 +78,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           />
         </Button>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

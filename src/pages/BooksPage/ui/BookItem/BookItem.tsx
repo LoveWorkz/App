@@ -72,7 +72,7 @@ const BookItem = (props: BookProps) => {
         onPress={() => onBookPreviewPressHandler(id)}
         style={[
           styles.imageWrapper,
-          {...getShadowOpacity(theme).shadowOpacity_level_2},
+          {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
         ]}>
         <FastImage
           style={styles.image}

@@ -7,6 +7,7 @@ import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface BookPreviewProps {
   image: BookImage;
@@ -20,6 +21,7 @@ const borderRadius = moderateScale(10);
 const BookPreview = (props: BookPreviewProps) => {
   const {image, isLoading} = props;
   const {theme} = useTheme();
+  const colors = useColors();
 
   const imageFront = image.front;
 
@@ -39,7 +41,7 @@ const BookPreview = (props: BookPreviewProps) => {
     <View
       style={[
         styles.BookPreview,
-        {...getShadowOpacity(theme).shadowOpacity_level_3},
+        {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_3},
       ]}>
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
     </View>
@@ -49,12 +51,12 @@ const BookPreview = (props: BookPreviewProps) => {
 const styles = StyleSheet.create({
   BookPreview: {
     height: height,
-    border: borderRadius,
+    borderRadius: borderRadius,
     width: width,
   },
   image: {
     borderRadius: borderRadius,
-    idth: '100%',
+    width: '100%',
     height: '100%',
   },
 });

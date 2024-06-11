@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
@@ -46,7 +46,7 @@ const ProfileForm = (props: ProfileFormProps) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.profileForm}>
+    <View style={styles.profileForm}>
       <View style={styles.item}>
         <Input
           isLoading={isLoading}
@@ -97,7 +97,7 @@ const ProfileForm = (props: ProfileFormProps) => {
           error={t(profileStore.errorInfo.genderError)}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

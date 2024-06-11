@@ -31,7 +31,8 @@ export const SeeAll = memo((props: SeeAllProps) => {
         style={[
           styles.SeeAll,
           {
-            ...getShadowOpacity(theme).shadowOpacity_level_1,
+            ...getShadowOpacity(theme, colors.bgSecondaryColor)
+              .shadowOpacity_level_1,
             backgroundColor: colors.bgSecondaryColor,
           },
           styles[seeAllTheme],
@@ -49,7 +50,7 @@ export const SeeAll = memo((props: SeeAllProps) => {
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   SeeAll: {
     flexDirection: 'row',
     alignItems: 'center',

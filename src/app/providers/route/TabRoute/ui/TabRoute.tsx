@@ -26,7 +26,7 @@ const TabRoute = () => {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarStyle: {
-          ...getShadowOpacity(theme).shadowOpacity_level_3,
+          ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_3,
           borderTopLeftRadius: moderateScale(40),
           borderTopRightRadius: moderateScale(40),
           height: verticalScale(tabBarHeight),

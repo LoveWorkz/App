@@ -1,12 +1,12 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {t} from 'i18next';
-import {
-  getSubscriptions,
-  initConnection,
-  requestSubscription,
-  getPurchaseHistory,
-  PurchaseError,
-} from 'react-native-iap';
+// import {
+//   getSubscriptions,
+//   initConnection,
+//   requestSubscription,
+//   getPurchaseHistory,
+//   PurchaseError,
+// } from 'react-native-iap';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
@@ -18,7 +18,7 @@ import {
 } from '@src/entities/SubscriptionBlock';
 import {ValidationErrorCodes} from '@src/shared/types/validation';
 import {userStore} from '@src/entities/User';
-import {formatProducts, subscriptionsIds} from '../lib/inAppPurchaseLib';
+// import {formatProducts, subscriptionsIds} from '../lib/inAppPurchaseLib';
 import {checkPromoCode, validateAndroid, validateIos} from '../services/api';
 import {
   AndroidValidationSendingDataType,
@@ -69,16 +69,16 @@ class InAppPurchaseStore {
 
       this.setIsFetching(true);
 
-      await initConnection();
+      // await initConnection();
 
-      const products = await getSubscriptions({
-        skus: subscriptionsIds as string[],
-      });
-      const formattedProducts = formatProducts(products);
+      // const products = await getSubscriptions({
+      //   skus: subscriptionsIds as string[],
+      // });
+      // const formattedProducts = formatProducts(products);
 
-      runInAction(() => {
-        this.formattedProducts = formattedProducts;
-      });
+      // runInAction(() => {
+      //   this.formattedProducts = formattedProducts;
+      // });
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -130,12 +130,12 @@ class InAppPurchaseStore {
           offerToken = formattedMonthly.offerToken;
       }
 
-      await requestSubscription({
-        sku: productId,
-        ...(offerToken && {
-          subscriptionOffers: [{sku: productId, offerToken}],
-        }),
-      });
+      // await requestSubscription({
+      //   sku: productId,
+      //   ...(offerToken && {
+      //     subscriptionOffers: [{sku: productId, offerToken}],
+      //   }),
+      // });
     } catch (e: any) {
       this.purchaseErrorHandler(e);
     }
@@ -185,7 +185,7 @@ class InAppPurchaseStore {
     }
   };
 
-  purchaseErrorHandler = async (error: PurchaseError) => {
+  purchaseErrorHandler = async (error: any) => {
     const code = error.code;
 
     if (!(code === 'E_USER_CANCELLED')) {
@@ -204,18 +204,18 @@ class InAppPurchaseStore {
 
     crashlytics().log('Checking if user has subscription');
 
-    const purchaseHistory = await getPurchaseHistory();
-    const receipt =
-      purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
-    if (receipt) {
-      const result = await this.validate(receipt);
+    // const purchaseHistory = await getPurchaseHistory();
+    // const receipt =
+    //   purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
+    // if (receipt) {
+    //   const result = await this.validate(receipt);
 
-      if (result.isExpired) {
-        userStore.setHasUserSubscription(false);
-      } else {
-        userStore.setHasUserSubscription(true);
-      }
-    }
+    //   if (result.isExpired) {
+    //     userStore.setHasUserSubscription(false);
+    //   } else {
+    //     userStore.setHasUserSubscription(true);
+    //   }
+    // }
   };
 
   validate = async (token: string) => {

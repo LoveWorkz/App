@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
@@ -35,8 +35,7 @@ export const PageSelect = (props: PageSelectProps) => {
       onClose={() => {
         onClose();
       }}>
-      <SafeAreaView
-        style={[styles.selectPage, {backgroundColor: colors.bgColor}]}>
+      <View style={[styles.selectPage, {backgroundColor: colors.bgColor}]}>
         <View
           style={[
             styles.header,
@@ -62,12 +61,12 @@ export const PageSelect = (props: PageSelectProps) => {
           )}
         </View>
         <View style={styles.content}>{children}</View>
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 };
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create<any>({
   selectPage: {
     flex: 1,
     width: '100%',

@@ -70,7 +70,7 @@ const HeaderLeft = (props: HeaderLeftProps) => {
 
 export default memo(HeaderLeft);
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',

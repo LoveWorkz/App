@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     height: verticalScale(32),
   },
   icon: {
-    width: '100%^',
+    width: '100%',
     height: '100%',
   },
 });

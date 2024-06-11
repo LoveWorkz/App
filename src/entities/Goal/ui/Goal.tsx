@@ -52,7 +52,7 @@ const Goal = (props: GoalProps) => {
       style={[
         styles.container,
         {
-          ...getShadowOpacity(theme).shadowOpacity_level_2,
+          ...getShadowOpacity(theme, colors.white).shadowOpacity_level_2,
           backgroundColor: colors.white,
         },
       ]}>

@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {SafeAreaView} from 'react-native';
+import {View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
 
@@ -26,7 +26,7 @@ const Gender = (props: GenderProps) => {
   );
 
   return (
-    <SafeAreaView>
+    <View>
       <Select
         isLoading={isLoading}
         Theme={SelectTheme.OUTLINE}
@@ -38,7 +38,7 @@ const Gender = (props: GenderProps) => {
         onSelect={onChangeHandler}
         error={error}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -46,7 +46,7 @@ const QuestionCard = (props: QuestionCardProps) => {
       <Gradient
         style={[
           styles.questionCard,
-          {...getShadowOpacity(theme).shadowOpacity_level_2},
+          {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
         ]}>
         <FastImage
           resizeMode="stretch"
@@ -61,7 +61,7 @@ const QuestionCard = (props: QuestionCardProps) => {
   }
 
   return (
-    <View style={{...getShadowOpacity(theme).shadowOpacity_level_2}}>
+    <View style={[styles.questionCardWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2}]}>
       <FastImage
         resizeMode="stretch"
         source={image as number}
@@ -74,15 +74,20 @@ const QuestionCard = (props: QuestionCardProps) => {
   );
 };
 
+const borderRadius = moderateScale(20);
+
 const styles = StyleSheet.create({
   questionCard: {
     height: verticalScale(CARD_HEIGHT),
     width: horizontalScale(CARD_WIDTH),
-    borderRadius: moderateScale(20),
+    borderRadius,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: horizontalScale(40),
   },
+  questionCardWrapper: {
+    borderRadius,
+  }
 });
 
 export default memo(QuestionCard);

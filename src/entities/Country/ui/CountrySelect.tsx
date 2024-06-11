@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useTranslation} from 'react-i18next';
+import {View} from 'react-native';
 
 import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
@@ -32,7 +32,7 @@ const CountrySelect = (props: CountrySelectProps) => {
   );
 
   return (
-    <SafeAreaView>
+    <View>
       <Select
         isCountry
         isLoading={isLoading}
@@ -46,7 +46,7 @@ const CountrySelect = (props: CountrySelectProps) => {
         onSelect={onChangeHandler}
         error={error}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

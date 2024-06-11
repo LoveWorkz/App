@@ -1,6 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -16,7 +15,7 @@ export const AboutItem = (props: AboutItemProps) => {
   const colors = useColors();
 
   return (
-    <SafeAreaView style={styles.aboutItem}>
+    <View style={styles.aboutItem}>
       <AppText
         size={TextSize.LEVEL_7}
         style={[styles.title, {color: colors.primaryTextColor}]}
@@ -27,7 +26,7 @@ export const AboutItem = (props: AboutItemProps) => {
         size={TextSize.LEVEL_4}
         text={text}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -4,7 +4,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Toast} from '@src/shared/ui/Toast/Toast';
 import {PushNotifications} from '@src/features/PushNotifications';
-import {initAdmob} from './config/admobConfig';
+// import {initAdmob} from './config/admobConfig';
 import {configureGoogleSignin} from './config/firebaseConfig';
 import {ColorsProvider} from './providers/colorsProvider';
 import {AppRoute} from './providers/route/AppRoute';
@@ -13,7 +13,7 @@ import {GradientProvider} from './providers/GradientProvider';
 
 const App = () => {
   useEffect(() => {
-    initAdmob();
+    // initAdmob();
     configureGoogleSignin();
   }, []);
 

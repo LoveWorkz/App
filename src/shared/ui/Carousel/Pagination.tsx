@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {SafeAreaView, StyleSheet, Animated} from 'react-native';
+import {StyleSheet, Animated, View} from 'react-native';
 import {Extrapolate} from 'react-native-reanimated';
 
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -27,7 +27,7 @@ const Pagination = (props: PaginationProps) => {
   }
 
   return (
-    <SafeAreaView style={styles.pegination}>
+    <View style={styles.pegination}>
       {data.map((_, i) => {
         const inputRange = [
           (i - 1) * itemWidth,
@@ -74,7 +74,7 @@ const Pagination = (props: PaginationProps) => {
           />
         );
       })}
-    </SafeAreaView>
+    </View>
   );
 };
 

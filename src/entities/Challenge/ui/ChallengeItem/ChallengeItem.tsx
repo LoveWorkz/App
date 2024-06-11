@@ -63,8 +63,9 @@ const ChallengeItem = (props: ChallengeItemProps) => {
         style={[
           styles.ChallengeItem,
           {
+            ...getShadowOpacity(theme, colors.bgSecondaryColor)
+              .shadowOpacity_level_1,
             backgroundColor: colors.bgSecondaryColor,
-            ...getShadowOpacity(theme).shadowOpacity_level_1,
           },
         ]}>
         <FastImage style={styles.img} resizeMode={'stretch'} source={leaves} />

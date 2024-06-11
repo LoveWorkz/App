@@ -79,7 +79,10 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
         style={styles.contentWrapper}
         contentStyle={[
           {
-            ...getShadowOpacity(theme).shadowOpacity_level_2,
+            ...getShadowOpacity(
+              theme,
+              isActive ? 'transparent' : colors.bgSecondaryColor,
+            ).shadowOpacity_level_2,
             backgroundColor: isActive ? 'transparent' : colors.bgSecondaryColor,
           },
         ]}>

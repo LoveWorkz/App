@@ -116,7 +116,8 @@ export const Input = memo((props: InputProps) => {
       style={[
         style,
         {
-          ...getShadowOpacity(appTheme).shadowOpacity_level_1,
+          ...getShadowOpacity(appTheme, colors.bgColor).shadowOpacity_level_1,
+          borderRadius,
         },
       ]}>
       {label && (
@@ -176,9 +177,10 @@ export const Input = memo((props: InputProps) => {
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create<any>({
   inputWrapper: {
     justifyContent: 'center',
+    borderRadius
   },
   input: {
     height: 40,

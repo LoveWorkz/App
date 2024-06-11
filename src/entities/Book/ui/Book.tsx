@@ -40,6 +40,7 @@ interface BookPreview {
 const BookPreview = memo((props: BookPreview) => {
   const {image, fullImage} = props;
   const {theme} = useTheme();
+  const colors = useColors();
 
   const [isBookModalVisible, setIsBookModalVisible] = useState(false);
 
@@ -64,7 +65,7 @@ const BookPreview = memo((props: BookPreview) => {
       style={[
         styles.imageWrapper,
         {
-          ...getShadowOpacity(theme).shadowOpacity_level_2,
+          ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2,
         },
       ]}>
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />

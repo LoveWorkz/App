@@ -131,7 +131,8 @@ const Rubric = (props: RubricProps) => {
         style={[
           styles.Rubric,
           {
-            ...getShadowOpacity(theme).shadowOpacity_level_1,
+            ...getShadowOpacity(theme, colors.bgSecondaryColor)
+              .shadowOpacity_level_1,
             backgroundColor: colors.bgSecondaryColor,
           },
         ]}>

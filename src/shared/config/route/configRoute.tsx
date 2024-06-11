@@ -2,7 +2,7 @@ import React, {ComponentType} from 'react';
 import {ParamListBase} from '@react-navigation/native';
 
 import {AuthPage} from '@src/pages/AuthPage';
-import {SplashPage} from '@src/pages/SplashPage';
+// import {SplashPage} from '@src/pages/SplashPage';
 import {TabRoute} from '@src/app/providers/route/TabRoute';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfilePage} from '@src/pages/ProfilePage';
@@ -46,6 +46,7 @@ import {QuadrantDetailsPage} from '@src/pages/QuadrantDetailsPage';
 import {GameRulesPage} from '@src/pages/GameRulesPage';
 import {CoreChallengeIntroPage} from '@src/pages/CoreChallengeIntroPage';
 import {SpecialChallengeIntroHeaderRight} from '@src/widgets/headers/SpecialChallengeIntroHeaderRight';
+import {SplashPage} from '@src/pages/SplashPage/ui/SplashPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
