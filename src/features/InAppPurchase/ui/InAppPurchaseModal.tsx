@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {Modal} from 'react-native';
 
-// import {InAppPurchase} from '@src/features/InAppPurchase';
+import {InAppPurchase} from '@src/features/InAppPurchase';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 
 interface InAppPurchaseModalProps {
@@ -22,7 +22,7 @@ const InAppPurchaseModal = (props: InAppPurchaseModalProps) => {
       visible={visible}
       onRequestClose={onCancelHandler}>
       <ScrollViewWithoutIndicator>
-        {/* <InAppPurchase onCancelHandler={onCancelHandler} /> */}
+        <InAppPurchase onCancelHandler={onCancelHandler} />
       </ScrollViewWithoutIndicator>
     </Modal>
   );
