@@ -1,1 +1,1 @@
-// export {initAdmob, initInterstitialAd} from './config/admobConfig';
+export {initAdmob, initInterstitialAd} from './config/admobConfig';

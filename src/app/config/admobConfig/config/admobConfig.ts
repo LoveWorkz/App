@@ -1,26 +1,28 @@
-// import {Platform} from 'react-native';
-// import mobileAds, {
-//   InterstitialAd,
-//   TestIds,
-// } from 'react-native-google-mobile-ads';
+import {Platform} from 'react-native';
+import mobileAds, {
+  InterstitialAd,
+  TestIds,
+} from 'react-native-google-mobile-ads';
 
-// export const initAdmob = () => {
-//   mobileAds().initialize();
-// };
+export const initAdmob = () => {
+  mobileAds().initialize();
+};
 
-// // const interstitialID = Platform.select({
-// //   ios: 'ca-app-pub-4287224605926771/4098715773',
-// //   android: 'ca-app-pub-4287224605926771/7818468938',
-// // });
+const interstitialID = Platform.select({
+  ios: 'ca-app-pub-4287224605926771/4098715773',
+  android: 'ca-app-pub-4287224605926771/7818468938',
+});
 
-// export const initInterstitialAd = () => {
-//   // const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : interstitialID || '';
-//   const adUnitId = TestIds.INTERSTITIAL;
+export const initInterstitialAd = () => {
+  // const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : interstitialID || '';
 
-//   const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-//     requestNonPersonalizedAdsOnly: true,
-//     keywords: ['fashion', 'clothing'],
-//   });
+  // change this to the above in production
+  const adUnitId = TestIds.INTERSTITIAL;
 
-//   return interstitial;
-// };
+  const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+    keywords: ['fashion', 'clothing'],
+  });
+
+  return interstitial;
+};

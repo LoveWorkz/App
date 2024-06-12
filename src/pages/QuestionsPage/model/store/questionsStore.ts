@@ -1,6 +1,6 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import firestore from '@react-native-firebase/firestore';
-// import {InterstitialAd} from 'react-native-google-mobile-ads';
+import {InterstitialAd} from 'react-native-google-mobile-ads';
 import crashlytics from '@react-native-firebase/crashlytics';
 
 import {Collections, DocsType} from '@src/shared/types/firebase';
@@ -156,7 +156,7 @@ class QuestionsStore {
     key: DocumentType;
     language: LanguageValueType;
     documentId?: string;
-    // interstitial: InterstitialAd;
+    interstitial: InterstitialAd;
     questionNumber: number;
     setIsGradient: (isGradient: boolean) => void;
   }) => {
@@ -170,14 +170,14 @@ class QuestionsStore {
         return;
       }
 
-      const {question, questionNumber, key, documentId} = swipeData;
+      const {question, questionNumber, key, documentId, interstitial} = swipeData;
       const sessionId = sessionStore.session?.id;
 
       if (!question) {
         return;
       }
 
-      // this.loadAds({ questionNumber, interstitial });
+      this.loadAds({ questionNumber, interstitial });
 
       if (key !== DocumentType.FAVORITE && documentId) {
         wowThatWasFastModalStore.wowThatWasFastLogic({
