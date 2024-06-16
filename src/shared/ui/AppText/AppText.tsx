@@ -49,6 +49,7 @@ interface AppTextProps {
   ellipsizeMode?: EllipsizeMode;
   numberOfLines?: number;
   onTextLayout?: (param: NativeSyntheticEvent<TextLayoutEventData>) => void;
+  letterSpacing?: number;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -63,6 +64,7 @@ export const AppText = memo((props: AppTextProps) => {
     ellipsizeMode,
     numberOfLines,
     onTextLayout,
+    letterSpacing,
   } = props;
 
   const colors = useColors();
@@ -77,6 +79,7 @@ export const AppText = memo((props: AppTextProps) => {
       {
         textAlign: align,
         fontWeight: weight,
+        letterSpacing,
         color:
           type === TextType.ERROR
             ? colors.secondaryError
@@ -96,6 +99,7 @@ export const AppText = memo((props: AppTextProps) => {
     colors.secondaryError,
     lineHeight,
     align,
+    letterSpacing,
   ]);
 
   return (

@@ -170,14 +170,15 @@ class QuestionsStore {
         return;
       }
 
-      const {question, questionNumber, key, documentId, interstitial} = swipeData;
+      const {question, questionNumber, key, documentId, interstitial} =
+        swipeData;
       const sessionId = sessionStore.session?.id;
 
       if (!question) {
         return;
       }
 
-      this.loadAds({ questionNumber, interstitial });
+      this.loadAds({questionNumber, interstitial});
 
       if (key !== DocumentType.FAVORITE && documentId) {
         wowThatWasFastModalStore.wowThatWasFastLogic({

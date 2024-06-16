@@ -4,6 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
+import {CopilotStep, walkthroughable} from 'react-native-copilot';
 
 import {Avatar} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -15,13 +16,15 @@ import {userStore} from '@src/entities/User';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {SettingsIcon} from '@src/shared/assets/icons/Settings';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {HEADER_HEIGHT} from '@src/shared/consts/common';
+import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {HomepageBackground} from '@src/shared/assets/images';
 import {homepageBackgroundImgHeight} from '../model/lib/homePageHeaderLib';
 
 interface HomePageHeaderProps {
   isLoading: boolean;
 }
+
+const WalkthroughableText = walkthroughable(View);
 
 const HomePageHeader = (props: HomePageHeaderProps) => {
   const {isLoading} = props;
@@ -104,13 +107,28 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
             </View>
           </Pressable>
         </View>
-        <Pressable onPress={onSettingsPressHandler}>
-          <SvgXml
-            xml={SettingsIcon}
-            style={styles.icon}
-            stroke={colors.white}
-          />
-        </Pressable>
+
+        <CopilotStep
+          name="Want to learn more about the app?"
+          text="Link with your partner or tweak the settings to better suit your preferences."
+          order={4}>
+          <WalkthroughableText
+            style={{
+              top: horizontalScale(isPlatformIos ? 0 : 27),
+            }}>
+            <Pressable
+              style={{
+                top: horizontalScale(isPlatformIos ? 0 : -27),
+              }}
+              onPress={onSettingsPressHandler}>
+              <SvgXml
+                xml={SettingsIcon}
+                style={styles.icon}
+                stroke={colors.white}
+              />
+            </Pressable>
+          </WalkthroughableText>
+        </CopilotStep>
       </View>
     </View>
   );

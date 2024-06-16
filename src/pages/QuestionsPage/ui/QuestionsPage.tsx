@@ -197,18 +197,18 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
-        <HorizontalSlide
-          isSlideEnabled={isSliideEnabled}
-          onSwipeHandler={onSwipeHandler}
-          data={questionsWithEmptyCard}
-          itemStyle={styles.slideItemStyle}
-          Component={QuestionCard}
-          defaultElement={defaultElementIndex}
-          itemWidth={CARD_WIDTH}
-          Footer={Footer}
-          showLength={isGradient ? 4 : 5}
-          opacityInterval={isGradient ? 0.3 : 0}
-        />
+      <HorizontalSlide
+        isSlideEnabled={isSliideEnabled}
+        onSwipeHandler={onSwipeHandler}
+        data={questionsWithEmptyCard}
+        itemStyle={styles.slideItemStyle}
+        Component={QuestionCard}
+        defaultElement={defaultElementIndex}
+        itemWidth={CARD_WIDTH}
+        Footer={Footer}
+        showLength={isGradient ? 4 : 5}
+        opacityInterval={isGradient ? 0.3 : 0}
+      />
       <WowThatWasFast />
     </View>
   );
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
   question: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   slideItemStyle: {
     ...globalStyles.slideItemZindex,

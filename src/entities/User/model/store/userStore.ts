@@ -14,6 +14,7 @@ import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {
   AUTH_METHOD_STORAGE_KEY,
   EVENT_END_TYPE_KEY,
+  GUIDED_TOUR_COMPLETED_KEY,
   HAS_COMPLETED_ONBOARDING_KEY,
   RATE_TYPE_KEY,
   SPECIAL_CHALLENGE_BUTTON_STATUS_KEY,
@@ -37,6 +38,7 @@ import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdap
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {eventEndStorage} from '@src/shared/lib/storage/adapters/EventEndAdapter';
 import {coreChallengeInfoStorage} from '@src/shared/lib/storage/adapters/coreChallengeInfoAdapter';
+import {guidedTourStorage} from '@src/shared/lib/storage/adapters/guidedTourAdapter';
 import {
   User,
   AuthMethod,
@@ -52,7 +54,7 @@ class UserStore {
   isFirstUserVisit: boolean = true;
   isAccountDeleted: boolean = false;
   currentCategory: CurrentCategory | null = null;
-  hasUserSubscription: boolean = false;
+  hasUserSubscription: boolean = true;
   inited: boolean = false;
   hasUserCompletedAnySession: boolean = false;
 
@@ -448,6 +450,7 @@ class UserStore {
       await themeStorage.removeTheme(RATE_TYPE_KEY);
       await eventEndStorage.removeEventEndType(EVENT_END_TYPE_KEY);
       await coreChallengeInfoStorage.removeCoreChallengeInfo(userId);
+      await guidedTourStorage.removeGuidedTour(GUIDED_TOUR_COMPLETED_KEY);
     } catch (e) {
       errorHandler({error: e});
     }

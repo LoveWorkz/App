@@ -41,7 +41,7 @@ export const SplashPage = () => {
         source={splashScreenImage}
         resizeMode={isPlatformIos ? 'contain' : 'cover'}
         // if image loaded hide native splash screen and show dynamic splash screen
-        >
+      >
         <View style={styles.content}>
           <View style={styles.titleWrapper}>
             <AppText

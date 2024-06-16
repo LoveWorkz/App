@@ -148,7 +148,10 @@ const Category = (props: CategoryProps) => {
   return (
     <Pressable onPress={handleCategoryPress}>
       <View
-        style={[styles.Category, getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2]}>
+        style={[
+          styles.Category,
+          getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2,
+        ]}>
         <FastImage
           resizeMode="cover"
           source={{uri: image}}

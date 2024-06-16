@@ -66,7 +66,7 @@ const LevelNameItem = (props: {
 
 export default memo(observer(LevelNameItem));
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create<any>({
   // Starter
   completedStarter: {
     position: 'absolute',

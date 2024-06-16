@@ -4,7 +4,7 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import queryString from 'query-string';
 import crashlytics from '@react-native-firebase/crashlytics';
 import {t} from 'i18next';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 import {userStore} from '@src/entities/User';
 import {questionStore} from '@src/entities/QuestionCard';
@@ -65,7 +65,7 @@ class shareStore {
 
       const questionCardScreenshot = questionStore.questionCardScreenshot;
 
-      if(!questionCardScreenshot) {
+      if (!questionCardScreenshot) {
         Toast.show({
           type: ToastType.ERROR,
           text1: t('error.title'),
@@ -329,9 +329,9 @@ class shareStore {
 
         if (question && category) {
           questionLink = `https://www.google.com?questionId=${question.id}&categoryId=${category.id}`;
-        } 
+        }
 
-        if(session) {
+        if (session) {
           questionLink = `${questionLink}&sessionId=${session.id}}`;
         }
 

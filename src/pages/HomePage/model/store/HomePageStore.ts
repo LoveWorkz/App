@@ -19,6 +19,7 @@ import {rubricStore} from '@src/entities/Rubric';
 import {goalStore} from '@src/entities/Goal';
 import {notificationStore} from '@src/entities/Notification';
 import {userChallengeCategoryStore} from '@src/entities/UserChallengeCategory';
+import {guidedTourStore} from '@src/widgets/GuidedTour';
 import {getProgressBarImageGroups} from '../lib/homePage';
 
 class HomePageStore {
@@ -56,8 +57,16 @@ class HomePageStore {
       const promise5 = specialDayStore.fetchSpecialDays();
       const promise6 = inAppPurchaseStore.checkIfUserHasSubscription();
       const promise7 = this.fetchHomePageChallengeInfo();
+      const promise8 = guidedTourStore.initGuidedTour();
 
-      await Promise.all([promise3, promise4, promise5, promise6, promise7]);
+      await Promise.all([
+        promise3,
+        promise4,
+        promise5,
+        promise6,
+        promise7,
+        promise8,
+      ]);
 
       // handling share logic
       shareStore.shareQuestionHandler(language);

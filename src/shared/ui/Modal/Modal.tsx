@@ -35,8 +35,6 @@ export const Modal = (props: ModalProps) => {
   const colors = useColors();
   const isThemeBottom = theme === 'bottom';
 
-  const animationType = isThemeBottom ? 'slideInUp' : 'bounceIn';
-
   const onCancelHandler = useCallback(() => {
     onClose?.();
   }, [onClose]);
@@ -49,7 +47,7 @@ export const Modal = (props: ModalProps) => {
           onBackdropPress={onCancelHandler}
           statusBarTranslucent
           animationInTiming={300}
-          animationIn={animationType}
+          animationIn={'slideInUp'}
           backdropColor={colors.bgPopup}
           isVisible={visible}>
           <View

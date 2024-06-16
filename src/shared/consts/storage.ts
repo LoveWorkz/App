@@ -9,3 +9,4 @@ export const HAS_COMPLETED_ONBOARDING_KEY = 'hasCompletedOnboarding';
 export const SPECIAL_CHALLENGE_BUTTON_STATUS_KEY =
   'specialChallengeStatusButton';
 export const EVENT_END_TYPE_KEY = 'eventEndType';
+export const GUIDED_TOUR_COMPLETED_KEY = 'guidedTourCompleted';

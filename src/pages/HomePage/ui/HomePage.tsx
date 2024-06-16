@@ -4,6 +4,11 @@ import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
+import {
+  CopilotProvider,
+  CopilotStep,
+  walkthroughable,
+} from 'react-native-copilot';
 
 import {
   HomepageBackground,
@@ -17,7 +22,7 @@ import {
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {Quotes} from '@src/widgets/Quotes';
-import {horizontalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
@@ -30,6 +35,11 @@ import {userStore} from '@src/entities/User';
 import {TrendingList} from '@src/entities/Rubric';
 import {TrendingChallengeList} from '@src/entities/Challenge';
 import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
+import {
+  GuidedTour,
+  GuidedTourModal,
+  guidedTourStore,
+} from '@src/widgets/GuidedTour';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
@@ -43,6 +53,8 @@ interface HomePageProps {
     };
   };
 }
+
+const WalkthroughableWiew = walkthroughable(View);
 
 const contentTop = horizontalScale(isPlatformIos ? -165 : -195);
 const skeletonContentTop = -20;
@@ -59,6 +71,7 @@ const HomePage = (props: HomePageProps) => {
   const prevRouteName = route?.params?.prevRouteName;
   const isTabScreen = route?.params?.isTabScreen;
   const isLoading = homePageStore.isHomePageLoading;
+  const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
 
   useFocusEffect(
     useCallback(() => {
@@ -127,19 +140,49 @@ const HomePage = (props: HomePageProps) => {
               <DiscountOfferCard isLoading={isLoading} />
             </View>
           )}
+
           <CategoriesCarousel isLoading={isLoading} />
+
+          <CopilotStep
+            name="Beyond your love journey there’s always more to explore"
+            order={3}
+            text="Dive straight into sessions, delve deeper into topics, or take on an extra challenge whenever you feel inspired">
+            <WalkthroughableWiew style={styles.walkthroughableWiew} />
+          </CopilotStep>
+
           <TrendingList isLoading={isLoading} />
           <View style={styles.trendingChallengeWrapper}>
             <TrendingChallengeList isLoading={isLoading} />
           </View>
         </View>
-        <Quotes />
+        {/* show quotes popup only if Guided Tour is completed */}
+        {isGuidedTourCompleted && !isLoading && <Quotes />}
+        {!isLoading && <GuidedTour />}
       </View>
     </View>
   );
 };
 
-export default memo(observer(HomePage));
+const style = {
+  backgroundColor: 'transparent',
+  paddingBottom: 20,
+};
+
+const StepNumberComponent = () => <></>;
+
+const HomePageWrapper = memo(observer(HomePage));
+
+export default memo(() => {
+  return (
+    <CopilotProvider
+      stepNumberComponent={StepNumberComponent}
+      tooltipStyle={style}
+      tooltipComponent={GuidedTourModal}
+      arrowSize={0}>
+      <HomePageWrapper />
+    </CopilotProvider>
+  );
+});
 
 const styles = StyleSheet.create({
   HomePage: {
@@ -178,5 +221,9 @@ const styles = StyleSheet.create({
 
   progressBarSkeleton: {
     marginBottom: horizontalScale(30),
+  },
+  walkthroughableWiew: {
+    position: 'absolute',
+    bottom: verticalScale(isPlatformIos ? 320 : 370),
   },
 });

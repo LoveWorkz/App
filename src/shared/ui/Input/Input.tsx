@@ -180,7 +180,7 @@ export const Input = memo((props: InputProps) => {
 const styles = StyleSheet.create<any>({
   inputWrapper: {
     justifyContent: 'center',
-    borderRadius
+    borderRadius,
   },
   input: {
     height: 40,

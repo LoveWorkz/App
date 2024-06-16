@@ -61,7 +61,11 @@ const QuestionCard = (props: QuestionCardProps) => {
   }
 
   return (
-    <View style={[styles.questionCardWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2}]}>
+    <View
+      style={[
+        styles.questionCardWrapper,
+        {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
+      ]}>
       <FastImage
         resizeMode="stretch"
         source={image as number}
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
   },
   questionCardWrapper: {
     borderRadius,
-  }
+  },
 });
 
 export default memo(QuestionCard);
