@@ -419,14 +419,46 @@ class UserCategoryStore {
     }
   };
 
-  deleteUserCategory = async (userId: string) => {
-    try {
-      crashlytics().log('Deleting User Category.');
+  deleteDocumentsInCollection = async (collectionRef: any) => {
+    const querySnapshot = await collectionRef.get();
+    const batch = firestore().batch();
+    querySnapshot.docs.forEach((doc: any) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+  };
 
-      await firestore()
-        .collection(Collections.USER_LEVELS)
-        .doc(userId)
-        .delete();
+  deleteSessionsForLevel = async (levelRef: any) => {
+    const sessionsCollection = levelRef.collection(Collections.SESSIONS);
+    await this.deleteDocumentsInCollection(sessionsCollection);
+  };
+
+  // Delete all levels and their sessions for a given user
+  deleteLevelsAndSessions = async (userRef: any) => {
+    const levelsCollection = userRef.collection(Collections.LEVELS);
+    const levelsSnapshot = await levelsCollection.get();
+
+    for (const levelDoc of levelsSnapshot.docs) {
+      // Delete all sessions within this level
+      await this.deleteSessionsForLevel(levelDoc.ref);
+
+      // Once all sessions are deleted, delete the level document
+      await levelDoc.ref.delete();
+    }
+  };
+
+  // Delete a user, their levels, and all nested sessions
+  deleteUserLevelsInfo = async (userId: string) => {
+    crashlytics().log('Deleting User Level.');
+    const userDocRef = firestore()
+      .collection(Collections.USER_LEVELS)
+      .doc(userId);
+
+    try {
+      // Delete all levels and their sessions
+      await this.deleteLevelsAndSessions(userDocRef);
+
+      await userDocRef.delete();
     } catch (e) {
       errorHandler({error: e, message: 'Error deleting user levels:'});
     }

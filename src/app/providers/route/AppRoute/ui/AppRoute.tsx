@@ -17,7 +17,7 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {Theme} from '@src/app/providers/themeProvider';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
-import AppRouteHeaderLeft from './HeaderLeft/HeaderLeft';
+import {CustomHeader} from '@src/widgets/headers/CustomHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,7 +83,6 @@ const Routes = memo(() => {
           headerShown,
           headerTitle,
           HeaderRight,
-          HeaderLeft,
           isTitleLarge,
           isAboutMyRelationshipPage,
           bgColor,
@@ -104,26 +103,18 @@ const Routes = memo(() => {
           return (
             <Stack.Screen
               options={({route}) => ({
-                headerStyle: {
-                  backgroundColor,
-                },
                 headerShown: headerShown,
                 title: '',
-                headerRight: HeaderRight
-                  ? () => <HeaderRight {...route.params} />
-                  : undefined,
-                headerLeft: headerShown
-                  ? HeaderLeft
-                    ? () => <HeaderLeft {...route.params} />
-                    : () => (
-                        <AppRouteHeaderLeft
-                          {...route.params}
-                          headerTitle={headerTitle}
-                          isTitleLarge={isTitleLarge}
-                          isSecondaryBackground={isSecondaryBackground}
-                        />
-                      )
-                  : undefined,
+                header: () => (
+                  <CustomHeader
+                    {...route.params}
+                    headerTitle={headerTitle}
+                    isTitleLarge={isTitleLarge}
+                    isSecondaryBackground={isSecondaryBackground}
+                    backgroundColor={backgroundColor}
+                    HeaderRight={HeaderRight}
+                  />
+                ),
               })}
               name={name}
               component={Element}

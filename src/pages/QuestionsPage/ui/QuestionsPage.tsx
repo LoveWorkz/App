@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {AdEventType} from 'react-native-google-mobile-ads';
 
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
-import {globalStyles} from '@src/app/styles/GlobalStyle';
+import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {
   emptyCard,
@@ -25,7 +25,15 @@ import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  HEADER_HEIGHT_ADNDROID,
+  HEADER_HEIGHT_IOS,
+  isPlatformIos,
+} from '@src/shared/consts/common';
+import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import questionsStore from '../model/store/questionsStore';
 import {
   getDefaultIndex,
@@ -185,6 +193,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   if (isLoading) {
     return (
       <View style={styles.QuestionsPage}>
+        <View style={styles.skeletonHeader} />
         <View style={styles.questionCardSkeleton}>
           <Skeleton
             height={CARD_HEIGHT}
@@ -197,6 +206,12 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
+      <View style={styles.headerWrapper}>
+        <CustomHeader
+          isSecondaryBackground={isGradient}
+          HeaderRight={QuestionsHeaderRight}
+        />
+      </View>
       <HorizontalSlide
         isSlideEnabled={isSliideEnabled}
         onSwipeHandler={onSwipeHandler}
@@ -228,8 +243,17 @@ const styles = StyleSheet.create({
   slideItemStyle: {
     ...globalStyles.slideItemZindex,
   },
+  headerWrapper: {
+    width: windowWidth,
+  },
+
   questionCardSkeleton: {
     marginTop: verticalScale(30),
     width: '90%',
   },
+  skeletonHeader: {
+    height: isPlatformIos
+    ? HEADER_HEIGHT_IOS
+    : HEADER_HEIGHT_ADNDROID
+  }
 });

@@ -463,7 +463,7 @@ class UserStore {
       await firestore().collection(Collections.USERS).doc(id).delete();
 
       await userRubricStore.deleteUserRubric(id);
-      await userCategoryStore.deleteUserCategory(id);
+      await userCategoryStore.deleteUserLevelsInfo(id);
       await userChallengeCategoryStore.deleteUserChallengeCategory(id);
 
       await profileStore.profilePhotoAction(ProfilePhotoActionType.DELETE);

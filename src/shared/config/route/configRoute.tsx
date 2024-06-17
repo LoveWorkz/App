@@ -2,7 +2,6 @@ import React, {ComponentType} from 'react';
 import {ParamListBase} from '@react-navigation/native';
 
 import {AuthPage} from '@src/pages/AuthPage';
-// import {SplashPage} from '@src/pages/SplashPage';
 import {TabRoute} from '@src/app/providers/route/TabRoute';
 import {SettingsPage} from '@src/pages/SettingsPage';
 import {ProfilePage} from '@src/pages/ProfilePage';
@@ -16,7 +15,6 @@ import {ContactUsPage} from '@src/pages/ContactUsPage';
 import {BookDetailsPage} from '@src/pages/BookDetailsPage';
 import {CategoryDetailsPage} from '@src/pages/CategoryDetailsPage';
 import {QuestionsPage} from '@src/pages/QuestionsPage';
-import {QuestionsHeaderRight} from '@src/widgets/headers/QuestionsHeaderRight';
 import {Layout} from '@src/widgets/layout';
 import {SessionsPage} from '@src/pages/SessionsPage';
 import {SpecialChallengeCardsPage} from '@src/pages/SpecialChallengeCardsPage';
@@ -35,7 +33,6 @@ import {SessionsHeaderRight} from '@src/widgets/headers/SessionsHeaderRight';
 import {FavoriteSessionsPage} from '@src/pages/FavoriteSessionsPage';
 import {PreSessionPage} from '@src/pages/PreSessionPage';
 import {BreakPage} from '@src/pages/BreakPage';
-import {BreakHeaderLeft} from '@src/widgets/headers/BreakHeaderLeft';
 import {SpecialChallengeHeaderRight} from '@src/widgets/headers/SpecialChallengeHeaderRight';
 import {SpecialChallengeIntroPage} from '@src/pages/SpecialChallengeIntroPage';
 import {
@@ -141,7 +138,6 @@ export type NewRouteProps = {
   headerShown?: boolean;
   headerTitle?: string;
   HeaderRight?: ComponentType;
-  HeaderLeft?: ComponentType;
   isTitleLarge?: boolean;
   isAboutMyRelationshipPage?: boolean;
   bgColor?: BgColor;
@@ -307,9 +303,8 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.QUESTIONS]: {
     name: appRoutePaths.questions,
-    headerShown: true,
+    headerShown: false,
     headerTitle: '',
-    HeaderRight: QuestionsHeaderRight,
     Element: (props: ParamListBase) => {
       return (
         <Layout deleteTopPadding={true}>
@@ -502,7 +497,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerShown: true,
     bgColor: 'secondaryBackground',
     headerTitle: '',
-    HeaderLeft: BreakHeaderLeft,
     Element: (props: ParamListBase) => {
       return (
         <Layout deleteTopPadding bgColor="secondaryBackground">

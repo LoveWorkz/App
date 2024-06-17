@@ -44,14 +44,14 @@ const QuestionsHeaderRight = () => {
 
   return (
     <View style={styles.QuestionsHeaderRight}>
-      <Button onPress={onShareHandler}>
+      <Button style={styles.shareWrapper} onPress={onShareHandler}>
         <SvgXml
           xml={ShareIcon}
           stroke={isGradient ? colors.white : colors.primaryTextColor}
           style={styles.shareIcon}
         />
       </Button>
-      <Button onPress={toggleFavorite}>
+      <Button style={styles.favoriteWrapper} onPress={toggleFavorite}>
         {isQuestionFavorite ? (
           <SvgXml
             xml={HeartIconWithoutColor}
@@ -79,12 +79,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  shareWrapper: {
+    paddingRight: horizontalScale(10),
+  },
   shareIcon: {
     height: verticalScale(15),
     width: horizontalScale(20),
-    marginRight: horizontalScale(20),
   },
 
+  favoriteWrapper: {
+    paddingLeft: horizontalScale(10),
+  },
   HeartIcon: {
     height: verticalScale(18),
     width: horizontalScale(20),

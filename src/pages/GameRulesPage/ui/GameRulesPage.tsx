@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import {gameRulesBg} from '@src/shared/assets/images';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
-import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import {CustomHeaderWithImage} from '@src/widgets/headers/CustomHeaderWithImage';
 import {TextSection} from '@src/shared/ui/TextSection/TextSection';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
@@ -25,7 +25,7 @@ import List from './List';
 const GameRulesPage = () => {
   return (
     <View style={styles.GameRulesPage}>
-      <CustomHeader
+      <CustomHeaderWithImage
         isWhite
         ImageComponent={
           <FastImage

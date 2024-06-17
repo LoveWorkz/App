@@ -10,13 +10,13 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {TextSize} from '@src/shared/ui/AppText/AppText';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
-import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import {CustomHeaderWithImage} from '@src/widgets/headers/CustomHeaderWithImage';
 import {descriptions1, descriptions2, descriptions3} from '../lib/howToUse';
 
 const AboutPage = () => {
   return (
     <View style={styles.about}>
-      <CustomHeader
+      <CustomHeaderWithImage
         title={'About the app'}
         isWhite
         ImageComponent={
