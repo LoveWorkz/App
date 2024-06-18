@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {gameRulesBg} from '@src/shared/assets/images';
@@ -25,6 +25,8 @@ import List from './List';
 const GameRulesPage = () => {
   return (
     <View style={styles.GameRulesPage}>
+      <StatusBar barStyle={'light-content'} />
+
       <CustomHeaderWithImage
         isWhite
         ImageComponent={

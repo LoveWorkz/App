@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
@@ -206,6 +206,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
   return (
     <View style={styles.QuestionsPage}>
+      <StatusBar barStyle={isGradient ? 'light-content' : 'dark-content'} />
       <View style={styles.headerWrapper}>
         <CustomHeader
           isSecondaryBackground={isGradient}
@@ -252,8 +253,6 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   skeletonHeader: {
-    height: isPlatformIos
-    ? HEADER_HEIGHT_IOS
-    : HEADER_HEIGHT_ADNDROID
-  }
+    height: isPlatformIos ? HEADER_HEIGHT_IOS : HEADER_HEIGHT_ADNDROID,
+  },
 });

@@ -46,12 +46,8 @@ import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 
 interface HomePageProps {
-  route?: {
-    params: {
-      prevRouteName: AppRouteNames | TabRoutesNames;
-      isTabScreen: boolean;
-    };
-  };
+  prevRouteName?: string;
+  isTabScreen?: boolean;
 }
 
 const WalkthroughableWiew = walkthroughable(View);
@@ -60,7 +56,7 @@ const contentTop = horizontalScale(isPlatformIos ? -165 : -195);
 const skeletonContentTop = -20;
 
 const HomePage = (props: HomePageProps) => {
-  const {route} = props;
+  const {isTabScreen, prevRouteName} = props;
 
   const {theme} = useTheme();
   const {i18n} = useTranslation();
@@ -68,8 +64,6 @@ const HomePage = (props: HomePageProps) => {
   const hasUserSubscription = userStore.getUserHasSubscription();
 
   const language = i18n.language as LanguageValueType;
-  const prevRouteName = route?.params?.prevRouteName;
-  const isTabScreen = route?.params?.isTabScreen;
   const isLoading = homePageStore.isHomePageLoading;
   const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
 
@@ -163,6 +157,15 @@ const HomePage = (props: HomePageProps) => {
   );
 };
 
+interface HomePageWrapperProps {
+  route?: {
+    params: {
+      prevRouteName: AppRouteNames | TabRoutesNames;
+      isTabScreen: boolean;
+    };
+  };
+}
+
 const style = {
   backgroundColor: 'transparent',
   paddingBottom: 20,
@@ -172,14 +175,22 @@ const StepNumberComponent = () => <></>;
 
 const HomePageWrapper = memo(observer(HomePage));
 
-export default memo(() => {
+export default memo((props: HomePageWrapperProps) => {
+  const {route} = props;
+
+  const prevRouteName = route?.params?.prevRouteName;
+  const isTabScreen = route?.params?.isTabScreen;
+
   return (
     <CopilotProvider
       stepNumberComponent={StepNumberComponent}
       tooltipStyle={style}
       tooltipComponent={GuidedTourModal}
       arrowSize={0}>
-      <HomePageWrapper />
+      <HomePageWrapper
+        prevRouteName={prevRouteName}
+        isTabScreen={isTabScreen}
+      />
     </CopilotProvider>
   );
 });

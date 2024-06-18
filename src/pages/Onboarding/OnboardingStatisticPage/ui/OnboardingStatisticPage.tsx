@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
@@ -20,6 +20,8 @@ const OnboardingStatisticPage = () => {
 
   return (
     <View style={styles.OnboardingStatisticPage}>
+      <StatusBar barStyle={'light-content'} />
+
       <Carousel
         style={styles.carouselStyle}
         itemWidth={windowWidth}

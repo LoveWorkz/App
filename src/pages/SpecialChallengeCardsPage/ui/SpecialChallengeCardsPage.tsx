@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -73,6 +73,7 @@ const SpecialChallengeCardsPage = () => {
 
   return (
     <View style={styles.ChallengeCardsPage}>
+      <StatusBar barStyle={'light-content'} />
       <View style={styles.topPart}>
         <ChallengeCategoryBlock
           text={

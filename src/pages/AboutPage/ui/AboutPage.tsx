@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
@@ -16,6 +16,8 @@ import {descriptions1, descriptions2, descriptions3} from '../lib/howToUse';
 const AboutPage = () => {
   return (
     <View style={styles.about}>
+      <StatusBar barStyle={'light-content'} />
+
       <CustomHeaderWithImage
         title={'About the app'}
         isWhite

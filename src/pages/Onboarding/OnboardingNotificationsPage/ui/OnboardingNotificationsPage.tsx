@@ -1,5 +1,5 @@
 import React, {memo, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
 
@@ -39,6 +39,8 @@ const OnboardingNotificationsPage = () => {
 
   return (
     <View style={styles.OnboardingNotificationsPage}>
+      <StatusBar barStyle={'light-content'} />
+
       <OnboardingContainer
         bgImage={gradientBg}
         imageChildren={image}

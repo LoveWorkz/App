@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
@@ -21,8 +21,8 @@ import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
-import {QUADRANT_DETAILS_CONTENT_TOP} from '../model/lib/QuadrantDetailsPageLib';
 import QuadrantDetailsItem from './QuadrantDetailsItem';
+import {QUADRANT_DETAILS_CONTENT_TOP} from '../model/lib/QuadrantDetailsPageLib';
 
 interface QuadrantDetailsPageProps {
   route?: {
@@ -63,6 +63,8 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
 
   return (
     <View>
+      <StatusBar barStyle={'light-content'} />
+
       <Button style={styles.iconBtn} onPress={onPressHandler}>
         <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
       </Button>

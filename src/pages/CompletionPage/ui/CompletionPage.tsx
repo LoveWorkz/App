@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -54,6 +54,8 @@ const CompletionPage = () => {
 
   return (
     <View style={styles.CompletionPage}>
+      <StatusBar barStyle={'light-content'} />
+
       <Carousel
         itemWidth={windowWidth}
         data={newListWithMetadata}

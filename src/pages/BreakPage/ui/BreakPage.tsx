@@ -1,6 +1,6 @@
 import React, {memo, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -26,6 +26,7 @@ const BreakPage = () => {
 
   return (
     <View style={styles.BreakPage}>
+      <StatusBar barStyle={'light-content'} />
       <View style={styles.topPart}>
         <AppText
           weight="900"

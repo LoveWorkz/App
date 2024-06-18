@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {challengeStore} from '@src/entities/Challenge';
@@ -17,15 +17,23 @@ const CoreChallengeCardsPage = () => {
 
   if (isSessionFlow) {
     return (
-      <SessionFlowCoreChallenges
-        isSessionFlow={isSessionFlow}
-        currentCoreChallengeGroup={currentCoreChallengeGroup}
-      />
+      <>
+        <StatusBar barStyle={'light-content'} />
+        <SessionFlowCoreChallenges
+          isSessionFlow={isSessionFlow}
+          currentCoreChallengeGroup={currentCoreChallengeGroup}
+        />
+      </>
     );
   }
 
   return (
-    <BaseCoreChallenges currentCoreChallengeGroup={currentCoreChallengeGroup} />
+    <>
+      <StatusBar barStyle={'light-content'} />
+      <BaseCoreChallenges
+        currentCoreChallengeGroup={currentCoreChallengeGroup}
+      />
+    </>
   );
 };
 

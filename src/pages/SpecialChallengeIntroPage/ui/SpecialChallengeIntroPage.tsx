@@ -1,11 +1,12 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import {ChallengeIntroCard} from '@src/entities/Challenge';
 
 const SpecialChallengeIntroPage = () => {
   return (
     <View style={styles.SpecialChallengeIntroPage}>
+      <StatusBar barStyle={'light-content'} />
       <ChallengeIntroCard />
     </View>
   );
