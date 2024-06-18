@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   },
   sessionCountBlock: {
     alignSelf: 'flex-start',
-    paddingVertical: verticalScale(2),
+    paddingVertical: verticalScale(5),
     paddingHorizontal: horizontalScale(8),
     borderRadius: moderateScale(6),
     position: 'absolute',

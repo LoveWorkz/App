@@ -6,7 +6,6 @@ import {Favorite, FavoriteType} from '@src/entities/Favorite';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
-import {questionFavourites} from '@src/shared/assets/images';
 
 interface FavoritesProps {
   favorites: FavoriteType | null;
@@ -21,7 +20,7 @@ const Favorites = (props: FavoritesProps) => {
   if (isLoading) {
     return (
       <View style={styles.favorites}>
-        <Favorite image={questionFavourites} text={''} isLoading={true} />
+        <Favorite text={''} isLoading={true} />
       </View>
     );
   }
@@ -38,7 +37,6 @@ const Favorites = (props: FavoritesProps) => {
     <Pressable onPress={onPressHandler}>
       <View style={styles.favorites}>
         <Favorite
-          image={questionFavourites}
           text={`${favorites.ids.length} ${t('challenge.title')}`}
           isLoading={isLoading}
         />

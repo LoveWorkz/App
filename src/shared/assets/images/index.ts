@@ -98,10 +98,6 @@ export {default as shopImage3} from './shopImages/shopImage3.png';
 export {default as shopImage4} from './shopImages/shopImage4.png';
 export {default as shopImage5} from './shopImages/shopImage5.png';
 
-// favorites
-
-export {default as questionFavourites} from './favorites/questionFavourites.png';
-
 export {default as challengeImage} from './challengeImage.png';
 export {default as leaves} from './leaves.png';
 
@@ -131,3 +127,5 @@ export {default as Badge} from './Badge.png';
 
 export {default as guidedTourProgressBarImage} from './guidedTourProgressBarImage.png';
 export {default as quadrantImage} from './quadrantImage.png';
+
+export {default as favoriteImage} from './favoriteImage.png';

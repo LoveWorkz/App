@@ -6,7 +6,6 @@ import {observer} from 'mobx-react-lite';
 import {Favorite, favoriteStore} from '@src/entities/Favorite';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
-import {questionFavourites} from '@src/shared/assets/images';
 import categoriesStore from '../../model/store/categoriesStore';
 
 const FavoriteSessions = () => {
@@ -15,7 +14,7 @@ const FavoriteSessions = () => {
   const isLoading = categoriesStore.isCategoriesPageLoading;
 
   if (isLoading) {
-    return <Favorite image={questionFavourites} text={''} isLoading={true} />;
+    return <Favorite text={''} isLoading={true} />;
   }
 
   const favorite = favoriteStore.sessiionFavorites;
@@ -32,7 +31,6 @@ const FavoriteSessions = () => {
   return (
     <Pressable onPress={onPressHandler}>
       <Favorite
-        image={questionFavourites}
         text={`${favorite.ids.length} ${
           isLengthOne ? t('sessions.session') : t('sessions.sessions')
         }`}

@@ -17,33 +17,25 @@ import {
 import {useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
+import {favoriteImage} from '@src/shared/assets/images';
 
 interface FavouriteProps {
   isLoading: boolean;
   text: string;
-  image: number;
-  isChallenge?: boolean;
 }
-
 const height = 90;
 const borderRadius = moderateScale(20);
 
 export const Favorite = (props: FavouriteProps) => {
-  const {isLoading, text, image, isChallenge = false} = props;
+  const {isLoading, text} = props;
 
   const colors = useColors();
   const {t} = useTranslation();
   const {theme} = useTheme();
 
-  const textColor = isChallenge ? colors.white : colors.primaryTextColor;
-
   if (isLoading) {
     return <Skeleton height={height} borderRadius={borderRadius} />;
   }
-
-  const textContent = (
-    <AppText style={[styles.title, {color: textColor}]} text={text} />
-  );
 
   return (
     <View
@@ -52,27 +44,20 @@ export const Favorite = (props: FavouriteProps) => {
         borderRadius,
       }}>
       <FastImage
-        style={[styles.favoritesFolder, {width: windowWidthMinusPaddings}]}
+        style={[
+          styles.favoritesFolder,
+          {width: windowWidthMinusPaddings, backgroundColor: colors.white},
+        ]}
         resizeMode={'stretch'}
-        source={image}>
-        {isChallenge ? (
-          <Gradient
-            style={[styles.titleWrapper, {backgroundColor: colors.white}]}>
-            {textContent}
-          </Gradient>
-        ) : (
-          <View style={[styles.titleWrapper, {backgroundColor: colors.white}]}>
-            {textContent}
-          </View>
-        )}
-
+        source={favoriteImage}>
+        <Gradient
+          style={[styles.titleWrapper, {backgroundColor: colors.white}]}>
+          <AppText style={[styles.title, {color: colors.white}]} text={text} />
+        </Gradient>
         <View>
           <AppText
-            style={[
-              styles.text,
-              {color: isChallenge ? colors.primaryTextColor : colors.white},
-            ]}
-            weight={'700'}
+            style={[styles.text]}
+            weight={'600'}
             size={TextSize.LEVEL_4}
             text={t('favorites.title')}
           />
@@ -93,7 +78,7 @@ const styles = StyleSheet.create({
   titleWrapper: {
     paddingVertical: verticalScale(4),
     paddingHorizontal: verticalScale(10),
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(6),
     alignSelf: 'flex-start',
   },
   title: {

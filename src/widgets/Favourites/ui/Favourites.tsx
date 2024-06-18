@@ -7,7 +7,6 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {Favorite, favoriteStore} from '@src/entities/Favorite';
 import {DocumentType} from '@src/shared/types/types';
-import {questionFavourites} from '@src/shared/assets/images';
 
 interface FavouritesProps {
   isLoading: boolean;
@@ -18,7 +17,7 @@ export const Favourites = (props: FavouritesProps) => {
   const {t} = useTranslation();
 
   if (isLoading) {
-    return <Favorite image={questionFavourites} text={''} isLoading={true} />;
+    return <Favorite text={''} isLoading={true} />;
   }
 
   const onPressHandler = () => {
@@ -35,7 +34,6 @@ export const Favourites = (props: FavouritesProps) => {
   return (
     <Pressable onPress={onPressHandler}>
       <Favorite
-        image={questionFavourites}
         text={`${favorite.ids.length} ${t('questions.questions')}`}
         isLoading={isLoading}
       />
