@@ -6,7 +6,7 @@ import {ChallengeGroupDetails} from '@src/entities/ChallengeGroup';
 const ChallengeTypeInfoPage = () => {
   const title = 'It’s time for a Routine!';
   const description =
-    'Implement new routines in your lifes. By embracing routines you will  foster a “we” feeling.  They provide structured moments for sharing thoughts, feelings, and daily experiences, ultimately strengthening your bond and ensuring your relationship continues to grow and thrive."';
+    "Implementing new routines in your lives fosters a “we” feeling.  They provide structured moments for sharing thoughts, feelings, and daily experiences, ultimately strengthening your bond and ensuring your relationship continues to grow and thrive.";
 
   return (
     <View style={styles.ChallengeTypeInfoPage}>

@@ -44,15 +44,13 @@ export const getInformationBlockContent = (
       };
     case 'Topics':
       return {
-        title: 'Browsing Topics!',
+        title: 'Browsing Topics',
         text: [
           {
-            boldString: 'You',
-            text: ' are currently in the Topic Section. Here you can start browsing questions & exploring based on specific subjects of interest.',
+            text: "Don't feel like doing a full session right now? No problem! You can browse and explore individual questions based on specific topics of interest.",
           },
           {
-            boldString: 'To',
-            text: ' make In-App-progress, please return to the session area above or start the game from the homepage.',
+            text: "Just keep in mind that to track your progress and get the most out of the app, you'll want to return to the session area or start a new session from the homepage.",
           },
         ],
       };
@@ -61,8 +59,7 @@ export const getInformationBlockContent = (
         title: 'Session Library',
         text: [
           {
-            boldString: 'You',
-            text: ' are currently in the Session Library. It gives you a perfect overview of the the sessions per category. The categories will unlock as you progress.',
+            text: 'You are currently in the Session Library. It gives you a perfect overview of the sessions in each level. The levels will unlock as you progress.',
           },
         ],
       };
