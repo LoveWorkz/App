@@ -108,7 +108,7 @@ class QuestionStore {
   incrementQuestionViewCount = (questionId: string) => {
     try {
       const questionRef = firestore()
-        .collection(Collections.ORDINARY_QUESTIONS)
+        .collection(Collections.ORDINARY_QUESTIONS_NEW)
         .doc(questionId);
       questionRef.update({
         viewCount: firestore.FieldValue.increment(1),

@@ -243,7 +243,7 @@ class RubricStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const data = await firestore()
-        .collection(Collections.RUBRICS)
+        .collection(Collections.RUBRICS_NEW)
         .get({source});
 
       const rubrics = data.docs.map(rubric => {

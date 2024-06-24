@@ -539,7 +539,7 @@ class ChallengeStore {
     isCore: boolean;
   }) => {
     const collectionName = isCore
-      ? Collections.CORE_CHALLENGES
+      ? Collections.CORE_CHALLENGES_NEW
       : Collections.SPECIAL_CHALLENGES_2;
 
     const challengeRef = firestore()
@@ -573,7 +573,7 @@ class ChallengeStore {
       const data = await firestore()
         .collection(
           isCore
-            ? Collections.CORE_CHALLENGES
+            ? Collections.CORE_CHALLENGES_NEW
             : Collections.SPECIAL_CHALLENGES_2,
         )
         .doc(challengeId)

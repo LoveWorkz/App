@@ -4,13 +4,24 @@ export enum Collections {
   USERS = 'users',
   BOOKS = 'Books',
   CATEGORIES = 'Categories',
+  
   RUBRICS = 'Rubrics',
+  RUBRICS_NEW = 'Rubrics_new',
+  
   QUESTIONS = 'Questions',
+  
   ORDINARY_QUESTIONS = 'ordinary_questions',
+  ORDINARY_QUESTIONS_NEW = 'ordinary_questions_new',
+  
   WILD_QUESTIONS = 'wild_questions',
+  WILD_QUESTIONS_NEW = 'wild_questions_new',
+
   RUBRIC_QUESTIONS = 'rubric_questions',
   CHALLENGE_CATEGORIES = 'Challenge_Categories',
+  
   CORE_CHALLENGES = 'core_challenges',
+  CORE_CHALLENGES_NEW = 'core_challenges_new',
+  
   USER_CHALLENGE_CATEGORIES = 'user_Challenge_Categories',
   USER_LEVELS = 'user_levels',
   USER_RUBRICS = 'user_Rubrics',

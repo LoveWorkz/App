@@ -365,10 +365,10 @@ class QuestionsStore {
     // fetch and merge all questions
 
     const promise1 = firestore()
-      .collection(Collections.ORDINARY_QUESTIONS)
+      .collection(Collections.ORDINARY_QUESTIONS_NEW)
       .get({source});
     const promise2 = firestore()
-      .collection(Collections.WILD_QUESTIONS)
+      .collection(Collections.WILD_QUESTIONS_NEW)
       .get({source});
     // const promise4 = firestore()
     //   .collection(Collections.RUBRIC_QUESTIONS)

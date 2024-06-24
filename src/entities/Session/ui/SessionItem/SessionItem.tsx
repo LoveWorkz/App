@@ -25,6 +25,7 @@ import PremiumBlock from '@src/shared/ui/PremiumBlock/PremiumBlock';
 import {SessionState, SessionType} from '../../model/types/sessionType';
 import sessionStore from '../../model/store/sessionStore';
 import PresSessionModal from '../PreSessionModal/PreSessionModal';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface SessionItemProps {
   session: SessionType;
@@ -38,6 +39,7 @@ const SessionItem = (props: SessionItemProps) => {
   const colors = useColors();
   const {theme} = useTheme();
   const {t} = useTranslation();
+  const language = useLanguage();
 
   const [visible, setVisible] = useState(false);
 
@@ -129,15 +131,13 @@ const SessionItem = (props: SessionItemProps) => {
             <AppText
               weight={'900'}
               size={TextSize.LEVEL_5}
-              text={'Personal Growth'}
+              text={`${session.displayName[language]}`}
             />
           </View>
           <AppText
             weight={'600'}
             size={TextSize.LEVEL_2}
-            text={
-              'Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being.'
-            }
+            text={`${session.description[language]}`}
           />
         </>
         {disabled ? <></> : <>{rightIcon}</>}

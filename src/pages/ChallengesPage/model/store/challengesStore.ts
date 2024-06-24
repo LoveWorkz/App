@@ -265,7 +265,7 @@ class ChallengesStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const challengesData = await firestore()
-        .collection(Collections.CORE_CHALLENGES)
+        .collection(Collections.CORE_CHALLENGES_NEW)
         .get({source});
 
       // merge default challenges and user custom challenges together
@@ -369,7 +369,7 @@ class ChallengesStore {
       // Fetch top 3 trending challenges for both core and special
       const [coreChallenges, specialChallenges] = await Promise.all([
         this.fetchTrendingChallenges({
-          collectionName: Collections.CORE_CHALLENGES,
+          collectionName: Collections.CORE_CHALLENGES_NEW,
         }),
         this.fetchTrendingChallenges({
           collectionName: Collections.SPECIAL_CHALLENGES_2,
