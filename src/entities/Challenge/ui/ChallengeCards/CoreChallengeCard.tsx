@@ -134,7 +134,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
 
 export default memo(observer(CoreChallengeCard));
 
-const padding = horizontalScale(20);
+const padding = horizontalScale(10);
 const btnWidth = '87%';
 
 const styles = StyleSheet.create({

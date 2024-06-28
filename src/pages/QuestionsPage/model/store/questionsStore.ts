@@ -178,7 +178,7 @@ class QuestionsStore {
         return;
       }
 
-      this.loadAds({questionNumber, interstitial});
+      // this.loadAds({questionNumber, interstitial});
 
       if (key !== DocumentType.FAVORITE && documentId) {
         wowThatWasFastModalStore.wowThatWasFastLogic({

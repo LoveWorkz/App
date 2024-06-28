@@ -13,7 +13,7 @@ import {GradientProvider} from './providers/GradientProvider';
 
 const App = () => {
   useEffect(() => {
-    initAdmob();
+    // initAdmob();
     configureGoogleSignin();
   }, []);
 

@@ -16,7 +16,7 @@ import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {homePageStore} from '../..';
 
 // import firestore from '@react-native-firebase/firestore';
-// import JSON from './core_challenge_self_ref.json';
+// import JSON from './core_challenge_routine.json';
 // import { Collections } from '@src/shared/types/firebase';
 
 interface QuickStartProps {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     bottom: 0,
-    lef: 0,
+    left: 0,
     right: 0,
     ...containerStyles,
   },

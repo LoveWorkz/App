@@ -90,10 +90,10 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     useCallback(() => {
       questionsStore.clearQuestionsInfo();
 
-      const adListener = interstitial.addAdEventListener(
-        AdEventType.LOADED,
-        () => interstitial.show(),
-      );
+      // const adListener = interstitial.addAdEventListener(
+      //   AdEventType.LOADED,
+      //   () => interstitial.show(),
+      // );
 
       if (key) {
         questionsStore.init({
@@ -108,7 +108,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
 
       return () => {
         setIsGradient(false);
-        adListener();
+        // adListener();
       };
     }, [
       key,

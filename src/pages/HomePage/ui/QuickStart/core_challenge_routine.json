@@ -1,0 +1,92 @@
+[
+  {
+    "id": "core_challenge_1",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Die Geschichten-Erzähl-Routine",
+      "en": "The Story - Telling Routine",
+      "pt": "A rotina de contar histórias"
+    },
+    "description": {
+      "de": "Nehmt euch jede Woche etwas Zeit, um Geschichten aus eurer Vergangenheit und Träume für die Zukunft auszutauschen, oder denkt euch sogar gemeinsam fiktive Geschichten aus.",
+      "en": "Spend some time each week sharing stories from your past, dreams for the future, or even making up fictional stories together.",
+      "pt": "Passe algum tempo toda semana compartilhando histórias do passado, sonhos para o futuro ou até mesmo inventando histórias fictícias juntos."
+    }
+  },
+  {
+    "id": "core_challenge_2",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Die Kochabend-Routine",
+      "en": "The Cooking Night Routine",
+      "pt": "A rotina de cozinhar à noite"
+    },
+    "description": {
+      "de": "Legt einen Abend in der Woche als Kochabend fest, an dem ihr gemeinsam eine Mahlzeit zubereitet. Experimentiert ruhig mit neuen Rezepten.",
+      "en": "Designate one night a week as your cooking night where you prepare a meal together. Feel free to experiment with new recipes.",
+      "pt": "Designe uma noite por semana como a noite da culinária, na qual vocês preparam uma refeição juntos. Sinta-se à vontade para experimentar novas receitas."
+    }
+  },
+  {
+    "id": "core_challenge_3",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Die Achtsamkeits - Routine",
+      "en": "The Mindfulness - Routine",
+      "pt": "A rotina da atenção plena"
+    },
+    "description": {
+      "de": "Übt gemeinsam Achtsamkeit oder Meditation. Nehmt euch jeden Tag/jede Woche ein paar Minuten Zeit für eine stille Reflexion oder eine geführte Meditationssitzung.",
+      "en": "Practice mindfulness or meditation together. ",
+      "pt": "Pratiquem a atenção plena ou a meditação juntos. "
+    }
+  },
+  {
+    "id": "core_challenge_4",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Die Kreativ - Projekt Routine",
+      "en": "The Creative - Project Routine",
+      "pt": "A rotina do projeto criativo"
+    },
+    "description": {
+      "de": "Arbeitet gemeinsam an einem kreativen Projekt, z. B. Scrapbooking, Gartenarbeit oder Heimwerken, um gemeinsam ein sinnvolles Projekt zu verwirklichen.",
+      "en": "Work on a creative project together, such as scrapbooking, gardening or home improvement to build on a meaningful project together",
+      "pt": "Trabalhem juntos em um projeto criativo, como scrapbooking, jardinagem ou reforma da casa para construir um projeto significativo juntos"
+    }
+  },
+  {
+    "id": "core_challenge_5",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Die Wertschätzungs - Notizen",
+      "en": "The Appreciation Note Routine",
+      "pt": "A rotina de notas de agradecimento"
+    },
+    "description": {
+      "de": "Hinterlasst an unerwarteten Orten kleine Notizen der gegenseitigen Wertschätzung, z. B. in der Brotdose, am Badezimmerspiegel oder in der Manteltasche. Ihr könnt es euch zur Gewohnheit machen, eure Wertschätzung regelmäßig in schriftlicher Form auszudrücken.",
+      "en": "Leave small notes of appreciation for each other in unexpected places, like in a lunchbox, on the bathroom mirror, or in a coat pocket. You may make it a habit to express appreciation regularly in written form.",
+      "pt": "Deixem pequenos bilhetes de agradecimento um para o outro em lugares inesperados, como na lancheira, no espelho do banheiro ou no bolso do casaco. Você pode criar o hábito de expressar gratidão regularmente por escrito."
+    }
+  },
+  {
+    "id": "core_challenge_6",
+    "groupId": "core_challenge_group_1",
+    "isChallengeSpecial": false,
+    "title": {
+      "de": "Das Dankbarkeits - Journal",
+      "en": "The Gratitude Journal",
+      "pt": "O Diário da Gratidão"
+    },
+    "description": {
+      "de": "Führt ein gemeinsames Dankbarkeits-Tagebuch, in dem ihr beide Dinge aufschreibt, für die ihr am anderen dankbar seid. Lest eure Einträge am Ende jeder Woche oder jedes Monats gemeinsam durch.",
+      "en": "Keep a shared gratitude journal where you both write down things you are grateful for in each other.",
+      "pt": "Mantenha um diário de gratidão compartilhado em que ambos escrevam coisas pelas quais são gratos um ao outro."
+    }
+  }
+]
