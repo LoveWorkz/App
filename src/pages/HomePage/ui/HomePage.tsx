@@ -44,6 +44,7 @@ import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
+import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
 
 interface HomePageProps {
   prevRouteName?: string;
@@ -153,6 +154,7 @@ const HomePage = (props: HomePageProps) => {
         {isGuidedTourCompleted && !isLoading && <Quotes />}
         {!isLoading && <GuidedTour />}
       </View>
+      <QuestionPageCongratsModal />
     </View>
   );
 };

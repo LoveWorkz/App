@@ -22,6 +22,7 @@ import {
   sessionRatingList,
 } from '../lib/completionPageLib';
 import {RatingInformationItemType} from '../types/completionTypes';
+import { questionsStore } from '@src/pages/QuestionsPage';
 
 const initialRatingResults: RatingResultsType = {
   question_1: 0,
@@ -296,6 +297,9 @@ class CompletionPageStore {
 
       this.setRatingResults(initialRatingResults);
       navigation.navigate(TabRoutesNames.HOME);
+      if (eventKey === EventEndType.LEVEL_END) {
+        questionsStore.setCongratsModalVisible(true)
+      }
     } catch (error) {
       errorHandler({error});
     } finally {
