@@ -11,7 +11,7 @@ import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import {StyleSheet} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
-import {windowWidth} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {
   horizontalScale,
@@ -19,7 +19,6 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
-import {isPlatformIos} from '@src/shared/consts/common';
 
 type Item = Record<string, any>;
 interface FooterProps {
@@ -196,11 +195,11 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         style={[
           itemStyle,
           {
-            marginLeft: horizontalScale(-15),
+            marginLeft: -globalPadding,
           },
         ]}
         enabled={isSlideEnabled}
-        width={windowWidth * 0.95}
+        width={windowWidth}
         pagingEnabled={true}
         overscrollEnabled={false}
         mode={'horizontal-stack'}
@@ -225,6 +224,5 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     marginTop: verticalScale(30),
-    left: horizontalScale(isPlatformIos ? -2 : -5),
   },
 });
