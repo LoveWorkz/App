@@ -43,7 +43,7 @@ interface HorizontalSlideProps {
 }
 
 const AnimatedView = Animated.View;
-const animationDuration = 100;
+const animationDuration = 300;
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const {
@@ -96,9 +96,9 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
 
         if (isCurrent) {
           // Styles for the current card
-          rotateZ = '0deg';
-          top = 0;
-          left = 0;
+          rotateZ = withTiming('0deg', {duration: animationDuration});
+          top = withTiming(0, {duration: animationDuration});
+          left = withTiming(0, {duration: animationDuration});
           zIndex = 50;
           backgroundColor = '#ffffff';
         } else if (isPreviousCard) {
@@ -107,11 +107,14 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
           backgroundColor = '#ffffff';
         } else if (isSecondCard) {
           // styles for the second card
-          rotateZ = '0deg';
+          rotateZ = withTiming('6deg', {duration: animationDuration});
+          left = withTiming(0, {duration: animationDuration});
+          top = withTiming(0, {duration: animationDuration});
         } else if (isThirdCard) {
           // styles for the third card
           rotateZ = withTiming('6deg', {duration: animationDuration});
-          top = withTiming(-25, {duration: animationDuration});
+          top = withTiming(25, {duration: animationDuration});
+          left = withTiming(10, {duration: animationDuration});
         } else {
           // Styles for all other cards with animation
           rotateZ = withTiming('8deg', {duration: animationDuration});
