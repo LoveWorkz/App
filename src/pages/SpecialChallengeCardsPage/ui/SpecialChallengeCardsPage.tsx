@@ -14,6 +14,7 @@ import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
@@ -86,6 +87,7 @@ const SpecialChallengeCardsPage = () => {
       <HorizontalSlide
         onSwipeHandler={onSwipeHandler}
         data={listWithMetadata}
+        itemStyle={styles.itemStyle}
         Component={ChallengeCard}
         isSlideEnabled
         itemWidth={CARD_WIDTH}
@@ -107,5 +109,8 @@ const styles = StyleSheet.create({
   topPart: {
     alignItems: 'center',
     top: verticalScale(3),
+  },
+  itemStyle: {
+    marginLeft: -globalPadding,
   },
 });
