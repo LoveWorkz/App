@@ -35,6 +35,9 @@ interface ChallengeCardProps {
   specialChallengeId: string;
   isSelectingChallenge: boolean;
   isChecked: boolean;
+  cardId?: string;
+  svgName?: string;
+  isSvg?: boolean;
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
@@ -45,6 +48,8 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     specialChallengeId,
     isSelectingChallenge,
     isChecked,
+    isSvg,
+    svgName
   } = props;
   const {theme} = useTheme();
   const colors = useColors();
@@ -56,12 +61,15 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   // const reference = storage().ref('/challenges_svg/Steps.svg');
 
   useEffect(() => {
+    // console.log('prop', props?.title?.en, props?.cardId);
+    
     const asyncEffect = async () => {
       const url = await storage()
-        .ref('/challenges_svg/bzrfeed.svg')
+        .ref(`/challenges_svg/${svgName ?? 'card-1-1'}-${language}.svg`)
         .getDownloadURL();
+
       setSvgUrl(url);
-      console.log(url);
+      // console.log(url);
     };
     asyncEffect();
   }, []);
@@ -89,13 +97,14 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           backgroundColor: colors.white,
         },
       ]}>
-      <AppText
+      {/* <AppText
         onTextLayout={onTextLayout}
         size={TextSize.LEVEL_6}
         weight={'600'}
         text={title[language]}
         align={numberOfLines === 1 ? 'left' : 'center'}
-      />
+      /> */}
+
       <View style={styles.iconWrapper}>
         <SvgXml
           xml={HeartsIcon}
@@ -103,8 +112,10 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           height={horizontalScale(60)}
         />
       </View>
-      {svgUrl && <SvgUri width="50%" height="50%" uri={svgUrl} />}
-      {/* <WebView
+
+      {isSvg && svgUrl && <SvgUri width="100%" height="100%" uri={svgUrl} />}
+      
+      {!isSvg && <WebView
         source={{
           html: `
          <!DOCTYPE html>
@@ -130,7 +141,8 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         style={styles.htmlStyle}
         bounces={false}
         scalesPageToFit={false}
-      /> */}
+      />}
+
       <View style={styles.appNameWrapper}>
         <GradientText
           size={TextSize.LEVEL_2}
