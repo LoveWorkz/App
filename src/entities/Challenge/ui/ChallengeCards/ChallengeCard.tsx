@@ -1,11 +1,11 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   NativeSyntheticEvent,
   StyleSheet,
   TextLayoutEventData,
   View,
 } from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import {SvgUri, SvgXml} from 'react-native-svg';
 import {WebView} from 'react-native-webview';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -25,6 +25,8 @@ import {DisplayText} from '@src/shared/types/types';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import challengeStore from '../../model/store/challengeStore';
+
+import storage from '@react-native-firebase/storage';
 
 interface ChallengeCardProps {
   title: DisplayText;
@@ -47,8 +49,22 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   const {theme} = useTheme();
   const colors = useColors();
   const language = useLanguage();
+  const [svgUrl, setSvgUrl] = useState<string>();
 
   const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
+
+  // const reference = storage().ref('/challenges_svg/Steps.svg');
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const url = await storage()
+        .ref('/challenges_svg/bzrfeed.svg')
+        .getDownloadURL();
+      setSvgUrl(url);
+      console.log(url);
+    };
+    asyncEffect();
+  }, []);
 
   const onTextLayout = useCallback(
     (e: NativeSyntheticEvent<TextLayoutEventData>) => {
@@ -87,7 +103,8 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           height={horizontalScale(60)}
         />
       </View>
-      <WebView
+      {svgUrl && <SvgUri width="50%" height="50%" uri={svgUrl} />}
+      {/* <WebView
         source={{
           html: `
          <!DOCTYPE html>
@@ -113,7 +130,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         style={styles.htmlStyle}
         bounces={false}
         scalesPageToFit={false}
-      />
+      /> */}
       <View style={styles.appNameWrapper}>
         <GradientText
           size={TextSize.LEVEL_2}
