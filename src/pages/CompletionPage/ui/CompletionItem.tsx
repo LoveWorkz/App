@@ -10,7 +10,11 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {PillContainer} from '@src/shared/ui/PillContainer/PillContainer';
-import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
+import {
+  globalPadding,
+  globalStyles,
+  windowWidth,
+} from '@src/app/styles/GlobalStyle';
 import {StyledWordText} from '@src/shared/ui/StyledWordText/StyledWordText';
 import {StarRatings} from '@src/shared/ui/StarRatings/StarRatings';
 import {StyleType} from '@src/shared/types/types';
@@ -18,6 +22,10 @@ import {RatingKeys} from '../model/types/completionTypes';
 import FeedbackBlock from './FeedbackBlock';
 import completionPageStore from '../model/store/completionPageStore';
 import {keyWords} from '../model/lib/completionPageLib';
+import {useNavigation} from '@react-navigation/native';
+import {SvgXml} from 'react-native-svg';
+import {Button} from '@src/shared/ui/Button/Button';
+import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 
 interface CompletionItemProps {
   handleNext: () => void;
@@ -90,8 +98,14 @@ const CompletionItem = (props: CompletionItemProps) => {
   const marginBottom =
     !isQuadrant && !isFeedbackPage ? verticalScale(110) : verticalScale(80);
 
+  const {goBack} = useNavigation();
+
   return (
     <View>
+      <Button style={styles.arrowWrapper} onPress={goBack}>
+        <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
+      </Button>
+
       {isQuadrant ? (
         <FastImage
           style={styles.quadrantImage}
@@ -271,5 +285,16 @@ const styles = StyleSheet.create({
     ...styledWordStyle,
     textTransform: 'uppercase',
     textDecorationLine: 'underline',
+  },
+  arrowWrapper: {
+    paddingRight: horizontalScale(20),
+    position: 'absolute',
+    top: 50,
+    left: globalPadding,
+    zIndex: 1,
+  },
+  icon: {
+    height: verticalScale(15),
+    width: horizontalScale(18),
   },
 });
