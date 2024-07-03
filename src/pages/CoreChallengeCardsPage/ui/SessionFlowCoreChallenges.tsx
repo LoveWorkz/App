@@ -109,5 +109,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: verticalScale(20),
     alignItems: 'center',
+    borderWidth: 10,
   },
 });

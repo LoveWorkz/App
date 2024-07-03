@@ -11,7 +11,7 @@ import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import {StyleSheet} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
-import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
+import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {
   horizontalScale,
@@ -195,12 +195,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         onProgressChange={onProgressChange}
         onScrollEnd={onScrollEnd}
         defaultIndex={defaultIndex}
-        style={[
-          itemStyle,
-          {
-            marginLeft: -globalPadding,
-          },
-        ]}
+        style={[itemStyle]}
         enabled={isSlideEnabled}
         width={windowWidth}
         pagingEnabled={true}
