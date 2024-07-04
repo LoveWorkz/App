@@ -30,9 +30,9 @@ export const QuestionText = React.memo((props: QuestionTextProps) => {
   return (
     <AppText
       style={{
-        color: isCardTypeOrdinary(type)
-          ? colors.primaryTextColor
-          : colors.white,
+        color: isCardTypeWild(type)
+          ? colors.white
+          : colors.primaryTextColor,
       }}
       align={'center'}
       weight={'700'}

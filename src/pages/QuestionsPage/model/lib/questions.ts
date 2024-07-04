@@ -51,7 +51,7 @@ export const getFormattedQuestionsWrapper = ({
         };
       }
 
-      if (isFunFact(question.rubric?.name)) {
+      if (isFunFact(question.type)) {
         const image = isDarkMode ? funFactDark : funFact;
 
         return {
@@ -60,7 +60,7 @@ export const getFormattedQuestionsWrapper = ({
         };
       }
 
-      if (isHotStuff(question.rubric?.name)) {
+      if (isHotStuff(question.type)) {
         const image = isDarkMode ? hotStuffDark : hotStuff;
 
         return {
