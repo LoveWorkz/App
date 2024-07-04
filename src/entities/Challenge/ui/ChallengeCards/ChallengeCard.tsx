@@ -1,11 +1,11 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {
   NativeSyntheticEvent,
   StyleSheet,
   TextLayoutEventData,
   View,
 } from 'react-native';
-import {SvgXml} from 'react-native-svg';
+import {SvgUri, SvgXml} from 'react-native-svg';
 import {WebView} from 'react-native-webview';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -26,6 +26,8 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import challengeStore from '../../model/store/challengeStore';
 
+import storage from '@react-native-firebase/storage';
+
 interface ChallengeCardProps {
   title: DisplayText;
   showButton: boolean;
@@ -33,6 +35,9 @@ interface ChallengeCardProps {
   specialChallengeId: string;
   isSelectingChallenge: boolean;
   isChecked: boolean;
+  cardId?: string;
+  svgName?: string;
+  isSvg?: boolean;
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
@@ -43,12 +48,31 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     specialChallengeId,
     isSelectingChallenge,
     isChecked,
+    isSvg,
+    svgName
   } = props;
   const {theme} = useTheme();
   const colors = useColors();
   const language = useLanguage();
+  const [svgUrl, setSvgUrl] = useState<string>();
 
   const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
+
+  // const reference = storage().ref('/challenges_svg/Steps.svg');
+
+  useEffect(() => {
+    // console.log('prop', props?.title?.en, props?.cardId);
+    
+    const asyncEffect = async () => {
+      const url = await storage()
+        .ref(`/challenges_svg/${svgName ?? 'card-1-1'}-${language}.svg`)
+        .getDownloadURL();
+
+      setSvgUrl(url);
+      // console.log(url);
+    };
+    asyncEffect();
+  }, []);
 
   const onTextLayout = useCallback(
     (e: NativeSyntheticEvent<TextLayoutEventData>) => {
@@ -73,13 +97,14 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           backgroundColor: colors.white,
         },
       ]}>
-      <AppText
+      {/* <AppText
         onTextLayout={onTextLayout}
         size={TextSize.LEVEL_6}
         weight={'600'}
         text={title[language]}
         align={numberOfLines === 1 ? 'left' : 'center'}
-      />
+      /> */}
+
       <View style={styles.iconWrapper}>
         <SvgXml
           xml={HeartsIcon}
@@ -87,7 +112,10 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           height={horizontalScale(60)}
         />
       </View>
-      <WebView
+
+      {isSvg && svgUrl && <SvgUri width="100%" height="100%" uri={svgUrl} />}
+      
+      {!isSvg && <WebView
         source={{
           html: `
          <!DOCTYPE html>
@@ -113,7 +141,8 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         style={styles.htmlStyle}
         bounces={false}
         scalesPageToFit={false}
-      />
+      />}
+
       <View style={styles.appNameWrapper}>
         <GradientText
           size={TextSize.LEVEL_2}
