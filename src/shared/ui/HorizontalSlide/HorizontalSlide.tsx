@@ -43,7 +43,7 @@ interface HorizontalSlideProps {
 }
 
 const AnimatedView = Animated.View;
-const animationDuration = 300;
+const animationDuration = 100;
 
 export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const {
@@ -96,30 +96,27 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
 
         if (isCurrent) {
           // Styles for the current card
-          rotateZ = withTiming('0deg', {duration: animationDuration});
           top = withTiming(0, {duration: animationDuration});
           left = withTiming(0, {duration: animationDuration});
+          rotateZ = withTiming('0deg', {duration: animationDuration});
           zIndex = 50;
           backgroundColor = '#ffffff';
         } else if (isPreviousCard) {
           // Styles for the previous card
-          rotateZ = '0deg';
+          rotateZ = withTiming('0deg', {duration: animationDuration});
           backgroundColor = '#ffffff';
         } else if (isSecondCard) {
           // styles for the second card
-          rotateZ = withTiming('6deg', {duration: animationDuration});
-          left = withTiming(0, {duration: animationDuration});
-          top = withTiming(0, {duration: animationDuration});
+          rotateZ = withTiming('0deg', {duration: animationDuration});
         } else if (isThirdCard) {
           // styles for the third card
+          top = withTiming(-25, {duration: animationDuration});
           rotateZ = withTiming('6deg', {duration: animationDuration});
-          top = withTiming(25, {duration: animationDuration});
-          left = withTiming(10, {duration: animationDuration});
         } else {
           // Styles for all other cards with animation
-          rotateZ = withTiming('8deg', {duration: animationDuration});
           top = withTiming(25, {duration: animationDuration});
           left = withTiming(10, {duration: animationDuration});
+          rotateZ = withTiming('8deg', {duration: animationDuration});
         }
 
         return {
@@ -146,7 +143,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         </AnimatedView>
       );
     },
-    [currentIndex, Component, itemWidth],
+    [currentIndex, itemWidth, Component],
   );
 
   const onProgressChange = useCallback(
@@ -185,7 +182,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         }, spead);
       }
     },
-    [onSwipeHandler, data, spead], // Dependencies for useCallback
+    [spead, data, onSwipeHandler], // Dependencies for useCallback
   );
 
   return (
@@ -193,7 +190,10 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
       <Carousel
         ref={carouselRef}
         onProgressChange={onProgressChange}
-        onScrollEnd={onScrollEnd}
+        onScrollEnd={() => {
+          onScrollEnd?.();
+        }}
+        onScrollBegin={() => {}}
         defaultIndex={defaultIndex}
         style={[itemStyle]}
         enabled={isSlideEnabled}
