@@ -81,8 +81,8 @@ android {
         applicationId "com.blineapp.bline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 17
+        versionName "1.0.10"
         missingDimensionStrategy "store", "play"
     }
     signingConfigs {
@@ -92,6 +92,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('LOVEWORKZ_UPLOAD_STORE_FILE')) {
+                storeFile file(LOVEWORKZ_UPLOAD_STORE_FILE)
+                storePassword LOVEWORKZ_UPLOAD_STORE_PASSWORD
+                keyAlias LOVEWORKZ_UPLOAD_KEY_ALIAS
+                keyPassword LOVEWORKZ_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -100,10 +108,10 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            
+
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
