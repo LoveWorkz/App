@@ -26,9 +26,10 @@ interface CarouselProps<T = Record<string, string | number>> {
   paginationColor?: string;
   onSwipeHandler?: (value: T) => void;
   setAsWidth?: boolean;
+  backgroundComponent?: React.JSX.Element;
 }
 
-export const Carousel = <T = {}>(props: CarouselProps<T>) => {
+export const Carousel = <T = {},>(props: CarouselProps<T>) => {
   const {
     Component,
     data,
@@ -45,6 +46,7 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
     paginationColor,
     onSwipeHandler,
     setAsWidth = true,
+    backgroundComponent,
   } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,6 +95,7 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
 
   return (
     <>
+      {backgroundComponent}
       <View>
         {isTopPagination && itemWidth && (
           <View style={paginationStyle}>
@@ -119,7 +122,12 @@ export const Carousel = <T = {}>(props: CarouselProps<T>) => {
           pagingEnabled
           renderItem={({item, index}) => (
             <View style={[itemStyle, {width: setAsWidth ? itemWidth : 'auto'}]}>
-              <Component {...item} index={index} handleNext={handleNext} />
+              <Component
+                {...item}
+                index={index}
+                handleNext={handleNext}
+                shouldRenderBackground={!backgroundComponent}
+              />
             </View>
           )}
           bounces={false}

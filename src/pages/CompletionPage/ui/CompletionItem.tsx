@@ -22,10 +22,6 @@ import {RatingKeys} from '../model/types/completionTypes';
 import FeedbackBlock from './FeedbackBlock';
 import completionPageStore from '../model/store/completionPageStore';
 import {keyWords} from '../model/lib/completionPageLib';
-import {useNavigation} from '@react-navigation/native';
-import {SvgXml} from 'react-native-svg';
-import {Button} from '@src/shared/ui/Button/Button';
-import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 
 interface CompletionItemProps {
   handleNext: () => void;
@@ -43,6 +39,7 @@ interface CompletionItemProps {
   isSending: boolean;
   isQuadrant: boolean;
   nextStep: string;
+  shouldRenderBackground?: boolean;
 }
 
 const CompletionItem = (props: CompletionItemProps) => {
@@ -61,6 +58,7 @@ const CompletionItem = (props: CompletionItemProps) => {
     isQuadrant,
     styledWords,
     nextStep,
+    shouldRenderBackground = true,
   } = props;
   const colors = useColors();
 
@@ -98,23 +96,28 @@ const CompletionItem = (props: CompletionItemProps) => {
   const marginBottom =
     !isQuadrant && !isFeedbackPage ? verticalScale(110) : verticalScale(80);
 
-  const {goBack} = useNavigation();
-
   return (
     <View>
-      <Button style={styles.arrowWrapper} onPress={goBack}>
-        <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
-      </Button>
+      <View style={styles.image} />
 
-      {isQuadrant ? (
-        <FastImage
-          style={styles.quadrantImage}
-          resizeMode={'cover'}
-          source={source}
-        />
-      ) : (
-        <FastImage style={styles.image} resizeMode={'cover'} source={source} />
+      {shouldRenderBackground && (
+        <>
+          {isQuadrant ? (
+            <FastImage
+              style={styles.quadrantImage}
+              resizeMode={'cover'}
+              source={source}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'cover'}
+              source={source}
+            />
+          )}
+        </>
       )}
+
       <View style={isQuadrant ? styles.quadrantContent : styles.content}>
         <View
           style={[
