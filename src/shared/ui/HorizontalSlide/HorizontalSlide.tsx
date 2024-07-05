@@ -11,7 +11,7 @@ import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import {StyleSheet} from 'react-native';
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
-import {windowWidth} from '@src/app/styles/GlobalStyle';
+import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
 import {
   horizontalScale,
@@ -104,6 +104,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         } else if (isPreviousCard) {
           // Styles for the previous card
           rotateZ = withTiming('0deg', {duration: animationDuration});
+          left = withTiming(-globalPadding, {duration: animationDuration});
           backgroundColor = '#ffffff';
         } else if (isSecondCard) {
           // styles for the second card
