@@ -18,10 +18,15 @@ import {Theme} from '@src/app/providers/themeProvider';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import * as Sentry from '@sentry/react-native';
 
 const Stack = createNativeStackNavigator();
 
-export const AppRoute = () => {
+type Props = {
+  routingInstrumentation: Sentry.ReactNavigationInstrumentation;
+};
+
+export const AppRoute = ({routingInstrumentation}: Props) => {
   const colors = useColors();
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
@@ -47,6 +52,11 @@ export const AppRoute = () => {
   return (
     <NavigationContainer
       ref={navigation.navigationRef}
+      onReady={() => {
+        routingInstrumentation.registerNavigationContainer(
+          navigation.navigationRef,
+        );
+      }}
       theme={isDarkMode ? Dark : Light}>
       {isPlatformIos ? (
         <StatusBar

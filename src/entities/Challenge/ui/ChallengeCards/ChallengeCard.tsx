@@ -49,7 +49,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     isSelectingChallenge,
     isChecked,
     isSvg,
-    svgName
+    svgName,
   } = props;
   const {theme} = useTheme();
   const colors = useColors();
@@ -62,7 +62,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
 
   useEffect(() => {
     // console.log('prop', props?.title?.en, props?.cardId);
-    
+
     const asyncEffect = async () => {
       const url = await storage()
         .ref(`/challenges_svg/${svgName ?? 'card-1-1'}-${language}.svg`)
@@ -114,10 +114,11 @@ const ChallengeCard = (props: ChallengeCardProps) => {
       </View>
 
       {isSvg && svgUrl && <SvgUri width="100%" height="100%" uri={svgUrl} />}
-      
-      {!isSvg && <WebView
-        source={{
-          html: `
+
+      {!isSvg && (
+        <WebView
+          source={{
+            html: `
          <!DOCTYPE html>
          <html>
            <head>
@@ -137,11 +138,12 @@ const ChallengeCard = (props: ChallengeCardProps) => {
             ${body[language]}
            </body>
          </html>`,
-        }}
-        style={styles.htmlStyle}
-        bounces={false}
-        scalesPageToFit={false}
-      />}
+          }}
+          style={styles.htmlStyle}
+          bounces={false}
+          scalesPageToFit={false}
+        />
+      )}
 
       <View style={styles.appNameWrapper}>
         <GradientText

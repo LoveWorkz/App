@@ -2388,7 +2388,7 @@ PODS:
   - RNGoogleSignin (12.2.0):
     - GoogleSignIn (~> 7.1)
     - React-Core
-  - RNIap (12.10.5):
+  - RNIap (12.15.1):
     - React-Core
   - RNLocalize (3.2.0):
     - React-Core
@@ -2404,6 +2404,11 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
+  - RNSentry (5.24.1):
+    - hermes-engine
+    - React-Core
+    - React-hermes
+    - Sentry/HybridSDK (= 8.29.1)
   - RNShare (10.2.1):
     - React-Core
   - RNSVG (15.3.0):
@@ -2414,6 +2419,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Sentry/HybridSDK (8.29.1)
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
 
@@ -2498,6 +2504,7 @@ DEPENDENCIES:
   - RNRate (from `../node_modules/react-native-rate`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -2546,6 +2553,7 @@ SPEC REPOS:
     - RecaptchaInterop
     - SDWebImage
     - SDWebImageWebPCoder
+    - Sentry
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2704,6 +2712,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   RNShare:
     :path: "../node_modules/react-native-share"
   RNSVG:
@@ -2824,17 +2834,19 @@ SPEC CHECKSUMS:
   RNGestureHandler: bbb04bccfd972fc228f7307815ccd11f47324605
   RNGoogleMobileAds: 748809f1382a4a0fe5f33ed3f2b932d92b3318d2
   RNGoogleSignin: ab87aa33c006c3a5c6a7f049f3643412efe94015
-  RNIap: c397f49db45af3b10dca64b2325f21bb8078ad21
+  RNIap: 17583f958d35788a87948e94072ff6edd3580497
   RNLocalize: b77875884750cb6a58cd6865863fe2ba2729b72b
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNReanimated: c0ef6d8727123e5b0b081c0004b84db4fb290b85
   RNScreens: f0e300a3be13eff48f8afb0b5c6fc558c9369b03
+  RNSentry: e9aa15bb2f3e18c822c002eea13bbd3b222ab493
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Sentry: c446963245407030e17f1b926a83c6337dc99f4e
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Yoga: 428500217b7b2dba1074041bd3ccf0cad3555925
+  Yoga: d670394a99ea2309012925d683fd75ae9aec78c8
 
 PODFILE CHECKSUM: ce0a7b03c8251f721f81cdace549cb547afc38e5
 
