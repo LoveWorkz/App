@@ -2,7 +2,7 @@ import {CategoryType} from '@src/entities/Category';
 import {RubricType} from '@src/entities/Rubric';
 import {DisplayText} from '@src/shared/types/types';
 
-export type QuestionCardTypes = 'WILD_CARD' | 'ORDINARY_CARD' | 'EMPTY_CARD';
+export type QuestionCardTypes = 'WILD_CARD' | 'ORDINARY_CARD' | 'EMPTY_CARD' | 'FUN_FACT_CARD' | 'HOT_STUFF_CARD';
 
 export interface BasicQuestionType {
   categoryId: string;

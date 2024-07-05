@@ -32,18 +32,12 @@ export const emptyCard: QuestionType = {
   category: null,
 };
 
-export const isFunFact = (value?: string) => {
-  if (!value) {
-    return false;
-  }
-  return value.toLowerCase() === 'fun_fact';
+export const isFunFact = (value?: QuestionCardTypes | string) => {
+  return value?.toLowerCase()?.includes('fun_fact') ?? false;
 };
 
-export const isHotStuff = (value?: string) => {
-  if (!value) {
-    return false;
-  }
-  return value.toLowerCase() === 'hot_stuff';
+export const isHotStuff = (value?: QuestionCardTypes | string) => {
+  return value?.toLowerCase()?.includes('hot') ?? false;
 };
 
 export const isCardTypeWild = (type: QuestionCardTypes) => {
