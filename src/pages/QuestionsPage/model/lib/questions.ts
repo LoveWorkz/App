@@ -5,6 +5,7 @@ import {
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
+import { RubricType } from '@src/entities/Rubric';
 import {
   funFact,
   funFactDark,
@@ -35,18 +36,23 @@ export const getQuestionsImages = (isDarkMode: boolean) => {
 
 export const getFormattedQuestionsWrapper = ({
   questions,
+  rubrics,
   isDarkMode,
 }: {
   questions: QuestionType[];
+  rubrics: RubricType[];
   isDarkMode: boolean;
 }) => {
   let index = 0;
 
   return () => {
     return questions.map(question => {
+      const rubric = rubrics.find(r => r.id === question.rubricId);
+
       if (isCardTypeWild(question.type)) {
         return {
           ...question,
+          rubric,
           image: WILD_CARD,
         };
       }
@@ -56,6 +62,7 @@ export const getFormattedQuestionsWrapper = ({
 
         return {
           ...question,
+          rubric,
           image,
         };
       }
@@ -65,6 +72,7 @@ export const getFormattedQuestionsWrapper = ({
 
         return {
           ...question,
+          rubric,
           image,
         };
       }
@@ -79,6 +87,7 @@ export const getFormattedQuestionsWrapper = ({
 
       const newQuestions = {
         ...question,
+        rubric,
         image: questionsImages[index],
       };
 
