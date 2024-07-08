@@ -48,6 +48,8 @@ const CustomHeader = (props: CustomHeaderProps) => {
     navigation.goBack();
   };
 
+  console.log('TITLE', title);
+
   return (
     <View style={[styles.CustomHeader, {backgroundColor}]}>
       <View style={styles.headerLeft}>

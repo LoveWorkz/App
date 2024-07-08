@@ -21,15 +21,27 @@ type RootStackParamList = {
   challenge?: string;
 };
 
+// type ScreenOptions extends {} = {}
+
 export interface Navigation {
   navigate: (name: string, params?: RootStackParamList) => void;
   replace: (name: string, params?: RootStackParamList) => void;
   resetHistoryAndNavigate: (name: string) => void;
   navigationRef: NavigationContainerRefWithCurrent<ParamListBase>;
   goBack: () => void;
+  // setOptions: (options: Partial<any>) => void;
+  // setOptions(options: Partial<ScreenOptions>): void;
 }
 
 const navigationRef = createNavigationContainerRef<ParamListBase>();
+
+// const setOptions = (options: any) => {
+//   if (navigationRef.isReady()) {
+//     // navigationRef.current?.setOptions();
+//     // navigationRef.current?.setOptions
+//     navigationRef.current?.setOptions
+//   }
+// };
 
 const navigate = (name: string, params?: RootStackParamList) => {
   if (navigationRef.isReady()) {
@@ -68,6 +80,18 @@ const goBack = () => {
     });
   }
 };
+
+// const setOptions = (options:any) => {
+//   if (navigationRef.isReady()) {
+//     const currentRoute = navigationRef.getCurrentRoute();
+
+//     navigationRef.setOptions();
+//     // navigationRef.setParams({
+//       // prevRouteName: currentRoute ? currentRoute.name : '',
+//       // isTabScreen: false,
+//     // });
+//   // }
+// };
 
 const resetHistoryAndNavigate = (name: string) => {
   if (navigationRef.isReady()) {
