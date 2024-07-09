@@ -39,6 +39,7 @@ import {
   getDefaultIndex,
   getFormattedQuestionsWrapper,
 } from '../model/lib/questions';
+import {rubricStore} from '@src/entities/Rubric';
 
 interface QuestionsPageProps {
   route?: {
@@ -69,6 +70,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const isSliideEnabled = !sharedQuestionId;
 
   const questions = questionsStore.questions;
+  const rubrics = rubricStore.rubrics;
   const defaultQuestionNumber = questionStore.defaultQuestionNumber;
   const language = i18n.language as LanguageValueType;
   const isLoading = questionsStore.questionsPageloading;
@@ -123,6 +125,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
       questions,
+      rubrics,
       isDarkMode: theme === Theme.Dark,
     });
   }, [questions, theme]);
