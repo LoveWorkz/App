@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {Dimensions, StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 
@@ -14,6 +14,25 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {SvgXml} from 'react-native-svg';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
+import FastImage from 'react-native-fast-image';
+
+type BackgroundProps = {
+  backgroundSource:
+    | {
+        uri: string;
+      }
+    | undefined;
+};
+
+const CarouselBackground = ({backgroundSource}: BackgroundProps) => (
+  <View style={styles.backgroundWrapper}>
+    <FastImage
+      style={styles.backgroundImage}
+      resizeMode={'cover'}
+      source={backgroundSource}
+    />
+  </View>
+);
 
 const CompletionPage = () => {
   const language = useLanguage();
@@ -62,6 +81,12 @@ const CompletionPage = () => {
 
   const colors = useColors();
 
+  const backgroundSource = useMemo(() => {
+    if (newListWithMetadata.length !== 0) {
+      return {uri: newListWithMetadata[0].image};
+    }
+  }, [newListWithMetadata]);
+
   return (
     <View style={styles.CompletionPage}>
       <StatusBar barStyle={'light-content'} />
@@ -74,6 +99,9 @@ const CompletionPage = () => {
         itemWidth={windowWidth}
         data={newListWithMetadata}
         Component={CompletionItem}
+        backgroundComponent={
+          <CarouselBackground backgroundSource={backgroundSource} />
+        }
       />
     </View>
   );
@@ -96,5 +124,15 @@ const styles = StyleSheet.create({
   icon: {
     height: verticalScale(15),
     width: horizontalScale(18),
+  },
+  backgroundWrapper: {
+    position: 'absolute',
+    top: 0,
+    zIndex: -10,
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height,
+  },
+  backgroundImage: {
+    height: verticalScale(320),
   },
 });
