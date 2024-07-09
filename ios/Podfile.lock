@@ -2388,7 +2388,7 @@ PODS:
   - RNGoogleSignin (12.2.0):
     - GoogleSignIn (~> 7.1)
     - React-Core
-  - RNIap (12.10.5):
+  - RNIap (12.15.1):
     - React-Core
   - RNLocalize (3.2.0):
     - React-Core
@@ -2824,7 +2824,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: bbb04bccfd972fc228f7307815ccd11f47324605
   RNGoogleMobileAds: 748809f1382a4a0fe5f33ed3f2b932d92b3318d2
   RNGoogleSignin: ab87aa33c006c3a5c6a7f049f3643412efe94015
-  RNIap: c397f49db45af3b10dca64b2325f21bb8078ad21
+  RNIap: 17583f958d35788a87948e94072ff6edd3580497
   RNLocalize: b77875884750cb6a58cd6865863fe2ba2729b72b
   RNRate: ef3bcff84f39bb1d1e41c5593d3eea4aab2bd73a
   RNReanimated: c0ef6d8727123e5b0b081c0004b84db4fb290b85
@@ -2834,7 +2834,7 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Yoga: 428500217b7b2dba1074041bd3ccf0cad3555925
+  Yoga: d670394a99ea2309012925d683fd75ae9aec78c8
 
 PODFILE CHECKSUM: ce0a7b03c8251f721f81cdace549cb547afc38e5
 
