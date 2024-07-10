@@ -204,6 +204,7 @@ class InAppPurchaseStore {
     crashlytics().log('Checking if user has subscription');
 
     const purchaseHistory = await getPurchaseHistory();
+    // TODO: here might be the error that Thomas mentioned on the  call
     const receipt =
       purchaseHistory[purchaseHistory.length - 1].transactionReceipt;
     if (receipt) {
