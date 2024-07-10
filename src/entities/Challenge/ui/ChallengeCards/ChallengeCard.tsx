@@ -113,7 +113,14 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         />
       </View>
 
-      {isSvg && svgUrl && <SvgUri width="100%" height="100%" uri={svgUrl} />}
+      {isSvg && svgUrl && (
+        <SvgUri
+          width="100%"
+          height="100%"
+          uri={svgUrl}
+          viewBox={`0 0 ${CARD_WIDTH} ${CARD_HEIGHT}`}
+        />
+      )}
 
       {!isSvg && (
         <WebView
