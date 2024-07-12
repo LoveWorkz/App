@@ -27,10 +27,12 @@ const App = () => {
     offlineAccess: true,
   });
 
-  Sentry.init({
-    dsn: 'https://1a830a2fba85e78cabee0f5223294936@o4507543721213952.ingest.de.sentry.io/4507543724163152',
-    integrations: [new Sentry.ReactNativeTracing({routingInstrumentation})],
-  });
+  if (!__DEV__) {
+    Sentry.init({
+      dsn: 'https://1a830a2fba85e78cabee0f5223294936@o4507543721213952.ingest.de.sentry.io/4507543724163152',
+      integrations: [new Sentry.ReactNativeTracing({routingInstrumentation})],
+    });
+  }
 
   return (
     <GestureHandlerRootView style={styles.App}>
