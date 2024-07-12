@@ -215,8 +215,5 @@ const styles = StyleSheet.create({
   },
   cardBgWrapper: {
     width: width,
-    // height: verticalScale(450),
-
-    // paddingHorizontal: horizontalScale(30),
   },
 });
