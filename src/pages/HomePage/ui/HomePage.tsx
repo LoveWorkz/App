@@ -180,6 +180,7 @@ interface HomePageWrapperProps {
 const style = {
   backgroundColor: 'transparent',
   paddingBottom: 20,
+  // marginTop: 50,
 };
 
 const StepNumberComponent = () => <></>;
@@ -197,6 +198,7 @@ export default memo((props: HomePageWrapperProps) => {
       stepNumberComponent={StepNumberComponent}
       tooltipStyle={style}
       tooltipComponent={GuidedTourModal}
+      verticalOffset={-(StatusBar.currentHeight as number) ?? -27}
       arrowSize={0}>
       <HomePageWrapper
         prevRouteName={prevRouteName}
