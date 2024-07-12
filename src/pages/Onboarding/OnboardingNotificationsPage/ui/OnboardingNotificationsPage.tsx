@@ -39,7 +39,11 @@ const OnboardingNotificationsPage = () => {
 
   return (
     <View style={styles.OnboardingNotificationsPage}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        translucent={true}
+        backgroundColor={'transparent'}
+      />
 
       <OnboardingContainer
         bgImage={gradientBg}
