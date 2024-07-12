@@ -195,9 +195,9 @@ class InAppPurchaseStore {
   checkIfUserHasSubscription = async () => {
     //TODO: update subscription flows on production build
     //NOTE: it's a workaround to make testflight build running properly - we have an error with subscriptions
-    // if (isPlatformIos) {
-    //   return;
-    // }
+    if (isPlatformIos) {
+      return;
+    }
 
     if (userStore.inited) {
       return;

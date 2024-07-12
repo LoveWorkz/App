@@ -11,12 +11,6 @@ import {GradientProvider} from './providers/GradientProvider';
 import * as Sentry from '@sentry/react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
-// GoogleSignin.configure({
-//   webClientId:
-//     '470642156929-4a86lh5s44dthrf439p3l1nrfrt2u56l.apps.googleusercontent.com',
-//   offlineAccess: true,
-// });
-
 const App = () => {
   // TODO: enable Admob
   // useEffect(() => {
@@ -29,17 +23,9 @@ const App = () => {
 
   GoogleSignin.configure({
     webClientId:
-      // '470642156929-4a86lh5s44dthrf439p3l1nrfrt2u56l.apps.googleusercontent.com',
-      // '470642156929-8dh2vvicnkd997h6ndg27mi43l4m004k.apps.googleusercontent.com',
       '470642156929-4a86lh5s44dthrf439p3l1nrfrt2u56l.apps.googleusercontent.com',
     offlineAccess: true,
   });
-
-  // GoogleSignin.configure({
-  //   webClientId:
-  //     '470642156929-4a86lh5s44dthrf439p3l1nrfrt2u56l.apps.googleusercontent.com',
-  //   offlineAccess: true,
-  // });
 
   Sentry.init({
     dsn: 'https://1a830a2fba85e78cabee0f5223294936@o4507543721213952.ingest.de.sentry.io/4507543724163152',

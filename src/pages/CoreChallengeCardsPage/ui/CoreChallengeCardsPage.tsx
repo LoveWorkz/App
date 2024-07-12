@@ -38,9 +38,3 @@ const CoreChallengeCardsPage = () => {
 };
 
 export default memo(observer(CoreChallengeCardsPage));
-
-// const styles = StyleSheet.create({
-//   CoreChallengeDetailsPage: {
-//     flex: 1,
-//   },
-// });
