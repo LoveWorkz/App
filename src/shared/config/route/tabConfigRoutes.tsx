@@ -9,6 +9,7 @@ import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
 import {RubricsPage} from '@src/pages/RubricsPage';
+import {StatusBar} from 'react-native';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -44,7 +45,10 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling={true} isTabBar>
-          <CategoriesPage {...props} />
+          <>
+            <StatusBar barStyle={'dark-content'} />
+            <CategoriesPage {...props} />
+          </>
         </Layout>
       );
     },
@@ -58,7 +62,10 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
     Element: (props: ParamListBase) => {
       return (
         <Layout isPageScrolling={true} isTabBar>
-          <RubricsPage {...props} />
+          <>
+            <StatusBar barStyle={'dark-content'} />
+            <RubricsPage {...props} />
+          </>
         </Layout>
       );
     },
@@ -76,7 +83,14 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
           deleteBottomPadding={false}
           deleteTopPadding={true}
           isTabBar>
-          <HomePage {...props} />
+          <>
+            {/* <StatusBar
+              barStyle={'dark-content'}
+              backgroundColor={'transparent'}
+              translucent={true}
+            /> */}
+            <HomePage {...props} />
+          </>
         </Layout>
       );
     },
@@ -94,7 +108,10 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
           deleteBottomPadding={false}
           deleteTopPadding={true}
           isTabBar>
-          <ChallengesPage {...props} />
+          <>
+            <StatusBar barStyle={'dark-content'} />
+            <ChallengesPage {...props} />
+          </>
         </Layout>
       );
     },
@@ -112,7 +129,10 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
           deleteBottomPadding={false}
           deleteTopPadding={false}
           isTabBar>
-          <BooksPage {...props} />
+          <>
+            <StatusBar barStyle={'dark-content'} />
+            <BooksPage {...props} />
+          </>
         </Layout>
       );
     },

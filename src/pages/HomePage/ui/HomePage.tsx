@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -88,74 +88,83 @@ const HomePage = (props: HomePageProps) => {
   }, [language]);
 
   return (
-    <View
-      style={[
-        styles.HomePage,
-        {marginBottom: isLoading ? 0 : horizontalScale(-HEADER_HEIGHT)},
-      ]}>
-      <HomePageHeader isLoading={isLoading} />
+    <>
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={'transparent'}
+        translucent={true}
+      />
       <View
         style={[
-          styles.container,
-          {
-            top: isLoading
-              ? horizontalScale(10)
-              : horizontalScale(-HEADER_HEIGHT),
-          },
+          styles.HomePage,
+          {marginBottom: isLoading ? 0 : horizontalScale(-HEADER_HEIGHT)},
         ]}>
-        {isLoading ? (
-          <View style={styles.progressBarSkeleton}>
-            <Skeleton
-              width={windowWidthMinusPaddings}
-              height={horizontalScale(250)}
-            />
-          </View>
-        ) : (
-          <FastImage
-            style={[styles.homepageBackground]}
-            source={
-              theme === Theme.Dark ? HomepageBackgroundDark : HomepageBackground
-            }>
-            <ProgressBar />
-          </FastImage>
-        )}
+        <HomePageHeader isLoading={isLoading} />
         <View
           style={[
-            styles.content,
+            styles.container,
             {
-              top: isLoading ? skeletonContentTop : contentTop,
-              marginBottom: isLoading ? skeletonContentTop : contentTop,
+              top: isLoading
+                ? horizontalScale(10)
+                : horizontalScale(-HEADER_HEIGHT),
             },
           ]}>
-          <View style={styles.homeCategoryWrapper}>
-            <QuickStart isLoading={isLoading} />
-          </View>
-          {!hasUserSubscription && (
-            <View style={styles.discountOfferCardWrapper}>
-              <DiscountOfferCard isLoading={isLoading} />
+          {isLoading ? (
+            <View style={styles.progressBarSkeleton}>
+              <Skeleton
+                width={windowWidthMinusPaddings}
+                height={horizontalScale(250)}
+              />
             </View>
+          ) : (
+            <FastImage
+              style={[styles.homepageBackground]}
+              source={
+                theme === Theme.Dark
+                  ? HomepageBackgroundDark
+                  : HomepageBackground
+              }>
+              <ProgressBar />
+            </FastImage>
           )}
+          <View
+            style={[
+              styles.content,
+              {
+                top: isLoading ? skeletonContentTop : contentTop,
+                marginBottom: isLoading ? skeletonContentTop : contentTop,
+              },
+            ]}>
+            <View style={styles.homeCategoryWrapper}>
+              <QuickStart isLoading={isLoading} />
+            </View>
+            {!hasUserSubscription && (
+              <View style={styles.discountOfferCardWrapper}>
+                <DiscountOfferCard isLoading={isLoading} />
+              </View>
+            )}
 
-          <CategoriesCarousel isLoading={isLoading} />
+            <CategoriesCarousel isLoading={isLoading} />
 
-          <CopilotStep
-            name="Beyond your love journey there’s always more to explore"
-            order={3}
-            text="Dive straight into sessions, delve deeper into topics, or take on an extra challenge whenever you feel inspired">
-            <WalkthroughableWiew style={styles.walkthroughableWiew} />
-          </CopilotStep>
+            <CopilotStep
+              name="Beyond your love journey there’s always more to explore"
+              order={3}
+              text="Dive straight into sessions, delve deeper into topics, or take on an extra challenge whenever you feel inspired">
+              <WalkthroughableWiew style={styles.walkthroughableWiew} />
+            </CopilotStep>
 
-          <TrendingList isLoading={isLoading} />
-          <View style={styles.trendingChallengeWrapper}>
-            <TrendingChallengeList isLoading={isLoading} />
+            <TrendingList isLoading={isLoading} />
+            <View style={styles.trendingChallengeWrapper}>
+              <TrendingChallengeList isLoading={isLoading} />
+            </View>
           </View>
+          {/* show quotes popup only if Guided Tour is completed */}
+          {isGuidedTourCompleted && !isLoading && <Quotes />}
+          {!isLoading && <GuidedTour />}
         </View>
-        {/* show quotes popup only if Guided Tour is completed */}
-        {isGuidedTourCompleted && !isLoading && <Quotes />}
-        {!isLoading && <GuidedTour />}
+        <QuestionPageCongratsModal />
       </View>
-      <QuestionPageCongratsModal />
-    </View>
+    </>
   );
 };
 

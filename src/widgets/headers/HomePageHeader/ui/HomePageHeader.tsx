@@ -1,5 +1,5 @@
 import React, {memo, useMemo} from 'react';
-import {StyleSheet, View, Pressable} from 'react-native';
+import {StyleSheet, View, Pressable, StatusBar} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
@@ -138,7 +138,7 @@ export default memo(observer(HomePageHeader));
 
 const styles = StyleSheet.create({
   header: {
-    height: HEADER_HEIGHT,
+    height: HEADER_HEIGHT + (StatusBar.currentHeight as number),
     overflow: 'hidden',
     ...globalStyles.zIndex_1,
   },
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     paddingHorizontal: globalPadding,
     position: 'absolute',
+    marginTop: StatusBar.currentHeight,
   },
   leftPart: {
     flexDirection: 'row',
