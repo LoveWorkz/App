@@ -1,5 +1,5 @@
 import React, {ComponentType, memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
@@ -81,7 +81,9 @@ const bottom = 0;
 const styles = StyleSheet.create({
   CustomHeader: {
     width: '100%',
-    height: isPlatformIos ? HEADER_HEIGHT_IOS : HEADER_HEIGHT_ADNDROID,
+    height: isPlatformIos
+      ? HEADER_HEIGHT_IOS
+      : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
     paddingHorizontal: globalPadding,
   },
   headerLeft: {

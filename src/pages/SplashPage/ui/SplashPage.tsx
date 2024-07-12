@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react-lite';
 import React, {useEffect, memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import Lottie from 'lottie-react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -35,27 +35,35 @@ export const SplashPage = () => {
   }, []);
 
   return (
-    <View style={styles.SplashPage}>
-      <FastImage
-        style={[styles.splashScreenImage]}
-        source={splashScreenImage}
-        resizeMode={isPlatformIos ? 'contain' : 'cover'}
-        // if image loaded hide native splash screen and show dynamic splash screen
-      >
-        <View style={styles.content}>
-          <View style={styles.titleWrapper}>
-            <AppText
-              style={styles.title}
-              weight={'700'}
-              size={TextSize.LEVEL_7}
-              text={t('splash.title')}
-            />
-          </View>
+    <>
+      <StatusBar
+        animated={true}
+        backgroundColor={'transparent'}
+        translucent={true}
+        barStyle={'default'}
+      />
+      <View style={styles.SplashPage}>
+        <FastImage
+          style={[styles.splashScreenImage]}
+          source={splashScreenImage}
+          resizeMode={isPlatformIos ? 'contain' : 'cover'}
+          // if image loaded hide native splash screen and show dynamic splash screen
+        >
+          <View style={styles.content}>
+            <View style={styles.titleWrapper}>
+              <AppText
+                style={styles.title}
+                weight={'700'}
+                size={TextSize.LEVEL_7}
+                text={t('splash.title')}
+              />
+            </View>
 
-          <Lottie style={styles.loader} source={myAnimation} autoPlay loop />
-        </View>
-      </FastImage>
-    </View>
+            <Lottie style={styles.loader} source={myAnimation} autoPlay loop />
+          </View>
+        </FastImage>
+      </View>
+    </>
   );
 };
 
