@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/native';
 import React, {memo} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {StatusBar} from 'react-native';
+import {Platform, StatusBar} from 'react-native';
 
 import {
   AppRouteNames,
@@ -85,6 +85,7 @@ const Routes = memo(() => {
       screenOptions={{
         headerShown: false,
         headerShadowVisible: false,
+        animation: Platform.OS === 'android' ? 'none' : undefined,
       }}>
       {Object.values(appRoutesConfig).map(
         ({

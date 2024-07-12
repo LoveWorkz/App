@@ -66,14 +66,11 @@ class AuthByGoogleStore {
 
       await GoogleSignin.hasPlayServices();
       const result = await GoogleSignin.signIn();
-
       const googleCredential = auth.GoogleAuthProvider.credential(
         result.idToken,
       );
       await auth().signInWithCredential(googleCredential);
-
       crashlytics().log('User signed in with Google.');
-
       const currentUser = auth().currentUser;
 
       await this.setUser(currentUser as InitlUserInfo);
@@ -87,7 +84,6 @@ class AuthByGoogleStore {
         if (isUserCanceledAuthorisation) {
           return;
         }
-
         errorHandler({error});
       }
     }

@@ -30,6 +30,22 @@
           }
         },
         {
+          "client_id": "470642156929-4eh14glfm081479v2er52sv3qnhjcj6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blineapp.bline",
+            "certificate_hash": "71af8c7f55d5d7e30b854a3ec643be783e8d3d3e"
+          }
+        },
+        {
+          "client_id": "470642156929-s5tkhi52g96jkt4vrngo56qjdd16ubtg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blineapp.bline",
+            "certificate_hash": "53a305a048ada93b1fd9220795a3d7cf6759d06f"
+          }
+        },
+        {
           "client_id": "470642156929-sfnatfj2kbscmrrvalffgdovkrsl35qm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -55,10 +71,11 @@
               "client_type": 3
             },
             {
-              "client_id": "470642156929-46cmlfrrark01l9tvga62os0ppp6762h.apps.googleusercontent.com",
+              "client_id": "470642156929-1hv54h671kqqkne19ees1k8vm1a0j4mb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.blineapp.bline"
+                "bundle_id": "com.appbline.app",
+                "app_store_id": "6463159843"
               }
             }
           ]
