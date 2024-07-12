@@ -52,12 +52,14 @@ class AuthByGoogleStore {
         navigation.replace(AppRouteNames.SETUP);
       }
     } catch (e) {
+      // console.error('SET USER: ', e);
       errorHandler({error: e});
     }
   };
   signIn = async () => {
     try {
       const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
+      // console.info('isOffline', isOffline);
       if (isOffline) {
         return;
       }
@@ -65,21 +67,25 @@ class AuthByGoogleStore {
       crashlytics().log('User tried to sign in with Google.');
 
       await GoogleSignin.hasPlayServices();
+      // console.log('HAS SERVICES');
       const result = await GoogleSignin.signIn();
-
+      // console.info('result', result);
       const googleCredential = auth.GoogleAuthProvider.credential(
         result.idToken,
       );
+      // console.info('googleCredential', googleCredential);
       await auth().signInWithCredential(googleCredential);
-
       crashlytics().log('User signed in with Google.');
-
       const currentUser = auth().currentUser;
+      // console.info('currentUser', currentUser);
 
       await this.setUser(currentUser as InitlUserInfo);
     } catch (error: any) {
       const isUserCanceledAuthorisation =
         error.code === statusCodes.SIGN_IN_CANCELLED;
+      // console.error('isUserCanceledAuthorisation', isUserCanceledAuthorisation);
+      // console.info('SIGN IN: ', error);
+      // errorHandler({error});
 
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
         userStore.toggleDialog(true);
@@ -87,7 +93,7 @@ class AuthByGoogleStore {
         if (isUserCanceledAuthorisation) {
           return;
         }
-
+        // console.error('SIGN IN: ', error);
         errorHandler({error});
       }
     }

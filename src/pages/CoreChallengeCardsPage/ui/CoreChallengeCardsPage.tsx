@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {StatusBar, StyleSheet} from 'react-native';
+import {StatusBar} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {challengeStore} from '@src/entities/Challenge';
@@ -39,8 +39,8 @@ const CoreChallengeCardsPage = () => {
 
 export default memo(observer(CoreChallengeCardsPage));
 
-const styles = StyleSheet.create({
-  CoreChallengeDetailsPage: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   CoreChallengeDetailsPage: {
+//     flex: 1,
+//   },
+// });

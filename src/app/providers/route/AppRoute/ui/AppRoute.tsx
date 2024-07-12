@@ -85,6 +85,7 @@ const Routes = memo(() => {
       screenOptions={{
         headerShown: false,
         headerShadowVisible: false,
+        animation: 'none',
       }}>
       {Object.values(appRoutesConfig).map(
         ({
