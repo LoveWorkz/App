@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {
@@ -22,6 +22,10 @@ import {RatingKeys} from '../model/types/completionTypes';
 import FeedbackBlock from './FeedbackBlock';
 import completionPageStore from '../model/store/completionPageStore';
 import {keyWords} from '../model/lib/completionPageLib';
+import {SvgXml} from 'react-native-svg';
+import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
+import {useNavigation} from '@react-navigation/native';
+import {Button} from '@src/shared/ui/Button/Button';
 
 interface CompletionItemProps {
   handleNext: () => void;
@@ -61,6 +65,7 @@ const CompletionItem = (props: CompletionItemProps) => {
     shouldRenderBackground = true,
   } = props;
   const colors = useColors();
+  const {goBack} = useNavigation();
 
   const isFeedbackPage = pagekey === 'feedback';
 
@@ -98,7 +103,15 @@ const CompletionItem = (props: CompletionItemProps) => {
 
   return (
     <View>
-      <View style={styles.image} />
+      {isQuadrant && !isFeedbackPage && (
+        <Button style={styles.arrowWrapper} onPress={goBack}>
+          <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />
+        </Button>
+      )}
+
+      <View
+        style={[styles.image, !isQuadrant ? {height: verticalScale(320)} : {}]}
+      />
 
       {shouldRenderBackground && (
         <>
@@ -224,7 +237,7 @@ const styledWordStyle: StyleType = {
 
 const styles = StyleSheet.create({
   image: {
-    height: verticalScale(320),
+    marginTop: StatusBar.currentHeight,
   },
   quadrantImage: {
     height: verticalScale(470),
