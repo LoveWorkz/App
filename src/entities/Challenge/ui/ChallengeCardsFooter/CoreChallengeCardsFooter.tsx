@@ -11,6 +11,8 @@ import {CARD_WIDTH} from '@src/shared/consts/common';
 import {sessionStore} from '@src/entities/Session';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import challengeStore from '../../model/store/challengeStore';
+import {SvgXml} from 'react-native-svg';
+import {CheckIcon} from '@src/shared/assets/icons/Check';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -36,6 +38,34 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
       isChecked: currentCoreChallenge.isChecked,
     });
   };
+
+  // console.log('CURRENT', currentCoreChallenge.isChecked);
+
+  if (!isSessionFlow && currentCoreChallenge.isChecked) {
+    return (
+      <Button
+        theme={ButtonTheme.CLEAR}
+        backgroundColor="##8581cf"
+        style={{
+          paddingHorizontal: 20,
+          backgroundColor: '#8581cf',
+          borderRadius: 10,
+          flexDirection: 'row',
+        }}>
+        <SvgXml
+          xml={CheckIcon}
+          stroke={colors.white}
+          style={{width: horizontalScale(16), height: verticalScale(12)}}
+        />
+
+        <AppText
+          text="Done"
+          style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
+          size={TextSize.LEVEL_4}
+        />
+      </Button>
+    );
+  }
 
   if (!isSessionFlow) {
     return (
