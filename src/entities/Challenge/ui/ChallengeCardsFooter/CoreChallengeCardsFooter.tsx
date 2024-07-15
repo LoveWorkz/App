@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: verticalScale(50),
+    bottom: verticalScale(0),
     alignItems: 'center',
   },
   text: {
