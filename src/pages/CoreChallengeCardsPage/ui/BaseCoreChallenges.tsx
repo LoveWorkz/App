@@ -26,6 +26,11 @@ import {CARD_WIDTH} from '@src/shared/consts/common';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+// import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+// import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
+// import {SvgXml} from 'react-native-svg';
+// import {CheckIcon} from '@src/shared/assets/icons/Check';
+// import {useColors} from '@src/app/providers/colorsProvider';
 
 interface BaseCoreChallengesProps {
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>;
@@ -33,6 +38,7 @@ interface BaseCoreChallengesProps {
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   const {params} = useRoute();
+  // const colors = useColors();
   const {
     // isSessionFlow,
     currentCoreChallengeGroup,
@@ -61,9 +67,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
 
     // if (isCurrent) {
     filteredChallenges = challenges.filter(
-      challenge =>
-        !challenge.isChecked &&
-        challenge.groupId === currentCoreChallengeGroup.id,
+      challenge => challenge.groupId === currentCoreChallengeGroup.id,
     );
     // } else {
     // const sessionChallenge = challenges.find(
@@ -123,7 +127,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   }, [coreChallengesList, currentCoreChallengeGroup]);
 
   const {coreChallenge} = challengeStore;
-  console.log('CORE CHALLENGE', coreChallenge);
+  // console.log('CORE CHALLENGE', coreChallenge);
   if (!coreChallenge) {
     return <></>;
   }
@@ -131,6 +135,8 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // console.log('CORE: ', coreChallengesList);
 
   // console.log('defaultChallengeNumber', defaultChallengeNumber);
+
+  // console.log('LIST', coreChallengesList[0].isChecked);
 
   return (
     <View style={styles.BaseCoreChallenges}>
