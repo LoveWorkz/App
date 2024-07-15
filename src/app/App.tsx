@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Toast} from '@src/shared/ui/Toast/Toast';
@@ -41,7 +41,7 @@ const App = () => {
           <GradientProvider>
             <AppRoute routingInstrumentation={routingInstrumentation} />
             <Toast />
-            {!Platform.OS === 'ios' && <PushNotifications />}
+            <PushNotifications />
           </GradientProvider>
         </ColorsProvider>
       </ThemeProvider>
