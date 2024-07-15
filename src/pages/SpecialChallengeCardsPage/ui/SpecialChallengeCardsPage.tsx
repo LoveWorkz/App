@@ -9,15 +9,19 @@ import {
   ChallengeCategoryBlock,
   challengeStore,
 } from '@src/entities/Challenge';
-import {verticalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {CARD_WIDTH} from '@src/shared/consts/common';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {globalPadding, globalStyles} from '@src/app/styles/GlobalStyle';
+import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
+  const colors = useColors();
 
   const specialChallenge = challengeStore.specialChallenge;
 
@@ -38,6 +42,13 @@ const SpecialChallengeCardsPage = () => {
   const onSwipeHandler = useCallback(({cardId}: {cardId: string}) => {
     challengeStore.swipeSpecialChallengeCard(cardId);
   }, []);
+
+  const onSpecialChallengeHandler = () => {
+    challengeStore.specialChallengeCardButtonPressHandler(
+      specialChallenge?.id as string,
+      specialChallenge?.isChecked as boolean,
+    );
+  };
 
   const listWithMetadata = useMemo(() => {
     if (!specialChallenge) {
@@ -95,6 +106,20 @@ const SpecialChallengeCardsPage = () => {
         showLength={4}
         opacityInterval={0.3}
       />
+      <View style={styles.btnWrapper}>
+        <Button
+          disabled={isSelectingChallenge}
+          onPress={onSpecialChallengeHandler}
+          theme={ButtonTheme.CLEAR}
+          style={[styles.btn, {backgroundColor: colors.white}]}>
+          <AppText
+            style={{color: colors.tabIconColor}}
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={'We’ve done the challenge'}
+          />
+        </Button>
+      </View>
     </View>
   );
 };
@@ -112,5 +137,21 @@ const styles = StyleSheet.create({
   },
   itemStyle: {
     marginLeft: -globalPadding,
+  },
+  btn: {
+    width: horizontalScale(CARD_WIDTH),
+    borderRadius: 14,
+    // borderWidth: 0,
+  },
+  btnWrapper: {
+    // width: horizontalScale(CARD_WIDTH),
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: verticalScale(0),
+    alignItems: 'center',
+    // borderWidth: 5,
+    ...globalStyles.zIndex_1,
   },
 });
