@@ -1,4 +1,11 @@
-import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  // useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -13,17 +20,18 @@ import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {useRoute} from '@react-navigation/native';
-import {sessionStore} from '@src/entities/Session';
+// import {sessionStore} from '@src/entities/Session';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CARD_WIDTH} from '@src/shared/consts/common';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {navigation} from '@src/shared/lib/navigation/navigation';
 
 interface BaseCoreChallengesProps {
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>;
 }
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
-  const [currentPosition, setCurrentPosition] = useState(1);
   const {params} = useRoute();
   const {
     // isSessionFlow,
@@ -33,9 +41,12 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
-    console.log('E: ', challenge);
+    // console.log('E: ', challenge);
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
+
+  // console.log('PARAMS', params);
+
   // const {session} = sessionStore;
   const {challenges} = challengesStore;
   const coreChallengesList = useMemo(() => {
@@ -75,6 +86,25 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     });
   }, [coreChallengesList]);
 
+  const [currentPosition, setCurrentPosition] = useState(
+    defaultChallengeNumber,
+  );
+
+  // console.log('defaultChallengeNumber', defaultChallengeNumber);
+
+  // useLayoutEffect(() => {
+  //   navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+  //     title: `${headerCustomTitle} ${defaultChallengeNumber}/${coreChallengesList.length}`,
+  //   });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [defaultChallengeNumber]);
+
+  useEffect(() => {
+    navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+      title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
+    });
+  }, [currentPosition, headerCustomTitle]);
+
   useEffect(() => {
     if (!currentCoreChallengeGroup) {
       return;
@@ -98,7 +128,9 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     return <></>;
   }
 
-  console.log('CORE: ', coreChallengesList);
+  // console.log('CORE: ', coreChallengesList);
+
+  // console.log('defaultChallengeNumber', defaultChallengeNumber);
 
   return (
     <View style={styles.BaseCoreChallenges}>
