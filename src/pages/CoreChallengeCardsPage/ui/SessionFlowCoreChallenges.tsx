@@ -16,6 +16,9 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {sessionStore} from '@src/entities/Session';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
+// import {useNavigation} from '@react-navigation/native';
+// import {AppRouteNames} from '@src/shared/config/route/configRoute';
+// import {navigation} from '@src/shared/lib/navigation/navigation';
 
 interface SessionFlowCoreChallengesProps {
   isSessionFlow: boolean;
@@ -23,7 +26,18 @@ interface SessionFlowCoreChallengesProps {
 }
 
 const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
+  // const [currentPosition, setCurrentPosition] = useState(1);
+  // const {params} = useRoute();
+
   const {isSessionFlow, currentCoreChallengeGroup} = props;
+
+  // const headerCustomTitle = useMemo(() => params?.title, []);
+
+  // useEffect(() => {
+  //   navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+  //     title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
+  //   });
+  // }, [currentPosition, headerCustomTitle]);
 
   const language = useLanguage();
 
@@ -75,6 +89,13 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
     };
   }, [coreChallengesList, currentCoreChallengeGroup]);
 
+  // const {getState, setOptions} = useNavigation();
+  // useEffect(() => {
+  //   navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+  //     title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
+  //   });
+  // }, [getState, setOptions]);
+
   const defaultChallengeNumber = useMemo(() => {
     return challengeStore.getDefaultChallengeNumberForCardsPage({
       coreChallengesList,
@@ -89,6 +110,7 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
     <View style={styles.SessionFlowCoreChallenges}>
       <HorizontalSlide
         onSwipeHandler={handleSwipe}
+        // onScrollEnd={index => setCurrentPosition(index + 1)}
         defaultElement={defaultChallengeNumber}
         data={coreChallengesList}
         Component={CoreChallengeIntroCardWrapper}

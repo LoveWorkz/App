@@ -34,7 +34,7 @@ interface HorizontalSlideProps {
   data: Array<Item>;
   defaultElement?: number;
   isSlideEnabled?: boolean;
-  onScrollEnd?: () => void;
+  onScrollEnd?: (index: number) => void;
   spead?: number;
   itemWidth?: number;
   Footer?: ComponentType<FooterProps>;
@@ -191,8 +191,8 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
       <Carousel
         ref={carouselRef}
         onProgressChange={onProgressChange}
-        onScrollEnd={() => {
-          onScrollEnd?.();
+        onScrollEnd={e => {
+          onScrollEnd?.(e);
         }}
         onScrollBegin={() => {}}
         defaultIndex={defaultIndex}
