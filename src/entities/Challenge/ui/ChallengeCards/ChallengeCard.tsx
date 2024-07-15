@@ -159,7 +159,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           text={`...${APPLICATION_NAME}`}
         />
       </View>
-      {showButton && (
+      {/* {showButton && (
         <View style={styles.btnWrapper}>
           <Button
             disabled={isSelectingChallenge}
@@ -174,7 +174,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
             />
           </Button>
         </View>
-      )}
+      )} */}
     </View>
   );
 };
