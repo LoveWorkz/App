@@ -66,7 +66,7 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
             text={t('send')}
           />
         </Button>
-        <Button
+        {/* <Button
           style={styles.dontShowAgainBtn}
           theme={ButtonTheme.CLEAR}
           onPress={onDontShowAgainHandler}>
@@ -76,7 +76,7 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
             size={TextSize.LEVEL_4}
             text={t('dont_show_again')}
           />
-        </Button>
+        </Button> */}
       </>
     </Modal>
   );
