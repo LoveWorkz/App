@@ -13,6 +13,8 @@ import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {DeleteAccountForm, DeleteAccountFormError} from '../../deleteAccount';
 import {validateFields} from '../services/validation/validateFields';
 
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 class DeleteAccountStore {
   formData: DeleteAccountForm = {
     password: '',
@@ -109,6 +111,7 @@ class DeleteAccountStore {
         actionAfterDeleting();
         navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);
         this.setIsLoading(false);
+        GoogleSignin.signOut();
       }
     } catch (e) {
       errorHandler({error: e});
