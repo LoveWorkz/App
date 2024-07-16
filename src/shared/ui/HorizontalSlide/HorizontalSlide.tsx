@@ -214,7 +214,7 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-      {Footer && <Footer count={data.length} currentIndex={currentIndex} />}
+      {Footer && <Footer count={data.length - 1} currentIndex={currentIndex} />}
     </>
   );
 });
