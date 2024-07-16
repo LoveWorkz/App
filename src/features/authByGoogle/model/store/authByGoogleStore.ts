@@ -58,6 +58,7 @@ class AuthByGoogleStore {
   signIn = async () => {
     try {
       const isOffline = await userStore.checkIfUserOfflineAndShowMessage();
+      console.log('isOffline', isOffline);
       if (isOffline) {
         return;
       }
@@ -65,26 +66,33 @@ class AuthByGoogleStore {
       crashlytics().log('User tried to sign in with Google.');
 
       await GoogleSignin.hasPlayServices();
+      // GoogleSignin.signOut
+      console.log('has play services');
       const result = await GoogleSignin.signIn();
+      console.log('sign in result', result);
       const googleCredential = auth.GoogleAuthProvider.credential(
         result.idToken,
       );
+      console.log('BEFORE AUTH');
       await auth().signInWithCredential(googleCredential);
+      console.log('AFTER AUTH');
       crashlytics().log('User signed in with Google.');
       const currentUser = auth().currentUser;
-
+      console.log('CURRENT USER', currentUser);
       await this.setUser(currentUser as InitlUserInfo);
     } catch (error: any) {
+      errorHandler({error});
+      console.log('ERROR', error);
       const isUserCanceledAuthorisation =
         error.code === statusCodes.SIGN_IN_CANCELLED;
-
+      console.log('isUserCanceledAuthorisation', isUserCanceledAuthorisation);
       if (error.message.includes(FirebaseErrorCodes.AUTH_USER_DISABLED)) {
         userStore.toggleDialog(true);
       } else {
         if (isUserCanceledAuthorisation) {
           return;
         }
-        errorHandler({error});
+        // errorHandler({error});
       }
     }
   };

@@ -42,6 +42,7 @@ class LogoutStore {
       });
 
       if (authMethod === AuthMethod.AUTH_BY_GOOGLE) {
+        console.log('GOOGLE LOGOUT');
         await GoogleSignin.signOut();
       }
 
