@@ -1,4 +1,4 @@
-import React, {ComponentType, memo} from 'react';
+import React, {ComponentType, memo, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
@@ -38,6 +38,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
   const colors = useColors();
   const {t} = useTranslation();
   const {isGradient} = useGradient();
+  const [headerHeight, setHeaderHeight] = useState<null | number>(null);
 
   const color =
     isSecondaryBackground || isGradient
@@ -48,31 +49,36 @@ const CustomHeader = (props: CustomHeaderProps) => {
     navigation.goBack();
   };
 
-  // console.log('TITLE', title);
-
   return (
-    <View style={[styles.CustomHeader, {backgroundColor}]}>
-      <View style={styles.headerLeft}>
-        <Button style={styles.arrowWrapper} onPress={onPressHandler}>
-          <SvgXml fill={color} style={styles.icon} xml={ArrowLeftIcon} />
-        </Button>
-        {(headerTitle || title) && (
-          <AppText
-            style={[
-              {
-                color: color,
-                width: isTitleLarge ? '88%' : 'auto',
-                paddingRight: isTitleLarge ? horizontalScale(20) : 0,
-              },
-            ]}
-            size={TextSize.LEVEL_6}
-            weight={'700'}
-            text={t(title || headerTitle || '')}
-          />
-        )}
+    <>
+      <StatusBar animated={true} translucent={true} />
+      <View style={[styles.CustomHeader, {backgroundColor}]}>
+        <View
+          style={styles.headerLeft}
+          onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
+          <Button style={styles.arrowWrapper} onPress={onPressHandler}>
+            <SvgXml fill={color} style={styles.icon} xml={ArrowLeftIcon} />
+          </Button>
+          {(headerTitle || title) && (
+            <AppText
+              style={[
+                {
+                  color: color,
+                  width: isTitleLarge ? '88%' : 'auto',
+                  paddingRight: isTitleLarge ? horizontalScale(20) : 0,
+                },
+              ]}
+              size={TextSize.LEVEL_6}
+              weight={'700'}
+              text={t(title || headerTitle || '')}
+            />
+          )}
+        </View>
+        <View style={[styles.headerRight, {height: headerHeight}]}>
+          {HeaderRight && <HeaderRight />}
+        </View>
       </View>
-      <View style={styles.headerRight}>{HeaderRight && <HeaderRight />}</View>
-    </View>
+    </>
   );
 };
 
@@ -99,6 +105,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: globalPadding,
     bottom,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   arrowWrapper: {
     paddingRight: horizontalScale(20),

@@ -186,6 +186,8 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
     [spead, data, onSwipeHandler], // Dependencies for useCallback
   );
 
+  const nonEmptyData = data.filter(el => el.type !== 'EMPTY_CARD');
+
   return (
     <>
       <Carousel
@@ -214,7 +216,9 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
         customConfig={() => ({type: 'positive', viewCount})}
         renderItem={renderItem}
       />
-      {Footer && <Footer count={data.length - 1} currentIndex={currentIndex} />}
+      {Footer && (
+        <Footer count={nonEmptyData.length} currentIndex={currentIndex} />
+      )}
     </>
   );
 });
