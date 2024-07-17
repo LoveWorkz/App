@@ -76,6 +76,11 @@ const SpecialChallengeCardsPage = () => {
     }));
   }, [isChallengeDoneButtonVisible, specialChallenge, isSelectingChallenge]);
 
+  const showBottomButton = useMemo(
+    () => listWithMetadata[0].showButton,
+    [listWithMetadata],
+  );
+
   if (!specialChallenge) {
     return null;
   }
@@ -106,20 +111,22 @@ const SpecialChallengeCardsPage = () => {
         showLength={4}
         opacityInterval={0.3}
       />
-      <View style={styles.btnWrapper}>
-        <Button
-          disabled={isSelectingChallenge}
-          onPress={onSpecialChallengeHandler}
-          theme={ButtonTheme.CLEAR}
-          style={[styles.btn, {backgroundColor: colors.white}]}>
-          <AppText
-            style={{color: colors.tabIconColor}}
-            size={TextSize.LEVEL_4}
-            weight={'600'}
-            text={'We’ve done the challenge'}
-          />
-        </Button>
-      </View>
+      {showBottomButton && (
+        <View style={styles.btnWrapper}>
+          <Button
+            disabled={isSelectingChallenge}
+            onPress={onSpecialChallengeHandler}
+            theme={ButtonTheme.CLEAR}
+            style={[styles.btn, {backgroundColor: colors.white}]}>
+            <AppText
+              style={{color: colors.tabIconColor}}
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={'We’ve done the challenge'}
+            />
+          </Button>
+        </View>
+      )}
     </View>
   );
 };
