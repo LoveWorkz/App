@@ -38,6 +38,7 @@ interface CategoryProps {
   isActionDisabled?: MutableRefObject<boolean>;
   isHomepage?: boolean;
   allSessionsCount: number;
+  onBlockedCategoryPress?: () => void;
 }
 
 const CategorySizes = {
@@ -61,6 +62,7 @@ const Category = (props: CategoryProps) => {
     name,
     isHomepage,
     allSessionsCount,
+    onBlockedCategoryPress,
   } = props;
 
   const {t, i18n} = useTranslation();
@@ -84,6 +86,12 @@ const Category = (props: CategoryProps) => {
     // Early return if any of the following conditions are true:
     // 1. The action is currently disabled.
     // 2. The category is special and blocked.
+
+    if (isBlocked) {
+      onBlockedCategoryPress?.();
+      return;
+    }
+
     if (
       isActionDisabled?.current ||
       (isSpecialCategoryBlocked && isSpecialCategory)

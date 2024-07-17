@@ -39,6 +39,7 @@ interface ChallangeProps {
   isHomePage?: boolean;
   isLoading?: boolean;
   size?: ChallengeCategorySize;
+  onPressBlockedCategory?: () => void;
 }
 
 const challengeWidth = horizontalScale(60);
@@ -61,6 +62,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
     isHomePage = false,
     isLoading = false,
     size = 'small',
+    onPressBlockedCategory,
   } = props;
   const colors = useColors();
   const {i18n} = useTranslation();
@@ -89,6 +91,12 @@ const ChallengeCategory = (props: ChallangeProps) => {
 
   const onPressHandler = useCallback(() => {
     if (isBlocked) {
+      // TODO: implement modal from figma
+      onPressBlockedCategory?.();
+    }
+
+    // TODO: activate in-app-purchases
+    if (isBlocked) {
       inAppPurchaseStore.setIsInAppPurchaseModalVisible(true);
       return;
     }
@@ -103,7 +111,14 @@ const ChallengeCategory = (props: ChallangeProps) => {
     if (id && name && selectChallngeCategory) {
       selectChallngeCategory({id, name});
     }
-  }, [selectChallngeCategory, id, name, isBlocked, isHomePage]);
+  }, [
+    isBlocked,
+    isHomePage,
+    id,
+    name,
+    selectChallngeCategory,
+    onPressBlockedCategory,
+  ]);
 
   const uri = useMemo(() => {
     return {
@@ -197,7 +212,7 @@ const ChallengeCategory = (props: ChallangeProps) => {
 
 export default memo(ChallengeCategory);
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   challangeWrapper: {
     alignItems: 'center',
   },
