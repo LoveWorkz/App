@@ -1,10 +1,11 @@
 import {View, StyleSheet} from 'react-native';
-import React, {memo} from 'react';
+import React, {memo, useState} from 'react';
 import {observer} from 'mobx-react-lite';
 
 import {Category, categoryExample, CategoryType} from '@src/entities/Category';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import categoriesStore from '../../model/store/categoriesStore';
+import CategoryBlockedModal from '@src/entities/ChallengeCategory/ui/CategoryBlockedModal';
 
 interface CategoriesProps {
   isLoading: boolean;
@@ -13,6 +14,7 @@ interface CategoriesProps {
 const paddings = 10;
 
 const Categories = (props: CategoriesProps) => {
+  const [visible, setVisible] = useState(false);
   const {isLoading} = props;
   let categories = categoriesStore.displayedLevels;
 
@@ -76,11 +78,13 @@ const Categories = (props: CategoriesProps) => {
                   image={category.image.small}
                   size={category.size}
                   name={category.name}
+                  onBlockedCategoryPress={() => setVisible(true)}
                 />
               </View>
             );
           })}
       </View>
+      <CategoryBlockedModal visible={visible} setVisible={setVisible} />
     </View>
   );
 };
