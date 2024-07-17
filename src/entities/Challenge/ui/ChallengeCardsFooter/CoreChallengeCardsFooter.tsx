@@ -41,33 +41,57 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
   // console.log('CURRENT', currentCoreChallenge.isChecked);
 
-  if (!isSessionFlow && currentCoreChallenge.isChecked) {
-    return (
-      <Button
-        theme={ButtonTheme.CLEAR}
-        backgroundColor="##8581cf"
-        style={{
-          paddingHorizontal: 20,
-          backgroundColor: '#8581cf',
-          borderRadius: 10,
-          flexDirection: 'row',
-        }}>
-        <SvgXml
-          xml={CheckIcon}
-          stroke={colors.white}
-          style={{width: horizontalScale(16), height: verticalScale(12)}}
-        />
-
-        <AppText
-          text="Done"
-          style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
-          size={TextSize.LEVEL_4}
-        />
-      </Button>
-    );
-  }
+  // if (!isSessionFlow && currentCoreChallenge.isChecked) {
+  // return (
+  //   <Button
+  //     theme={ButtonTheme.CLEAR}
+  //     backgroundColor="##8581cf"
+  //     style={{
+  //       paddingHorizontal: 20,
+  //       backgroundColor: '#8581cf',
+  //       borderRadius: 10,
+  //       flexDirection: 'row',
+  //     }}>
+  //     <SvgXml
+  //       xml={CheckIcon}
+  //       stroke={colors.white}
+  //       style={{width: horizontalScale(16), height: verticalScale(12)}}
+  //     />
+  //     <AppText
+  //       text="Done"
+  //       style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
+  //       size={TextSize.LEVEL_4}
+  //     />
+  //   </Button>
+  // );
+  // }
 
   if (!isSessionFlow) {
+    if (currentCoreChallenge.isChecked) {
+      return (
+        <Button
+          theme={ButtonTheme.CLEAR}
+          backgroundColor="##8581cf"
+          style={{
+            paddingHorizontal: 20,
+            backgroundColor: '#8581cf',
+            borderRadius: 10,
+            flexDirection: 'row',
+          }}>
+          <SvgXml
+            xml={CheckIcon}
+            stroke={colors.white}
+            style={{width: horizontalScale(16), height: verticalScale(12)}}
+          />
+
+          <AppText
+            text="Done"
+            style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
+            size={TextSize.LEVEL_4}
+          />
+        </Button>
+      );
+    }
     return (
       <View style={styles.footer}>
         <Button
