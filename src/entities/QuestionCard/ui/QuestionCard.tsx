@@ -41,7 +41,7 @@ const QuestionCard = (props: QuestionCardProps) => {
     return <></>;
   }
 
-  console.log('CURRENT TYPE', rubric?.id, type, question.en);
+  // console.log('CURRENT TYPE', rubric?.id, type, question.en);
 
   if (isCardTypeWild(type)) {
     return (

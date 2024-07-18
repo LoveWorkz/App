@@ -209,7 +209,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     );
   }
 
-  console.log('QUESTIONS', questions);
+  // console.log('QUESTIONS', questions);
 
   // console.log('questionsWithEmptyCard', questionsWithEmptyCard[0]);
 
