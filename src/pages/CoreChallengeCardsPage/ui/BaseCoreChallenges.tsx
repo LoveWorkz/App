@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   // useLayoutEffect,
+  // useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
@@ -23,7 +24,7 @@ import {useRoute} from '@react-navigation/native';
 // import {sessionStore} from '@src/entities/Session';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CARD_WIDTH} from '@src/shared/consts/common';
-import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
+// import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 // import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
@@ -47,7 +48,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
-    // console.log('E: ', challenge);
+    console.log('SWIPE EVENT: ', challenge);
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
@@ -104,10 +105,31 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // }, [defaultChallengeNumber]);
 
   useEffect(() => {
+    console.log('EFFECT');
+    // challengeStore.coreChallengeCardsSwipeHandler(challenge);
+    // const challenge = challengeStore.coreChallenge;
+
+    challengeStore.setCoreChallenge(
+      coreChallengesList[defaultChallengeNumber - 1],
+    );
+    console.log(
+      'CORE EFFECT',
+      coreChallengesList[defaultChallengeNumber - 1].id,
+    );
+  }, [coreChallengesList, defaultChallengeNumber]);
+
+  useEffect(() => {
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
       title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
     });
   }, [currentPosition, headerCustomTitle]);
+
+  useEffect(() => {
+    console.log('EFFECT EVENT: ', coreChallengesList[defaultChallengeNumber]);
+    challengeStore.coreChallengeCardsSwipeHandler(
+      coreChallengesList[defaultChallengeNumber - 1],
+    );
+  }, [coreChallengesList, defaultChallengeNumber]);
 
   useEffect(() => {
     if (!currentCoreChallengeGroup) {
@@ -116,10 +138,10 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
 
     // TODO: Initi session flow - something is here
 
-    coreChallengeCardsPageStore.initSessionFlow({
-      coreChallengesList,
-      currentCoreChallengeGroupId: currentCoreChallengeGroup.id,
-    });
+    // coreChallengeCardsPageStore.initSessionFlow({
+    //   coreChallengesList,
+    //   currentCoreChallengeGroupId: currentCoreChallengeGroup.id,
+    // });
 
     return () => {
       challengeStore.clearForm();
@@ -131,6 +153,8 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   if (!coreChallenge) {
     return <></>;
   }
+
+  console.log('BaseCoreChallenges: CORE CHALLENGE', coreChallenge.id);
 
   // console.log('CORE: ', coreChallengesList);
 
@@ -160,6 +184,10 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
         showLength={4}
         opacityInterval={0.3}
       />
+      {/* <CoreChallengeCardsFooter
+        currentIndex={currentPosition - 1}
+        count={coreChallengesList.length}
+      /> */}
     </View>
   );
 };

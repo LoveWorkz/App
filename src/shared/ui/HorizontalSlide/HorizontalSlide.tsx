@@ -4,6 +4,7 @@ import React, {
   MemoExoticComponent,
   MutableRefObject,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -19,6 +20,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
+import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
 
 type Item = Record<string, any>;
 interface FooterProps {
@@ -72,6 +74,8 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   const swipeStartStatus = useRef(false) as MutableRefObject<boolean>;
 
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
+
+  // console.log('CURRENT INDEX', currentIndex);
 
   const checkAndSetSwipeDirection = (progress: number, total: number) => {
     const currentIndex2 = Math.round(progress * (total - 1));
@@ -187,6 +191,19 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
   );
 
   const nonEmptyData = data.filter(el => el.type !== 'EMPTY_CARD');
+
+  // useEffect(() => {
+  //   console.log('EFFECT');
+  //   // challengeStore.coreChallengeCardsSwipeHandler(challenge);
+  //   // const challenge = challengeStore.coreChallenge
+  //   console.log('EFFECT ELEMENT', data[defaultElement as number]);
+
+  //   challengeStore.setCoreChallenge(data[defaultElement as number]);
+  //   // console.log(
+  //   // 'CORE EFFECT',
+  //   // coreChallengesList[defaultChallengeNumber - 1].id,
+  //   // );
+  // }, [data, defaultElement]);
 
   return (
     <>

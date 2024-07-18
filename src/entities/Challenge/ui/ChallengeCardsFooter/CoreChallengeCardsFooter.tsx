@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -28,70 +28,52 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
 
-  if (!currentCoreChallenge) {
-    return null;
-  }
+  // console.log('currentIndex FOOTIER', currentIndex);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onPressHandler = () => {
+    console.log('ON PRESS HANDLER');
     challengeStore.coreChallengeCardButtonPressHandler({
-      coreChallengeId: currentCoreChallenge.id,
-      isChecked: currentCoreChallenge.isChecked,
+      coreChallengeId: currentCoreChallenge!.id,
+      isChecked: currentCoreChallenge!.isChecked,
     });
   };
 
-  // console.log('CURRENT', currentCoreChallenge.isChecked);
+  // useEffect(() => {
+  //   challengeStore.swipeSpecialChallengeCard(cardId);
+  // }, []);
 
-  // if (!isSessionFlow && currentCoreChallenge.isChecked) {
-  // return (
-  //   <Button
-  //     theme={ButtonTheme.CLEAR}
-  //     backgroundColor="##8581cf"
-  //     style={{
-  //       paddingHorizontal: 20,
-  //       backgroundColor: '#8581cf',
-  //       borderRadius: 10,
-  //       flexDirection: 'row',
-  //     }}>
-  //     <SvgXml
-  //       xml={CheckIcon}
-  //       stroke={colors.white}
-  //       style={{width: horizontalScale(16), height: verticalScale(12)}}
-  //     />
-  //     <AppText
-  //       text="Done"
-  //       style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
-  //       size={TextSize.LEVEL_4}
-  //     />
-  //   </Button>
-  // );
-  // }
+  const showPagination = currentIndex !== undefined && count;
 
-  if (!isSessionFlow) {
-    if (currentCoreChallenge.isChecked) {
-      return (
-        <Button
-          theme={ButtonTheme.CLEAR}
-          backgroundColor="##8581cf"
-          style={{
-            paddingHorizontal: 20,
-            backgroundColor: '#8581cf',
-            borderRadius: 10,
-            flexDirection: 'row',
-          }}>
-          <SvgXml
-            xml={CheckIcon}
-            stroke={colors.white}
-            style={{width: horizontalScale(16), height: verticalScale(12)}}
-          />
+  console.log('CardsFooter: CORE CHALLENGE', currentCoreChallenge?.id);
 
-          <AppText
-            text="Done"
-            style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
-            size={TextSize.LEVEL_4}
-          />
-        </Button>
-      );
-    }
+  const DoneButton = useMemo(() => {
+    return (
+      <Button
+        theme={ButtonTheme.CLEAR}
+        backgroundColor="##8581cf"
+        style={{
+          paddingHorizontal: 20,
+          backgroundColor: '#8581cf',
+          borderRadius: 10,
+          flexDirection: 'row',
+        }}>
+        <SvgXml
+          xml={CheckIcon}
+          stroke={colors.white}
+          style={{width: horizontalScale(16), height: verticalScale(12)}}
+        />
+
+        <AppText
+          text="Done"
+          style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
+          size={TextSize.LEVEL_4}
+        />
+      </Button>
+    );
+  }, [colors.white]);
+
+  const ProceedButton = useMemo(() => {
     return (
       <View style={styles.footer}>
         <Button
@@ -107,50 +89,97 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         </Button>
       </View>
     );
+  }, [colors.white, isSelectingChallenge, onPressHandler]);
+
+  const RegularFooter = useMemo(() => {
+    return (
+      <View style={styles.footer}>
+        {challengeStore.isChallengeLockedIn(currentCoreChallenge!.id) ||
+        !session?.isCurrent ? (
+          <Button
+            disabled={isSelectingChallenge}
+            onPress={onPressHandler}
+            theme={ButtonTheme.OUTLINED}
+            style={[styles.btn, {backgroundColor: colors.white}]}>
+            <GradientText
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={'We’ve done the challenge'}
+            />
+          </Button>
+        ) : (
+          <>
+            {showPagination ? (
+              <>
+                <Pagination
+                  isWhite={true}
+                  currentIndex={currentIndex}
+                  count={count}
+                />
+                <AppText
+                  size={TextSize.LEVEL_2}
+                  style={[styles.text, {color: colors.white}]}
+                  align={'center'}
+                  lineHeight={15}
+                  weight={'600'}
+                  text={'Lock one of the challenges'}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        )}
+      </View>
+    );
+  }, [
+    colors.white,
+    count,
+    currentCoreChallenge,
+    currentIndex,
+    isSelectingChallenge,
+    onPressHandler,
+    session?.isCurrent,
+    showPagination,
+  ]);
+
+  if (!currentCoreChallenge) {
+    return null;
   }
 
-  const showPagination = currentIndex !== undefined && count;
-
-  return (
-    <View style={styles.footer}>
-      {challengeStore.isChallengeLockedIn(currentCoreChallenge.id) ||
-      !session?.isCurrent ? (
-        <Button
-          disabled={isSelectingChallenge}
-          onPress={onPressHandler}
-          theme={ButtonTheme.OUTLINED}
-          style={[styles.btn, {backgroundColor: colors.white}]}>
-          <GradientText
-            size={TextSize.LEVEL_4}
-            weight={'600'}
-            text={'We’ve done the challenge'}
-          />
-        </Button>
-      ) : (
-        <>
-          {showPagination ? (
-            <>
-              <Pagination
-                isWhite={true}
-                currentIndex={currentIndex}
-                count={count}
-              />
-              <AppText
-                size={TextSize.LEVEL_2}
-                style={[styles.text, {color: colors.white}]}
-                align={'center'}
-                lineHeight={15}
-                weight={'600'}
-                text={'Lock one of the challenges'}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
-    </View>
+  console.log(
+    'IS SESSION FLOW: ',
+    `${currentCoreChallenge.id}: `,
+    isSessionFlow,
   );
+  console.log(
+    'CHAL IS CHECKED: ',
+    `${currentCoreChallenge.id}: `,
+    currentCoreChallenge.isChecked,
+  ); //TODO: here is the error
+
+  if (!isSessionFlow && currentCoreChallenge.isChecked) {
+    return DoneButton;
+  } else if (!isSessionFlow && !currentCoreChallenge.isChecked) {
+    return ProceedButton;
+  } else {
+    return RegularFooter;
+  }
+
+  // if (!isSessionFlow) {
+  //   if (currentCoreChallenge.isChecked) {
+  //     return DoneButton;
+  //   } else {
+  //     return ProceedButton;
+  //   }
+  // } else {
+  //   // return RegularFooter;
+  //   if (currentCoreChallenge.isChecked) {
+  //     return DoneButton;
+  //   } else {
+  //     return RegularFooter;
+  //   }
+  // }
 };
 
 export default memo(observer(CoreChallengeCardsFooter));
