@@ -41,6 +41,8 @@ const QuestionCard = (props: QuestionCardProps) => {
     return <></>;
   }
 
+  console.log('CURRENT TYPE', rubric, type, question.en);
+
   if (isCardTypeWild(type)) {
     return (
       <Gradient

@@ -207,6 +207,8 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     );
   }
 
+  console.log('questionsWithEmptyCard', questionsWithEmptyCard[0]);
+
   return (
     <View style={styles.QuestionsPage}>
       <StatusBar barStyle={isGradient ? 'light-content' : 'dark-content'} />
