@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextLayoutEventData,
+  PixelRatio,
 } from 'react-native';
 
 import {globalStyles} from '@src/app/styles/GlobalStyle';
@@ -69,6 +70,10 @@ export const AppText = memo((props: AppTextProps) => {
 
   const colors = useColors();
 
+  const pixelRatio = PixelRatio.getFontScale();
+
+  // console.log('PIXEL RATIO', PixelRatio.getFontScale());
+
   const mode = useMemo(() => {
     return [
       {
@@ -104,6 +109,7 @@ export const AppText = memo((props: AppTextProps) => {
 
   return (
     <Text
+      maxFontSizeMultiplier={1.1}
       onTextLayout={onTextLayout}
       ellipsizeMode={ellipsizeMode}
       numberOfLines={numberOfLines}
