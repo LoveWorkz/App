@@ -64,6 +64,8 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {setIsGradient, isGradient} = useGradient();
   const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
 
+  // console.log('PROPS', props);
+
   const key = route?.params.type;
   const id = route?.params.id;
   const sharedQuestionId = route?.params.initialQuestionId;
@@ -207,7 +209,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     );
   }
 
-  console.log('questionsWithEmptyCard', questionsWithEmptyCard[0]);
+  console.log('QUESTIONS', questions);
+
+  // console.log('questionsWithEmptyCard', questionsWithEmptyCard[0]);
 
   return (
     <View style={styles.QuestionsPage}>

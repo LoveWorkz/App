@@ -15,10 +15,10 @@ const CoreChallengeCardsPage = () => {
     return <></>;
   }
 
-  console.log(
-    'currentCoreChallengeGroup: ',
-    currentCoreChallengeGroup.displayName,
-  );
+  // console.log(
+  //   'currentCoreChallengeGroup: ',
+  //   currentCoreChallengeGroup.displayName,
+  // );
 
   if (isSessionFlow) {
     return (

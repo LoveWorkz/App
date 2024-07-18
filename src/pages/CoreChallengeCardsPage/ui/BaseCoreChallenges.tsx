@@ -48,7 +48,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
-    console.log('SWIPE EVENT: ', challenge);
+    // console.log('SWIPE EVENT: ', challenge);
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
@@ -105,17 +105,17 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // }, [defaultChallengeNumber]);
 
   useEffect(() => {
-    console.log('EFFECT');
+    // console.log('EFFECT');
     // challengeStore.coreChallengeCardsSwipeHandler(challenge);
     // const challenge = challengeStore.coreChallenge;
 
     challengeStore.setCoreChallenge(
       coreChallengesList[defaultChallengeNumber - 1],
     );
-    console.log(
-      'CORE EFFECT',
-      coreChallengesList[defaultChallengeNumber - 1].id,
-    );
+    // console.log(
+    //   'CORE EFFECT',
+    //   coreChallengesList[defaultChallengeNumber - 1].id,
+    // );
   }, [coreChallengesList, defaultChallengeNumber]);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   }, [currentPosition, headerCustomTitle]);
 
   useEffect(() => {
-    console.log('EFFECT EVENT: ', coreChallengesList[defaultChallengeNumber]);
+    // console.log('EFFECT EVENT: ', coreChallengesList[defaultChallengeNumber]);
     challengeStore.coreChallengeCardsSwipeHandler(
       coreChallengesList[defaultChallengeNumber - 1],
     );
@@ -154,7 +154,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     return <></>;
   }
 
-  console.log('BaseCoreChallenges: CORE CHALLENGE', coreChallenge.id);
+  // console.log('BaseCoreChallenges: CORE CHALLENGE', coreChallenge.id);
 
   // console.log('CORE: ', coreChallengesList);
 

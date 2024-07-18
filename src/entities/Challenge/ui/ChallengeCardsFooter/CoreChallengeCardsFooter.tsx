@@ -32,7 +32,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onPressHandler = () => {
-    console.log('ON PRESS HANDLER');
+    // console.log('ON PRESS HANDLER');
     challengeStore.coreChallengeCardButtonPressHandler({
       coreChallengeId: currentCoreChallenge!.id,
       isChecked: currentCoreChallenge!.isChecked,
@@ -45,7 +45,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
   const showPagination = currentIndex !== undefined && count;
 
-  console.log('CardsFooter: CORE CHALLENGE', currentCoreChallenge?.id);
+  // console.log('CardsFooter: CORE CHALLENGE', currentCoreChallenge?.id);
 
   const DoneButton = useMemo(() => {
     return (
@@ -147,18 +147,18 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     showPagination,
   ]);
 
-  if (currentCoreChallenge) {
-    console.log(
-      'IS SESSION FLOW: ',
-      `${currentCoreChallenge.id}: `,
-      isSessionFlow,
-    );
-    console.log(
-      'CHAL IS CHECKED: ',
-      `${currentCoreChallenge.id}: `,
-      currentCoreChallenge.isChecked,
-    ); //TODO: here is the error
-  }
+  // if (currentCoreChallenge) {
+  //   console.log(
+  //     'IS SESSION FLOW: ',
+  //     `${currentCoreChallenge.id}: `,
+  //     isSessionFlow,
+  //   );
+  //   console.log(
+  //     'CHAL IS CHECKED: ',
+  //     `${currentCoreChallenge.id}: `,
+  //     currentCoreChallenge.isChecked,
+  //   ); //TODO: here is the error
+  // }
 
   if (!currentCoreChallenge) {
     return null;
