@@ -45,6 +45,7 @@ const renderStar = ({
     <View key={index} style={styles.starWrapper}>
       <TouchableOpacity
         disabled={readOnly}
+        hitSlop={{bottom: 15, right: 15, left: 15, top: 15}}
         onPress={() => onRate(index + 1)}
         style={{
           marginHorizontal: horizontalScale(
