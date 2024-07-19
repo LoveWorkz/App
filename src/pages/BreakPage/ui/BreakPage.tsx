@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
 import {StatusBar, StyleSheet, View} from 'react-native';
 
@@ -23,6 +23,10 @@ const BreakPage = () => {
   const onPressHandler = () => {
     breakPageStore.letsDoThisPressHandler(language);
   };
+
+  useEffect(() => {
+    console.log('MOUNTED');
+  }, []);
 
   return (
     <View style={styles.BreakPage}>

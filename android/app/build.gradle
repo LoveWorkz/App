@@ -82,8 +82,8 @@ android {
         applicationId "com.blineapp.bline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 27
-        versionName "1.0.19"
+        versionCode 28
+        versionName "1.0.20"
         missingDimensionStrategy "store", "play"
     }
     signingConfigs {
