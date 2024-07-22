@@ -91,6 +91,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const isLoading = questionsStore.questionsPageloading;
   const sharedSessionId = route?.params.sessionId;
   const sessionId = sharedSessionId || sessionStore.session?.id;
+  const shouldDisplayFastModal = key === DocumentType.RUBRIC;
 
   const isPreviousScreenBreak =
     route?.params?.prevRouteName === AppRouteNames.BREAK;
@@ -247,7 +248,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         showLength={isGradient ? 4 : 5}
         opacityInterval={isGradient ? 0.3 : 0}
       />
-      <WowThatWasFast />
+      {!shouldDisplayFastModal && <WowThatWasFast />}
     </View>
   );
 };
