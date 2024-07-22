@@ -3,7 +3,7 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
-import {AdEventType} from 'react-native-google-mobile-ads';
+// import {AdEventType} from 'react-native-google-mobile-ads';
 
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {globalStyles, windowWidth} from '@src/app/styles/GlobalStyle';
@@ -41,6 +41,10 @@ import {
 } from '../model/lib/questions';
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
+// import {navigation} from '@src/shared/lib/navigation/navigation';
+import challengeGroupStore from '@src/entities/ChallengeGroup/model/store/challengeGroupStore';
+import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
+// import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
 
 interface QuestionsPageProps {
   route?: {
@@ -92,6 +96,10 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const sharedSessionId = route?.params.sessionId;
   const sessionId = sharedSessionId || sessionStore.session?.id;
   const shouldDisplayFastModal = key === DocumentType.RUBRIC;
+
+  const currentCoreChallengeGroup =
+    challengeGroupStore.currentCoreChallengeGroup;
+  const groupName = currentCoreChallengeGroup?.displayName[language];
 
   const isPreviousScreenBreak =
     route?.params?.prevRouteName === AppRouteNames.BREAK;
@@ -166,6 +174,19 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     },
     [timer],
   );
+
+  const lockedChallengeId = challengeStore.lockedChallengeId;
+  const isChallengeLocked =
+    challengeStore.isChallengeLockedIn(lockedChallengeId);
+
+  useEffect(() => {
+    if (isChallengeLocked) {
+      // breakPageStore.letsDoThisPressHandler(language);
+      // navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+      //   title: groupName,
+      // });
+    }
+  }, [groupName, isChallengeLocked, language]);
 
   const onSwipeHandler = useCallback(
     (param: QuestionType, questionNumber: number) => {

@@ -106,12 +106,28 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
+  const lockedChallengeId = challengeStore.lockedChallengeId;
+  const lockedChallengeIndex = coreChallengesList.findIndex(
+    challenge => challenge.id === lockedChallengeId,
+  );
+  const isChallengeLocked =
+    challengeStore.isChallengeLockedIn(lockedChallengeId);
+
+  // console.log('LOCKED CHALLENGE CONTENT', lockedChallengeIndex);
+  // console.log('lockedChallengeId', lockedChallengeId);
+  // console.log('isChallengeLocked', isChallengeLocked);
+
   return (
     <View style={styles.SessionFlowCoreChallenges}>
       <HorizontalSlide
         onSwipeHandler={handleSwipe}
         // onScrollEnd={index => setCurrentPosition(index + 1)}
-        defaultElement={defaultChallengeNumber}
+        defaultElement={
+          isChallengeLocked && lockedChallengeIndex >= 0
+            ? lockedChallengeIndex + 1
+            : defaultChallengeNumber
+        }
+        // defaultElement={defaultChallengeNumber}
         data={coreChallengesList}
         Component={CoreChallengeIntroCardWrapper}
         isSlideEnabled
