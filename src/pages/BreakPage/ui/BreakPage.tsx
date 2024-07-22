@@ -24,10 +24,6 @@ const BreakPage = () => {
     breakPageStore.letsDoThisPressHandler(language);
   };
 
-  useEffect(() => {
-    console.log('MOUNTED');
-  }, []);
-
   return (
     <View style={styles.BreakPage}>
       <StatusBar barStyle={'light-content'} />
