@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -13,6 +13,7 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import challengeStore from '../../model/store/challengeStore';
 import {SvgXml} from 'react-native-svg';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
+import {ChallengeType} from '../../model/types/ChallengeTypes';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -28,29 +29,30 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
 
-  // console.log('currentIndex FOOTIER', currentIndex);
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const onPressHandler = () => {
-    // console.log('ON PRESS HANDLER');
+  const onCompleteHandler = () => {
     challengeStore.coreChallengeCardButtonPressHandler({
       coreChallengeId: currentCoreChallenge!.id,
       isChecked: currentCoreChallenge!.isChecked,
     });
   };
 
-  // useEffect(() => {
-  //   challengeStore.swipeSpecialChallengeCard(cardId);
-  // }, []);
+  const undoHandler = (challenge: ChallengeType) => {
+    challengeStore.coreChallengeCardButtonPressHandler({
+      coreChallengeId: challenge.id,
+      isChecked: challenge.isChecked,
+    });
+  };
 
   const showPagination = currentIndex !== undefined && count;
-
-  // console.log('CardsFooter: CORE CHALLENGE', currentCoreChallenge?.id);
 
   const DoneButton = useMemo(() => {
     return (
       <Button
         theme={ButtonTheme.CLEAR}
+        onPress={() =>
+          currentCoreChallenge && undoHandler(currentCoreChallenge)
+        }
         backgroundColor="##8581cf"
         style={{
           paddingHorizontal: 20,
@@ -71,14 +73,14 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         />
       </Button>
     );
-  }, [colors.white]);
+  }, [colors.white, currentCoreChallenge]);
 
   const ProceedButton = useMemo(() => {
     return (
       <View style={styles.footer}>
         <Button
           disabled={isSelectingChallenge}
-          onPress={onPressHandler}
+          onPress={onCompleteHandler}
           theme={ButtonTheme.OUTLINED}
           style={[styles.btn, {backgroundColor: colors.white}]}>
           <GradientText
@@ -89,7 +91,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         </Button>
       </View>
     );
-  }, [colors.white, isSelectingChallenge, onPressHandler]);
+  }, [colors.white, isSelectingChallenge, onCompleteHandler]);
 
   const RegularFooter = useMemo(() => {
     return (
@@ -100,7 +102,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
             !session?.isCurrent ? (
               <Button
                 disabled={isSelectingChallenge}
-                onPress={onPressHandler}
+                onPress={onCompleteHandler}
                 theme={ButtonTheme.OUTLINED}
                 style={[styles.btn, {backgroundColor: colors.white}]}>
                 <GradientText
@@ -142,7 +144,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     currentCoreChallenge,
     currentIndex,
     isSelectingChallenge,
-    onPressHandler,
+    onCompleteHandler,
     session?.isCurrent,
     showPagination,
   ]);

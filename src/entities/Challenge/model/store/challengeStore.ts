@@ -506,6 +506,14 @@ class ChallengeStore {
           isChallengeCard: true,
         });
       }
+
+      if (isChecked && coreChallengeId) {
+        this.selectChallenge({
+          id: coreChallengeId,
+          newValue: false,
+          isChallengeCard: true,
+        });
+      }
     } catch (e) {
       errorHandler({error: e});
     } finally {
