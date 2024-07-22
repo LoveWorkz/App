@@ -32,6 +32,7 @@ export const userFormatter = (userInfo: InitlUserInfo): User => {
     lastSessionDate: '',
     fcmToken: '',
   };
+  formatedUser.rubrics_seen = [];
 
   return formatedUser;
 };
