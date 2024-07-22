@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import {useFocusEffect} from '@react-navigation/native';
@@ -40,6 +40,7 @@ import {
   getFormattedQuestionsWrapper,
 } from '../model/lib/questions';
 import {rubricStore} from '@src/entities/Rubric';
+import {userStore} from '@src/entities/User';
 
 interface QuestionsPageProps {
   route?: {
@@ -64,7 +65,19 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const {setIsGradient, isGradient} = useGradient();
   const [timer, setTimer] = useState<null | NodeJS.Timeout>(null);
 
-  // console.log('PROPS', props);
+  const userRubricsSeen = userStore.user?.rubrics_seen;
+  const rubricId = props.route?.params.id;
+
+  useEffect(() => {
+    if (rubricId && userRubricsSeen && !userRubricsSeen?.includes(rubricId)) {
+      userStore.updateUser({
+        data: [...userRubricsSeen, rubricId],
+        field: 'rubrics_seen',
+      });
+      userStore.fetchUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const key = route?.params.type;
   const id = route?.params.id;

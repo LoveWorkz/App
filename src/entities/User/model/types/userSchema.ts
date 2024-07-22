@@ -18,6 +18,7 @@ export interface User {
   selectedGoalsIds: string[];
   birthDate: string;
   notification: Notification;
+  rubrics_seen: string[];
 }
 
 export interface Notification {

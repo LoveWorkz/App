@@ -26,6 +26,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
 import rubricStore from '../model/store/rubricStore';
+import {userStore} from '@src/entities/User';
 
 interface RubricProps {
   rubric: RubricType;
@@ -43,12 +44,16 @@ const Rubric = (props: RubricProps) => {
   const {i18n} = useTranslation();
   const {theme} = useTheme();
 
+  const userRubricsSeen = userStore.user?.rubrics_seen;
+
   const language = i18n.language as LanguageValueType;
 
   const swipedQuestionCount = rubricStore.getQuestionNumberForRubric({
     questionIds: questions,
     currenctQuestionId: currentQuestion,
   });
+
+  const shouldDisplayNewBanner = !userRubricsSeen?.includes(rubric.id);
 
   const source = useMemo(() => {
     return {
@@ -136,11 +141,13 @@ const Rubric = (props: RubricProps) => {
             backgroundColor: colors.bgSecondaryColor,
           },
         ]}>
-        <FastImage
-          resizeMode="contain"
-          style={styles.badgeImg}
-          source={Badge}
-        />
+        {shouldDisplayNewBanner && (
+          <FastImage
+            resizeMode="contain"
+            style={styles.badgeImg}
+            source={Badge}
+          />
+        )}
         <View style={styles.imageWrapper}>
           <FastImage style={styles.image} source={challengeImage} />
         </View>
