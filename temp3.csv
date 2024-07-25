@@ -3,21 +3,21 @@ auth.email;;E-Mail;E-Mail;e-mail
 auth.username;Start Screen/Login/Signin;Benutzer-Name;Username;Nome do usuário
 auth.password;Start Screen/Login/Signin;Passwort;Password;Senha
 auth.repeat_password;Start Screen/Login/Signin;Passwort wiederholen;Repeat Password;Repetir Senha
-auth.enter_email;;;Enter Email;
-auth.enter_password;;;Enter Password;
-auth.or;;;Or;
+auth.enter_email;;Email eingeben;Enter Email;Inserir E-mail
+auth.enter_password;;Passwort eingeben;Enter Password;Inserir senha
+auth.or;;Oder;Or;Ou
 auth.continue_google;Start Screen/Login/Signin;Weiter mit Google;Continue with Google;Continuar com Google
-auth.delete_your_account_description;;;You will lose all your progress and data.;
+auth.delete_your_account_description;;Sie werden all Ihren Fortschritt und Ihre Daten verlieren.;You will lose all your progress and data.;Você perderá todo o seu progresso e dados.
 auth.continue_apple;Start Screen/Login/Signin;Weiter mit Apple;Continue with Apple;Continuar com Apple
-auth.delete_my_account;;;Delete my account;
+auth.delete_my_account;;Meinen Account löschen;Delete my account;Apagar a minha conta
 auth.agree_with;Start Screen/Login/Signin;Es gelten unsere Allgemeinen Geschäftsbedingungen. Unsere Datenschutzerklärung finden sie hier.;I agree with the terms of Use & Provacy Policy;Concordo com os termos da Política de Uso e Privacidade
-auth.terms_of_policy;;;Terms of Use & Provacy Policy;
+auth.terms_of_policy;;Unsere Datenschutzerklärung finden sie hier;Terms of Use & Provacy Policy;Termos da Política de Uso e Privacidade
 auth.signup;Start Screen/Login/Signin;Anmeldung;Sign Up;Inscreva-se
 auth.already_have_an_account;Start Screen/Login/Signin;Sie haben bereits ein Konto.;Already have an account?;Já tem uma conta?
-auth.enter_your_email_to_get_the_reset_link;;;Enter your email to get the reset link;
+auth.enter_your_email_to_get_the_reset_link;;Geben Sie Ihre E-Mail-Adresse ein, um den Link zum Zurücksetzen zu erhalten;Enter your email to get the reset link;Digite seu e-mail para obter o link de redefinição
 auth.login;Start Screen/Login/Signin;Einloggen;Log In;Iniciar Sessão
-auth.check_your_email;;;Check your email;
-auth.forgot_password;;;Forgot password?;
+auth.check_your_email;;Check deine E-Mails;Check your email;Verifique seu e-mail
+auth.forgot_password;;Passwort vergessen?;Forgot password?;Esqueceu sua senha?
 auth.dont_have_an_acount;Start Screen/Login/Signin;Sie haben noch kein Konto?;Dont have an account?;Não tem uma conta?
 onboarding.welcome.title;Welcome;Schön, dass du hier bist!;Good, that you are here!;Que bom que você está aqui!
 onboarding.welcome.description;welcome;Erlebt mit uns eine neue, revolutionäre, leichte & spielerische Reise zu mehr Nähe und Intimität in Ihrer Beziehung;Experience with us a new, revolutionary, easy & playfully journey to more closeness and intimacy in your relationship;
@@ -148,11 +148,11 @@ common.deep;Homepage;Deep;Deep;Profundo
 common.intimate;Homepage;Intim ;Intimate;Íntimo
 common.hot;Homepage;Hot;Hot;Quente
 common.all_in_one;Homepage;All in one;all in one;Tudo em um
-challenge.specialChallengeTitle;;;Specials;
-challenge.tab_special;;;Special;
+challenge.specialChallengeTitle;;Sonderangebote;Specials;Promoções
+challenge.tab_special;;Spezial;Special;Especial
 challenge.title;Homepage;Challenges;Challenges;Desafios
-challenge.tab_core;;;Core;
-challenge.lockedPopupTitle;;;Sorry, these challenges are still locked;
+challenge.tab_core;;Kern;Core;Núcleo
+challenge.lockedPopupTitle;;Entschuldigung, diese Herausforderungen sind noch gesperrt.;Sorry, these challenges are still locked;Desculpe, estes desafios ainda estão bloqueados.
 home.see_all;Homepage;alle entdecken;See all;Ver tudo
 common.go_back;Homepage;zurück;Go back;Voltar
 settings.language;Settings;Sprache;Language;Idioma
@@ -168,10 +168,10 @@ settings.english;Settings;Englisch;english ;Inglês
 settings.portuguese;Settings;Portugiesisch;portuguese;Português
 upload.change_photo;Settings;Foto ändern;change photo;Alterar foto
 auth.change_password;Settings;Passwort ändern;change password;Alterar Senha
-auth.current_password;;;Current password;
+auth.current_password;;Aktuelles Passwort;Current password;Senha atual
 auth.enter_current_password;Settings;aktuelles Passwort eingeben;enter current password;Inserir senha atual
 auth.enter_new_password;Settings;neues Passwort eingeben;enter new password;Inserir nova senha
-auth.new_assword;;;New password;
+auth.new_assword;;Neues Passwort;New password;Nova senha
 auth.repeat_password;Settings;Passwort wiederholen;repeat password;Repetir senha
 auth.repeat_new_password;Settings;neues Passwort wiederholen;repeat new password;Repetir nova senha
 common.save;Settings;Sichern;Save;Salvar
@@ -182,11 +182,11 @@ common.about_the_app;;Über die App;About the app;Sobre o aplicativo
 auth.logout;;ausloggen;Log Out;Sair
 common.cancel;;abbrechen;Cancel;Cancelar
 common.my_categories;Categories;Meine Kategorien;My categories;Minhas Categorias
-categories.lockPopupTitle;;;Sorry, the category is locked;
-categories.lockPopupText;;;In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don’t move forward prematurely, so you can get the maximum therapeutic effect from each stage.;
-challenge.lockedPopupText;;;In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don’t move forward prematurely, so you can get the maximum therapeutic effect from each stage.;
+categories.lockPopupTitle;;Tut mir leid, die Kategorie ist gesperrt.;Sorry, the category is locked;Desculpe, a categoria está bloqueada.
+categories.lockPopupText;;Um die nächste Stufe freizuschalten, müssen Sie die Fragen und Herausforderungen im aktuellen Schritt vollständig beantworten und beherrschen. Dieser Ansatz (4 Schritte zur Liebe) ist so konzipiert, dass Sie nicht vorzeitig weiterkommen, damit Sie den maximalen therapeutischen Effekt aus jeder Stufe ziehen können.;In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don’t move forward prematurely, so you can get the maximum therapeutic effect from each stage.;Para desbloquear a próxima etapa, você precisa responder e dominar completamente as perguntas e desafios no passo atual. Esta abordagem (4 Passos para o Amor) é projetada para garantir que você não avance prematuramente, para que possa obter o máximo efeito terapêutico de cada estágio.
+challenge.lockedPopupText;;Um die nächste Stufe freizuschalten, müssen Sie die Fragen und Herausforderungen des aktuellen Schrittes vollständig beantworten und beherrschen. Dieser Ansatz (4 Schritte zur Liebe) ist so konzipiert, dass Sie nicht vorzeitig weitergehen, damit Sie den maximalen therapeutischen Effekt aus jeder Stufe ziehen können.;In order to unlock the next stage, you need to fully answer and master the questions and challenges in the current step. This approach (4-Steps to Love) is designed to ensure you don’t move forward prematurely, so you can get the maximum therapeutic effect from each stage.;Para desbloquear a próxima etapa, você precisa responder e dominar completamente as perguntas e desafios do passo atual. Esta abordagem (4 Passos para o Amor) é projetada para garantir que você não avance prematuramente, para que possa obter o máximo efeito terapêutico de cada estágio.
 common.add_categories;;Kategorie hinzufügen;add categories;Adicionar Categoria
-common.to_get_known_deeper_level;;;to get to know you on a deeper level;Para te conhecer em um nível mais profundo
+common.to_get_known_deeper_level;;um Sie auf einer tieferen Ebene kennenzulernen;to get to know you on a deeper level;Para te conhecer em um nível mais profundo
 questions.title;questions library;Fragen - Bibliothek;questions library;Biblioteca de perguntas
 categories.favourites;questions library;Favoriten;favourites;Favoritos
 common.add_category;questions library;Kategorie hinzufügen;add category;Adicionar categoria
@@ -243,16 +243,16 @@ auth.something_went_wrong;Settings;uups da ist wohl etas falsch gelaufen;Somethi
 auth.invalid_age;Settings;ungültiges Alter;invalid age;Idade inválida
 auth.password_must_contain_lowercase;Start Screen/Login/Signin;Passwort muss Großbuchstaben, Kleinbuchstaben, Nummern, Sonderzeichen  (#,$,@,!,_,%,&,*,?) beinhalten und mind. aus 8 Stellen  umfassen.;Password must contain lowercase, uppercase, number, special character (#,$,@,!,_,%,&,*,?) and at least 8 characters in length;A palavra-chave deve conter letras minúsculas, maiúsculas, números, caracteres especiais (#,$,@,!,_,%,&,*,?) e pelo menos 8 caracteres
 auth.disabled_account;Start Screen/Login/Signin;Dein Konto wurde deaktiviert, bitte versuche es zu einem späteren Zeitpunkt erneut.;Your account has been disabled, please try again later;A sua conta foi desativada, tente novamente mais tarde
-auth.deleted_account;;;Your account has been deleted;
+auth.deleted_account;;Dein Konto wurde gelöscht;Your account has been deleted;A sua conta foi deletada
 common.something_went_wrong_try_again;Start Screen/Login/Signin;Da ist etwas schief gelaufen, bitte versuche es zu einem späteren Zeitpunkt erneut.;Something went wrong, please try again later!;Algo de errado, por favor tente novamente mais tarde!
-common.enter_email_to_reset;Forgot Password;;Enter your email to reset password.;Insira seu e-mail para redefinir sua senha
-auth.send_link;Forgot Password;;Send link;Enviar Link
-common.show_me_the_book;Quotes of the day;;Show me the book?;Mostra-me o livro?
-common.dont_show_again_message;Quotes of the day;;Dont show this message again;Não mostrar esta mensagem novamente
-common.delete;Delete Account;;Delete;Excluir
-settings.about;Delete Account;;About;Sobre
-settings.partners;Delete Account;;Partners;Parceiros
-settings.privacy_policy;Delete Account;;Terms of Use & Privacy Policy;Termos de Uso e Política de Privacidade
-common.are_you_sure_to_delete_account;Delete Account;;Are you sure, that you want to permanently erase your Account? ;Tem certeza de que deseja apagar permanentemente sua conta? 
-auth.delete_your_account;Delete Account;;Delete your account?;Excluir sua conta?
-auth.delete_your_account_question;;;Delete your account;
+common.enter_email_to_reset;Forgot Password;Geben Sie Ihre E-Mail-Adresse ein, um das Passwort zurückzusetzen;Enter your email to reset password.;Insira seu e-mail para redefinir sua senha
+auth.send_link;Forgot Password;Link senden;Send link;Enviar Link
+common.show_me_the_book;Quotes of the day;Zeig mir das Buch?;Show me the book?;Mostra-me o livro?
+common.dont_show_again_message;Quotes of the day;Diese Nachricht nicht noch einmal anzeigen;Dont show this message again;Não mostrar esta mensagem novamente
+common.delete;Delete Account;Löschen;Delete;Excluir
+settings.about;Delete Account;Um;About;Sobre
+settings.partners;Delete Account;Partner;Partners;Parceiros
+settings.privacy_policy;Delete Account;"""Allgemeine Geschäftsbedingungen und Datenschutzerklärung";Terms of Use & Privacy Policy;Termos de Uso e Política de Privacidade
+common.are_you_sure_to_delete_account;Delete Account;Sind Sie sicher, dass Sie Ihr Konto dauerhaft löschen möchten?;Are you sure, that you want to permanently erase your Account? ;Tem certeza de que deseja apagar permanentemente sua conta? 
+auth.delete_your_account;Delete Account;Konto löschen;Delete your account?;Excluir sua conta?
+auth.delete_your_account_question;;Konto löschen?;Delete your account;Excluir sua conta
