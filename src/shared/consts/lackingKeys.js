@@ -1,12 +1,6 @@
-const fs = require('fs');
-
-const en = require('./final_en_translations.json');
-const de = require('./final_de_translations.json');
-const pt = require('./final_pt_translations.json');
-
-// const en_keys = Object.keys(en);
-// const de_keys = Object.keys(de);
-// const pt_keys = Object.keys(pt);
+const en = require('./en.json');
+const de = require('./de.json');
+const pt = require('./pt.json');
 
 const check = (lang1, lang2) => {
   const lang1Keys = Object.keys(lang1);

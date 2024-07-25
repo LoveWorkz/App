@@ -10,6 +10,7 @@ import {SeeAll} from '@src/shared/ui/SeeAll/SeeAll';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import rubricStore from '../model/store/rubricStore';
+import {useTranslation} from 'react-i18next';
 
 interface RubricWrapperProps {
   rubric: RubricType;
@@ -53,6 +54,7 @@ interface TrendingListProps {
 
 const TrendingList = (props: TrendingListProps) => {
   const {isLoading} = props;
+  const {t} = useTranslation();
 
   const rubrics = rubricStore.rubrics;
 
@@ -86,7 +88,7 @@ const TrendingList = (props: TrendingListProps) => {
   return (
     <View>
       <View style={styles.titleWrapper}>
-        <AppText weight={'500'} text={'Trending topics'} />
+        <AppText weight={'500'} text={t('common.trending_topics')} />
       </View>
       <HorizontalCarousel data={list} Component={RubricWrapper} />
     </View>

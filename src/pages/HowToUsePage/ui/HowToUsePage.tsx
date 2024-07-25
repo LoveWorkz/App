@@ -16,8 +16,10 @@ import {
 import EntityInformationList from './EntityInformationList';
 import OrderedList from './OrderedList';
 import Images from './Images';
+import {useTranslation} from 'react-i18next';
 
 const HowToUsePage = () => {
+  const {t} = useTranslation();
   return (
     <View style={styles.howToUse}>
       <Images />
@@ -46,12 +48,12 @@ const HowToUsePage = () => {
             size={TextSize.SIZE_24}
             align="center"
             weight="700"
-            text={'“In a nutshell, we want you to have fun”'}
+            text={`"${t('common.in_a_nutshell_fun')}"`}
           />
         </View>
         <View style={styles.item}>
           <TextSection
-            title="You can always do more"
+            title={t('common.you_can_do_more')}
             paragraph={descriptions4}
           />
         </View>

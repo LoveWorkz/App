@@ -23,6 +23,7 @@ import {
   OutlineLockIcon,
 } from '@src/shared/assets/icons/Lock';
 import challengeStore from '../../model/store/challengeStore';
+import {useTranslation} from 'react-i18next';
 
 interface ChallengeCardProps {
   description: DisplayText;
@@ -44,6 +45,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
   } = props;
   const colors = useColors();
   const language = useLanguage();
+  const {t} = useTranslation();
 
   const challengelockedHandler = () => {
     if (isChallengeCompleted) {
@@ -102,7 +104,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
                 style={{color: colors.primaryTextColor}}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Challenge locked'}
+                text={t('common.challenge_locked')}
               />
             </Button>
           ) : (
@@ -121,7 +123,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
                 <GradientText
                   size={TextSize.LEVEL_4}
                   weight={'600'}
-                  text={'Lock the challenge in'}
+                  text={t('common.lock_the_challenge_in')}
                 />
               </View>
             </Button>

@@ -14,6 +14,8 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {WithInAppPurchase} from '@src/widgets/WithInAppPurchase';
 import {inAppPurchaseStore} from '@src/features/InAppPurchase';
+import {useTranslation} from 'react-i18next';
+import {upperCase} from 'lodash';
 
 interface DiscountOfferCardProps {
   isLoading: boolean;
@@ -23,6 +25,7 @@ const borderRadius = moderateScale(15);
 
 const DiscountOfferCard = (props: DiscountOfferCardProps) => {
   const {isLoading} = props;
+  const {t} = useTranslation();
 
   const colors = useColors();
 
@@ -60,7 +63,7 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
               style={[styles.off, textStyle]}
               weight={'900'}
               size={TextSize.SIZE_38}
-              text={'OFF'}
+              text={upperCase(t('common.off'))}
             />
           </View>
           <View style={styles.descriptionWrapper}>
@@ -68,16 +71,14 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
               <AppText
                 style={textStyle}
                 size={TextSize.LEVEL_4}
-                text={'Subscribe to LoveWorkz Premium now - '}
+                text={t('common.subscribe_desc_part_1')}
                 align={'center'}
               />
               <AppText
                 style={textStyle}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={
-                  'and enjoy more than 80 weeks of transformative relationship guidance'
-                }
+                text={t('common.subscribe_desc_part_2')}
                 align={'center'}
               />
             </Text>
@@ -91,7 +92,7 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
               style={textStyle}
               weight={'600'}
               size={TextSize.LEVEL_4}
-              text={'Claim my offer'}
+              text={t('common.claim_my_offer')}
             />
             <SvgXml
               xml={getArrowRightIcon({isGradient: true})}

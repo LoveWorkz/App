@@ -18,10 +18,12 @@ import {globalPadding, globalStyles} from '@src/app/styles/GlobalStyle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
+import {useTranslation} from 'react-i18next';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
   const colors = useColors();
+  const {t} = useTranslation();
 
   const specialChallenge = challengeStore.specialChallenge;
 
@@ -124,7 +126,7 @@ const SpecialChallengeCardsPage = () => {
               style={{color: colors.tabIconColor}}
               size={TextSize.LEVEL_4}
               weight={'600'}
-              text={'We’ve done the challenge'}
+              text={t('common.we_have_done_the_challenge')}
             />
           </Button>
         </View>
@@ -150,17 +152,14 @@ const styles = StyleSheet.create({
   btn: {
     width: horizontalScale(CARD_WIDTH),
     borderRadius: 14,
-    // borderWidth: 0,
   },
   btnWrapper: {
-    // width: horizontalScale(CARD_WIDTH),
     width: '100%',
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: verticalScale(0),
     alignItems: 'center',
-    // borderWidth: 5,
     ...globalStyles.zIndex_1,
   },
 });

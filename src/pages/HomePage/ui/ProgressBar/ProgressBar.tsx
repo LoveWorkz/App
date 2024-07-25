@@ -70,9 +70,9 @@ const ProgressBar = () => {
   ) : (
     <>
       <CopilotStep
-        name="Your way to more intimac"
+        name={t('copilot.step_1_name')}
         order={1}
-        text="This progress bar tracks your journey— think of it as an Intimacy meter. With our coach function at your fingertips, we ensure you engage in the right session at the perfect moment, guiding you through each level.">
+        text={t('copilot.step_1_text')}>
         <WalkthroughableWiew style={styles.progressImageCopilotStep}>
           <FastImage
             resizeMode={'cover'}
@@ -83,9 +83,9 @@ const ProgressBar = () => {
       </CopilotStep>
 
       <CopilotStep
-        name="The flower shows the current focus of the session"
+        name={t('copilot.step_2_name')}
         order={2}
-        text="Letting you know which of the four quadrants you're diving into.">
+        text={t('copilot.step_2_text')}>
         <WalkthroughableWiew style={styles.quadrantCopilotStept}>
           <FastImage
             resizeMode={'cover'}

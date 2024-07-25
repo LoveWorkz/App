@@ -14,6 +14,7 @@ import challengeStore from '../../model/store/challengeStore';
 import {SvgXml} from 'react-native-svg';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
+import {useTranslation} from 'react-i18next';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -23,13 +24,13 @@ interface CoreChallengeCardsFooterProps {
 const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {count, currentIndex} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onCompleteHandler = () => {
     challengeStore.coreChallengeCardButtonPressHandler({
       coreChallengeId: currentCoreChallenge!.id,
@@ -67,7 +68,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         />
 
         <AppText
-          text="Done"
+          text={t('common.done')}
           style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
           size={TextSize.LEVEL_4}
         />
@@ -86,7 +87,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
           <GradientText
             size={TextSize.LEVEL_4}
             weight={'600'}
-            text={'We’ve done the challenge'}
+            text={t('common.we_have_done_the_challenge')}
           />
         </Button>
       </View>
@@ -108,7 +109,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
                 <GradientText
                   size={TextSize.LEVEL_4}
                   weight={'600'}
-                  text={'We’ve done the challenge'}
+                  text={t('common.we_have_done_the_challenge')}
                 />
               </Button>
             ) : (
@@ -126,7 +127,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
                       align={'center'}
                       lineHeight={15}
                       weight={'600'}
-                      text={'Lock one of the challenges'}
+                      text={t('common.lock_one_of_the_challenges')}
                     />
                   </>
                 ) : (

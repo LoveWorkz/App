@@ -12,6 +12,7 @@ import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
 import {TrendingChallengeType} from '../../model/types/ChallengeTypes';
 import {TrendingChallengeExample} from '../../model/lib/challenge';
 import TrendingChallenge from './TrendingChallenge';
+import {useTranslation} from 'react-i18next';
 
 interface TrendingChallengeWrapperProps {
   challenge: TrendingChallengeType;
@@ -56,6 +57,7 @@ interface ChallengeGroupProps {
 
 const TrendingChallengeList = (props: ChallengeGroupProps) => {
   const {isLoading} = props;
+  const {t} = useTranslation();
 
   const trendingChallenges = challengesStore.trendingChallenges;
 
@@ -89,7 +91,7 @@ const TrendingChallengeList = (props: ChallengeGroupProps) => {
     <View>
       {!isLoading && (
         <View style={styles.titleWrapper}>
-          <AppText weight={'500'} text={'Trending challenges'} />
+          <AppText weight={'500'} text={t('common.trending_challenges')} />
         </View>
       )}
       <HorizontalCarousel

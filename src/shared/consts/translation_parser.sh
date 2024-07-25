@@ -2,9 +2,9 @@
 
 temp_name="temp3.csv"
 xlsx2csv -d ";" --no-line-breaks "$1" $temp_name
-english_file="en.json"
-german_file="de.json"
-portugal_file="pt.json"
+english_file="en_output.json"
+german_file="de_output.json"
+portugal_file="pt_output.json"
 echo "{" >$portugal_file
 echo "{" >$english_file
 echo "{" >$german_file
@@ -14,8 +14,8 @@ compare_length=$(cat compare.json | wc -l | tr -d ' ')
 counter=0
 
 echo "JSON LENGTH: ${compare_length}" | tr -d ' '
-json_counter=1
-should_add_key_to_translations=0
+# json_counter=1
+# should_add_key_to_translations=0
 
 # while read -r json_line; do
 #     ((json_counter = json_counter + 1))
@@ -73,16 +73,16 @@ should_add_key_to_translations=0
 while read -r line; do
     ((counter = counter + 1))
     key=$(echo ${line} | cut -d ';' -f1)
-    compare_key=$(echo ${line} | cut -d ';' -f1 | sed "s/\"//g")
+    # compare_key=$(echo ${line} | cut -d ';' -f1 | sed "s/\"//g")
     de_value=$(echo ${line} | cut -d ';' -f3 | sed "s/\"//g")
     en_value=$(echo ${line} | cut -d ';' -f4 | sed "s/\"//g")
     pt_value=$(echo ${line} | cut -d ';' -f5 | sed "s/\"//g")
 
-    inner_counter=1
+    # inner_counter=1
     # json_counter=1
     # should_add_key_to_translations=0
 
-    echo "COMPARE KEY: ${compare_key}"
+    # echo "COMPARE KEY: ${compare_key}"
     # NOTE: checking if translation exist in xslx
     # while read -r json_line; do
     #     ((inner_counter = inner_counter + 1))
@@ -143,3 +143,5 @@ done <"${temp_name}"
 echo "}" >>$portugal_file
 echo "}" >>$english_file
 echo "}" >>$german_file
+
+rm ${temp_name}

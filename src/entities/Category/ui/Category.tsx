@@ -206,7 +206,7 @@ const renderHomePageCategory = (params: {
             weight={'900'}
             style={{color: colors.white}}
             size={TextSize.LEVEL_6}
-            text={'Explore'}
+            text={t('common.explore')}
           />
         </Gradient>
         <AppText
@@ -365,7 +365,7 @@ const renderUnlockedContent = (params: {
           size={size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2}
           text={
             isCategoryHowToUse
-              ? 'Explore here'
+              ? t('common.explore_here')
               : `${allSessionsCount} ${t('sessions')}`
           }
         />

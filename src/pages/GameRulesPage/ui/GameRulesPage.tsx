@@ -21,8 +21,10 @@ import {
   title1,
 } from '../model/lib/gameRuleslib';
 import List from './List';
+import {useTranslation} from 'react-i18next';
 
 const GameRulesPage = () => {
+  const {t} = useTranslation();
   return (
     <View style={styles.GameRulesPage}>
       <StatusBar barStyle={'light-content'} />
@@ -59,11 +61,11 @@ const GameRulesPage = () => {
                 lineHeight={25}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Step 1:'}
+                text={`${t('common.step')} 1:`}
               />
             </View>
             <TextSection
-              title={'Create Your Ritual'}
+              title={t('common.create_your_ritual')}
               paragraph={descriptions2}
             />
           </View>
@@ -73,11 +75,11 @@ const GameRulesPage = () => {
                 lineHeight={25}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Step 2:'}
+                text={`${t('common.step')} 2:`}
               />
             </View>
             <TextSection
-              title={'Create a Comfortable Space'}
+              title={t('common.create_space')}
               paragraph={descriptions3}
             />
           </View>
@@ -87,12 +89,12 @@ const GameRulesPage = () => {
                 lineHeight={25}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Step 3:'}
+                text={`${t('common.step')} 3:`}
               />
             </View>
 
             <TextSection
-              title={'Dive into the App Together'}
+              title={t('common.dive_into_app_together')}
               paragraph={descriptions4}
             />
           </View>
@@ -103,7 +105,7 @@ const GameRulesPage = () => {
                 lineHeight={25}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Step 4:'}
+                text={`${t('common.step')} 4:`}
               />
             </View>
 
@@ -111,7 +113,7 @@ const GameRulesPage = () => {
               <AppText
                 size={TextSize.SIZE_24}
                 weight="700"
-                text={'Navigate the Sessions Your Way'}
+                text={t('common.navigate_session_your_way')}
               />
             </View>
             <List />
@@ -122,20 +124,26 @@ const GameRulesPage = () => {
                 lineHeight={25}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
-                text={'Step 5:'}
+                text={`${t('common.step')} 5:`}
               />
             </View>
 
-            <TextSection title={'Reflect Together'} paragraph={descriptions5} />
+            <TextSection
+              title={t('common.reflect_together')}
+              paragraph={descriptions5}
+            />
           </View>
           <View style={styles.item}>
             <TextSection
-              title={'How often do i play?'}
+              title={t('common.how_often_i_play')}
               paragraph={descriptions6}
             />
           </View>
           <View style={styles.item}>
-            <TextSection title={'Important note'} paragraph={descriptions7} />
+            <TextSection
+              title={t('common.important_note')}
+              paragraph={descriptions7}
+            />
           </View>
         </View>
       </ScrollViewWithoutIndicator>

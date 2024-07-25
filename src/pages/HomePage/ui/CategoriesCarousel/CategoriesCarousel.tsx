@@ -8,6 +8,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {useTranslation} from 'react-i18next';
 
 interface CategoriesCarouselProps {
   isLoading: boolean;
@@ -16,6 +17,7 @@ interface CategoriesCarouselProps {
 const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   const {isLoading} = props;
   const homePageLevels = categoriesStore.homePageLevels;
+  const {t} = useTranslation();
 
   const formatedCategories = useMemo(() => {
     if (isLoading) {
@@ -52,10 +54,10 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
           <AppText
             weight={'900'}
             size={TextSize.SIZE_24}
-            text={'Want to explore more?'}
+            text={t('common.explore_more')}
           />
           <View style={styles.text}>
-            <AppText weight={'500'} text={'Levels & Sessions'} />
+            <AppText weight={'500'} text={t('common.levels_and_sessions')} />
           </View>
         </>
       )}

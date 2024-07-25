@@ -43,7 +43,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
         style={{color: colors.primaryTextColor}}
         size={TextSize.LEVEL_6}
         weight={'600'}
-        text={'How are we today?'}
+        text={t('common.how_are_we_today')}
       />
 
       <View style={styles.textsBlock}>
@@ -51,27 +51,27 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           style={styles.mainText}
           size={TextSize.LEVEL_4}
           align={'justify'}
-          text={
-            'From 10 (feeling amazing) to 1 (leave me alone). Everything below 7: please take a break & skip the session to another day.'
-          }
+          text={t('common._feedback_text_1')}
         />
         <AppText
           size={TextSize.LEVEL_4}
           align={'justify'}
-          text={'Ps:  Put your phone in flight mode so you are not distracted.'}
+          text={t('common.put_iphone_not_distracted')}
         />
 
         <View style={styles.noteBlock}>
           <View style={styles.note}>
-            <AppText size={TextSize.LEVEL_2} weight={'500'} text={'Note:'} />
+            <AppText
+              size={TextSize.LEVEL_2}
+              weight={'500'}
+              text={t('common.note')}
+            />
           </View>
           <AppText
             size={TextSize.LEVEL_2}
             weight={'500'}
             align={'justify'}
-            text={
-              "Alternate turns in asking your partner questions and listen to your partner's answers w/o interrupting. If your partner doesn't want to answer a question, just pick another card. No judgment or criticism, listen closely, and be supportive and show empathy. Alternate roles as listener & speaker. "
-            }
+            text={t('common.alternate_turns_in_questions')}
           />
         </View>
       </View>
@@ -84,7 +84,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           <AppText
             style={styles.skipBtnText}
             weight={'600'}
-            text={'naah not today'}
+            text={t('common.not_today')}
           />
         </Button>
         <Button
@@ -94,7 +94,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             weight={'700'}
-            text={"Amazing, let's do it"}
+            text={t('common.amazing_lets_do_it')}
           />
         </Button>
       </View>

@@ -14,6 +14,7 @@ import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {userStore} from '@src/entities/User';
 import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {homePageStore} from '../..';
+import {useTranslation} from 'react-i18next';
 
 // import firestore from '@react-native-firebase/firestore';
 // import JSON from './core_challenge_routine.json';
@@ -28,6 +29,7 @@ const borderRadius = moderateScale(20);
 const QuickStart = (props: QuickStartProps) => {
   const {isLoading} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const {hasUserCompletedAnySession} = userStore;
   const {homePageQuadrantName, homePageCategory} = homePageStore;
@@ -48,7 +50,6 @@ const QuickStart = (props: QuickStartProps) => {
   //       });
   //   });
   // };
-  
 
   const onPressHandler = () => {
     // onHandler()
@@ -61,11 +62,13 @@ const QuickStart = (props: QuickStartProps) => {
 
   let textContent = '';
   if (hasUserCompletedAnySession && homePageCategory) {
-    textContent = `For the ${ordinalSuffixOf(
+    textContent = `${t('common.for_the')} ${ordinalSuffixOf(
       homePageCategory.currentSessionNumber,
-    )} of ${homePageCategory.allSessionsCount} sessions`;
+    )} ${t('common.of')} ${homePageCategory.allSessionsCount} ${t(
+      'sessions.sessions',
+    )}`;
   } else {
-    textContent = `Focus: ${homePageQuadrantName}`;
+    textContent = `${t('common.focus')}: ${homePageQuadrantName}`;
   }
 
   return (
@@ -78,8 +81,8 @@ const QuickStart = (props: QuickStartProps) => {
           weight={'600'}
           text={
             hasUserCompletedAnySession
-              ? 'See you next week?'
-              : 'Start your journey now!'
+              ? t('common.see_you_next_week')
+              : t('common.start_your_journey_now')
           }
         />
       </View>
@@ -98,8 +101,8 @@ const QuickStart = (props: QuickStartProps) => {
           size={TextSize.LEVEL_4}
           text={
             hasUserCompletedAnySession
-              ? 'Naah. Let’s do it now!'
-              : 'Let’s dive into your session'
+              ? t('common.naah_lets_do_it_now')
+              : t('common.lets_dive_into_your_session')
           }
         />
         <SvgXml

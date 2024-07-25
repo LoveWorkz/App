@@ -9,6 +9,7 @@ import {getPremiumIcon} from '@src/shared/assets/icons/Premium';
 import {Gradient} from '@src/shared/ui/Gradient/Gradient';
 import {StyleType} from '@src/shared/types/types';
 import {GradientText} from '../GradientText/GradientText';
+import {useTranslation} from 'react-i18next';
 
 interface PremiumBlockProps {
   isGradient?: boolean;
@@ -17,6 +18,7 @@ interface PremiumBlockProps {
 
 const PremiumBlock = (props: PremiumBlockProps) => {
   const {isGradient = false, style} = props;
+  const {t} = useTranslation();
 
   const colors = useColors();
 
@@ -26,7 +28,7 @@ const PremiumBlock = (props: PremiumBlockProps) => {
         <AppText
           style={[styles.premiumText, {color: colors.white}]}
           size={TextSize.LEVEL_2}
-          text="Premium"
+          text={t('common.premium')}
           weight="500"
         />
         <SvgXml
@@ -40,7 +42,7 @@ const PremiumBlock = (props: PremiumBlockProps) => {
 
   return (
     <View style={[styles.premiumBlock, {backgroundColor: colors.white}, style]}>
-      <GradientText size={TextSize.LEVEL_2} text="Premium" />
+      <GradientText size={TextSize.LEVEL_2} text={t('common.premium')} />
       <SvgXml
         xml={getPremiumIcon({isGradient: true})}
         width={horizontalScale(13)}

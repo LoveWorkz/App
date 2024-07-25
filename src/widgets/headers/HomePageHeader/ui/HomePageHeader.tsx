@@ -109,8 +109,8 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
         </View>
 
         <CopilotStep
-          name="Want to learn more about the app?"
-          text="Link with your partner or tweak the settings to better suit your preferences."
+          name={t('copilot.step_4_name')}
+          text={t('copilot.step_4_text')}
           order={4}>
           <WalkthroughableText
             style={{

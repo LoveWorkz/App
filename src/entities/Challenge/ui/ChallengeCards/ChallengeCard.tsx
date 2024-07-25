@@ -170,7 +170,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
               style={{color: colors.white}}
               size={TextSize.LEVEL_4}
               weight={'600'}
-              text={'We’ve done the challenge'}
+              text={t('common.we_have_done_the_challenge)}
             />
           </Button>
         </View>

@@ -12,14 +12,16 @@ import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicato
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {CustomHeaderWithImage} from '@src/widgets/headers/CustomHeaderWithImage';
 import {descriptions1, descriptions2, descriptions3} from '../lib/howToUse';
+import {useTranslation} from 'react-i18next';
 
 const AboutPage = () => {
+  const {t} = useTranslation();
   return (
     <View style={styles.about}>
       <StatusBar barStyle={'light-content'} />
 
       <CustomHeaderWithImage
-        title={'About the app'}
+        title={t('common.about_the_app')}
         isWhite
         ImageComponent={
           <FastImage
@@ -46,7 +48,10 @@ const AboutPage = () => {
 
           <View style={styles.content}>
             <View style={styles.item}>
-              <TextSection title="Congrats" paragraph={descriptions1} />
+              <TextSection
+                title={t('common.congrats')}
+                paragraph={descriptions1}
+              />
             </View>
 
             <View style={styles.item}>
@@ -55,16 +60,17 @@ const AboutPage = () => {
                 size={TextSize.SIZE_24}
                 align="center"
                 weight="700"
-                text={
-                  'But the truth is, love is not enough to keep the bond strong and healthy'
-                }
+                text={t('common.but_the_truth_is')}
               />
             </View>
 
             <View style={styles.item}>
               <TextSection paragraph={descriptions2} />
             </View>
-            <TextSection title="We have your back." paragraph={descriptions3} />
+            <TextSection
+              title={t('common.we_have_your_back')}
+              paragraph={descriptions3}
+            />
           </View>
         </View>
       </ScrollViewWithoutIndicator>

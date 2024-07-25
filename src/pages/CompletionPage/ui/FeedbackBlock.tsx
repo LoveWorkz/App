@@ -7,6 +7,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import completionPageStore from '../model/store/completionPageStore';
+import {useTranslation} from 'react-i18next';
 
 interface CompletionItemProps {
   value: string;
@@ -17,6 +18,7 @@ interface CompletionItemProps {
 
 const FeedbackBlock = (props: CompletionItemProps) => {
   const {onFeedbackChangeHandler, value, onSendPressHandler, isSending} = props;
+  const {t} = useTranslation();
 
   const colors = useColors();
 
@@ -31,10 +33,8 @@ const FeedbackBlock = (props: CompletionItemProps) => {
       <TextArea
         onChange={onFeedbackChangeHandler}
         value={value}
-        placeholder={
-          'Any propositions or your genuine feedback will allow us to make the experience even better for you'
-        }
-        label={'Tell us what we can improve'}
+        placeholder={t('common.any_proposition')}
+        label={t('common.what_can_we_improve')}
       />
       <Button
         disabled={isSending}
@@ -45,7 +45,7 @@ const FeedbackBlock = (props: CompletionItemProps) => {
           style={{color: colors.black}}
           size={TextSize.LEVEL_4}
           weight={'600'}
-          text={'Send'}
+          text={t('common.send')}
         />
       </Button>
     </View>

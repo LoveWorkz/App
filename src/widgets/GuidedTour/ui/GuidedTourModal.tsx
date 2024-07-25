@@ -12,10 +12,12 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import guidedTourStore from '../model/store/guidedTourStore';
+import {useTranslation} from 'react-i18next';
 
 const GuidedTourModal = () => {
   const {currentStep, isLastStep, goToNext, stop} = useCopilot();
   const colors = useColors();
+  const {t} = useTranslation();
 
   if (!currentStep) {
     return null;
@@ -69,7 +71,7 @@ const GuidedTourModal = () => {
             align={'center'}
             letterSpacing={1}
             size={TextSize.LEVEL_4}
-            text={"It's all just a few clicks away!"}
+            text={t('common.few_clicks_away')}
           />
         </View>
       )}
@@ -79,9 +81,7 @@ const GuidedTourModal = () => {
             weight="600"
             align={'center'}
             size={TextSize.LEVEL_2}
-            text={
-              'Want to learn more about the quadrants? Check out the “How to use” in Settings.'
-            }
+            text={t('common.how_to_use_quadrants')}
           />
         </View>
       )}
@@ -94,7 +94,7 @@ const GuidedTourModal = () => {
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_5}
             weight={'600'}
-            text={isLastStep ? 'Got it, let’s do it!' : 'Next'}
+            text={isLastStep ? t('common.got_it_lets_do_it') : t('common.next')}
           />
         </Button>
       </View>

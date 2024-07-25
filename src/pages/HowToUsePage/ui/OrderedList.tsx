@@ -4,51 +4,45 @@ import {StyleSheet, View} from 'react-native';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {TextListItem} from '@src/shared/ui/TextListItem/TextListItem';
+import {useTranslation} from 'react-i18next';
 
 const OrderedList = () => {
+  const {t} = useTranslation();
   return (
     <>
       <View style={styles.item}>
         <AppText
           size={TextSize.SIZE_24}
           weight="700"
-          text={'How to Navigate LoveWorkz'}
+          text={t('common.how_to_navigate')}
         />
       </View>
       <View style={styles.List}>
         <View style={styles.item}>
           <TextListItem
             number={1}
-            prefix={'Start with The Journey:'}
-            text={
-              'Begin with the Love-Yourney to establish a solid foundation of skills and understanding, progressing through levels and quadrants'
-            }
+            prefix={t('common.start_the_journey_prefix')}
+            text={t('common.begin_love_journey')}
           />
         </View>
         <View style={styles.item}>
           <TextListItem
             number={2}
-            prefix={'Engage with Challenges:'}
-            text={
-              'Utilize the challenges at the end of each session to build your toolkit and apply learned concepts to your relationship.'
-            }
+            prefix={t('common.engage_with_challenges')}
+            text={t('common.utilize_the_challenges')}
           />
         </View>
         <View style={styles.item}>
           <TextListItem
             number={3}
-            prefix={'Explore Independently:'}
-            text={
-              'Venture beyond "The Journey" whenever you wish, choosing content that aligns with your relationship\'s needs and interests.'
-            }
+            prefix={t('common.explore_independently')}
+            text={t('common.venture_beyond_the_journey')}
           />
         </View>
         <TextListItem
           number={4}
-          prefix={'Maintain a Positive Outlook:'}
-          text={
-            'Keep the journey engaging and positive, balancing serious topics with light-hearted discussions to foster a supportive atmosphere.'
-          }
+          prefix={t('common.maintain_positive_outlook')}
+          text={t('common.keep_the_journey')}
         />
       </View>
     </>

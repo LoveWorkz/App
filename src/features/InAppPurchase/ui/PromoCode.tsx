@@ -9,12 +9,14 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {Spinner} from '@src/shared/ui/Spinner/Spinner';
 import {moderateScale} from '@src/shared/lib/Metrics';
 import inAppPurchaseStore from '../model/store/InAppPurchaseStore';
+import {useTranslation} from 'react-i18next';
 
 const PromoCode = () => {
   const colors = useColors();
   const promoCode = inAppPurchaseStore.promoCode;
   const promoCodeErrorMessage = inAppPurchaseStore.promoCodeErrorMessage;
   const isCheckingPromoCode = inAppPurchaseStore.isCheckingPromoCode;
+  const {t} = useTranslation();
 
   const onPromoCodeChangeHandler = useCallback((v: string) => {
     inAppPurchaseStore.setPromoCode(v);
@@ -46,7 +48,7 @@ const PromoCode = () => {
           style={{color: colors.bgQuinaryColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={'add'}
+          text={t('common.add')}
         />
       </Button>
       <Spinner visible={isCheckingPromoCode} />

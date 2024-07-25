@@ -4,6 +4,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {useTranslation} from 'react-i18next';
 
 interface ListItemProps {
   text: string;
@@ -15,6 +16,7 @@ interface ListItemProps {
 
 export const TextListItem = memo((props: ListItemProps) => {
   const {text, prefix, hideButton = true, onPress, number} = props;
+  const {t} = useTranslation();
 
   return (
     <View style={styles.TextList}>
@@ -35,7 +37,7 @@ export const TextListItem = memo((props: ListItemProps) => {
               <GradientText
                 style={styles.readMore}
                 size={TextSize.LEVEL_5}
-                text={' Read more...'}
+                text={t('common.read_more')}
                 weight="500"
               />
             </TouchableOpacity>

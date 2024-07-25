@@ -125,7 +125,7 @@ const AuthPage = () => {
       {userStore.isDialogOpen && (
         <Dialog
           visible={userStore.isDialogOpen}
-          confirmText={'OK'}
+          confirmText={t('common.ok')}
           onConfirmHandler={onConfirmHandler}
           title={dialogContent || ''}
         />

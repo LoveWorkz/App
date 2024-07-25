@@ -17,6 +17,7 @@ import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {useTranslation} from 'react-i18next';
 
 interface Carouseltemrops {
   image: CategoryImageType;
@@ -38,6 +39,7 @@ const Carouseltem = (props: Carouseltemrops) => {
   } = props;
   const colors = useColors();
   const language = useLanguage();
+  const {t} = useTranslation();
 
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.CATEGORY_DETAILS, {id});
@@ -88,9 +90,7 @@ const Carouseltem = (props: Carouseltemrops) => {
         <AppText
           weight={'600'}
           size={TextSize.LEVEL_2}
-          text={
-            "Exploring individual personalities and life backgrounds; beginning to understand each other's basic needs and preferences."
-          }
+          text={t('common.exploring_individual_personalities')}
         />
       </View>
     </View>

@@ -18,6 +18,7 @@ import {
   SubscriptionBlockContentType,
   SubscriptionType,
 } from '../model/types/subscriptionTypes';
+import {useTranslation} from 'react-i18next';
 
 interface SubscriptionBlockProps {
   chosenSubscriptionType?: SubscriptionType;
@@ -49,6 +50,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
   const isActive = subscriptionType === chosenSubscriptionType;
   const isYearly = SubscriptionType.YEARLY === subscriptionType;
   const textColor = isActive ? colors.white : colors.primaryTextColor;
+  const {t} = useTranslation();
 
   const onSubscriptionHandler = () => {
     setSubscriptionType?.(subscriptionType);
@@ -68,7 +70,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
           <AppText
             style={{color: colors.white}}
             size={TextSize.LEVEL_2}
-            text={'Popular'}
+            text={t('common.popular')}
           />
         </Gradient>
       )}
@@ -137,7 +139,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
                 style={{color: textColor}}
                 weight={'500'}
                 size={TextSize.LEVEL_3}
-                text={'per week'}
+                text={t('common.per_week')}
               />
             </View>
           </View>

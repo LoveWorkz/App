@@ -20,7 +20,7 @@
 // import myRelationship from './myRelationship.json';
 // import favorites from './favorites.json';
 // import onboarding from './onboarding.json';
-import en_main from './en.json';
+import en_main from '../../en.json';
 
 export const en = {
   ...en_main,
