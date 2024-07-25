@@ -1,17 +1,16 @@
 {
-   "Fun": "Fun",
-   "Intimacy": "Intimacy",
-   "Respect": "Respect",
-   "Conflict": "Conflict",
-
-   "routine": "Routine",
-   "activity": "Activity",
-   "self_reflection": "Self-Reflection",
-   "game": "Game",
-   "communication": "Communication",
-   "exercise": "Exercise",
-   "dreams": "Dreams",
-   "friendship": "Friendship",
-   "personal_growth": "Personal Growth",
-   "conflict_management": "Conflict Management"
+   "rubricFilterItem.Fun": "Fun",
+   "rubricFilterItem.Intimacy": "Intimacy",
+   "rubricFilterItem.Respect": "Respect",
+   "rubricFilterItem.Conflict": "Conflict",
+   "rubricFilterItem.routine": "Routine",
+   "rubricFilterItem.activity": "Activity",
+   "rubricFilterItem.self_reflection": "Self-Reflection",
+   "rubricFilterItem.game": "Game",
+   "rubricFilterItem.communication": "Communication",
+   "rubricFilterItem.exercise": "Exercise",
+   "rubricFilterItem.dreams": "Dreams",
+   "rubricFilterItem.friendship": "Friendship",
+   "rubricFilterItem.personal_growth": "Personal Growth",
+   "rubricFilterItem.conflict_management": "Conflict Management"
 }
