@@ -1,4 +1,4 @@
-import {fs} from 'fs';
+var fs = require('fs');
 
 const en = require('./en.json');
 const de = require('./de.json');
@@ -14,7 +14,7 @@ const exportToCsv = () => {
     rows.push(row);
   });
 
-  let csvContent = 'data:text/csv;charset=utf-8,';
+  let csvContent = '';
 
   rows.forEach(function (rowArray) {
     let row = rowArray.join(';');
@@ -30,26 +30,6 @@ const exportToCsv = () => {
       console.log("It's saved!");
     }
   });
-
-  // const lang2Keys = Object.keys(lang2);
-
-  // const lackingKeysOnewWay = [];
-  // const lackingKeysSecondWay = [];
-
-  // lang1Keys.forEach(key => {
-  //   if (!lang2Keys.includes(key)) {
-  //     lackingKeysOnewWay.push(key);
-  //   }
-  // });
-
-  // lang2Keys.forEach(key => {
-  //   if (!lang1Keys.includes(key)) {
-  //     lackingKeysSecondWay.push(key);
-  //   }
-  // });
-
-  // console.log('LAckingOneWay: ', lackingKeysOnewWay);
-  // console.log('LAckingSecondWay: ', lackingKeysSecondWay);
 };
 
 exportToCsv();
