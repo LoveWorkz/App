@@ -54,11 +54,11 @@ class InAppReviewStore {
   showCustomPopup = () => {
     Alert.alert(t('questions.have_you_already_rated_this_app'), '', [
       {
-        text: t('no') || '',
+        text: t('common.no') || '',
         style: 'cancel',
       },
       {
-        text: t('yes') || '',
+        text: t('common.yes') || '',
         onPress: async () => {
           await userStore.updateUser({
             field: 'hasUserRated',

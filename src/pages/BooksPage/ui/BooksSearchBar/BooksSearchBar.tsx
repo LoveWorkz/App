@@ -37,7 +37,7 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
         isLoading={isLoading}
         value={booksStore.searchBooksText}
         onChange={onSearchHandler}
-        placeholder={t('search')}
+        placeholder={t('common.search')}
         StartIcon={() => (
           <SvgXml
             xml={SearchIcon}

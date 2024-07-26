@@ -128,7 +128,7 @@ const Books = (props: BooksProps) => {
           <View style={styles.noResults}>
             <AppText
               style={[styles.booksTitle, {color: colors.primaryTextColor}]}
-              text={t('noResults')}
+              text={t('common.noResults')}
               size={TextSize.LEVEL_7}
             />
           </View>

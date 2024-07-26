@@ -287,7 +287,7 @@ class UserStore {
       if (isOffline) {
         Toast.show({
           type: ToastType.WARNING,
-          text1: t('you_are_offline') || '',
+          text1: t('common.you_are_offline') || '',
         });
       }
       return isOffline;

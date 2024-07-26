@@ -151,7 +151,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           style={{color: colors.bgQuinaryColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={t('buy_now')}
+          text={t('common.buy_now')}
         />
       </Button>
       <Button>

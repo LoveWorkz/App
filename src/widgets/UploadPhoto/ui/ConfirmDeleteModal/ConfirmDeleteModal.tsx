@@ -59,7 +59,7 @@ const ConfirmDeleteModal = (props: UploadModalProps) => {
             <GradientText
               weight={'700'}
               size={TextSize.LEVEL_4}
-              text={t('cancel')}
+              text={t('common.cancel')}
             />
           </Button>
           <Button
@@ -70,7 +70,7 @@ const ConfirmDeleteModal = (props: UploadModalProps) => {
             <AppText
               style={{color: colors.bgQuinaryColor}}
               size={TextSize.LEVEL_4}
-              text={t('delete')}
+              text={t('common.delete')}
             />
           </Button>
         </View>

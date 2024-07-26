@@ -63,7 +63,7 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
-            text={t('send')}
+            text={t('common.send')}
           />
         </Button>
         {/* <Button
@@ -74,7 +74,7 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
             style={styles.dontShowAgainText}
             weight={'700'}
             size={TextSize.LEVEL_4}
-            text={t('dont_show_again')}
+            text={t('common.dont_show_again')}
           />
         </Button> */}
       </>

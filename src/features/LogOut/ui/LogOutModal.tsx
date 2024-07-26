@@ -53,7 +53,7 @@ const LogOutModal = (props: LogOutModalProps) => {
           <GradientText
             size={TextSize.LEVEL_4}
             weight={'700'}
-            text={t('cancel')}
+            text={t('common.cancel')}
           />
         </Button>
         <Button

@@ -75,7 +75,7 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
         <View style={styles.noResults}>
           <AppText
             style={{color: colors.primaryTextColor}}
-            text={t('noResults')}
+            text={t('common.noResults')}
             size={TextSize.LEVEL_7}
           />
         </View>

@@ -43,7 +43,7 @@ export const ChallengeInfoPopupContent = memo(
             style={styles.btnText}
             size={TextSize.LEVEL_2}
             weight={'600'}
-            text={t('Ok. I’ve got this')}
+            text={t('common.ok_i_got_this')}
           />
         </Button>
       </>

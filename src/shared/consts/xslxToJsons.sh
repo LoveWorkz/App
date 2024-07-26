@@ -17,9 +17,9 @@ counter=0
 while read -r line; do
     ((counter = counter + 1))
     key=$(echo ${line} | cut -d ';' -f1)
-    de_value=$(echo ${line} | cut -d ';' -f3 | sed "s/\"//g")
-    en_value=$(echo ${line} | cut -d ';' -f4 | sed "s/\"//g")
-    pt_value=$(echo ${line} | cut -d ';' -f5 | sed "s/\"//g")
+    de_value=$(echo ${line} | cut -d ';' -f2 | sed "s/\"//g")
+    en_value=$(echo ${line} | cut -d ';' -f3 | sed "s/\"//g")
+    pt_value=$(echo ${line} | cut -d ';' -f4 | sed "s/\"//g")
 
     if [ -z "${key}" ]; then
         continue

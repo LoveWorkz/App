@@ -84,7 +84,7 @@ const QuotesModal = (props: QuotesModalProps) => {
           style={[styles.dontShowAgain, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_4}
           weight={'600'}
-          text={t('dont_show_again')}
+          text={t('common.dont_show_again')}
         />
       </Button>
     </Modal>

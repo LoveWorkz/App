@@ -57,7 +57,7 @@ const Screen4 = () => {
         <View style={styles.btnWrapper}>
           <GradientArrowButton
             activeOpacity={0.9}
-            text={t('lets_start')}
+            text={t('common.lets_start')}
             onPressHandler={onLetsStartPressHandler}
           />
         </View>

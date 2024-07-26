@@ -80,7 +80,7 @@ const ChangePasswordPage = () => {
         <AppText
           style={{color: colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
-          text={t('save')}
+          text={t('common.save')}
         />
       </Button>
     </View>
