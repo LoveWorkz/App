@@ -32,13 +32,13 @@ const HowToUsePage = () => {
         </View>
         <View style={styles.item}>
           <TextSection
-            title="Building Your Toolkit with Challenges"
+            title={t('how_to_use.title_challenges')}
             paragraph={descriptions2}
           />
         </View>
         <View style={styles.item}>
           <TextSection
-            title="Maintaining a Positive Emotional Climate"
+            title={t('how_to_use.title_maintaining')}
             paragraph={descriptions3}
           />
         </View>
