@@ -1,4 +1,5 @@
 import {TabName} from '@src/shared/types/types';
+import {t} from 'i18next';
 
 export interface infoTextType {
   text: string;
@@ -16,50 +17,50 @@ export const getInformationBlockContent = (
   switch (tabName) {
     case 'Books':
       return {
-        title: 'Welcome to the literature Section',
+        title: t('information_block.literature'),
         text: [
           {
-            boldString: 'Each book',
-            text: ' you find here is a standout gem, highly recommended by  therapists and handpicked by our team.',
+            boldString: t('information_block.literature_title_1'),
+            text: t('information_block.literature_text_1'),
           },
           {
-            boldString: 'Scientifically',
-            text: ' backed, filled with evidence-based insights, tips and exercises, these books will help you improve communication, increase mutual understanding, deepen emotional bonds, and navigate through your relationship challenges.',
+            boldString: t('information_block.literature_title_2'),
+            text: t('information_block.literature_text_2'),
           },
           {
-            boldString: 'Each title',
-            text: ' is categorized and comes with a short explanation, assisting you in discovering the perfect resource to enrich your partnership',
+            boldString: t('information_block.literature_title_3'),
+            text: t('information_block.literature_text_3'),
           },
         ],
       };
     case 'Challenges':
       return {
-        title: 'Challenges',
+        title: t('information_block.challenges'),
         text: [
           {
-            boldString: 'Each book',
-            text: ' Challenges',
+            boldString: t('information_block.challenges_title_1'),
+            text: t('information_block.challenges_text_1'),
           },
         ],
       };
     case 'Topics':
       return {
-        title: 'Browsing Topics',
+        title: t('information_block.browsing_topics'),
         text: [
           {
-            text: "Don't feel like doing a full session right now? No problem! You can browse and explore individual questions based on specific topics of interest.",
+            text: t('information_block.browsing_topics_text_1'),
           },
           {
-            text: "Just keep in mind that to track your progress and get the most out of the app, you'll want to return to the session area or start a new session from the homepage.",
+            text: t('information_block.browsing_topics_text_2'),
           },
         ],
       };
     default:
       return {
-        title: 'Session Library',
+        title: t('information_block.session_library'),
         text: [
           {
-            text: 'You are currently in the Session Library. It gives you a perfect overview of the sessions in each level. The levels will unlock as you progress.',
+            text: t('information_block.session_library_text_1'),
           },
         ],
       };
