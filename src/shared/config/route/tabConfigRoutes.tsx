@@ -20,12 +20,28 @@ export enum TabRoutesNames {
   TOPICS = 'topics',
 }
 
+// export const tabRoutePaths: Record<TabRoutesNames, string> = {
+//   [TabRoutesNames.HOME]: t('tab_navigator.tab_name_home'),
+//   [TabRoutesNames.CATEGORIES]: t('tab_navigator.tab_name_sessions'),
+//   [TabRoutesNames.BOOKS]: t('tab_navigator.tab_name_books'),
+//   [TabRoutesNames.CHALLENGES]: t('tab_navigator.tab_name_challenges'),
+//   [TabRoutesNames.TOPICS]: t('tab_navigator.tab_name_topics'),
+// };
+
+// export const tabRoutePaths: Record<TabRoutesNames, string> = {
+//   [TabRoutesNames.HOME]: 'home',
+//   [TabRoutesNames.CATEGORIES]: t('tab_navigator.tab_name_sessions'),
+//   [TabRoutesNames.BOOKS]: t('tab_navigator.tab_name_books'),
+//   [TabRoutesNames.CHALLENGES]: t('tab_navigator.tab_name_challenges'),
+//   [TabRoutesNames.TOPICS]: t('tab_navigator.tab_name_topics'),
+// };
+
 export const tabRoutePaths: Record<TabRoutesNames, string> = {
-  [TabRoutesNames.HOME]: t('tab_navigator.tab_name_home'),
-  [TabRoutesNames.CATEGORIES]: t('tab_navigator.tab_name_sessions'),
-  [TabRoutesNames.BOOKS]: t('tab_navigator.tab_name_books'),
-  [TabRoutesNames.CHALLENGES]: t('tab_navigator.tab_name_challenges'),
-  [TabRoutesNames.TOPICS]: t('tab_navigator.tab_name_topics'),
+  [TabRoutesNames.HOME]: 'home',
+  [TabRoutesNames.CATEGORIES]: 'categories',
+  [TabRoutesNames.BOOKS]: 'books',
+  [TabRoutesNames.CHALLENGES]: 'challenges',
+  [TabRoutesNames.TOPICS]: 'topics',
 };
 
 type NewRouteProps = {
