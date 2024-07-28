@@ -26,7 +26,7 @@ while read -r line; do
     fi
 
     if [ -z "${de_value}" ]; then
-        de_value="${key}, ${counter} missing translation"
+        de_value="DE ${en_value},"
     fi
 
     if [ -z "${en_value}" ]; then
@@ -34,7 +34,7 @@ while read -r line; do
     fi
 
     if [ -z "${pt_value}" ]; then
-        pt_value="${key}, ${counter} missing translation"
+        pt_value="PT ${en_value}"
     fi
 
     if ((counter == file_length)); then
