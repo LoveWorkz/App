@@ -2,6 +2,7 @@ import React, {memo, useCallback, useMemo} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {TFunction} from 'i18next';
+import RNRestart from 'react-native-restart';
 
 import {Select, SelectTheme} from '@src/shared/ui/Select/Select';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
@@ -39,7 +40,12 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
 
   const onLanguageChangeHandler = useCallback(
     (value: string) => {
-      i18n.changeLanguage(value);
+      // console.log('NEW: ', value);
+      // console.log('CURRENT: ', i18n.language);
+      if (i18n.language !== value) {
+        i18n.changeLanguage(value);
+        RNRestart.restart();
+      }
     },
     [i18n],
   );
@@ -61,6 +67,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
         options={languages}
         value={i18n.language}
         closingTime={220}
+        onClose={() => {}}
         onSelect={onLanguageChangeHandler}
       />
     </View>

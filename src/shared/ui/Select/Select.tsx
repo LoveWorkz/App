@@ -29,6 +29,7 @@ interface SelectProps {
   isPopupVisible?: boolean;
   error?: string | null;
   isCountry?: boolean;
+  onClose?: () => void;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -48,6 +49,7 @@ export const Select = memo((props: SelectProps) => {
     setIsPopupVisible,
     isCountry,
     error,
+    onClose,
   } = props;
 
   const itemHeight = verticalScale(60);
@@ -92,8 +94,10 @@ export const Select = memo((props: SelectProps) => {
       return;
     }
 
+    onClose?.();
+
     setIsVisible(false);
-  }, [setIsPopupVisible]);
+  }, [onClose, setIsPopupVisible]);
 
   const onSelectHandler = useCallback(
     (itemValue: string) => {
