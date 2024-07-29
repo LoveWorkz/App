@@ -1,0 +1,46 @@
+[
+    {
+    "question":{
+    "en":"Look online for 2 costumes each. Write them down, guess each other and talk about them!",
+    "pt":"Procurem online 2 fantasias cada. Anote-as, mostre ao parceiro(a) e fale sobre elas!",
+    "de":"Welche 2 Kostüme würdet ihr gerne mal ausprobieren. Schreibt sie auf, erratet sie gegenseitig und sprecht darüber!"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_1" // session 1
+    },
+    {
+    "question":{
+    "en":"Kiss me for 1 minute the way you love to be kissed and I'll kiss you for 1 minute the way I love to be kissed.",
+    "pt":"Beije-me por 1 minuto do jeito que você ama ser beijado(a) e eu irei te beijar por 1 minuto do jeito que eu amo ser beijado(a).",
+    "de":"Küsse mich 1 Minute lang, wie du es liebst geküsst zu werden und ich küsse dich eine Minute lang so, wie ich es liebe, geküsst zu werden."
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_2"  // session 2
+    },
+    {
+    "question":{
+    "en":"Look into each other's eyes for 90 seconds. Do not speak. -> How did you feel?",
+    "pt":"Olhe nos olhos um do outro por 3 minutos. Não falem. -> Como você se sentiu?",
+    "de":"Schaut euch 3 min in die Augen. Dabei wird nicht gesprochen. -> Wie habt ihr euch dabei gefühlt?"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_3"  // session 3
+    },
+    {
+    "question":{
+    "en":"You have one wish. What should I do differently in the bedroom today? What do you wish for in particular?",
+    "pt":"Você tem um desejo. O que devo fazer de diferente hoje no quarto? O que você deseja em particular?",
+    "de":"Wunsch frei. Was soll ich heute im Bett anders machen? Was wünscht du dir ganz besonderes?"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_4" // session 4
+    }
+    ]

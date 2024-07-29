@@ -1,0 +1,137 @@
+[
+  {
+    "id": "level_1",
+    "name": "Starter",
+    "challengeCategoryId": "challenge_category_1",
+    "displayName": {
+      "en": "Starter",
+      "pt": "Iniciante",
+      "de": "Starter"
+     },
+    "categorySize": "large",
+    "allSessionsCount": 6,
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FStarter%2FStarter_large.png?alt=media&token=384ac560-087f-40f8-9162-2dd64abad5c1",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FStarter%2FStarter_middle.png?alt=media&token=f1917e82-829f-430d-bb2b-251b99767611",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FStarter%2FStarter_small.png?alt=media&token=282950c9-2a16-450e-a4f1-1e3273c57ce0" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },
+    "createdDate": ""
+  },
+  {
+    "id": "level_2",
+    "name": "Basic",
+    "challengeCategoryId": "challenge_category_2",
+    "displayName": {
+      "en": "Basic",
+      "pt": "Básico",
+      "de": "Basic"
+     },
+    "categorySize": "small",
+    "allSessionsCount": 6,
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_large.png?alt=media&token=d22cc5a9-9668-49c6-a5cc-9d94865a4a25",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_middle.png?alt=media&token=101fae76-ed6f-4fc4-8b2c-b9eec321d0a5",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_middle.png?alt=media&token=101fae76-ed6f-4fc4-8b2c-b9eec321d0a5" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },
+    "createdDate": ""
+  },
+  {
+    "id": "level_3",
+    "name": "Deep",
+    "challengeCategoryId": "challenge_category_3",
+    "allSessionsCount": 6,
+    "displayName": {
+      "en": "Deep",
+      "pt": "Deep",
+      "de": "Deep"
+     },
+    "categorySize": "large",
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_large.png?alt=media&token=b9b37d48-807a-4b5f-8968-4c91db0ebaad",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_middle.png?alt=media&token=c00a8a27-ce44-476f-863b-3aff3db8d6aa",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_small.png?alt=media&token=365cea0d-074e-4f5f-b3d2-f360f7b54c2e" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },
+    "createdDate": ""
+  },
+  {
+    "id": "level_4",
+    "name": "Intimate",
+    "challengeCategoryId": "challenge_category_4",
+    "allSessionsCount": 6,
+    "displayName": {
+      "en": "Intimate",
+      "de": "Intimate",
+      "pt": "Íntimo"
+     },
+    "categorySize": "large",
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_large.png?alt=media&token=ec88b4a7-dab1-4212-be58-fb2180e9988d",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_middle.png?alt=media&token=7fee4fbf-aa70-4f55-8aa7-52688731ac42",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_small.png?alt=media&token=603ecae6-489a-4abc-844c-e126774a87d7" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },
+    "createdDate": ""
+  },
+  {
+    "id": "level_5",
+    "name": "Specials",
+    "challengeCategoryId": "challenge_category_5",
+    "displayName": {
+      "en": "Coming soon",
+      "de": "Demnächst",
+      "pt": "Em breve"
+     },
+    "categorySize": "small",
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FHot%2FHot_large.png?alt=media&token=3f815906-c813-46ed-a0d4-d8c7d59c6316",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FHot%2FHot_middle.png?alt=media&token=e783d429-67b3-4abd-99ae-6cbe592083e3",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FHot%2FHot_small.png?alt=media&token=2f41c7e4-68fe-4fb8-a0db-00ce87786879" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },
+    "createdDate": ""
+  },
+  {
+    "id": "level_6",
+    "name": "How_To_Use",
+    "displayName": {
+      "en": "How to use",
+      "de": "Wie benutzt man",
+      "pt": "Como usar"
+     },
+    "categorySize": "large",
+    "image": {
+      "large": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_large.png?alt=media&token=55ef341d-836d-44c6-922b-20a7536f0300",
+      "middle": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_middle.png?alt=media&token=02ebd2a0-0cef-41cb-96d5-0a8ca07cd48f",
+      "small": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_small.png?alt=media&token=7a8091b6-39f7-4d6b-bc22-3ec712e3e2fd" 
+    },
+    "description": {
+      "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "de": "de Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+      "pt": "pt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt"
+     },    
+     "createdDate": ""
+  }
+]

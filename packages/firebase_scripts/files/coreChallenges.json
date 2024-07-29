@@ -1,0 +1,130 @@
+[
+  {
+  "title":{
+  "en":"Start a DIY Project",
+  "pt":"Inicie um projeto de bricolagem",
+  "de":"Das DIY-Projekt"
+  },
+  "description":{
+  "en":"Choose a project for your home and spend time creating something together.",
+  "pt":"Escolha um projeto para sua casa e gaste algum tempo criando algo juntos.",
+  "de":"Wählt ein Projekt für euer Zuhause aus und verbringt Zeit damit, gemeinsam etwas zu schaffen."
+  },
+  "groupId": "core_challenge_group_1",
+  "totalViews": 0,
+  "id":"core_challenge_1",
+  "isChallengeSpecial": false
+  },
+  {
+  "title":{
+  "en":"The \"Special -Day\" - activity",
+  "pt":"A atividade \"dia especial\"",
+  "de":"Die \"Spezial-Tag\"- Aktivität"
+  },
+  "description":{
+  "en":"Plan a day on which you give your partner undivided attention. No devices allowed.",
+  "pt":"Planeje um dia em que você dê atenção total ao seu parceiro. Não são permitidos dispositivos.",
+  "de":"Plant einen Tag, an dem ihr eurem Partner ungeteilte Aufmerksamkeit schenkt. Legt Handy & Co. zur Seite."
+  },
+  "groupId": "core_challenge_group_1",
+  "totalViews": 0,
+  "id":"core_challenge_2",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"The Love Map Exercise",
+  "pt":"O exercício do mapa do amor",
+  "de":"Die Liebes-Karten-Übung"
+  },
+  "description":{
+  "en":"Take turns answering questions about each other's likes, dislikes, hopes, and fears.",
+  "pt":"Reveze-se respondendo perguntas sobre os gostos, o que não gosta, as esperanças e os medos.",
+  "de":"Stellt euch abwechselnd Fragen zu den Dingen, die der Andere mag und nicht mag, zu seinen Hoffnungen und Ängsten."
+  },
+  "groupId": "core_challenge_group_2",
+  "totalViews": 0,
+  "id":"core_challenge_3",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"The trigger challenge exercise 1",
+  "pt":"O desafio do gatilho Exercício 1:",
+  "de":"Die Trigger - Übung 1"
+  },
+  "description":{
+  "en":"Think back to situations in which you overreacted. When did other triggers lead to an overreaction? When you were tired? Hungry? Stressed? Discuss with your partner.",
+  "pt":"Pense em situações em que você exagerou. Quando outros gatilhos levaram a uma reação exagerada? Quando você estava cansado? Com fome? Estressado? Discuta com seu parceiro.",
+  "de":"Denkt zurück an Situationen, in denen ihr überreagiert habt. Welche Trigger haben zu der Überreaktion geführt? Wenn ihr müde wart? Hungrig? Gestresst? Besprecht das mit eurem Partner."
+  },
+  "groupId": "core_challenge_group_2",
+  "totalViews": 0,
+  "id":"core_challenge_4",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"The self-reflection exercise 5",
+  "pt":"O exercício de auto-reflexão 5",
+  "de":"Die Selbstreflexions - Übung 5"
+  },
+  "description":{
+  "en":"Reflect on whether you feel safe in your relationship. When discussing with your partner, start with: \"I feel safe in our relationship when I...\" or \"It would make me feel safe if I...\"",
+  "pt":"Reflita se você se sente seguro em seu relacionamento. Ao discutir com seu parceiro, comece com: \"Sinto-me seguro em nosso relacionamento quando eu ...\" ou \"Isso me faria sentir seguro se eu ...\"",
+  "de":"Überlegt, ob ihr euch in eurer Beziehung sicher fühlt. Wenn ihr mit eurem Partner darüber spricht, beginnt mit: \"Ich fühle mich in unserer Beziehung sicher, wenn ich...\" oder \"Ich würde mich sicherer fühlen, wenn ich...\""
+  },
+  "groupId": "core_challenge_group_3",
+  "totalViews": 0,
+  "id":"core_challenge_5",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"The self-reflection exercise 6",
+  "pt":"O exercício de auto-reflexão 6",
+  "de":"Die Selbstreflexions - Übung 6"
+  },
+  "description":{
+  "en":"Reflect on whether you feel appreciated in your relationship. Start with: \"I feel particularly appreciated when you...\" and \"I feel less appreciated when...\"",
+  "pt":"Anote e discuta o que você precisa se sentir apreciado em um relacionamento. Comece com: \"Sinto-me particularmente apreciado quando você ...\" e \"Sinto-me menos apreciado quando ...\"",
+  "de":"Schreibt auf und besprecht, was ihr braucht, um euch in einer Beziehung geschätzt zu fühlen. Beginnt mit: \"Ich fühle mich besonders geschätzt, wenn du...\" und \"Ich fühle mich weniger geschätzt, wenn...\""
+  },
+  "groupId": "core_challenge_group_3",
+  "totalViews": 0,
+  "id":"core_challenge_6",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"Try a New Restaurant or Cuisine",
+  "pt":"Experimente um novo restaurante ou cozinha",
+  "de":"Die neue Küche / neues Restaurant"
+  },
+  "description":{
+  "en":"Discover a new favorite dish or cuisine.",
+  "pt":"Descubra um novo prato ou cozinha favorita.",
+  "de":"Entdeckt ein neues Lieblingsgericht oder eine neue Küche."
+  },
+  "groupId": "core_challenge_group_3",
+  "totalViews": 0,
+  "id":"core_challenge_7",
+  "isChallengeSpecial":false
+  },
+  {
+  "title":{
+  "en":"Visit a Farmer's Market or Flea Market",
+  "pt":"Visite o mercado de um fazendeiro ou o mercado de pulgas",
+  "de":"Ab auf den Bauern- oder Flohmarkt"
+  },
+  "description":{
+  "en":"Spend a day exploring local treasures and finding unique items.",
+  "pt":"Passe um dia explorando tesouros locais e encontrando itens únicos.",
+  "de":"Verbringt einen Tag damit, lokale Schätze zu erkunden und einzigartige Gegenstände zu finden."
+  },
+  "groupId": "core_challenge_group_4",
+  "totalViews": 0,
+  "id":"core_challenge_8",
+  "isChallengeSpecial":false
+  }
+  ]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "intimate_session_1",
+    "challenge": "special_challenge_4",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_44",
+      "starter_question_43",
+      "starter_question_42",
+      "starter_question_41",
+      "starter_question_40",
+      "starter_question_39",
+      "starter_question_38",
+      "starter_question_1",
+      "starter_wild_card_1",
+      "starter_question_2",
+      "starter_question_3",
+      "starter_question_4"
+    ],
+    "sessionNumber": 1,
+    "displayName": {
+      "en": "Communication Skills",
+      "de": "de Communication Skills",
+      "pt": "pt Communication Skills"
+    },
+    "description": {
+      "en": "The focus of the questions in this sessions are on beautiful memories. A set of handpicked Core - Challenges of the category Exercise is rounding up the  picture.",
+      "de": "The focus of the questions in this sessions are on beautiful memories. A set of handpicked Core - Challenges of the category Exercise is rounding up the  picture.s",
+      "pt": "The focus of the questions in this sessions are on beautiful memories. A set of handpicked Core - Challenges of the category Exercise is rounding up the  picture."
+    }
+  },
+  {
+    "id": "intimate_session_2",
+    "challenge": "core_challenge_group_4",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_37",
+      "starter_question_36",
+      "starter_question_35",
+      "starter_question_34",
+      "starter_question_33",
+      "starter_question_32",
+      "starter_question_31",
+      "starter_question_30",
+      "starter_wild_card_2",
+      "starter_question_5",
+      "starter_question_6",
+      "starter_question_7"
+    ],
+    "sessionNumber": 2, 
+    "displayName": {
+      "en": "Personal Growth",
+      "de": "de Personal Growth",
+      "pt": "pt Personal Growth"
+    },
+    "description": {
+      "en": "Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being.",
+      "de": "Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being.",
+      "pt": "Support your partner’s personal goals and aspirations, celebrate their achievements, and encourage their self-care and well-being."
+    }
+  },
+  {
+    "id": "intimate_session_3",
+    "challenge": "special_challenge_5",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_29",
+      "starter_question_28",
+      "starter_question_27",
+      "starter_question_26",
+      "starter_question_25",
+      "starter_question_24",
+      "starter_question_23",
+      "starter_question_22",
+      "starter_wild_card_3",
+      "starter_question_8",
+      "starter_question_9",
+      "starter_question_10"
+    ],
+    "sessionNumber": 3,
+    "displayName": {
+      "en": "Romance and Intimacy",
+      "de": "de Romance and Intimacy",
+      "pt": "pt Romance and Intimacy"
+    },
+    "description": {
+      "en": "Rekindle the spark in your relationship, discover new ways to show your love and appreciation, and explore your sexual compatibility and desires.",
+      "de": "Rekindle the spark in your relationship, discover new ways to show your love and appreciation, and explore your sexual compatibility and desires.",
+      "pt": "Rekindle the spark in your relationship, discover new ways to show your love and appreciation, and explore your sexual compatibility and desires."
+    }
+  },
+  {
+    "id": "intimate_session_4",
+    "challenge": "core_challenge_group_1",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_21",
+      "starter_question_20",
+      "starter_question_19",
+      "starter_question_18",
+      "starter_question_17",
+      "starter_question_16",
+      "starter_question_15",
+      "starter_question_14",
+      "starter_wild_card_4",
+      "starter_question_13",
+      "starter_question_12",
+      "starter_question_11"
+    ],
+    "sessionNumber": 4,
+    "displayName": {
+      "en": "Fun and Adventure",
+      "de": "de Fun and Adventure",
+      "pt": "pt Fun and Adventure"
+    },
+    "description": {
+      "en": "Add some excitement and variety to your relationship, try new activities and hobbies, and create memorable experiences with your partner.",
+      "de": "Add some excitement and variety to your relationship, try new activities and hobbies, and create memorable experiences with your partner.",
+      "pt": "Add some excitement and variety to your relationship, try new activities and hobbies, and create memorable experiences with your partner."
+    }
+  },
+  {
+    "id": "intimate_session_5",
+    "challenge": "special_challenge_6",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_21",
+      "starter_question_20",
+      "starter_question_19",
+      "starter_question_18",
+      "starter_question_17",
+      "starter_question_16",
+      "starter_question_15",
+      "starter_question_14",
+      "starter_wild_card_4",
+      "starter_question_13",
+      "starter_question_12",
+      "starter_question_11"
+    ],
+    "sessionNumber": 5,
+    "displayName": {
+      "en": "Boundaries and Respect",
+      "de": "de Boundaries and Respect",
+      "pt": "pt Boundaries and Respect"
+    },
+    "description": {
+      "en": "Learn how to set healthy boundaries with your partner, respect their privacy and autonomy, and avoid codependency and manipulation.",
+      "de": "Learn how to set healthy boundaries with your partner, respect their privacy and autonomy, and avoid codependency and manipulation.",
+      "pt": "Learn how to set healthy boundaries with your partner, respect their privacy and autonomy, and avoid codependency and manipulation."
+    }
+  },
+  {
+    "id": "intimate_session_6",
+    "challenge": "core_challenge_group_2",
+    "categoryId": "level_4",
+    "questions": [
+      "starter_question_21",
+      "starter_question_20",
+      "starter_question_19",
+      "starter_question_18",
+      "starter_question_17",
+      "starter_question_16",
+      "starter_question_15",
+      "starter_question_14",
+      "starter_wild_card_4",
+      "starter_question_13",
+      "starter_question_12",
+      "starter_question_11"
+    ],
+    "sessionNumber": 6,
+    "displayName": {
+      "en": "Challenges and Opportunities",
+      "de": "de Challenges and Opportunities",
+      "pt": "pt Challenges and Opportunities"
+    },
+    "description": {
+      "en": "Learn how to face the challenges and opportunities that come with being in a relationship, such as financial issues, career changes, family matters, and health problems",
+      "de": "Learn how to face the challenges and opportunities that come with being in a relationship, such as financial issues, career changes, family matters, and health problems",
+      "pt": "Learn how to face the challenges and opportunities that come with being in a relationship, such as financial issues, career changes, family matters, and health problems"
+    }
+  }
+]

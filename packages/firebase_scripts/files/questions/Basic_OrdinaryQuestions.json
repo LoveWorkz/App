@@ -1,0 +1,574 @@
+[
+    {
+    "question":{
+    "en":"What would you like to have more time for? Can I support you with this?",
+    "pt":"No que você gostaria de ter mais tempo? Posso te apoiar nisso?",
+    "de":"Für was hättest du gerne mehr Zeit zur Verfügung? Könnte ich dich hierbei unterstützen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":3,
+    "id":"basic_question_1" // session 2
+    },
+    {
+    "question":{
+    "en":"What makes us strong as a team?",
+    "pt":"O que nos torna fortes como equipe?",
+    "de":"Was macht uns als Team stark?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_2" // session 4
+    },
+    {
+    "question":{
+    "en":"Where have we come closer in our behaviour/opinions?",
+    "pt":"Onde chegamos mais perto em nosso comportamento/opiniões?",
+    "de":"Wo haben wir uns angenähert in unserem Verhalten/Meinung?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_3"  // session 4
+    },
+    {
+    "question":{
+    "en":"In which company you can be totally yourself?",
+    "pt":"Em que empresa você pode ser totalmente você mesmo?",
+    "de":"In welchem Umfeld kannst du ganz du selbst sein?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_4" // session 4
+    },
+    {
+    "question":{
+    "en":"How can I show you best, that I will be always there for you?",
+    "pt":"Como posso te mostrar da melhor maneira que estarei sempre aqui para você?",
+    "de":"Wie kann ich dir am besten zeigen, dass ich immer für dich da sein werde?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_5" // session 3
+    },
+    {
+    "question":{
+    "en":"Is there a recent moment when you felt especially strong for me? Which one?",
+    "pt":"Existe algum momento que fiz você se sentir mais forte? Qual momento?",
+    "de":"Gibt es einen Moment aus jüngster Vergangenheit, an dem du besonders starke Gefühle für mich empfandest? Welcher?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_6" // session 3
+    },
+    {
+    "question":{
+    "en":"Can I do something for you to relax better occasionally?",
+    "pt":"Posso fazer algo para você ficar mais relaxado(a) ocasionalmente?",
+    "de":"Kann ich etwas tun, damit du gelegentlich besser entspannen kannst?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_7" // session 3
+    },
+    {
+    "question":{
+    "en":"What should we definitely preserve in our relationship?",
+    "pt":"O que devemos definitivamente preservar em nosso relacionamento?",
+    "de":"Was an unserer Beziehung sollten wir unbedingt bewaren?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_18",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_8" // session 4
+    },
+    {
+    "question":{
+    "en":"Would you like to spend a night in the wilderness with me?",
+    "pt":"Você gosta de brinquedos sexuais?",
+    "de":"Würdest du gerne mit mir eine Nacht in der Wildnis verbringen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":3,
+    "id":"basic_question_9"  // session 3
+    },
+    {
+    "question":{
+    "en":"What adventure would you like to experience with me next? ",
+    "pt":"Que aventura você gostaria de viver comigo? ",
+    "de":"Welches Abenteuer würdest du gerne als Nächstes mit mir erleben?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":3,
+    "id":"basic_question_10" // session 4
+    },
+    {
+    "question":{
+    "en":"How many days of the upcoming year do you want to spend with your/my parents?",
+    "pt":"Quantos dias do próximo ano você quer passar com seus/meus pais?",
+    "de":"Wieviel Tage möchtest du im kommenden Jahr mit deinen/meinen Eltern verbringen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_11"  // session 4
+    },
+    {
+    "question":{
+    "en":"Which movie/series should we watch for our next movienight?",
+    "pt":"Que filme/série devemos assistir na nossa próxima \"noite de cinema\"?",
+    "de":"Welcher Film/Serie für unseren nächsten Coach-Abend?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_12" // session 3
+    },
+    {
+    "question":{
+    "en":"Is there a special event you are particularly looking forward to?",
+    "pt":"Há algum evento especial que você está especialmente ansioso(a) para participar?",
+    "de":"Gibt es ein besonderes Ereignis auf das du dich besonders freust?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_13"  // session 4
+    },
+    {
+    "question":{
+    "en":"Is there something you are particularly looking forward to tomorrow/next week?",
+    "pt":"Há algo que você está especialmente ansioso(a) para amanhã/na próxima semana?",
+    "de":"Gibt es etwas, auf das du dich morgen besonders freust?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_14" // session 4
+    },
+    {
+    "question":{
+    "en":"How could I make you happy tomorrow?",
+    "pt":"Como eu poderia te fazer feliz amanhã?",
+    "de":"Wodurch könnte ich dir morgen eine Freude machen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_2",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_15" // session 4
+    },
+    {
+    "question":{
+    "en":"Is there a question you have not yet dared to ask me?",
+    "pt":"Existe uma pergunta que você ainda não ousou me fazer?",
+    "de":"Gibt es eine Frage, die du dir noch nicht getraut hast mir zu stellen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_16" // session 3
+    },
+    {
+    "question":{
+    "en":"Which person are you especially grateful for? Why?",
+    "pt":"Por qual pessoa você é especialmente grato? Por quê?",
+    "de":"Für welchen Menschen empfindest du besondere Dankbarkeit? Wofür?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_17"  // session 3
+    },
+    {
+    "question":{
+    "en":"Who do you never want to have anything to do with? Why?",
+    "pt":"Com quem você nunca desejaria se relacionar? Por quê?",
+    "de":"Mit wem willst du nie wieder etwas zu tun haben? Warum?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_18"  // session 3
+    },
+    {
+    "question":{
+    "en":"Have you ever given up on someone? What happened?",
+    "pt":"Alguma vez você já desistiu de alguém? O que aconteceu?",
+    "de":"Hast du schonmal jemanden aufgegeben? Was ist passiert?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_19"  // session 4
+    },
+    {
+    "question":{
+    "en":"What is the worst thing that has ever happened to you in a stranger's bathroom?",
+    "pt":"Qual é a pior coisa que já aconteceu com você no banheiro de um estranho?",
+    "de":"Was ist das schlimmste, was dir mal in einem fremden Badezimmer passiert ist?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_20"  // session 3
+    },
+    {
+    "question":{
+    "en":"How do you wish to be comforted when you are sad?",
+    "pt":"Como você gosta de ser consolado(a) quando estiver triste?",
+    "de":"Wie wünscht du dir getröstet zu werden, falls du traurig bist?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_21"  // session 3
+    },
+    {
+    "question":{
+    "en":"What should I do for you every day?",
+    "pt":"O que eu deveria fazer por você todos os dias?",
+    "de":"Was sollte ich jeden Tag für dich tun?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_22" // session 3
+    },
+    {
+    "question":{
+    "en":"Which of my traits do you like the most about me?",
+    "pt":"Qual dos meus traços você mais gosta em mim?",
+    "de":"Welches meiner Merkmale gefällt dir am besten an mir?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_23" // session 2
+    },
+    {
+    "question":{
+    "en":"Is there anything that often worries you?",
+    "pt":"Há algo que frequentemente te preocupa?",
+    "de":"Gibt es etwas, das dir oft Sorgen bereitet?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_9",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_24" // session 2
+    },
+    {
+    "question":{
+    "en":"Are you feeling uncomfortable when talking about sex?",
+    "pt":"Você se sente desconfortável ao falar sobre sexo?",
+    "de":"Fühlst du dich unwohl, wenn du über Sex sprichst?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_10",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_25" // session 2
+    },
+    {
+    "question":{
+    "en":"Have we ever had sex when you didn't really feel like it?",
+    "pt":"Já fizemos sexo quando você não estava realmente com vontade?",
+    "de":"Hatten wir schonmal Sex miteinander, obwohl du eigentlich gar keine Lust hattest?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_10",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_26"  // session 2
+    },
+    {
+    "question":{
+    "en":"How could I help you become more confident?",
+    "pt":"Como eu poderia ajudá-lo(a) a se tornar mais confiante?",
+    "de":"Wie könnte ich dir helfen selbstbewusster zu werden?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_10",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_27" // session 2
+    },
+    {
+    "question":{
+    "en":"Has anyone ever caught you masturbating?",
+    "pt":"Alguém já pegou você se masturbando?",
+    "de":"Hat dich schonmal jemand beim Selbstbefriedigen erwischt?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_10",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_28" // session 2
+    },
+    {
+    "question":{
+    "en":"What is your biggest concern right now?",
+    "pt":"Qual é a sua maior preocupação neste momento?",
+    "de":"Was ist derzeit deine größte Sorge ?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_29"  // session 2
+    },
+    {
+    "question":{
+    "en":"Do you think you would be happier with a different profession?",
+    "pt":"Você acha que seria mais feliz com uma profissão diferente?",
+    "de":"Denkst du, dass du mit einem anderem Beruf glücklicher wärst?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_30" // session 4
+    },
+    {
+    "question":{
+    "en":"What advice about love would you tell your 15 year old self?",
+    "pt":"Que conselho sobre o amor você diria ao seu eu de 15 anos?",
+    "de":"Welchen Rat über die Liebe würdest du deinem 15 Jahre alten Ich mitteilen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_31" // session 2
+    },
+    {
+    "question":{
+    "en":"Which challenge/task made you surpass yourself?",
+    "pt":"Que mudança (física/característica) provavelmente faria você terminar comigo?",
+    "de":"Welche Herausforderungen/Aufgaben haben dich dazu gebracht, über dich hinauszuwachsen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_32" // session 2
+    },
+    {
+    "question":{
+    "en":"What do you tell others about me?",
+    "pt":"O que você fala sobre mim para as outras pessoas?",
+    "de":"Was erzählst du anderen über mich?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_33" // session 2
+    },
+    {
+    "question":{
+    "en":"What is the last thing you did just to make yourself happy?",
+    "pt":"Qual foi a última coisa que você fez apenas para se sentir feliz?",
+    "de":"Was ist das letzte, was du nur getan hast, um dich sellbst glücklich zu machen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_7",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_34" // session 1
+    },
+    {
+    "question":{
+    "en":"When was the last time I accidently embarrassed you and with what?",
+    "pt":"Quando foi a última vez que eu te constrangi acidentalmente e com o que?",
+    "de":"Wann war das letzte Mal, dass ich dich in Verlegenheit gebracht habe und womit?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_12",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_35" // session 1
+    },
+    {
+    "question":{
+    "en":"What do you think I could do to significantly improve my life?",
+    "pt":"O que você acha que eu poderia fazer para melhorar significativamente minha vida? ",
+    "de":"Was denkst du, wodurch könnte ich mein Leben erheblich verbessern."
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_12",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_36" // session 1
+    },
+    {
+    "question":{
+    "en":"What did I last impress you with?",
+    "pt":"Qual foi a última coisa que eu fiz que te impressionou?",
+    "de":"Womit habe ich dich zuletzt beeindruckt?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_8",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_37" // session 1
+    },
+    {
+    "question":{
+    "en":"Which one of my traits would you like to have?",
+    "pt":"Qual dos meus traços você gostaria de ter?",
+    "de":"Von welcher meiner Eigenschaft würdest du gerne mehr haben?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_8",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_38" // session 1
+    },
+    {
+    "question":{
+    "en":"When was the last time you made another person happy? How?",
+    "pt":"Quando foi a última vez que você fez outra pessoa feliz? Como?",
+    "de":"Wann hast du zuletzt einen anderen Menschen glücklich gemacht? Womit?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":3,
+    "id":"basic_question_39" // session 1
+    },
+    {
+    "question":{
+    "en":"What was the most beautiful moment with me?",
+    "pt":"Qual foi o momento mais bonito comigo?",
+    "de":"Was war der schönste Augenblick mit mir?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":2,
+    "id":"basic_question_40" // session 1
+    },
+    {
+    "question":{
+    "en":"What memory from our past always makes you laugh?",
+    "pt":"Que memória do nosso passado sempre faz você rir?",
+    "de":"Welche Erinnerung aus unserer Vergangenheit bringt dich immer zum Lachen?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_41" // session 1
+    },
+    {
+    "question":{
+    "en":"What is the biggest favor someone has ever done for you?",
+    "pt":"Qual é o maior favor que alguém já fez por você?",
+    "de":"Was war der größte Gefallen, den man dir je getan hat?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_42" // session 1
+    },
+    {
+    "question":{
+    "en":"How did you experience our first kiss and what thoughts went through your head?",
+    "pt":"Como você vivenciou o nosso primeiro beijo e quais pensamentos passaram pela sua cabeça?",
+    "de":"Wie hast du unseren ersten Kuss erlebt und welche Gedanken gingen dir dabei durch den Kopf?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_43" // session 1
+    },
+    {
+    "question":{
+    "en":"In what moments do you feel most alive?",
+    "pt":"Em quais momentos você se sente mais vivo(a)?",
+    "de":"In welchen Momenten fühlst du dich am Lebendigsten?"
+    },
+    "categoryId":"level_2",
+"viewCount": 0,
+    "rubricId":"rubric_5",
+    "type":"ORDINARY_CARD",
+    "difficulty":1,
+    "id":"basic_question_44" // session 1
+    }
+    ]

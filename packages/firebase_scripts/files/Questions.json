@@ -1,0 +1,222 @@
+[
+    {
+        "question": {
+            "en": "What do you like most about me?",
+            "pt": "pt What do you like most about me?",
+            "de": "de What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "2 What do you like most about me?",
+            "pt": "pt What do you like most about me?",
+            "de": "de What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_1",
+        "type": "WILD_CARD"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_1",
+        "type": "Action_CARD"
+    },
+    {
+        "question": {
+            "en": "4 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "5 What do you like most about me?",
+            "pt": "pt 5 What do you like most about me?",
+            "de": "de 5 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "6 What do you like most about me?",
+            "pt": "pt 6 What do you like most about me?",
+            "de": "de 6 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "7 What do you like most about me?",
+            "pt": "pt 7 What do you like most about me?",
+            "de": "de 7 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "8 What do you like most about me?",
+            "pt": "pt 8 What do you like most about me?",
+            "de": "de 8 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "9 What do you like most about me?",
+            "pt": "pt 9 What do you like most about me?",
+            "de": "de 9 What do you like most about me?"
+        },
+        "categoryId": "category_3",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "10 What do you like most about me?",
+            "pt": "pt 10 What do you like most about me?",
+            "de": "de 10 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_3",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_3",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_3",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_4",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_5",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_6",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_3",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_2",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_3",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_2",
+        "type": "ORDINARY"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "categoryId": "category_1",
+        "rubricId": "rubric_1",
+        "type": "ORDINARY"
+    }
+]

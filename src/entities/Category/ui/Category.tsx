@@ -238,7 +238,7 @@ const renderHomePageCategory = (params: {
               weight="500"
               style={{color: colors.white}}
               size={TextSize.LEVEL_6}
-              text={`${allSessionsCount} ${t('sessions')}`}
+              text={`${allSessionsCount} ${t('sessions.sessions')}`}
             />
           </View>
           <AppText
@@ -366,7 +366,7 @@ const renderUnlockedContent = (params: {
           text={
             isCategoryHowToUse
               ? t('common.explore_here')
-              : `${allSessionsCount} ${t('sessions')}`
+              : `${allSessionsCount} ${t('sessions.sessions')}`
           }
         />
       </View>

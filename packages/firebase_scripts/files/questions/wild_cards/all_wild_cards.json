@@ -1,0 +1,178 @@
+[
+    {
+    "question":{
+    "en":"Look online for 2 costumes each. Write them down, guess each other and talk about them!",
+    "pt":"Procurem online 2 fantasias cada. Anote-as, mostre ao parceiro(a) e fale sobre elas!",
+    "de":"Welche 2 Kostüme würdet ihr gerne mal ausprobieren. Schreibt sie auf, erratet sie gegenseitig und sprecht darüber!"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_1"
+    },
+    {
+    "question":{
+    "en":"Kiss me for 1 minute the way you love to be kissed and I'll kiss you for 1 minute the way I love to be kissed.",
+    "pt":"Beije-me por 1 minuto do jeito que você ama ser beijado(a) e eu irei te beijar por 1 minuto do jeito que eu amo ser beijado(a).",
+    "de":"Küsse mich 1 Minute lang, wie du es liebst geküsst zu werden und ich küsse dich eine Minute lang so, wie ich es liebe, geküsst zu werden."
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_2"
+    },
+    {
+    "question":{
+    "en":"Look into each other's eyes for 90 seconds. Do not speak. -> How did you feel?",
+    "pt":"Olhe nos olhos um do outro por 3 minutos. Não falem. -> Como você se sentiu?",
+    "de":"Schaut euch 3 min in die Augen. Dabei wird nicht gesprochen. -> Wie habt ihr euch dabei gefühlt?"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_3"
+    },
+    {
+    "question":{
+    "en":"You have one wish. What should I do differently in the bedroom today? What do you wish for in particular?",
+    "pt":"Você tem um desejo. O que devo fazer de diferente hoje no quarto? O que você deseja em particular?",
+    "de":"Wunsch frei. Was soll ich heute im Bett anders machen? Was wünscht du dir ganz besonderes?"
+    },
+    "categoryId":"level_1",
+    "type":"WILD_CARD",
+    "difficulty":1,
+    "id":"starter_wild_card_4"
+    },
+    {
+        "question":{
+        "en":"What do you think could strengthen our relationship every day? Direction: everyone writes their answer on a piece of paper. The slips of paper are exchanged face down and read aloud?",
+        "pt":"O que você acha que poderia fortalecer nosso relacionamento todos os dias? Direção: Todo mundo escreve sua resposta em um pedaço de papel. Os papéis são trocados de bruços e lidos em voz alta.",
+        "de":"Was glaubst du könnte unsere Beziehung jeden Tag aufs Neue stärken: Regieanweisung: jeder schreibt seine Antwort auf einen Zettel. Die Zettel werden verdeckt ausgetauscht und vorgelesen?"
+        },
+        "categoryId":"level_2",
+        "type":"WILD_CARD",
+        "difficulty":1,
+        "id":"basic_wild_card_1"
+        },
+        {
+        "question":{
+        "en":"Complete the sentence:: Whenever you… I fall a little more in love with you!",
+        "pt":"Complete a frase: Sempre que você... eu me apaixono um pouco mais por você!",
+        "de":"Vervollständige: Immer dann, wenn du …..verliebe ich mich ein bisschen mehr in dich!"
+        },
+        "categoryId":"level_2",
+        "type":"WILD_CARD",
+        "difficulty":1,
+        "id":"basic_wild_card_2"
+        },
+        {
+        "question":{
+        "en":"Complete: the most beautiful thing about you is that.....?",
+        "pt":"Complete a frase: a coisa mais linda sobre você é .....?",
+        "de":"Vervollständige: Das schönste an dir ist, dass…..?"
+        },
+        "categoryId":"level_2",
+        "type":"WILD_CARD",
+        "difficulty":1,
+        "id":"basic_wild_card_3"
+        },
+        {
+        "question":{
+        "en":"Wish granted: For the next 10 days, I will do one thing differently. What is it?",
+        "pt":"Desejo concedido: pelos próximos 10 dias, farei uma coisa de maneira diferente. O que é?",
+        "de":"Wunsch frei: Für die nächsten 10 Tage werde ich eine Sache anders machen. Was ist es?"
+        },
+        "categoryId":"level_2",
+        "type":"WILD_CARD",
+        "difficulty":2,
+        "id":"basic_wild_card_4"
+        },
+        {
+            "question":{
+            "en":"Our next weekend trip: where are we going and what are we doing?",
+            "pt":"Na nossa próxima viagem de fim de semana, para onde estamos indo e o que faremos lá?",
+            "de":"Unser nächster Wochenendtrip: Wohin reisen wir und was stellen wir an?"
+            },
+            "categoryId":"level_3",
+            "type":"WILD_CARD",
+            "difficulty":1,
+            "id":"deep_wild_card_1"
+            },
+            {
+            "question":{
+            "en":"Think of 3 things each from your bucket list. Write them down, guess them to each other. Agree on at least 1 project that will be tackled soon!",
+            "pt":"Pense em 3 coisas de sua lista. Anote-as, mostre ao parceiro(a) e fale sobre elas! Concorde em pelo menos 1 projeto que será abordado em breve!",
+            "de":"Denkt an je 3 Dinge von eurer Bucketlist. Schreibt sie auf, erratet sie gegenseitig. Einigt euch auf mindestens 1 Vorhaben, dass zeitnah angegangen wird!"
+            },
+            "categoryId":"level_3",
+            "type":"WILD_CARD",
+            "difficulty":1,
+            "id":"deep_wild_card_2"
+            },
+            {
+            "question":{
+            "en":"Search online for an unusual sex position. Write it down, guess it to each other and try it out. ",
+            "pt":"Pesquise online por uma posição sexual incomum. Anotem, mostrem um para o outro e experimentem.",
+            "de":"Welche ausgefallenen Sexstellung würdet ihr gerne mal ausprobieren. Schreibt sie auf, erratet sie gegenseitig und probiert sie aus. "
+            },
+            "categoryId":"level_3",
+            "type":"WILD_CARD",
+            "difficulty":1,
+            "id":"deep_wild_card_3"
+            },
+            {
+            "question":{
+            "en":"Complete the sentence: Without you, I would be missing….",
+            "pt":"Complete a frase: Sem você, eu sentiria falta de...",
+            "de":"Vervollständige: Ohne dich würde mir fehlen…."
+            },
+            "categoryId":"level_3",
+            "type":"WILD_CARD",
+            "difficulty":2,
+            "id":"deep_wild_card_4"
+            },
+            {
+                "question":{
+                "en":"Choose 2 fetishes each. Write them down, guess them and talk about them!",
+                "pt":"Escolham 2 fetiches cada. Anote-os, mostre ao parceiro(a) e fale sobre eles!",
+                "de":"Wählt je 2 Fetische aus, die ihr gerne mal ausprobieren wollt.. Schreibt sie auf, erratet sie gegenseitig und sprecht darüber!"
+                },
+                "categoryId":"level_4",
+                "type":"WILD_CARD",
+                "difficulty":1,
+                "id":"intimate_wild_card_1"
+                },
+                {
+                "question":{
+                "en":"Complete the sentence:: I love that you...",
+                "pt":"Complete a frase: Eu amo quando você...",
+                "de":"Vervollständige: ich liebe, dass du…."
+                },
+                "categoryId":"level_4",
+                "type":"WILD_CARD",
+                "difficulty":1,
+                "id":"intimate_wild_card_2"
+                },
+                {
+                "question":{
+                "en":"What 3 things did you notice the first time you met? Write them down and talk about them!",
+                "pt":"Que três coisas você notou quando me conheceu? Anote-as e fale sobre elas!",
+                "de":"Welche 3 Dinge sind euch aufgefallen, als ihr euch das erste Mal gesehen habt? Schreibt sie auf und sprecht darüber!"
+                },
+                "categoryId":"level_4",
+                "type":"WILD_CARD",
+                "difficulty":1,
+                "id":"intimate_wild_card_3"
+                },
+                {
+                "question":{
+                "en":"The translation from German to English is: \"What do you think you bring to the relationship? Does what I bring meet your expectations? If yes/no partly: In which aspects do you wish that I would contribute more? (Direction: Check whether what Partner 1 thinks to contribute is also what Partner 2 expects, or perhaps something completely different?",
+                "pt":"O que você acha que traz para o relacionamento? O que eu trago atende às suas expectativas? Se sim/não parcialmente: Em quais aspectos você gostaria que eu contribuísse mais? (Direção: Verifique se o que o Parceiro 1 pensa em contribuir é também o que o Parceiro 2 espera, ou talvez algo completamente diferente?",
+                "de":"Was denkst du bringst du in die Beziehung mit ein? Entspricht, dass was ich einbringe deinen Erwartungen? Wenn ja/nein teilweise: Bei welchen Aspekten wünscht du dir, dass ich mich mehr einbringe?\n(Regieanweiseung: gleicht ab, ob das was der Partner 1 denkt einzubringen auch das ist, was Partner 2 erwartet,oder vielleicht etwas völlig anderes ?"
+                },
+                "categoryId":"level_4",
+                "type":"WILD_CARD",
+                "difficulty":1,
+                "id":"intimate_wild_card_4"
+                }
+    ]

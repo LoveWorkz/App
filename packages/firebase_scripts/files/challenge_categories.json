@@ -1,0 +1,57 @@
+[
+  {
+    "id": "challenge_category_1",
+    "name": "All_in_one",
+    "displayName": {
+      "en": "All in one",
+      "pt": "Tudo em um",
+      "de": "All in one"
+    },
+    "createdDate": "",
+    "image": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FAllInOne%2FAllInOne_small.png?alt=media&token=7a8091b6-39f7-4d6b-bc22-3ec712e3e2fd"
+  },
+  {
+    "id": "challenge_category_2",
+    "name": "Starter",
+    "displayName": {
+      "en": "Starter",
+      "pt": "Iniciante",
+      "de": "Starter"
+    },
+    "createdDate": "",
+    "image": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FStarter%2FStarter_extra_small.png?alt=media&token=5aa267b2-b1c3-432f-ae67-1ff9911f7c4d"
+  },
+  {
+    "id": "challenge_category_3",
+    "name": "Basic",
+    "displayName": {
+      "en": "Basic",
+      "pt": "Básico",
+      "de": "Basic"
+    },
+    "createdDate": "",
+    "image": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_extra_small.png?alt=media&token=67f8dc74-fb84-4ff9-b3c8-ec4e92e0f993"
+  },
+  {
+    "id": "challenge_category_4",
+    "name": "Deep",
+    "displayName": {
+      "en": "Deep",
+      "pt": "Deep",
+      "de": "Deep"
+    },
+    "createdDate": "",
+    "image": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_extra_small.png?alt=media&token=eca909d2-ede9-4689-8acb-36577e93f1eb"
+  },
+  {
+    "id": "challenge_category_5",
+    "name": "Intimate",
+    "displayName": {
+      "en": "Intimate",
+      "pt": "Íntimo",
+      "de": "Intimate"
+    },
+    "createdDate": "",
+    "image": "https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FIntimate%2FIntimate_extra_small.png?alt=media&token=06aef836-41bb-407a-acbe-7e6f07e51622"
+  }
+]

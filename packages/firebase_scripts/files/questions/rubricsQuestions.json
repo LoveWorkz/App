@@ -1,0 +1,168 @@
+[
+    {
+        "question": {
+            "en": "What do you like most about me?",
+            "pt": "pt What do you like most about me?",
+            "de": "de What do you like most about me?"
+        },
+        "rubricId": "rubric_1",
+        "type": "ORDINARY_CARD",
+        "difficulty": 1,
+        "id": "rubric_question_1"
+    },
+    {
+        "question": {
+            "en": "2 What do you like most about me?",
+            "pt": "pt What do you like most about me?",
+            "de": "de What do you like most about me?"
+        },
+        "rubricId": "rubric_1",
+        "type": "ORDINARY_CARD",
+        "difficulty": 1,
+        "id": "rubric_question_2"
+    },
+    {
+        "question": {
+            "en": "3 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "rubricId": "rubric_1",
+        "type": "ORDINARY_CARD", 
+        "difficulty": 2,
+        "id": "rubric_question_3"
+    },
+    {
+        "question": {
+            "en": "4 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "rubricId": "rubric_1",
+        "type": "ORDINARY_CARD", 
+        "difficulty": 2,
+        "id": "rubric_question_4"
+    },
+    {
+        "question": {
+            "en": "5 What do you like most about me?",
+            "pt": "pt 3 What do you like most about me?",
+            "de": "de 3 What do you like most about me?"
+        },
+        "rubricId": "rubric_1",
+        "type": "ORDINARY_CARD", 
+        "difficulty": 2,
+        "id": "rubric_question_5"
+    },
+    {
+        "question": {
+            "en": "6 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_2",
+        "type": "ORDINARY_CARD",
+        "difficulty": 2,
+        "id": "rubric_question_6"
+    },
+    {
+        "question": {
+            "en": "7 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_2",
+        "type": "ORDINARY_CARD",
+        "difficulty": 2,
+        "id": "rubric_question_7"
+    },
+    {
+        "question": {
+            "en": "8 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_2",
+        "type": "ORDINARY_CARD",
+        "difficulty": 2,
+        "id": "rubric_question_8"
+    },
+    {
+        "question": {
+            "en": "9 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_2",
+        "type": "ORDINARY_CARD",
+        "difficulty": 2,
+        "id": "rubric_question_9"
+    },
+    {
+        "question": {
+            "en": "10 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_2",
+        "type": "ORDINARY_CARD",
+        "difficulty": 2,
+        "id": "rubric_question_10"
+    },
+    {
+        "question": {
+            "en": "11 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_3",
+        "type": "ORDINARY_CARD",
+        "difficulty": 3,
+        "id": "rubric_question_11"
+    },
+    {
+        "question": {
+            "en": "12 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_3",
+        "type": "ORDINARY_CARD",
+        "difficulty": 3,
+        "id": "rubric_question_12"
+    },
+    {
+        "question": {
+            "en": "13 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_3",
+        "type": "ORDINARY_CARD",
+        "difficulty": 3,
+        "id": "rubric_question_13"
+    },
+    {
+        "question": {
+            "en": "14 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_3",
+        "type": "ORDINARY_CARD",
+        "difficulty": 3,
+        "id": "rubric_question_14"
+    },
+    {
+        "question": {
+            "en": "15 What do you like most about me?",
+            "pt": "pt 4 What do you like most about me?",
+            "de": "de 4 What do you like most about me?"
+        },
+        "rubricId": "rubric_3",
+        "type": "ORDINARY_CARD",
+        "difficulty": 3,
+        "id": "rubric_question_15"
+    }
+  
+]

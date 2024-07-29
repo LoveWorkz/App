@@ -45,6 +45,7 @@ import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
+import InAppReviewStore from '@src/features/InAppReview/model/store/InAppReviewStore';
 
 interface HomePageProps {
   prevRouteName?: string;
@@ -87,6 +88,10 @@ const HomePage = (props: HomePageProps) => {
   useEffect(() => {
     homePageStore.init(language);
   }, [language]);
+
+  useEffect(() => {
+    InAppReviewStore.showNativePopup();
+  }, []);
 
   return (
     <>

@@ -1,0 +1,16 @@
+{
+  "name": "firebase_scripts",
+  "version": "1.0.0",
+  "description": "This is to upload JSON to Firestore",
+  "main": "uploader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "upload": "node uploader.js"
+  },
+  "author": "RetroPortal Studio",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.18.0",
+    "firebase-admin": "^11.5.0"
+  }
+}
