@@ -10,6 +10,7 @@ const Quotes = () => {
     <View>
       <QuotesModal
         visible={quotesStore.isQuoteModalVisible}
+        // visible={true}
         setVisible={quotesStore.setIsQuoteModalVisible}
       />
     </View>

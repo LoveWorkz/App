@@ -1,6 +1,82 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# Loveworkz docs
+
+## Collections (C)
+Need to remove these collections:
+- Categories_2
+- Questions
+
+## (C) Challenge_Categories
+This is header tab "Challenges" page.
+
+## (C) Rubrics
+This is list in "Topics" page
+
+## (C) levels
+This is cards in "Sessions" page
+
+## (C) quadrants
+4 main groups in "Session" page: Personal Growth, Friendship, Communication & Conflict and Shared Meaning.
+
+## (C) wild_questions
+
+## FILES
+
+All_16.xlsx - All questions list
+Menu_2.xlsx - tranlation
+NewBuild.xlsx          - challenge sequences
+Core_Challenges_6.xlsx - challenge questions
+
+## Links
+
+### Figma
+```
+https://www.figma.com/design/qLAOghgJXKLroTNtnG6KP1/LoveWorkz-WORK-FILE?node-id=1065-6551&t=1cdbEUz1qwZdqjI4-0
+```
+
+### Google admMob -
+```
+https://admob.google.com/home/
+```
+
+### APP STORE CONNECT -
+```
+https://appstoreconnect.apple.com/apps/6463159843/distribution/ios/version/inflight
+```
+
+### Apple developer account -
+```
+https://developer.apple.com/account
+```
+
+### Google play console -
+```
+https://play.google.com/console/u/0/developers/5737397304435905704/app-list
+```
+
+### google cloud platform
+```
+TODO
+```
+## Commands
+### . For getting APK file -
+```
+cd ./android && ./gradlew clean && cd ../
+cd ./android && ./gradlew assembleRelease && cd ../
+```
+
+### install iOS dependencies -
+```
+cd ios/ && pod install && cd ..
+```
+
+### Notes
+
+- if iOS not working you can delete iOS/Podfile.lock, iOS/pods, also clean build inside Xcode and then run the command cd ios/ && pod install && cd ..
+
 # Getting Started
+# Original React-native docs.
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
