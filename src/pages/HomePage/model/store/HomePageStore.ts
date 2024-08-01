@@ -90,6 +90,8 @@ class HomePageStore {
     // receive notifications from the storage and place them in the database
     await notificationStore.initUserNotifications();
 
+    // console.log('BOOKS', books[0]);
+
     quotesStore.checkQuotesShownStatus(books);
   };
 

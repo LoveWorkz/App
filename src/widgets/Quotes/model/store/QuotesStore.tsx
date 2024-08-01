@@ -89,6 +89,7 @@ class QuotesStore {
         const oneDay = 1;
 
         const diff = datediff(currentDate, quoteCheckingDate);
+        // TODO: restore time checking
         // checking last show time
         if (diff >= oneDay) {
           this.getAndSetQuotesModalInfo(books);
@@ -109,13 +110,15 @@ class QuotesStore {
   getAndSetQuotesModalInfo = (books: BookType[]) => {
     try {
       const currentBookId = this.quoteInfo.bookId;
+      // console.log('currentBookId', currentBookId);
       if (!currentBookId) {
         // only works the first time
 
         const firstBook = books[0];
+        // console.log('FIRST BOOK', firstBook);
         let currentBook = firstBook;
 
-        if (!firstBook.quote) {
+        if (!firstBook.quotes) {
           currentBook = this.getNextBook({
             books,
             currentBookId: firstBook.id,
@@ -164,12 +167,21 @@ class QuotesStore {
     try {
       const language = i18n.language as LanguageValueType;
 
-      if (!book.quote) {
+      if (!book.quotes) {
         return;
       }
 
+      // const quotesModalInfo = {
+      //   quote: book.quote[language],
+      //   bookAuthor: book.author,
+      //   bookName: book.displayName[language],
+      //   bookId: book.id,
+      // };
+
+      console.log('TESTING', book.quotes[0]);
+
       const quotesModalInfo = {
-        quote: book.quote[language],
+        quote: book.quotes[0][language],
         bookAuthor: book.author,
         bookName: book.displayName[language],
         bookId: book.id,

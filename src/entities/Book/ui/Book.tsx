@@ -183,7 +183,7 @@ export const Book = (props: BookProps) => {
             <StarRatings count={rate} isCentred={false} readOnly />
           </View>
           <View style={styles.rubrics}>
-            {rubrics.map(rubric => {
+            {rubrics[language].map(rubric => {
               return (
                 <View style={styles.category} key={rubric}>
                   <RubricFilterItem
