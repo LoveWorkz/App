@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo} from 'react';
 import {View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 

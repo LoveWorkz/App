@@ -50,9 +50,12 @@ export const TabView = React.memo((props: TabViewProps) => {
   const {renderScene, tabNames, setIndex, index} = props;
   const layout = useWindowDimensions();
 
-  const onIndexChange = React.useCallback((newIndex: number) => {
-    setIndex(newIndex);
-  }, []);
+  const onIndexChange = React.useCallback(
+    (newIndex: number) => {
+      setIndex(newIndex);
+    },
+    [setIndex],
+  );
 
   return (
     <View style={styles.TabView}>

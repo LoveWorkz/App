@@ -98,6 +98,7 @@ const HomePage = (props: HomePageProps) => {
       <View
         style={[
           styles.HomePage,
+          // eslint-disable-next-line react-native/no-inline-styles
           {marginBottom: isLoading ? 0 : horizontalScale(-HEADER_HEIGHT)},
         ]}>
         <HomePageHeader isLoading={isLoading} />

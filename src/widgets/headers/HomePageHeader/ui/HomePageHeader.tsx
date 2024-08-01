@@ -37,7 +37,7 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const user = userStore.user;
   if (isLoading || !user) {

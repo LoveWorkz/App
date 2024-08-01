@@ -5,7 +5,7 @@ import {
   questionStore,
   QuestionType,
 } from '@src/entities/QuestionCard';
-import { RubricType } from '@src/entities/Rubric';
+import {RubricType} from '@src/entities/Rubric';
 import {
   funFact,
   funFactDark,

@@ -20,13 +20,17 @@ const ChallengeTabView = (props: ChallengesPageProps) => {
   const renderScene = useMemo(() => {
     if (isFavortePage) {
       return SceneMap({
+        // eslint-disable-next-line react/no-unstable-nested-components
         core: () => <ComponentScreen isCore={true} isFavortePage />,
+        // eslint-disable-next-line react/no-unstable-nested-components
         special: () => <ComponentScreen isFavortePage />,
       });
     }
 
     return SceneMap({
+      // eslint-disable-next-line react/no-unstable-nested-components
       core: () => <ComponentScreen isCore={true} />,
+      // eslint-disable-next-line react/no-unstable-nested-components
       special: () => <ComponentScreen />,
     });
   }, [isFavortePage]);
@@ -36,7 +40,7 @@ const ChallengeTabView = (props: ChallengesPageProps) => {
       {key: 'core', title: t('challenge.tab_core')},
       {key: 'special', title: t('challenge.tab_special')},
     ];
-  }, []);
+  }, [t]);
 
   const onIndexChange = (index: number) => {
     setTimeout(() => {

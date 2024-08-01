@@ -6,6 +6,6 @@ export const TopicIcon = `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www
 </svg>
 `;
 
-export const getTopicIcon = ({isDarkMode = false}) => {
+export const getTopicIcon = ({_isDarkMode = false}) => {
   return TopicIcon;
 };

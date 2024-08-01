@@ -18,6 +18,7 @@ const ChallengeDetailsColumns = (props: ChallengeDetailsColumnsProps) => {
     <View
       style={[
         styles.ChallengeDetailsColumns,
+        // eslint-disable-next-line react-native/no-inline-styles
         {marginBottom: isMarginBottom ? verticalScale(10) : 'auto'},
       ]}>
       <View style={{marginRight: horizontalScale(thirdColumn ? 20 : 50)}}>

@@ -80,12 +80,15 @@ const CompletionItem = (props: CompletionItemProps) => {
       setValue(newRating);
       handleNext();
     },
-    [handleNext],
+    [handleNext, setValue],
   );
 
-  const onFeedbackChangeHandler = useCallback((value: string) => {
-    setValue(value);
-  }, []);
+  const onFeedbackChangeHandler = useCallback(
+    (newValue: string) => {
+      setValue(newValue);
+    },
+    [setValue],
+  );
 
   const onSendPressHandler = useCallback(() => {
     completionPageStore.sendRatingResults();
@@ -137,6 +140,7 @@ const CompletionItem = (props: CompletionItemProps) => {
         <View
           style={[
             styles.contentTop,
+            // eslint-disable-next-line react-native/no-inline-styles
             {
               marginBottom,
               top: isQuadrant ? 0 : verticalScale(-20),

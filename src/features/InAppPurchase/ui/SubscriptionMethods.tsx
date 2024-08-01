@@ -80,14 +80,23 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
       },
     ];
   }, [
-    formattedMonthlyPrice,
-    formattedYearlyPromoPrice,
     formattedYearlyPrice,
-    formattedMonthlyPromoPrice,
+    formattedYearlyPromoPrice,
+    t,
+    isPromo,
+    formattedProducts.formattedYearlyPromo.price,
+    formattedProducts.formattedYearly.price,
+    formattedProducts.formattedYearly.currency,
+    formattedProducts.formattedQuarterlyPromo.price,
+    formattedProducts.formattedQuarterly.price,
+    formattedProducts.formattedQuarterly.currency,
+    formattedProducts.formattedMonthlyPromo.price,
+    formattedProducts.formattedMonthly.price,
+    formattedProducts.formattedMonthly.currency,
     formattedQuarterlyPrice,
     formattedQuarterlyPromoPrice,
-    isPromo,
-    formattedProducts,
+    formattedMonthlyPrice,
+    formattedMonthlyPromoPrice,
   ]);
 
   return (

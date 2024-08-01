@@ -31,7 +31,7 @@ const DiscountOfferCard = (props: DiscountOfferCardProps) => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const onPressHandler = () => {
     inAppPurchaseStore.setIsInAppPurchaseModalVisible(true);

@@ -69,6 +69,7 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
           mode={'multiple'}
           carouselHeight={240}
           paginationStyle={styles.paginationStyle}
+          // eslint-disable-next-line react/no-unstable-nested-components
           Component={(param: BookType) => (
             <Pressable onPress={() => onBookPreviewPressHandler(param.id)}>
               <BookPreview isLoading={isLoading} {...param} />

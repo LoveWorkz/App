@@ -53,8 +53,8 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
     return sessionStore.getQuadrantIndexById(quadrants, quadrantId);
   }, [quadrants, quadrantId]);
 
-  const swipeHandler = useCallback((currentQuadrant: QuadrantType) => {
-    setCurrentQuadrant(currentQuadrant);
+  const swipeHandler = useCallback((newCurrentQuadrant: QuadrantType) => {
+    setCurrentQuadrant(newCurrentQuadrant);
   }, []);
 
   const onPressHandler = () => {

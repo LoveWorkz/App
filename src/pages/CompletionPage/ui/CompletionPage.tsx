@@ -72,11 +72,12 @@ const CompletionPage = () => {
       };
     });
   }, [
-    ratingResults,
     ratingInformationList,
+    ratingResults,
     currentLevel,
     isSending,
     description,
+    setRating,
   ]);
 
   const colors = useColors();

@@ -121,6 +121,7 @@ export const Carousel = <T = {},>(props: CarouselProps<T>) => {
           data={data}
           pagingEnabled
           renderItem={({item, index}) => (
+            // eslint-disable-next-line react-native/no-inline-styles
             <View style={[itemStyle, {width: setAsWidth ? itemWidth : 'auto'}]}>
               <Component
                 {...item}

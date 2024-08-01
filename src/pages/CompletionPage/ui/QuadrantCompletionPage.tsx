@@ -64,13 +64,14 @@ const QuadrantCompletionPage = () => {
       };
     });
   }, [
-    ratingResults,
     ratingInformationList,
-    isSending,
+    ratingResults,
     currentQuadrant,
-    nextQuadrant,
+    isSending,
+    nextQuadrant?.displayName,
     language,
     description,
+    setRating,
   ]);
 
   return (

@@ -31,7 +31,7 @@ const TherapistBlock = () => {
 
   const textStyle = useMemo(() => {
     return {color: colors.black};
-  }, []);
+  }, [colors.black]);
 
   // Initial settings for translateY, opacity, and scale
   const translateY = useSharedValue(windowHeightMinusNavbarHeight);
@@ -66,6 +66,7 @@ const TherapistBlock = () => {
         stiffness: 150,
       });
     }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

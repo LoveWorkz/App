@@ -71,6 +71,7 @@ export const Layout = (props: LayoutProps) => {
         <View
           style={[
             layoutStyles.layout,
+            // eslint-disable-next-line react-native/no-inline-styles
             {
               paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
               paddingTop: marginTop,

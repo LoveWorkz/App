@@ -269,7 +269,7 @@ class ChallengesStore {
         .get({source});
 
       // merge default challenges and user custom challenges together
-      const challenges = challengesData.docs.map((doc, i) => {
+      const challenges = challengesData.docs.map((doc, _i) => {
         const challenge = doc.data() as ChallengeType;
 
         return {

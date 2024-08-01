@@ -53,6 +53,7 @@ const AdaptiveLayout = (props: AdaptiveLayoutProps) => {
     <View
       style={[
         layoutStyles.layout,
+        // eslint-disable-next-line react-native/no-inline-styles
         {
           backgroundColor: isGradient ? 'transparent' : backgroundColor,
           paddingBottom: deleteBottomPadding ? 0 : paddingBottom,

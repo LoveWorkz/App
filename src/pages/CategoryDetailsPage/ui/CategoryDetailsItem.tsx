@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';

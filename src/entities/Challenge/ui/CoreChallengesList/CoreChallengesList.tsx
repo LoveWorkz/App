@@ -94,6 +94,7 @@ export const renderChallengeGroups = ({
         title={item.displayName[language]}
         description={item.description[language]}>
         {!!list.length &&
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           list.map((item, i) => renderChallenges({isCore, item, index: i}))}
       </ChallengeGroup>
     </View>

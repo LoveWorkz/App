@@ -4,7 +4,6 @@ import React, {
   MemoExoticComponent,
   MutableRefObject,
   useCallback,
-  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -20,7 +19,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {getDefaultIndexForCarousel} from '@src/shared/lib/common';
-import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
+// import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
 
 type Item = Record<string, any>;
 interface FooterProps {

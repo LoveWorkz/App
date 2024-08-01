@@ -161,6 +161,7 @@ export const Book = (props: BookProps) => {
             itemWidth={windowWidthMinusPaddings * 0.5}
             isTopPagination
             data={bookCarouselData}
+            // eslint-disable-next-line react/no-unstable-nested-components
             Component={({bookImage}: {bookImage: string}) => {
               return <BookPreview image={bookImage} fullImage={image} />;
             }}

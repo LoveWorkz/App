@@ -178,7 +178,7 @@ class HomePageStore {
       categoryStore.setCategory(homePageCategory);
 
       let quickStartCategoryName = category.displayName[language];
-      let progressBarCategoryName = quickStartCategoryName;
+      // let progressBarCategoryName = quickStartCategoryName;
       let progressBarCategoryKey = userCurrentCategoryKey;
 
       // Hot and How To Use should not show up in the progress bar
@@ -194,7 +194,7 @@ class HomePageStore {
           return;
         }
 
-        progressBarCategoryName = intimateCategory.displayName[language];
+        // progressBarCategoryName = intimateCategory.displayName[language];
         progressBarCategoryKey = CategoryKey.Intimate;
       }
 

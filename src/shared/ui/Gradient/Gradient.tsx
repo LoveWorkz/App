@@ -39,6 +39,7 @@ export const Gradient = (props: GradientProps) => {
     return (
       <LinearGradient
         colors={gradientColors}
+        // eslint-disable-next-line react-native/no-inline-styles
         style={[styles[size], style, {flex: 1}]}
         start={start}
         end={end}

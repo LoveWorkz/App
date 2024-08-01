@@ -36,7 +36,7 @@ const QuickStart = (props: QuickStartProps) => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   // const onHandler = async () => {
   //   JSON.forEach(async item => {

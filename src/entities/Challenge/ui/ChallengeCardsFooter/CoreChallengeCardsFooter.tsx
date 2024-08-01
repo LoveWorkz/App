@@ -31,6 +31,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onCompleteHandler = () => {
     challengeStore.coreChallengeCardButtonPressHandler({
       coreChallengeId: currentCoreChallenge!.id,
@@ -55,6 +56,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
           currentCoreChallenge && undoHandler(currentCoreChallenge)
         }
         backgroundColor="##8581cf"
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           paddingHorizontal: 20,
           backgroundColor: '#8581cf',
@@ -69,12 +71,13 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
 
         <AppText
           text={t('common.done')}
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
           size={TextSize.LEVEL_4}
         />
       </Button>
     );
-  }, [colors.white, currentCoreChallenge]);
+  }, [colors.white, currentCoreChallenge, t]);
 
   const ProceedButton = useMemo(() => {
     return (
@@ -92,7 +95,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         </Button>
       </View>
     );
-  }, [colors.white, isSelectingChallenge, onCompleteHandler]);
+  }, [colors.white, isSelectingChallenge, onCompleteHandler, t]);
 
   const RegularFooter = useMemo(() => {
     return (
@@ -148,6 +151,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     onCompleteHandler,
     session?.isCurrent,
     showPagination,
+    t,
   ]);
 
   // if (currentCoreChallenge) {

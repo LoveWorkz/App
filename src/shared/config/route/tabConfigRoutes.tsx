@@ -10,7 +10,7 @@ import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
 import {RubricsPage} from '@src/pages/RubricsPage';
 import {StatusBar} from 'react-native';
-import {t} from 'i18next';
+// import {t} from 'i18next';
 
 export enum TabRoutesNames {
   HOME = 'home',

@@ -303,7 +303,7 @@ const renderLockedContent = (params: {
     isSpecialCategoryBlocked,
     categorySize,
     colors,
-    size,
+    // size,
   } = params;
 
   if (isContentLocked && !isSpecialCategory) {

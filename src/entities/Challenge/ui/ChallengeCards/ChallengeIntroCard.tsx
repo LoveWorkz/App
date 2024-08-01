@@ -36,7 +36,7 @@ const ChallengeIntroCard = () => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const onChallengeBackgroundPressHandler = () => {
     setIsVisible(prev => !prev);
@@ -52,7 +52,7 @@ const ChallengeIntroCard = () => {
     });
 
     setIsPopupVisible(false);
-  }, []);
+  }, [language, specialChallenge?.title]);
 
   if (!specialChallenge) {
     return null;

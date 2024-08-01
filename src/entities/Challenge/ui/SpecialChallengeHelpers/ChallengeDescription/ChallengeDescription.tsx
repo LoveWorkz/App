@@ -17,6 +17,7 @@ const ChallengeDescription = (props: ChallengeDescriptionProps) => {
 
   if (!gradientWordscount) {
     return (
+      // eslint-disable-next-line react-native/no-inline-styles
       <View style={{marginBottom: isMarginBottom ? verticalScale(10) : 'auto'}}>
         <AppText
           align="justify"
@@ -35,6 +36,7 @@ const ChallengeDescription = (props: ChallengeDescriptionProps) => {
   const secondPart = description.split(' ').slice(gradientWordscount).join(' ');
 
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <View style={{marginBottom: isMarginBottom ? verticalScale(10) : 'auto'}}>
       <Text style={styles.text}>
         <TouchableOpacity>

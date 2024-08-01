@@ -60,9 +60,9 @@ export const Avatar = memo((props: AvatarProps) => {
     return [styles.Avatar, style, {width: size, height: size}];
   }, [style, size]);
 
-  const image = useMemo(() => {
-    return {uri: imageUrl};
-  }, [imageUrl]);
+  // const image = useMemo(() => {
+  // return {uri: imageUrl};
+  // }, [imageUrl]);
 
   const onLoadStartHandler = useCallback(() => {
     if (isLoading) {
@@ -97,7 +97,7 @@ export const Avatar = memo((props: AvatarProps) => {
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   Avatar: {
     justifyContent: 'center',
     alignItems: 'center',

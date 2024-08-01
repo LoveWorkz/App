@@ -1,4 +1,4 @@
-import {Platform} from 'react-native';
+// import {Platform} from 'react-native';
 import mobileAds, {
   InterstitialAd,
   TestIds,
@@ -8,10 +8,10 @@ export const initAdmob = () => {
   mobileAds().initialize();
 };
 
-const interstitialID = Platform.select({
-  ios: 'ca-app-pub-4287224605926771/4098715773',
-  android: 'ca-app-pub-4287224605926771/7818468938',
-});
+// const interstitialID = Platform.select({
+// ios: 'ca-app-pub-4287224605926771/4098715773',
+// android: 'ca-app-pub-4287224605926771/7818468938',
+// });
 
 export const initInterstitialAd = () => {
   // const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : interstitialID || '';

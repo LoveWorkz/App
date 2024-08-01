@@ -80,6 +80,7 @@ const SubscriptionBlock = (props: SubscriptionBlockProps) => {
         radius={moderateScale(15)}
         style={styles.contentWrapper}
         contentStyle={[
+          // eslint-disable-next-line react-native/no-inline-styles
           {
             ...getShadowOpacity(
               theme,

@@ -15,7 +15,7 @@ const ChallengeCategoryBlock = (props: ChallengeCategoryBlockProps) => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   return (
     <PillContainer>

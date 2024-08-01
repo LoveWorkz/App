@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import {upperCase} from 'lodash';

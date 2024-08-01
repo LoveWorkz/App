@@ -25,7 +25,7 @@ const CoreChallengeIntroCard = () => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const currentCoreChallengeGroup =
     challengeGroupStore.currentCoreChallengeGroup;
