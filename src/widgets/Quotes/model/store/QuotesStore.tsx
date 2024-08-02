@@ -178,7 +178,7 @@ class QuotesStore {
       //   bookId: book.id,
       // };
 
-      console.log('TESTING', book.quotes[0]);
+      // console.log('TESTING', book.quotes[0]);
 
       const quotesModalInfo = {
         quote: book.quotes[0][language],
