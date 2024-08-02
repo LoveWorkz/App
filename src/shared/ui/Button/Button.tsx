@@ -54,6 +54,7 @@ export const Button = (props: ButtonProps) => {
   const mode = useMemo(() => {
     return [
       styles.Button,
+      //@ts-ignore
       styles[theme],
       disabled ? styles.disabled : '',
       squar ? styles.squar : '',
@@ -116,7 +117,7 @@ export const Button = (props: ButtonProps) => {
   );
 };
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   Button: {
     height: height,
     paddingHorizontal: horizontalScale(1),

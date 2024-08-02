@@ -216,7 +216,7 @@ class QuotesStore {
     const nextBook = books[nextBookIndex];
 
     // looking for the nearest book with quote
-    if (!nextBook.quote) {
+    if (!nextBook.quotes) {
       return this.getNextBook({books, currentBookId: nextBook.id});
     }
 

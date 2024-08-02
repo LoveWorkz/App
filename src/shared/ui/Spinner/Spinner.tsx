@@ -35,7 +35,7 @@ export const Spinner = memo((props: AppTextProps) => {
 
 const styles = StyleSheet.create({
   spinnerTextStyle: {
-    ...globalStyles.textFont,
+    // ...globalStyles.textFont,
     ...globalStyles.size_6,
   },
 });

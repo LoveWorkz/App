@@ -33,7 +33,7 @@ export const Dialog = memo((props: DialogProps) => {
           )}
           {text && (
             <AppText
-              style={[styles.text, {color: colors.primaryTextColor}]}
+              style={[{color: colors.primaryTextColor}]}
               size={TextSize.LEVEL_3}
               weight={'600'}
               text={text}
@@ -58,7 +58,7 @@ export const Dialog = memo((props: DialogProps) => {
   );
 });
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   contentStyle: {
     height: 'auto',
   },

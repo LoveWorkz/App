@@ -39,6 +39,7 @@ export const Gradient = (props: GradientProps) => {
     return (
       <LinearGradient
         colors={gradientColors}
+        //@ts-ignore
         // eslint-disable-next-line react-native/no-inline-styles
         style={[styles[size], style, {flex: 1}]}
         start={start}
@@ -49,6 +50,7 @@ export const Gradient = (props: GradientProps) => {
 
   return (
     <LinearGradient
+      //@ts-ignore
       style={[styles.gradient, styles[size], style]}
       colors={gradientColors}
       start={start}
@@ -58,7 +60,7 @@ export const Gradient = (props: GradientProps) => {
   );
 };
 
-const styles = StyleSheet.create<Record<string, any>>({
+const styles = StyleSheet.create({
   gradient: {
     borderRadius: moderateScale(10),
   },

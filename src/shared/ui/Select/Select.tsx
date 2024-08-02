@@ -170,7 +170,14 @@ export const Select = memo((props: SelectProps) => {
         {isScrolling ? (
           <FlatList
             initialScrollIndex={0}
-            getItemLayout={getItemLayout}
+            getItemLayout={
+              getItemLayout as
+                | ((
+                    data: ArrayLike<any> | null | undefined,
+                    index: number,
+                  ) => {length: number; offset: number; index: number})
+                | undefined
+            }
             ref={getFlatlistRef}
             style={styles.body}
             data={options}
