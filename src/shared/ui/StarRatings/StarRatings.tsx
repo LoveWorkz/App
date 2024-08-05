@@ -2,11 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import {
-  outlineStar,
-  selectedStar,
-  unselectedStar,
-} from '@src/shared/assets/images';
+import {outlineStar, selectedStar} from '@src/shared/assets/images';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '../AppText/AppText';
@@ -123,6 +119,7 @@ export const StarRatings = memo((props: StarRatingsProps) => {
     <View
       style={[
         styles.Stars,
+        // eslint-disable-next-line react-native/no-inline-styles
         {justifyContent: isCentred ? 'center' : 'flex-start'},
       ]}>
       {arrayFromNumber.map((_, index) => {

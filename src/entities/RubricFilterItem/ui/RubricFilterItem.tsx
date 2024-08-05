@@ -117,6 +117,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
     <Gradient
       style={[
         styles.RubricFilterItem,
+        // eslint-disable-next-line react-native/no-inline-styles
         {
           height,
           opacity: active || !action ? 1 : 0.6,

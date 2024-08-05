@@ -3,18 +3,18 @@ import {StyleSheet, View} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {useTranslation} from 'react-i18next';
 
 const PrivacyPolicyPage = () => {
   const colors = useColors();
+  const {t} = useTranslation();
 
   return (
     <View style={styles.privacyPolicy}>
       <AppText
         style={[styles.text, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'
-        }
+        text={t('common.privacy_policy_text')}
       />
     </View>
   );

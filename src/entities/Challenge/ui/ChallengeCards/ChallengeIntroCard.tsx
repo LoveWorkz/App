@@ -20,10 +20,12 @@ import {CaptureComponent} from '@src/shared/ui/CaptureComponent/CaptureComponent
 import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoPopup';
 import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
 import challengeStore from '../../model/store/challengeStore';
+import {useTranslation} from 'react-i18next';
 
 const ChallengeIntroCard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const {t} = useTranslation();
 
   const colors = useColors();
   const language = useLanguage();
@@ -34,7 +36,7 @@ const ChallengeIntroCard = () => {
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const onChallengeBackgroundPressHandler = () => {
     setIsVisible(prev => !prev);
@@ -50,7 +52,7 @@ const ChallengeIntroCard = () => {
     });
 
     setIsPopupVisible(false);
-  }, []);
+  }, [language, specialChallenge?.title]);
 
   if (!specialChallenge) {
     return null;
@@ -66,7 +68,7 @@ const ChallengeIntroCard = () => {
         <AppText
           style={[styles.text, textStyle]}
           size={TextSize.LEVEL_4}
-          text={"Your today's challenge"}
+          text={t('common.youre_todays_challenge')}
         />
         <AppText
           style={[styles.text, textStyle]}
@@ -117,7 +119,7 @@ const ChallengeIntroCard = () => {
           size={TextSize.LEVEL_4}
           weight={'600'}
           style={[textStyle, styles.challengeBackgroundText]}
-          text={true ? 'Challenge background' : 'Collapse'}
+          text={true ? t('common.challenge_background') : t('common.collapse')}
         />
         {isVisible ? (
           <SvgXml xml={ArrowUpIcon} style={styles.icon} fill={colors.white} />
@@ -153,7 +155,7 @@ const ChallengeIntroCard = () => {
         <GradientText
           size={TextSize.LEVEL_4}
           weight={'600'}
-          text={'We’re ready. Let’s do it!'}
+          text={t('common.we_are_ready')}
         />
       </Button>
 

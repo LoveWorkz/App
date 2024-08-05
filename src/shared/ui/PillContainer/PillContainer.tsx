@@ -1,4 +1,4 @@
-import React, {memo, ReactElement} from 'react';
+import React, {ReactElement} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import {useColors} from '@src/app/providers/colorsProvider';

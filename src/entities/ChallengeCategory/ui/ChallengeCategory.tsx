@@ -140,9 +140,10 @@ const ChallengeCategory = (props: ChallangeProps) => {
     return [
       styles.challange,
       {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
+      // @ts-ignore
       styles[size],
     ];
-  }, [size, theme]);
+  }, [colors.bgColor, size, theme]);
 
   if (isSkeleton) {
     return (

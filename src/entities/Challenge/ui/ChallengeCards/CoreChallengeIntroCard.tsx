@@ -16,14 +16,16 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {useTranslation} from 'react-i18next';
 
 const CoreChallengeIntroCard = () => {
   const colors = useColors();
   const language = useLanguage();
+  const {t} = useTranslation();
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
-  }, []);
+  }, [colors.white]);
 
   const currentCoreChallengeGroup =
     challengeGroupStore.currentCoreChallengeGroup;
@@ -67,7 +69,7 @@ const CoreChallengeIntroCard = () => {
               size={TextSize.LEVEL_5}
               lineHeight={24}
               weight="700"
-              text={'Info'}
+              text={t('challenge.group_info_title')}
             />
           </View>
           {description && (
@@ -85,7 +87,7 @@ const CoreChallengeIntroCard = () => {
             size={TextSize.LEVEL_5}
             lineHeight={24}
             weight="700"
-            text={'Instructions'}
+            text={t('challenge.group_instructions_title')}
           />
         </View>
 
@@ -104,7 +106,7 @@ const CoreChallengeIntroCard = () => {
         <GradientText
           size={TextSize.LEVEL_4}
           weight={'600'}
-          text={'Hop to the Challenge'}
+          text={t('challenge.hop_to_the_challenge')}
         />
       </Button>
     </View>

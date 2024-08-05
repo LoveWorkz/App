@@ -1,6 +1,7 @@
 import React, {useCallback, memo} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {SvgXml} from 'react-native-svg';
+import {t} from 'i18next';
 
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
@@ -52,7 +53,11 @@ const IconItem = (props: IconItemProps) => {
         ]}
         weight={'600'}
         size={TextSize.LEVEL_1}
-        text={name === TabRoutesNames.CATEGORIES ? 'sessions' : name}
+        text={
+          name === TabRoutesNames.CATEGORIES
+            ? t('tab_navigator.tab_name_sessions')
+            : t(`tab_navigator.tab_name_${name}`)
+        }
       />
     </Pressable>
   );

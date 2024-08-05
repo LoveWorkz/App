@@ -58,6 +58,7 @@ const skeletonContentTop = -20;
 
 const HomePage = (props: HomePageProps) => {
   const {isTabScreen, prevRouteName} = props;
+  const {t} = useTranslation();
 
   const {theme} = useTheme();
   const {i18n} = useTranslation();
@@ -97,6 +98,7 @@ const HomePage = (props: HomePageProps) => {
       <View
         style={[
           styles.HomePage,
+          // eslint-disable-next-line react-native/no-inline-styles
           {marginBottom: isLoading ? 0 : horizontalScale(-HEADER_HEIGHT)},
         ]}>
         <HomePageHeader isLoading={isLoading} />
@@ -147,9 +149,9 @@ const HomePage = (props: HomePageProps) => {
             <CategoriesCarousel isLoading={isLoading} />
 
             <CopilotStep
-              name="Beyond your love journey there’s always more to explore"
+              name={t('copilot.step_3_name')}
               order={3}
-              text="Dive straight into sessions, delve deeper into topics, or take on an extra challenge whenever you feel inspired">
+              text={t('copilot.step_3_text')}>
               <WalkthroughableWiew style={styles.walkthroughableWiew} />
             </CopilotStep>
 

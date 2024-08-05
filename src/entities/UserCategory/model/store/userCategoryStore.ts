@@ -341,6 +341,7 @@ class UserCategoryStore {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     updates.forEach(({levelId, quadrantId, updates}) => {
       const levelRef = db
         .collection(Collections.USER_LEVELS)

@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
@@ -55,12 +55,12 @@ const Rubric = (props: RubricProps) => {
 
   const shouldDisplayNewBanner = !userRubricsSeen?.includes(rubric.id);
 
-  const source = useMemo(() => {
-    return {
-      uri: rubric.image,
-      priority: FastImage.priority.normal,
-    };
-  }, [rubric.image]);
+  // const source = useMemo(() => {
+  //   return {
+  //     uri: rubric.image,
+  //     priority: FastImage.priority.normal,
+  //   };
+  // }, [rubric.image]);
 
   const onRubricPressHandlerCreator = (id: string) => {
     return () => {

@@ -10,6 +10,7 @@ import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
 import {RubricsPage} from '@src/pages/RubricsPage';
 import {StatusBar} from 'react-native';
+// import {t} from 'i18next';
 
 export enum TabRoutesNames {
   HOME = 'home',
@@ -18,6 +19,22 @@ export enum TabRoutesNames {
   CHALLENGES = 'challenges',
   TOPICS = 'topics',
 }
+
+// export const tabRoutePaths: Record<TabRoutesNames, string> = {
+//   [TabRoutesNames.HOME]: t('tab_navigator.tab_name_home'),
+//   [TabRoutesNames.CATEGORIES]: t('tab_navigator.tab_name_sessions'),
+//   [TabRoutesNames.BOOKS]: t('tab_navigator.tab_name_books'),
+//   [TabRoutesNames.CHALLENGES]: t('tab_navigator.tab_name_challenges'),
+//   [TabRoutesNames.TOPICS]: t('tab_navigator.tab_name_topics'),
+// };
+
+// export const tabRoutePaths: Record<TabRoutesNames, string> = {
+//   [TabRoutesNames.HOME]: 'home',
+//   [TabRoutesNames.CATEGORIES]: t('tab_navigator.tab_name_sessions'),
+//   [TabRoutesNames.BOOKS]: t('tab_navigator.tab_name_books'),
+//   [TabRoutesNames.CHALLENGES]: t('tab_navigator.tab_name_challenges'),
+//   [TabRoutesNames.TOPICS]: t('tab_navigator.tab_name_topics'),
+// };
 
 export const tabRoutePaths: Record<TabRoutesNames, string> = {
   [TabRoutesNames.HOME]: 'home',

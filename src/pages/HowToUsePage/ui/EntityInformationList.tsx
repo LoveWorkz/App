@@ -5,6 +5,8 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TextListItem} from '@src/shared/ui/TextListItem/TextListItem';
+import {upperFirst} from 'lodash';
+import {useTranslation} from 'react-i18next';
 
 const EntityInformationList = () => {
   const onLevelPressHandler = useCallback(() => {
@@ -15,33 +17,29 @@ const EntityInformationList = () => {
     navigation.navigate(AppRouteNames.QUADRANT_DETAILS);
   }, []);
 
+  const {t} = useTranslation();
+
   return (
     <View style={styles.List}>
       <View style={styles.listItem}>
         <TextListItem
           hideButton={false}
           onPress={onLevelPressHandler}
-          prefix={'Levels:'}
-          text={
-            'These represent the stages of your journey, with each level building on the last to introduce more complex concepts and discussions as your relationship matures.'
-          }
+          prefix={`${upperFirst(t('common.levels'))}:`}
+          text={t('common.these_represents_stages_of_journey')}
         />
       </View>
       <View style={styles.listItem}>
         <TextListItem
           hideButton={false}
           onPress={onQuadrantPressHandler}
-          prefix={'Quadrants:'}
-          text={
-            'Within each level, the journey is segmented into four key quadrants - Personal Growth, Friendship, Communication & Conflict, and Dreams. These quadrants are the pillars that support a healthy, thriving relationship, addressing the essential areas for development and understanding.'
-          }
+          prefix={`${upperFirst(t('common.quadrants'))}:`}
+          text={t('common.with_each_level_text')}
         />
       </View>
       <TextListItem
-        prefix={'Sessions:'}
-        text={
-          'Every quadrant consists of 4- 5 sessions, each containing 14 carefully selected questions from over 35 relevant topics, ensuring a comprehensive exploration of each area. The sessions are designed to progressively tackle important relationship themes, facilitating deep discussions and reflections.'
-        }
+        prefix={`${upperFirst(t('sessions.sessions'))}:`}
+        text={t('common.every_quadrant_consists')}
       />
     </View>
   );

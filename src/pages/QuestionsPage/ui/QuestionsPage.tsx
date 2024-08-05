@@ -136,15 +136,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         setIsGradient(false);
         // adListener();
       };
-    }, [
-      key,
-      id,
-      language,
-      sharedQuestionId,
-      sessionId,
-      setIsGradient,
-      isPreviousScreenBreak,
-    ]),
+    }, [key, id, language, sharedQuestionId, sessionId, setIsGradient]),
   );
   const getFormattedQuestions = useMemo(() => {
     return getFormattedQuestionsWrapper({
@@ -152,7 +144,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
       rubrics,
       isDarkMode: theme === Theme.Dark,
     });
-  }, [questions, theme]);
+  }, [questions, rubrics, theme]);
 
   const formattedQuestions = useMemo(() => {
     return getFormattedQuestions();
@@ -206,7 +198,7 @@ const QuestionsPage = (props: QuestionsPageProps) => {
         setIsGradient,
       });
     },
-    [key, id, language, timer, incrementViewCountHandler],
+    [key, incrementViewCountHandler, language, id, setIsGradient],
   );
 
   const questionsWithEmptyCard = useMemo(() => {

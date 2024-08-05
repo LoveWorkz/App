@@ -26,6 +26,7 @@ import {GradientArrowUpIcon} from '@src/shared/assets/icons/ArrowUp';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {userStore} from '@src/entities/User';
 import preSessionPageStore from '../model/store/PreSessionPageStore';
+import {useTranslation} from 'react-i18next';
 
 const PreSessionPage = () => {
   const language = useLanguage();
@@ -42,6 +43,7 @@ const PreSessionPage = () => {
   const currentLevelInfo = userStore.currentCategory;
   const levelName = currentLevelInfo?.currentCategory;
   const currentLevel = categoryStore.getCategoryByName(levelName);
+  const {t} = useTranslation();
 
   const currentQuadrantAndSession =
     preSessionPageStore.currentQuadrantAndSession;
@@ -123,7 +125,7 @@ const PreSessionPage = () => {
       <View style={styles.textWrapper}>
         <AppText
           size={TextSize.LEVEL_2}
-          text={'Your current intimacy level'}
+          text={t('home.current_level')}
           weight={'600'}
         />
 
@@ -151,8 +153,10 @@ const PreSessionPage = () => {
           weight={'600'}
           text={
             isCollapsed
-              ? `See all sessions of ${currentQuadrantAndSession.displayName[language]}`
-              : 'Collapse'
+              ? `${t('common.see_all_session_of')} ${
+                  currentQuadrantAndSession.displayName[language]
+                }`
+              : t('common.collapse')
           }
         />
         <SvgXml
@@ -170,7 +174,7 @@ const PreSessionPage = () => {
           style={{color: colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
           weight={'600'}
-          text={'Begin Session'}
+          text={t('common.begin_session')}
         />
         <SvgXml
           xml={getArrowRightIcon({isGradient: false})}

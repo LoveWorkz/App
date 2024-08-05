@@ -1,6 +1,7 @@
-import React, {memo, useEffect, useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {observer} from 'mobx-react-lite';
 import {StatusBar, StyleSheet, View} from 'react-native';
+import {upperCase} from 'lodash';
 
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
@@ -10,11 +11,13 @@ import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import TherapistBlock from './TherapistBlock';
 import breakPageStore from '../model/store/breakPageStore';
+import {useTranslation} from 'react-i18next';
 
 const BreakPage = () => {
   const colors = useColors();
   const language = useLanguage();
   const isLoading = breakPageStore.isLoading;
+  const {t} = useTranslation();
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -32,16 +35,14 @@ const BreakPage = () => {
           weight="900"
           style={textStyle}
           size={TextSize.SIZE_48}
-          text={'WELL DONE!'}
+          text={upperCase(t('common.well_done'))}
         />
         <AppText
           style={[styles.description, textStyle]}
           size={TextSize.LEVEL_5}
           align={'center'}
           weight="500"
-          text={
-            'You have succefully mastered the question part. Wasnt that bad wasn’t it?'
-          }
+          text={t('common.successfully_mastered_questions')}
         />
       </View>
 
@@ -53,9 +54,7 @@ const BreakPage = () => {
           size={TextSize.LEVEL_4}
           align={'center'}
           weight="500"
-          text={
-            'Master the upcoming challenge now to successfully complete this session.'
-          }
+          text={t('common.master_next')}
         />
         <Button
           disabled={isLoading}
@@ -65,7 +64,7 @@ const BreakPage = () => {
           <GradientText
             size={TextSize.LEVEL_4}
             weight={'500'}
-            text={'Let’s do this challenge'}
+            text={t('common.lets_do_this_challenge')}
           />
         </Button>
       </View>

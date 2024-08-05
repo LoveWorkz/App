@@ -14,6 +14,7 @@ import challengeStore from '../../model/store/challengeStore';
 import {SvgXml} from 'react-native-svg';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
+import {useTranslation} from 'react-i18next';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -23,6 +24,7 @@ interface CoreChallengeCardsFooterProps {
 const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {count, currentIndex} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
@@ -54,6 +56,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
           currentCoreChallenge && undoHandler(currentCoreChallenge)
         }
         backgroundColor="##8581cf"
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           paddingHorizontal: 20,
           backgroundColor: '#8581cf',
@@ -67,13 +70,14 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         />
 
         <AppText
-          text="Done"
+          text={t('common.done')}
+          // eslint-disable-next-line react-native/no-inline-styles
           style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
           size={TextSize.LEVEL_4}
         />
       </Button>
     );
-  }, [colors.white, currentCoreChallenge]);
+  }, [colors.white, currentCoreChallenge, t]);
 
   const ProceedButton = useMemo(() => {
     return (
@@ -86,12 +90,12 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
           <GradientText
             size={TextSize.LEVEL_4}
             weight={'600'}
-            text={'We’ve done the challenge'}
+            text={t('common.we_have_done_the_challenge')}
           />
         </Button>
       </View>
     );
-  }, [colors.white, isSelectingChallenge, onCompleteHandler]);
+  }, [colors.white, isSelectingChallenge, onCompleteHandler, t]);
 
   const RegularFooter = useMemo(() => {
     return (
@@ -108,7 +112,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
                 <GradientText
                   size={TextSize.LEVEL_4}
                   weight={'600'}
-                  text={'We’ve done the challenge'}
+                  text={t('common.we_have_done_the_challenge')}
                 />
               </Button>
             ) : (
@@ -126,7 +130,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
                       align={'center'}
                       lineHeight={15}
                       weight={'600'}
-                      text={'Lock one of the challenges'}
+                      text={t('common.lock_one_of_the_challenges')}
                     />
                   </>
                 ) : (
@@ -147,6 +151,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     onCompleteHandler,
     session?.isCurrent,
     showPagination,
+    t,
   ]);
 
   // if (currentCoreChallenge) {

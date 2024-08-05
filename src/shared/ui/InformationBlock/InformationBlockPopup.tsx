@@ -77,7 +77,7 @@ export const InformationBlockPopup = memo(
                 style={{color: colors.bgQuinaryColor}}
                 size={TextSize.LEVEL_4}
                 weight={'700'}
-                text={t('ok')}
+                text={t('common.ok')}
               />
             </Button>
           </View>

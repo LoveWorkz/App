@@ -21,7 +21,7 @@ export const Spinner = memo((props: AppTextProps) => {
   return (
     <SP
       visible={visible}
-      textContent={`${t('loading')}...`}
+      textContent={`${t('common.loading')}...`}
       textStyle={
         [
           styles.spinnerTextStyle,
@@ -35,7 +35,7 @@ export const Spinner = memo((props: AppTextProps) => {
 
 const styles = StyleSheet.create({
   spinnerTextStyle: {
-    ...globalStyles.textFont,
+    // ...globalStyles.textFont,
     ...globalStyles.size_6,
   },
 });

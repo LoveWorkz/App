@@ -44,7 +44,7 @@ const ChallengeItem = (props: ChallengeItemProps) => {
     } else {
       challengeStore.selectSpecialChallenge({id, newValue: !isChecked});
     }
-  }, [id, isChecked]);
+  }, [id, isChecked, isCoreChallenge]);
 
   const onChallengePressHandler = () => {
     // setting this flag to avoid going to the final page

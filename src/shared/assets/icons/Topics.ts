@@ -7,5 +7,7 @@ export const TopicIcon = `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www
 `;
 
 export const getTopicIcon = ({isDarkMode = false}) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _isDarkMode = isDarkMode;
   return TopicIcon;
 };

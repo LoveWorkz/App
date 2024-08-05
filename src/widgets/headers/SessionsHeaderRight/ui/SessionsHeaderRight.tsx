@@ -9,6 +9,7 @@ import {horizontalScale} from '@src/shared/lib/Metrics';
 import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {useTranslation} from 'react-i18next';
 
 interface SessionsHeaderRightProps {
   isFavorite?: boolean;
@@ -16,6 +17,7 @@ interface SessionsHeaderRightProps {
 
 const SessionsHeaderRight = (props: SessionsHeaderRightProps) => {
   const {isFavorite = false} = props;
+  const {t} = useTranslation();
 
   const colors = useColors();
 
@@ -34,7 +36,7 @@ const SessionsHeaderRight = (props: SessionsHeaderRightProps) => {
             weight={'600'}
             size={TextSize.LEVEL_2}
             style={styles.title}
-            text={'How to use'}
+            text={t('settings.how_to_use')}
           />
         )}
         <SvgXml

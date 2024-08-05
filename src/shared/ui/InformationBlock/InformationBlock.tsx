@@ -49,7 +49,7 @@ const InformationBlock = (props: InformationBlockProps) => {
   const buttonRef: RefWithMeasureInWindow = useRef(null);
 
   const [visible, setVisible] = useState(false);
-  const [modalPosition, setModalPosition] =
+  const [_modalPosition, setModalPosition] =
     useState<InformationBlockButtonCoordinates>({
       top: 0,
       left: 0,

@@ -58,7 +58,7 @@ const WelcomePage = () => {
         />
         <View style={styles.btnWrapper}>
           <GradientArrowButton
-            text={t('lets_do_this')}
+            text={t('common.lets_do_this')}
             onPressHandler={letsDoThisPressHandler}
           />
         </View>

@@ -29,6 +29,7 @@ const ChallengeDescriptionList = (props: ChallengeDescriptionListProps) => {
     <View
       style={[
         styles.ChallengeDescriptionList,
+        // eslint-disable-next-line react-native/no-inline-styles
         {marginBottom: isMarginBottom ? verticalScale(10) : 'auto'},
       ]}>
       {list.map((item, i) => {

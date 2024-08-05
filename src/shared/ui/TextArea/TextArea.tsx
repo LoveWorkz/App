@@ -57,7 +57,7 @@ export const TextArea = memo((props: TextAreaProps) => {
       },
       style,
     ];
-  }, [style]);
+  }, [colors.white, style]);
 
   const textSize = useMemo(() => {
     return {color: colors.white};

@@ -90,6 +90,8 @@ class HomePageStore {
     // receive notifications from the storage and place them in the database
     await notificationStore.initUserNotifications();
 
+    // console.log('BOOKS', books[0]);
+
     quotesStore.checkQuotesShownStatus(books);
   };
 
@@ -176,7 +178,7 @@ class HomePageStore {
       categoryStore.setCategory(homePageCategory);
 
       let quickStartCategoryName = category.displayName[language];
-      let progressBarCategoryName = quickStartCategoryName;
+      // let progressBarCategoryName = quickStartCategoryName;
       let progressBarCategoryKey = userCurrentCategoryKey;
 
       // Hot and How To Use should not show up in the progress bar
@@ -192,7 +194,7 @@ class HomePageStore {
           return;
         }
 
-        progressBarCategoryName = intimateCategory.displayName[language];
+        // progressBarCategoryName = intimateCategory.displayName[language];
         progressBarCategoryKey = CategoryKey.Intimate;
       }
 

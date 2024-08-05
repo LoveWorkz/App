@@ -206,7 +206,7 @@ const renderHomePageCategory = (params: {
             weight={'900'}
             style={{color: colors.white}}
             size={TextSize.LEVEL_6}
-            text={'Explore'}
+            text={t('common.explore')}
           />
         </Gradient>
         <AppText
@@ -238,7 +238,7 @@ const renderHomePageCategory = (params: {
               weight="500"
               style={{color: colors.white}}
               size={TextSize.LEVEL_6}
-              text={`${allSessionsCount} ${t('sessions')}`}
+              text={`${allSessionsCount} ${t('sessions.sessions')}`}
             />
           </View>
           <AppText
@@ -303,7 +303,7 @@ const renderLockedContent = (params: {
     isSpecialCategoryBlocked,
     categorySize,
     colors,
-    size,
+    // size,
   } = params;
 
   if (isContentLocked && !isSpecialCategory) {
@@ -365,8 +365,8 @@ const renderUnlockedContent = (params: {
           size={size === CateorySize.L ? TextSize.LEVEL_6 : TextSize.LEVEL_2}
           text={
             isCategoryHowToUse
-              ? 'Explore here'
-              : `${allSessionsCount} ${t('sessions')}`
+              ? t('common.explore_here')
+              : `${allSessionsCount} ${t('sessions.sessions')}`
           }
         />
       </View>

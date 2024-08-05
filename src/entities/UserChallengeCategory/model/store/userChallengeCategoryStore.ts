@@ -320,6 +320,7 @@ class UserChallengeCategoryStore {
         return id !== challengeId;
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const favorites: FavoriteType = {
         ids: newIds,
       };

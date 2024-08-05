@@ -109,7 +109,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
         style={styles.title}
         weight="700"
         size={TextSize.LEVEL_9}
-        text={'Get your own journey now!'}
+        text={t('common.get_your_own_journey')}
       />
 
       <View style={styles.benefitList}>
@@ -132,16 +132,14 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           size={TextSize.LEVEL_2}
           weight={'600'}
           style={{color: colors.primaryTextColor}}
-          text={'Can be canceled at any time!'}
+          text={t('common.can_be_cancelled_anytime')}
           lineHeight={11}
         />
         <AppText
           size={TextSize.LEVEL_1}
           weight={'600'}
           style={styles.description}
-          text={
-            'Paired subscription automatically renews unless auto-renew is turned off at least 24 hours before current period ends. Payment is charged to your Apple ID. Manage subscriptions and turn off auto-renew in Account Settings.'
-          }
+          text={t('common.paired_subscription')}
           lineHeight={11}
         />
       </View>
@@ -153,7 +151,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           style={{color: colors.bgQuinaryColor}}
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={t('buy_now')}
+          text={t('common.buy_now')}
         />
       </Button>
       <Button>
@@ -161,7 +159,7 @@ const InAppPurchase = (props: InAppPurchaseProps) => {
           size={TextSize.LEVEL_4}
           weight={'600'}
           style={styles.startForFree}
-          text={'Start for free'}
+          text={t('common.start_for_free')}
           lineHeight={20}
         />
       </Button>

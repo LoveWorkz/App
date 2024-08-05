@@ -25,10 +25,6 @@ const FavoriteSessionsPage = (props: FavoriteSessionsPageProps) => {
     sessionStore.favoriteQuadrantsSessions;
   const isLoading = sessionStore.isFetching;
 
-  if (!currentLevel) {
-    return <></>;
-  }
-
   const isPreviousScreenQuestions =
     route?.params?.prevRouteName === AppRouteNames.QUESTIONS;
 
@@ -38,16 +34,21 @@ const FavoriteSessionsPage = (props: FavoriteSessionsPageProps) => {
       if (isPreviousScreenQuestions) {
         sessionStore.levelSwipeHandlerForFavorites(currentLevel);
       }
-    }, [isPreviousScreenQuestions]),
+    }, [currentLevel, isPreviousScreenQuestions]),
   );
 
   useEffect(() => {
     sessionStore.levelSwipeHandlerForFavorites(currentLevel);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onCategorySwipeHandler = useCallback((level: CategoryType) => {
     sessionStore.levelSwipeHandlerForFavorites(level);
   }, []);
+
+  if (!currentLevel) {
+    return <></>;
+  }
 
   return (
     <View style={styles.FavoriteSessionsPage}>

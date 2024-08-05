@@ -27,7 +27,7 @@ export const ChallengeInfoPopup = (props: ChallengeInfoPopupProps) => {
 
   const onBtnPressHandler = useCallback(() => {
     setVisible(false);
-  }, []);
+  }, [setVisible]);
 
   if (!(visible && specialChallenge)) {
     return null;

@@ -216,7 +216,7 @@ class SessionStore {
         .collection(Collections.QUADRANTS)
         .get({source});
 
-      const quadrants = data.docs.map((doc, i) => {
+      const quadrants = data.docs.map((doc, _i) => {
         const quadrant = doc.data() as QuadrantType;
 
         const isPremium: boolean =
@@ -289,7 +289,7 @@ class SessionStore {
       });
 
       const quadrantSessions = await Promise.all(quadrantSessionsPromises);
-      const quadrantDetailsWithSessions = quadrants.map((quadrant, i) => {
+      const quadrantDetailsWithSessions = quadrants.map((quadrant, _i) => {
         const isPremium: boolean =
           categoryStore.isFirstLevel(levelId) &&
           this.isFirstQuadrant(quadrant.id)

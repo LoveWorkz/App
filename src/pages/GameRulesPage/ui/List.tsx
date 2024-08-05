@@ -3,29 +3,19 @@ import {StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {TextListItem} from '@src/shared/ui/TextListItem/TextListItem';
+import {useTranslation} from 'react-i18next';
 
 const List = () => {
+  const {t} = useTranslation();
   return (
     <View style={styles.List}>
       <View style={styles.listItem}>
-        <TextListItem
-          text={
-            'Take Turns: Decide who asks the first question. After answering, swap roles for the next card. This back-and-forth keeps it fair and engaging. Swipe to the next card after both have answers keeps the session flowing smoothly.'
-          }
-        />
+        <TextListItem text={t('game_rules.rule_1')} />
       </View>
       <View style={styles.listItem}>
-        <TextListItem
-          text={
-            "It's Okay to Pass: If any question doesn't feel right, just skip it. There's plenty more to explore. Simply move on to the next card."
-          }
-        />
+        <TextListItem text={t('game_rules.rule_2')} />
       </View>
-      <TextListItem
-        text={
-          "Offer Empathy: Respond to each other's answers with an open heart, free from judgment. This is your space to offer support, understanding, and empathy."
-        }
-      />
+      <TextListItem text={t('game_rules.rule_3')} />
     </View>
   );
 };

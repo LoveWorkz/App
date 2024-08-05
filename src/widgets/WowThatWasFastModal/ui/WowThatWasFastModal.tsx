@@ -51,7 +51,7 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
         <AppText
           style={{color: colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
-          text={t('continue')}
+          text={t('common.continue')}
         />
       </Button>
       <Button onPress={onDontShowAgainHandler} theme={ButtonTheme.CLEAR}>
@@ -59,7 +59,7 @@ export const WowThatWasFastModal = (props: WowThatWasFastModalProps) => {
           style={[styles.dontShowAgain, {color: colors.primaryTextColor}]}
           weight={'600'}
           size={TextSize.LEVEL_4}
-          text={t('dont_show_again')}
+          text={t('common.dont_show_again')}
         />
       </Button>
     </Modal>

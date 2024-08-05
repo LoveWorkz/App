@@ -41,7 +41,8 @@ const LevelNameItem = (props: {
   baseLevelKey: CategoryKey;
   progressBarCategoryKey: CategoryKey;
 }) => {
-  const {progressBarCategoryName, baseLevelKey, progressBarCategoryKey} = props;
+  // const {progressBarCategoryName, baseLevelKey, progressBarCategoryKey} = props;
+  const {baseLevelKey, progressBarCategoryKey} = props;
 
   const isLevelCurrent = baseLevelKey === progressBarCategoryKey;
 

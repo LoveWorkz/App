@@ -12,14 +12,16 @@ import {
 } from '@src/shared/lib/Metrics';
 import {List} from '@src/shared/ui/List';
 import {LinkedinIcon} from '@src/shared/assets/icons/Linkedin';
+import {useTranslation} from 'react-i18next';
 
 const PartnersPage = () => {
   const colors = useColors();
+  const {t} = useTranslation();
 
   const listItems = [
-    '1 to 1 therapy in person and online.',
-    '‘Seven Principles for Making Marriage Work’ couples group course in person and online.',
-    '‘Seven Principles for Singles’ singles group course, in person and online. ',
+    t('common.partners_item_1'),
+    t('common.partners_item_2'),
+    t('common.partners_item_3'),
   ];
 
   return (
@@ -33,7 +35,7 @@ const PartnersPage = () => {
         <AppText
           style={[styles.name, {color: colors.primaryTextColor}]}
           size={TextSize.LEVEL_7}
-          text={'Arran Kennedy'}
+          text={t('common.arran_kennedy')}
         />
         <SvgXml xml={LinkedinIcon} style={styles.icon} />
       </View>
@@ -41,36 +43,28 @@ const PartnersPage = () => {
         align={'justify'}
         style={[styles.description, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={
-          'Arran Kennedy works as a Psychologist, Cognitive Behavioural Psychotherapist and Couples Therapist. '
-        }
+        text={t('common.arran_text_1')}
       />
       <AppText
         align={'justify'}
         style={[styles.description, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={
-          'For 10 years he has worked with adults, teens, children, and couples assisting people to navigate mind, mood, life and relationship challenges both in private practice and large company wellbeing programs. '
-        }
+        text={t('common.arran_text_2')}
       />
       <AppText
         align={'justify'}
         style={[styles.description, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={
-          'Presently, he serves as a senior psychotherapist for staff at the Google EMEA Office Dublin.'
-        }
+        text={t('common.arran_text_3')}
       />
       <AppText
         align={'justify'}
         style={[styles.description, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_4}
-        text={
-          'He is a Founder Member of the Irish Positive Psychology Association and has a special interest assisting couples to develop the knowledge, attitudes and skills to create thriving relationships and families.'
-        }
+        text={t('common.arran_text_4')}
       />
 
-      <List title={'Programs offered by Arran: '} items={listItems} />
+      <List title={t('common.programs_offered_by_arran')} items={listItems} />
     </View>
   );
 };

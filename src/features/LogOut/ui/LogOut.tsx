@@ -8,9 +8,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {LogOutIcon} from '@src/shared/assets/icons/LogOut';
 import {horizontalScale} from '@src/shared/lib/Metrics';
 import LogOutModal from './LogOutModal';
+import {useTranslation} from 'react-i18next';
 
 const LogOut = () => {
   const colors = useColors();
+  const {t} = useTranslation();
 
   const [visible, setVisible] = useState(false);
 
@@ -30,7 +32,7 @@ const LogOut = () => {
           style={[styles.text, {color: colors.primaryTextColor}]}
           weight={'500'}
           size={TextSize.LEVEL_4}
-          text={'Log out'}
+          text={t('auth.logout')}
         />
       </TouchableOpacity>
       <LogOutModal visible={visible} setVisible={setVisible} />

@@ -26,6 +26,7 @@ import {SvgXml} from 'react-native-svg';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import {useNavigation} from '@react-navigation/native';
 import {Button} from '@src/shared/ui/Button/Button';
+import {useTranslation} from 'react-i18next';
 
 interface CompletionItemProps {
   handleNext: () => void;
@@ -66,6 +67,7 @@ const CompletionItem = (props: CompletionItemProps) => {
   } = props;
   const colors = useColors();
   const {goBack} = useNavigation();
+  const {t} = useTranslation();
 
   const isFeedbackPage = pagekey === 'feedback';
 
@@ -78,12 +80,15 @@ const CompletionItem = (props: CompletionItemProps) => {
       setValue(newRating);
       handleNext();
     },
-    [handleNext],
+    [handleNext, setValue],
   );
 
-  const onFeedbackChangeHandler = useCallback((value: string) => {
-    setValue(value);
-  }, []);
+  const onFeedbackChangeHandler = useCallback(
+    (newValue: string) => {
+      setValue(newValue);
+    },
+    [setValue],
+  );
 
   const onSendPressHandler = useCallback(() => {
     completionPageStore.sendRatingResults();
@@ -135,6 +140,7 @@ const CompletionItem = (props: CompletionItemProps) => {
         <View
           style={[
             styles.contentTop,
+            // eslint-disable-next-line react-native/no-inline-styles
             {
               marginBottom,
               top: isQuadrant ? 0 : verticalScale(-20),
@@ -146,14 +152,14 @@ const CompletionItem = (props: CompletionItemProps) => {
                 weight="900"
                 style={textSize}
                 size={TextSize.LEVEL_9}
-                text={'Great Job!!'}
+                text={t('questions.great_job')}
               />
             ) : (
               <AppText
                 weight="900"
                 style={textSize}
                 size={TextSize.LEVEL_9}
-                text={'Fantastic!'}
+                text={t('common.fantastic')}
               />
             )}
           </View>

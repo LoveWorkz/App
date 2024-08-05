@@ -55,7 +55,7 @@ const AboutMyRelationshipPage = () => {
                 style={{color: colors.white}}
                 weight={'700'}
                 size={TextSize.LEVEL_5}
-                text={'John'}
+                text={t('common.john_placeholder')}
               />
             </Gradient>
             <SvgXml xml={GradientHeartsIcon} style={styles.icon} />
@@ -67,7 +67,7 @@ const AboutMyRelationshipPage = () => {
                 style={{color: colors.white}}
                 weight={'700'}
                 size={TextSize.LEVEL_5}
-                text={t('you')}
+                text={t('common.you')}
               />
             </Gradient>
           </View>

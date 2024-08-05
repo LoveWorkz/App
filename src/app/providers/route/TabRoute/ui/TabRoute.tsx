@@ -37,6 +37,7 @@ const TabRoute = () => {
           borderTopColor: colors.bgQuaternaryColor,
         },
         tabBarShowLabel: false,
+        // eslint-disable-next-line react/no-unstable-nested-components
         tabBarIcon: ({focused}) => {
           const routeName = route.name;
 
@@ -72,10 +73,12 @@ const TabRoute = () => {
                     borderBottomWidth: 0,
                   },
                   headerShown: headerShown,
+                  // eslint-disable-next-line react/no-unstable-nested-components
                   headerLeft: () =>
                     HeaderLeft ? (
                       <HeaderLeft {...route.params} title={headerTitle} />
                     ) : null,
+                  // eslint-disable-next-line react/no-unstable-nested-components
                   headerRight: () =>
                     headerShown ? (
                       <TabHeaderRight tabName={tabName} {...route.params} />

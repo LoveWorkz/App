@@ -37,7 +37,8 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
         isLoading={isLoading}
         value={booksStore.searchBooksText}
         onChange={onSearchHandler}
-        placeholder={t('search')}
+        placeholder={t('common.search')}
+        // eslint-disable-next-line react/no-unstable-nested-components
         StartIcon={() => (
           <SvgXml
             xml={SearchIcon}

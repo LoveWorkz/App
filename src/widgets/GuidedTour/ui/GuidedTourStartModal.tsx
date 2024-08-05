@@ -7,6 +7,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
+import {useTranslation} from 'react-i18next';
 
 interface GuidedTourStartModalProps {
   visible: boolean;
@@ -17,6 +18,7 @@ interface GuidedTourStartModalProps {
 const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
   const {visible, onStart} = props;
   const colors = useColors();
+  const {t} = useTranslation();
 
   return (
     <Modal contentStyle={styles.content} visible={visible}>
@@ -36,7 +38,7 @@ const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_5}
             weight={'700'}
-            text={'Start your tour here!'}
+            text={t('common.start_tour_here')}
           />
         </Button>
       </View>

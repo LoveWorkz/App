@@ -161,6 +161,7 @@ export const Book = (props: BookProps) => {
             itemWidth={windowWidthMinusPaddings * 0.5}
             isTopPagination
             data={bookCarouselData}
+            // eslint-disable-next-line react/no-unstable-nested-components
             Component={({bookImage}: {bookImage: string}) => {
               return <BookPreview image={bookImage} fullImage={image} />;
             }}
@@ -183,7 +184,7 @@ export const Book = (props: BookProps) => {
             <StarRatings count={rate} isCentred={false} readOnly />
           </View>
           <View style={styles.rubrics}>
-            {rubrics.map(rubric => {
+            {rubrics[language].map(rubric => {
               return (
                 <View style={styles.category} key={rubric}>
                   <RubricFilterItem

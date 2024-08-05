@@ -62,6 +62,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
           {(headerTitle || title) && (
             <AppText
               style={[
+                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   color: color,
                   width: isTitleLarge ? '88%' : 'auto',

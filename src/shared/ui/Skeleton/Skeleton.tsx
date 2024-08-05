@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {View} from 'react-native';
+import {DimensionValue, View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 import {moderateScale} from '@src/shared/lib/Metrics';
@@ -34,8 +34,8 @@ export const Skeleton = (props: SkeletonProps) => {
         borderRadius={moderateScale(SkeletonPlaceholderBorderRadius || 4)}>
         <View
           style={{
-            width,
-            height,
+            width: width as DimensionValue,
+            height: height as DimensionValue,
             borderRadius: moderateScale(borderRadius || 0),
           }}
         />

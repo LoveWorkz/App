@@ -11,12 +11,12 @@ export interface BookFieldType {
 
 export interface BookType {
   author: string;
-  rubrics: string[];
+  rubrics: {[key: string]: string[]};
   description: BookFieldType;
   id: string;
   image: BookImage;
   displayName: BookFieldType;
   rate: number;
-  quote?: BookFieldType;
+  quotes?: BookFieldType[];
   links: BookFieldType;
 }

@@ -20,7 +20,7 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
-import {useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 // import {sessionStore} from '@src/entities/Session';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CARD_WIDTH} from '@src/shared/consts/common';
@@ -38,13 +38,13 @@ interface BaseCoreChallengesProps {
 }
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
-  const {params} = useRoute();
+  const {params} = useRoute<RouteProp<{params: {title: string}}>>();
   // const colors = useColors();
   const {
     // isSessionFlow,
     currentCoreChallengeGroup,
   } = props;
-  const headerCustomTitle = useMemo(() => params?.title, []);
+  const headerCustomTitle = useMemo(() => params?.title, [params?.title]);
   // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
@@ -122,6 +122,7 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
       title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPosition, headerCustomTitle]);
 
   useEffect(() => {

@@ -14,6 +14,7 @@ import {
   isCardTypeWild,
   isHotStuff,
 } from '../model/lib/questionLib';
+import {useTranslation} from 'react-i18next';
 
 interface QuestionTextProps {
   type: QuestionCardTypes;
@@ -49,6 +50,7 @@ interface TopicNameProps {
 
 export const TopicName = React.memo((props: TopicNameProps) => {
   const {rubric, language, type} = props;
+  const {t} = useTranslation();
 
   const colors = useColors();
   const topicName = rubric?.displayName?.[language] ?? null;
@@ -62,7 +64,7 @@ export const TopicName = React.memo((props: TopicNameProps) => {
           style={{color: colors.white}}
           weight={'700'}
           size={TextSize.LEVEL_2}
-          text={'Wild Card'}
+          text={t('common.wild_card')}
         />
       </View>
     );

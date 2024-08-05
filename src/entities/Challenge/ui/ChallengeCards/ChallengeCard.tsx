@@ -1,14 +1,14 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
-  NativeSyntheticEvent,
+  // NativeSyntheticEvent,
   StyleSheet,
-  TextLayoutEventData,
+  // TextLayoutEventData,
   View,
 } from 'react-native';
 import {SvgUri, SvgXml} from 'react-native-svg';
 import {WebView} from 'react-native-webview';
 
-import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
+import {TextSize} from '@src/shared/ui/AppText/AppText';
 import {
   horizontalScale,
   moderateScale,
@@ -19,12 +19,12 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
 import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {useColors} from '@src/app/providers/colorsProvider';
-import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+// import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {DisplayText} from '@src/shared/types/types';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
-import challengeStore from '../../model/store/challengeStore';
+// import challengeStore from '../../model/store/challengeStore';
 
 import storage from '@react-native-firebase/storage';
 
@@ -42,12 +42,12 @@ interface ChallengeCardProps {
 
 const ChallengeCard = (props: ChallengeCardProps) => {
   const {
-    title,
-    showButton,
+    // title,
+    // showButton,
     body,
-    specialChallengeId,
-    isSelectingChallenge,
-    isChecked,
+    // specialChallengeId,
+    // isSelectingChallenge,
+    // isChecked,
     isSvg,
     svgName,
   } = props;
@@ -56,7 +56,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   const language = useLanguage();
   const [svgUrl, setSvgUrl] = useState<string>();
 
-  const [numberOfLines, setNumberOfLines] = useState<number | null>(null);
+  const [_numberOfLines, _setNumberOfLines] = useState<number | null>(null);
 
   // const reference = storage().ref('/challenges_svg/Steps.svg');
 
@@ -72,21 +72,22 @@ const ChallengeCard = (props: ChallengeCardProps) => {
       // console.log(url);
     };
     asyncEffect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onTextLayout = useCallback(
-    (e: NativeSyntheticEvent<TextLayoutEventData>) => {
-      setNumberOfLines(e.nativeEvent.lines.length);
-    },
-    [],
-  );
+  // const onTextLayout = useCallback(
+  // (e: NativeSyntheticEvent<TextLayoutEventData>) => {
+  // setNumberOfLines(e.nativeEvent.lines.length);
+  // },
+  // [],
+  // );
 
-  const onPressHandler = () => {
-    challengeStore.specialChallengeCardButtonPressHandler(
-      specialChallengeId,
-      isChecked,
-    );
-  };
+  // const onPressHandler = () => {
+  // challengeStore.specialChallengeCardButtonPressHandler(
+  // specialChallengeId,
+  // isChecked,
+  // );
+  // };
 
   return (
     <View
@@ -170,7 +171,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
               style={{color: colors.white}}
               size={TextSize.LEVEL_4}
               weight={'600'}
-              text={'We’ve done the challenge'}
+              text={t('common.we_have_done_the_challenge)}
             />
           </Button>
         </View>

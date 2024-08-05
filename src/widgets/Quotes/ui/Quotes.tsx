@@ -6,10 +6,15 @@ import QuotesModal from './QuotesModal';
 import quotesStore from '../model/store/QuotesStore';
 
 const Quotes = () => {
+  // useEffect(() => {
+  //   quotesStore.setIsQuoteModalVisible(true);
+  // }, []);
+
   return (
     <View>
       <QuotesModal
         visible={quotesStore.isQuoteModalVisible}
+        // visible={true}
         setVisible={quotesStore.setIsQuoteModalVisible}
       />
     </View>

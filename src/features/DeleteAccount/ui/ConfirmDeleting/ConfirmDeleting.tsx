@@ -38,7 +38,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
       <AppText
         style={[styles.title, {color: colors.primaryTextColor}]}
         size={TextSize.LEVEL_6}
-        text={t('enter_your_data')}
+        text={t('common.enter_your_data')}
       />
       <View style={styles.inputs}>
         <Input
@@ -64,7 +64,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           style={styles.cancelBtn}
           theme={ButtonTheme.OUTLINED_GRADIENT}
           onPress={onCancelHandler}>
-          <GradientText size={TextSize.LEVEL_4} text={t('cancel')} />
+          <GradientText size={TextSize.LEVEL_4} text={t('common.cancel')} />
         </Button>
         <Button
           disabled={deleteAccountStore.isLoading}
@@ -74,7 +74,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
-            text={t('confirm')}
+            text={t('common.confirm')}
           />
         </Button>
       </View>

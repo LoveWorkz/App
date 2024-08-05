@@ -24,6 +24,7 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
       <View
         style={[
           styles.imgWrapper,
+          // eslint-disable-next-line react-native/no-inline-styles
           {
             backgroundColor: colors.bgOnboardingColor,
             left: isNotification ? -globalPadding : 0,

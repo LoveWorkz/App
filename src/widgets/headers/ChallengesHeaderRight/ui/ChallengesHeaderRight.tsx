@@ -15,11 +15,14 @@ import {infoTextType} from '@src/widgets/InformationBlock';
 import {ShareIcon} from '@src/shared/assets/icons/Share';
 import {shareStore} from '@src/features/Share';
 import {Spinner} from '@src/shared/ui/Spinner/Spinner';
+import {useTranslation} from 'react-i18next';
+import {upperFirst} from 'lodash';
 
 const textContent: infoTextType[] = [];
 
 const ChallengesHeaderRight = () => {
   const colors = useColors();
+  const {t} = useTranslation();
 
   const coreChallenge = challengeStore.coreChallenge;
   const isFavorite = favoriteStore.isFavorite;
@@ -51,7 +54,7 @@ const ChallengesHeaderRight = () => {
         popupWidth={horizontalScale(280)}
         isChallenge
         text={textContent}
-        title={'Title'}
+        title={upperFirst(t('common.title'))}
         Popup={InformationBlockPopup}
       />
       <Button style={styles.HeartIconBtn} onPress={toggleFavorite}>

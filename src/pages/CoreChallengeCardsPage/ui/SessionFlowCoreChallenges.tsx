@@ -29,7 +29,8 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
   // const [currentPosition, setCurrentPosition] = useState(1);
   // const {params} = useRoute();
 
-  const {isSessionFlow, currentCoreChallengeGroup} = props;
+  // const {isSessionFlow, currentCoreChallengeGroup} = props;
+  const {currentCoreChallengeGroup} = props;
 
   // const headerCustomTitle = useMemo(() => params?.title, []);
 
@@ -72,7 +73,7 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
       isSessionFlow: true,
       isChallengeCompleted: !session?.isCurrent,
     }));
-  }, [challenges, currentCoreChallengeGroup, language, isSessionFlow, session]);
+  }, [challenges, currentCoreChallengeGroup, language, session]);
 
   useEffect(() => {
     if (!currentCoreChallengeGroup) {

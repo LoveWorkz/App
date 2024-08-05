@@ -80,7 +80,9 @@ class BooksStore {
     try {
       crashlytics().log('User tried to filter books by rubrics.');
 
+      //@ts-ignore
       this.booksFilteredList = rubricFilterItemStore.startFilterLogic({
+        //@ts-ignore
         list: this.booksList,
         key: name,
       });

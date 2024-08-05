@@ -75,7 +75,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
             <AppText
               style={{color: colors.bgQuinaryColor}}
               size={TextSize.LEVEL_4}
-              text={t('delete')}
+              text={t('common.delete')}
             />
           </Button>
           <Button
@@ -87,7 +87,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
               style={styles.cancelText}
               weight={'700'}
               size={TextSize.LEVEL_4}
-              text={t('cancel')}
+              text={t('common.cancel')}
             />
           </Button>
         </>

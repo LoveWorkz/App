@@ -24,7 +24,7 @@ const GoalsPage = () => {
         <AppText
           size={TextSize.LEVEL_7}
           weight={'700'}
-          text={`${t('lets_do_this')}!`}
+          text={`${t('common.lets_do_this')}!`}
         />
       </View>
       <AppText
@@ -37,7 +37,7 @@ const GoalsPage = () => {
       </View>
       <View style={styles.btnWrapper}>
         <GradientArrowButton
-          text={t('proceed')}
+          text={t('common.proceed')}
           onPressHandler={onProceedHandler}
         />
       </View>

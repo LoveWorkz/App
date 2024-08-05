@@ -116,6 +116,7 @@ const Routes = memo(() => {
               options={({route}) => ({
                 headerShown: headerShown,
                 title: '',
+                // eslint-disable-next-line react/no-unstable-nested-components
                 header: () => (
                   <CustomHeader
                     {...route.params}

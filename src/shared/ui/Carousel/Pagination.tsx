@@ -64,6 +64,7 @@ const Pagination = (props: PaginationProps) => {
             key={i.toString()}
             style={[
               styles.dot,
+              // eslint-disable-next-line react-native/no-inline-styles
               {
                 height: isSmallDotPagination ? width : 5,
                 width: dotWidth,

@@ -10,6 +10,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {getQuadrantsImageUrls} from '@src/entities/Session';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {QUADRANT_DETAILS_CONTENT_TOP} from '../model/lib/QuadrantDetailsPageLib';
+import {useTranslation} from 'react-i18next';
 
 interface QuadrantDetailsItemProps {
   step: DisplayText;
@@ -21,6 +22,7 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
   const {step, displayName, id} = props;
   const colors = useColors();
   const language = useLanguage();
+  const {t} = useTranslation();
 
   const textSiyle = useMemo(() => {
     return {color: colors.white};
@@ -59,7 +61,7 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
           style={textSiyle}
           size={TextSize.LEVEL_5}
           weight={'700'}
-          text={'The heart of everyones relationships'}
+          text={t('common.the_heart_of_relationship')}
         />
       </View>
     </>

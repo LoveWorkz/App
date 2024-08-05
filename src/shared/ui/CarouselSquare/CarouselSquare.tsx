@@ -2,7 +2,7 @@ import React, {memo, useCallback, useMemo, useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+// import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale} from '@src/shared/lib/Metrics';
@@ -108,6 +108,7 @@ export const CarouselSquare = memo(
           <Component isActionDisabled={isScrolling} {...item} />
         </View>
       ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [isScrolling, itemStyle],
     );
 
@@ -118,7 +119,7 @@ export const CarouselSquare = memo(
           onSwipeHandler?.(currentElement, index);
         }
       },
-      [onSwipeHandler],
+      [data, onSwipeHandler],
     );
 
     const style = useMemo(() => {

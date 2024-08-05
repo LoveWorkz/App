@@ -70,7 +70,7 @@ const Profile = (props: ProfileProps) => {
           theme={ButtonTheme.GRADIENT}
           style={styles.nextButton}>
           <AppText
-            text={t('next')}
+            text={t('common.next')}
             size={TextSize.LEVEL_4}
             style={{color: colors.bgQuinaryColor}}
           />
@@ -146,7 +146,7 @@ const Profile = (props: ProfileProps) => {
           <AppText
             style={{color: colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
-            text={t('save')}
+            text={t('common.save')}
           />
         </Button>
         <DeleteAccount />

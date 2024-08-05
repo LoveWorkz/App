@@ -170,8 +170,8 @@ class QuestionsStore {
         return;
       }
 
-      const {question, questionNumber, key, documentId, interstitial} =
-        swipeData;
+      // const {question, questionNumber, key, documentId, interstitial} =
+      const {question, key, documentId} = swipeData;
       const sessionId = sessionStore.session?.id;
 
       if (!question) {

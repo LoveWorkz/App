@@ -37,13 +37,15 @@ export const bookExample: BookType = {
     pt: 'pt All about love',
     de: 'de All about love',
   },
-  quote: {
-    en: 'Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
-    pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
-    de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
-  },
+  quotes: [
+    {
+      en: 'Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
+      pt: 'pt Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
+      de: 'de Lorem ipsum dolor sit amet, consectetur adipiscing Show more Lorem ipsum dolor sit amet, consectetur adipiscing',
+    },
+  ],
   rate: 3.5,
-  rubrics: ['Fun'],
+  rubrics: {en: ['Fun'], de: ['Fun'], pt: ['Fun']},
   links: {
     en: 'https://www.google.com/?client=safari',
     pt: 'https://www.youtube.com',

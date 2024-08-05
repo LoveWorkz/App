@@ -45,7 +45,7 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
       {
         cost: formattedYearlyPrice,
         promoCost: formattedYearlyPromoPrice,
-        duration: `12 ${t('months')}`,
+        duration: `12 ${t('common.months')}`,
         description: t('shop.yearly_description'),
         subscriptionType: SubscriptionType.YEARLY,
         perWeekCost: `${yearlyToWeekly(
@@ -57,7 +57,7 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
       {
         cost: formattedQuarterlyPrice,
         promoCost: formattedQuarterlyPromoPrice,
-        duration: `3 ${t('months')}`,
+        duration: `3 ${t('common.months')}`,
         description: t('shop.quarterly_description'),
         subscriptionType: SubscriptionType.QUARTERLY,
         perWeekCost: `${threeMonthsToWeekly(
@@ -69,7 +69,7 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
       {
         cost: formattedMonthlyPrice,
         promoCost: formattedMonthlyPromoPrice,
-        duration: `1 ${t('month')}`,
+        duration: `1 ${t('common.month')}`,
         description: t('shop.monthly_description'),
         subscriptionType: SubscriptionType.MONTHLY,
         perWeekCost: `${monthlyToWeekly(
@@ -80,14 +80,23 @@ const SubscriptionMethods = (props: SubscriptionMethodsProps) => {
       },
     ];
   }, [
-    formattedMonthlyPrice,
-    formattedYearlyPromoPrice,
     formattedYearlyPrice,
-    formattedMonthlyPromoPrice,
+    formattedYearlyPromoPrice,
+    t,
+    isPromo,
+    formattedProducts.formattedYearlyPromo.price,
+    formattedProducts.formattedYearly.price,
+    formattedProducts.formattedYearly.currency,
+    formattedProducts.formattedQuarterlyPromo.price,
+    formattedProducts.formattedQuarterly.price,
+    formattedProducts.formattedQuarterly.currency,
+    formattedProducts.formattedMonthlyPromo.price,
+    formattedProducts.formattedMonthly.price,
+    formattedProducts.formattedMonthly.currency,
     formattedQuarterlyPrice,
     formattedQuarterlyPromoPrice,
-    isPromo,
-    formattedProducts,
+    formattedMonthlyPrice,
+    formattedMonthlyPromoPrice,
   ]);
 
   return (

@@ -18,18 +18,20 @@ import {
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {windowHeight} from '@src/app/styles/GlobalStyle';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
+import {useTranslation} from 'react-i18next';
 
 const blockHeight = verticalScale(390);
 
 const TherapistBlock = () => {
   const colors = useColors();
   const navbarHeaderHeight = useHeaderHeight();
+  const {t} = useTranslation();
 
   const windowHeightMinusNavbarHeight = windowHeight - navbarHeaderHeight;
 
   const textStyle = useMemo(() => {
     return {color: colors.black};
-  }, []);
+  }, [colors.black]);
 
   // Initial settings for translateY, opacity, and scale
   const translateY = useSharedValue(windowHeightMinusNavbarHeight);
@@ -64,6 +66,7 @@ const TherapistBlock = () => {
         stiffness: 150,
       });
     }, 500);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -75,29 +78,31 @@ const TherapistBlock = () => {
       ]}>
       <ArranKennedyBlock />
       <View style={styles.text}>
-        <AppText style={textStyle} size={TextSize.LEVEL_4} text={'Nice Job,'} />
+        <AppText
+          style={textStyle}
+          size={TextSize.LEVEL_4}
+          text={t('common.nice_job_single_phrase')}
+        />
       </View>
 
       <View style={styles.text}>
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
-          text={
-            'Take a little break and talk about what you liked and disliked. Which questions did you find difficult and which were easy? Why?'
-          }
+          text={t('common.nice_job_single_phrase_part_2')}
         />
       </View>
       <View style={[styles.text, styles.textStop]}>
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
-          text={'Next Stop: '}
+          text={t('common.next_stop_challenges_part_1')}
         />
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_4}
           weight={'700'}
-          text={'Challenges*'}
+          text={t('common.next_stop_challenges_part_2')}
         />
       </View>
 
@@ -105,9 +110,7 @@ const TherapistBlock = () => {
         <AppText
           style={textStyle}
           size={TextSize.LEVEL_2}
-          text={
-            '*Each Session concludes with a challenge—think of it as homework or a tool—designed to translate insights into action.'
-          }
+          text={t('common.each_session_future_action')}
         />
       </View>
     </Animated.View>
