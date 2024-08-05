@@ -265,6 +265,7 @@ class ChallengesStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
 
       const challengesData = await firestore()
+        // TODO: here core challenges translations
         .collection(Collections.CORE_CHALLENGES_NEW)
         .get({source});
 

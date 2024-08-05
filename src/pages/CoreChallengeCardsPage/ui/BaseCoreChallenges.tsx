@@ -44,7 +44,8 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     // isSessionFlow,
     currentCoreChallengeGroup,
   } = props;
-  const headerCustomTitle = useMemo(() => params?.title, [params?.title]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const headerCustomTitle = useMemo(() => params?.title, []);
   // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
