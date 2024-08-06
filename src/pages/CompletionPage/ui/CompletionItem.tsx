@@ -179,7 +179,7 @@ const CompletionItem = (props: CompletionItemProps) => {
               align={'center'}
               style={textSize}
               size={TextSize.LEVEL_5}
-              text={`Next Step: ${nextStep}`}
+              text={`${t('common.next_step')}: ${nextStep}`}
             />
           </View>
         )}

@@ -21,6 +21,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {DisplayText} from '@src/shared/types/types';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {isPlatformIos} from '@src/shared/consts/common';
+import {useTranslation} from 'react-i18next';
 
 interface CategoryDetailsItemProps {
   levelName: CategoryKey;
@@ -35,6 +36,7 @@ const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
 
   const colors = useColors();
   const language = useLanguage();
+  const {t} = useTranslation();
 
   const uri = useMemo(() => {
     return {
@@ -64,13 +66,13 @@ const CategoryDetailsItem = (props: CategoryDetailsItemProps) => {
           style={{color: colors.white}}
           weight={'700'}
           size={TextSize.SIZE_24}
-          text={`${displayName[language]} Level`}
+          text={`${displayName[language]} ${t('common.level')}`}
         />
         <AppText
           style={{color: colors.white}}
           weight={'700'}
           size={TextSize.LEVEL_4}
-          text={`${allSessionsCount} sessions`}
+          text={`${allSessionsCount} ${t('sessions.sessions')}`}
         />
       </View>
     </FastImage>

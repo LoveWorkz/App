@@ -27,7 +27,7 @@ const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
         size={TextSize.SIZE_32}
         letterSpacing={1}
         weight={'600'}
-        text={`Welcome to ${APPLICATION_NAME}`}
+        text={`${t('common.welcome_to')} ${APPLICATION_NAME}`}
       />
       <View style={styles.btnGroup}>
         <Button

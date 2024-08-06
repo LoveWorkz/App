@@ -1,5 +1,5 @@
 import React, {memo, ReactNode} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
@@ -9,7 +9,12 @@ import {Button} from '@src/shared/ui/Button/Button';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
-import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
+import {
+  HEADER_HEIGHT,
+  HEADER_HEIGHT_ADNDROID,
+  HEADER_HEIGHT_IOS,
+  isPlatformIos,
+} from '@src/shared/consts/common';
 
 interface CustomHeaderWithImageProps {
   ImageComponent?: ReactNode;
@@ -58,15 +63,18 @@ const CustomHeaderWithImage = (props: CustomHeaderWithImageProps) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: HEADER_HEIGHT,
+    height: isPlatformIos
+      ? HEADER_HEIGHT_IOS
+      : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
     width: windowWidth,
     overflow: 'hidden',
   },
   content: {
     position: 'absolute',
-    top: 0,
+    top: StatusBar.currentHeight as number,
     height: HEADER_HEIGHT,
     justifyContent: 'center',
+    flex: 1,
   },
   titleWrapper: {
     top: verticalScale(isPlatformIos ? 25 : 0),
