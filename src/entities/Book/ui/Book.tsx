@@ -86,7 +86,8 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo, isLoading} = props;
-  const {image, displayName, description, author, rubrics, rate, links} =
+  console.log('Book -> bookInfo', bookInfo);
+  const {image, displayName, description, author, rubrics, rate, link} =
     bookInfo;
 
   const {i18n} = useTranslation();
@@ -95,7 +96,7 @@ export const Book = (props: BookProps) => {
   const language = i18n.language as LanguageValueType;
   const title = displayName[language];
   const translatedDescription = description[language];
-  const translatedlinks = links[language];
+  const translatedlinks = link[language];
 
   const bookCarouselData = [
     {

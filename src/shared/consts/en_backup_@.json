@@ -509,10 +509,5 @@
   "upload.change_profile_photo": "Change profil photo",
   "upload.delete_photo": "Delete Photo",
   "upload.open_gallery": "Open gallery",
-  "upload.take_photo": "take photo",
-  "common.next_step": "Next Step",
-  "common.level": "Level",
-  "common.welcome_to": "Welcome to",
-  "common.choose_of_the_following": "Choose one of the following",
-  "common.choose_of_the_following_part_2": "enjoy it together and remember to mark it as completed once you're finished."
+  "upload.take_photo": "take photo"
 }

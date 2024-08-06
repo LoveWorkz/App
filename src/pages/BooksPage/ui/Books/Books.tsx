@@ -67,6 +67,8 @@ const Books = (props: BooksProps) => {
   let booksList = booksStore.booksFilteredList;
   const booksCategories = rubricFilterItemStore.rubricFilterItems;
 
+  console.log('BOOKS booksList', booksList);
+
   const language = i18n.language as LanguageValueType;
 
   const filterItemsWithIsLoading = useMemo(() => {
@@ -112,12 +114,14 @@ const Books = (props: BooksProps) => {
       <View style={styles.books}>
         {booksList.length ? (
           booksList.map(book => {
+            // console.log('SINGLE BOOK', book);
             return (
               <View style={styles.book} key={book.id}>
                 <BookItem
                   isLoading={isLoading}
                   id={book.id}
                   image={book.image.front}
+                  imageName={book.storage?.front_file_name}
                   title={book.displayName?.[language] || ''}
                   description={book.description?.[language] || ''}
                 />

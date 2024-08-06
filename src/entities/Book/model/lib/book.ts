@@ -46,9 +46,13 @@ export const bookExample: BookType = {
   ],
   rate: 3.5,
   rubrics: {en: ['Fun'], de: ['Fun'], pt: ['Fun']},
-  links: {
+  link: {
     en: 'https://www.google.com/?client=safari',
     pt: 'https://www.youtube.com',
     de: 'https://www.google.com/?client=safari',
+  },
+  storage: {
+    back_file_name: 'book_1_back.jpg',
+    front_file_name: 'book_1_front.jpg',
   },
 };

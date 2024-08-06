@@ -18,5 +18,9 @@ export interface BookType {
   displayName: BookFieldType;
   rate: number;
   quotes?: BookFieldType[];
-  links: BookFieldType;
+  link: BookFieldType;
+  storage: {
+    back_file_name: string;
+    front_file_name: string;
+  };
 }

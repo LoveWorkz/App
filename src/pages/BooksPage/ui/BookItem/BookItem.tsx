@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -17,6 +17,7 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
+import storage from '@react-native-firebase/storage';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {
   horizontalScale,
@@ -31,6 +32,7 @@ interface BookProps {
   image: string;
   id: string;
   isLoading: boolean;
+  imageName?: string;
 }
 
 const height = 100;
@@ -38,11 +40,12 @@ const borderRadius = moderateScale(5);
 const width = horizontalScale(70);
 
 const BookItem = (props: BookProps) => {
+  const [imageUrl, setImageUrl] = useState('');
   const {title, description, image, id, isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
   const {theme} = useTheme();
-
+  // const url = await storage().ref('images/profile-1.png').getDownloadURL();
   const StandardTextLength = 110;
   const ISDescriptionLarge = description.length > StandardTextLength;
 
@@ -51,6 +54,21 @@ const BookItem = (props: BookProps) => {
     Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
   };
+
+  // console.log('REFNAME', `books/${props.imageName}`);
+
+  useEffect(() => {
+    const asyncEffect = async () => {
+      const url = await storage()
+        .ref(`books/${props.imageName}`)
+        .getDownloadURL();
+      setImageUrl(url);
+    };
+    asyncEffect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log('FIREBASE URL', imageUrl);
 
   if (isLoading) {
     return (
@@ -77,7 +95,8 @@ const BookItem = (props: BookProps) => {
         <FastImage
           style={styles.image}
           source={{
-            uri: image,
+            // uri: image,
+            uri: imageUrl ?? image,
             priority: FastImage.priority.normal,
           }}
         />

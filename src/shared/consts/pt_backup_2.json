@@ -509,10 +509,5 @@
   "upload.change_profile_photo": "Alterar foto do perfil",
   "upload.delete_photo": "Apagar foto",
   "upload.open_gallery": "Galeria aberta",
-  "upload.take_photo": "Tirar foto",
-  "common.next_step": "Próxima Etapa",
-  "common.level": "Nível",
-  "common.welcome_to": "Bem-vindo ao",
-  "common.choose_of_the_following": "Escolha um dos seguintes",
-  "common.choose_of_the_following_part_2": "aproveitem juntos e lembrem-se de marcar como concluído quando terminarem."
+  "upload.take_photo": "Tirar foto"
 }
