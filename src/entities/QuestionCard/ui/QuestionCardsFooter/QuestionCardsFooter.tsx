@@ -6,6 +6,7 @@ import {AppText} from '@src/shared/ui/AppText/AppText';
 import Pagination from '@src/shared/ui/HorizontalSlide/Pagination';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import SwipeToProceed from './SwipeToProceed';
+import {useTranslation} from 'react-i18next';
 
 interface QuestionCardsFooterProps {
   count: number;
@@ -15,7 +16,7 @@ interface QuestionCardsFooterProps {
 
 const QuestionCardsFooter = (props: QuestionCardsFooterProps) => {
   const {count, currentIndex, isWhite} = props;
-
+  const {t} = useTranslation();
   const [hideSwipeIcon, setHideSwipeIcon] = useState(false);
   const hasRenderedOnce = useRef(false);
   const colors = useColors();
@@ -50,7 +51,9 @@ const QuestionCardsFooter = (props: QuestionCardsFooterProps) => {
             color: isWhite ? colors.white : colors.primaryTextColor,
           }}
           weight={'600'}
-          text={`${currentIndex + 1}/${count} - You’re great! Proceed`}
+          text={`${currentIndex + 1}/${count} - ${t(
+            'common.youre_great_proceed',
+          )}`}
         />
       )}
       <Pagination

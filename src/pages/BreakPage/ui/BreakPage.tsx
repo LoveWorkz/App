@@ -27,15 +27,18 @@ const BreakPage = () => {
     breakPageStore.letsDoThisPressHandler(language);
   };
 
+  const headerText = upperCase(t('common.well_done'));
+
   return (
     <View style={styles.BreakPage}>
       <StatusBar barStyle={'light-content'} />
       <View style={styles.topPart}>
         <AppText
+          numberOfLines={1}
           weight="900"
           style={textStyle}
-          size={TextSize.SIZE_48}
-          text={upperCase(t('common.well_done'))}
+          size={headerText.length > 10 ? TextSize.SIZE_32 : TextSize.SIZE_48}
+          text={headerText}
         />
         <AppText
           style={[styles.description, textStyle]}

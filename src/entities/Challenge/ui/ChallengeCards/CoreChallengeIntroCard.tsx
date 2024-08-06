@@ -95,7 +95,11 @@ const CoreChallengeIntroCard = () => {
           styledWords={['one']}
           styledWordStyle={[styles.styledWordStyle, textStyle]}
           textStyle={[styles.textStyle, textStyle]}
-          text={`Choose one of the following ${groupName.toLowerCase()}, enjoy it together and remember to mark it as completed once you're finished.`}
+          text={`${t(
+            'common.choose_of_the_following',
+          )} ${groupName.toLowerCase()}, ${t(
+            'common.choose_of_the_following_part_2',
+          )}`}
         />
       </FastImage>
 
