@@ -67,7 +67,7 @@ const Books = (props: BooksProps) => {
   let booksList = booksStore.booksFilteredList;
   const booksCategories = rubricFilterItemStore.rubricFilterItems;
 
-  console.log('BOOKS booksList', booksList);
+  // console.log('BOOKS booksList', booksList);
 
   const language = i18n.language as LanguageValueType;
 

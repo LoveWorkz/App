@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View, Pressable} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -26,6 +26,7 @@ import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {BookType, BookImage} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
+import firebaseStorage from '@react-native-firebase/storage';
 
 const bookPreviewheight = 210;
 const bookPreviewWidth = horizontalScale(150);
@@ -86,24 +87,49 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo, isLoading} = props;
-  console.log('Book -> bookInfo', bookInfo);
-  const {image, displayName, description, author, rubrics, rate, link} =
-    bookInfo;
+  // console.log('Book -> bookInfo', bookInfo);
+  const {
+    image,
+    displayName,
+    description,
+    author,
+    rubrics,
+    rate,
+    link,
+    storage,
+  } = bookInfo;
 
   const {i18n} = useTranslation();
   const colors = useColors();
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const language = i18n.language as LanguageValueType;
   const title = displayName[language];
   const translatedDescription = description[language];
   const translatedlinks = link[language];
 
+  useEffect(() => {
+    const urlFront = firebaseStorage()
+      .ref(`books/${storage.front_file_name}`)
+      .getDownloadURL();
+    const urlBack = firebaseStorage()
+      .ref(`books/${storage.back_file_name}`)
+      .getDownloadURL();
+
+    Promise.all([urlFront, urlBack]).then(urls => {
+      setImageUrls(urls);
+    });
+    return () => {
+      setImageUrls([]);
+    };
+  }, [storage.front_file_name, storage.back_file_name]);
+
   const bookCarouselData = [
     {
-      bookImage: image.front,
+      bookImage: imageUrls[0],
     },
     {
-      bookImage: image.back,
+      bookImage: imageUrls[1],
     },
   ];
 

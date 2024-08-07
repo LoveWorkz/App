@@ -24,6 +24,8 @@ const BookPreview = (props: BookPreviewProps) => {
   const {theme} = useTheme();
   const colors = useColors();
 
+  // props.
+
   useEffect(() => {
     const asyncEffect = async () => {
       const url = await firebaseStorage()
