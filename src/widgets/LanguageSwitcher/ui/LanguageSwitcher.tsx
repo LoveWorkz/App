@@ -40,8 +40,6 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
 
   const onLanguageChangeHandler = useCallback(
     (value: string) => {
-      // console.log('NEW: ', value);
-      // console.log('CURRENT: ', i18n.language);
       if (i18n.language !== value) {
         i18n.changeLanguage(value);
         RNRestart.restart();

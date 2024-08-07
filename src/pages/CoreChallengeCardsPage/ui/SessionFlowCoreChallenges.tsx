@@ -90,13 +90,6 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
     };
   }, [coreChallengesList, currentCoreChallengeGroup]);
 
-  // const {getState, setOptions} = useNavigation();
-  // useEffect(() => {
-  //   navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-  //     title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
-  //   });
-  // }, [getState, setOptions]);
-
   const defaultChallengeNumber = useMemo(() => {
     return challengeStore.getDefaultChallengeNumberForCardsPage({
       coreChallengesList,
@@ -113,10 +106,6 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
   );
   const isChallengeLocked =
     challengeStore.isChallengeLockedIn(lockedChallengeId);
-
-  // console.log('LOCKED CHALLENGE CONTENT', lockedChallengeIndex);
-  // console.log('lockedChallengeId', lockedChallengeId);
-  // console.log('isChallengeLocked', isChallengeLocked);
 
   return (
     <View style={styles.SessionFlowCoreChallenges}>

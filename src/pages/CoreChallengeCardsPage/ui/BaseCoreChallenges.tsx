@@ -39,21 +39,16 @@ interface BaseCoreChallengesProps {
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   const {params} = useRoute<RouteProp<{params: {title: string}}>>();
-  // const colors = useColors();
   const {
     // isSessionFlow,
     currentCoreChallengeGroup,
   } = props;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const headerCustomTitle = useMemo(() => params?.title, []);
-  // const {currentCoreChallengeGroup} = props;
   const language = useLanguage();
   const handleSwipe = useCallback((challenge: ChallengeType) => {
-    // console.log('SWIPE EVENT: ', challenge);
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
-
-  // console.log('PARAMS', params);
 
   // const {session} = sessionStore;
   const {challenges} = challengesStore;
@@ -96,27 +91,10 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     defaultChallengeNumber,
   );
 
-  // console.log('defaultChallengeNumber', defaultChallengeNumber);
-
-  // useLayoutEffect(() => {
-  //   navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-  //     title: `${headerCustomTitle} ${defaultChallengeNumber}/${coreChallengesList.length}`,
-  //   });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [defaultChallengeNumber]);
-
   useEffect(() => {
-    // console.log('EFFECT');
-    // challengeStore.coreChallengeCardsSwipeHandler(challenge);
-    // const challenge = challengeStore.coreChallenge;
-
     challengeStore.setCoreChallenge(
       coreChallengesList[defaultChallengeNumber - 1],
     );
-    // console.log(
-    //   'CORE EFFECT',
-    //   coreChallengesList[defaultChallengeNumber - 1].id,
-    // );
   }, [coreChallengesList, defaultChallengeNumber]);
 
   useEffect(() => {
@@ -127,7 +105,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   }, [currentPosition, headerCustomTitle]);
 
   useEffect(() => {
-    // console.log('EFFECT EVENT: ', coreChallengesList[defaultChallengeNumber]);
     challengeStore.coreChallengeCardsSwipeHandler(
       coreChallengesList[defaultChallengeNumber - 1],
     );
@@ -151,18 +128,9 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   }, [coreChallengesList, currentCoreChallengeGroup]);
 
   const {coreChallenge} = challengeStore;
-  // console.log('CORE CHALLENGE', coreChallenge);
   if (!coreChallenge) {
     return <></>;
   }
-
-  // console.log('BaseCoreChallenges: CORE CHALLENGE', coreChallenge.id);
-
-  // console.log('CORE: ', coreChallengesList);
-
-  // console.log('defaultChallengeNumber', defaultChallengeNumber);
-
-  // console.log('LIST', coreChallengesList[0].isChecked);
 
   return (
     <View style={styles.BaseCoreChallenges}>

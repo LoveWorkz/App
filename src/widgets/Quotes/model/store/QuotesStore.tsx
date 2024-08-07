@@ -110,12 +110,10 @@ class QuotesStore {
   getAndSetQuotesModalInfo = (books: BookType[]) => {
     try {
       const currentBookId = this.quoteInfo.bookId;
-      // console.log('currentBookId', currentBookId);
       if (!currentBookId) {
         // only works the first time
 
         const firstBook = books[0];
-        // console.log('FIRST BOOK', firstBook);
         let currentBook = firstBook;
 
         if (!firstBook.quotes) {
@@ -170,15 +168,6 @@ class QuotesStore {
       if (!book.quotes) {
         return;
       }
-
-      // const quotesModalInfo = {
-      //   quote: book.quote[language],
-      //   bookAuthor: book.author,
-      //   bookName: book.displayName[language],
-      //   bookId: book.id,
-      // };
-
-      // console.log('TESTING', book.quotes[0]);
 
       const quotesModalInfo = {
         quote: book.quotes[0][language],

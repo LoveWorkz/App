@@ -87,7 +87,6 @@ interface BookProps {
 
 export const Book = (props: BookProps) => {
   const {bookInfo, isLoading} = props;
-  // console.log('Book -> bookInfo', bookInfo);
   const {
     image,
     displayName,

@@ -3,9 +3,6 @@ import React, {memo} from 'react';
 import {observer} from 'mobx-react-lite';
 
 import {Rubric, rubricExample, RubricType} from '@src/entities/Rubric';
-// import {navigation} from '@src/shared/lib/navigation/navigation';
-// import {AppRouteNames} from '@src/shared/config/route/configRoute';
-// import {DocumentType} from '@src/shared/types/types';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import rubricStore from '../model/store/rubricStore';
@@ -18,15 +15,6 @@ const RubricList = (props: RubricListProps) => {
   const {isLoading} = props;
 
   const rubrics = rubricStore.rubrics;
-
-  // const onRubricPressHandlerCreator = (id: string) => {
-  //   return () => {
-  //     navigation.navigate(AppRouteNames.QUESTIONS, {
-  //       type: DocumentType.RUBRIC,
-  //       id,
-  //     });
-  //   };
-  // };
 
   let content = rubrics.map((rubric, i) => {
     const isFirstElement = i === 0;

@@ -8,7 +8,6 @@ import {
   Theme,
   useTheme,
 } from '@src/app/providers/themeProvider';
-// import {useColors} from '@src/app/providers/colorsProvider';
 
 interface DatePickerModalProps {
   visible: boolean;
@@ -20,7 +19,6 @@ interface DatePickerModalProps {
 const DatePickerModal = (props: DatePickerModalProps) => {
   const {visible, setVisible, setSelectedDate, initialValue} = props;
   const {theme} = useTheme();
-  // const colors = useColors();
 
   const themeMap = useMemo<Record<Theme, StandardThemes>>(() => {
     return {
@@ -52,9 +50,7 @@ const DatePickerModal = (props: DatePickerModalProps) => {
         onDateChange={setDate}
         mode="date"
         locale={'en'}
-        // androidVariant="iosClone"
         theme={themeMap[theme]}
-        // fadeToColor={colors.bgColor}
       />
     </Modal>
   );

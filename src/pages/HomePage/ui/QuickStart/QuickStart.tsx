@@ -16,10 +16,6 @@ import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {homePageStore} from '../..';
 import {useTranslation} from 'react-i18next';
 
-// import firestore from '@react-native-firebase/firestore';
-// import JSON from './core_challenge_routine.json';
-// import { Collections } from '@src/shared/types/firebase';
-
 interface QuickStartProps {
   isLoading: boolean;
 }
@@ -38,21 +34,7 @@ const QuickStart = (props: QuickStartProps) => {
     return {color: colors.white};
   }, [colors.white]);
 
-  // const onHandler = async () => {
-  //   JSON.forEach(async item => {
-  //     firestore()
-  //       .collection(Collections.CORE_CHALLENGES_NEW)
-  //       .doc(item.id)
-  //       .set(item)
-  //       .then(() => {
-  //         console.log('work')
-  //         console.clear();
-  //       });
-  //   });
-  // };
-
   const onPressHandler = () => {
-    // onHandler()
     navigation.navigate(AppRouteNames.PRE_SESSION);
   };
 

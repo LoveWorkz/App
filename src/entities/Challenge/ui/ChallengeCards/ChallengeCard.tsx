@@ -58,18 +58,13 @@ const ChallengeCard = (props: ChallengeCardProps) => {
 
   const [_numberOfLines, _setNumberOfLines] = useState<number | null>(null);
 
-  // const reference = storage().ref('/challenges_svg/Steps.svg');
-
   useEffect(() => {
-    // console.log('prop', props?.title?.en, props?.cardId);
-
     const asyncEffect = async () => {
       const url = await storage()
         .ref(`/challenges_svg/${svgName ?? 'card-1-1'}-${language}.svg`)
         .getDownloadURL();
 
       setSvgUrl(url);
-      // console.log(url);
     };
     asyncEffect();
     // eslint-disable-next-line react-hooks/exhaustive-deps

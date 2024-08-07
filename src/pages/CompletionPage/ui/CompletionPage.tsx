@@ -49,8 +49,6 @@ const CompletionPage = () => {
 
   useFocusEffect(
     useCallback(() => {
-      // console.log('init complete page', language);
-
       completionPageStore.init(language);
     }, [language]),
   );

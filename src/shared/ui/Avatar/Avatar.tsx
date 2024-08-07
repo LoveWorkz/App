@@ -60,10 +60,6 @@ export const Avatar = memo((props: AvatarProps) => {
     return [styles.Avatar, style, {width: size, height: size}];
   }, [style, size]);
 
-  // const image = useMemo(() => {
-  // return {uri: imageUrl};
-  // }, [imageUrl]);
-
   const onLoadStartHandler = useCallback(() => {
     if (isLoading) {
       return;

@@ -2,7 +2,6 @@ import React, {memo, useCallback, useMemo, useRef} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
-// import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale} from '@src/shared/lib/Metrics';

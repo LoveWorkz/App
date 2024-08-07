@@ -192,7 +192,6 @@ class CompletionPageStore {
     try {
       const documentSnapshot = await sessionEndDocRef.get();
       if (!documentSnapshot.exists) {
-        // console.log('No document found for user:', userId);
         return;
       } else {
         const sessionRatingResults = {

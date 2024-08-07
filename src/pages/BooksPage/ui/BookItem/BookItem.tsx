@@ -45,7 +45,6 @@ const BookItem = (props: BookProps) => {
   const colors = useColors();
   const {t} = useTranslation();
   const {theme} = useTheme();
-  // const url = await storage().ref('images/profile-1.png').getDownloadURL();
   const StandardTextLength = 110;
   const ISDescriptionLarge = description.length > StandardTextLength;
 
@@ -54,8 +53,6 @@ const BookItem = (props: BookProps) => {
     Keyboard.dismiss();
     navigation.navigate(AppRouteNames.BOOK_DETAILS, {id: bookId});
   };
-
-  // console.log('REFNAME', `books/${props.imageName}`);
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -67,8 +64,6 @@ const BookItem = (props: BookProps) => {
     asyncEffect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log('FIREBASE URL', imageUrl);
 
   if (isLoading) {
     return (
