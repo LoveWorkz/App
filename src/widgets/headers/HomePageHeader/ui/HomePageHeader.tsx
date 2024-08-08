@@ -19,6 +19,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {HomepageBackground} from '@src/shared/assets/images';
 import {homepageBackgroundImgHeight} from '../model/lib/homePageHeaderLib';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 interface HomePageHeaderProps {
   isLoading: boolean;
@@ -31,6 +32,7 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
 
   const {t} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
 
   const maxNameLength = 25;
   const isFirstUserVisit = userStore.isFirstUserVisit;
@@ -79,10 +81,12 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
 
   return (
     <View style={styles.header}>
-      <FastImage
-        style={[styles.homepageBackground]}
-        source={HomepageBackground}
-      />
+      {theme === Theme.LIGHT && (
+        <FastImage
+          style={[styles.homepageBackground]}
+          source={HomepageBackground}
+        />
+      )}
       <View style={styles.content}>
         <View style={styles.leftPart}>
           <Pressable onPress={onProfilePressHandler}>

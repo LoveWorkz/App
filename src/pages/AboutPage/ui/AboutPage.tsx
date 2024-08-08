@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -13,9 +13,40 @@ import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {CustomHeaderWithImage} from '@src/widgets/headers/CustomHeaderWithImage';
 import {descriptions1, descriptions2, descriptions3} from '../lib/howToUse';
 import {useTranslation} from 'react-i18next';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const AboutPage = () => {
   const {t} = useTranslation();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
+
+  const lightModeLogo = useMemo(() => {
+    return (
+      <FastImage
+        style={styles.image}
+        resizeMode={'stretch'}
+        source={gradientBg}>
+        <FastImage
+          style={styles.appImg}
+          resizeMode={'contain'}
+          source={AppIconImg}
+        />
+      </FastImage>
+    );
+  }, []);
+
+  const darkModeLogo = useMemo(() => {
+    return (
+      <View style={styles.image}>
+        <FastImage
+          style={styles.appImg}
+          resizeMode={'contain'}
+          source={AppIconImg}
+        />
+      </View>
+    );
+  }, []);
+
   return (
     <View style={styles.about}>
       <StatusBar barStyle={'light-content'} />
@@ -24,26 +55,19 @@ const AboutPage = () => {
         title={t('common.about_the_app')}
         isWhite
         ImageComponent={
-          <FastImage
-            style={styles.headerImg}
-            resizeMode={'stretch'}
-            source={gradientBg}
-          />
+          isDark ? null : (
+            <FastImage
+              style={styles.headerImg}
+              resizeMode={'stretch'}
+              source={gradientBg}
+            />
+          )
         }
       />
       <ScrollViewWithoutIndicator>
         <View style={styles.body}>
           <View style={styles.ImageWrapper}>
-            <FastImage
-              style={styles.image}
-              resizeMode={'stretch'}
-              source={gradientBg}>
-              <FastImage
-                style={styles.appImg}
-                resizeMode={'contain'}
-                source={AppIconImg}
-              />
-            </FastImage>
+            {isDark ? darkModeLogo : lightModeLogo}
           </View>
 
           <View style={styles.content}>

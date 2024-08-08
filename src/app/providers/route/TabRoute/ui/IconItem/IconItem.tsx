@@ -31,7 +31,14 @@ const IconItem = (props: IconItemProps) => {
   if (name === TabRoutesNames.HOME) {
     return (
       <Pressable
-        style={[styles.homeIconWrapper, {backgroundColor: colors.white}]}
+        style={[
+          styles.homeIconWrapper,
+          {
+            backgroundColor: isDarkMode
+              ? colors.purchaseButtonColor
+              : colors.white,
+          },
+        ]}
         onPress={onPressHandler}>
         <SvgXml xml={GradientHeart} height={32} width={32} />
       </Pressable>

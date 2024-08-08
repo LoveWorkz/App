@@ -8,16 +8,33 @@ import {
 import {getShadowOpacity, tabBarHeight} from '@src/app/styles/GlobalStyle';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
-import {useTheme} from '@src/app/providers/themeProvider';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {TabHeaderRight} from '@src/widgets/headers/TabHeaderRight';
 import IconItem from './IconItem/IconItem';
 import {getTabIcon} from '../lib/getIcon';
+import {ViewStyle} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 const TabRoute = () => {
   const colors = useColors();
   const {theme} = useTheme();
+
+  const tabDarkStyle: ViewStyle = {
+    backgroundColor: '#2E3440',
+    borderEndColor: '#5c657c',
+    borderEndWidth: 1,
+    borderStartColor: '#5c657c',
+    borderStartWidth: 1,
+    borderTopColor: '#5c657c',
+    borderTopWidth: 1,
+  };
+  const tabLightStyle: ViewStyle = {
+    backgroundColor: colors.whisperWhite,
+    borderTopColor: colors.bgQuaternaryColor,
+  };
+
+  const tabThemedStyles = theme === Theme.Dark ? tabDarkStyle : tabLightStyle;
 
   return (
     <Tab.Navigator
@@ -31,10 +48,9 @@ const TabRoute = () => {
           borderTopRightRadius: moderateScale(40),
           height: verticalScale(tabBarHeight),
           paddingTop: 10,
-          backgroundColor: colors.whisperWhite,
           position: 'absolute',
           bottom: 0,
-          borderTopColor: colors.bgQuaternaryColor,
+          ...tabThemedStyles,
         },
         tabBarShowLabel: false,
         // eslint-disable-next-line react/no-unstable-nested-components

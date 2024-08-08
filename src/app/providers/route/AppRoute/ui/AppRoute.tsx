@@ -61,13 +61,13 @@ export const AppRoute = ({routingInstrumentation}: Props) => {
       {isPlatformIos ? (
         <StatusBar
           animated={true}
-          barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         />
       ) : (
         <StatusBar
           animated={true}
           backgroundColor={colors.bgColor}
-          barStyle={!isDarkMode ? 'dark-content' : 'light-content'}
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         />
       )}
       <Routes />

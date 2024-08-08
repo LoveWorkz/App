@@ -16,7 +16,6 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
   const defaultThemeOnFirstAppLaunch =
     colorScheme === 'dark' ? Theme.Dark : Theme.LIGHT;
 
-  // const [theme, setTheme] = useState<Theme>(Theme.Dark);
   const [theme, setTheme] = useState(defaultThemeOnFirstAppLaunch);
 
   useEffect(() => {
