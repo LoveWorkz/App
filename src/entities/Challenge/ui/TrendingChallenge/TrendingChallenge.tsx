@@ -11,6 +11,7 @@ import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {TrendingChallengeType} from '../../model/types/ChallengeTypes';
 import challengeStore from '../../model/store/challengeStore';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 interface TrendingChallengeProps {
   challenge: TrendingChallengeType;
@@ -27,6 +28,8 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
   const displayName = group?.displayName;
 
   const colors = useColors();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
   const languae = useLanguage();
 
   const onChallengePressHandler = () => {
@@ -54,7 +57,11 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
 
   return (
     <TouchableOpacity onPress={onChallengePressHandler}>
-      <View style={[styles.TrendingChallenge, {backgroundColor: colors.white}]}>
+      <View
+        style={[
+          styles.TrendingChallenge,
+          {backgroundColor: isDark ? colors.bgSecondaryColor : colors.white},
+        ]}>
         <FastImage
           style={styles.img}
           resizeMode={'stretch'}
