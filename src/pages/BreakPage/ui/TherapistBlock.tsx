@@ -19,6 +19,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {windowHeight} from '@src/app/styles/GlobalStyle';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const blockHeight = verticalScale(390);
 
@@ -26,12 +27,13 @@ const TherapistBlock = () => {
   const colors = useColors();
   const navbarHeaderHeight = useHeaderHeight();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const windowHeightMinusNavbarHeight = windowHeight - navbarHeaderHeight;
 
   const textStyle = useMemo(() => {
-    return {color: colors.black};
-  }, [colors.black]);
+    return {color: isDark ? colors.whisperWhite : colors.black};
+  }, [colors.black, colors.whisperWhite, isDark]);
 
   // Initial settings for translateY, opacity, and scale
   const translateY = useSharedValue(windowHeightMinusNavbarHeight);
@@ -74,7 +76,7 @@ const TherapistBlock = () => {
       style={[
         styles.TherapistBlock,
         animatedStyles,
-        {backgroundColor: colors.white},
+        {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
       ]}>
       <ArranKennedyBlock />
       <View style={styles.text}>

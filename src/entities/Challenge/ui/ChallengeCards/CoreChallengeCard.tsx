@@ -24,6 +24,7 @@ import {
 } from '@src/shared/assets/icons/Lock';
 import challengeStore from '../../model/store/challengeStore';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface ChallengeCardProps {
   description: DisplayText;
@@ -46,6 +47,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
   const colors = useColors();
   const language = useLanguage();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const challengelockedHandler = () => {
     if (isChallengeCompleted) {
@@ -63,7 +65,12 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
     <FastImage
       resizeMode="stretch"
       source={questionImage1 as number}
-      style={[styles.ChallengeCard, {backgroundColor: colors.white}]}>
+      style={[
+        styles.ChallengeCard,
+        {
+          backgroundColor: isDark ? colors.bgQuinaryColor : colors.white,
+        },
+      ]}>
       <View style={styles.groupName}>
         <GradientText size={TextSize.LEVEL_2} weight={'600'} text={groupName} />
       </View>

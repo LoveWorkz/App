@@ -362,9 +362,12 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: '',
     bgColor: 'secondaryBackground',
     HeaderRight: ChallengesHeaderRight,
+    bgColorOverride: 'backgroundSecondary',
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColor="secondaryBackground">
+        <Layout
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <CoreChallengeCardsPage {...props} />
         </Layout>
       );
