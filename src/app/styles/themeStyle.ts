@@ -44,6 +44,7 @@ export type Colors =
   | 'challengeCardBtnColor'
   | 'whisperWhite'
   | 'tabIconColor'
+  | 'backgroundSecondary'
   | 'activeTabIconColor';
 
 export type ColorType = Record<Colors, string>;
@@ -66,7 +67,7 @@ const commonColor = {
   softPeriwinkle: '#DCE0F5',
   specialChallengeBgColor: '#39518080',
   // tabIconColor: '#A5AEF0',
-  themeSecondaryBackground: '#695FCB',
+  // themeSecondaryBackground: '#695FCB',
   whisperWhite: '#fafbfc',
   white: '#FFFFFF',
 };
@@ -91,6 +92,8 @@ const light: ColorType = {
   questionCardBackColor: '#F8F5FF',
   skeletonColor: '#E1E9EE',
   skeletonHighlightColor: '#F2F8FC',
+  themeSecondaryBackground: '#695FCB',
+  backgroundSecondary: '#695FCB',
   // text colors
   categoryAndFavoritesTextColor: '#395180',
   challengeCategoryNameColor: '#B6B6BD',
@@ -127,6 +130,8 @@ const dark: ColorType = {
   questionCardBackColor: '#242832',
   skeletonColor: '#2E3440',
   skeletonHighlightColor: '#242832',
+  themeSecondaryBackground: '#242832',
+  backgroundSecondary: '#282643',
   // text colors
   categoryAndFavoritesTextColor: '#1F232C',
   challengeCategoryNameColor: '#C0C3CF',

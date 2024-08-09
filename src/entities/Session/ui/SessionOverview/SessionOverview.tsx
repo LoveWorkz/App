@@ -1,11 +1,12 @@
 import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {CategoryType} from '@src/entities/Category';
 import HeaderSection from './HeaderSection/HeaderSection';
 import {QuadrantType} from '../../model/types/sessionType';
 import QuadrantList from '../QuadrantList/QuadrantList';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface SessionOverviewProps {
   levels: CategoryType[];
@@ -26,8 +27,11 @@ const SessionOverview = (props: SessionOverviewProps) => {
     isLoading = false,
   } = props;
 
+  const {isDark} = useTheme();
+
   return (
     <View style={styles.SessionOverview}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <HeaderSection
         swipeHandler={swipeHandler}
         isFavorite={isFavorite}

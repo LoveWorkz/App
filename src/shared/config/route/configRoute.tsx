@@ -44,6 +44,7 @@ import {GameRulesPage} from '@src/pages/GameRulesPage';
 import {CoreChallengeIntroPage} from '@src/pages/CoreChallengeIntroPage';
 import {SpecialChallengeIntroHeaderRight} from '@src/widgets/headers/SpecialChallengeIntroHeaderRight';
 import {SplashPage} from '@src/pages/SplashPage/ui/SplashPage';
+import themeStyle from '@src/app/styles/themeStyle';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -141,6 +142,7 @@ export type NewRouteProps = {
   isTitleLarge?: boolean;
   isAboutMyRelationshipPage?: boolean;
   bgColor?: BgColor;
+  bgColorOverride?: keyof typeof themeStyle.dark;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -255,7 +257,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.HOW_TO_USE]: {
     name: appRoutePaths.howToUse,
     headerShown: true,
-    bgColor: '#e8ecf9',
+    // bgColor: '#e8ecf9',
     headerTitle: 'Loveworkz',
     Element: (props: ParamListBase) => {
       return (
@@ -496,10 +498,14 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.break,
     headerShown: true,
     bgColor: 'secondaryBackground',
+    bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding bgColor="secondaryBackground">
+        <Layout
+          deleteTopPadding
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <BreakPage {...props} />
         </Layout>
       );

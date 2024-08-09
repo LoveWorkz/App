@@ -12,6 +12,9 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {BgColor} from '@src/shared/config/route/configRoute';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import AdaptiveLayout from './AdaptiveLayout';
+import themeStyle from '@src/app/styles/themeStyle';
+// import {useTheme} from '@src/app/providers/themeProvider';
+// import {useTheme} from '@src/app/providers/themeProvider';
 
 interface LayoutProps {
   children: ReactElement;
@@ -21,6 +24,7 @@ interface LayoutProps {
   isTabBar?: boolean;
   bgColor?: BgColor;
   deleteGlobalPadding?: boolean;
+  bgColorOverride?: keyof typeof themeStyle.dark;
 }
 
 export const Layout = (props: LayoutProps) => {
@@ -32,12 +36,24 @@ export const Layout = (props: LayoutProps) => {
     isTabBar = false,
     bgColor,
     deleteGlobalPadding = false,
+    bgColorOverride,
   } = props;
 
   const scrollViewRef = useRef<ScrollView>(null);
   const colors = useColors();
+  // const {isDark} = useTheme();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
+
+  const getThemeColor = () => {
+    if (bgColorOverride) {
+      return bgColorOverride;
+    } else {
+      return undefined;
+    }
+  };
+  const colorOverride = getThemeColor();
+  // console.log('IS OVERRIDE', colorOverride);
 
   let backgroundColor;
 
@@ -60,6 +76,12 @@ export const Layout = (props: LayoutProps) => {
 
   const {isGradient} = useGradient();
 
+  const overrideBgColor = colorOverride
+    ? colors[colorOverride]
+    : backgroundColor;
+
+  // console.log(Platform.OS, overrideBgColor, isDark);
+
   if (isPageScrolling) {
     return (
       <ScrollView
@@ -67,7 +89,7 @@ export const Layout = (props: LayoutProps) => {
         ref={scrollViewRef}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        style={{height: windowHeight, backgroundColor}}>
+        style={{height: windowHeight, backgroundColor: overrideBgColor}}>
         <View
           style={[
             layoutStyles.layout,
@@ -88,7 +110,7 @@ export const Layout = (props: LayoutProps) => {
     <AdaptiveLayout
       isGradient={isGradient}
       children={children}
-      backgroundColor={backgroundColor}
+      backgroundColor={overrideBgColor}
       deleteBottomPadding={deleteBottomPadding}
       paddingBottom={paddingBottom}
       marginTop={marginTop}

@@ -18,6 +18,7 @@ import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface Carouseltemrops {
   image: CategoryImageType;
@@ -49,6 +50,8 @@ const Carouseltem = (props: Carouseltemrops) => {
     return {uri: image.large};
   }, [image]);
 
+  const {isDark} = useTheme();
+
   return (
     <View>
       <FastImage style={styles.Carouseltem} source={source} />
@@ -76,7 +79,11 @@ const Carouseltem = (props: Carouseltemrops) => {
           <View
             style={[
               styles.countWrapper,
-              {backgroundColor: colors.periwinkleDust},
+              {
+                backgroundColor: isDark
+                  ? colors.bgTertiaryColor
+                  : colors.periwinkleDust,
+              },
             ]}>
             <AppText
               weight={'600'}

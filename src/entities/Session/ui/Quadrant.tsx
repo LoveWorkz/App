@@ -18,6 +18,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {LockIcon} from '@src/shared/assets/icons/Lock';
 import {QuadrantType} from '../model/types/sessionType';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface QuadrantProps {
   isBlocked: boolean;
@@ -29,11 +30,17 @@ const Quadrant = (props: QuadrantProps) => {
   const {isBlocked = false, quadrant, isPremium} = props;
 
   const colors = useColors();
+  const {isDark} = useTheme();
   const language = useLanguage();
 
   const disabled = isBlocked || isPremium;
 
-  const bgColor = isPremium ? colors.disabledSessionColor : colors.lilacBreeze;
+  const premiumBgColors = isDark
+    ? colors.disabledSessionColor
+    : colors.lilacBreeze;
+
+  const regularBgColors = isDark ? colors.bgTertiaryColor : colors.lilacBreeze;
+  const bgColor = isPremium ? premiumBgColors : regularBgColors;
 
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.QUADRANT_DETAILS, {id: quadrant.id});

@@ -8,10 +8,12 @@ import {Theme, ThemeContext} from './ThemeContext';
 interface UseThemeResult {
   theme: Theme;
   toggleTheme: () => void;
+  isDark: boolean;
 }
 
 export const useTheme = (): UseThemeResult => {
   const {setTheme, theme} = useContext(ThemeContext);
+  const isDark = theme === Theme.Dark;
 
   const toggleTheme = () => {
     let newTheme;
@@ -28,5 +30,6 @@ export const useTheme = (): UseThemeResult => {
   return {
     theme: theme || Theme.LIGHT,
     toggleTheme,
+    isDark,
   };
 };

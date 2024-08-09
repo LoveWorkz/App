@@ -40,6 +40,7 @@ const SessionItem = (props: SessionItemProps) => {
   const {theme} = useTheme();
   const {t} = useTranslation();
   const language = useLanguage();
+  const {isDark} = useTheme();
 
   const [visible, setVisible] = useState(false);
 
@@ -56,7 +57,8 @@ const SessionItem = (props: SessionItemProps) => {
 
   let leftIcon = EllipseIcon;
   let rightIcon = <></>;
-  let bgColor = colors.softPeriwinkle;
+  let bgColor = isDark ? colors.bgTertiaryColor : colors.softPeriwinkle;
+  // const bgColor = isDark ? colors.bgTertiaryColor : colors.softPeriwinkle;
 
   switch (state) {
     case 'completed':
@@ -76,7 +78,7 @@ const SessionItem = (props: SessionItemProps) => {
         colors,
       });
 
-      bgColor = colors.bgSecondaryColor;
+      bgColor = isDark ? colors.bgTertiaryColor : colors.bgSecondaryColor;
 
       break;
     default:
@@ -87,7 +89,7 @@ const SessionItem = (props: SessionItemProps) => {
 
   // premium logic
   if (isPremium) {
-    bgColor = colors.disabledSessionColor;
+    bgColor = isDark ? colors.bgTertiaryColor : colors.disabledSessionColor;
     leftIcon = LockIcon;
   }
   const disabled = isBlocked || isPremium;

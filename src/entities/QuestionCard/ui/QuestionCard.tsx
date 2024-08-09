@@ -31,7 +31,7 @@ const QuestionCard = (props: QuestionCardProps) => {
   const {question, image, type, rubric} = props;
 
   const {i18n} = useTranslation();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const colors = useColors();
 
   const language = i18n.language as LanguageValueType;
@@ -69,7 +69,10 @@ const QuestionCard = (props: QuestionCardProps) => {
       <FastImage
         resizeMode="stretch"
         source={image as number}
-        style={[styles.questionCard, {backgroundColor: colors.white}]}>
+        style={[
+          styles.questionCard,
+          {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
+        ]}>
         <TopicName type={type} rubric={rubric} language={language} />
         <QuestionText type={type} translatedQuestion={translatedQuestion} />
         <AppName type={type} />

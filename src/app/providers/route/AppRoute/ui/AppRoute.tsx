@@ -97,9 +97,19 @@ const Routes = memo(() => {
           isTitleLarge,
           isAboutMyRelationshipPage,
           bgColor,
+          bgColorOverride,
         }) => {
           let backgroundColor = colors.bgColor;
           const isSecondaryBackground = bgColor === 'secondaryBackground';
+
+          const getThemeColor = () => {
+            if (bgColorOverride) {
+              return bgColorOverride;
+            } else {
+              return undefined;
+            }
+          };
+          const colorOverride = getThemeColor();
 
           if (isSecondaryBackground) {
             backgroundColor = colors.themeSecondaryBackground;
@@ -123,7 +133,9 @@ const Routes = memo(() => {
                     headerTitle={headerTitle}
                     isTitleLarge={isTitleLarge}
                     isSecondaryBackground={isSecondaryBackground}
-                    backgroundColor={backgroundColor}
+                    backgroundColor={
+                      colorOverride ? colors[colorOverride] : backgroundColor
+                    }
                     HeaderRight={HeaderRight}
                   />
                 ),

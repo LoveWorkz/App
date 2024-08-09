@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {ImageSourcePropType} from 'react-native';
+import {ImageSourcePropType, StatusBar} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
 import {RubricType} from '@src/entities/Rubric';
@@ -8,6 +8,7 @@ import {CaptureComponent} from '@src/shared/ui/CaptureComponent/CaptureComponent
 import questionStore from '../model/store/questionStore';
 import QuestionCard from './QuestionCard';
 import {QuestionCardTypes} from '../model/types/questionTypes';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface QuestionCardWrapperProps {
   question: DisplayText;
@@ -21,17 +22,24 @@ const QuestionCardWrapper = (props: QuestionCardWrapperProps) => {
   const {id} = props;
   const chosenQuestionId = questionStore.question?.id;
   const isChosenQuestion = id === chosenQuestionId;
+  const {isDark} = useTheme();
 
   const captureHandler = (uri: string) => {
     questionStore.setQuestionCardScreenshot(uri);
   };
 
   return isChosenQuestion ? (
-    <CaptureComponent captureHandler={captureHandler}>
-      <QuestionCard {...props} />
-    </CaptureComponent>
+    <>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      <CaptureComponent captureHandler={captureHandler}>
+        <QuestionCard {...props} />
+      </CaptureComponent>
+    </>
   ) : (
-    <QuestionCard {...props} />
+    <>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      <QuestionCard {...props} />
+    </>
   );
 };
 

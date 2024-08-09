@@ -10,6 +10,7 @@ export type StandardThemes = 'light' | 'dark' | 'auto';
 export interface ThemeContextProps {
   theme?: Theme;
   setTheme?: (theme: Theme) => void;
+  isDark?: boolean;
 }
 
 export const ThemeContext = React.createContext<ThemeContextProps>({});
