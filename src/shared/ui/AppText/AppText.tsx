@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import {globalStyles} from '@src/app/styles/GlobalStyle';
-import {StyleType} from '@src/shared/types/types';
+// import {StyleType} from '@src/shared/types/types';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {moderateScale} from '@src/shared/lib/Metrics';
 import {

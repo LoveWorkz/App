@@ -19,7 +19,7 @@ import {CategoryKey} from '@src/entities/Category';
 import {useTheme} from '@src/app/providers/themeProvider';
 import homePageStore from '../../model/store/HomePageStore';
 import LevelNameItem from './LevelNameItem';
-import {MiniFlower} from '@src/entities/MiniFlower/MiniFlower';
+// import {MiniFlower} from '@src/entities/MiniFlower/MiniFlower';
 
 const WalkthroughableWiew = walkthroughable(View);
 const progressBarImgTop = horizontalScale(20);
@@ -42,12 +42,12 @@ const ProgressBar = () => {
 
   const content = isGuidedTourCompleted ? (
     <>
-      {/* <FastImage
+      <FastImage
         resizeMode={'cover'}
         source={progressBarImg}
         style={styles.progressImage}
-      /> */}
-      <MiniFlower currentLevel={1} />
+      />
+      {/* <MiniFlower currentLevel={1} /> */}
       <LevelNameItem
         progressBarCategoryKey={progressBarCategoryKey}
         progressBarCategoryName={progressBarCategoryName}
