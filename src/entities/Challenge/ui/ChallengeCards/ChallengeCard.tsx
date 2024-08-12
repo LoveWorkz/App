@@ -51,7 +51,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     isSvg,
     svgName,
   } = props;
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const colors = useColors();
   const language = useLanguage();
   const [svgUrl, setSvgUrl] = useState<string>();
@@ -90,7 +90,7 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         styles.ChallengeCard,
         {
           ...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2,
-          backgroundColor: colors.white,
+          backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
         },
       ]}>
       {/* <AppText

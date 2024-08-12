@@ -501,14 +501,15 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.break,
     headerShown: true,
     bgColor: 'secondaryBackground',
-    bgColorOverride: 'backgroundSecondary',
+    // bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
     Element: (props: ParamListBase) => {
       return (
         <Layout
           deleteTopPadding
           bgColor="secondaryBackground"
-          bgColorOverride="backgroundSecondary">
+          // bgColorOverride="backgroundSecondary"
+        >
           <BreakPage {...props} />
         </Layout>
       );
@@ -518,11 +519,16 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.specialChallengeIntro,
     headerShown: true,
     bgColor: 'secondaryBackground',
+    bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
     HeaderRight: SpecialChallengeIntroHeaderRight,
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding isPageScrolling bgColor="secondaryBackground">
+        <Layout
+          deleteTopPadding
+          isPageScrolling
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <SpecialChallengeIntroPage {...props} />
         </Layout>
       );
@@ -532,12 +538,14 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.completion,
     headerShown: false,
     bgColor: 'secondaryBackground',
+    bgColorOverride: 'backgroundSecondary',
     Element: (props: ParamListBase) => {
       return (
         <Layout
           isPageScrolling
           deleteGlobalPadding
-          bgColor="secondaryBackground">
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <CompletionPage {...props} />
         </Layout>
       );

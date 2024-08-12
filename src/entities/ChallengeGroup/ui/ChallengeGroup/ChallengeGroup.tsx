@@ -14,6 +14,7 @@ import {
 import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {challengeImage} from '@src/shared/assets/images';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface ChallengeGroupProps {
   title: string;
@@ -31,6 +32,7 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
 
   const colors = useColors();
   const [isActive, setIsActive] = useState(false);
+  const {isDark} = useTheme();
 
   useFocusEffect(
     useCallback(() => {
@@ -42,10 +44,16 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
     setIsActive(!isActive);
   };
 
+  console.log('ChallengeGroup render', isDark);
+
   return (
     <View>
       <TouchableOpacity onPress={onPressHandler}>
-        <View style={[styles.ChallengeGroup, {backgroundColor: colors.white}]}>
+        <View
+          style={[
+            styles.ChallengeGroup,
+            {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
+          ]}>
           <FastImage
             style={styles.img}
             resizeMode={'stretch'}

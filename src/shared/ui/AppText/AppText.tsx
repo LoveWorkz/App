@@ -1,9 +1,11 @@
 import React, {memo, useMemo} from 'react';
 import {
   NativeSyntheticEvent,
+  StyleProp,
   StyleSheet,
   Text,
   TextLayoutEventData,
+  TextStyle,
 } from 'react-native';
 
 import {globalStyles} from '@src/app/styles/GlobalStyle';
@@ -43,7 +45,7 @@ interface AppTextProps {
   size?: TextSize;
   weight?: TextWeight;
   type?: TextType;
-  style?: StyleType;
+  style?: StyleProp<TextStyle>;
   lineHeight?: number;
   align?: AlignType;
   ellipsizeMode?: EllipsizeMode;

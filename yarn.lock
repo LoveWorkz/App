@@ -8440,7 +8440,7 @@ __metadata:
     react-native-skeleton-placeholder: ^5.2.4
     react-native-status-bar-height: ^2.6.0
     react-native-svg: ^15.3.0
-    react-native-svg-transformer: ^1.4.0
+    react-native-svg-transformer: ^1.5.0
     react-native-tab-view: ^3.5.2
     react-native-toast-message: ^2.2.0
     react-native-view-shot: ^3.8.0
@@ -10276,9 +10276,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-svg-transformer@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "react-native-svg-transformer@npm:1.4.0"
+"react-native-svg-transformer@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "react-native-svg-transformer@npm:1.5.0"
   dependencies:
     "@svgr/core": ^8.1.0
     "@svgr/plugin-jsx": ^8.1.0
@@ -10287,7 +10287,7 @@ __metadata:
   peerDependencies:
     react-native: ">=0.59.0"
     react-native-svg: ">=12.0.0"
-  checksum: 9f457ee91cce8f7644e712f0ad1b051533e61499cc816a03c416fd6482110b1caeb71e1cb3379de23953ffaa6cc2149fd10688b7fd8083efce804e0164ff6c40
+  checksum: 6c2544ef095b098de68c45a1698bc79acea10935391009c6322699e0df96a48953949b75309fc6fc7bba32ce5e8c7df632f817b116dd05456e26a5938108a8e6
   languageName: node
   linkType: hard
 

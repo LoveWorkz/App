@@ -15,24 +15,36 @@ import {SvgXml} from 'react-native-svg';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {ArrowLeftIcon} from '@src/shared/assets/icons/ArrowLeft';
 import FastImage from 'react-native-fast-image';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 type BackgroundProps = {
-  backgroundSource:
+  backgroundSource?:
     | {
         uri: string;
       }
     | undefined;
 };
 
-const CarouselBackground = ({backgroundSource}: BackgroundProps) => (
-  <View style={styles.backgroundWrapper}>
-    <FastImage
-      style={styles.backgroundImage}
-      resizeMode={'cover'}
-      source={backgroundSource}
-    />
-  </View>
-);
+const CarouselBackground = (_props: BackgroundProps) => {
+  const {isDark} = useTheme();
+  return isDark ? (
+    <View style={styles.backgroundWrapper}>
+      <FastImage
+        style={styles.backgroundImage}
+        resizeMode={'cover'}
+        source={require('../../../shared/assets/images/completionImageDark.png')}
+      />
+    </View>
+  ) : (
+    <View style={styles.backgroundWrapper}>
+      <FastImage
+        style={styles.backgroundImage}
+        resizeMode={'cover'}
+        source={require('../../../shared/assets/images/completionImageLight.png')}
+      />
+    </View>
+  );
+};
 
 const CompletionPage = () => {
   const language = useLanguage();
@@ -80,13 +92,13 @@ const CompletionPage = () => {
 
   const colors = useColors();
 
-  const backgroundSource = useMemo(() => {
-    if (newListWithMetadata.length !== 0) {
-      return {uri: newListWithMetadata[0].image};
-    }
-  }, [newListWithMetadata]);
+  // const backgroundSource = useMemo(() => {
+  //   if (newListWithMetadata.length !== 0) {
+  //     return {uri: newListWithMetadata[0].image};
+  //   }
+  // }, [newListWithMetadata]);
 
-  console.log('IMAGE', newListWithMetadata[0].image);
+  // console.log('IMAGE', newListWithMetadata[0].image);
 
   return (
     <View style={styles.CompletionPage}>
@@ -100,9 +112,7 @@ const CompletionPage = () => {
         itemWidth={windowWidth}
         data={newListWithMetadata}
         Component={CompletionItem}
-        backgroundComponent={
-          <CarouselBackground backgroundSource={backgroundSource} />
-        }
+        backgroundComponent={<CarouselBackground />}
       />
     </View>
   );
