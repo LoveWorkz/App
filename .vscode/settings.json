@@ -54,4 +54,5 @@
       "export {default as [FTName]} from './ui/[FTName]';"
     ]
   },
+  "java.compile.nullAnalysis.mode": "automatic",
 }
