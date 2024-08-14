@@ -45,6 +45,7 @@ import {
   AuthUserInfo,
   Notification,
 } from '../types/userSchema';
+import * as Sentry from '@sentry/react-native';
 
 class UserStore {
   user: null | User = null;
@@ -188,6 +189,12 @@ class UserStore {
           }
 
           this.user = user;
+          Sentry.setUser({
+            email: user.email,
+            user: user,
+            name: user.name,
+            username: user.name,
+          });
 
           this.setCurrentLevel(user.category);
           challengesStore.setChallengeCategory(user.challengeCategory);
