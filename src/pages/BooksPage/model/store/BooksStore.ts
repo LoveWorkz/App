@@ -76,7 +76,7 @@ class BooksStore {
     }
   };
 
-  filterBooks = (name: string) => {
+  filterBooks = (name: string, lang: string) => {
     try {
       crashlytics().log('User tried to filter books by rubrics.');
 
@@ -85,6 +85,7 @@ class BooksStore {
         //@ts-ignore
         list: this.booksList,
         key: name,
+        lang,
       });
 
       // after filtering books by rubric name filter by search name if the search bar is active
@@ -93,6 +94,7 @@ class BooksStore {
           isSearchBarFilterActive: false,
           list: this.booksFilteredList,
           searchBooksText: this.searchBooksText,
+          lang,
         });
       }
     } catch (e) {
@@ -104,10 +106,12 @@ class BooksStore {
     searchBooksText,
     list = this.booksList,
     isSearchBarFilterActive = true,
+    lang,
   }: {
     searchBooksText: string;
     list?: BookType[];
     isSearchBarFilterActive?: boolean;
+    lang?: string;
   }) => {
     try {
       crashlytics().log('User tried to filter books by text.');
@@ -136,6 +140,7 @@ class BooksStore {
         this.booksFilteredList = rubricFilterItemStore.filterByKey({
           key: selectedRubricKey,
           list: this.booksFilteredList,
+          lang: lang as string,
         });
       }
     } catch (e) {

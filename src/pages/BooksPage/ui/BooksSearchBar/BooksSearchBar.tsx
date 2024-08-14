@@ -11,6 +11,7 @@ import {getShadowOpacity} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {useColors} from '@src/app/providers/colorsProvider';
 import booksStore from '../../model/store/BooksStore';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface BooksSearchBarProps {
   isLoading: boolean;
@@ -22,11 +23,15 @@ const BooksSearchBar = (props: BooksSearchBarProps) => {
   const {t} = useTranslation();
   const {theme} = useTheme();
   const colors = useColors();
+  const language = useLanguage();
 
-  const onSearchHandler = useCallback((searchBooksText: string) => {
-    booksStore.setSearchBooksText(searchBooksText);
-    booksStore.searchBooks({searchBooksText});
-  }, []);
+  const onSearchHandler = useCallback(
+    (searchBooksText: string) => {
+      booksStore.setSearchBooksText(searchBooksText);
+      booksStore.searchBooks({searchBooksText, lang: language});
+    },
+    [language],
+  );
 
   return (
     <View

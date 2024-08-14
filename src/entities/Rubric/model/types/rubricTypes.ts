@@ -1,17 +1,17 @@
 import {DisplayText} from '@src/shared/types/types';
 
 export interface RubricType {
-  description: DisplayText;
-  questions: string[];
-  name: string;
-  startQuestionDate: string;
-  id: string;
-  currentQuestion: string;
-  questionSwipeStartDate: string;
   breakPointForCheckingDate: number;
-  swipedQuestionsPercentage: number;
-  displayName: DisplayText;
   createdDate: string;
+  currentQuestion: string;
+  description: DisplayText;
+  displayName: DisplayText;
+  id: string;
   image: string;
+  name: string;
+  questions: string[];
+  questionSwipeStartDate: string;
+  startQuestionDate: string;
+  swipedQuestionsPercentage: number;
   totalViews: number;
 }

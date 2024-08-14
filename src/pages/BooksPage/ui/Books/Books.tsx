@@ -19,6 +19,7 @@ import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import booksStore from '../../model/store/BooksStore';
 import BookItem from '../BookItem/BookItem';
 import BooksSearchBar from '../BooksSearchBar/BooksSearchBar';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface FilterItemProps {
   name: string;
@@ -31,11 +32,15 @@ const FilterItem = memo((props: FilterItemProps) => {
 
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
+  const lang = useLanguage();
 
-  const onFiltreHandler = useCallback((key: string) => {
-    booksStore.filterBooks(key);
-    Keyboard.dismiss();
-  }, []);
+  const onFiltreHandler = useCallback(
+    (key: string) => {
+      booksStore.filterBooks(key, lang);
+      Keyboard.dismiss();
+    },
+    [lang],
+  );
 
   return (
     <View style={styles.rubricCategory}>

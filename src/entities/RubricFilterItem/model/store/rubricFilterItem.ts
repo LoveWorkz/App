@@ -1,4 +1,5 @@
 import {makeAutoObservable} from 'mobx';
+import {trim} from 'lodash';
 
 import {RubricFilterItemType} from '../types/rubricFilterItemTypes';
 
@@ -40,21 +41,34 @@ class RubricFilterItemStore {
     return list;
   };
 
-  filterByKey = ({key, list}: {key: string; list: any[]}) => {
+  filterByKey = ({
+    key,
+    list,
+    lang,
+  }: {
+    key: string;
+    list: any[];
+    lang: string;
+  }) => {
     this.selectedRubricKey = key;
     this.toggleRubricStatus({key, status: true});
 
     return list.filter(item => {
-      return item.rubrics.includes(key);
+      const rubrics = item.rubrics[lang] as string[];
+      const trimmedRubrics = rubrics.map(rubric => trim(rubric));
+      const filteredItems = trimmedRubrics.includes(trim(key));
+      return filteredItems;
     });
   };
 
   startFilterLogic = <T extends {rubrics: string[]}>({
     key,
     list,
+    lang,
   }: {
     key: string;
     list: T[];
+    lang: string;
   }): T[] => {
     // when user presses already selected filter item
     if (this.selectedRubricKey === key) {
@@ -63,10 +77,10 @@ class RubricFilterItemStore {
     // when user presses filter item but there is already selected another item
     if (this.selectedRubricKey) {
       this.resetActiveRubricStatus();
-      return this.filterByKey({key, list});
+      return this.filterByKey({key, list, lang});
     }
 
-    return this.filterByKey({key, list});
+    return this.filterByKey({key, list, lang});
   };
 
   clearFilteredInfo = () => {
