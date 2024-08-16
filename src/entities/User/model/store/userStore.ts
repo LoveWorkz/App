@@ -183,25 +183,29 @@ class UserStore {
           .get({source});
 
         runInAction(() => {
-          const user = data.data() as User;
+          const user = data.data() as User | undefined;
           if (!data) {
             return;
           }
 
-          this.user = user;
-          Sentry.setUser({
-            email: user.email,
-            user: user,
-            name: user.name,
-            username: user.name,
-          });
+          if (user) {
+            this.user = user;
+            Sentry.setUser({
+              email: user.email,
+              user: user,
+              name: user.name,
+              username: user.name,
+            });
 
-          this.setCurrentLevel(user.category);
-          challengesStore.setChallengeCategory(user.challengeCategory);
-          quotesStore.setIsQuoteInfo(user.quote);
-          wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
-            user.isWowThatWasFastModalForbidden,
-          );
+            this.setCurrentLevel(user.category);
+            challengesStore.setChallengeCategory(user.challengeCategory);
+            quotesStore.setIsQuoteInfo(user.quote);
+            wowThatWasFastModalStore.setIsThatWasFastModalForbidden(
+              user.isWowThatWasFastModalForbidden,
+            );
+          } else {
+            return;
+          }
         });
       }
     } catch (e) {

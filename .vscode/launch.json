@@ -7,6 +7,6 @@
             "cwd": "${workspaceFolder}",
             "platform": "ios",
             "target": "6C37DA68-AB97-43C3-B6A6-C9303C6FAFB1"
-        },
+        }
     ]
 }
