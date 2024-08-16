@@ -22,11 +22,11 @@ const TabRoute = () => {
 
   const tabDarkStyle: ViewStyle = {
     backgroundColor: '#2E3440',
-    borderEndColor: '#5c657c',
+    borderEndColor: '#ffffff33',
     borderEndWidth: 1,
-    borderStartColor: '#5c657c',
+    borderStartColor: '#ffffff33',
     borderStartWidth: 1,
-    borderTopColor: '#5c657c',
+    borderTopColor: '#ffffff33',
     borderTopWidth: 1,
   };
   const tabLightStyle: ViewStyle = {
