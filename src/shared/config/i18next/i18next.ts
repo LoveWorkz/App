@@ -17,7 +17,7 @@ const LANGUAGE_DETECTOR = {
         if (err) {
           console.log('Error fetching Languages from asyncstorage ', err);
         } else {
-          console.log('No language is set, choosing English as fallback');
+          console.info('No language is set, choosing English as fallback');
         }
         const deviceLanguageInfo = RNLocalize.getLocales()?.[0];
 

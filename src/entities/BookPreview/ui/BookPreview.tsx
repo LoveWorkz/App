@@ -37,7 +37,7 @@ const BookPreview = (props: BookPreviewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('BOOK PREVIEW URL', imageUrl);
+  // console.log('BOOK PREVIEW URL', imageUrl);
 
   // const imageFront = image.front;
 
