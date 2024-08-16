@@ -39,6 +39,10 @@ class UserRubricStore {
 
       const userRubrics = data.data() as UserRubric;
 
+      if (!userRubrics) {
+        return;
+      }
+
       runInAction(() => {
         this.userRubric = userRubrics;
         favoriteStore.setFavorites({

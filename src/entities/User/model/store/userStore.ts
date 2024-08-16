@@ -494,6 +494,7 @@ class UserStore {
       }
 
       if (isOffline) {
+        Sentry.captureMessage('NOTE: User was in offline mode?');
         firestore()
           .collection(Collections.USERS)
           .doc(userId)
