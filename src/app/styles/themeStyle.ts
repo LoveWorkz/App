@@ -131,7 +131,8 @@ const dark: ColorType = {
   skeletonColor: '#2E3440',
   skeletonHighlightColor: '#242832',
   themeSecondaryBackground: '#242832',
-  backgroundSecondary: '#282643',
+  // backgroundSecondary: '#282643',
+  backgroundSecondary: '#2e2a4c',
   // text colors
   categoryAndFavoritesTextColor: '#1F232C',
   challengeCategoryNameColor: '#C0C3CF',
