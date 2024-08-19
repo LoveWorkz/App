@@ -107,6 +107,8 @@ export const Book = (props: BookProps) => {
   const translatedDescription = description[language];
   const translatedlinks = link[language];
 
+  console.log('IMAGE URLS', imageUrls);
+
   useEffect(() => {
     const urlFront = firebaseStorage()
       .ref(`books/${storage.front_file_name}`)
@@ -124,12 +126,8 @@ export const Book = (props: BookProps) => {
   }, [storage.front_file_name, storage.back_file_name]);
 
   const bookCarouselData = [
-    {
-      bookImage: imageUrls[0],
-    },
-    {
-      bookImage: imageUrls[1],
-    },
+    {bookImage: imageUrls[0]},
+    {bookImage: imageUrls[1]},
   ];
 
   if (isLoading) {
@@ -183,15 +181,17 @@ export const Book = (props: BookProps) => {
     <View style={styles.Book}>
       <View style={styles.topBlock}>
         <View style={[{width: windowWidthMinusPaddings * 0.5}]}>
-          <Carousel
-            itemWidth={windowWidthMinusPaddings * 0.5}
-            isTopPagination
-            data={bookCarouselData}
-            // eslint-disable-next-line react/no-unstable-nested-components
-            Component={({bookImage}: {bookImage: string}) => {
-              return <BookPreview image={bookImage} fullImage={image} />;
-            }}
-          />
+          {imageUrls.length !== 0 && (
+            <Carousel
+              itemWidth={windowWidthMinusPaddings * 0.5}
+              isTopPagination
+              data={bookCarouselData}
+              // eslint-disable-next-line react/no-unstable-nested-components
+              Component={({bookImage}: {bookImage: string}) => {
+                return <BookPreview image={bookImage} fullImage={image} />;
+              }}
+            />
+          )}
         </View>
         <View style={styles.bookInfo}>
           <AppText
