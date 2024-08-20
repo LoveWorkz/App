@@ -146,6 +146,10 @@ export const CarouselSquare = memo(
           autoPlay={false}
           autoPlayInterval={1500}
           onScrollEnd={onScrollEnd}
+          panGestureHandlerProps={{
+            activeOffsetX: [-10, 10], // Enable horizontal panning
+            failOffsetY: [-5, 5], // Limit vertical movement to fail the gesture
+          }}
           mode="parallax"
           modeConfig={getModeConfig()}
           data={data}
