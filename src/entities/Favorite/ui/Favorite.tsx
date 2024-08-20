@@ -31,7 +31,7 @@ export const Favorite = (props: FavouriteProps) => {
 
   const colors = useColors();
   const {t} = useTranslation();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
 
   if (isLoading) {
     return <Skeleton height={height} borderRadius={borderRadius} />;
@@ -46,7 +46,10 @@ export const Favorite = (props: FavouriteProps) => {
       <FastImage
         style={[
           styles.favoritesFolder,
-          {width: windowWidthMinusPaddings, backgroundColor: colors.white},
+          {
+            width: windowWidthMinusPaddings,
+            backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
+          },
         ]}
         resizeMode={'stretch'}
         source={favoriteImage}>
