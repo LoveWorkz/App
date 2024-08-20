@@ -107,8 +107,6 @@ export const Book = (props: BookProps) => {
   const translatedDescription = description[language];
   const translatedlinks = link[language];
 
-  console.log('IMAGE URLS', imageUrls);
-
   useEffect(() => {
     const urlFront = firebaseStorage()
       .ref(`books/${storage.front_file_name}`)

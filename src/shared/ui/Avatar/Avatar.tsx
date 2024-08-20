@@ -16,12 +16,12 @@ const getImage = (
   imageNumber?: number,
   imageUrl?: string,
 ) => {
-  if (imageNumber) {
-    return imageNumber;
-  }
-
   if (imageUrl) {
     return {uri: imageUrl};
+  }
+
+  if (imageNumber) {
+    return imageNumber;
   }
 
   return defaultImage;
@@ -47,10 +47,10 @@ export const Avatar = memo((props: AvatarProps) => {
   } = props;
 
   const {theme: appTheme} = useTheme();
+  const [isSkeleton, setIsSkeleton] = useState(false);
+
   const isDarkMode = appTheme === Theme.Dark;
   const defaultImage = isDarkMode ? defaultAvatarImageDark : defaultAvatarImage;
-
-  const [isSkeleton, setIsSkeleton] = useState(false);
 
   useEffect(() => {
     setIsSkeleton(isLoading);

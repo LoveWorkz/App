@@ -40,6 +40,8 @@ export enum Collections {
 
   RATING_INFORMATION = 'rating_information',
   ENTRIES = 'entries',
+
+  THERAPISTS = 'Therapists',
 }
 
 export enum CloudStoragePaths {

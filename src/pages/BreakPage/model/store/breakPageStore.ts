@@ -10,16 +10,52 @@ import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import {Therapist} from './types';
+import firestore from '@react-native-firebase/firestore';
+import {Collections} from '@src/shared/types/firebase';
+import {userStore} from '@src/entities/User';
 
 class BreakPageStore {
   isLoading: boolean = false;
+  therapists: Therapist[] = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  init = async () => {
+    try {
+      crashlytics().log('Fetching Challenges page.');
+      await this.fetchTherapists();
+    } catch (e) {
+      errorHandler({error: e});
+    } finally {
+    }
+  };
+
   setIsLoading = (isLoading: boolean) => {
     this.isLoading = isLoading;
+  };
+
+  fetchTherapists = async () => {
+    try {
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+
+      const data = await firestore()
+        .collection(Collections.THERAPISTS)
+        .get({source});
+
+      const therapists = data.docs.map(rubric => {
+        return {
+          ...(rubric.data() as Therapist),
+          id: rubric.id,
+        };
+      });
+
+      this.therapists = therapists;
+    } catch (e) {
+      errorHandler({error: e});
+    }
   };
 
   letsDoThisPressHandler = async (language: LanguageValueType) => {
