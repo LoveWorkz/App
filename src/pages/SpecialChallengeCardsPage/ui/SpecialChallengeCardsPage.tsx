@@ -19,11 +19,14 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useTranslation} from 'react-i18next';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const specialChallenge = challengeStore.specialChallenge;
 
@@ -120,14 +123,22 @@ const SpecialChallengeCardsPage = () => {
           <Button
             disabled={isSelectingChallenge}
             onPress={onSpecialChallengeHandler}
-            theme={ButtonTheme.CLEAR}
-            style={[styles.btn, {backgroundColor: colors.white}]}>
-            <AppText
-              style={{color: colors.tabIconColor}}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={t('common.we_have_done_the_challenge')}
-            />
+            theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.CLEAR}
+            style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+            {isDark ? (
+              <AppText
+                style={{color: colors.white}}
+                weight={'600'}
+                size={TextSize.LEVEL_4}
+                text={t('common.we_have_done_the_challenge')}
+              />
+            ) : (
+              <GradientText
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={t('common.we_have_done_the_challenge')}
+              />
+            )}
           </Button>
         </View>
       )}

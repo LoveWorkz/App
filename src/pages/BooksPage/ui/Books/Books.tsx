@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {Keyboard, StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
@@ -14,7 +14,7 @@ import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {bookExample, BookType} from '@src/entities/Book';
+import {bookExample, booksFilterItems, BookType} from '@src/entities/Book';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import booksStore from '../../model/store/BooksStore';
 import BookItem from '../BookItem/BookItem';
@@ -25,21 +25,47 @@ interface FilterItemProps {
   name: string;
   active: boolean;
   isLoading: boolean;
+  type: string;
 }
 
 const FilterItem = memo((props: FilterItemProps) => {
-  const {name, active, isLoading} = props;
+  const {name, active, isLoading, type} = props;
 
   const {theme} = useTheme();
   const isDarkMode = theme === Theme.Dark;
   const lang = useLanguage();
 
+  useEffect(() => {
+    rubricFilterItemStore.setRubricFilterItems(
+      booksFilterItems.map(item => ({
+        name: item.name,
+        active: item.type === 'all' ? true : false,
+        type: item.type,
+      })),
+    );
+  }, []);
+
   const onFiltreHandler = useCallback(
     (key: string) => {
+      if (type === 'all') {
+        booksStore.clearBooksInfo();
+        rubricFilterItemStore.resetActiveRubricStatus();
+        rubricFilterItemStore.setRubricFilterItems(
+          booksFilterItems.map(item => ({
+            name: item.name,
+            active: item.type === 'all' ? true : false,
+            type: item.type,
+          })),
+        );
+        Keyboard.dismiss();
+        return;
+      } else {
+        rubricFilterItemStore.resetActiveRubricStatus();
+      }
       booksStore.filterBooks(key, lang);
       Keyboard.dismiss();
     },
-    [lang],
+    [lang, type],
   );
 
   return (

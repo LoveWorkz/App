@@ -87,17 +87,26 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         <Button
           disabled={isSelectingChallenge}
           onPress={onCompleteHandler}
-          theme={ButtonTheme.OUTLINED}
-          style={[styles.btn, {backgroundColor: colors.white}]}>
-          <GradientText
-            size={TextSize.LEVEL_4}
-            weight={'600'}
-            text={t('common.we_have_done_the_challenge')}
-          />
+          theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.OUTLINED}
+          style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+          {isDark ? (
+            <AppText
+              style={{color: colors.white}}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={t('common.we_have_done_the_challenge')}
+            />
+          ) : (
+            <GradientText
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={t('common.we_have_done_the_challenge')}
+            />
+          )}
         </Button>
       </View>
     );
-  }, [colors.white, isSelectingChallenge, onCompleteHandler, t]);
+  }, [colors.white, isDark, isSelectingChallenge, onCompleteHandler, t]);
 
   const RegularFooter = useMemo(() => {
     return (
@@ -109,17 +118,11 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
               <Button
                 disabled={isSelectingChallenge}
                 onPress={onCompleteHandler}
-                // theme={ButtonTheme.OUTLINED}
                 theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.OUTLINED}
                 style={[
                   styles.btn,
                   isDark ? {} : {backgroundColor: colors.white},
                 ]}>
-                {/* <GradientText
-                  size={TextSize.LEVEL_4}
-                  weight={'600'}
-                  text={t('common.we_have_done_the_challenge')}
-                /> */}
                 {isDark ? (
                   <AppText
                     style={{color: colors.white}}
@@ -162,6 +165,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         )}
       </>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     colors.white,
     count,

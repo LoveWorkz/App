@@ -17,6 +17,7 @@ import {moderateScale, verticalScale} from '@src/shared/lib/Metrics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {capitalize, toUpper} from 'lodash';
 
 interface BookProps {
   description: string;
@@ -30,7 +31,7 @@ const Description = (props: BookProps) => {
   const {description, bookLink, isLoading} = props;
 
   const colors = useColors();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const {t} = useTranslation();
 
   const descriptionHeight = windowHeight * 0.55;
@@ -103,8 +104,8 @@ const Description = (props: BookProps) => {
             theme={ButtonTheme.GRADIENT}>
             <AppText
               weight={'700'}
-              style={{color: colors.bgQuinaryColor}}
-              text={t('common.buy_now')}
+              style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
+              text={capitalize(t('common.buy_now'))}
               size={TextSize.LEVEL_4}
             />
           </Button>

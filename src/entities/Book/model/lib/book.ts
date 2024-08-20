@@ -2,20 +2,29 @@ import {BookType} from '@src/entities/Book';
 
 export const booksFilterItems = [
   {
+    name: 'All',
+    active: false,
+    type: 'all',
+  },
+  {
     name: 'Fun',
     active: false,
+    type: 'filter',
   },
   {
     name: 'Intimacy',
     active: false,
+    type: 'filter',
   },
   {
     name: 'Respect',
     active: false,
+    type: 'filter',
   },
   {
     name: 'Conflict',
     active: false,
+    type: 'filter',
   },
 ];
 

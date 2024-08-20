@@ -21,11 +21,13 @@ import {ChallengeIntroInfoPopup} from '../ChallengeInfoPopup/ChallengeIntroInfoP
 import ChallengeCategoryBlock from '../ChallengeCategoryBlock/ChallengeCategoryBlock';
 import challengeStore from '../../model/store/challengeStore';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const ChallengeIntroCard = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const colors = useColors();
   const language = useLanguage();
@@ -150,13 +152,22 @@ const ChallengeIntroCard = () => {
 
       <Button
         onPress={LetsDoItPressHandler}
-        theme={ButtonTheme.NORMAL}
-        style={[styles.btn, {backgroundColor: colors.white}]}>
-        <GradientText
-          size={TextSize.LEVEL_4}
-          weight={'600'}
-          text={t('common.we_are_ready')}
-        />
+        theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.NORMAL}
+        style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+        {isDark ? (
+          <AppText
+            style={{color: colors.white}}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={t('common.we_are_ready')}
+          />
+        ) : (
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={t('common.we_are_ready')}
+          />
+        )}
       </Button>
 
       <ChallengeIntroInfoPopup
