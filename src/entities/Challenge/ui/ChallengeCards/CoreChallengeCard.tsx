@@ -68,7 +68,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
       style={[
         styles.ChallengeCard,
         {
-          backgroundColor: isDark ? colors.bgQuinaryColor : colors.white,
+          backgroundColor: isDark ? colors.darkCard : colors.white,
         },
       ]}>
       <View style={styles.groupName}>
@@ -97,18 +97,22 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
               theme={ButtonTheme.OUTLINED}
               style={[
                 styles.challengeLockedBtn,
-                {backgroundColor: colors.challengeCardBtnColor},
+                {backgroundColor: colors.buttonLocked},
               ]}>
               <View style={styles.lockIcon}>
                 <SvgXml
-                  fill={colors.primaryTextColor}
+                  fill={isDark ? colors.lavenderBlue2 : colors.primaryTextColor}
                   xml={OutlineLockIcon}
                   width={horizontalScale(21)}
                   height={horizontalScale(21)}
                 />
               </View>
               <AppText
-                style={{color: colors.primaryTextColor}}
+                style={{
+                  color: isDark
+                    ? colors.lavenderBlue2
+                    : colors.primaryTextColor,
+                }}
                 size={TextSize.LEVEL_4}
                 weight={'600'}
                 text={t('common.challenge_locked')}

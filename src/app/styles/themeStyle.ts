@@ -45,7 +45,10 @@ export type Colors =
   | 'whisperWhite'
   | 'tabIconColor'
   | 'backgroundSecondary'
-  | 'activeTabIconColor';
+  | 'activeTabIconColor'
+  | 'lavenderBlue2'
+  | 'darkCard'
+  | 'buttonLocked';
 
 export type ColorType = Record<Colors, string>;
 
@@ -57,6 +60,8 @@ const commonColor = {
   disabledSessionColor: '#D8DBE2',
   goalIconBgColor: '#83C0F833',
   lavenderBlue: '#847AED',
+  lavenderBlue2: '#99aaf7',
+  darkCard: '#20232b',
   lightGreyColor: '#D9D9D9',
   lilacBreeze: '#E3E6F6',
   orange: 'orange',
@@ -88,6 +93,7 @@ const light: ColorType = {
   bgSecondaryColor: '#FFFFFF',
   bgTabViewColor: '#94ABFD',
   bgTertiaryColor: '#FFFFFF',
+  buttonLocked: '#f5f6f9',
   purchaseButtonColor: '#B9C3FD',
   questionCardBackColor: '#F8F5FF',
   skeletonColor: '#E1E9EE',
@@ -126,6 +132,7 @@ const dark: ColorType = {
   bgSecondaryColor: '#2E3440',
   bgTabViewColor: '#94ABFD',
   bgTertiaryColor: '#2E3440',
+  buttonLocked: '#1b1d24',
   purchaseButtonColor: '#242832',
   questionCardBackColor: '#242832',
   skeletonColor: '#2E3440',

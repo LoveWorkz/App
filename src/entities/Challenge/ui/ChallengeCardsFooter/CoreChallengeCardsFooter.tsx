@@ -15,6 +15,7 @@ import {SvgXml} from 'react-native-svg';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -25,6 +26,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {count, currentIndex} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const {isSessionFlow} = challengeStore;
   const currentCoreChallenge = challengeStore.coreChallenge;
@@ -107,13 +109,31 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
               <Button
                 disabled={isSelectingChallenge}
                 onPress={onCompleteHandler}
-                theme={ButtonTheme.OUTLINED}
-                style={[styles.btn, {backgroundColor: colors.white}]}>
-                <GradientText
+                // theme={ButtonTheme.OUTLINED}
+                theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.OUTLINED}
+                style={[
+                  styles.btn,
+                  isDark ? {} : {backgroundColor: colors.white},
+                ]}>
+                {/* <GradientText
                   size={TextSize.LEVEL_4}
                   weight={'600'}
                   text={t('common.we_have_done_the_challenge')}
-                />
+                /> */}
+                {isDark ? (
+                  <AppText
+                    style={{color: colors.white}}
+                    weight={'600'}
+                    size={TextSize.LEVEL_4}
+                    text={t('challenge.hop_to_the_challenge')}
+                  />
+                ) : (
+                  <GradientText
+                    size={TextSize.LEVEL_4}
+                    weight={'600'}
+                    text={t('challenge.hop_to_the_challenge')}
+                  />
+                )}
               </Button>
             ) : (
               <>
