@@ -21,6 +21,7 @@ import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBl
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
 import breakPageStore from '../model/store/breakPageStore';
+import {observer} from 'mobx-react-lite';
 
 const blockHeight = verticalScale(390);
 
@@ -30,12 +31,12 @@ const TherapistBlock = () => {
   const {t} = useTranslation();
   const {isDark} = useTheme();
   const therapists = breakPageStore.therapists;
-  breakPageStore.init();
 
   useEffect(() => {
     breakPageStore.init();
   }, []);
   const selectedTherapist = useMemo(() => therapists[0], [therapists]);
+  console.log('selectedTherapist', selectedTherapist);
 
   const windowHeightMinusNavbarHeight = windowHeight - navbarHeaderHeight;
 
@@ -86,7 +87,7 @@ const TherapistBlock = () => {
         animatedStyles,
         {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
       ]}>
-      <ArranKennedyBlock therapist={selectedTherapist} />
+      {selectedTherapist && <ArranKennedyBlock therapist={selectedTherapist} />}
       <View style={styles.text}>
         <AppText
           style={textStyle}
@@ -127,7 +128,7 @@ const TherapistBlock = () => {
   );
 };
 
-export default memo(TherapistBlock);
+export default memo(observer(TherapistBlock));
 
 const styles = StyleSheet.create({
   TherapistBlock: {

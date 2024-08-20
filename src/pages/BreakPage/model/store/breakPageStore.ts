@@ -37,6 +37,10 @@ class BreakPageStore {
     this.isLoading = isLoading;
   };
 
+  setTherapists = (newTherapists: Therapist[]) => {
+    this.therapists = newTherapists;
+  };
+
   fetchTherapists = async () => {
     try {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
@@ -52,7 +56,7 @@ class BreakPageStore {
         };
       });
 
-      this.therapists = therapists;
+      this.setTherapists(therapists);
     } catch (e) {
       errorHandler({error: e});
     }
