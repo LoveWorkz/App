@@ -18,7 +18,7 @@ interface CarouselSquareProps {
   itemStyle?: StyleType;
   carouselHeight?: number;
   withPagination?: boolean;
-  withTopPagination?: boolean;
+  withBottomNavigation?: boolean;
   loop?: boolean;
   paginationStyle?: StyleType;
   paginationDotColor?: string;
@@ -36,7 +36,7 @@ export const CarouselSquare = memo(
     itemStyle = {},
     carouselHeight,
     withPagination = false,
-    withTopPagination = false,
+    withBottomNavigation = false,
     loop = true,
     paginationStyle = {},
     paginationDotColor,
@@ -156,7 +156,7 @@ export const CarouselSquare = memo(
           renderItem={renderItem}
           onProgressChange={handleProgressChange}
         />
-        {withTopPagination && (
+        {withBottomNavigation && (
           <View style={[styles.bottomPaginationWrapper, paginationStyle]}>
             {renderPagination()}
           </View>

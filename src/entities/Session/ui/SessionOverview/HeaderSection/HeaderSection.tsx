@@ -38,7 +38,7 @@ const HeaderSection = (props: HeaderSectionProps) => {
       mode={'expanded'}
       loop={false}
       paginationStyle={styles.paginationStyle}
-      withTopPagination
+      withBottomNavigation
       paginationDotColor={colors.lavenderBlue}
     />
   );

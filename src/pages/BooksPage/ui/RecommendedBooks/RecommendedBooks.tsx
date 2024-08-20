@@ -13,7 +13,6 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
-import {globalPadding} from '@src/app/styles/GlobalStyle';
 import BooksStore from '../../model/store/BooksStore';
 
 interface RecommendedBooksProps {
@@ -65,9 +64,10 @@ const RecommendedBooks = (props: RecommendedBooksProps) => {
       )}
       {!!recommendedBooksList.length && (
         <CarouselSquare
-          withPagination={!isLoading}
+          withPagination={false}
           mode={'multiple'}
-          carouselHeight={240}
+          withBottomNavigation
+          carouselHeight={260}
           paginationStyle={styles.paginationStyle}
           // eslint-disable-next-line react/no-unstable-nested-components
           Component={(param: BookType) => (
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     marginBottom: -40,
   },
   paginationStyle: {
-    left: globalPadding,
+    width: '100%',
   },
 });
