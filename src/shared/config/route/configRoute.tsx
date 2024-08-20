@@ -428,9 +428,12 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.CHALLENGE_TYPE_INFO]: {
     name: appRoutePaths.challengeTypeInfo,
     bgColor: 'secondaryBackground',
+    bgColorOverride: 'backgroundSecondary',
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColor="secondaryBackground">
+        <Layout
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <ChallengeTypeInfoPage {...props} />
         </Layout>
       );
@@ -591,10 +594,13 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.coreChallengeIntro,
     headerShown: true,
     bgColor: 'secondaryBackground',
+    bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColor="secondaryBackground">
+        <Layout
+          bgColor="secondaryBackground"
+          bgColorOverride="backgroundSecondary">
           <CoreChallengeIntroPage {...props} />
         </Layout>
       );

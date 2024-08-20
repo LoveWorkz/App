@@ -12,6 +12,8 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
+import {useTheme} from '@src/app/providers/themeProvider';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 
 interface ChallengeGroupProps {
   title: string;
@@ -23,6 +25,7 @@ const ChallengeGroupDetails = (props: ChallengeGroupProps) => {
   const {t} = useTranslation();
 
   const colors = useColors();
+  const {isDark} = useTheme();
 
   return (
     <View
@@ -57,15 +60,30 @@ const ChallengeGroupDetails = (props: ChallengeGroupProps) => {
         />
       </View>
       <Button
-        style={styles.btn}
+        // style={styles.btn}
         backgroundColor={colors.white}
-        theme={ButtonTheme.NORMAL}>
-        <AppText
+        theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.NORMAL}
+        style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+        {/* <AppText
           size={TextSize.LEVEL_4}
           style={{color: colors.primaryTextColor}}
           weight={'700'}
           text={t('challenge.hop_to_the_challenges')}
-        />
+        /> */}
+        {isDark ? (
+          <AppText
+            style={{color: colors.primaryTextColor}}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={t('challenge.hop_to_the_challenges')}
+          />
+        ) : (
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'500'}
+            text={t('challenge.hop_to_the_challenges')}
+          />
+        )}
       </Button>
     </View>
   );

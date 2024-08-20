@@ -17,11 +17,13 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const CoreChallengeIntroCard = () => {
   const colors = useColors();
   const language = useLanguage();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -105,13 +107,22 @@ const CoreChallengeIntroCard = () => {
 
       <Button
         onPress={LetsDoItPressHandler}
-        theme={ButtonTheme.NORMAL}
-        style={[styles.btn, {backgroundColor: colors.white}]}>
-        <GradientText
-          size={TextSize.LEVEL_4}
-          weight={'600'}
-          text={t('challenge.hop_to_the_challenge')}
-        />
+        theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.NORMAL}
+        style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+        {isDark ? (
+          <AppText
+            style={textStyle}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={t('challenge.hop_to_the_challenge')}
+          />
+        ) : (
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={t('challenge.hop_to_the_challenge')}
+          />
+        )}
       </Button>
     </View>
   );

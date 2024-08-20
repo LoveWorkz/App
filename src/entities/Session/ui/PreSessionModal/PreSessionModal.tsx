@@ -7,6 +7,7 @@ import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {Modal} from '@src/shared/ui/Modal/Modal';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface PresSessionModalProps {
   visible: boolean;
@@ -19,6 +20,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
   const {visible, setVisible, onConfirm, onCancel} = props;
 
   const colors = useColors();
+  const {isDark} = useTheme();
   const {t} = useTranslation();
 
   const onCancelHandler = () => {
@@ -92,7 +94,7 @@ const PresSessionModal = (props: PresSessionModalProps) => {
           theme={ButtonTheme.GRADIENT}
           style={styles.letsDoThisBtn}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             weight={'700'}
             text={t('common.amazing_lets_do_it')}
           />
