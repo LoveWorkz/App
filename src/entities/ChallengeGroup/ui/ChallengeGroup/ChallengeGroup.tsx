@@ -44,7 +44,7 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
     setIsActive(!isActive);
   };
 
-  console.log('ChallengeGroup render', isDark);
+  // console.log('ChallengeGroup render', isDark);
 
   return (
     <View>

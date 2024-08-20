@@ -1,5 +1,5 @@
 import {moderateScale} from '@src/shared/lib/Metrics';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 
 import {Theme} from '../providers/themeProvider';
 
@@ -63,10 +63,13 @@ export const getShadowOpacity = (theme: Theme, color?: string) => {
 
 export const globalStyles = StyleSheet.create({
   Quicksand_Regular: {
-    fontFamily: 'Quicksand-Regular',
+    fontFamily:
+      Platform.OS === 'ios' ? 'Quicksand-Regular' : 'QuicksandRegular',
   },
   Quicksand_SemiBold: {
-    fontFamily: 'Quicksand-SemiBold',
+    fontFamily:
+      // Platform.OS === 'ios' ? 'Quicksand-SemiBold' : 'Quicksand SemiBold',
+      Platform.OS === 'ios' ? 'Quicksand-Regular' : 'QuicksandSemiBold',
   },
 
   // z-index
