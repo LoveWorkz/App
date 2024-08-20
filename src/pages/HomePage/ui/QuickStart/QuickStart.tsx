@@ -15,6 +15,7 @@ import {userStore} from '@src/entities/User';
 import {ordinalSuffixOf} from '@src/shared/lib/common';
 import {homePageStore} from '../..';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface QuickStartProps {
   isLoading: boolean;
@@ -26,6 +27,7 @@ const QuickStart = (props: QuickStartProps) => {
   const {isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const {hasUserCompletedAnySession} = userStore;
   const {homePageQuadrantName, homePageCategory} = homePageStore;
@@ -55,7 +57,12 @@ const QuickStart = (props: QuickStartProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.layout, {backgroundColor: colors.white}]} />
+      <View
+        style={[
+          styles.layout,
+          {backgroundColor: colors.white, opacity: isDark ? 0.05 : 0.15},
+        ]}
+      />
 
       <View style={styles.titleWrapper}>
         <AppText
@@ -90,7 +97,7 @@ const QuickStart = (props: QuickStartProps) => {
         <SvgXml
           xml={getArrowRightIcon({})}
           style={styles.arrowIcon}
-          fill={colors.bgQuinaryColor}
+          fill={isDark ? colors.white : colors.bgQuinaryColor}
         />
       </Button>
     </View>
@@ -110,7 +117,6 @@ const styles = StyleSheet.create({
     ...containerStyles,
   },
   layout: {
-    opacity: 0.15,
     position: 'absolute',
     top: 0,
     bottom: 0,
