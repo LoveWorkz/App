@@ -48,6 +48,7 @@ export type Colors =
   | 'activeTabIconColor'
   | 'lavenderBlue2'
   | 'darkCard'
+  | 'backgroundTertiary'
   | 'buttonLocked';
 
 export type ColorType = Record<Colors, string>;
@@ -100,6 +101,7 @@ const light: ColorType = {
   skeletonHighlightColor: '#F2F8FC',
   themeSecondaryBackground: '#695FCB',
   backgroundSecondary: '#695FCB',
+  backgroundTertiary: '#695FCB',
   // text colors
   categoryAndFavoritesTextColor: '#395180',
   challengeCategoryNameColor: '#B6B6BD',
@@ -140,6 +142,7 @@ const dark: ColorType = {
   themeSecondaryBackground: '#242832',
   // backgroundSecondary: '#282643',
   backgroundSecondary: '#2e2a4c',
+  backgroundTertiary: '#20232b',
   // text colors
   categoryAndFavoritesTextColor: '#1F232C',
   challengeCategoryNameColor: '#C0C3CF',

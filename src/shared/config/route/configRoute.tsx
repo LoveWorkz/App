@@ -540,14 +540,14 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.completion,
     headerShown: false,
     bgColor: 'secondaryBackground',
-    bgColorOverride: 'backgroundSecondary',
+    bgColorOverride: 'backgroundTertiary',
     Element: (props: ParamListBase) => {
       return (
         <Layout
           isPageScrolling
           deleteGlobalPadding
           bgColor="secondaryBackground"
-          bgColorOverride="backgroundSecondary">
+          bgColorOverride="backgroundTertiary">
           <CompletionPage {...props} />
         </Layout>
       );
