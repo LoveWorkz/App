@@ -12,12 +12,14 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import TherapistBlock from './TherapistBlock';
 import breakPageStore from '../model/store/breakPageStore';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const BreakPage = () => {
   const colors = useColors();
   const language = useLanguage();
   const isLoading = breakPageStore.isLoading;
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -62,13 +64,22 @@ const BreakPage = () => {
         <Button
           disabled={isLoading}
           onPress={onPressHandler}
-          theme={ButtonTheme.NORMAL}
-          style={[styles.btn, {backgroundColor: colors.white}]}>
-          <GradientText
-            size={TextSize.LEVEL_4}
-            weight={'500'}
-            text={t('common.lets_do_this_challenge')}
-          />
+          theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.NORMAL}
+          style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+          {isDark ? (
+            <AppText
+              style={textStyle}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={t('common.lets_do_this_challenge')}
+            />
+          ) : (
+            <GradientText
+              size={TextSize.LEVEL_4}
+              weight={'500'}
+              text={t('common.lets_do_this_challenge')}
+            />
+          )}
         </Button>
       </View>
     </View>

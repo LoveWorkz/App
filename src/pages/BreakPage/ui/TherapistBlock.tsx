@@ -36,7 +36,6 @@ const TherapistBlock = () => {
     breakPageStore.init();
   }, []);
   const selectedTherapist = useMemo(() => therapists[0], [therapists]);
-  console.log('selectedTherapist', selectedTherapist);
 
   const windowHeightMinusNavbarHeight = windowHeight - navbarHeaderHeight;
 
@@ -120,7 +119,8 @@ const TherapistBlock = () => {
       <View style={styles.text}>
         <AppText
           style={textStyle}
-          size={TextSize.LEVEL_2}
+          weight="700"
+          size={TextSize.LEVEL_3}
           text={t('common.each_session_future_action')}
         />
       </View>
