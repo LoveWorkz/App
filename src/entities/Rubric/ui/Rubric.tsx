@@ -19,7 +19,7 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {Badge, challengeImage} from '@src/shared/assets/images';
+import {Badge, BadgeDark, challengeImage} from '@src/shared/assets/images';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {DocumentType} from '@src/shared/types/types';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -42,7 +42,7 @@ const Rubric = (props: RubricProps) => {
   const {displayName, questions, description, currentQuestion} = rubric;
   const colors = useColors();
   const {i18n} = useTranslation();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
 
   const userRubricsSeen = userStore.user?.rubrics_seen;
 
@@ -145,7 +145,7 @@ const Rubric = (props: RubricProps) => {
           <FastImage
             resizeMode="contain"
             style={styles.badgeImg}
-            source={Badge}
+            source={isDark ? BadgeDark : Badge}
           />
         )}
         <View style={styles.imageWrapper}>

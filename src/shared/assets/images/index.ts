@@ -124,6 +124,7 @@ export {default as gameRulesBg} from './gameRulesBg.png';
 export {default as discountOfferCardBg} from './discountOfferCardBg.png';
 
 export {default as Badge} from './Badge.png';
+export {default as BadgeDark} from './BadgeDark.png';
 
 export {default as guidedTourProgressBarImage} from './guidedTourProgressBarImage.png';
 export {default as quadrantImage} from './quadrantImage.png';
