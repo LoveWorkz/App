@@ -23,7 +23,7 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {BookType, BookImage} from '../model/types';
+import {BookType} from '../model/types';
 import BookPreviewModal from './BookPreviewModal/BookPreviewModal';
 import Description from './Description/Description';
 import firebaseStorage from '@react-native-firebase/storage';
@@ -35,11 +35,12 @@ const borderRadius = moderateScale(5);
 
 interface BookPreview {
   image: string;
-  fullImage: BookImage;
+  // fullImage: BookImage;
+  fullImageUrls: string[];
 }
 
 const BookPreview = memo((props: BookPreview) => {
-  const {image, fullImage} = props;
+  const {image, fullImageUrls} = props;
   const {theme} = useTheme();
   const colors = useColors();
 
@@ -71,8 +72,9 @@ const BookPreview = memo((props: BookPreview) => {
       ]}>
       <FastImage style={styles.image} resizeMode={'stretch'} source={uri} />
       <BookPreviewModal
-        image={image}
-        fullImage={fullImage}
+        // image={image}
+        // fullImage={fullImage}
+        fullImageUrls={fullImageUrls}
         visible={isBookModalVisible}
         onClose={onModalCloseHandler}
       />
@@ -88,7 +90,7 @@ interface BookProps {
 export const Book = (props: BookProps) => {
   const {bookInfo, isLoading} = props;
   const {
-    image,
+    // image,
     displayName,
     description,
     author,
@@ -186,7 +188,9 @@ export const Book = (props: BookProps) => {
               data={bookCarouselData}
               // eslint-disable-next-line react/no-unstable-nested-components
               Component={({bookImage}: {bookImage: string}) => {
-                return <BookPreview image={bookImage} fullImage={image} />;
+                return (
+                  <BookPreview image={bookImage} fullImageUrls={imageUrls} />
+                );
               }}
             />
           )}

@@ -17,7 +17,8 @@ import {
   verticalScale,
 } from '@src/shared/lib/Metrics';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
-import {BookImage} from '../../model/types';
+// import {BookImage} from '../../model/types';
+// import bookDetailsStore from '../model/store/BookDetailsStore';
 
 interface CarouselItemProps {
   bookImage: string;
@@ -28,8 +29,9 @@ interface BookPreviewItemProps {
 }
 
 interface BookProps {
-  image: string;
-  fullImage: BookImage;
+  // image: string;
+  // fullImage: BookImage;
+  fullImageUrls: string[];
   visible: boolean;
   onClose: () => void;
 }
@@ -42,6 +44,7 @@ const CarouselItem = (props: CarouselItemProps) => {
 
 const BookPreviewItem = (props: BookPreviewItemProps) => {
   const {image} = props;
+  // const currentBook = bookDetailsStore.currentBook;
 
   const uri = useMemo(() => {
     return {
@@ -58,7 +61,7 @@ const BookPreviewItem = (props: BookPreviewItemProps) => {
 };
 
 const BookPreviewModal = (props: BookProps) => {
-  const {image, fullImage, visible, onClose} = props;
+  const {visible, onClose, fullImageUrls} = props;
   const colors = useColors();
 
   const onCloseHandler = () => {
@@ -66,10 +69,12 @@ const BookPreviewModal = (props: BookProps) => {
   };
 
   const data = useMemo(() => {
-    return [{bookImage: fullImage.front}, {bookImage: fullImage.back}];
-  }, [fullImage]);
+    // return [{bookImage: fullImage.front}, {bookImage: fullImage.back}];
+    return [{bookImage: fullImageUrls[0]}, {bookImage: fullImageUrls[1]}];
+  }, [fullImageUrls]);
 
-  const initialIndex = fullImage.front === image ? 0 : 1;
+  // const initialIndex = fullImage.front === image ? 0 : 1;
+  const initialIndex = 0;
 
   return (
     <Modal
