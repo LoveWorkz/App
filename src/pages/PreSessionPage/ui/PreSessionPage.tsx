@@ -5,7 +5,7 @@ import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
 import {useFocusEffect} from '@react-navigation/native';
 
-import {preSession} from '@src/shared/assets/images';
+import {preSession, preSessionDark} from '@src/shared/assets/images';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {windowWidth} from '@src/app/styles/GlobalStyle';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -27,11 +27,12 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {userStore} from '@src/entities/User';
 import preSessionPageStore from '../model/store/PreSessionPageStore';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const PreSessionPage = () => {
   const language = useLanguage();
   const colors = useColors();
-
+  const {isDark} = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [visible, setVisible] = useState(false);
 
@@ -76,7 +77,7 @@ const PreSessionPage = () => {
       <FastImage
         style={styles.image}
         resizeMode={'contain'}
-        source={preSession}
+        source={isDark ? preSessionDark : preSession}
       />
     </View>
   );
@@ -171,7 +172,7 @@ const PreSessionPage = () => {
         theme={ButtonTheme.GRADIENT}
         style={styles.btn}>
         <AppText
-          style={{color: colors.bgQuinaryColor}}
+          style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
           weight={'600'}
           text={t('common.begin_session')}
@@ -179,7 +180,7 @@ const PreSessionPage = () => {
         <SvgXml
           xml={getArrowRightIcon({isGradient: false})}
           style={styles.icon}
-          fill={colors.white}
+          fill={isDark ? colors.white : colors.white}
         />
       </Button>
 
