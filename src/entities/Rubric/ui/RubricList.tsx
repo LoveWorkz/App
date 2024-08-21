@@ -16,6 +16,8 @@ const RubricList = (props: RubricListProps) => {
 
   const rubrics = rubricStore.rubrics;
 
+  console.log('rubrics', rubrics);
+
   let content = rubrics.map((rubric, i) => {
     const isFirstElement = i === 0;
 
