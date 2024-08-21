@@ -74,7 +74,7 @@ const Profile = (props: ProfileProps) => {
           <AppText
             text={t('common.next')}
             size={TextSize.LEVEL_4}
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
           />
         </Button>
       </View>

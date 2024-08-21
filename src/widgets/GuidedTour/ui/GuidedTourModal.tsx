@@ -13,11 +13,13 @@ import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import guidedTourStore from '../model/store/guidedTourStore';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const GuidedTourModal = () => {
   const {currentStep, isLastStep, goToNext, stop} = useCopilot();
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   if (!currentStep) {
     return null;
@@ -48,7 +50,11 @@ const GuidedTourModal = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
+      ]}>
       <View style={styles.title}>
         <AppText
           size={TextSize.LEVEL_5}
@@ -91,14 +97,21 @@ const GuidedTourModal = () => {
           theme={ButtonTheme.GRADIENT}
           style={styles.btn}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             size={TextSize.LEVEL_5}
             weight={'600'}
             text={isLastStep ? t('common.got_it_lets_do_it') : t('common.next')}
           />
         </Button>
       </View>
-      <View style={[styles.arrow, styles[arrowStyleName]]} />
+      <View
+        style={[
+          styles.arrow,
+          styles[arrowStyleName],
+          {borderBottomColor: isDark ? colors.bgTertiaryColor : colors.white},
+          {borderTopColor: isDark ? colors.bgTertiaryColor : colors.white},
+        ]}
+      />
     </View>
   );
 };
@@ -106,7 +119,6 @@ const GuidedTourModal = () => {
 const arrowSize = horizontalScale(10);
 
 const arrrowTopStyles = {
-  borderBottomColor: 'white',
   top: -arrowSize,
   borderBottomWidth: arrowSize,
 };
@@ -116,7 +128,6 @@ const styles = StyleSheet.create<any>({
     paddingVertical: verticalScale(20),
     paddingHorizontal: horizontalScale(18),
     alignItems: 'center',
-    backgroundColor: 'white',
     borderRadius: moderateScale(15),
     width: windowWidthMinusPaddings,
     left: horizontalScale(-8),
@@ -160,7 +171,7 @@ const styles = StyleSheet.create<any>({
     bottom: -arrowSize,
     left: horizontalScale(15),
     borderTopWidth: arrowSize,
-    borderTopColor: 'white',
+    // borderTopColor: 'white',
   },
 });
 

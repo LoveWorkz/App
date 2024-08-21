@@ -14,6 +14,7 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import quotesStore from '../model/store/QuotesStore';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface QuotesModalProps {
   visible: boolean;
@@ -24,6 +25,7 @@ const QuotesModal = (props: QuotesModalProps) => {
   const {visible, setVisible} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
   const {quote, bookId, bookAuthor, bookName} = quotesStore.quotesModalInfo;
 
   const onCancelHandler = () => {
@@ -74,7 +76,7 @@ const QuotesModal = (props: QuotesModalProps) => {
         style={styles.btn}
         onPress={onShowBookPressHanlder}>
         <AppText
-          style={{color: colors.bgQuinaryColor}}
+          style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
           size={TextSize.LEVEL_4}
           text={t('quotes.show_me_book')}
         />

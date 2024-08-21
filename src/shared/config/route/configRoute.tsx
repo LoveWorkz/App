@@ -444,10 +444,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   // onboarding
   [AppRouteNames.WELCOME]: {
     name: appRoutePaths.welcome,
-    bgColor: 'bgQuinaryColor',
+    bgColor: 'bgQuinaryColor' as BgColor,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColor="bgQuinaryColor">
+        <Layout bgColor={'bgQuinaryColor' as BgColor}>
           <WelcomePage {...props} />
         </Layout>
       );

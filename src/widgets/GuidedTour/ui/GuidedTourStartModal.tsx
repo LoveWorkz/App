@@ -8,6 +8,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import {useTranslation} from 'react-i18next';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface GuidedTourStartModalProps {
   visible: boolean;
@@ -19,6 +20,7 @@ const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
   const {visible, onStart} = props;
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   return (
     <Modal contentStyle={styles.content} visible={visible}>
@@ -35,7 +37,7 @@ const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
           theme={ButtonTheme.GRADIENT}
           style={styles.btn}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             size={TextSize.LEVEL_5}
             weight={'700'}
             text={t('common.start_tour_here')}
