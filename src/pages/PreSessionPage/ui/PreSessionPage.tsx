@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     left: -10,
   },
   image: {
-    height: verticalScale(240),
+    height: verticalScale(180),
   },
   textWrapper: {
     alignItems: 'center',
