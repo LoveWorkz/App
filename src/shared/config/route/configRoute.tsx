@@ -257,7 +257,6 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.HOW_TO_USE]: {
     name: appRoutePaths.howToUse,
     headerShown: true,
-    // bgColor: '#e8ecf9',
     headerTitle: 'Loveworkz',
     Element: (props: ParamListBase) => {
       return (

@@ -68,7 +68,6 @@ export const globalStyles = StyleSheet.create({
   },
   Quicksand_SemiBold: {
     fontFamily:
-      // Platform.OS === 'ios' ? 'Quicksand-SemiBold' : 'Quicksand SemiBold',
       Platform.OS === 'ios' ? 'Quicksand-Regular' : 'QuicksandSemiBold',
   },
 

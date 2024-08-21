@@ -1,12 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  // useLayoutEffect,
-  // useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -21,17 +13,10 @@ import {ChallengeGroupType} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
 import {RouteProp, useRoute} from '@react-navigation/native';
-// import {sessionStore} from '@src/entities/Session';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CARD_WIDTH} from '@src/shared/consts/common';
-// import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-// import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
-// import {AppText, TextSize, TextType} from '@src/shared/ui/AppText/AppText';
-// import {SvgXml} from 'react-native-svg';
-// import {CheckIcon} from '@src/shared/assets/icons/Check';
-// import {useColors} from '@src/app/providers/colorsProvider';
 
 interface BaseCoreChallengesProps {
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>;
@@ -39,10 +24,7 @@ interface BaseCoreChallengesProps {
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   const {params} = useRoute<RouteProp<{params: {title: string}}>>();
-  const {
-    // isSessionFlow,
-    currentCoreChallengeGroup,
-  } = props;
+  const {currentCoreChallengeGroup} = props;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const headerCustomTitle = useMemo(() => params?.title, []);
   const language = useLanguage();
@@ -50,34 +32,21 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
 
-  // const {session} = sessionStore;
   const {challenges} = challengesStore;
   const coreChallengesList = useMemo(() => {
-    // if (!(currentCoreChallengeGroup && session)) {
     if (!currentCoreChallengeGroup) {
       return [];
     }
 
     let filteredChallenges = [];
 
-    // const {isCurrent, linkedCoreChallenge} = session;
-
-    // if (isCurrent) {
     filteredChallenges = challenges.filter(
       challenge => challenge.groupId === currentCoreChallengeGroup.id,
     );
-    // } else {
-    // const sessionChallenge = challenges.find(
-    // challenge => challenge.id === linkedCoreChallenge,
-    // );
-    // filteredChallenges = sessionChallenge ? [sessionChallenge] : [];
-    // }
 
     return filteredChallenges.map(challenge => ({
       ...challenge,
       groupName: currentCoreChallengeGroup.displayName[language],
-      // isSessionFlow: false,
-      // isChallengeCompleted: !session?.isCurrent,
     }));
   }, [challenges, currentCoreChallengeGroup, language]);
 
@@ -115,13 +84,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
       return;
     }
 
-    // TODO: Initi session flow - something is here
-
-    // coreChallengeCardsPageStore.initSessionFlow({
-    //   coreChallengesList,
-    //   currentCoreChallengeGroupId: currentCoreChallengeGroup.id,
-    // });
-
     return () => {
       challengeStore.clearForm();
     };
@@ -134,14 +96,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
 
   return (
     <View style={styles.BaseCoreChallenges}>
-      {/* <CoreChallengeIntroCardWrapper
-        isSessionFlow={false}
-        id={coreChallenge.id}
-        description={coreChallenge.description}
-        groupId={currentCoreChallengeGroup.id}
-        groupName={currentCoreChallengeGroup.displayName[language]}
-      />
-      <CoreChallengeCardsFooter /> */}
       <HorizontalSlide
         onSwipeHandler={handleSwipe}
         onScrollEnd={index => setCurrentPosition(index + 1)}
@@ -154,10 +108,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
         showLength={4}
         opacityInterval={0.3}
       />
-      {/* <CoreChallengeCardsFooter
-        currentIndex={currentPosition - 1}
-        count={coreChallengesList.length}
-      /> */}
     </View>
   );
 };

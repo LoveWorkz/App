@@ -9,11 +9,7 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
 import {RubricType} from '@src/entities/Rubric';
 import {QuestionCardTypes} from '../model/types/questionTypes';
-import {
-  // isCardTypeOrdinary,
-  isCardTypeWild,
-  isHotStuff,
-} from '../model/lib/questionLib';
+import {isCardTypeWild, isHotStuff} from '../model/lib/questionLib';
 import {useTranslation} from 'react-i18next';
 
 interface QuestionTextProps {
@@ -26,7 +22,6 @@ export const QuestionText = React.memo((props: QuestionTextProps) => {
 
   const colors = useColors();
   const questionTextSize =
-    // translatedQuestion.length < 150 ? TextSize.LEVEL_6 : TextSize.LEVEL_5;
     translatedQuestion.length < 150 ? TextSize.LEVEL_5 : TextSize.LEVEL_5;
 
   return (

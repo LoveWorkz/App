@@ -178,19 +178,6 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     t,
   ]);
 
-  // if (currentCoreChallenge) {
-  //   console.log(
-  //     'IS SESSION FLOW: ',
-  //     `${currentCoreChallenge.id}: `,
-  //     isSessionFlow,
-  //   );
-  //   console.log(
-  //     'CHAL IS CHECKED: ',
-  //     `${currentCoreChallenge.id}: `,
-  //     currentCoreChallenge.isChecked,
-  //   ); //TODO: here is the error
-  // }
-
   if (!currentCoreChallenge) {
     return null;
   }
@@ -202,21 +189,6 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   } else {
     return RegularFooter;
   }
-
-  // if (!isSessionFlow) {
-  //   if (currentCoreChallenge.isChecked) {
-  //     return DoneButton;
-  //   } else {
-  //     return ProceedButton;
-  //   }
-  // } else {
-  //   // return RegularFooter;
-  //   if (currentCoreChallenge.isChecked) {
-  //     return DoneButton;
-  //   } else {
-  //     return RegularFooter;
-  //   }
-  // }
 };
 
 export default memo(observer(CoreChallengeCardsFooter));

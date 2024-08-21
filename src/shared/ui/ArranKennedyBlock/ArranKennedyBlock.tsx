@@ -27,9 +27,6 @@ export const ArranKennedyBlock = memo(({therapist}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log('avatarUrl', avatarUrl);
-
-  // console.log('THERAPIST TO DISPLAY', therapist);
   return (
     <View style={styles.ArranKennedyBlock}>
       <View style={styles.avatarWrapper}>

@@ -60,16 +60,9 @@ const ChallengeGroupDetails = (props: ChallengeGroupProps) => {
         />
       </View>
       <Button
-        // style={styles.btn}
         backgroundColor={colors.white}
         theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.NORMAL}
         style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
-        {/* <AppText
-          size={TextSize.LEVEL_4}
-          style={{color: colors.primaryTextColor}}
-          weight={'700'}
-          text={t('challenge.hop_to_the_challenges')}
-        /> */}
         {isDark ? (
           <AppText
             style={{color: colors.primaryTextColor}}

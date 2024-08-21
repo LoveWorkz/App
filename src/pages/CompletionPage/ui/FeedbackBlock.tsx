@@ -42,15 +42,8 @@ const FeedbackBlock = (props: CompletionItemProps) => {
       <Button
         disabled={isSending}
         onPress={onSendPressHandler}
-        // theme={ButtonTheme.OUTLINED}
         theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.OUTLINED}
         style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
-        {/* <AppText
-          style={{color: colors.black}}
-          size={TextSize.LEVEL_4}
-          weight={'600'}
-          text={t('common.send')}
-        /> */}
         {isDark ? (
           <AppText
             style={{color: colors.white}}

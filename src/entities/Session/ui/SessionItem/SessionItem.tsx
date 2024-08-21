@@ -58,7 +58,6 @@ const SessionItem = (props: SessionItemProps) => {
   let leftIcon = EllipseIcon;
   let rightIcon = <></>;
   let bgColor = isDark ? colors.bgTertiaryColor : colors.softPeriwinkle;
-  // const bgColor = isDark ? colors.bgTertiaryColor : colors.softPeriwinkle;
 
   switch (state) {
     case 'completed':

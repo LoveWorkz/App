@@ -55,13 +55,6 @@ const Rubric = (props: RubricProps) => {
 
   const shouldDisplayNewBanner = !userRubricsSeen?.includes(rubric.id);
 
-  // const source = useMemo(() => {
-  //   return {
-  //     uri: rubric.image,
-  //     priority: FastImage.priority.normal,
-  //   };
-  // }, [rubric.image]);
-
   const onRubricPressHandlerCreator = (id: string) => {
     return () => {
       navigation.navigate(AppRouteNames.QUESTIONS, {

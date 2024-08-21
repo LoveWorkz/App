@@ -192,7 +192,6 @@ class HomePageStore {
           return;
         }
 
-        // progressBarCategoryName = intimateCategory.displayName[language];
         progressBarCategoryKey = CategoryKey.Intimate;
       }
 

@@ -182,7 +182,6 @@ interface HomePageWrapperProps {
 const style = {
   backgroundColor: 'transparent',
   paddingBottom: 20,
-  // marginTop: 50,
 };
 
 const StepNumberComponent = () => <></>;

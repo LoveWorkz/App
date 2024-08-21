@@ -54,7 +54,6 @@ i18n
     compatibilityJSON: 'v3', // for android
     resources: locals,
     fallbackLng: 'en',
-    // defaultNS: 'en',
     interpolation: {
       escapeValue: false,
     },

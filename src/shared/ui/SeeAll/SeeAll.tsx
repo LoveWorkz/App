@@ -34,7 +34,6 @@ export const SeeAll = memo((props: SeeAllProps) => {
             ...getShadowOpacity(theme, colors.bgSecondaryColor)
               .shadowOpacity_level_1,
             backgroundColor: colors.bgSecondaryColor,
-            // backgroundColor: 'red',
           },
           styles[seeAllTheme],
         ]}>

@@ -188,12 +188,6 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
 
   const nonEmptyData = data.filter(el => el.type !== 'EMPTY_CARD');
 
-  // useEffect(() => {
-  //   challengeStore.coreChallengeCardsSwipeHandler(challenge);
-  //   const challenge = challengeStore.coreChallenge
-  //   challengeStore.setCoreChallenge(data[defaultElement as number]);
-  // }, [data, defaultElement]);
-
   return (
     <>
       <Carousel

@@ -66,17 +66,6 @@ const InvitePartnerModal = (props: InvitePartnerModalProps) => {
             text={t('common.send')}
           />
         </Button>
-        {/* <Button
-          style={styles.dontShowAgainBtn}
-          theme={ButtonTheme.CLEAR}
-          onPress={onDontShowAgainHandler}>
-          <AppText
-            style={styles.dontShowAgainText}
-            weight={'700'}
-            size={TextSize.LEVEL_4}
-            text={t('common.dont_show_again')}
-          />
-        </Button> */}
       </>
     </Modal>
   );

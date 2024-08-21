@@ -42,8 +42,8 @@ import {
 import {rubricStore} from '@src/entities/Rubric';
 import {userStore} from '@src/entities/User';
 // import {navigation} from '@src/shared/lib/navigation/navigation';
-import challengeGroupStore from '@src/entities/ChallengeGroup/model/store/challengeGroupStore';
-import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
+// import challengeGroupStore from '@src/entities/ChallengeGroup/model/store/challengeGroupStore';
+// import challengeStore from '@src/entities/Challenge/model/store/challengeStore';
 // import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
 
 interface QuestionsPageProps {
@@ -97,9 +97,9 @@ const QuestionsPage = (props: QuestionsPageProps) => {
   const sessionId = sharedSessionId || sessionStore.session?.id;
   const shouldDisplayFastModal = key === DocumentType.RUBRIC;
 
-  const currentCoreChallengeGroup =
-    challengeGroupStore.currentCoreChallengeGroup;
-  const groupName = currentCoreChallengeGroup?.displayName[language];
+  // const currentCoreChallengeGroup =
+  // challengeGroupStore.currentCoreChallengeGroup;
+  // const groupName = currentCoreChallengeGroup?.displayName[language];
 
   const isPreviousScreenBreak =
     route?.params?.prevRouteName === AppRouteNames.BREAK;
@@ -167,18 +167,18 @@ const QuestionsPage = (props: QuestionsPageProps) => {
     [timer],
   );
 
-  const lockedChallengeId = challengeStore.lockedChallengeId;
-  const isChallengeLocked =
-    challengeStore.isChallengeLockedIn(lockedChallengeId);
+  // const lockedChallengeId = challengeStore.lockedChallengeId;
+  // const isChallengeLocked =
+  // challengeStore.isChallengeLockedIn(lockedChallengeId);
 
-  useEffect(() => {
-    if (isChallengeLocked) {
-      // breakPageStore.letsDoThisPressHandler(language);
-      // navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-      //   title: groupName,
-      // });
-    }
-  }, [groupName, isChallengeLocked, language]);
+  // useEffect(() => {
+  // if (isChallengeLocked) {
+  // breakPageStore.letsDoThisPressHandler(language);
+  // navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+  //   title: groupName,
+  // });
+  // }
+  // }, [groupName, isChallengeLocked, language]);
 
   const onSwipeHandler = useCallback(
     (param: QuestionType, questionNumber: number) => {

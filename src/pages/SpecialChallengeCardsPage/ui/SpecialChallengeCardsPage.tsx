@@ -81,8 +81,6 @@ const SpecialChallengeCardsPage = () => {
     }));
   }, [isChallengeDoneButtonVisible, specialChallenge, isSelectingChallenge]);
 
-  console.log(listWithMetadata[0].showButton);
-
   const showBottomButton = useMemo(
     () => listWithMetadata[0].showButton,
     [listWithMetadata],

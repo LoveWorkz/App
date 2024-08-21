@@ -41,7 +41,6 @@ export const Layout = (props: LayoutProps) => {
 
   const scrollViewRef = useRef<ScrollView>(null);
   const colors = useColors();
-  // const {isDark} = useTheme();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
 
@@ -53,7 +52,6 @@ export const Layout = (props: LayoutProps) => {
     }
   };
   const colorOverride = getThemeColor();
-  // console.log('IS OVERRIDE', colorOverride);
 
   let backgroundColor;
 
@@ -79,8 +77,6 @@ export const Layout = (props: LayoutProps) => {
   const overrideBgColor = colorOverride
     ? colors[colorOverride]
     : backgroundColor;
-
-  // console.log(Platform.OS, overrideBgColor, isDark);
 
   if (isPageScrolling) {
     return (

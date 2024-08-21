@@ -43,14 +43,6 @@ export const PageSelect = (props: PageSelectProps) => {
               height: navbarHeaderHeight,
             },
           ]}>
-          {/* <Button style={styles.iconWrapper} onPress={onClose}>
-            <SvgXml
-              fill={colors.primaryTextColor}
-              style={styles.arrowLeft}
-              xml={ArrowLeftIcon}
-            />
-          </Button> */}
-
           {prompt && (
             <AppText
               style={{color: colors.primaryTextColor}}

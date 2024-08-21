@@ -24,8 +24,6 @@ const BookPreview = (props: BookPreviewProps) => {
   const {theme} = useTheme();
   const colors = useColors();
 
-  // props.
-
   useEffect(() => {
     const asyncEffect = async () => {
       const url = await firebaseStorage()
@@ -37,12 +35,7 @@ const BookPreview = (props: BookPreviewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log('BOOK PREVIEW URL', imageUrl);
-
-  // const imageFront = image.front;
-
   const uri = useMemo(() => {
-    // return {uri: imageFront, priority: FastImage.priority.normal};
     return {uri: imageUrl, priority: FastImage.priority.normal};
   }, [imageUrl]);
 

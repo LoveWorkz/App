@@ -92,14 +92,6 @@ const CompletionPage = () => {
 
   const colors = useColors();
 
-  // const backgroundSource = useMemo(() => {
-  //   if (newListWithMetadata.length !== 0) {
-  //     return {uri: newListWithMetadata[0].image};
-  //   }
-  // }, [newListWithMetadata]);
-
-  // console.log('IMAGE', newListWithMetadata[0].image);
-
   return (
     <View style={styles.CompletionPage}>
       <StatusBar barStyle={'light-content'} />

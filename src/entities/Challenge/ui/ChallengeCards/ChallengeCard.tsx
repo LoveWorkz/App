@@ -1,10 +1,5 @@
 import React, {memo, useEffect, useState} from 'react';
-import {
-  // NativeSyntheticEvent,
-  StyleSheet,
-  // TextLayoutEventData,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {SvgUri, SvgXml} from 'react-native-svg';
 import {WebView} from 'react-native-webview';
 
@@ -19,12 +14,10 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
 import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
 import {useColors} from '@src/app/providers/colorsProvider';
-// import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {DisplayText} from '@src/shared/types/types';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {APPLICATION_NAME} from '@src/app/config/appConfig';
-// import challengeStore from '../../model/store/challengeStore';
 
 import storage from '@react-native-firebase/storage';
 
@@ -41,16 +34,7 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard = (props: ChallengeCardProps) => {
-  const {
-    // title,
-    // showButton,
-    body,
-    // specialChallengeId,
-    // isSelectingChallenge,
-    // isChecked,
-    isSvg,
-    svgName,
-  } = props;
+  const {body, isSvg, svgName} = props;
   const {theme, isDark} = useTheme();
   const colors = useColors();
   const language = useLanguage();
@@ -70,20 +54,6 @@ const ChallengeCard = (props: ChallengeCardProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const onTextLayout = useCallback(
-  // (e: NativeSyntheticEvent<TextLayoutEventData>) => {
-  // setNumberOfLines(e.nativeEvent.lines.length);
-  // },
-  // [],
-  // );
-
-  // const onPressHandler = () => {
-  // challengeStore.specialChallengeCardButtonPressHandler(
-  // specialChallengeId,
-  // isChecked,
-  // );
-  // };
-
   return (
     <View
       style={[
@@ -93,14 +63,6 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
         },
       ]}>
-      {/* <AppText
-        onTextLayout={onTextLayout}
-        size={TextSize.LEVEL_6}
-        weight={'600'}
-        text={title[language]}
-        align={numberOfLines === 1 ? 'left' : 'center'}
-      /> */}
-
       <View style={styles.iconWrapper}>
         <SvgXml
           xml={HeartsIcon}
@@ -155,22 +117,6 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           text={`...${APPLICATION_NAME}`}
         />
       </View>
-      {/* {showButton && (
-        <View style={styles.btnWrapper}>
-          <Button
-            disabled={isSelectingChallenge}
-            onPress={onPressHandler}
-            theme={ButtonTheme.GRADIENT}
-            style={styles.btn}>
-            <AppText
-              style={{color: colors.white}}
-              size={TextSize.LEVEL_4}
-              weight={'600'}
-              text={t('common.we_have_done_the_challenge)}
-            />
-          </Button>
-        </View>
-      )} */}
     </View>
   );
 };
