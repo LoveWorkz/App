@@ -23,18 +23,17 @@ import {CategoryKey} from '@src/entities/Category';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
-  challenges: ChallengeType[] = [];
-  specialChallenges: SpecialChallengeType[] = [];
-  selectedChallengesIds: string[] = [];
-  favoriteChallengesList: ChallengeType[] = [];
-  selectedSpecialChallengesIds: string[] = [];
-  isAllChallengesSelected: boolean = false;
   challengeCategory: null | CurrentChallengeCategoryType = null;
-  isChallengesLoading: boolean = false;
-  isChallengePageLoading: boolean = true;
+  challenges: ChallengeType[] = [];
   challengeTabIndex: number = 0;
+  favoriteChallengesList: ChallengeType[] = [];
+  isAllChallengesSelected: boolean = false;
+  isChallengePageLoading: boolean = true;
+  isChallengesLoading: boolean = false;
+  selectedChallengesIds: string[] = [];
+  selectedSpecialChallengesIds: string[] = [];
+  specialChallenges: SpecialChallengeType[] = [];
   trendingChallenges: TrendingChallengeType[] = [];
-
   unlockedChallengeCategoriesIds: string[] = [];
 
   constructor() {
@@ -112,6 +111,8 @@ class ChallengesStore {
       const data = await firestore()
         .collection(Collections.CHALLENGE_CATEGORIES)
         .get({source});
+
+      // console.log('XX FETCH DEFAULT CHALLENGE CATEGORIES', data.docs);
 
       const challengeCategories = data.docs.map(challengeCategory => {
         return challengeCategory.data() as ChallengeCategoryType;

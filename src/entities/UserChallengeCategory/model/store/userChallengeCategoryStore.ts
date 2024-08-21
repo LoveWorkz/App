@@ -57,6 +57,11 @@ class UserChallengeCategoryStore {
             userChallengeCategory.specialChallengeFavorites,
         });
 
+        // console.log(
+        // 'TEST: currenetChallengeCategory',
+        // currenetChallengeCategory,
+        // );
+
         this.userChallengeCategory = userChallengeCategory;
         challengesStore.setIsAllChallengesSelected(
           currenetChallengeCategory.isAllChallengesSelected,

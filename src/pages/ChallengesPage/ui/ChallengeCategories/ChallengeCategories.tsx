@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -18,6 +18,7 @@ interface ChallengeCategoriesProps {
 
 export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
   const [visible, setVisible] = useState(false);
+  const [wasInitialCategorySet, setWasInitialCategorySet] = useState(false);
   const {defaultChallengeId, isLoading} = props;
   let challengeCategories = challengesStore.challengeCategories;
 
@@ -34,6 +35,26 @@ export const ChallengeCategories = (props: ChallengeCategoriesProps) => {
     },
     [],
   );
+
+  useEffect(() => {
+    if (challengeCategories.length > 0) {
+      if (!wasInitialCategorySet && !isLoading) {
+        const allInOneCategory = challengeCategories.filter(
+          category => category.id === 'challenge_category_1',
+        );
+        onChallengeCategoryPressHandler({
+          id: allInOneCategory[0].id,
+          name: allInOneCategory[0].name,
+        });
+        setWasInitialCategorySet(true);
+      }
+    }
+  }, [
+    challengeCategories,
+    isLoading,
+    onChallengeCategoryPressHandler,
+    wasInitialCategorySet,
+  ]);
 
   return (
     <>

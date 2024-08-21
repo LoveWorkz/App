@@ -60,6 +60,7 @@ const QuickStart = (props: QuickStartProps) => {
       <View
         style={[
           styles.layout,
+          // eslint-disable-next-line react-native/no-inline-styles
           {backgroundColor: colors.white, opacity: isDark ? 0.05 : 0.15},
         ]}
       />
