@@ -62,86 +62,107 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
   };
 
   return (
-    <FastImage
-      resizeMode="stretch"
-      source={questionImage1 as number}
-      style={[
-        styles.ChallengeCard,
-        {
-          backgroundColor: isDark ? colors.darkCard : colors.white,
-        },
-      ]}>
-      <View style={styles.groupName}>
-        <GradientText size={TextSize.LEVEL_2} weight={'600'} text={groupName} />
-      </View>
-      <AppText
-        size={TextSize.SIZE_24}
-        align={'center'}
-        lineHeight={30}
-        weight={'700'}
-        text={description[language]}
+    <>
+      <FastImage
+        resizeMode="stretch"
+        source={questionImage1 as number}
+        style={[
+          styles.ChallengeCard,
+          // eslint-disable-next-line react-native/no-inline-styles
+          {
+            position: 'absolute',
+            top: 0,
+            zIndex: 1000,
+            opacity: isDark ? 0.3 : 1,
+          },
+        ]}
       />
-
-      <View style={styles.appNameWrapper}>
-        <GradientText
-          size={TextSize.LEVEL_2}
+      <View
+        style={[
+          styles.ChallengeCard,
+          {
+            backgroundColor: isDark ? colors.darkCard : colors.white,
+          },
+        ]}>
+        <View style={styles.groupName}>
+          <GradientText
+            size={TextSize.LEVEL_2}
+            weight={'600'}
+            text={groupName}
+          />
+        </View>
+        <AppText
+          size={TextSize.SIZE_24}
+          align={'center'}
+          lineHeight={30}
           weight={'700'}
-          text={`...${APPLICATION_NAME}`}
+          text={description[language]}
         />
-      </View>
-      {isSessionFlow && (
-        <View style={styles.btnWrapper}>
-          {challengeStore.isChallengeLockedIn(id) || !!isChallengeCompleted ? (
-            <Button
-              onPress={challengelockedHandler}
-              theme={ButtonTheme.OUTLINED}
-              style={[
-                styles.challengeLockedBtn,
-                {backgroundColor: colors.buttonLocked},
-              ]}>
-              <View style={styles.lockIcon}>
-                <SvgXml
-                  fill={isDark ? colors.lavenderBlue2 : colors.primaryTextColor}
-                  xml={OutlineLockIcon}
-                  width={horizontalScale(21)}
-                  height={horizontalScale(21)}
-                />
-              </View>
-              <AppText
-                style={{
-                  color: isDark
-                    ? colors.lavenderBlue2
-                    : colors.primaryTextColor,
-                }}
-                size={TextSize.LEVEL_4}
-                weight={'600'}
-                text={t('common.challenge_locked')}
-              />
-            </Button>
-          ) : (
-            <Button
-              onPress={lockTheChallengeInHandler}
-              theme={ButtonTheme.OUTLINED_GRADIENT}
-              style={styles.lockChallengeBtn}>
-              <View style={styles.lockChallengeContent}>
+
+        <View style={styles.appNameWrapper}>
+          <GradientText
+            size={TextSize.LEVEL_2}
+            weight={'700'}
+            text={`...${APPLICATION_NAME}`}
+          />
+        </View>
+        {isSessionFlow && (
+          <View style={styles.btnWrapper}>
+            {challengeStore.isChallengeLockedIn(id) ||
+            !!isChallengeCompleted ? (
+              <Button
+                onPress={challengelockedHandler}
+                theme={ButtonTheme.OUTLINED}
+                style={[
+                  styles.challengeLockedBtn,
+                  {backgroundColor: colors.buttonLocked},
+                ]}>
                 <View style={styles.lockIcon}>
                   <SvgXml
-                    xml={OutlineLockGradientIcon}
+                    fill={
+                      isDark ? colors.lavenderBlue2 : colors.primaryTextColor
+                    }
+                    xml={OutlineLockIcon}
                     width={horizontalScale(21)}
                     height={horizontalScale(21)}
                   />
                 </View>
-                <GradientText
+                <AppText
+                  style={{
+                    color: isDark
+                      ? colors.lavenderBlue2
+                      : colors.primaryTextColor,
+                  }}
                   size={TextSize.LEVEL_4}
                   weight={'600'}
-                  text={t('common.lock_the_challenge_in')}
+                  text={t('common.challenge_locked')}
                 />
-              </View>
-            </Button>
-          )}
-        </View>
-      )}
-    </FastImage>
+              </Button>
+            ) : (
+              <Button
+                onPress={lockTheChallengeInHandler}
+                theme={ButtonTheme.OUTLINED_GRADIENT}
+                style={styles.lockChallengeBtn}>
+                <View style={styles.lockChallengeContent}>
+                  <View style={styles.lockIcon}>
+                    <SvgXml
+                      xml={OutlineLockGradientIcon}
+                      width={horizontalScale(21)}
+                      height={horizontalScale(21)}
+                    />
+                  </View>
+                  <GradientText
+                    size={TextSize.LEVEL_4}
+                    weight={'600'}
+                    text={t('common.lock_the_challenge_in')}
+                  />
+                </View>
+              </Button>
+            )}
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 

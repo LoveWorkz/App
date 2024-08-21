@@ -66,17 +66,33 @@ const QuestionCard = (props: QuestionCardProps) => {
         styles.questionCardWrapper,
         {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_2},
       ]}>
-      <FastImage
-        resizeMode="stretch"
-        source={image as number}
-        style={[
-          styles.questionCard,
-          {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
-        ]}>
-        <TopicName type={type} rubric={rubric} language={language} />
-        <QuestionText type={type} translatedQuestion={translatedQuestion} />
-        <AppName type={type} />
-      </FastImage>
+      <>
+        <FastImage
+          resizeMode="stretch"
+          source={image as number}
+          style={[
+            styles.questionCard,
+            // eslint-disable-next-line react-native/no-inline-styles
+            {
+              position: 'absolute',
+              top: 0,
+              zIndex: 1,
+              opacity: isDark ? 0.4 : 1,
+            },
+          ]}
+        />
+        <View
+          style={[
+            styles.questionCard,
+            {
+              backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
+            },
+          ]}>
+          <TopicName type={type} rubric={rubric} language={language} />
+          <QuestionText type={type} translatedQuestion={translatedQuestion} />
+          <AppName type={type} />
+        </View>
+      </>
     </View>
   );
 };
