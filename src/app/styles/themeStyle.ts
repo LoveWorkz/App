@@ -127,6 +127,7 @@ const dark: ColorType = {
   bgForgotPasswordPopupColor: '#242832',
   bgHomePageHeaderColor: '#242832',
   bgLayout: 'rgba(0, 0, 0, 0.5)',
+  // bgOnboardingColor: '#FBFCFF',
   bgOnboardingColor: '#FBFCFF',
   bgPopup: '#000000',
   bgQuaternaryColor: '#242832',

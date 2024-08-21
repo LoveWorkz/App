@@ -11,6 +11,7 @@ import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
 import ConfirmDeleting from '../ConfirmDeleting/ConfirmDeleting';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface DeleteAccountModalProps {
   visible: boolean;
@@ -21,6 +22,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
   const {visible, setVisible} = props;
   const {t} = useTranslation();
   const colors = useColors();
+  const {isDark} = useTheme();
 
   const [isConfirm, setIsConfirm] = useState(false);
 
@@ -73,7 +75,7 @@ const DeleteAccountModal = (props: DeleteAccountModalProps) => {
             style={styles.logOutBtn}
             onPress={onDeleteHandler}>
             <AppText
-              style={{color: colors.bgQuinaryColor}}
+              style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
               size={TextSize.LEVEL_4}
               text={t('common.delete')}
             />

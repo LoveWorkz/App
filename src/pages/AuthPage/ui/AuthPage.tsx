@@ -17,11 +17,13 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {windowHeightMinusPaddings} from '@src/app/styles/GlobalStyle';
 import {HaveAnAccount} from '@src/widgets/HaveAnAccount';
 import OrLine from './OrLine/OrLine';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 const AuthPage = () => {
   const {t} = useTranslation();
   const colors = useColors();
   const statusBarHeight = getStatusBarHeight();
+  const {isDark} = useTheme();
 
   const dialogContent = userStore.isAccountDeleted
     ? t('auth.deleted_account')
@@ -100,7 +102,7 @@ const AuthPage = () => {
           style={styles.singInBtn}
           theme={ButtonTheme.GRADIENT}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             weight={'700'}
             text={isSignIn ? t('auth.login') : t('auth.signup')}

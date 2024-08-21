@@ -6,6 +6,7 @@ import {windowWidth, globalPadding} from '@src/app/styles/GlobalStyle';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import LinearGradient from 'react-native-linear-gradient';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface OnboardingContainerProps {
   children: ReactElement | ReactElement[];
@@ -16,8 +17,12 @@ interface OnboardingContainerProps {
 
 const OnboardingContainer = (props: OnboardingContainerProps) => {
   const {children, bgImage, imageChildren, isNotification = false} = props;
-
+  const {isDark} = useTheme();
   const colors = useColors();
+
+  const gradientColors = isDark
+    ? ['#323233', colors.bgQuinaryColor, colors.bgQuinaryColor]
+    : ['#FBFCFF', '#F4F6FA', '#F4F6FA'];
 
   return (
     <View>
@@ -30,13 +35,24 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
             left: isNotification ? -globalPadding : 0,
           },
         ]}>
-        <FastImage resizeMode="cover" source={bgImage} style={styles.bgImg}>
+        <FastImage resizeMode="cover" source={bgImage} style={[styles.bgImg]}>
           {imageChildren}
         </FastImage>
+        <View
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            position: 'absolute',
+            top: 0,
+            height: '100%',
+            width: '100%',
+            backgroundColor: isDark ? 'black' : 'transparent',
+            opacity: 0.8,
+          }}
+        />
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 0, y: 1}}
-          colors={['#FBFCFF', '#F4F6FA', '#F4F6FA']}
+          colors={gradientColors}
           style={styles.linearGradient}
         />
         {children}

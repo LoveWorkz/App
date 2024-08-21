@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: verticalScale(200),
+    height: verticalScale(140),
+    marginBottom: verticalScale(40),
   },
   title: {
     marginBottom: verticalScale(20),

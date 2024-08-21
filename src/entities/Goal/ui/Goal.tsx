@@ -28,7 +28,7 @@ const Goal = (props: GoalProps) => {
 
   const {i18n} = useTranslation();
   const colors = useColors();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
 
   const language = i18n.language as LanguageValueType;
   const isKeyImproveParenting = keyName === 'improve_co_parenting';
@@ -53,7 +53,7 @@ const Goal = (props: GoalProps) => {
         styles.container,
         {
           ...getShadowOpacity(theme, colors.white).shadowOpacity_level_2,
-          backgroundColor: colors.white,
+          backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
         },
       ]}>
       {isSelected ? (

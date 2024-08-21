@@ -9,6 +9,7 @@ import {horizontalScale} from '@src/shared/lib/Metrics';
 import {useColors} from '@src/app/providers/colorsProvider';
 import UploadModal from './UploadModal/UploadModal';
 import ConfirmDeleteModal from './ConfirmDeleteModal/ConfirmDeleteModal';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface UploadPhotoProps {
   setPhtotData: (photoData: Asset) => void;
@@ -21,6 +22,7 @@ const UploadPhoto = (props: UploadPhotoProps) => {
   const {setPhtotData, deletePhoto, style, isDeletingPhoto} = props;
   const {t} = useTranslation();
   const colors = useColors();
+  const {isDark} = useTheme();
 
   const [visible, setVisible] = useState(false);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -37,12 +39,15 @@ const UploadPhoto = (props: UploadPhotoProps) => {
         theme={ButtonTheme.GRADIENT}>
         <View style={styles.uploadTextWrapper}>
           <AppText
-            style={[styles.plus, {color: colors.bgQuinaryColor}]}
+            style={[
+              styles.plus,
+              {color: isDark ? colors.white : colors.bgQuinaryColor},
+            ]}
             size={TextSize.LEVEL_4}
             text={'+'}
           />
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             weight={'500'}
             size={TextSize.LEVEL_4}
             text={t('upload.change_photo')}

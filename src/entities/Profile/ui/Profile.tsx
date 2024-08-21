@@ -17,6 +17,7 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {Wrapper as ChangePassword} from './ChangePassword/ChangePassword';
 import ProfileForm from './ProfileForm/ProfileForm';
 import profileStore from '../model/store/profileStore';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface ProfileProps {
   isSetUp?: boolean;
@@ -32,6 +33,7 @@ const Profile = (props: ProfileProps) => {
 
   const colors = useColors();
   const {t} = useTranslation();
+  const {isDark} = useTheme();
 
   useEffect(() => {
     profileStore.fetchProfile();
@@ -144,7 +146,7 @@ const Profile = (props: ProfileProps) => {
           theme={ButtonTheme.GRADIENT}
           style={styles.saveBtn}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             text={t('common.save')}
           />

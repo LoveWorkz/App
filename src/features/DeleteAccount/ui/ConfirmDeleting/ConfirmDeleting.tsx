@@ -10,6 +10,7 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import deleteAccountStore from '../../model/store/DeleteAccountStore';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 interface ConfirmDeletingProps {
   onDeleteHandler: () => void;
@@ -20,6 +21,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
   const {onDeleteHandler, onCancelHandler} = props;
   const {t} = useTranslation();
   const colors = useColors();
+  const {isDark} = useTheme();
 
   useEffect(() => {
     return () => deleteAccountStore.resetForm();
@@ -72,7 +74,7 @@ const ConfirmDeleting = (props: ConfirmDeletingProps) => {
           style={styles.confirmBtn}
           theme={ButtonTheme.GRADIENT}>
           <AppText
-            style={{color: colors.bgQuinaryColor}}
+            style={{color: isDark ? colors.white : colors.bgQuinaryColor}}
             size={TextSize.LEVEL_4}
             text={t('common.confirm')}
           />
