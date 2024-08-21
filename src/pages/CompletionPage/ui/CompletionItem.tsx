@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useMemo} from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import {
@@ -123,13 +123,13 @@ const CompletionItem = (props: CompletionItemProps) => {
           {isQuadrant ? (
             <FastImage
               style={styles.quadrantImage}
-              resizeMode={'cover'}
+              resizeMode={'contain'}
               source={source}
             />
           ) : (
             <FastImage
               style={styles.image}
-              resizeMode={'cover'}
+              resizeMode={'contain'}
               source={source}
             />
           )}
@@ -242,12 +242,11 @@ const styledWordStyle: StyleType = {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    marginTop: StatusBar.currentHeight,
-  },
+  image: {},
   quadrantImage: {
     height: verticalScale(470),
     width: windowWidth,
+    marginTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
   },
 
   content: {
@@ -264,8 +263,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(50),
   },
   contentMiddle: {
-    marginBottom: verticalScale(50),
+    marginBottom: verticalScale(40),
     paddingHorizontal: horizontalScale(50),
+    marginTop: -verticalScale(20),
   },
   titleWrapper: {
     marginBottom: verticalScale(10),
