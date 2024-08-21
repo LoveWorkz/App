@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* loveWorkzTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* loveWorkzTests.m */; };
+		04CEF1A29FCF422980542182 /* QuicksandRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -16,12 +17,11 @@
 		635426992C15ED1E00D19546 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 635426982C15ED1E00D19546 /* GoogleService-Info.plist */; };
 		6373C5602C1839FC007E3B3D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6373C55F2C1839FC007E3B3D /* StoreKit.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AEB4A5A4CAD7491CB70A7147 /* QuicksandLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */; };
 		D9916059DCBCF24422417C67 /* Pods_loveWorkz_loveWorkzTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8C4F63A17554AF8E3068EAC /* Pods_loveWorkz_loveWorkzTests.framework */; };
 		E8AD22AA33B54FBFA49378EA /* QuicksandBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FF18E824EF8C402998F77927 /* QuicksandBold.ttf */; };
-		AEB4A5A4CAD7491CB70A7147 /* QuicksandLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */; };
-		F4A564DE6C4B4B2D850512C8 /* QuicksandMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */; };
-		04CEF1A29FCF422980542182 /* QuicksandRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */; };
 		F39789840142497C9398D4EA /* QuicksandSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C7783C3E7804FB7830DA448 /* QuicksandSemiBold.ttf */; };
+		F4A564DE6C4B4B2D850512C8 /* QuicksandMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,20 +47,20 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = loveWorkz/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = loveWorkz/main.m; sourceTree = "<group>"; };
 		20A6654BD6A5A923A0CD31DA /* Pods-loveWorkz.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loveWorkz.debug.xcconfig"; path = "Target Support Files/Pods-loveWorkz/Pods-loveWorkz.debug.xcconfig"; sourceTree = "<group>"; };
+		31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = QuicksandRegular.ttf; path = ../src/shared/assets/fonts/QuicksandRegular.ttf; sourceTree = "<group>"; };
+		36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = QuicksandLight.ttf; path = ../src/shared/assets/fonts/QuicksandLight.ttf; sourceTree = "<group>"; };
+		3C7783C3E7804FB7830DA448 /* QuicksandSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = QuicksandSemiBold.ttf; path = ../src/shared/assets/fonts/QuicksandSemiBold.ttf; sourceTree = "<group>"; };
 		6132EF172BDFF13200BBE14D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = loveWorkz/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		635426982C15ED1E00D19546 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6358B6092C182ABE0003E408 /* loveWorkz.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = loveWorkz.entitlements; path = loveWorkz/loveWorkz.entitlements; sourceTree = "<group>"; };
 		6373C55F2C1839FC007E3B3D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = loveWorkz/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = QuicksandMedium.ttf; path = ../src/shared/assets/fonts/QuicksandMedium.ttf; sourceTree = "<group>"; };
 		91B8D5584F283360CE3F88C3 /* Pods-loveWorkz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loveWorkz.release.xcconfig"; path = "Target Support Files/Pods-loveWorkz/Pods-loveWorkz.release.xcconfig"; sourceTree = "<group>"; };
 		A5B478D13492E6D5855697C0 /* Pods-loveWorkz-loveWorkzTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loveWorkz-loveWorkzTests.debug.xcconfig"; path = "Target Support Files/Pods-loveWorkz-loveWorkzTests/Pods-loveWorkz-loveWorkzTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E8C4F63A17554AF8E3068EAC /* Pods_loveWorkz_loveWorkzTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_loveWorkz_loveWorkzTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FF18E824EF8C402998F77927 /* QuicksandBold.ttf */ = {isa = PBXFileReference; name = "QuicksandBold.ttf"; path = "../src/shared/assets/fonts/QuicksandBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */ = {isa = PBXFileReference; name = "QuicksandLight.ttf"; path = "../src/shared/assets/fonts/QuicksandLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */ = {isa = PBXFileReference; name = "QuicksandMedium.ttf"; path = "../src/shared/assets/fonts/QuicksandMedium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */ = {isa = PBXFileReference; name = "QuicksandRegular.ttf"; path = "../src/shared/assets/fonts/QuicksandRegular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3C7783C3E7804FB7830DA448 /* QuicksandSemiBold.ttf */ = {isa = PBXFileReference; name = "QuicksandSemiBold.ttf"; path = "../src/shared/assets/fonts/QuicksandSemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FF18E824EF8C402998F77927 /* QuicksandBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = QuicksandBold.ttf; path = ../src/shared/assets/fonts/QuicksandBold.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +126,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4A7912D9D7E042F69166B038 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FF18E824EF8C402998F77927 /* QuicksandBold.ttf */,
+				36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */,
+				8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */,
+				31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */,
+				3C7783C3E7804FB7830DA448 /* QuicksandSemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,19 +182,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		4A7912D9D7E042F69166B038 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				FF18E824EF8C402998F77927 /* QuicksandBold.ttf */,
-				36D058A56CB0464A8B23B26A /* QuicksandLight.ttf */,
-				8F45D0E808E74794B5C5410F /* QuicksandMedium.ttf */,
-				31592ADCA21945AFBD6170C6 /* QuicksandRegular.ttf */,
-				3C7783C3E7804FB7830DA448 /* QuicksandSemiBold.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -567,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = loveWorkz/loveWorkz.entitlements;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = loveWorkz/Info.plist;
@@ -575,7 +574,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.11;
+				MARKETING_VERSION = 2.1.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -596,14 +595,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = loveWorkz/loveWorkz.entitlements;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 3NKATQ67Z9;
 				INFOPLIST_FILE = loveWorkz/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.11;
+				MARKETING_VERSION = 2.1.13;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
