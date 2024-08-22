@@ -26,7 +26,11 @@ const ChallengesPage = (props: ChallengesPageProps) => {
   useFocusEffect(
     useCallback(() => {
       // when user returns from any tab screen or BREAK page, get actual challenges data
-      if (isTabScreen || prevRouteName === AppRouteNames.BREAK) {
+      if (
+        isTabScreen ||
+        prevRouteName === AppRouteNames.BREAK ||
+        prevRouteName === 'home'
+      ) {
         challengesStore.init();
       }
     }, [isTabScreen, prevRouteName]),
