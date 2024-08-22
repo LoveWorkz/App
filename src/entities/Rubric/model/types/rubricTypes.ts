@@ -14,4 +14,6 @@ export interface RubricType {
   startQuestionDate: string;
   swipedQuestionsPercentage: number;
   totalViews: number;
+  number: number;
+  image_name: string;
 }

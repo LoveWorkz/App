@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
@@ -19,7 +19,7 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {Badge, BadgeDark, challengeImage} from '@src/shared/assets/images';
+import {Badge, BadgeDark} from '@src/shared/assets/images';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {DocumentType} from '@src/shared/types/types';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
@@ -27,6 +27,7 @@ import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {RubricType} from '../model/types/rubricTypes';
 import rubricStore from '../model/store/rubricStore';
 import {userStore} from '@src/entities/User';
+import firebaseStorage from '@react-native-firebase/storage';
 
 interface RubricProps {
   rubric: RubricType;
@@ -43,6 +44,7 @@ const Rubric = (props: RubricProps) => {
   const colors = useColors();
   const {i18n} = useTranslation();
   const {theme, isDark} = useTheme();
+  const [imageUrl, setImageUrl] = React.useState('');
 
   const userRubricsSeen = userStore.user?.rubrics_seen;
 
@@ -54,6 +56,23 @@ const Rubric = (props: RubricProps) => {
   });
 
   const shouldDisplayNewBanner = !userRubricsSeen?.includes(rubric.id);
+
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      try {
+        const url = await firebaseStorage()
+          .ref(`topics/images/${rubric.image_name}`)
+          .getDownloadURL();
+        setImageUrl(url);
+      } catch (error) {
+        console.error('Error fetching image URL:', error);
+      }
+    };
+
+    if (rubric.image_name) {
+      fetchImageUrl();
+    }
+  }, [rubric.image_name]);
 
   const onRubricPressHandlerCreator = (id: string) => {
     return () => {
@@ -142,7 +161,7 @@ const Rubric = (props: RubricProps) => {
           />
         )}
         <View style={styles.imageWrapper}>
-          <FastImage style={styles.image} source={challengeImage} />
+          <FastImage style={styles.image} source={{uri: imageUrl}} />
         </View>
         {content}
       </View>
