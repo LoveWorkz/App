@@ -93,13 +93,14 @@ const ChallengeIntroCard = () => {
           source={challengeIntroCard as number} // image number
           style={[
             styles.cardBg,
-            {backgroundColor: colors.themeSecondaryBackground},
+            // {backgroundColor: colors.themeSecondaryBackground},
+            {backgroundColor: 'transparent'},
           ]}>
           {specialChallenge.description.map((item, i) => {
             return (
-              <View key={i.toString()} style={styles.descriptionItem}>
+              <View key={i.toString()} style={[styles.descriptionItem, {}]}>
                 <AppText
-                  style={textStyle}
+                  style={[textStyle, {}]}
                   weight={'500'}
                   align={'center'}
                   size={TextSize.LEVEL_5}
@@ -187,7 +188,6 @@ const width = '90%';
 const styles = StyleSheet.create({
   ChallengeIntroCard: {
     flex: 1,
-    alignItems: 'center',
   },
   topPart: {
     marginBottom: verticalScale(20),
@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: horizontalScale(30),
+    alignSelf: 'center',
   },
   challengeBackgroundWrapper: {
     flexDirection: 'row',
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
   btn: {
     marginTop: verticalScale(25),
     width: width,
+    alignSelf: 'center',
   },
   challengeBackgroundText: {
     textDecorationLine: 'underline',

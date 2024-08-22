@@ -199,7 +199,7 @@ export const Book = (props: BookProps) => {
           <AppText
             style={{color: colors.primaryTextColor}}
             weight={'600'}
-            size={TextSize.LEVEL_7}
+            size={TextSize.LEVEL_5}
             text={title}
           />
           <AppText

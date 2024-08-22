@@ -134,12 +134,13 @@ const styles = StyleSheet.create({
   TherapistBlock: {
     width: '100%',
     position: 'absolute',
-    height: blockHeight,
+    minHeight: blockHeight,
     left: 0,
     right: 0,
     borderRadius: moderateScale(20),
     paddingHorizontal: horizontalScale(40),
     justifyContent: 'center',
+    paddingVertical: verticalScale(10),
   },
 
   text: {
