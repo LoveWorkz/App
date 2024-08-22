@@ -74,7 +74,7 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
         <AppText
           text={t('common.done')}
           // eslint-disable-next-line react-native/no-inline-styles
-          style={{color: colors.white, fontWeight: 600, paddingLeft: 12}}
+          style={{color: colors.white, fontWeight: '600', paddingLeft: 12}}
           size={TextSize.LEVEL_4}
         />
       </Button>

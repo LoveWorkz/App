@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
@@ -7,6 +7,7 @@ import {infoTextType} from '@src/widgets/InformationBlock';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
+import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
 
 interface ChallengeInfoPopupContentProps {
   text: infoTextType[];
@@ -18,10 +19,12 @@ export const ChallengeInfoPopupContent = memo(
     const {text = [], onBtnPressHandler} = props;
 
     const {t} = useTranslation();
+    const therapists = breakPageStore.therapists;
+    const selectedTherapist = useMemo(() => therapists[0], [therapists]);
 
     return (
       <>
-        <ArranKennedyBlock />
+        <ArranKennedyBlock therapist={selectedTherapist} />
         <View style={styles.texts}>
           {text.map((item, i) => {
             return (

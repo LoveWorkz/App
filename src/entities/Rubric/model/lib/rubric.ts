@@ -22,4 +22,6 @@ export const rubricExample: RubricType = {
   createdDate: '',
   image: '',
   totalViews: 0,
+  image_name: '',
+  number: 0,
 };
