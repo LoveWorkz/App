@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useFocusEffect} from '@react-navigation/native';
@@ -13,8 +13,8 @@ import {
 } from '@src/shared/lib/Metrics';
 import {ArrowDownIcon} from '@src/shared/assets/icons/ArrowDown';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
-import {challengeImage} from '@src/shared/assets/images';
 import {useTheme} from '@src/app/providers/themeProvider';
+import firebaseStorage from '@react-native-firebase/storage';
 
 interface ChallengeGroupProps {
   title: string;
@@ -22,17 +22,49 @@ interface ChallengeGroupProps {
   description: string;
   challengesCount: number;
   activeChallengesCount: number;
+  imageName: string;
+  isCore?: boolean;
 }
 
 const borderRadius = moderateScale(20);
 
 const ChallengeGroup = (props: ChallengeGroupProps) => {
-  const {title, description, children, challengesCount, activeChallengesCount} =
-    props;
+  const {
+    title,
+    description,
+    children,
+    challengesCount,
+    activeChallengesCount,
+    imageName,
+    isCore,
+  } = props;
 
   const colors = useColors();
   const [isActive, setIsActive] = useState(false);
   const {isDark} = useTheme();
+  const [imageUrl, setImageUrl] = React.useState('');
+
+  const imageVariant = isDark ? 'dark' : 'light';
+  const mainImagePath = isCore
+    ? 'core_challenges_groups'
+    : 'special_challenge_groups';
+
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      try {
+        const url = await firebaseStorage()
+          .ref(`${mainImagePath}/images/${imageVariant}/${imageName}`)
+          .getDownloadURL();
+        setImageUrl(url);
+      } catch (error) {
+        console.error('Error fetching image URL:', error);
+      }
+    };
+
+    if (imageName) {
+      fetchImageUrl();
+    }
+  }, [imageName, imageVariant, mainImagePath]);
 
   useFocusEffect(
     useCallback(() => {
@@ -55,7 +87,7 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
           <FastImage
             style={styles.img}
             resizeMode={'stretch'}
-            source={challengeImage}
+            source={{uri: imageUrl}}
           />
           <View style={styles.textWrapper}>
             <AppText

@@ -12,6 +12,7 @@ import {
 import {useColors} from '@src/app/providers/colorsProvider';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
+import {useTheme} from '@src/app/providers/themeProvider';
 
 export enum BookCategorySize {
   SMALL = 'small',
@@ -49,6 +50,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
   const {t} = useTranslation();
   const name = t(displayName);
   const height = size === BookCategorySize.SMALL ? smallHeight : largeHeight;
+  const {isDark} = useTheme();
 
   const onPressHandler = () => {
     onPress?.(rubric);
@@ -80,7 +82,7 @@ const RubricFilterItem = (props: bookCategoryProps) => {
               style={styles.btn}
               onPress={onPressHandler}>
               <AppText
-                style={[{color: colors.bgQuinaryColor}]}
+                style={[{color: isDark ? colors.white : colors.bgQuinaryColor}]}
                 text={name}
                 weight={'500'}
                 size={
@@ -128,8 +130,9 @@ const RubricFilterItem = (props: bookCategoryProps) => {
         style={styles.btn}
         onPress={onPressHandler}>
         <AppText
-          style={[{color: colors.bgQuinaryColor}]}
+          style={[{color: isDark ? colors.white : colors.bgQuinaryColor}]}
           text={name}
+          numberOfLines={1}
           weight={'500'}
           size={
             size === BookCategorySize.SMALL

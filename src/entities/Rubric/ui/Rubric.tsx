@@ -57,11 +57,13 @@ const Rubric = (props: RubricProps) => {
 
   const shouldDisplayNewBanner = !userRubricsSeen?.includes(rubric.id);
 
+  const imageVariant = isDark ? 'dark' : 'light';
+
   useEffect(() => {
     const fetchImageUrl = async () => {
       try {
         const url = await firebaseStorage()
-          .ref(`topics/images/${rubric.image_name}`)
+          .ref(`topics/images/${imageVariant}/${rubric.image_name}`)
           .getDownloadURL();
         setImageUrl(url);
       } catch (error) {
@@ -72,7 +74,7 @@ const Rubric = (props: RubricProps) => {
     if (rubric.image_name) {
       fetchImageUrl();
     }
-  }, [rubric.image_name]);
+  }, [imageVariant, rubric.image_name]);
 
   const onRubricPressHandlerCreator = (id: string) => {
     return () => {

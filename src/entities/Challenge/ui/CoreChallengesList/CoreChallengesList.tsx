@@ -91,6 +91,8 @@ export const renderChallengeGroups = ({
       <ChallengeGroup
         activeChallengesCount={activeChallengesCount}
         challengesCount={list.length}
+        imageName={item.image_name}
+        isCore={isCore}
         title={item.displayName[language]}
         description={item.description[language]}>
         {!!list.length &&

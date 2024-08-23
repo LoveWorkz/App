@@ -10,4 +10,5 @@ export interface ChallengeGroupType<C> {
   key: string;
   largeDescription?: DisplayText;
   title?: DisplayText;
+  image_name: string;
 }

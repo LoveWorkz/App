@@ -1,5 +1,5 @@
 import React, {ReactElement, useCallback, useRef} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import {
@@ -13,6 +13,7 @@ import {BgColor} from '@src/shared/config/route/configRoute';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import AdaptiveLayout from './AdaptiveLayout';
 import themeStyle from '@src/app/styles/themeStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 // import {useTheme} from '@src/app/providers/themeProvider';
 // import {useTheme} from '@src/app/providers/themeProvider';
 
@@ -43,6 +44,7 @@ export const Layout = (props: LayoutProps) => {
   const colors = useColors();
   const paddingBottom = verticalScale(isTabBar ? tabBarHeight + 30 : 30);
   const marginTop = verticalScale(deleteTopPadding ? 0 : 20);
+  const {isDark} = useTheme();
 
   const getThemeColor = () => {
     if (bgColorOverride) {
@@ -80,39 +82,45 @@ export const Layout = (props: LayoutProps) => {
 
   if (isPageScrolling) {
     return (
-      <ScrollView
-        bounces={true}
-        ref={scrollViewRef}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        style={{height: windowHeight, backgroundColor: overrideBgColor}}>
-        <View
-          style={[
-            layoutStyles.layout,
-            // eslint-disable-next-line react-native/no-inline-styles
-            {
-              paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
-              paddingTop: marginTop,
-              padding: deleteGlobalPadding ? 0 : globalPadding,
-            },
-          ]}>
-          {children}
-        </View>
-      </ScrollView>
+      <>
+        <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+        <ScrollView
+          bounces={true}
+          ref={scrollViewRef}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          style={{height: windowHeight, backgroundColor: overrideBgColor}}>
+          <View
+            style={[
+              layoutStyles.layout,
+              // eslint-disable-next-line react-native/no-inline-styles
+              {
+                paddingBottom: deleteBottomPadding ? 0 : paddingBottom,
+                paddingTop: marginTop,
+                padding: deleteGlobalPadding ? 0 : globalPadding,
+              },
+            ]}>
+            {children}
+          </View>
+        </ScrollView>
+      </>
     );
   }
 
   return (
-    <AdaptiveLayout
-      isGradient={isGradient}
-      children={children}
-      backgroundColor={overrideBgColor}
-      deleteBottomPadding={deleteBottomPadding}
-      paddingBottom={paddingBottom}
-      marginTop={marginTop}
-      deleteGlobalPadding={deleteGlobalPadding}
-      globalPadding={globalPadding}
-    />
+    <>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      <AdaptiveLayout
+        isGradient={isGradient}
+        children={children}
+        backgroundColor={overrideBgColor}
+        deleteBottomPadding={deleteBottomPadding}
+        paddingBottom={paddingBottom}
+        marginTop={marginTop}
+        deleteGlobalPadding={deleteGlobalPadding}
+        globalPadding={globalPadding}
+      />
+    </>
   );
 };
 

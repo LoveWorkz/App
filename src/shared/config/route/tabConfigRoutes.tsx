@@ -46,7 +46,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       return (
         <Layout isPageScrolling={true} isTabBar>
           <>
-            <StatusBar barStyle={'dark-content'} />
+            {/* <StatusBar barStyle={'dark-content'} /> */}
             <CategoriesPage {...props} />
           </>
         </Layout>
@@ -63,7 +63,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
       return (
         <Layout isPageScrolling={true} isTabBar>
           <>
-            <StatusBar barStyle={'dark-content'} />
+            {/* <StatusBar barStyle={'dark-content'} /> */}
             <RubricsPage {...props} />
           </>
         </Layout>
@@ -104,7 +104,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
           deleteTopPadding={true}
           isTabBar>
           <>
-            <StatusBar barStyle={'dark-content'} />
+            {/* <StatusBar barStyle={'dark-content'} /> */}
             <ChallengesPage {...props} />
           </>
         </Layout>
@@ -125,7 +125,7 @@ export const tabRoutesConfig: Record<TabRoutesNames, NewRouteProps> = {
           deleteTopPadding={false}
           isTabBar>
           <>
-            <StatusBar barStyle={'dark-content'} />
+            {/* <StatusBar barStyle={'dark-content'} /> */}
             <BooksPage {...props} />
           </>
         </Layout>
