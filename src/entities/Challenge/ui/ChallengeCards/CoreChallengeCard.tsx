@@ -72,8 +72,9 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
           {
             position: 'absolute',
             top: 0,
-            zIndex: 1000,
+            zIndex: 1,
             opacity: isDark ? 0.3 : 1,
+            // backgroundColor: 'aqua',
           },
         ]}
       />
@@ -106,62 +107,59 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
             text={`...${APPLICATION_NAME}`}
           />
         </View>
-        {isSessionFlow && (
-          <View style={styles.btnWrapper}>
-            {challengeStore.isChallengeLockedIn(id) ||
-            !!isChallengeCompleted ? (
-              <Button
-                onPress={challengelockedHandler}
-                theme={ButtonTheme.OUTLINED}
-                style={[
-                  styles.challengeLockedBtn,
-                  {backgroundColor: colors.buttonLocked},
-                ]}>
+      </View>
+      {isSessionFlow && (
+        <View style={styles.btnWrapper}>
+          {challengeStore.isChallengeLockedIn(id) || !!isChallengeCompleted ? (
+            <Button
+              onPress={challengelockedHandler}
+              theme={ButtonTheme.OUTLINED}
+              style={[
+                styles.challengeLockedBtn,
+                {backgroundColor: colors.buttonLocked},
+              ]}>
+              <View style={styles.lockIcon}>
+                <SvgXml
+                  fill={isDark ? colors.lavenderBlue2 : colors.primaryTextColor}
+                  xml={OutlineLockIcon}
+                  width={horizontalScale(21)}
+                  height={horizontalScale(21)}
+                />
+              </View>
+              <AppText
+                style={{
+                  color: isDark
+                    ? colors.lavenderBlue2
+                    : colors.primaryTextColor,
+                }}
+                size={TextSize.LEVEL_4}
+                weight={'600'}
+                text={t('common.challenge_locked')}
+              />
+            </Button>
+          ) : (
+            <Button
+              onPress={lockTheChallengeInHandler}
+              theme={ButtonTheme.OUTLINED_GRADIENT}
+              style={styles.lockChallengeBtn}>
+              <View style={styles.lockChallengeContent}>
                 <View style={styles.lockIcon}>
                   <SvgXml
-                    fill={
-                      isDark ? colors.lavenderBlue2 : colors.primaryTextColor
-                    }
-                    xml={OutlineLockIcon}
+                    xml={OutlineLockGradientIcon}
                     width={horizontalScale(21)}
                     height={horizontalScale(21)}
                   />
                 </View>
-                <AppText
-                  style={{
-                    color: isDark
-                      ? colors.lavenderBlue2
-                      : colors.primaryTextColor,
-                  }}
+                <GradientText
                   size={TextSize.LEVEL_4}
                   weight={'600'}
-                  text={t('common.challenge_locked')}
+                  text={t('common.lock_the_challenge_in')}
                 />
-              </Button>
-            ) : (
-              <Button
-                onPress={lockTheChallengeInHandler}
-                theme={ButtonTheme.OUTLINED_GRADIENT}
-                style={styles.lockChallengeBtn}>
-                <View style={styles.lockChallengeContent}>
-                  <View style={styles.lockIcon}>
-                    <SvgXml
-                      xml={OutlineLockGradientIcon}
-                      width={horizontalScale(21)}
-                      height={horizontalScale(21)}
-                    />
-                  </View>
-                  <GradientText
-                    size={TextSize.LEVEL_4}
-                    weight={'600'}
-                    text={t('common.lock_the_challenge_in')}
-                  />
-                </View>
-              </Button>
-            )}
-          </View>
-        )}
-      </View>
+              </View>
+            </Button>
+          )}
+        </View>
+      )}
     </>
   );
 };
@@ -195,6 +193,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: verticalScale(45),
     alignItems: 'center',
+    zIndex: 2,
   },
   lockChallengeBtn: {
     width: btnWidth,
