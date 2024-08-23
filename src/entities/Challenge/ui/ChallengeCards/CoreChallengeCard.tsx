@@ -74,7 +74,6 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
             top: 0,
             zIndex: 1,
             opacity: isDark ? 0.3 : 1,
-            // backgroundColor: 'aqua',
           },
         ]}
       />
