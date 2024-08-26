@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {SvgXml} from 'react-native-svg';
 import {observer} from 'mobx-react-lite';
@@ -32,6 +32,7 @@ import {rubricStore} from '@src/entities/Rubric';
 import {mostOccurringString} from '@src/shared/utils/mostOccuringString';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
+import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 
 interface SessionItemProps {
   session: SessionType;
@@ -233,11 +234,43 @@ const SessionItem = (props: SessionItemProps) => {
               text={`${session.displayName[language]}`}
             />
           </View>
-          <AppText
-            weight={'600'}
-            size={TextSize.LEVEL_2}
-            text={`${session.description[language]}`}
-          />
+          <Text style={styles.textContainer}>
+            <AppText
+              weight={'400'}
+              size={TextSize.LEVEL_4}
+              text={t('sessions.questions_in_sessions_are_on')}
+            />
+            <AppText
+              weight={'400'}
+              style={{
+                color: isDark
+                  ? colors.lavenderBlue2
+                  : colors.homePageCategoryTextColor,
+              }}
+              size={TextSize.LEVEL_4}
+              text={` ${cardFocus}. `}
+            />
+            <AppText
+              weight={'400'}
+              size={TextSize.LEVEL_4}
+              text={t('sessions.a_handpicked_challenge_is_part_1')}
+            />
+            <AppText
+              weight={'400'}
+              size={TextSize.LEVEL_4}
+              style={{
+                color: isDark
+                  ? colors.lavenderBlue2
+                  : colors.homePageCategoryTextColor,
+              }}
+              text={` ${roundingCategory} `}
+            />
+            <AppText
+              weight={'400'}
+              size={TextSize.LEVEL_4}
+              text={t('sessions.a_handpicked_challenge_is_part_2')}
+            />
+          </Text>
         </>
         {disabled ? <></> : <>{rightIcon}</>}
       </TouchableOpacity>
@@ -329,5 +362,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: horizontalScale(globalPadding),
     top: horizontalScale(globalPadding),
+  },
+  textContainer: {
+    flexDirection: 'row',
   },
 });

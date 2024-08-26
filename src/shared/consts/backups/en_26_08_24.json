@@ -514,8 +514,5 @@
   "common.level": "Level",
   "common.welcome_to": "Welcome to",
   "common.choose_of_the_following": "Choose one of the following",
-  "common.choose_of_the_following_part_2": "enjoy it together and remember to mark it as completed once you're finished.",
-  "sessions.questions_in_sessions_are_on": "The focus of the questions in this sessions are on",
-  "sessions.a_handpicked_challenge_is_part_1": "A set of handpicked Core - Challenges of the category Exercise",
-  "sessions.a_handpicked_challenge_is_part_2": "is rounding up the picture."
+  "common.choose_of_the_following_part_2": "enjoy it together and remember to mark it as completed once you're finished."
 }

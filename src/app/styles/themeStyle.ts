@@ -62,6 +62,7 @@ const commonColor = {
   goalIconBgColor: '#83C0F833',
   lavenderBlue: '#847AED',
   lavenderBlue2: '#99aaf7',
+  lavenderBlue3: '#885FFF',
   darkCard: '#20232b',
   lightGreyColor: '#D9D9D9',
   lilacBreeze: '#E3E6F6',
