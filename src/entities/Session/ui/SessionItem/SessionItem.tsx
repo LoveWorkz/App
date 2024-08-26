@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {SvgXml} from 'react-native-svg';
@@ -26,6 +26,12 @@ import {SessionState, SessionType} from '../../model/types/sessionType';
 import sessionStore from '../../model/store/sessionStore';
 import PresSessionModal from '../PreSessionModal/PreSessionModal';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {questionsStore} from '@src/pages/QuestionsPage';
+import {QuestionType} from '@src/entities/QuestionCard';
+import {rubricStore} from '@src/entities/Rubric';
+import {mostOccurringString} from '@src/shared/utils/mostOccuringString';
+import {challengesStore} from '@src/pages/ChallengesPage';
+import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 
 interface SessionItemProps {
   session: SessionType;
@@ -35,6 +41,98 @@ interface SessionItemProps {
 
 const SessionItem = (props: SessionItemProps) => {
   const {session, state = 'completed', isPremium} = props;
+  const questions = questionsStore.allQuestions;
+  const rubrics = rubricStore.rubrics;
+  const coreChallenges = challengesStore.challenges;
+  const specialChallenges = challengesStore.specialChallenges;
+  const specialChallengesGroups = challengeGroupStore.specialChallengeGroups;
+  const challengeGroups = challengeGroupStore.coreChallengeGroups;
+  const lang = useLanguage();
+
+  useEffect(() => {
+    challengesStore.init();
+  }, []);
+
+  const sessionQuestions = session.questions;
+
+  const rubricsInSession = sessionQuestions.map(
+    question => questions.find(q => q.id === question)?.rubricId,
+  );
+  const mostOccurredRubric = mostOccurringString(rubricsInSession);
+  const cardFocus = rubrics.find(rubric => rubric.id === mostOccurredRubric)
+    ?.displayName[lang];
+
+  const linkedChallengeGroupId = coreChallenges.find(
+    el => el.id === session.linkedCoreChallenge,
+  )?.groupId;
+  // const pickedCategoryGroup = challengeGroups.find(
+  //   group => group.id === challengeGroup?.groupId,
+  // );
+
+  // console.log('GROUPS', challengeGroups);
+
+  const coreChallengeGroup = challengeGroups.find(group => {
+    // if (session.challenge.includes('special')) {
+    //   console.log('TRUE XXX');
+    //   const specialChallengesGroupId = specialChallenges.find()
+    //   return (
+    //     group.id ===
+    //     specialChallenges.find(challenge => challenge.id === session.challenge)
+    //       ?.groupId
+    //   );
+    // }
+    if (linkedChallengeGroupId) {
+      return group.id === linkedChallengeGroupId;
+    } else {
+      return group.id === session?.challenge;
+    }
+  });
+
+  const currentSpecialChallenge = specialChallenges.find(
+    challenge => challenge.id === session.challenge,
+  );
+
+  // console.log('CURRENT SPECIAL CHALLENGE', currentSpecialChallenge);
+  //
+  // console.log('SPECIALL CHALLENGE GROUPS', specialChallengesGroups);
+
+  const specialChallengeGroup = specialChallengesGroups.find(group => {
+    // if (session.challenge.includes('special')) {
+    //   console.log('TRUE XXX');
+    //   const specialChallengesGroupId = specialChallenges.find()
+    //   return (
+    //     group.id ===
+    //     specialChallenges.find(challenge => challenge.id === session.challenge)
+    //       ?.groupId
+    //   );
+    // }
+    // if (linkedChallengeGroupId) {
+    // return group.id === linkedChallengeGroupId;
+    // } else {
+    return group.id === currentSpecialChallenge?.groupId;
+    // }
+  });
+
+  // console.log('SPECIALL CHALLENGE GROUP XXXX', specialChallengeGroup);
+
+  const challengeGroup = session.challenge.includes('special')
+    ? specialChallengeGroup
+    : coreChallengeGroup;
+
+  const roundingCategory = challengeGroup?.displayName[lang];
+
+  // console.log('SESSION: ', session);
+  console.log('XXX DISPLAY cardFocus', cardFocus);
+  console.log('Rounding Category', roundingCategory);
+  // console.log('most occured', mostOccurredRubric);
+  // console.log('session.challenge', session.challenge);
+  // console.log('Challenge group', challengeGroup?.displayName[lang]);
+  // console.log('linked challnge group ID', linkedChallengeGroupId);
+  // console.log('session.linkedCoreChallenge', session.linkedCoreChallenge);
+  // console.log('Challenge group', challengeGroup);
+  // console.log('CHALLENGES', coreChallenges);
+  // console.log('QUESTIONS ALL: ', questions);
+  // console.log('PICKED GROUP', pickedCategoryGroup);
 
   const colors = useColors();
   const {theme} = useTheme();
