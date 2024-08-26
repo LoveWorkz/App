@@ -34,7 +34,7 @@ const HeaderSection = (props: HeaderSectionProps) => {
       onSwipeHandler={swipeHandler}
       Component={Carouseltem}
       data={levelsWithMetaDatas}
-      carouselHeight={verticalScale(isPlatformIos ? 300 : 310)}
+      carouselHeight={verticalScale(isPlatformIos ? 310 : 310)}
       mode={'expanded'}
       loop={false}
       paginationStyle={styles.paginationStyle}
