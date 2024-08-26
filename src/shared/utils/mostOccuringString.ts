@@ -8,10 +8,12 @@ export function mostOccurringString(
   const frequencyMap: {[key: string]: number} = {};
 
   arr.forEach(str => {
-    if (frequencyMap[str]) {
-      frequencyMap[str]++;
-    } else {
-      frequencyMap[str] = 1;
+    if (str !== undefined) {
+      if (frequencyMap[str]) {
+        frequencyMap[str]++;
+      } else {
+        frequencyMap[str] = 1;
+      }
     }
   });
 

@@ -95,8 +95,8 @@ const Carouseltem = (props: Carouseltemrops) => {
       </View>
       <View style={styles.descriptionWrapper}>
         <AppText
-          weight={'600'}
-          size={TextSize.LEVEL_2}
+          weight={'400'}
+          size={TextSize.LEVEL_4}
           text={t('common.exploring_individual_personalities')}
         />
       </View>
