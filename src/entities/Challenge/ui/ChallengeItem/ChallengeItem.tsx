@@ -79,7 +79,7 @@ const ChallengeItem = (props: ChallengeItemProps) => {
         <View style={styles.line} />
         <View style={styles.textWrapper}>
           <AppText
-            weight={'500'}
+            weight={'400'}
             size={TextSize.LEVEL_4}
             text={text[language]}
             numberOfLines={2}

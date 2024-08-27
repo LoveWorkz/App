@@ -84,12 +84,21 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
             styles.ChallengeGroup,
             {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
           ]}>
-          <FastImage
-            style={styles.img}
-            resizeMode={'stretch'}
-            source={{uri: imageUrl}}
-          />
-          <View style={styles.textWrapper}>
+          <View style={styles.badgeWrapper}>
+            <FastImage
+              style={styles.img}
+              resizeMode={'stretch'}
+              source={{uri: imageUrl}}
+            />
+            <View style={styles.countWrapper}>
+              <GradientText
+                weight={'500'}
+                size={TextSize.LEVEL_3}
+                text={`${activeChallengesCount || 0}/${challengesCount || 0}`}
+              />
+            </View>
+          </View>
+          <View style={[styles.textWrapper]}>
             <AppText
               style={[styles.title, {color: colors.primaryTextColor}]}
               weight={'600'}
@@ -99,20 +108,14 @@ const ChallengeGroup = (props: ChallengeGroupProps) => {
             />
             <AppText
               style={{color: colors.primaryTextColor}}
-              weight={'600'}
-              size={TextSize.LEVEL_2}
+              weight={'400'}
+              numberOfLines={2}
+              size={TextSize.LEVEL_4}
               text={description}
               lineHeight={20}
             />
           </View>
           <View style={styles.arrowIconWrapper}>
-            <View style={styles.countWrapper}>
-              <GradientText
-                weight={'500'}
-                size={TextSize.LEVEL_3}
-                text={`${activeChallengesCount || 0}/${challengesCount || 0}`}
-              />
-            </View>
             <SvgXml
               xml={ArrowDownIcon}
               stroke={colors.primaryTextColor}
@@ -138,15 +141,15 @@ const styles = StyleSheet.create({
     padding,
   },
   img: {
-    height: horizontalScale(70),
-    width: horizontalScale(70),
-    left: -5,
+    height: horizontalScale(40),
+    width: horizontalScale(40),
   },
   listWrapper: {
     marginTop: verticalScale(10),
   },
   textWrapper: {
-    width: horizontalScale(220),
+    paddingRight: verticalScale(50),
+    paddingLeft: verticalScale(10),
   },
   title: {
     marginBottom: horizontalScale(10),
@@ -164,6 +167,12 @@ const styles = StyleSheet.create({
     width: horizontalScale(13),
   },
   countWrapper: {
-    right: horizontalScale(8),
+    marginTop: 6,
+  },
+  badgeWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: horizontalScale(40),
+    width: horizontalScale(40),
   },
 });
