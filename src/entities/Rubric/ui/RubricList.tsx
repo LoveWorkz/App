@@ -6,6 +6,7 @@ import {Rubric, rubricExample, RubricType} from '@src/entities/Rubric';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {getEntityExampleDataForSkeleton} from '@src/shared/lib/common';
 import rubricStore from '../model/store/rubricStore';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 
 interface RubricListProps {
   isLoading: boolean;
@@ -13,11 +14,17 @@ interface RubricListProps {
 
 const RubricList = (props: RubricListProps) => {
   const {isLoading} = props;
+  const lang = useLanguage();
   const rubrics = rubricStore.rubrics;
 
-  // console.log('rubrics', rubrics);
+  const sortedRubrics = rubrics.slice().sort((a, b) => {
+    return a.displayName[lang].toLocaleUpperCase() >
+      b.displayName[lang].toUpperCase()
+      ? 1
+      : -1;
+  });
 
-  let content = rubrics.map((rubric, i) => {
+  let content = sortedRubrics.map((rubric, i) => {
     const isFirstElement = i === 0;
 
     return rubric.questions.length ? (
