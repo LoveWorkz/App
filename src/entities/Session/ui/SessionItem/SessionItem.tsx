@@ -197,11 +197,7 @@ const SessionItem = (props: SessionItemProps) => {
       <AppText
         weight={'400'}
         size={TextSize.LEVEL_4}
-        text={
-          sessionHasSpecialChallenge
-            ? t('sessions.picked_special_challenge_part_2')
-            : t('sessions.a_handpicked_challenge_is_part_2')
-        }
+        text={t('sessions.a_handpicked_challenge_is_part_2')}
       />
     </Text>
   );
