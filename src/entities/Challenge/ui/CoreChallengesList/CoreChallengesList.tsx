@@ -134,6 +134,13 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
     });
   }, [formattedCoreChallengesGroupList, challengeList]);
 
+  const sortedCoreChallengesList = coreChallengesList.slice().sort((a, b) => {
+    return a.displayName[language].toLocaleUpperCase() >
+      b.displayName[language].toUpperCase()
+      ? 1
+      : -1;
+  });
+
   if (isLoading) {
     return (
       <>
@@ -146,10 +153,12 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
     );
   }
 
+  console.log('coreChallengesList', coreChallengesList);
+
   return (
     <ScrollViewWithoutIndicator>
       {challengeList.length ? (
-        coreChallengesList.map(item =>
+        sortedCoreChallengesList.map(item =>
           renderChallengeGroups({
             item,
             isCore: true,

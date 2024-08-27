@@ -50,6 +50,15 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
     });
   }, [formattedSpecialChallengesGroupList, challengeList]);
 
+  const sortedSpecialChallengesList = specialChallengesList
+    .slice()
+    .sort((a, b) => {
+      return a.displayName[language].toLocaleUpperCase() >
+        b.displayName[language].toUpperCase()
+        ? 1
+        : -1;
+    });
+
   if (isLoading) {
     return (
       <>
@@ -65,7 +74,7 @@ const SpecialChallengesList = (props: SpecialChallengesListProps) => {
   return (
     <ScrollViewWithoutIndicator>
       {specialChallengesList.length ? (
-        specialChallengesList.map(item =>
+        sortedSpecialChallengesList.map(item =>
           renderChallengeGroups({
             item,
             language,
