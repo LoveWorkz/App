@@ -202,8 +202,8 @@ const ChallengeCategory = (props: ChallangeProps) => {
       {displayName && (
         <AppText
           style={[styles.name, {color: colors.challengeCategoryNameColor}]}
-          weight={'500'}
-          size={TextSize.LEVEL_1}
+          weight={'400'}
+          size={TextSize.LEVEL_4}
           text={displayName[language]}
         />
       )}

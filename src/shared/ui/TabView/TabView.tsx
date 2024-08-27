@@ -3,7 +3,7 @@ import {useWindowDimensions, StyleSheet, View} from 'react-native';
 import {TabView as TabV, TabBar, Route} from 'react-native-tab-view';
 
 import {useColors} from '@src/app/providers/colorsProvider';
-import {AppText} from '@src/shared/ui/AppText/AppText';
+import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {RenderSceneType} from '@src/shared/types/types';
 
@@ -21,15 +21,21 @@ const RenderTabBar = (props: RenderSceneType) => {
 
         let content = (
           <AppText
-            weight={'700'}
+            weight={'600'}
             style={[styles.text, {color: colors.primaryTextColor}]}
             text={text}
+            size={TextSize.LEVEL_4}
           />
         );
 
         if (focused) {
           content = (
-            <GradientText style={styles.text} weight={'700'} text={text} />
+            <GradientText
+              style={styles.text}
+              weight={'600'}
+              text={text}
+              size={TextSize.LEVEL_4}
+            />
           );
         }
 
