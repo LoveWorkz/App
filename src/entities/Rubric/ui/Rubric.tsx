@@ -104,19 +104,21 @@ const Rubric = (props: RubricProps) => {
         <View style={styles.nameWrapper}>
           <AppText
             style={[styles.name, {color: colors.primaryTextColor}]}
-            weight={'900'}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
             text={displayName[language]}
           />
         </View>
         <AppText
-          style={[styles.text, {color: colors.topicDescriptionColor}]}
+          size={TextSize.LEVEL_4}
+          style={[styles.text, {color: colors.primaryTextColor}]}
           text={description[language]}
         />
       </View>
       <View style={styles.countWrapper}>
         <GradientText
           weight={'600'}
-          size={TextSize.LEVEL_2}
+          size={TextSize.LEVEL_4}
           text={`${swipedQuestionCount}/${questions.length}`}
         />
       </View>
