@@ -9,7 +9,6 @@ import {TabHeaderLeft} from '@src/widgets/headers/TabHeaderLeft';
 import {Layout} from '@src/widgets/layout';
 import {TabName} from '@src/shared/types/types';
 import {RubricsPage} from '@src/pages/RubricsPage';
-import {StatusBar} from 'react-native';
 
 export enum TabRoutesNames {
   HOME = 'home',

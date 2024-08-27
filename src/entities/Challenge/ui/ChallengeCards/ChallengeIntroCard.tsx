@@ -94,7 +94,6 @@ const ChallengeIntroCard = () => {
           style={[
             styles.cardBg,
             // {backgroundColor: colors.themeSecondaryBackground},
-            {backgroundColor: 'transparent'},
           ]}>
           {specialChallenge.description.map((item, i) => {
             return (
@@ -203,6 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: horizontalScale(30),
     alignSelf: 'center',
+    backgroundColor: 'transparent',
   },
   challengeBackgroundWrapper: {
     flexDirection: 'row',

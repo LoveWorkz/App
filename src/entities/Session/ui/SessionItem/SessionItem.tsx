@@ -39,6 +39,13 @@ interface SessionItemProps {
 }
 
 const SessionItem = (props: SessionItemProps) => {
+  const [visible, setVisible] = useState(false);
+  const {isDark} = useTheme();
+  const {t} = useTranslation();
+  const {theme} = useTheme();
+  const colors = useColors();
+  const lang = useLanguage();
+  const language = useLanguage();
   const {session, state = 'completed', isPremium} = props;
   const questions = questionsStore.allQuestions;
   const rubrics = rubricStore.rubrics;
@@ -46,13 +53,15 @@ const SessionItem = (props: SessionItemProps) => {
   const specialChallenges = challengesStore.specialChallenges;
   const specialChallengesGroups = challengeGroupStore.specialChallengeGroups;
   const challengeGroups = challengeGroupStore.coreChallengeGroups;
-  const lang = useLanguage();
+  const sessionQuestions = session.questions;
+  const sessionHasSpecialChallenge = session.challenge.includes('special');
+  const specialChallengeName = specialChallenges.find(
+    el => el.id === session.challenge,
+  )?.title[lang];
 
   useEffect(() => {
     challengesStore.init();
   }, []);
-
-  const sessionQuestions = session.questions;
 
   const rubricsInSession = sessionQuestions.map(
     question => questions.find(q => q.id === question)?.rubricId,
@@ -81,19 +90,11 @@ const SessionItem = (props: SessionItemProps) => {
     return group.id === currentSpecialChallenge?.groupId;
   });
 
-  const challengeGroup = session.challenge.includes('special')
+  const challengeGroup = sessionHasSpecialChallenge
     ? specialChallengeGroup
     : coreChallengeGroup;
 
   const roundingCategory = challengeGroup?.displayName[lang];
-
-  const colors = useColors();
-  const {theme} = useTheme();
-  const {t} = useTranslation();
-  const language = useLanguage();
-  const {isDark} = useTheme();
-
-  const [visible, setVisible] = useState(false);
 
   const isFavorite = favoriteStore.checkIsFavorite({
     id: session.id,
@@ -153,6 +154,58 @@ const SessionItem = (props: SessionItemProps) => {
     sessionStore.selectSessionAndNavigate({session});
   }, [session]);
 
+  const renderCardText = () => (
+    <Text style={styles.textContainer}>
+      <AppText
+        weight={'400'}
+        size={TextSize.LEVEL_4}
+        text={t('sessions.questions_in_sessions_are_on')}
+      />
+      <AppText
+        weight={'400'}
+        style={{
+          color: isDark
+            ? colors.lavenderBlue2
+            : colors.homePageCategoryTextColor,
+        }}
+        size={TextSize.LEVEL_4}
+        text={` ${cardFocus}. `}
+      />
+      <AppText
+        weight={'400'}
+        size={TextSize.LEVEL_4}
+        text={
+          sessionHasSpecialChallenge
+            ? t('sessions.picked_special_challenge_part_1')
+            : t('sessions.a_handpicked_challenge_is_part_1')
+        }
+      />
+      <AppText
+        weight={'400'}
+        size={TextSize.LEVEL_4}
+        style={{
+          color: isDark
+            ? colors.lavenderBlue2
+            : colors.homePageCategoryTextColor,
+        }}
+        text={
+          sessionHasSpecialChallenge
+            ? ` ${specialChallengeName} `
+            : ` ${roundingCategory} `
+        }
+      />
+      <AppText
+        weight={'400'}
+        size={TextSize.LEVEL_4}
+        text={
+          sessionHasSpecialChallenge
+            ? t('sessions.picked_special_challenge_part_2')
+            : t('sessions.a_handpicked_challenge_is_part_2')
+        }
+      />
+    </Text>
+  );
+
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
@@ -186,43 +239,7 @@ const SessionItem = (props: SessionItemProps) => {
               text={`${session.displayName[language]}`}
             />
           </View>
-          <Text style={styles.textContainer}>
-            <AppText
-              weight={'400'}
-              size={TextSize.LEVEL_4}
-              text={t('sessions.questions_in_sessions_are_on')}
-            />
-            <AppText
-              weight={'400'}
-              style={{
-                color: isDark
-                  ? colors.lavenderBlue2
-                  : colors.homePageCategoryTextColor,
-              }}
-              size={TextSize.LEVEL_4}
-              text={` ${cardFocus}. `}
-            />
-            <AppText
-              weight={'400'}
-              size={TextSize.LEVEL_4}
-              text={t('sessions.a_handpicked_challenge_is_part_1')}
-            />
-            <AppText
-              weight={'400'}
-              size={TextSize.LEVEL_4}
-              style={{
-                color: isDark
-                  ? colors.lavenderBlue2
-                  : colors.homePageCategoryTextColor,
-              }}
-              text={` ${roundingCategory} `}
-            />
-            <AppText
-              weight={'400'}
-              size={TextSize.LEVEL_4}
-              text={t('sessions.a_handpicked_challenge_is_part_2')}
-            />
-          </Text>
+          {renderCardText()}
         </>
         {disabled ? <></> : <>{rightIcon}</>}
       </TouchableOpacity>
