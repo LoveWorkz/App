@@ -70,6 +70,15 @@ export const globalStyles = StyleSheet.create({
     fontFamily:
       Platform.OS === 'ios' ? 'Quicksand-SemiBold' : 'QuicksandSemiBold',
   },
+  // Quicksand_SemiBold: Platform.select({
+  //   android: {
+  //     fontFamily: 'QuicksandSemiBold',
+  //   },
+  //   ios: {
+  //     fontFamily: 'Quicksand-SemiBold',
+  //     fontWeight: '700',
+  //   },
+  // }),
 
   // z-index
   zIndex_1: {

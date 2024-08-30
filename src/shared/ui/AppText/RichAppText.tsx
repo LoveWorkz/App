@@ -20,8 +20,17 @@ export const RichAppText = ({text, style, ...props}: Props) => {
           <AppText
             key={index}
             text={string}
-            // eslint-disable-next-line react-native/no-inline-styles
-            style={[style, {fontWeight: '700'}]}
+            weight="700"
+            style={[
+              style,
+              // {
+              //   fontFamily:
+              //     Platform.OS === 'ios'
+              //       ? 'Quicksand-SemiBold'
+              //       : 'QuicksandBold',
+              // },
+              // Platform.OS === 'ios' && {fontWeight: '700'},
+            ]}
             {...props}
           />
         );
