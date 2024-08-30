@@ -150,7 +150,9 @@ const dark: ColorType = {
   challengeCategoryNameColor: '#C0C3CF',
   homePageCategoryTextColor: '#FFFFFF',
   homePageCategoryTitleColor: '#FFFFFF',
-  primaryTextColor: '#C0C3CF',
+  //NOTE: BLINE-313: Change primaryTextColor to #C0C3CF
+  // primaryTextColor: '#C0C3CF',
+  primaryTextColor: '#DADEEB',
   purchaseDescriptionColor: '#565F77',
   secondaryTextColor: '#4C5465',
   topicDescriptionColor: '#C0C3CF',

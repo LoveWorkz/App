@@ -5,7 +5,6 @@ import FastImage from 'react-native-fast-image';
 import {gameRulesBg} from '@src/shared/assets/images';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
-import {CustomHeaderWithImage} from '@src/widgets/headers/CustomHeaderWithImage';
 import {TextSection} from '@src/shared/ui/TextSection/TextSection';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
@@ -22,14 +21,20 @@ import {
 } from '../model/lib/gameRuleslib';
 import List from './List';
 import {useTranslation} from 'react-i18next';
+import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import {useTheme} from '@src/app/providers/themeProvider';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const GameRulesPage = () => {
   const {t} = useTranslation();
+  const {isDark} = useTheme();
+  const colors = useColors();
+
   return (
     <View style={styles.GameRulesPage}>
       <StatusBar barStyle={'light-content'} />
 
-      <CustomHeaderWithImage
+      {/* <CustomHeaderWithImage
         isWhite
         ImageComponent={
           <FastImage
@@ -38,6 +43,11 @@ const GameRulesPage = () => {
             source={gameRulesBg}
           />
         }
+      /> */}
+
+      <CustomHeader
+        transparent
+        arrowColor={isDark ? colors.bgTertiaryColor : colors.white}
       />
 
       <ScrollViewWithoutIndicator>
@@ -175,7 +185,7 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    top: -HEADER_HEIGHT,
+    marginBottom: HEADER_HEIGHT,
   },
   content: {
     top: -top,

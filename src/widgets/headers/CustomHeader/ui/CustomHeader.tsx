@@ -24,6 +24,8 @@ interface CustomHeaderProps {
   isSecondaryBackground?: boolean;
   backgroundColor?: string;
   HeaderRight?: ComponentType<any>;
+  transparent?: boolean;
+  arrowColor?: string;
 }
 
 const CustomHeader = (props: CustomHeaderProps) => {
@@ -33,6 +35,8 @@ const CustomHeader = (props: CustomHeaderProps) => {
     isTitleLarge,
     isSecondaryBackground = false,
     backgroundColor,
+    transparent,
+    arrowColor,
     HeaderRight,
   } = props;
   const colors = useColors();
@@ -52,12 +56,21 @@ const CustomHeader = (props: CustomHeaderProps) => {
   return (
     <>
       <StatusBar animated={true} translucent={true} />
-      <View style={[styles.CustomHeader, {backgroundColor}]}>
+      <View
+        style={[
+          styles.CustomHeader,
+          {backgroundColor},
+          transparent && styles.transparentStyle,
+        ]}>
         <View
           style={styles.headerLeft}
           onLayout={e => setHeaderHeight(e.nativeEvent.layout.height)}>
           <Button style={styles.arrowWrapper} onPress={onPressHandler}>
-            <SvgXml fill={color} style={styles.icon} xml={ArrowLeftIcon} />
+            <SvgXml
+              fill={arrowColor ?? color}
+              style={styles.icon}
+              xml={ArrowLeftIcon}
+            />
           </Button>
           {(headerTitle || title) && (
             <AppText
@@ -115,5 +128,11 @@ const styles = StyleSheet.create({
   icon: {
     height: verticalScale(15),
     width: horizontalScale(18),
+  },
+  transparentStyle: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
   },
 });
