@@ -111,6 +111,11 @@ class GoalStore {
       const selectedGoalsIds = this.selectedGoalsIds;
       let newSelectedGoalsIds = selectedGoalsIds;
 
+      // BLINE-312: User can select up to 5 goals
+      if (selectedGoalsIds.length >= 5) {
+        return;
+      }
+
       if (selectedGoalsIds.includes(id)) {
         newSelectedGoalsIds = selectedGoalsIds.filter(goal => goal !== id);
       } else {
