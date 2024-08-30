@@ -13,9 +13,8 @@ import {
 import {List} from '@src/shared/ui/List';
 import {LinkedinIcon} from '@src/shared/assets/icons/Linkedin';
 import {useTranslation} from 'react-i18next';
-import {RichAppText} from '@src/shared/ui/AppText/RichAppText';
 
-const PartnersPage = () => {
+const PartnerDetailsPage = () => {
   const colors = useColors();
   const {t} = useTranslation();
 
@@ -24,11 +23,6 @@ const PartnersPage = () => {
     t('common.partners_item_2'),
     t('common.partners_item_3'),
   ];
-
-  // const testingString =
-  // 'Arran Kennedy works as **bold** text **Testing** ina Arran Kennedy works as **bold** text **Testing** ina';
-  const testingString =
-    '**Arran** Kennedy **works** as a **Psychologist**, Cognitive **Behavioural** Psychotherapist and Couple Therapist';
 
   return (
     <View style={styles.partners}>
@@ -45,12 +39,6 @@ const PartnersPage = () => {
         />
         <SvgXml xml={LinkedinIcon} style={styles.icon} />
       </View>
-      <RichAppText
-        align={'justify'}
-        style={styles.description}
-        size={TextSize.LEVEL_4}
-        text={testingString}
-      />
       <AppText
         align={'justify'}
         style={[styles.description, {color: colors.primaryTextColor}]}
@@ -81,7 +69,7 @@ const PartnersPage = () => {
   );
 };
 
-export const Wrapper = memo(PartnersPage);
+export const Wrapper = memo(PartnerDetailsPage);
 
 const styles = StyleSheet.create({
   partners: {

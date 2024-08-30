@@ -40,7 +40,7 @@ export enum TextType {
   ERROR = 'error',
 }
 
-interface AppTextProps {
+export interface AppTextProps {
   text: string;
   size?: TextSize;
   weight?: TextWeight;
