@@ -45,104 +45,107 @@ import {CoreChallengeIntroPage} from '@src/pages/CoreChallengeIntroPage';
 import {SpecialChallengeIntroHeaderRight} from '@src/widgets/headers/SpecialChallengeIntroHeaderRight';
 import {SplashPage} from '@src/pages/SplashPage/ui/SplashPage';
 import themeStyle from '@src/app/styles/themeStyle';
+import {PartnerDetailsPage} from '@src/pages/PartnerDetailsPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
-  TAB_ROUTE = 'tabRoute',
-  SPLASH = 'splash',
   SETUP = 'setup',
+  SPLASH = 'splash',
+  TAB_ROUTE = 'tabRoute',
 
   // pages with title
-  SETTINGS = 'settings',
-  PROFILE = 'profile',
   ABOUT = 'about',
-  PARTNERS = 'partners',
-  PRIVACY_POLICY = 'privacyPolicy',
-  CHANGE_PASSWORD = 'changePassword',
-  HOW_TO_USE = 'howToUse',
-  CONTACT_US = 'contactUs',
-  BOOK_DETAILS = 'bookDetails',
-  CATEGORY_DETAILS = 'categoryDetails',
-  QUESTIONS = 'questions',
-  SESSIONS = 'sessions',
-  FAVORITE_SESSIONS = 'favoriteSessions',
-  SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
-  CORE_CHALLENGE_CARDS = 'coreChallengeCards',
-  NOTIFICATIONS = 'notifications',
   ABOUT_MY_RELATIONSHIP = 'aboutMyRelationship',
-  YOUR_GOALS = 'yourGoals',
-  FAVORITES_CHALLENGES = 'favoritesChallenges',
+  BOOK_DETAILS = 'bookDetails',
+  BREAK = 'break',
+  CATEGORY_DETAILS = 'categoryDetails',
   CHALLENGE_TYPE_INFO = 'challengeTypeInfo',
-  WELCOME = 'welcome',
+  CHANGE_PASSWORD = 'changePassword',
+  COMPLETION = 'completion',
+  CONTACT_US = 'contactUs',
+  CORE_CHALLENGE_CARDS = 'coreChallengeCards',
+  CORE_CHALLENGE_INTRO = 'coreChallengeIntro',
+  FAVORITE_SESSIONS = 'favoriteSessions',
+  FAVORITES_CHALLENGES = 'favoritesChallenges',
+  GAME_RULES = 'gameRules',
+  HOW_TO_USE = 'howToUse',
+  NOTIFICATIONS = 'notifications',
   ONBOARDING_GOALS = 'onboardingGoals',
   ONBOARDING_NOTIFICATIONS = 'onboardingNotifications',
   ONBOARDING_STATISTIC = 'onboardingStatistic',
+  PARTNERS = 'partners',
+  PARTNER_DETAILS = 'partnerDetails',
   PRE_SESSION = 'preSession',
-  BREAK = 'break',
-  SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
-  COMPLETION = 'completion',
+  PRIVACY_POLICY = 'privacyPolicy',
+  PROFILE = 'profile',
   QUADRANT_COMPLETION = 'quadrantCompletion',
   QUADRANT_DETAILS = 'quadrantDetails',
-  GAME_RULES = 'gameRules',
-  CORE_CHALLENGE_INTRO = 'coreChallengeIntro',
+  QUESTIONS = 'questions',
+  SESSIONS = 'sessions',
+  SETTINGS = 'settings',
+  SPECIAL_CHALLENGE_CARDS = 'specialChallengeCards',
+  SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
+  WELCOME = 'welcome',
+  YOUR_GOALS = 'yourGoals',
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.AUTH]: 'auth',
-  [AppRouteNames.TAB_ROUTE]: 'tabRoute',
   [AppRouteNames.SPLASH]: 'splash',
+  [AppRouteNames.TAB_ROUTE]: 'tabRoute',
 
   // pages with title
-  [AppRouteNames.SETTINGS]: 'settings',
-  [AppRouteNames.PROFILE]: 'profile',
-  [AppRouteNames.ABOUT]: 'about',
-  [AppRouteNames.PARTNERS]: 'partners',
-  [AppRouteNames.PRIVACY_POLICY]: 'privacyPolicy',
-  [AppRouteNames.CHANGE_PASSWORD]: 'changePassword',
-  [AppRouteNames.SETUP]: 'setup',
-  [AppRouteNames.HOW_TO_USE]: 'howToUse',
-  [AppRouteNames.CONTACT_US]: 'contactUs',
-  [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
-  [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
-  [AppRouteNames.QUESTIONS]: 'questions',
-  [AppRouteNames.SESSIONS]: 'sessions',
-  [AppRouteNames.FAVORITE_SESSIONS]: 'favoriteSessions',
-  [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
-  [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
-  [AppRouteNames.NOTIFICATIONS]: 'notifications',
   [AppRouteNames.ABOUT_MY_RELATIONSHIP]: 'aboutMyRelationship',
-  [AppRouteNames.YOUR_GOALS]: 'yourGoals',
-  [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
-  [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
-  [AppRouteNames.PRE_SESSION]: 'preSession',
+  [AppRouteNames.ABOUT]: 'about',
+  [AppRouteNames.BOOK_DETAILS]: 'bookDetails',
   [AppRouteNames.BREAK]: 'break',
-  [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
+  [AppRouteNames.CATEGORY_DETAILS]: 'categoryDetails',
+  [AppRouteNames.CHALLENGE_TYPE_INFO]: 'challengeTypeInfo',
+  [AppRouteNames.CHANGE_PASSWORD]: 'changePassword',
   [AppRouteNames.COMPLETION]: 'completion',
+  [AppRouteNames.CONTACT_US]: 'contactUs',
+  [AppRouteNames.CORE_CHALLENGE_CARDS]: 'coreChallengeCards',
+  [AppRouteNames.CORE_CHALLENGE_INTRO]: 'coreChallengeIntro',
+  [AppRouteNames.FAVORITE_SESSIONS]: 'favoriteSessions',
+  [AppRouteNames.FAVORITES_CHALLENGES]: 'favoritesChallenges',
+  [AppRouteNames.GAME_RULES]: 'gameRules',
+  [AppRouteNames.HOW_TO_USE]: 'howToUse',
+  [AppRouteNames.NOTIFICATIONS]: 'notifications',
+  [AppRouteNames.PARTNERS]: 'partners',
+  [AppRouteNames.PARTNER_DETAILS]: 'partnerDetails',
+  [AppRouteNames.PRE_SESSION]: 'preSession',
+  [AppRouteNames.PRIVACY_POLICY]: 'privacyPolicy',
+  [AppRouteNames.PROFILE]: 'profile',
   [AppRouteNames.QUADRANT_COMPLETION]: 'quadrantCompletion',
   [AppRouteNames.QUADRANT_DETAILS]: 'quadrantDetails',
-  [AppRouteNames.GAME_RULES]: 'gameRules',
-  [AppRouteNames.CORE_CHALLENGE_INTRO]: 'coreChallengeIntro',
+  [AppRouteNames.QUESTIONS]: 'questions',
+  [AppRouteNames.SESSIONS]: 'sessions',
+  [AppRouteNames.SETTINGS]: 'settings',
+  [AppRouteNames.SETUP]: 'setup',
+  [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
+  [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
+  [AppRouteNames.YOUR_GOALS]: 'yourGoals',
 
   // onboarding
-  [AppRouteNames.WELCOME]: 'welcome',
   [AppRouteNames.ONBOARDING_GOALS]: 'onboardingGoals',
   [AppRouteNames.ONBOARDING_NOTIFICATIONS]: 'onboardingNotifications',
   [AppRouteNames.ONBOARDING_STATISTIC]: 'onboardingStatistic',
+  [AppRouteNames.WELCOME]: 'welcome',
 };
 
 export type BgColor = 'secondaryBackground' | 'white' | '#e8ecf9';
 
 export type NewRouteProps = {
   authOnly?: boolean;
-  name: string;
-  Element: ComponentType;
-  headerShown?: boolean;
-  headerTitle?: string;
-  HeaderRight?: ComponentType;
-  isTitleLarge?: boolean;
-  isAboutMyRelationshipPage?: boolean;
   bgColor?: BgColor;
   bgColorOverride?: keyof typeof themeStyle.dark;
+  Element: ComponentType;
+  HeaderRight?: ComponentType;
+  headerShown?: boolean;
+  headerTitle?: string;
+  isAboutMyRelationshipPage?: boolean;
+  isTitleLarge?: boolean;
+  name: string;
 };
 
 export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
@@ -225,6 +228,18 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout isPageScrolling>
           <PartnersPage {...props} />
+        </Layout>
+      );
+    },
+  },
+  [AppRouteNames.PARTNER_DETAILS]: {
+    name: appRoutePaths.partnerDetails,
+    headerShown: false,
+    headerTitle: 'settings.partnerDetails',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout isPageScrolling>
+          <PartnerDetailsPage {...props} />
         </Layout>
       );
     },

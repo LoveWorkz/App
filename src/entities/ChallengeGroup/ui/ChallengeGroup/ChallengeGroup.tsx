@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius,
     padding,
+    // backgroundColor: 'red',
+    // borderWidth: 10,
   },
   img: {
     height: horizontalScale(40),

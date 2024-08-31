@@ -9,7 +9,7 @@ import {
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import Skeleton from '../Skeleton/Skeleton';
 
-type Size = 130 | 170 | 200 | 40 | 60;
+type Size = 130 | 170 | 200 | 40 | 60 | 80;
 
 const getImage = (
   defaultImage: number,

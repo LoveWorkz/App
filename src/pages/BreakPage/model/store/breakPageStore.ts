@@ -10,14 +10,14 @@ import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {categoryStore} from '@src/entities/Category';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {challengesStore} from '@src/pages/ChallengesPage';
-import {Therapist} from './types';
-import firestore from '@react-native-firebase/firestore';
-import {Collections} from '@src/shared/types/firebase';
-import {userStore} from '@src/entities/User';
+// import {Therapist} from './types';
+// import firestore from '@react-native-firebase/firestore';
+// import {Collections} from '@src/shared/types/firebase';
+// import {userStore} from '@src/entities/User';
 
 class BreakPageStore {
   isLoading: boolean = false;
-  therapists: Therapist[] = [];
+  // therapists: Therapist[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -26,7 +26,7 @@ class BreakPageStore {
   init = async () => {
     try {
       crashlytics().log('Fetching Challenges page.');
-      await this.fetchTherapists();
+      // await this.fetchTherapists();
     } catch (e) {
       errorHandler({error: e});
     } finally {
@@ -37,30 +37,30 @@ class BreakPageStore {
     this.isLoading = isLoading;
   };
 
-  setTherapists = (newTherapists: Therapist[]) => {
-    this.therapists = newTherapists;
-  };
+  // setTherapists = (newTherapists: Therapist[]) => {
+  //   this.therapists = newTherapists;
+  // };
 
-  fetchTherapists = async () => {
-    try {
-      const source = await userStore.checkIsUserOfflineAndReturnSource();
+  // fetchTherapists = async () => {
+  //   try {
+  //     const source = await userStore.checkIsUserOfflineAndReturnSource();
 
-      const data = await firestore()
-        .collection(Collections.THERAPISTS)
-        .get({source});
+  //     const data = await firestore()
+  //       .collection(Collections.THERAPISTS)
+  //       .get({source});
 
-      const therapists = data.docs.map(rubric => {
-        return {
-          ...(rubric.data() as Therapist),
-          id: rubric.id,
-        };
-      });
+  //     const therapists = data.docs.map(rubric => {
+  //       return {
+  //         ...(rubric.data() as Therapist),
+  //         id: rubric.id,
+  //       };
+  //     });
 
-      this.setTherapists(therapists);
-    } catch (e) {
-      errorHandler({error: e});
-    }
-  };
+  //     this.setTherapists(therapists);
+  //   } catch (e) {
+  //     errorHandler({error: e});
+  //   }
+  // };
 
   letsDoThisPressHandler = async (language: LanguageValueType) => {
     try {

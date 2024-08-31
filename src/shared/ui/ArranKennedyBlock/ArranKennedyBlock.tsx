@@ -5,8 +5,9 @@ import {horizontalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '../AppText/AppText';
 import {Avatar} from '../Avatar/Avatar';
 import {useTranslation} from 'react-i18next';
-import {Therapist} from '@src/pages/BreakPage/model/store/types';
+// import {Therapist} from '@src/pages/BreakPage/model/store/types';
 import firebaseStorage from '@react-native-firebase/storage';
+import {Therapist} from '@src/pages/PartnersPage/model/types';
 
 type Props = {
   therapist: Therapist;

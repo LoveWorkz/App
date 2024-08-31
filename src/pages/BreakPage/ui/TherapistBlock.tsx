@@ -20,8 +20,9 @@ import {windowHeight} from '@src/app/styles/GlobalStyle';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
-import breakPageStore from '../model/store/breakPageStore';
+// import breakPageStore from '../model/store/breakPageStore';
 import {observer} from 'mobx-react-lite';
+import therapistsStore from '@src/pages/PartnersPage/model/therapistsStore';
 
 const blockHeight = verticalScale(390);
 
@@ -30,10 +31,11 @@ const TherapistBlock = () => {
   const navbarHeaderHeight = useHeaderHeight();
   const {t} = useTranslation();
   const {isDark} = useTheme();
-  const therapists = breakPageStore.therapists;
+  const therapists = therapistsStore.therapists;
 
   useEffect(() => {
-    breakPageStore.init();
+    // breakPageStore.init();
+    therapistsStore.init();
   }, []);
   const selectedTherapist = useMemo(() => therapists[0], [therapists]);
 
