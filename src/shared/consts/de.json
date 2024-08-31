@@ -518,5 +518,11 @@
   "sessions.questions_in_sessions_are_on": "DE The focus of the questions in this sessions are on",
   "sessions.a_handpicked_challenge_is_part_1": "DE A set of handpicked Core - Challenges of the category Exercise",
   "sessions.a_handpicked_challenge_is_part_2": "DE is rounding up the picture.",
-  "therapists.programs_offered_by": "DE Programs offered by "
+  "therapists.programs_offered_by": "DE Programs offered by ",
+  "therapists.contact": "DE Contacts",
+  "therapist.contact_linkedin":"DE LinkedIn",
+  "therapist.contact_phone":"DE Phone",
+  "therapist.contact_website":"DE Website",
+  "therapist.contact_email":"DE Email",
+  "therapist.contact_instagram":"DE Instagram"
 }

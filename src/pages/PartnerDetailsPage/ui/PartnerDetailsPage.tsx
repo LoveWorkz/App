@@ -25,6 +25,7 @@ import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {RichAppText} from '@src/shared/ui/AppText/RichAppText';
 import {t} from 'i18next';
 import {ProgramItem} from '@src/entities/ProgramItem';
+import {useTranslation} from 'react-i18next';
 
 const PartnerDetailsPage = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -32,6 +33,7 @@ const PartnerDetailsPage = () => {
   const colors = useColors();
   const {isDark} = useTheme();
   const lang = useLanguage();
+  const {t} = useTranslation();
   const therapist = therapistsStore.therapists.find(el => el.id === params.id);
 
   console.log(therapist);
@@ -107,7 +109,7 @@ const PartnerDetailsPage = () => {
                 <View style={styles.programs}>
                   {therapist.programs[lang].map((program, index) => (
                     <ProgramItem
-                      key={therapist.id}
+                      key={program.id}
                       text={program.description}
                       isOdd={index % 2 === 0}
                     />
@@ -115,9 +117,74 @@ const PartnerDetailsPage = () => {
                 </View>
               </>
             )}
-            <View style={styles.bottomFiller} />
+
+            {therapist.contacts.length > 0 && (
+              <>
+                <AppText
+                  align={'justify'}
+                  weight={'700'}
+                  style={[styles.description, {color: colors.primaryTextColor}]}
+                  size={TextSize.LEVEL_4}
+                  text={t('therapists.contacts')}
+                />
+                <View
+                  style={[
+                    styles.contacts,
+                    {
+                      backgroundColor: isDark
+                        ? colors.bgTertiaryColor
+                        : colors.white,
+                    },
+                  ]}>
+                  <>
+                    {therapist.contacts.map((contact, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          // borderWidth: 2,
+                          height: 50,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          // padding: 12,
+                        }}>
+                        <AppText
+                          align={'justify'}
+                          // weight="700"
+                          style={[
+                            styles.description,
+                            {color: colors.primaryTextColor},
+                          ]}
+                          size={TextSize.LEVEL_4}
+                          text={t(`therapist.contact_${contact.type}`)}
+                        />
+                        <AppText
+                          align={'justify'}
+                          weight="700"
+                          style={[
+                            styles.description,
+                            {color: colors.primaryTextColor},
+                            {textDecorationLine: 'underline'},
+                          ]}
+                          size={TextSize.LEVEL_4}
+                          text={contact.value}
+                        />
+                      </View>
+                    ))}
+                  </>
+                  {/* {therapist.programs[lang].map((program, index) => (
+                    <ProgramItem
+                      key={therapist.id}
+                      text={program.description}
+                      isOdd={index % 2 === 0}
+                    />
+                  ))} */}
+                </View>
+              </>
+            )}
           </>
         )}
+        <View style={styles.bottomFiller} />
       </ScrollView>
     </View>
   );
@@ -172,5 +239,11 @@ const styles = StyleSheet.create({
   },
   headline: {
     marginBottom: verticalScale(20),
+  },
+  contacts: {
+    // height: 400,
+    marginBottom: 100,
+    borderRadius: 12,
+    padding: 12,
   },
 });

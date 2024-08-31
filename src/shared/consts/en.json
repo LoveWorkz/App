@@ -519,5 +519,11 @@
   "sessions.a_handpicked_challenge_is_part_1": "A set of handpicked Core - Challenges of the category Exercise",
   "sessions.a_handpicked_challenge_is_part_2": "is rounding up the picture.",
   "sessions.picked_special_challenge_part_1": "The Special Challenges in this session:",
-  "therapists.programs_offered_by": "Programs offered by "
+  "therapists.programs_offered_by": "Programs offered by ",
+  "therapists.contacts": "Contacts",
+  "therapist.contact_linkedin":"LinkedIn",
+  "therapist.contact_phone":"Phone",
+  "therapist.contact_website":"Website",
+  "therapist.contact_email":"Email",
+  "therapist.contact_instagram":"Instagram"
 }
