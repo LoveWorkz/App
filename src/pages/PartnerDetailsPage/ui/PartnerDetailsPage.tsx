@@ -23,6 +23,8 @@ import {
 import firebaseStorage from '@react-native-firebase/storage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {RichAppText} from '@src/shared/ui/AppText/RichAppText';
+import {t} from 'i18next';
+import {ProgramItem} from '@src/entities/ProgramItem';
 
 const PartnerDetailsPage = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -90,28 +92,29 @@ const PartnerDetailsPage = () => {
                 text={paragraph}
               />
             ))}
-            {/* <AppText
-              align={'justify'}
-              style={[styles.description, {color: colors.primaryTextColor}]}
-              size={TextSize.LEVEL_4}
-              text={t('common.arran_text_2')}
-            /> */}
-            {/* <AppText
-              align={'justify'}
-              style={[styles.description, {color: colors.primaryTextColor}]}
-              size={TextSize.LEVEL_4}
-              text={t('common.arran_text_3')}
-            />
-            <AppText
-              align={'justify'}
-              style={[styles.description, {color: colors.primaryTextColor}]}
-              size={TextSize.LEVEL_4}
-              text={t('common.arran_text_4')}
-            />
-            <List
-              title={t('common.programs_offered_by_arran')}
-              items={listItems}
-            /> */}
+
+            {therapist.programs[lang].length > 0 && (
+              <>
+                <AppText
+                  align={'justify'}
+                  weight={'700'}
+                  style={[styles.description, {color: colors.primaryTextColor}]}
+                  size={TextSize.LEVEL_4}
+                  text={`${t('therapists.programs_offered_by')} ${
+                    therapist.first_name
+                  }`}
+                />
+                <View style={styles.programs}>
+                  {therapist.programs[lang].map((program, index) => (
+                    <ProgramItem
+                      key={therapist.id}
+                      text={program.description}
+                      isOdd={index % 2 === 0}
+                    />
+                  ))}
+                </View>
+              </>
+            )}
             <View style={styles.bottomFiller} />
           </>
         )}
@@ -126,6 +129,10 @@ const styles = StyleSheet.create({
   partners: {
     flex: 1,
     paddingHorizontal: globalPadding,
+  },
+  programs: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   imageWrapper: {
     alignItems: 'center',
