@@ -1,5 +1,5 @@
-import React, {memo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 
@@ -10,61 +10,112 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {List} from '@src/shared/ui/List';
 import {LinkedinIcon} from '@src/shared/assets/icons/Linkedin';
-import {useTranslation} from 'react-i18next';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import therapistsStore from '@src/pages/PartnersPage/model/therapistsStore';
+import {CustomHeader} from '@src/widgets/headers/CustomHeader';
+import {useTheme} from '@src/app/providers/themeProvider';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {
+  HEADER_HEIGHT_ADNDROID,
+  HEADER_HEIGHT_IOS,
+} from '@src/shared/consts/common';
+import firebaseStorage from '@react-native-firebase/storage';
+import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
+import {RichAppText} from '@src/shared/ui/AppText/RichAppText';
 
 const PartnerDetailsPage = () => {
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const {params} = useRoute<RouteProp<{params: {id: string}}>>();
   const colors = useColors();
-  const {t} = useTranslation();
+  const {isDark} = useTheme();
+  const lang = useLanguage();
+  const therapist = therapistsStore.therapists.find(el => el.id === params.id);
 
-  const listItems = [
-    t('common.partners_item_1'),
-    t('common.partners_item_2'),
-    t('common.partners_item_3'),
-  ];
+  console.log(therapist);
+
+  useEffect(() => {
+    if (therapist) {
+      const asyncEffect = async () => {
+        const url = await firebaseStorage()
+          .ref(`therapists_data/${therapist.image_name}`)
+          .getDownloadURL();
+        setAvatarUrl(url);
+      };
+      asyncEffect();
+    }
+  }, [therapist, therapist?.image_name]);
 
   return (
     <View style={styles.partners}>
-      <View style={styles.imageWrapper}>
-        <FastImage
-          style={[styles.image, {backgroundColor: colors.secondaryTextColor}]}
-        />
-      </View>
-      <View style={styles.nameWrapper}>
-        <AppText
-          style={[styles.name, {color: colors.primaryTextColor}]}
-          size={TextSize.LEVEL_7}
-          text={t('common.arran_kennedy')}
-        />
-        <SvgXml xml={LinkedinIcon} style={styles.icon} />
-      </View>
-      <AppText
-        align={'justify'}
-        style={[styles.description, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={t('common.arran_text_1')}
+      <CustomHeader
+        transparent
+        arrowColor={isDark ? colors.white : '#2E3440'}
       />
-      <AppText
-        align={'justify'}
-        style={[styles.description, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={t('common.arran_text_2')}
-      />
-      <AppText
-        align={'justify'}
-        style={[styles.description, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={t('common.arran_text_3')}
-      />
-      <AppText
-        align={'justify'}
-        style={[styles.description, {color: colors.primaryTextColor}]}
-        size={TextSize.LEVEL_4}
-        text={t('common.arran_text_4')}
-      />
-
-      <List title={t('common.programs_offered_by_arran')} items={listItems} />
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {therapist && (
+          <>
+            <View style={styles.imageWrapper}>
+              <FastImage
+                source={{
+                  uri: avatarUrl,
+                }}
+                style={[
+                  styles.image,
+                  {backgroundColor: colors.secondaryTextColor},
+                ]}
+              />
+            </View>
+            <View style={styles.nameWrapper}>
+              <AppText
+                align="justify"
+                style={[styles.name, {color: colors.primaryTextColor}]}
+                size={TextSize.LEVEL_7}
+                text={therapist.full_name}
+              />
+              <SvgXml xml={LinkedinIcon} style={styles.icon} />
+            </View>
+            <RichAppText
+              align={'justify'}
+              style={styles.headline}
+              size={TextSize.LEVEL_4}
+              text={therapist.description[lang]}
+            />
+            {therapist.paragraphs[lang].map((paragraph, index) => (
+              <RichAppText
+                key={index}
+                align={'justify'}
+                style={[styles.description, {color: colors.primaryTextColor}]}
+                size={TextSize.LEVEL_4}
+                text={paragraph}
+              />
+            ))}
+            {/* <AppText
+              align={'justify'}
+              style={[styles.description, {color: colors.primaryTextColor}]}
+              size={TextSize.LEVEL_4}
+              text={t('common.arran_text_2')}
+            /> */}
+            {/* <AppText
+              align={'justify'}
+              style={[styles.description, {color: colors.primaryTextColor}]}
+              size={TextSize.LEVEL_4}
+              text={t('common.arran_text_3')}
+            />
+            <AppText
+              align={'justify'}
+              style={[styles.description, {color: colors.primaryTextColor}]}
+              size={TextSize.LEVEL_4}
+              text={t('common.arran_text_4')}
+            />
+            <List
+              title={t('common.programs_offered_by_arran')}
+              items={listItems}
+            /> */}
+            <View style={styles.bottomFiller} />
+          </>
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -74,6 +125,7 @@ export const Wrapper = memo(PartnerDetailsPage);
 const styles = StyleSheet.create({
   partners: {
     flex: 1,
+    paddingHorizontal: globalPadding,
   },
   imageWrapper: {
     alignItems: 'center',
@@ -98,5 +150,20 @@ const styles = StyleSheet.create({
   },
   icon: {
     top: 2,
+  },
+  container: {
+    paddingVertical:
+      Platform.OS === 'ios'
+        ? HEADER_HEIGHT_IOS
+        : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+  },
+  bottomFiller: {
+    height:
+      Platform.OS === 'ios'
+        ? HEADER_HEIGHT_IOS
+        : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+  },
+  headline: {
+    marginBottom: verticalScale(20),
   },
 });

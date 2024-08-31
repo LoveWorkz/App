@@ -235,10 +235,10 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   [AppRouteNames.PARTNER_DETAILS]: {
     name: appRoutePaths.partnerDetails,
     headerShown: false,
-    headerTitle: 'settings.partnerDetails',
     Element: (props: ParamListBase) => {
       return (
-        <Layout isPageScrolling>
+        // <Layout isPageScrolling>
+        <Layout deleteTopPadding deleteGlobalPadding>
           <PartnerDetailsPage {...props} />
         </Layout>
       );
