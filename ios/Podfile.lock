@@ -2415,6 +2415,8 @@ PODS:
     - React-Core
   - RNSVG (15.3.0):
     - React-Core
+  - RNSwanBrowser (0.3.1):
+    - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -2510,6 +2512,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - "RNSwanBrowser (from `../node_modules/@swan-io/react-native-browser`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2723,6 +2726,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNSwanBrowser:
+    :path: "../node_modules/@swan-io/react-native-browser"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -2848,6 +2853,7 @@ SPEC CHECKSUMS:
   RNSentry: e9aa15bb2f3e18c822c002eea13bbd3b222ab493
   RNShare: 0fad69ae2d71de9d1f7b9a43acf876886a6cb99c
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
+  RNSwanBrowser: ed90441895fd02d35017bfa9d79d686c77e9cd60
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Sentry: c446963245407030e17f1b926a83c6337dc99f4e

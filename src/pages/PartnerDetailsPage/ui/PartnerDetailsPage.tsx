@@ -1,5 +1,13 @@
 import React, {memo} from 'react';
-import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  Linking,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StatusBarProps,
+  StyleSheet,
+  View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
 
@@ -26,6 +34,13 @@ import {ProgramItem} from '@src/entities/ProgramItem';
 import {useTranslation} from 'react-i18next';
 import {CleanRootStackParamList} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import ContactIcon from './ContactIcon';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {openBrowser} from '@swan-io/react-native-browser';
+// import LinkedInIcon from '@src/shared/assets/icons/social/LinkedInIcon';
+// import getIcon from './getIcon';
+// import ContactIcon from './getIcon';
+// import parseUrl from 'url-parse';
 
 const PartnerDetailsPage = () => {
   const {params} =
@@ -39,6 +54,42 @@ const PartnerDetailsPage = () => {
   const therapist = therapistsStore.therapists.find(el => el.id === params?.id);
 
   console.log(therapist);
+
+  // const handleOnPress = React.useCallback(() => {
+  //   let entry: StatusBarProps | undefined;
+
+  //   openBrowser('https://swan.io', {
+  //     animationType: 'slide',
+  //     dismissButtonStyle: 'close',
+  //     barTintColor: '#FFF',
+  //     controlTintColor: '#000',
+  //     onOpen: () => {
+  //       entry = StatusBar.pushStackEntry({
+  //         animated: true,
+  //         barStyle:
+  //           Platform.OS === 'ios' && Number.parseInt(Platform.Version, 10) >= 13
+  //             ? 'light-content'
+  //             : 'dark-content',
+  //       });
+  //     },
+  //     onClose: url => {
+  //       if (entry) {
+  //         StatusBar.popStackEntry(entry);
+  //       }
+
+  //       if (url) {
+  //         const {protocol, host, query} = parseUrl(url, true);
+  //         const origin = `${protocol}//${host}`;
+
+  //         if (origin === 'io.swan.rnbrowserexample://close') {
+  //           console.log(JSON.stringify(query, null, 2));
+  //         }
+  //       }
+  //     },
+  //   }).catch(error => {
+  //     console.error(error);
+  //   });
+  // }, []);
 
   return (
     <View style={styles.partners}>
@@ -129,25 +180,46 @@ const PartnerDetailsPage = () => {
                   <>
                     {therapist.contacts.map((contact, index) => (
                       <View key={index} style={styles.contactBox}>
-                        <AppText
-                          align={'justify'}
-                          style={[
-                            styles.description,
-                            {color: colors.primaryTextColor},
-                          ]}
-                          size={TextSize.LEVEL_4}
-                          text={t(`therapist.contact_${contact.type}`)}
-                        />
-                        <AppText
-                          align={'justify'}
-                          weight="700"
-                          style={[
-                            styles.link,
-                            {color: colors.primaryTextColor},
-                          ]}
-                          size={TextSize.LEVEL_4}
-                          text={contact.value}
-                        />
+                        <View style={styles.iconContainer}>
+                          <ContactIcon
+                            style={styles.socialIcon}
+                            iconName={contact.type}
+                          />
+                          <AppText
+                            align={'justify'}
+                            style={[
+                              styles.contactType,
+                              {color: colors.primaryTextColor},
+                            ]}
+                            size={TextSize.LEVEL_4}
+                            text={t(`therapist.contact_${contact.type}`)}
+                          />
+                        </View>
+                        <TouchableOpacity
+                          // onPress={() => openBrowser('https://swan.io', {})}
+                          onPress={() => {
+                            if (
+                              contact.type === 'phone' ||
+                              contact.type === 'email'
+                            ) {
+                              Linking.openURL(contact.uri);
+                            } else {
+                              openBrowser(contact.uri, {});
+                            }
+                          }}>
+                          <AppText
+                            align={'justify'}
+                            weight="700"
+                            numberOfLines={1}
+                            ellipsizeMode="tail"
+                            style={[
+                              styles.link,
+                              {color: colors.primaryTextColor},
+                            ]}
+                            size={TextSize.LEVEL_4}
+                            text={contact.value}
+                          />
+                        </TouchableOpacity>
                       </View>
                     ))}
                   </>
@@ -192,14 +264,13 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(25),
     marginRight: horizontalScale(10),
   },
-  description: {
-    // marginBottom: verticalScale(20),
-    // marginTop: 24,
-  },
+  description: {},
   link: {
-    // marginBottom: verticalScale(20),
     textDecorationLine: 'underline',
-    // marginTop: 24,
+    // borderWidth: 2,
+    flexShrink: 1,
+    // overflow: 'hidden',
+    // flex: 1,
   },
   icon: {
     top: 2,
@@ -228,7 +299,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   contactBox: {
-    // height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -236,5 +306,14 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     marginBottom: 24,
+  },
+  socialIcon: {
+    marginRight: 12,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+  },
+  contactType: {
+    marginRight: 12,
   },
 });

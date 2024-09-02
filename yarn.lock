@@ -3551,6 +3551,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swan-io/react-native-browser@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "@swan-io/react-native-browser@npm:0.3.1"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+  checksum: 658d67912d2f3a55b04ae0c382f0fda67649941ab7644c2a37e6f3a436ed045125bffa955b94ca440ae92be7d83c1e68e08dc214fd803514f4bdbe4a7219cee5
+  languageName: node
+  linkType: hard
+
 "@trysound/sax@npm:0.2.0":
   version: 0.2.0
   resolution: "@trysound/sax@npm:0.2.0"
@@ -8398,6 +8408,7 @@ __metadata:
     "@react-navigation/native-stack": ^6.9.26
     "@react-navigation/stack": ^6.3.29
     "@sentry/react-native": ^5.24.1
+    "@swan-io/react-native-browser": ^0.3.1
     "@types/lodash": ^4.17.7
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
