@@ -3,11 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import therapistsStore from '../model/therapistsStore';
 import {observer} from 'mobx-react-lite';
 import {TherapistItem} from '@src/entities/TherapistItem';
-import {
-  // navigation,
-  RootStackParamList,
-} from '@src/shared/lib/navigation/navigation';
-// import {AppRouteNames} from '@src/shared/config/route/configRoute';
+import {RootStackParamList} from '@src/shared/lib/navigation/navigation';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 

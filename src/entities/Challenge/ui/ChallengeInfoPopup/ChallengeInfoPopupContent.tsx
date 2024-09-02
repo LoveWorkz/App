@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
@@ -7,7 +7,8 @@ import {infoTextType} from '@src/widgets/InformationBlock';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
-import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
+// import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
+import therapistsStore from '@src/pages/PartnersPage/model/therapistsStore';
 
 interface ChallengeInfoPopupContentProps {
   text: infoTextType[];
@@ -18,8 +19,12 @@ export const ChallengeInfoPopupContent = memo(
   (props: ChallengeInfoPopupContentProps) => {
     const {text = [], onBtnPressHandler} = props;
 
+    useEffect(() => {
+      therapistsStore.init();
+    }, []);
+
     const {t} = useTranslation();
-    const therapists = breakPageStore.therapists;
+    const therapists = therapistsStore.therapists;
     const selectedTherapist = useMemo(() => therapists[0], [therapists]);
 
     return (

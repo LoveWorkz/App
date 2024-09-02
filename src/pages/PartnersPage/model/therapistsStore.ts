@@ -7,7 +7,7 @@ import {Collections} from '@src/shared/types/firebase';
 import {userStore} from '@src/entities/User';
 import {Therapist} from './types';
 
-class BreakPageStore {
+class TherapistsStore {
   isLoading: boolean = false;
   therapists: Therapist[] = [];
 
@@ -55,4 +55,4 @@ class BreakPageStore {
   };
 }
 
-export default new BreakPageStore();
+export default new TherapistsStore();

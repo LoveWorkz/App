@@ -4,7 +4,6 @@ import {
   Platform,
   ScrollView,
   StatusBar,
-  StatusBarProps,
   StyleSheet,
   View,
 } from 'react-native';
@@ -37,10 +36,6 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import ContactIcon from './ContactIcon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {openBrowser} from '@swan-io/react-native-browser';
-// import LinkedInIcon from '@src/shared/assets/icons/social/LinkedInIcon';
-// import getIcon from './getIcon';
-// import ContactIcon from './getIcon';
-// import parseUrl from 'url-parse';
 
 const PartnerDetailsPage = () => {
   const {params} =
@@ -53,50 +48,9 @@ const PartnerDetailsPage = () => {
   const {t} = useTranslation();
   const therapist = therapistsStore.therapists.find(el => el.id === params?.id);
 
-  console.log(therapist);
-
-  // const handleOnPress = React.useCallback(() => {
-  //   let entry: StatusBarProps | undefined;
-
-  //   openBrowser('https://swan.io', {
-  //     animationType: 'slide',
-  //     dismissButtonStyle: 'close',
-  //     barTintColor: '#FFF',
-  //     controlTintColor: '#000',
-  //     onOpen: () => {
-  //       entry = StatusBar.pushStackEntry({
-  //         animated: true,
-  //         barStyle:
-  //           Platform.OS === 'ios' && Number.parseInt(Platform.Version, 10) >= 13
-  //             ? 'light-content'
-  //             : 'dark-content',
-  //       });
-  //     },
-  //     onClose: url => {
-  //       if (entry) {
-  //         StatusBar.popStackEntry(entry);
-  //       }
-
-  //       if (url) {
-  //         const {protocol, host, query} = parseUrl(url, true);
-  //         const origin = `${protocol}//${host}`;
-
-  //         if (origin === 'io.swan.rnbrowserexample://close') {
-  //           console.log(JSON.stringify(query, null, 2));
-  //         }
-  //       }
-  //     },
-  //   }).catch(error => {
-  //     console.error(error);
-  //   });
-  // }, []);
-
   return (
     <View style={styles.partners}>
-      <CustomHeader
-        // transparent
-        arrowColor={isDark ? colors.white : '#2E3440'}
-      />
+      <CustomHeader arrowColor={isDark ? colors.white : '#2E3440'} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {therapist && (
           <>
@@ -196,7 +150,6 @@ const PartnerDetailsPage = () => {
                           />
                         </View>
                         <TouchableOpacity
-                          // onPress={() => openBrowser('https://swan.io', {})}
                           onPress={() => {
                             if (
                               contact.type === 'phone' ||
@@ -267,20 +220,12 @@ const styles = StyleSheet.create({
   description: {},
   link: {
     textDecorationLine: 'underline',
-    // borderWidth: 2,
     flexShrink: 1,
-    // overflow: 'hidden',
-    // flex: 1,
   },
   icon: {
     top: 2,
   },
-  container: {
-    // paddingVertical:
-    //   Platform.OS === 'ios'
-    //     ? HEADER_HEIGHT_IOS
-    //     : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-  },
+  container: {},
   bottomFiller: {
     height:
       Platform.OS === 'ios'
