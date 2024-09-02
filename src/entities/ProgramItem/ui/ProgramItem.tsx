@@ -32,12 +32,15 @@ export default ProgramItem;
 export const styles = StyleSheet.create({
   container: {
     width: '50%',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // borderWidth: 2,
   },
   oddStyles: {
-    paddingRight: 12,
+    paddingRight: 6,
   },
   evenStyles: {
-    paddingLeft: 12,
+    paddingLeft: 6,
   },
   tile: {
     width: '100%',
@@ -46,5 +49,6 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 12,
     borderRadius: 12,
+    justifyContent: 'center',
   },
 });

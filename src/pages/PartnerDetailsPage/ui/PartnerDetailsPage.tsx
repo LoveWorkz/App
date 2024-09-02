@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo} from 'react';
 import {Platform, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {SvgXml} from 'react-native-svg';
@@ -20,40 +20,30 @@ import {
   HEADER_HEIGHT_ADNDROID,
   HEADER_HEIGHT_IOS,
 } from '@src/shared/consts/common';
-import firebaseStorage from '@react-native-firebase/storage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {RichAppText} from '@src/shared/ui/AppText/RichAppText';
-import {t} from 'i18next';
 import {ProgramItem} from '@src/entities/ProgramItem';
 import {useTranslation} from 'react-i18next';
+import {CleanRootStackParamList} from '@src/shared/lib/navigation/navigation';
+import {AppRouteNames} from '@src/shared/config/route/configRoute';
 
 const PartnerDetailsPage = () => {
-  const [avatarUrl, setAvatarUrl] = useState('');
-  const {params} = useRoute<RouteProp<{params: {id: string}}>>();
+  const {params} =
+    useRoute<
+      RouteProp<CleanRootStackParamList, AppRouteNames.PARTNER_DETAILS>
+    >();
   const colors = useColors();
   const {isDark} = useTheme();
   const lang = useLanguage();
   const {t} = useTranslation();
-  const therapist = therapistsStore.therapists.find(el => el.id === params.id);
+  const therapist = therapistsStore.therapists.find(el => el.id === params?.id);
 
   console.log(therapist);
-
-  useEffect(() => {
-    if (therapist) {
-      const asyncEffect = async () => {
-        const url = await firebaseStorage()
-          .ref(`therapists_data/${therapist.image_name}`)
-          .getDownloadURL();
-        setAvatarUrl(url);
-      };
-      asyncEffect();
-    }
-  }, [therapist, therapist?.image_name]);
 
   return (
     <View style={styles.partners}>
       <CustomHeader
-        transparent
+        // transparent
         arrowColor={isDark ? colors.white : '#2E3440'}
       />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -62,7 +52,7 @@ const PartnerDetailsPage = () => {
             <View style={styles.imageWrapper}>
               <FastImage
                 source={{
-                  uri: avatarUrl,
+                  uri: params?.avatarUri,
                 }}
                 style={[
                   styles.image,
@@ -89,7 +79,7 @@ const PartnerDetailsPage = () => {
               <RichAppText
                 key={index}
                 align={'justify'}
-                style={[styles.description, {color: colors.primaryTextColor}]}
+                style={[styles.paragraph, {color: colors.primaryTextColor}]}
                 size={TextSize.LEVEL_4}
                 text={paragraph}
               />
@@ -100,7 +90,7 @@ const PartnerDetailsPage = () => {
                 <AppText
                   align={'justify'}
                   weight={'700'}
-                  style={[styles.description, {color: colors.primaryTextColor}]}
+                  style={[styles.paragraph, {color: colors.primaryTextColor}]}
                   size={TextSize.LEVEL_4}
                   text={`${t('therapists.programs_offered_by')} ${
                     therapist.first_name
@@ -138,19 +128,9 @@ const PartnerDetailsPage = () => {
                   ]}>
                   <>
                     {therapist.contacts.map((contact, index) => (
-                      <View
-                        key={index}
-                        style={{
-                          // borderWidth: 2,
-                          height: 50,
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          // padding: 12,
-                        }}>
+                      <View key={index} style={styles.contactBox}>
                         <AppText
                           align={'justify'}
-                          // weight="700"
                           style={[
                             styles.description,
                             {color: colors.primaryTextColor},
@@ -162,9 +142,8 @@ const PartnerDetailsPage = () => {
                           align={'justify'}
                           weight="700"
                           style={[
-                            styles.description,
+                            styles.link,
                             {color: colors.primaryTextColor},
-                            {textDecorationLine: 'underline'},
                           ]}
                           size={TextSize.LEVEL_4}
                           text={contact.value}
@@ -172,13 +151,6 @@ const PartnerDetailsPage = () => {
                       </View>
                     ))}
                   </>
-                  {/* {therapist.programs[lang].map((program, index) => (
-                    <ProgramItem
-                      key={therapist.id}
-                      text={program.description}
-                      isOdd={index % 2 === 0}
-                    />
-                  ))} */}
                 </View>
               </>
             )}
@@ -200,6 +172,7 @@ const styles = StyleSheet.create({
   programs: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginBottom: 12,
   },
   imageWrapper: {
     alignItems: 'center',
@@ -220,16 +193,22 @@ const styles = StyleSheet.create({
     marginRight: horizontalScale(10),
   },
   description: {
-    marginBottom: verticalScale(20),
+    // marginBottom: verticalScale(20),
+    // marginTop: 24,
+  },
+  link: {
+    // marginBottom: verticalScale(20),
+    textDecorationLine: 'underline',
+    // marginTop: 24,
   },
   icon: {
     top: 2,
   },
   container: {
-    paddingVertical:
-      Platform.OS === 'ios'
-        ? HEADER_HEIGHT_IOS
-        : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+    // paddingVertical:
+    //   Platform.OS === 'ios'
+    //     ? HEADER_HEIGHT_IOS
+    //     : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
   },
   bottomFiller: {
     height:
@@ -241,9 +220,21 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
   contacts: {
-    // height: 400,
     marginBottom: 100,
     borderRadius: 12,
-    padding: 12,
+    paddingTop: 0,
+    paddingBottom: 24,
+    padding: 24,
+    marginTop: 24,
+  },
+  contactBox: {
+    // height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  paragraph: {
+    marginBottom: 24,
   },
 });

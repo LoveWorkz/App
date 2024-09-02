@@ -11,7 +11,7 @@ type Props = {
   fullName: string;
   headline: string;
   isOdd?: boolean;
-  onPress?: () => void;
+  onPress?: (avatarUri: string) => void;
 };
 
 export const TherapistItem = ({
@@ -39,7 +39,7 @@ export const TherapistItem = ({
     <View
       style={[styles.container, isOdd ? styles.oddStyles : styles.evenStyles]}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress?.(avatarUrl)}
         style={[
           styles.tile,
           {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
@@ -59,10 +59,10 @@ export const styles = StyleSheet.create({
     width: '50%',
   },
   oddStyles: {
-    paddingRight: 12,
+    paddingRight: 6,
   },
   evenStyles: {
-    paddingLeft: 12,
+    paddingLeft: 6,
   },
   tile: {
     minHeight: 220,
@@ -72,6 +72,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     paddingTop: 24,
     borderRadius: 12,
+    paddingHorizontal: 12,
   },
   fullName: {
     fontSize: 16,

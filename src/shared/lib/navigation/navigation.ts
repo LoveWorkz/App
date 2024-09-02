@@ -1,3 +1,4 @@
+// import {PartnerDetailsPage} from '@src/pages/PartnerDetailsPage';
 import {
   createNavigationContainerRef,
   StackActions,
@@ -7,10 +8,11 @@ import {
 } from '@react-navigation/native';
 import {DocumentType} from '@src/shared/types/types';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home?: undefined;
   Profile?: {userId: string};
   Feed?: {sort: 'latest' | 'top'} | undefined;
+  partnerDetails?: {id: string; avatarUri: string};
   id?: string;
   initialQuestionId?: string;
   title?: string;
@@ -20,6 +22,18 @@ type RootStackParamList = {
   showPreSessionPopup?: boolean;
   challenge?: string;
 };
+
+export type CleanRootStackParamList = Omit<
+  RootStackParamList,
+  | 'id'
+  | 'initialQuestionId'
+  | 'title'
+  | 'type'
+  | 'isTabScreen'
+  | 'sessionId'
+  | 'showPreSessionPopup'
+  | 'challenge'
+>;
 
 export interface Navigation {
   navigate: (name: string, params?: RootStackParamList) => void;
