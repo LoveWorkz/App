@@ -32,8 +32,6 @@ const CoreChallengeIntroCard = () => {
     //@ts-ignore
     useRoute<RouteProp<RootStackParamList, 'CoreChallengeIntroCard'>>();
 
-  console.log('IS FAVORITE ON INTRO CARD: ', params?.isFavorite);
-
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors.white]);

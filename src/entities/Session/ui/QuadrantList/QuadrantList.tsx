@@ -51,8 +51,6 @@ const QuadrantList = (props: QuadrantListProps) => {
         const marginBottom = horizontalScale(40);
         const marginBottomForLastElement = withBottomSpace ? marginBottom : 0;
 
-        // console.log('QUADRANT', quadrant);
-
         return (
           <View
             key={quadrant.id}

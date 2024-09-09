@@ -56,7 +56,6 @@ const ChallengeItem = (props: ChallengeItemProps) => {
         challenge,
         isFavorite: props.isFavorite,
       });
-      console.log('HERE X1');
     } else if (specailChallenge) {
       challengeStore.specialChallengePressHandler({
         specialChallenge: specailChallenge,

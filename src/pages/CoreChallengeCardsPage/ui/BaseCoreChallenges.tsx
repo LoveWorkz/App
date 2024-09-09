@@ -42,8 +42,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     (coreChallengeFavorites?.ids || []).includes(challenge.id),
   );
 
-  console.log('BASE CORE CHALLENGES PAGE FAVORITE', params?.isFavorite);
-
   const coreChallengesList = useMemo(() => {
     if (props.isFavorite) {
       return favoriteCoreChallengesList;

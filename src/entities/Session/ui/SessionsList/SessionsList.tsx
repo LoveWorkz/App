@@ -14,8 +14,6 @@ interface SessionsListProps {
 const SessionsList = (props: SessionsListProps) => {
   const {sessions, isPremium} = props;
 
-  // console.log('SESSIONS', sessions);
-
   return (
     <View>
       {sessions.map((item, i) => {

@@ -157,8 +157,6 @@ const CoreChallengesList = (props: CoreChallengesListProps) => {
     );
   }
 
-  console.log('coreChallengesList', coreChallengesList);
-
   return (
     <ScrollViewWithoutIndicator>
       {challengeList.length ? (

@@ -16,8 +16,6 @@ const CoreChallengeCardsPage = () => {
     //@ts-ignore
     useRoute<RouteProp<RootStackParamList, 'CoreChallengeIntroCard'>>();
 
-  console.log('CHALLENGE CARDS PAGE FAVORITE', params?.isFavorite);
-
   if (!currentCoreChallengeGroup) {
     return <></>;
   }

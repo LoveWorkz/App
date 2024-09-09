@@ -112,8 +112,6 @@ class ChallengesStore {
         .collection(Collections.CHALLENGE_CATEGORIES)
         .get({source});
 
-      // console.log('XX FETCH DEFAULT CHALLENGE CATEGORIES', data.docs);
-
       const challengeCategories = data.docs.map(challengeCategory => {
         return challengeCategory.data() as ChallengeCategoryType;
       });

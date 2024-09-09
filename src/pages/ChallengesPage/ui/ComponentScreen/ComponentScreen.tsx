@@ -41,8 +41,6 @@ const ComponentScreen = (props: ComponentScreenProps) => {
       (specialChallengeFavorites?.ids || []).includes(challenge.id),
     );
 
-    console.log('Favorite Core Challenges List: ', favoriteCoreChallengesList);
-
     return (
       <View style={styles.ComponentScreen}>
         <ChallengeCategories isLoading={isLoading} />
