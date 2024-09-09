@@ -526,5 +526,12 @@
   "therapist.contact_website":"Website",
   "therapist.contact_email":"Email",
   "therapist.contact_instagram":"Instagram",
-  "therapist.contact_youtube":"Youtube"
+  "therapist.contact_youtube":"Youtube",
+  "languages.en": "English",
+  "languages.de": "German",
+  "languages.pt": "Portuguese",
+  "languages.es": "Spanish",
+  "languages.fr": "French",
+  "languages.sv": "Swedish",
+  "languages.gr": "Greek"
 }

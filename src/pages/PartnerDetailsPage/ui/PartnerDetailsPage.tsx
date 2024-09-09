@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -17,7 +16,6 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {LinkedinIcon} from '@src/shared/assets/icons/Linkedin';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import therapistsStore from '@src/pages/PartnersPage/model/therapistsStore';
 import {CustomHeader} from '@src/widgets/headers/CustomHeader';
@@ -36,6 +34,7 @@ import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import ContactIcon from './ContactIcon';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {openBrowser} from '@swan-io/react-native-browser';
+import {Badge} from '@src/widgets/Badge';
 
 const PartnerDetailsPage = () => {
   const {params} =
@@ -72,7 +71,11 @@ const PartnerDetailsPage = () => {
                 size={TextSize.LEVEL_7}
                 text={therapist.full_name}
               />
-              <SvgXml xml={LinkedinIcon} style={styles.icon} />
+            </View>
+            <View style={styles.languages}>
+              {therapist.languages.map((language, index) => (
+                <Badge key={index} text={t(`languages.${language}`)} />
+              ))}
             </View>
             <RichAppText
               align={'justify'}
@@ -260,5 +263,11 @@ const styles = StyleSheet.create({
   },
   contactType: {
     marginRight: 12,
+  },
+  languages: {
+    flexDirection: 'row',
+    marginBottom: 32,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
   },
 });
