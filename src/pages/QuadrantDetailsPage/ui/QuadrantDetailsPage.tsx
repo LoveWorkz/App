@@ -22,7 +22,6 @@ import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import ScrollViewWithoutIndicator from '@src/shared/ui/ScrollViewWithoutIndicator/ScrollViewWithoutIndicator';
 import QuadrantDetailsItem from './QuadrantDetailsItem';
-import {QUADRANT_DETAILS_CONTENT_TOP} from '../model/lib/QuadrantDetailsPageLib';
 
 interface QuadrantDetailsPageProps {
   route?: {
@@ -61,6 +60,17 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
     navigation.goBack();
   };
 
+  const bottomTextComponent = useMemo(() => {
+    return (
+      <AppText
+        size={TextSize.LEVEL_5}
+        weight="500"
+        style={styles.bottomText}
+        text={currentQuadrant.largeDescription[language]}
+      />
+    );
+  }, [currentQuadrant.largeDescription, language]);
+
   return (
     <View>
       <StatusBar barStyle={'light-content'} />
@@ -81,19 +91,18 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
               setAsWidth={false}
               isBottomPagination
               data={quadrants}
-              Component={QuadrantDetailsItem}
+              // eslint-disable-next-line react/no-unstable-nested-components, @typescript-eslint/no-shadow
+              Component={(props: any) => (
+                <QuadrantDetailsItem
+                  {...props}
+                  bottomTextComponent={bottomTextComponent}
+                />
+              )}
               paginationStyle={styles.paginationStyle}
               isSmallDotPagination={false}
               paginationColor={colors.white}
             />
           </FastImage>
-          <View style={styles.descriptionWrapper}>
-            <AppText
-              size={TextSize.LEVEL_5}
-              weight="500"
-              text={currentQuadrant.largeDescription[language]}
-            />
-          </View>
         </View>
       </ScrollViewWithoutIndicator>
     </View>
@@ -103,21 +112,18 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
 export default memo(observer(QuadrantDetailsPage));
 
 const styles = StyleSheet.create({
-  wrapper: {
-    paddingBottom: 50,
-  },
+  wrapper: {},
   bgImage: {
-    height: 800,
     width: windowWidth,
-    overflow: 'visible',
-    marginBottom: -235,
   },
   descriptionWrapper: {
     paddingHorizontal: globalPadding,
   },
   paginationStyle: {
     alignItems: 'center',
-    top: QUADRANT_DETAILS_CONTENT_TOP,
+    top: 550,
+    position: 'absolute',
+    width: '100%',
   },
 
   iconBtn: {
@@ -130,5 +136,9 @@ const styles = StyleSheet.create({
     height: verticalScale(15),
     width: horizontalScale(18),
     marginRight: horizontalScale(15),
+  },
+  bottomText: {
+    width: '100%',
+    height: 100,
   },
 });

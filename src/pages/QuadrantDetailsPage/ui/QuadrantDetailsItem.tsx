@@ -16,6 +16,7 @@ interface QuadrantDetailsItemProps {
   step: DisplayText;
   displayName: DisplayText;
   id: string;
+  bottomTextComponent?: React.JSX.Element;
 }
 
 const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
@@ -24,7 +25,7 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
   const language = useLanguage();
   const {t} = useTranslation();
 
-  const textSiyle = useMemo(() => {
+  const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors]);
 
@@ -37,34 +38,37 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
   }, [id]);
 
   return (
-    <>
+    <View style={{}}>
       <View style={styles.imageWrapper}>
         <FastImage style={styles.quadrantImage} source={source} />
       </View>
 
       <View style={styles.content}>
         <AppText
-          style={textSiyle}
+          style={textStyle}
           size={TextSize.LEVEL_2}
           weight={'600'}
           text={step[language]}
         />
-        <View style={styles.quadrantName}>
+        <View style={styles.quadrantTitle}>
+          <View style={styles.quadrantName}>
+            <AppText
+              style={textStyle}
+              size={TextSize.SIZE_32}
+              weight={'900'}
+              text={displayName[language]}
+            />
+          </View>
           <AppText
-            style={textSiyle}
-            size={TextSize.SIZE_32}
-            weight={'900'}
-            text={displayName[language]}
+            style={textStyle}
+            size={TextSize.LEVEL_5}
+            weight={'700'}
+            text={t('common.the_heart_of_relationship')}
           />
         </View>
-        <AppText
-          style={textSiyle}
-          size={TextSize.LEVEL_5}
-          weight={'700'}
-          text={t('common.the_heart_of_relationship')}
-        />
+        <View style={styles.bottomWrapper}>{props.bottomTextComponent}</View>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -83,9 +87,17 @@ const styles = StyleSheet.create({
   content: {
     padding: globalPadding,
     top: QUADRANT_DETAILS_CONTENT_TOP,
+    width: windowWidth,
   },
   quadrantName: {
     marginVertical: verticalScale(5),
     maxWidth: horizontalScale(350),
+  },
+  quadrantTitle: {height: 170},
+  bottomWrapper: {
+    paddingHorizontal: globalPadding,
+    flex: 1,
+    height: 200,
+    width: '100%',
   },
 });
