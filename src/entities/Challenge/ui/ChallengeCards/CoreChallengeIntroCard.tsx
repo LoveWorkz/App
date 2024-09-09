@@ -12,18 +12,27 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {StyledWordText} from '@src/shared/ui/StyledWordText/StyledWordText';
 import {globalStyles} from '@src/app/styles/GlobalStyle';
 import {StyleType} from '@src/shared/types/types';
-import {navigation} from '@src/shared/lib/navigation/navigation';
+import {
+  navigation,
+  RootStackParamList,
+} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {challengeGroupStore} from '@src/entities/ChallengeGroup';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {RouteProp, useRoute} from '@react-navigation/native';
 
 const CoreChallengeIntroCard = () => {
   const colors = useColors();
   const language = useLanguage();
   const {t} = useTranslation();
   const {isDark} = useTheme();
+  const {params} =
+    //@ts-ignore
+    useRoute<RouteProp<RootStackParamList, 'CoreChallengeIntroCard'>>();
+
+  console.log('IS FAVORITE ON INTRO CARD: ', params?.isFavorite);
 
   const textStyle = useMemo(() => {
     return {color: colors.white};
@@ -42,7 +51,8 @@ const CoreChallengeIntroCard = () => {
 
   const LetsDoItPressHandler = () => {
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-      title: groupName,
+      title: params?.isFavorite ? undefined : groupName,
+      isFavorite: params?.isFavorite,
     });
   };
 

@@ -41,6 +41,8 @@ const ComponentScreen = (props: ComponentScreenProps) => {
       (specialChallengeFavorites?.ids || []).includes(challenge.id),
     );
 
+    console.log('Favorite Core Challenges List: ', favoriteCoreChallengesList);
+
     return (
       <View style={styles.ComponentScreen}>
         <ChallengeCategories isLoading={isLoading} />
@@ -50,7 +52,12 @@ const ComponentScreen = (props: ComponentScreenProps) => {
             <>
               {!!favoriteCoreChallengesList.length &&
                 favoriteCoreChallengesList.map((item, i) =>
-                  renderChallenges({isCore: true, item, index: i}),
+                  renderChallenges({
+                    isCore: true,
+                    item,
+                    index: i,
+                    isFavorite: true,
+                  }),
                 )}
             </>
           </ScrollViewWithoutIndicator>
@@ -59,7 +66,12 @@ const ComponentScreen = (props: ComponentScreenProps) => {
             <>
               {!!favoriteSpecialChallengesList.length &&
                 favoriteSpecialChallengesList.map((item, i) =>
-                  renderChallenges({isCore: false, item, index: i}),
+                  renderChallenges({
+                    isCore: false,
+                    item,
+                    index: i,
+                    isFavorite: true,
+                  }),
                 )}
             </>
           </ScrollViewWithoutIndicator>

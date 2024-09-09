@@ -34,10 +34,12 @@ export const renderChallenges = ({
   item,
   index,
   isCore,
+  isFavorite,
 }: {
   item: ChallengeType | SpecialChallengeType;
   index: number;
   isCore: boolean;
+  isFavorite?: boolean;
 }) => {
   const isFirstElement = index === 0;
 
@@ -53,6 +55,7 @@ export const renderChallenges = ({
           text={challenge.description}
           id={challenge.id}
           isChecked={challenge.isChecked}
+          isFavorite={isFavorite}
         />
       </View>
     );
@@ -69,6 +72,7 @@ export const renderChallenges = ({
         text={specailChallenge.title}
         id={specailChallenge.id}
         isChecked={specailChallenge.isChecked}
+        isFavorite={isFavorite}
       />
     </View>
   );

@@ -12,6 +12,7 @@ export type RootStackParamList = {
   Home?: undefined;
   Profile?: {userId: string};
   Feed?: {sort: 'latest' | 'top'} | undefined;
+  CoreChallengeIntroCard?: {isFavorite?: boolean};
   partnerDetails?: {id: string; avatarUri: string};
   id?: string;
   initialQuestionId?: string;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   sessionId?: string;
   showPreSessionPopup?: boolean;
   challenge?: string;
+  isFavorite?: boolean;
 };
 
 export type CleanRootStackParamList = Omit<

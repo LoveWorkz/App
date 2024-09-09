@@ -17,13 +17,16 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {CARD_WIDTH} from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
+import {favoriteStore} from '@src/entities/Favorite';
 
 interface BaseCoreChallengesProps {
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>;
+  isFavorite?: boolean;
 }
 
 const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
-  const {params} = useRoute<RouteProp<{params: {title: string}}>>();
+  const {params} =
+    useRoute<RouteProp<{params: {title: string; isFavorite?: boolean}}>>();
   const {currentCoreChallengeGroup} = props;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const headerCustomTitle = useMemo(() => params?.title, []);
@@ -31,9 +34,21 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   const handleSwipe = useCallback((challenge: ChallengeType) => {
     challengeStore.coreChallengeCardsSwipeHandler(challenge);
   }, []);
-
+  // const challenges = challengesStore.challenges;
   const {challenges} = challengesStore;
+  const coreChallengeFavorites = favoriteStore.coreChallengeFavorites;
+
+  const favoriteCoreChallengesList = challenges.filter(challenge =>
+    (coreChallengeFavorites?.ids || []).includes(challenge.id),
+  );
+
+  console.log('BASE CORE CHALLENGES PAGE FAVORITE', params?.isFavorite);
+
   const coreChallengesList = useMemo(() => {
+    if (props.isFavorite) {
+      return favoriteCoreChallengesList;
+    }
+
     if (!currentCoreChallengeGroup) {
       return [];
     }
@@ -48,7 +63,13 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
       ...challenge,
       groupName: currentCoreChallengeGroup.displayName[language],
     }));
-  }, [challenges, currentCoreChallengeGroup, language]);
+  }, [
+    challenges,
+    currentCoreChallengeGroup,
+    favoriteCoreChallengesList,
+    language,
+    props.isFavorite,
+  ]);
 
   const defaultChallengeNumber = useMemo(() => {
     return challengeStore.getDefaultChallengeNumberForCardsPage({
@@ -67,11 +88,14 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   }, [coreChallengesList, defaultChallengeNumber]);
 
   useEffect(() => {
-    navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-      title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
-    });
+    if (!props.isFavorite) {
+      navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
+        title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
+        isFavorite: params?.isFavorite,
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPosition, headerCustomTitle]);
+  }, [currentPosition, headerCustomTitle, props.isFavorite]);
 
   useEffect(() => {
     challengeStore.coreChallengeCardsSwipeHandler(

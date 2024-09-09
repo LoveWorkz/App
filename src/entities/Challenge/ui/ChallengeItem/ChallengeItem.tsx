@@ -29,6 +29,7 @@ interface ChallengeItemProps {
   text: DisplayText;
   isChecked: boolean;
   id: string;
+  isFavorite?: boolean;
 }
 
 const ChallengeItem = (props: ChallengeItemProps) => {
@@ -51,9 +52,15 @@ const ChallengeItem = (props: ChallengeItemProps) => {
     challengeStore.setIsSessionFlow(false);
 
     if (isCoreChallenge) {
-      challengeStore.coreChallengePressHandler({challenge});
+      challengeStore.coreChallengePressHandler({
+        challenge,
+        isFavorite: props.isFavorite,
+      });
+      console.log('HERE X1');
     } else if (specailChallenge) {
-      challengeStore.specialChallengePressHandler(specailChallenge);
+      challengeStore.specialChallengePressHandler({
+        specialChallenge: specailChallenge,
+      });
     }
   };
 

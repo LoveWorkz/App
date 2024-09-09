@@ -26,6 +26,7 @@ const Favorites = (props: FavoritesProps) => {
   }
 
   const onPressHandler = () => {
+    console.log('Got to favorites');
     navigation.navigate(AppRouteNames.FAVORITES_CHALLENGES);
   };
 

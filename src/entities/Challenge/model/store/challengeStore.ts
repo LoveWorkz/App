@@ -164,8 +164,11 @@ class ChallengeStore {
 
   coreChallengePressHandler = async ({
     challenge,
-  }: {
+    isFavorite,
+  }: // isFavorite
+  {
     challenge: ChallengeType;
+    isFavorite?: boolean;
   }) => {
     // setting core challenge group info
     const coreChallengeGroups = challengeGroupStore.coreChallengeGroups;
@@ -189,12 +192,17 @@ class ChallengeStore {
 
     navigation.navigate(AppRouteNames.CORE_CHALLENGE_INTRO, {
       title: 'Challenges',
+      isFavorite,
     });
   };
 
-  specialChallengePressHandler = async (
-    specialChallenge: SpecialChallengeType,
-  ) => {
+  specialChallengePressHandler = async ({
+    specialChallenge,
+    isFavorite,
+  }: {
+    specialChallenge: SpecialChallengeType;
+    isFavorite?: boolean;
+  }) => {
     this.setSpecialChallenge(specialChallenge);
 
     const specialChallengeGroup =
@@ -213,7 +221,7 @@ class ChallengeStore {
       isCore: false,
     });
 
-    navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO);
+    navigation.navigate(AppRouteNames.SPECIAL_CHALLENGE_INTRO, {isFavorite});
   };
 
   getChallengeNumber = ({
