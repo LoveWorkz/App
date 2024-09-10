@@ -37,10 +37,10 @@ import {openBrowser} from '@swan-io/react-native-browser';
 import {Badge} from '@src/widgets/Badge';
 
 const PartnerDetailsPage = () => {
-  const {params} =
-    useRoute<
-      RouteProp<CleanRootStackParamList, AppRouteNames.PARTNER_DETAILS>
-    >();
+  const {params} = useRoute<
+    //@ts-ignore
+    RouteProp<CleanRootStackParamList, AppRouteNames.PARTNER_DETAILS>
+  >();
   const colors = useColors();
   const {isDark} = useTheme();
   const lang = useLanguage();
