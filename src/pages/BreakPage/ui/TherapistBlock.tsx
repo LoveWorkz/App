@@ -1,5 +1,5 @@
 import React, {memo, useEffect, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -33,6 +33,10 @@ const TherapistBlock = () => {
   const {isDark} = useTheme();
   const therapists = therapistsStore.therapists;
 
+  const isSmallDevice = Dimensions.get('window').height < 700;
+
+  console.log('WINDW HEIGHT', windowHeight);
+
   useEffect(() => {
     // breakPageStore.init();
     therapistsStore.init();
@@ -51,7 +55,8 @@ const TherapistBlock = () => {
   const scale = useSharedValue(0.5); // Start at half size for a scale effect
 
   // Calculate the middle position for the block
-  const middlePosition = windowHeightMinusNavbarHeight / 2 - blockHeight / 2;
+  // const middlePosition = windowHeightMinusNavbarHeight / 2 - blockHeight / 2;
+  const middlePosition = 0;
 
   // Animated styles for translateY, opacity, and scale
   const animatedStyles = useAnimatedStyle(() => {
@@ -86,13 +91,18 @@ const TherapistBlock = () => {
       style={[
         styles.TherapistBlock,
         animatedStyles,
+        {
+          paddingHorizontal: isSmallDevice
+            ? horizontalScale(10)
+            : horizontalScale(40),
+        },
         {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
       ]}>
       {selectedTherapist && <ArranKennedyBlock therapist={selectedTherapist} />}
       <View style={styles.text}>
         <AppText
           style={textStyle}
-          size={TextSize.LEVEL_4}
+          size={isSmallDevice ? TextSize.LEVEL_3 : TextSize.LEVEL_4}
           text={t('common.nice_job_single_phrase')}
         />
       </View>
@@ -100,19 +110,19 @@ const TherapistBlock = () => {
       <View style={styles.text}>
         <AppText
           style={textStyle}
-          size={TextSize.LEVEL_4}
+          size={isSmallDevice ? TextSize.LEVEL_3 : TextSize.LEVEL_4}
           text={t('common.nice_job_single_phrase_part_2')}
         />
       </View>
       <View style={[styles.text, styles.textStop]}>
         <AppText
           style={textStyle}
-          size={TextSize.LEVEL_4}
+          size={isSmallDevice ? TextSize.LEVEL_3 : TextSize.LEVEL_4}
           text={t('common.next_stop_challenges_part_1')}
         />
         <AppText
           style={textStyle}
-          size={TextSize.LEVEL_4}
+          size={isSmallDevice ? TextSize.LEVEL_3 : TextSize.LEVEL_4}
           weight={'700'}
           text={t('common.next_stop_challenges_part_2')}
         />
@@ -122,7 +132,7 @@ const TherapistBlock = () => {
         <AppText
           style={textStyle}
           weight="700"
-          size={TextSize.LEVEL_3}
+          size={isSmallDevice ? TextSize.LEVEL_2 : TextSize.LEVEL_3}
           text={t('common.each_session_future_action')}
         />
       </View>
@@ -135,14 +145,16 @@ export default memo(observer(TherapistBlock));
 const styles = StyleSheet.create({
   TherapistBlock: {
     width: '100%',
-    position: 'absolute',
+    // position: 'absolute',
     minHeight: blockHeight,
-    left: 0,
-    right: 0,
+    // left: 0,
+    // right: 0,
     borderRadius: moderateScale(20),
-    paddingHorizontal: horizontalScale(40),
+    // paddingHorizontal: horizontalScale(40),
     justifyContent: 'center',
     paddingVertical: verticalScale(10),
+    // borderWidth: 2,
+    // borderColor: 'yellow',
   },
 
   text: {

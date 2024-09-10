@@ -1,5 +1,5 @@
 import React, {ComponentType, memo, useState} from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {StatusBar, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 
@@ -16,6 +16,7 @@ import {
   HEADER_HEIGHT_IOS,
   isPlatformIos,
 } from '@src/shared/consts/common';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface CustomHeaderProps {
   headerTitle?: string;
@@ -26,6 +27,7 @@ interface CustomHeaderProps {
   HeaderRight?: ComponentType<any>;
   transparent?: boolean;
   arrowColor?: string;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const CustomHeader = (props: CustomHeaderProps) => {
@@ -38,11 +40,13 @@ const CustomHeader = (props: CustomHeaderProps) => {
     transparent,
     arrowColor,
     HeaderRight,
+    containerStyle,
   } = props;
   const colors = useColors();
   const {t} = useTranslation();
   const {isGradient} = useGradient();
   const [headerHeight, setHeaderHeight] = useState<null | number>(null);
+  const insets = useSafeAreaInsets();
 
   const color =
     isSecondaryBackground || isGradient
@@ -61,6 +65,21 @@ const CustomHeader = (props: CustomHeaderProps) => {
           styles.CustomHeader,
           {backgroundColor},
           transparent && styles.transparentStyle,
+          containerStyle,
+          {
+            top: insets.top,
+          },
+          {
+            // height: verticalScale(60),
+            height: 60,
+          },
+          // {
+          //   height: isPlatformIos
+          //     ? HEADER_HEIGHT_IOS
+          //     : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+          //       HEADER_HEIGHT_ADNDROID,
+          // },
+          // {borderWidth: 4, borderColor: 'red'},
         ]}>
         <View
           style={styles.headerLeft}
@@ -103,9 +122,9 @@ const bottom = 0;
 const styles = StyleSheet.create({
   CustomHeader: {
     width: '100%',
-    height: isPlatformIos
-      ? HEADER_HEIGHT_IOS
-      : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+    // height: isPlatformIos
+    //   ? HEADER_HEIGHT_IOS
+    //   : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
     paddingHorizontal: globalPadding,
   },
   headerLeft: {
@@ -132,7 +151,7 @@ const styles = StyleSheet.create({
   transparentStyle: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    top: 0,
+    // top: 0,
     zIndex: 1,
   },
 });

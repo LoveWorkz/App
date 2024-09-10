@@ -516,7 +516,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.BREAK]: {
     name: appRoutePaths.break,
-    headerShown: true,
+    headerShown: false,
     bgColor: 'secondaryBackground',
     bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
