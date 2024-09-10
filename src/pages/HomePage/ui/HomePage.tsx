@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {Dimensions, StatusBar, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -165,11 +165,15 @@ const HomePage = (props: HomePageProps) => {
                   styles.walkthroughableWiew,
                   {
                     top:
-                      Dimensions.get('screen').height -
-                      320 -
-                      tabBarHeight -
-                      insets.bottom +
-                      StatusBar.currentHeight,
+                      Platform.OS === 'ios'
+                        ? Dimensions.get('screen').height -
+                          320 -
+                          tabBarHeight -
+                          insets.bottom
+                        : Dimensions.get('window').height - 320 - tabBarHeight,
+                    // insets.bottom,
+                    // insets.bottom,
+                    // StatusBar.currentHeight,
                     // StatusBar.currentHeight,
                     // insets.top,
                     // insets.top,
@@ -218,12 +222,19 @@ export default memo((props: HomePageWrapperProps) => {
   const prevRouteName = route?.params?.prevRouteName;
   const isTabScreen = route?.params?.isTabScreen;
 
+  const insets = useSafeAreaInsets();
+
   return (
     <CopilotProvider
       stepNumberComponent={StepNumberComponent}
       tooltipStyle={style}
       tooltipComponent={GuidedTourModal}
-      verticalOffset={-(StatusBar.currentHeight as number) ?? -27}
+      verticalOffset={
+        Platform.OS === 'ios'
+          ? -(StatusBar.currentHeight as number) ?? -27
+          : -insets.top
+      }
+      // verticalOffset={Platform.OS === 'android' ? -insets.top : -27}
       arrowSize={0}>
       <HomePageWrapper
         prevRouteName={prevRouteName}
@@ -273,8 +284,8 @@ const styles = StyleSheet.create({
   },
   walkthroughableWiew: {
     position: 'absolute',
-    borderWidth: 2,
-    borderColor: 'red',
+    // borderWidth: 2,
+    // borderColor: 'red',
     height: 320,
     // bottom: isPlatformIos ? 320 : 370,
     // top:
