@@ -23,7 +23,7 @@ import {
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {Quotes} from '@src/widgets/Quotes';
-import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
+import {horizontalScale} from '@src/shared/lib/Metrics';
 import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
