@@ -168,7 +168,8 @@ const HomePage = (props: HomePageProps) => {
                       Dimensions.get('screen').height -
                       320 -
                       tabBarHeight -
-                      insets.bottom,
+                      insets.bottom +
+                      StatusBar.currentHeight,
                     // StatusBar.currentHeight,
                     // insets.top,
                     // insets.top,
