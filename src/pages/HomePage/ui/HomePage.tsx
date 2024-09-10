@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useEffect} from 'react';
-import {StatusBar, StyleSheet, View} from 'react-native';
+import {Dimensions, StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
@@ -16,6 +16,7 @@ import {
 } from '@src/shared/assets/images';
 import {
   globalPadding,
+  tabBarHeight,
   windowWidth,
   windowWidthMinusPaddings,
 } from '@src/app/styles/GlobalStyle';
@@ -45,6 +46,7 @@ import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface HomePageProps {
   prevRouteName?: string;
@@ -59,6 +61,9 @@ const skeletonContentTop = -20;
 const HomePage = (props: HomePageProps) => {
   const {isTabScreen, prevRouteName} = props;
   const {t} = useTranslation();
+  const insets = useSafeAreaInsets();
+
+  console.log('INSETS', insets);
 
   const {theme} = useTheme();
   const {i18n} = useTranslation();
@@ -152,7 +157,25 @@ const HomePage = (props: HomePageProps) => {
               name={t('copilot.step_3_name')}
               order={3}
               text={t('copilot.step_3_text')}>
-              <WalkthroughableWiew style={styles.walkthroughableWiew} />
+              <WalkthroughableWiew
+                onLayout={e => {
+                  console.log('Copilot height', e.nativeEvent.layout.height);
+                }}
+                style={[
+                  styles.walkthroughableWiew,
+                  {
+                    top:
+                      Dimensions.get('screen').height -
+                      320 -
+                      tabBarHeight -
+                      insets.bottom,
+                    // StatusBar.currentHeight,
+                    // insets.top,
+                    // insets.top,
+                    // StatusBar.currentHeight,
+                  },
+                ]}
+              />
             </CopilotStep>
 
             <TrendingList isLoading={isLoading} />
@@ -249,6 +272,14 @@ const styles = StyleSheet.create({
   },
   walkthroughableWiew: {
     position: 'absolute',
-    bottom: verticalScale(isPlatformIos ? 320 : 370),
+    borderWidth: 2,
+    borderColor: 'red',
+    height: 320,
+    // bottom: isPlatformIos ? 320 : 370,
+    // top:
+    //   Dimensions.get('screen').height -
+    //   320 -
+    //   tabBarHeight +
+    //   StatusBar.currentHeight,
   },
 });
