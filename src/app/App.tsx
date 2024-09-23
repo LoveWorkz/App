@@ -29,7 +29,7 @@ const App = () => {
 
   if (!__DEV__) {
     Sentry.init({
-      dsn: 'https://1a830a2fba85e78cabee0f5223294936@o4507543721213952.ingest.de.sentry.io/4507543724163152',
+      dsn: 'https://9f5d3ef55c477481ad80671d86731583@o4507470205616128.ingest.de.sentry.io/4508003901505616',
       integrations: [new Sentry.ReactNativeTracing({routingInstrumentation})],
     });
   }
@@ -49,10 +49,10 @@ const App = () => {
   );
 };
 
+export default App;
+
 const styles = StyleSheet.create({
   App: {
     flex: 1,
   },
 });
-
-export default App;

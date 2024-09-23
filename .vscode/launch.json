@@ -1,12 +1,12 @@
 {
-    "configurations": [
-        {
-            "name": "Good Debug iOS Hermes iPhone 15",
-            "request": "launch",
-            "type": "reactnativedirect",
-            "cwd": "${workspaceFolder}",
-            "platform": "ios",
-            "target": "6C37DA68-AB97-43C3-B6A6-C9303C6FAFB1"
-        }
-    ]
+  "configurations": [
+    {
+      "name": "Good Debug iOS Hermes iPhone 15",
+      "request": "launch",
+      "type": "reactnativedirect",
+      "cwd": "${workspaceFolder}",
+      "platform": "ios",
+      "target": "6C37DA68-AB97-43C3-B6A6-C9303C6FAFB1"
+    }
+  ]
 }

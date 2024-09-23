@@ -3,9 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "eslint.validate": [
-    "javascript"
-  ],
+  "eslint.validate": ["javascript"],
   "i18n-ally.localesPaths": [
     "ios/Pods/RCT-Folly/folly/lang",
     "ios/Pods/boost/boost/locale",
@@ -23,9 +21,9 @@
         {
           "fileName": "index.ts",
           "template": "index"
-        },
+        }
       ]
-    },
+    }
   ],
   "folderTemplates.fileTemplates": {
     "component": [
@@ -48,15 +46,11 @@
       "",
       "const styles = StyleSheet.create({",
       "  [FTName]: {},",
-      "});",
+      "});"
     ],
-    "index": [
-      "export {default as [FTName]} from './ui/[FTName]';"
-    ]
+    "index": ["export {default as [FTName]} from './ui/[FTName]';"]
   },
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "interactive",
-  "cSpell.words": [
-    "BLINE"
-  ],
+  "cSpell.words": ["BLINE"]
 }

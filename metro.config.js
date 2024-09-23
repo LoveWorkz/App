@@ -3,7 +3,6 @@ const defaultConfig = getDefaultConfig(__dirname);
 const {assetExts, sourceExts} = defaultConfig.resolver;
 
 const {withSentryConfig} = require('@sentry/react-native/metro');
-
 /**
  * Metro configuration
  * https://facebook.github.io/metro/docs/configuration
