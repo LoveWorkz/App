@@ -11,10 +11,11 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
-import // HEADER_HEIGHT_ADNDROID,
-// HEADER_HEIGHT_IOS,
-// isPlatformIos,
-'@src/shared/consts/common';
+import {
+  HEADER_HEIGHT_ADNDROID,
+  HEADER_HEIGHT_IOS,
+  isPlatformIos,
+} from '@src/shared/consts/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface CustomHeaderProps {
@@ -66,18 +67,11 @@ const CustomHeader = (props: CustomHeaderProps) => {
           transparent && styles.transparentStyle,
           containerStyle,
           {
-            top: insets.top,
+            height: isPlatformIos
+              ? HEADER_HEIGHT_IOS
+              : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+                HEADER_HEIGHT_ADNDROID,
           },
-          {
-            // height: verticalScale(60),
-            height: 60,
-          },
-          // {
-          //   height: isPlatformIos
-          //     ? HEADER_HEIGHT_IOS
-          //     : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-          //       HEADER_HEIGHT_ADNDROID,
-          // },
           // {borderWidth: 4, borderColor: 'red'},
         ]}>
         <View
