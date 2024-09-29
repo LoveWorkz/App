@@ -4,9 +4,9 @@ temp_name="temporary_translations.csv"
 
 xlsx2csv -d ";" --no-line-breaks "$1" $temp_name
 
-english_file="en_output.json"
-german_file="de_output.json"
-portugal_file="pt_output.json"
+english_file="en.json"
+german_file="de.json"
+portugal_file="pt.json"
 echo "{" >$portugal_file
 echo "{" >$english_file
 echo "{" >$german_file
