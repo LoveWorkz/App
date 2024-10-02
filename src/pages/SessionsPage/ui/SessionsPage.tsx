@@ -42,6 +42,8 @@ const SessionsPage = (props: SessionsPageProps) => {
     sessionsPageStore.init();
   }, []);
 
+  console.log('CURRENT LEVEL', currentLevel?.id);
+
   if (!currentLevel) {
     return <></>;
   }

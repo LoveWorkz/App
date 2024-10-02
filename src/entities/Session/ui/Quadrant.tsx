@@ -46,6 +46,8 @@ const Quadrant = (props: QuadrantProps) => {
     navigation.navigate(AppRouteNames.QUADRANT_DETAILS, {id: quadrant.id});
   };
 
+  console.log('QUADRANT DETAILS PAGE');
+
   return (
     <View style={[styles.Quadrant, {backgroundColor: bgColor}]}>
       <Button onPress={onPressHandler} style={styles.btn} disabled={disabled}>

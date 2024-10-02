@@ -60,6 +60,8 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
     navigation.goBack();
   };
 
+  // console.log('CURRENT QUADRANT', currentQuadrant);
+
   const bottomTextComponent = useMemo(() => {
     return (
       <AppText
