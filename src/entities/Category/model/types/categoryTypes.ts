@@ -23,12 +23,17 @@ export enum CategoryKey {
   All_In_One = 'All_In_One',
 }
 
+export type CategoryDescriptionType = {
+  type: 'paragraph' | 'list';
+  content: string | string[];
+};
+
 export interface CategoryType {
   name: CategoryKey;
   id: string;
   image: CategoryImageType;
   isBlocked: boolean;
-  description: DisplayText;
+  description: Record<'en' | 'de' | 'pt', CategoryDescriptionType[]>;
   categorySize: 'large' | 'small';
   leftSide?: boolean;
   size?: CateorySize;

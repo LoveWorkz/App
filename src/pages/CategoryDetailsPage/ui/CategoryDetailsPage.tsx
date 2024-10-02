@@ -23,6 +23,7 @@ import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {categoriesStore} from '@src/pages/CategoriesPage';
 import {Carousel} from '@src/shared/ui/Carousel/Carousel';
 import CategoryDetailsItem from './CategoryDetailsItem';
+import {CategoryDescriptionType} from '@src/entities/Category/model/types/categoryTypes';
 
 interface CategoryDetailsPageProps {
   route?: {
@@ -61,6 +62,34 @@ const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
     setCurrentLevel(level);
   }, []);
 
+  function renderParagraph(item: CategoryDescriptionType): React.JSX.Element {
+    if (typeof item.content === 'string') {
+      return (
+        <AppText
+          size={TextSize.LEVEL_4}
+          style={{marginBottom: verticalScale(10)}}
+          text={item.content}
+        />
+      );
+    }
+    return (
+      <>
+        {item.content.map((listItem, index) => (
+          <AppText
+            key={index}
+            size={TextSize.LEVEL_4}
+            style={
+              index === item.content.length - 1
+                ? {marginBottom: verticalScale(10)}
+                : {}
+            }
+            text={`- ${listItem}`}
+          />
+        ))}
+      </>
+    ) as React.JSX.Element;
+  }
+
   return (
     <View
       style={[
@@ -86,10 +115,9 @@ const CategoryDetailsPage = (props: CategoryDetailsPageProps) => {
       />
       {currentLevel && (
         <View style={styles.descriptionWrapper}>
-          <AppText
-            size={TextSize.LEVEL_4}
-            text={currentLevel.description[language]}
-          />
+          {currentLevel.description[language].map(item =>
+            renderParagraph(item),
+          )}
         </View>
       )}
     </View>
@@ -100,7 +128,7 @@ export default memo(observer(CategoryDetailsPage));
 
 const styles = StyleSheet.create({
   CategoryDetails: {
-    borderRadius: moderateScale(20),
+    borderRadius: moderateScale(10),
     paddingVertical: horizontalScale(10),
   },
   descriptionWrapper: {
