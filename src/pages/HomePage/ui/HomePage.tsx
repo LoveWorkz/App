@@ -153,35 +153,40 @@ const HomePage = (props: HomePageProps) => {
 
             <CategoriesCarousel isLoading={isLoading} />
 
-            <CopilotStep
-              name={t('copilot.step_3_name')}
-              order={3}
-              text={t('copilot.step_3_text')}>
-              <WalkthroughableWiew
-                onLayout={e => {
-                  console.log('Copilot height', e.nativeEvent.layout.height);
-                }}
-                style={[
-                  styles.walkthroughableWiew,
-                  {
-                    top:
-                      Platform.OS === 'ios'
-                        ? Dimensions.get('screen').height -
-                          320 -
-                          tabBarHeight -
-                          insets.bottom
-                        : Dimensions.get('window').height - 320 - tabBarHeight,
-                    // insets.bottom,
-                    // insets.bottom,
-                    // StatusBar.currentHeight,
-                    // StatusBar.currentHeight,
-                    // insets.top,
-                    // insets.top,
-                    // StatusBar.currentHeight,
-                  },
-                ]}
-              />
-            </CopilotStep>
+            <View style={{position: 'absolute', top: -46}}>
+              <CopilotStep
+                name={t('copilot.step_3_name')}
+                order={3}
+                text={t('copilot.step_3_text')}>
+                <WalkthroughableWiew
+                  onLayout={e => {
+                    console.log('Copilot height', e.nativeEvent.layout.height);
+                  }}
+                  style={[
+                    {
+                      top:
+                        Platform.OS === 'ios'
+                          ? Dimensions.get('screen').height -
+                            320 -
+                            tabBarHeight -
+                            insets.bottom
+                          : Dimensions.get('window').height - 320 - tabBarHeight,
+                      left: globalPadding,
+                      width: 44,
+                      height: 56,
+                      // insets.bottom,
+                      // insets.bottom,
+                      // StatusBar.currentHeight,
+                      // StatusBar.currentHeight,
+                      // insets.top,
+                      // insets.top,
+                      // StatusBar.currentHeight,
+                    },
+                  ]}
+                />
+              </CopilotStep>
+            </View>
+
 
             <TrendingList isLoading={isLoading} />
             <View style={styles.trendingChallengeWrapper}>

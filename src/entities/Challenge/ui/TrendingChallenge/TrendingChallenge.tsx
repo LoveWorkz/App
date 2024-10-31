@@ -37,8 +37,14 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
     challengeStore.setIsSessionFlow(false);
 
     if (isChallengeSpecial) {
-      challengeStore.specialChallengePressHandler(challenge as any);
+      console.log('MTAV');
+      
+      challengeStore.specialChallengePressHandler({
+        specialChallenge: challenge,
+      } as any);
     } else {
+      console.log('MTAV222');
+      
       challengeStore.coreChallengePressHandler({challenge: challenge as any});
     }
   };

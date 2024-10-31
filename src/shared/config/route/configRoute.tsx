@@ -516,7 +516,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.BREAK]: {
     name: appRoutePaths.break,
-    headerShown: false,
+    headerShown: false, 
     bgColor: 'secondaryBackground',
     bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
@@ -524,6 +524,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
       return (
         <Layout
           deleteTopPadding
+          deleteGlobalPadding
           bgColor="secondaryBackground"
           bgColorOverride="backgroundSecondary">
           <BreakPage {...props} />

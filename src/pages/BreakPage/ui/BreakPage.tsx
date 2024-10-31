@@ -15,6 +15,7 @@ import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {CustomHeader} from '@src/widgets/headers/CustomHeader';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { globalPadding } from '@src/app/styles/GlobalStyle';
 
 const BreakPage = () => {
   const colors = useColors();
@@ -38,7 +39,6 @@ const BreakPage = () => {
     <>
       <CustomHeader
         arrowColor={isDark ? colors.white : colors.white}
-        transparent
         // containerStyle={{borderWidth: 2}}
       />
       <View style={[styles.BreakPage, {marginTop: insets.top}]}>
@@ -60,7 +60,7 @@ const BreakPage = () => {
             text={t('common.successfully_mastered_questions')}
           />
         </View>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: globalPadding}}>
           <View
             style={{
               // borderWidth: 2,

@@ -203,6 +203,7 @@ class ChallengeStore {
     specialChallenge: SpecialChallengeType;
     isFavorite?: boolean;
   }) => {
+    console.log(specialChallenge);
     this.setSpecialChallenge(specialChallenge);
 
     const specialChallengeGroup =

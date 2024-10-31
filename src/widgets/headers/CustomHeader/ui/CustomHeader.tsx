@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     // height: isPlatformIos
     //   ? HEADER_HEIGHT_IOS
     //   : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
+    marginTop: globalPadding,
     paddingHorizontal: globalPadding,
   },
   headerLeft: {
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   transparentStyle: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    // top: 0,
+    top: 0,
     zIndex: 1,
   },
 });
