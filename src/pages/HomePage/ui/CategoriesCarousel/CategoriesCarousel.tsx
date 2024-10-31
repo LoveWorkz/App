@@ -42,7 +42,7 @@ const CategoriesCarousel = (props: CategoriesCarouselProps) => {
   }, [homePageLevels, isLoading]);
 
   return (
-    <View>
+    <View style={{marginTop: horizontalScale(20)}}>
       {isLoading ? (
         <>
           <View style={{top: horizontalScale(10)}}>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(20),
   },
   text: {
-    top: horizontalScale(20),
+    top: horizontalScale(10),
   },
   seeAll: {
     textDecorationLine: 'underline',
