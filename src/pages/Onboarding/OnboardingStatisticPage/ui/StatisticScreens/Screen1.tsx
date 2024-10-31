@@ -3,14 +3,17 @@ import FastImage from 'react-native-fast-image';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {onboardingBgWithLine, statisticImage1} from '@src/shared/assets/images';
+import {onboardingBgWithLine, onboardingBgWithLineDark, statisticImage1} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const Screen1 = () => {
   const {t} = useTranslation();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
 
   const image = (
     <FastImage
@@ -21,7 +24,7 @@ const Screen1 = () => {
   );
 
   return (
-    <OnboardingContainer bgImage={onboardingBgWithLine} imageChildren={image}>
+    <OnboardingContainer bgImage={isDark ? onboardingBgWithLineDark : onboardingBgWithLine} imageChildren={image}>
       <View style={styles.contentWrapper}>
         <AppText
           style={styles.title}

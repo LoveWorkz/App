@@ -3,7 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 
-import {gradientBg, AppIconImg} from '@src/shared/assets/images';
+import {gradientBg, AppIconImg, gradientBgDark} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
@@ -13,10 +13,13 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {onboardingStyles, onboardingWidth} from '../../../styles';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 import onboardingStore from '../../../model/onboardingStore';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const Screen4 = () => {
   const {t} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
 
   const onLetsStartPressHandler = useCallback(() => {
     onboardingStore.setOnboardingStatusAndNavigate();
@@ -37,7 +40,7 @@ const Screen4 = () => {
 
   return (
     <View>
-      <OnboardingContainer bgImage={gradientBg} imageChildren={image}>
+      <OnboardingContainer bgImage={isDark ? gradientBgDark : gradientBg} imageChildren={image}>
         <View style={styles.contentWrapper}>
           <GradientText
             size={TextSize.LEVEL_7}

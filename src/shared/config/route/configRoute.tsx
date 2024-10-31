@@ -484,7 +484,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingNotifications,
     Element: (props: ParamListBase) => {
       return (
-        <Layout>
+        <Layout bgColorOverride='bgOnboardingColor'>
           <OnboardingNotificationsPage {...props} />
         </Layout>
       );
@@ -495,7 +495,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingStatistic,
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteGlobalPadding>
+        <Layout bgColorOverride='bgOnboardingColor' deleteGlobalPadding>
           <OnboardingStatisticPage {...props} />
         </Layout>
       );

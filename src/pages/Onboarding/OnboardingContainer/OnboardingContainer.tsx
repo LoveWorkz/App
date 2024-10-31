@@ -21,8 +21,8 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
   const colors = useColors();
 
   const gradientColors = isDark
-    ? ['#323233', colors.bgQuinaryColor, colors.bgQuinaryColor]
-    : ['#FBFCFF', '#F4F6FA', '#F4F6FA'];
+    ? ['#2E3440', '#2E3440', '#2E3440']
+    : ['#FBFCFF', '#FBFCFF', '#FBFCFF'];
 
   return (
     <View>
@@ -31,14 +31,14 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
           styles.imgWrapper,
           // eslint-disable-next-line react-native/no-inline-styles
           {
-            backgroundColor: colors.bgOnboardingColor,
+            backgroundColor: isDark ? '#2E3440' : '#FBFCFF',
             left: isNotification ? -globalPadding : 0,
           },
         ]}>
         <FastImage resizeMode="cover" source={bgImage} style={[styles.bgImg]}>
           {imageChildren}
         </FastImage>
-        <View
+        {/* <View
           // eslint-disable-next-line react-native/no-inline-styles
           style={{
             position: 'absolute',
@@ -48,7 +48,7 @@ const OnboardingContainer = (props: OnboardingContainerProps) => {
             backgroundColor: isDark ? 'black' : 'transparent',
             opacity: 0.8,
           }}
-        />
+        /> */}
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 0, y: 1}}

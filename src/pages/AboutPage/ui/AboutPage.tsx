@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
-import {AppIconImg, gradientBg} from '@src/shared/assets/images';
+import {AppIconImg, gradientBg, gradientBgDark} from '@src/shared/assets/images';
 import {TextSection} from '@src/shared/ui/TextSection/TextSection';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {TextSize} from '@src/shared/ui/AppText/AppText';
@@ -25,7 +25,7 @@ const AboutPage = () => {
       <FastImage
         style={styles.image}
         resizeMode={'stretch'}
-        source={gradientBg}>
+        source={isDark ? gradientBgDark : gradientBg}>
         <FastImage
           style={styles.appImg}
           resizeMode={'contain'}
@@ -59,7 +59,7 @@ const AboutPage = () => {
             <FastImage
               style={styles.headerImg}
               resizeMode={'stretch'}
-              source={gradientBg}
+              source={isDark ? gradientBgDark : gradientBg}
             />
           )
         }

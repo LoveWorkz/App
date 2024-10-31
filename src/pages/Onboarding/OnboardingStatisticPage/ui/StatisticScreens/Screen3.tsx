@@ -2,7 +2,7 @@ import React, {memo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {onboardingBgWithLine} from '@src/shared/assets/images';
+import {onboardingBgWithLine, onboardingBgWithLineDark} from '@src/shared/assets/images';
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {TextSize} from '@src/shared/ui/AppText/AppText';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
@@ -11,10 +11,13 @@ import {CarouselSquare} from '@src/shared/ui/CarouselSquare/CarouselSquare';
 import OnboardingContainer from '../../../OnboardingContainer/OnboardingContainer';
 import CarouselItem from '../CarouselItem/CarouselItem';
 import {comments} from '../../model/lib/onboardingStatisticLib';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const Screen3 = () => {
   const {t} = useTranslation();
   const colors = useColors();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
 
   const imageChildren = (
     <View style={styles.carouselWrapper}>
@@ -32,7 +35,7 @@ const Screen3 = () => {
 
   return (
     <OnboardingContainer
-      bgImage={onboardingBgWithLine}
+      bgImage={isDark ? onboardingBgWithLineDark : onboardingBgWithLine}
       imageChildren={imageChildren}>
       <View style={styles.contentWrapper}>
         <GradientText

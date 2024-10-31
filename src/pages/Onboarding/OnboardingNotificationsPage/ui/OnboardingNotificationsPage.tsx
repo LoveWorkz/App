@@ -10,16 +10,19 @@ import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {GradientArrowButton} from '@src/shared/ui/GradientArrowButton/GradientArrowButton';
 import {Button} from '@src/shared/ui/Button/Button';
 import {navigation} from '@src/shared/lib/navigation/navigation';
-import {gradientBg} from '@src/shared/assets/images';
+import {gradientBg, gradientBgDark} from '@src/shared/assets/images';
 import {notificationsImage} from '@src/shared/assets/images';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {onboardingStyles} from '../../styles';
 import OnboardingContainer from '../../OnboardingContainer/OnboardingContainer';
 import onboardingStore from '../../model/onboardingStore';
+import {Theme, useTheme} from '@src/app/providers/themeProvider';
 
 const OnboardingNotificationsPage = () => {
   const {t} = useTranslation();
+  const {theme} = useTheme();
+  const isDark = theme === Theme.Dark;
 
   const onAllowNotificationsPressHandler = useCallback(() => {
     onboardingStore.allowNotificationsAndNavigate();
@@ -46,7 +49,7 @@ const OnboardingNotificationsPage = () => {
       />
 
       <OnboardingContainer
-        bgImage={gradientBg}
+        bgImage={isDark ? gradientBgDark : gradientBg}
         imageChildren={image}
         isNotification>
         <View style={styles.contentWrapper}>
