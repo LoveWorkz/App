@@ -585,7 +585,7 @@ class SessionStore {
     return currentSessionNumber % SESSION_INTERVAL_FOR_RATE_PROMPT === 0;
   };
 
-  isLastQuadrant = () => {
+  isLastQuadrant = () => {    
     return this.currentQuadrant?.id === this.lastQuadrant?.id;
   };
 
@@ -600,7 +600,7 @@ class SessionStore {
       // Find the last session in the current quadrant
       const lastSession = quadrant.sessions[quadrant.sessions.length - 1];
       // Check if the current session's ID matches the last session's ID in this quadrant
-      if (currentSession.id === lastSession.id) {
+      if (currentSession?.id === lastSession?.id) {
         return true;
       }
     }

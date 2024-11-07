@@ -109,7 +109,7 @@ const SessionItem = (props: SessionItemProps) => {
 
   let leftIcon = EllipseIcon;
   let rightIcon = <></>;
-  let bgColor = isDark ? colors.bgTertiaryColor : colors.softPeriwinkle;
+  let bgColor = colors.bgSessionActive;
 
   switch (state) {
     case 'completed':
@@ -129,7 +129,7 @@ const SessionItem = (props: SessionItemProps) => {
         colors,
       });
 
-      bgColor = isDark ? colors.bgTertiaryColor : colors.bgSecondaryColor;
+      bgColor = colors.bgSessionPassive;
 
       break;
     default:

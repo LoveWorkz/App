@@ -43,7 +43,7 @@ const ProgressBar = () => {
   const content = isGuidedTourCompleted ? (
     <>
       <FastImage
-        resizeMode={'cover'}
+        resizeMode={'contain'}
         source={progressBarImg}
         style={styles.progressImage}
       />

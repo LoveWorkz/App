@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {useHeaderHeight} from '@react-navigation/elements';
@@ -22,6 +22,7 @@ import {GradientHeartsIcon} from '@src/shared/assets/icons/Hearts';
 import RelationshipStatusSelect from './RelationshipStatusSelect/RelationshipStatusSelect';
 import DoYouLiveTogetherSelect from './DoYouLiveTogetherSelect/DoYouLiveTogetherSelect';
 import DoYouHaveKidsSelect from './DoYouHaveKidsSelect/DoYouHaveKidsSelect';
+import { userStore } from '@src/entities/User';
 
 const AboutMyRelationshipPage = () => {
   const {theme} = useTheme();
@@ -61,7 +62,7 @@ const AboutMyRelationshipPage = () => {
             <SvgXml xml={GradientHeartsIcon} style={styles.icon} />
           </View>
           <View style={styles.secondImage}>
-            <Avatar imageUrl={''} size={130} borderRadius={100} />
+            <Avatar imageUrl={userStore.user?.photo || ''} size={130} borderRadius={100} />
             <Gradient style={[styles.nameWrapper, styles.secondNameWrapper]}>
               <AppText
                 style={{color: colors.white}}

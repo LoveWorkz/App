@@ -4,6 +4,9 @@ export type Colors =
   | 'primaryTextColor'
   | 'bgSecondaryColor'
   | 'bgTertiaryColor'
+  | 'bgSessionActive'
+  | 'bgSessionPassive'
+  | 'bgSessionWarapper'
   | 'bgQuaternaryColor'
   | 'secondaryTextColor'
   | 'homePageCategoryTextColor'
@@ -95,6 +98,9 @@ const light: ColorType = {
   bgSecondaryColor: '#FFFFFF',
   bgTabViewColor: '#94ABFD',
   bgTertiaryColor: '#FFFFFF',
+  bgSessionActive: '#DCE0F5',
+  bgSessionPassive: '#FFFFFF',
+  bgSessionWarapper: '#EBEDF7',
   buttonLocked: '#f5f6f9',
   purchaseButtonColor: '#B9C3FD',
   questionCardBackColor: '#F8F5FF',
@@ -135,6 +141,9 @@ const dark: ColorType = {
   bgSecondaryColor: '#2E3440',
   bgTabViewColor: '#94ABFD',
   bgTertiaryColor: '#2E3440',
+  bgSessionActive: '#282C37',
+  bgSessionPassive: '#1F232C',
+  bgSessionWarapper: '#2E3440',
   buttonLocked: '#1b1d24',
   purchaseButtonColor: '#242832',
   questionCardBackColor: '#242832',

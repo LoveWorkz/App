@@ -83,7 +83,11 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     challengeStore.setCoreChallenge(
       coreChallengesList[defaultChallengeNumber - 1],
     );
-  }, [coreChallengesList, defaultChallengeNumber]);
+    challengeStore.coreChallengeCardsSwipeHandler(
+      coreChallengesList[defaultChallengeNumber - 1],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultChallengeNumber]);
 
   useEffect(() => {
     if (!props.isFavorite) {
@@ -94,12 +98,6 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPosition, headerCustomTitle, props.isFavorite]);
-
-  useEffect(() => {
-    challengeStore.coreChallengeCardsSwipeHandler(
-      coreChallengesList[defaultChallengeNumber - 1],
-    );
-  }, [coreChallengesList, defaultChallengeNumber]);
 
   useEffect(() => {
     if (!currentCoreChallengeGroup) {

@@ -35,12 +35,8 @@ const Quadrant = (props: QuadrantProps) => {
 
   const disabled = isBlocked || isPremium;
 
-  const premiumBgColors = isDark
-    ? colors.disabledSessionColor
-    : colors.lilacBreeze;
-
-  const regularBgColors = isDark ? colors.bgTertiaryColor : colors.lilacBreeze;
-  const bgColor = isPremium ? premiumBgColors : regularBgColors;
+  const regularBgColors =isDark ? colors.bgSessionActive : colors.bgSessionPassive;
+  const bgColor = regularBgColors;
 
   const onPressHandler = () => {
     navigation.navigate(AppRouteNames.QUADRANT_DETAILS, {id: quadrant.id});
@@ -64,7 +60,7 @@ const Quadrant = (props: QuadrantProps) => {
         <AppText
           weight={'700'}
           size={TextSize.LEVEL_3}
-          text={quadrant.step[language]}
+          text={quadrant.step?.[language]}
         />
         {isPremium && (
           <View style={styles.premiumBlock}>
@@ -76,13 +72,13 @@ const Quadrant = (props: QuadrantProps) => {
         <AppText
           weight={'700'}
           size={TextSize.LEVEL_6}
-          text={quadrant.displayName[language]}
+          text={quadrant.displayName?.[language]}
         />
       </View>
       <AppText
         weight={'400'}
         size={TextSize.LEVEL_4}
-        text={quadrant.description[language]}
+        text={quadrant.description?.[language]}
       />
     </View>
   );
