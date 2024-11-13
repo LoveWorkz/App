@@ -48,7 +48,7 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
           style={textStyle}
           size={TextSize.LEVEL_2}
           weight={'600'}
-          text={step[language]}
+          text={step?.[language]}
         />
         <View style={styles.quadrantTitle}>
           <View style={styles.quadrantName}>
@@ -56,7 +56,7 @@ const QuadrantDetailsItem = (props: QuadrantDetailsItemProps) => {
               style={textStyle}
               size={TextSize.SIZE_32}
               weight={'900'}
-              text={displayName[language]}
+              text={displayName?.[language]}
             />
           </View>
           <AppText

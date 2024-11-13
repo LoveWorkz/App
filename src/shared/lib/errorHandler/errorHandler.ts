@@ -1,7 +1,6 @@
 import crashlytics from '@react-native-firebase/crashlytics';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {t} from 'i18next';
-import * as Sentry from '@sentry/react-native';
 
 import {ToastType} from '@src/shared/ui/Toast/Toast';
 
@@ -29,9 +28,6 @@ export const errorHandler = ({
   }
 
   const messageText = t('error.title');
-
-  Sentry.captureException(error);
-  message && Sentry.captureMessage(message);
 
   if (withToast && messageText) {
     Toast.show({

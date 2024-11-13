@@ -68,7 +68,7 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
         size={TextSize.LEVEL_5}
         weight="500"
         style={styles.bottomText}
-        text={currentQuadrant.largeDescription[language]}
+        text={currentQuadrant.largeDescription?.[language]}
       />
     );
   }, [currentQuadrant.largeDescription, language]);

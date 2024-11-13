@@ -43,7 +43,7 @@ const CoreChallengeIntroCard = () => {
     return null;
   }
 
-  const groupName = currentCoreChallengeGroup.displayName[language];
+  const groupName = currentCoreChallengeGroup.displayName?.[language];
   const description = currentCoreChallengeGroup.largeDescription?.[language];
   const groupTitle = currentCoreChallengeGroup.title?.[language];
 
