@@ -478,6 +478,14 @@ class ChallengeStore {
           isChallengeCard: true,
         });
       }
+
+      if (isChecked && specialChallengeId) {
+        this.selectSpecialChallenge({
+          id: specialChallengeId,
+          newValue: false,
+          isChallengeCard: true,
+        });
+      }
     } catch (e) {
       errorHandler({error: e});
     } finally {

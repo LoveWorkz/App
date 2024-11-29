@@ -21,6 +21,9 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {useTranslation} from 'react-i18next';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {challengesStore} from '@src/pages/ChallengesPage';
+import {CheckIcon} from '@src/shared/assets/icons/Check';
+import {SvgXml} from 'react-native-svg';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
@@ -28,8 +31,11 @@ const SpecialChallengeCardsPage = () => {
   const {t} = useTranslation();
   const {isDark} = useTheme();
 
-  const specialChallenge = challengeStore.specialChallenge;
-
+  // const specialChallenge = challengeStore.specialChallenge;
+  const specialChallenge = challengesStore.specialChallenges
+    .filter(challenge => challenge.id === challengeStore.specialChallenge?.id)
+    .pop();
+  const specialChallengeisChecked = specialChallenge?.isChecked;
   const isChallengeDoneButtonVisible =
     challengeStore.isChallengeDoneButtonVisible;
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
@@ -49,6 +55,13 @@ const SpecialChallengeCardsPage = () => {
   }, []);
 
   const onSpecialChallengeHandler = () => {
+    challengeStore.specialChallengeCardButtonPressHandler(
+      specialChallenge?.id as string,
+      specialChallenge?.isChecked as boolean,
+    );
+  };
+
+  const undoHandler = () => {
     challengeStore.specialChallengeCardButtonPressHandler(
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
@@ -93,6 +106,71 @@ const SpecialChallengeCardsPage = () => {
   const specialChallengeGroup =
     challengeGroupStore.getSpecialChallengeGroupById(specialChallenge.groupId);
 
+  const DoneButton = useMemo(() => {
+    return (
+      <Button
+        theme={ButtonTheme.CLEAR}
+        onPress={() => specialChallenge && undoHandler()}
+        backgroundColor="##8581cf"
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          paddingHorizontal: 20,
+          backgroundColor: '#8581cf',
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignSelf: 'flex-start',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}>
+        <SvgXml
+          xml={CheckIcon}
+          stroke={colors.white}
+          style={{width: horizontalScale(16), height: verticalScale(12)}}
+        />
+
+        <AppText
+          text={t('common.done')}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{color: colors.white, fontWeight: '600', paddingLeft: 12}}
+          size={TextSize.LEVEL_4}
+        />
+      </Button>
+    );
+  }, [colors.white, specialChallenge, t]);
+
+  const ProceedButton = useMemo(() => {
+    return (
+      <View style={styles.btnWrapper}>
+        <Button
+          disabled={isSelectingChallenge}
+          onPress={onSpecialChallengeHandler}
+          theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.CLEAR}
+          style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
+          {isDark ? (
+            <AppText
+              style={{color: colors.white}}
+              weight={'600'}
+              size={TextSize.LEVEL_4}
+              text={t('common.we_have_done_the_challenge')}
+            />
+          ) : (
+            <GradientText
+              size={TextSize.LEVEL_4}
+              weight={'600'}
+              text={t('common.we_have_done_the_challenge')}
+            />
+          )}
+        </Button>
+      </View>
+    );
+  }, [
+    colors.white,
+    isDark,
+    isSelectingChallenge,
+    onSpecialChallengeHandler,
+    t,
+  ]);
+
   return (
     <View style={styles.ChallengeCardsPage}>
       <StatusBar barStyle={'light-content'} />
@@ -116,30 +194,8 @@ const SpecialChallengeCardsPage = () => {
         showLength={4}
         opacityInterval={0.3}
       />
-      {showBottomButton && (
-        <View style={styles.btnWrapper}>
-          <Button
-            disabled={isSelectingChallenge}
-            onPress={onSpecialChallengeHandler}
-            theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.CLEAR}
-            style={[styles.btn, isDark ? {} : {backgroundColor: colors.white}]}>
-            {isDark ? (
-              <AppText
-                style={{color: colors.white}}
-                weight={'600'}
-                size={TextSize.LEVEL_4}
-                text={t('common.we_have_done_the_challenge')}
-              />
-            ) : (
-              <GradientText
-                size={TextSize.LEVEL_4}
-                weight={'600'}
-                text={t('common.we_have_done_the_challenge')}
-              />
-            )}
-          </Button>
-        </View>
-      )}
+      {showBottomButton &&
+        (specialChallengeisChecked ? DoneButton : ProceedButton)}
     </View>
   );
 };

@@ -92,12 +92,12 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   useEffect(() => {
     if (!props.isFavorite) {
       navigation.navigate(AppRouteNames.CORE_CHALLENGE_CARDS, {
-        title: `${headerCustomTitle} ${currentPosition}/${coreChallengesList.length}`,
+        title: `${headerCustomTitle} ${defaultChallengeNumber}/${coreChallengesList.length}`,
         isFavorite: params?.isFavorite,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPosition, headerCustomTitle, props.isFavorite]);
+  }, [defaultChallengeNumber, headerCustomTitle, props.isFavorite]);
 
   useEffect(() => {
     if (!currentCoreChallengeGroup) {

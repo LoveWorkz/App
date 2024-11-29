@@ -131,13 +131,13 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
                     style={{color: colors.white}}
                     weight={'600'}
                     size={TextSize.LEVEL_4}
-                    text={t('challenge.hop_to_the_challenge')}
+                    text={t('common.we_have_done_the_challenge')}
                   />
                 ) : (
                   <GradientText
                     size={TextSize.LEVEL_4}
                     weight={'600'}
-                    text={t('challenge.hop_to_the_challenge')}
+                    text={t('common.we_have_done_the_challenge')}
                   />
                 )}
               </Button>

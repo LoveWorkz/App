@@ -94,11 +94,6 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
     <View style={styles.SessionFlowCoreChallenges}>
       <HorizontalSlide
         onSwipeHandler={handleSwipe}
-        defaultElement={
-          isChallengeLocked && lockedChallengeIndex >= 0
-            ? lockedChallengeIndex + 1
-            : defaultChallengeNumber
-        }
         data={coreChallengesList}
         Component={CoreChallengeIntroCardWrapper}
         isSlideEnabled
