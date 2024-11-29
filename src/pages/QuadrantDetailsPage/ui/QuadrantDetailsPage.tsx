@@ -141,6 +141,5 @@ const styles = StyleSheet.create({
   },
   bottomText: {
     width: '100%',
-    height: 100,
   },
 });

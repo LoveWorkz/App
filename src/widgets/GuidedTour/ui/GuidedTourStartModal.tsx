@@ -23,7 +23,10 @@ const GuidedTourStartModal = (props: GuidedTourStartModalProps) => {
   const {isDark} = useTheme();
 
   return (
-    <Modal contentStyle={styles.content} visible={visible}>
+    <Modal
+      backdropTransparent={true}
+      contentStyle={styles.content}
+      visible={visible}>
       <AppText
         style={styles.title}
         size={TextSize.SIZE_32}

@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
   bottomWrapper: {
     paddingHorizontal: globalPadding,
     flex: 1,
-    height: 200,
     width: '100%',
   },
 });

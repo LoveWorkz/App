@@ -25,8 +25,14 @@ const CarouselItem = (props: OnboardingCommentType) => {
         size={TextSize.LEVEL_5}
         text={comment}
         lineHeight={25}
+        textColor="#395180"
       />
-      <AppText weight={'700'} size={TextSize.LEVEL_5} text={author} />
+      <AppText
+        weight={'700'}
+        size={TextSize.LEVEL_5}
+        text={author}
+        textColor="#395180"
+      />
     </View>
   );
 };

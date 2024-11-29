@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Pressable,
   Keyboard,
+  StatusBar,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import FastImage from 'react-native-fast-image';
@@ -44,7 +45,7 @@ const BookItem = (props: BookProps) => {
   const {title, description, image, id, isLoading} = props;
   const colors = useColors();
   const {t} = useTranslation();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const StandardTextLength = 110;
   const ISDescriptionLarge = description.length > StandardTextLength;
 
@@ -81,6 +82,10 @@ const BookItem = (props: BookProps) => {
 
   return (
     <View style={styles.Book}>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.bgColor}
+      />
       <Pressable
         onPress={() => onBookPreviewPressHandler(id)}
         style={[

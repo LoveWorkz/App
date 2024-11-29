@@ -20,6 +20,7 @@ interface ModalProps {
   onClose?: () => void;
   isCloseIcon?: boolean;
   theme?: ModalTheme;
+  backdropTransparent?: boolean;
 }
 
 export const Modal = (props: ModalProps) => {
@@ -30,6 +31,7 @@ export const Modal = (props: ModalProps) => {
     onClose,
     isCloseIcon = false,
     theme = 'center',
+    backdropTransparent,
   } = props;
 
   const colors = useColors();
@@ -43,7 +45,7 @@ export const Modal = (props: ModalProps) => {
     <>
       {visible && (
         <Popup
-          backdropOpacity={0.6}
+          backdropOpacity={backdropTransparent ? 0 : 0.6}
           onBackdropPress={onCancelHandler}
           statusBarTranslucent
           animationInTiming={300}

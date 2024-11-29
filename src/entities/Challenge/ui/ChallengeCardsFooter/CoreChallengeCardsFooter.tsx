@@ -16,6 +16,7 @@ import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {ChallengeType} from '../../model/types/ChallengeTypes';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
+import {challengesStore} from '@src/pages/ChallengesPage';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -29,7 +30,9 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {isDark} = useTheme();
 
   const {isSessionFlow} = challengeStore;
-  const currentCoreChallenge = challengeStore.coreChallenge;
+  const currentCoreChallenge = challengesStore.challenges
+    .filter(challenge => challenge.id === challengeStore.coreChallenge?.id)
+    .pop();
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
 

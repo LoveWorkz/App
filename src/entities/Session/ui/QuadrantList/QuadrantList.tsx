@@ -10,7 +10,7 @@ import {
 import SessionsList from '../SessionsList/SessionsList';
 import Quadrant from '../Quadrant';
 import {QuadrantType} from '../../model/types/sessionType';
-import { globalPadding } from '@src/app/styles/GlobalStyle';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 
 interface QuadrantListProps {
   quadrantList: QuadrantType[];
@@ -46,7 +46,7 @@ const QuadrantList = (props: QuadrantListProps) => {
   }
 
   return (
-    <View style={{marginHorizontal: horizontalScale(globalPadding),}}>
+    <View style={{marginHorizontal: horizontalScale(globalPadding)}}>
       {quadrantList.map((quadrant, i) => {
         const isLastElement = i === quadrantList.length - 1;
         const marginBottom = horizontalScale(40);
@@ -60,11 +60,13 @@ const QuadrantList = (props: QuadrantListProps) => {
                 ? marginBottomForLastElement
                 : marginBottom,
             }}>
-            <Quadrant
-              isPremium={quadrant.isPremium}
-              isBlocked={quadrant.isBlocked}
-              quadrant={quadrant}
-            />
+            {quadrant.step && (
+              <Quadrant
+                isPremium={quadrant.isPremium}
+                isBlocked={quadrant.isBlocked}
+                quadrant={quadrant}
+              />
+            )}
             <SessionsList
               isPremium={quadrant.isPremium}
               sessions={quadrant.sessions}

@@ -47,6 +47,7 @@ import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 interface HomePageProps {
   prevRouteName?: string;
@@ -65,9 +66,9 @@ const HomePage = (props: HomePageProps) => {
 
   console.log('INSETS', insets);
 
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const {i18n} = useTranslation();
-
+  const colors = useColors();
   const hasUserSubscription = userStore.getUserHasSubscription();
 
   const language = i18n.language as LanguageValueType;
@@ -97,7 +98,7 @@ const HomePage = (props: HomePageProps) => {
     <>
       <StatusBar
         barStyle={'light-content'}
-        backgroundColor={'transparent'}
+        backgroundColor={isDark ? colors.bgColor : 'transparent'}
         translucent={true}
       />
       <View
@@ -170,7 +171,9 @@ const HomePage = (props: HomePageProps) => {
                             320 -
                             tabBarHeight -
                             insets.bottom
-                          : Dimensions.get('window').height - 320 - tabBarHeight,
+                          : Dimensions.get('window').height -
+                            320 -
+                            tabBarHeight,
                       left: globalPadding,
                       width: 44,
                       height: 56,
@@ -186,7 +189,6 @@ const HomePage = (props: HomePageProps) => {
                 />
               </CopilotStep>
             </View>
-
 
             <TrendingList isLoading={isLoading} />
             <View style={styles.trendingChallengeWrapper}>
@@ -231,6 +233,7 @@ export default memo((props: HomePageWrapperProps) => {
 
   return (
     <CopilotProvider
+      backdropColor="rgba(0, 0, 0, 0)"
       stepNumberComponent={StepNumberComponent}
       tooltipStyle={style}
       tooltipComponent={GuidedTourModal}

@@ -25,7 +25,8 @@ const HeaderSection = (props: HeaderSectionProps) => {
   );
 
   const levelsWithMetaDatas = levels.map(level => {
-    return {...level, sessionsCount: level.allSessionsCount, isFavorite};
+    // return {...level, sessionsCount: level.allSessionsCount, isFavorite};
+    return {...level, sessionsCount: 8, isFavorite};
   });
 
   return (

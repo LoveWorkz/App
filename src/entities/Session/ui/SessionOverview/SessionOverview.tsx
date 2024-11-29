@@ -7,8 +7,8 @@ import HeaderSection from './HeaderSection/HeaderSection';
 import {QuadrantType} from '../../model/types/sessionType';
 import QuadrantList from '../QuadrantList/QuadrantList';
 import {useTheme} from '@src/app/providers/themeProvider';
-import { useColors } from '@src/app/providers/colorsProvider';
-import { globalPadding } from '@src/app/styles/GlobalStyle';
+import {useColors} from '@src/app/providers/colorsProvider';
+import {globalPadding} from '@src/app/styles/GlobalStyle';
 
 interface SessionOverviewProps {
   levels: CategoryType[];
@@ -34,17 +34,24 @@ const SessionOverview = (props: SessionOverviewProps) => {
 
   return (
     <View style={styles.SessionOverview}>
-      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.bgColor}
+      />
       <HeaderSection
         swipeHandler={swipeHandler}
         isFavorite={isFavorite}
         levels={levels}
         currentLevel={currentLevel}
       />
-      <View style={[styles.quadrantList, {
-          backgroundColor: colors.bgSessionWarapper,
-          marginHorizontal: horizontalScale(-globalPadding),
-        }]}>
+      <View
+        style={[
+          styles.quadrantList,
+          {
+            backgroundColor: colors.bgSessionWarapper,
+            marginHorizontal: horizontalScale(-globalPadding),
+          },
+        ]}>
         <QuadrantList
           allSessionsCount={currentLevel.allSessionsCount}
           quadrantList={quadrantList}

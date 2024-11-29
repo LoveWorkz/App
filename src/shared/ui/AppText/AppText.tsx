@@ -52,6 +52,7 @@ export interface AppTextProps {
   numberOfLines?: number;
   onTextLayout?: (param: NativeSyntheticEvent<TextLayoutEventData>) => void;
   letterSpacing?: number;
+  textColor?: string;
 }
 
 export const AppText = memo((props: AppTextProps) => {
@@ -67,6 +68,7 @@ export const AppText = memo((props: AppTextProps) => {
     numberOfLines,
     onTextLayout,
     letterSpacing,
+    textColor,
   } = props;
 
   const colors = useColors();
@@ -82,10 +84,11 @@ export const AppText = memo((props: AppTextProps) => {
         textAlign: align,
         fontWeight: parseFloat(weight) >= 700 ? 600 : weight,
         letterSpacing,
-        color:
-          type === TextType.ERROR
-            ? colors.secondaryError
-            : colors.primaryTextColor,
+        color: textColor
+          ? textColor
+          : type === TextType.ERROR
+          ? colors.secondaryError
+          : colors.primaryTextColor,
       },
       lineHeight ? {lineHeight: moderateScale(lineHeight)} : undefined,
       styles[size],
@@ -102,6 +105,7 @@ export const AppText = memo((props: AppTextProps) => {
     lineHeight,
     align,
     letterSpacing,
+    textColor,
   ]);
 
   return (
