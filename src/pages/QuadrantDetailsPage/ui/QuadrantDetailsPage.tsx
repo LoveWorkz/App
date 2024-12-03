@@ -38,7 +38,7 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
   const language = useLanguage();
 
   const quadrantId = route?.params?.id;
-  const quadrants = sessionStore.quadrants;
+  const quadrants = sessionStore.quadrants.slice(0, 4);
 
   const [currentQuadrant, setCurrentQuadrant] = useState<QuadrantType>(
     quadrants[0],
@@ -75,7 +75,7 @@ const QuadrantDetailsPage = (props: QuadrantDetailsPageProps) => {
 
   return (
     <View>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={'#695FCB'} />
 
       <Button style={styles.iconBtn} onPress={onPressHandler}>
         <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />

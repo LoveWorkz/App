@@ -19,7 +19,9 @@ const SessionsPage = (props: SessionsPageProps) => {
   const {route} = props;
   const levels = categoriesStore.categories;
   const currentLevel = categoryStore.category;
-  const quadrantList = sessionStore.quadrants;
+  const quadrantList = sessionStore.quadrants.filter(
+    quadrantListItem => quadrantListItem.step,
+  );
   const isLoading = sessionStore.isFetching;
 
   const onCategorySwipeHandlerHandler = useCallback((level: CategoryType) => {

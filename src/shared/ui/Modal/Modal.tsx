@@ -1,5 +1,5 @@
 import React, {ReactElement, useCallback} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 import Popup from 'react-native-modal';
 import {SvgXml} from 'react-native-svg';
 
@@ -51,7 +51,8 @@ export const Modal = (props: ModalProps) => {
           animationInTiming={300}
           animationIn={'slideInUp'}
           backdropColor={colors.bgPopup}
-          isVisible={visible}>
+          isVisible={visible}
+          deviceHeight={Dimensions.get('screen').height}>
           <View
             style={[
               styles.content,

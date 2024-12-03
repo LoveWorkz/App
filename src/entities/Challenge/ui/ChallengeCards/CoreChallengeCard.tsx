@@ -92,7 +92,7 @@ const CoreChallengeCard = (props: ChallengeCardProps) => {
           />
         </View>
         <AppText
-          size={TextSize.SIZE_24}
+          size={TextSize.LEVEL_2}
           align={'center'}
           lineHeight={30}
           weight={'700'}

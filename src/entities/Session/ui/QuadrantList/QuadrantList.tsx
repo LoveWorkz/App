@@ -23,7 +23,7 @@ const QuadrantList = (props: QuadrantListProps) => {
   const {
     quadrantList,
     isLoading,
-    withBottomSpace = true,
+    withBottomSpace = false,
     allSessionsCount,
   } = props;
 
@@ -52,6 +52,8 @@ const QuadrantList = (props: QuadrantListProps) => {
         const marginBottom = horizontalScale(40);
         const marginBottomForLastElement = withBottomSpace ? marginBottom : 0;
 
+        console.log(isLastElement, 'isLastElement');
+
         return (
           <View
             key={quadrant.id}
@@ -60,13 +62,11 @@ const QuadrantList = (props: QuadrantListProps) => {
                 ? marginBottomForLastElement
                 : marginBottom,
             }}>
-            {quadrant.step && (
-              <Quadrant
-                isPremium={quadrant.isPremium}
-                isBlocked={quadrant.isBlocked}
-                quadrant={quadrant}
-              />
-            )}
+            <Quadrant
+              isPremium={quadrant.isPremium}
+              isBlocked={quadrant.isBlocked}
+              quadrant={quadrant}
+            />
             <SessionsList
               isPremium={quadrant.isPremium}
               sessions={quadrant.sessions}

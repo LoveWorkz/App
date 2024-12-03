@@ -11,7 +11,7 @@ const SpecialChallengeIntroPage = () => {
       <StatusBar
         barStyle={'light-content'}
         translucent={false}
-        backgroundColor={colors.themeSecondaryBackground}
+        backgroundColor={colors.backgroundSecondary}
       />
       <ChallengeIntroCard />
     </View>

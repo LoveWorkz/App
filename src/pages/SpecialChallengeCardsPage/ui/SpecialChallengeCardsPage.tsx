@@ -173,7 +173,11 @@ const SpecialChallengeCardsPage = () => {
 
   return (
     <View style={styles.ChallengeCardsPage}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={colors.themeSecondaryBackground}
+      />
+
       <View style={styles.topPart}>
         <ChallengeCategoryBlock
           text={

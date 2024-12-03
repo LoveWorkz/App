@@ -11,7 +11,7 @@ const CoreChallengeIntroPage = () => {
     <View style={styles.CoreChallengeIntroPage}>
       <StatusBar
         barStyle={'light-content'}
-        backgroundColor={colors.themeSecondaryBackground}
+        backgroundColor={colors.backgroundSecondary}
       />
       <CoreChallengeIntroCard />
     </View>

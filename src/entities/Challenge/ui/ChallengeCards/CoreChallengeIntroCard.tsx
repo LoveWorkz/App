@@ -31,7 +31,7 @@ const CoreChallengeIntroCard = () => {
   const {params} =
     //@ts-ignore
     useRoute<RouteProp<RootStackParamList, 'CoreChallengeIntroCard'>>();
-
+  const prevRouteName = params?.prevRouteName;
   const textStyle = useMemo(() => {
     return {color: colors.white};
   }, [colors.white]);
@@ -105,11 +105,17 @@ const CoreChallengeIntroCard = () => {
           styledWords={['one']}
           styledWordStyle={[styles.styledWordStyle, textStyle]}
           textStyle={[styles.textStyle, textStyle]}
-          text={`${t(
-            'common.choose_of_the_following',
-          )} ${groupName.toLowerCase()}, ${t(
-            'common.choose_of_the_following_part_2',
-          )}`}
+          text={
+            prevRouteName === 'break'
+              ? `${t(
+                  'common.choose_of_the_following',
+                )} ${groupName.toLowerCase()}, ${t(
+                  'common.choose_of_the_following_part_2',
+                )}`
+              : `${t('common.choose_of_the_following_2')}\n${t(
+                  'common.choose_of_the_following_2_part_2',
+                )}`
+          }
         />
       </FastImage>
 
