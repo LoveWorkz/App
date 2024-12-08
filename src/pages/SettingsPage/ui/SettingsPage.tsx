@@ -1,5 +1,5 @@
 import React, {memo, useMemo, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useHeaderHeight} from '@react-navigation/elements';
 import {useTranslation} from 'react-i18next';
@@ -28,10 +28,14 @@ import {
   getMoreItems,
   getSubscriptionItems,
 } from '../model/lib/settingslib';
+import {useColors} from '@src/app/providers/colorsProvider';
 
 const SettingsPage = () => {
   const statusBarHeight = getStatusBarHeight();
   const navbarHeaderHeight = useHeaderHeight();
+
+  const colors = useColors();
+  const {isDark} = useTheme();
 
   const {t} = useTranslation();
   const {theme} = useTheme();
@@ -106,6 +110,11 @@ const SettingsPage = () => {
           minHeight: windowHeightMinusPaddings - navbarHeight,
         },
       ]}>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.bgColor}
+      />
+
       <View style={styles.settingGroupItem}>
         <SettingGroup
           title={t('settings.preferences')}

@@ -45,7 +45,7 @@ const BreakPage = () => {
         arrowColor={isDark ? colors.white : colors.white}
         // containerStyle={{borderWidth: 2}}
       />
-      <View style={[styles.BreakPage, {marginTop: insets.top}]}>
+      <View style={styles.BreakPage}>
         <StatusBar
           barStyle={'light-content'}
           backgroundColor={colors.backgroundSecondary}

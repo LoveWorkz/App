@@ -69,7 +69,8 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-toast-message": "^2.2.0",
     "react-native-view-shot": "^3.8.0",
-    "react-native-webview": "^13.10.3"
+    "react-native-webview": "^13.10.3",
+    "rn-faded-scrollview": "^1.0.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

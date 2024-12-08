@@ -9,6 +9,8 @@ import {Button, ButtonTheme} from '@src/shared/ui/Button/Button';
 import {ArranKennedyBlock} from '@src/shared/ui/ArranKennedyBlock/ArranKennedyBlock';
 // import breakPageStore from '@src/pages/BreakPage/model/store/breakPageStore';
 import therapistsStore from '@src/pages/PartnersPage/model/therapistsStore';
+import RNFadedScrollView from 'rn-faded-scrollview';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface ChallengeInfoPopupContentProps {
   text: infoTextType[];
@@ -30,19 +32,30 @@ export const ChallengeInfoPopupContent = memo(
     return (
       <>
         <ArranKennedyBlock therapist={selectedTherapist} />
-        <View style={styles.texts}>
-          {text.map((item, i) => {
-            return (
-              <View key={i.toString()} style={styles.textItem}>
-                <AppText
-                  weight={'600'}
-                  size={TextSize.LEVEL_2}
-                  text={item.text}
-                />
-              </View>
-            );
-          })}
-        </View>
+        <SafeAreaView style={{height: 300}}>
+          <RNFadedScrollView
+            allowEndFade={true}
+            fadeSize={20}
+            fadeColors={[
+              'rgba(255, 255, 255, 0.01)',
+              'rgba(255, 255, 255, 0.4)',
+              'rgba(255, 255, 255, 0.5)',
+            ]}
+            style={styles.texts}>
+            {text.map((item, i) => {
+              return (
+                <View key={i.toString()} style={styles.textItem}>
+                  <AppText
+                    weight={'600'}
+                    size={TextSize.LEVEL_2}
+                    text={item.text}
+                  />
+                </View>
+              );
+            })}
+          </RNFadedScrollView>
+        </SafeAreaView>
+
         <Button
           style={styles.btn}
           theme={ButtonTheme.CLEAR}
@@ -63,9 +76,7 @@ const styles = StyleSheet.create({
   texts: {
     marginTop: verticalScale(20),
   },
-  textItem: {
-    marginBottom: verticalScale(20),
-  },
+  textItem: {},
   btn: {
     width: '100%',
   },

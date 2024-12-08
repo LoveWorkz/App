@@ -91,11 +91,6 @@ const TherapistBlock = () => {
       style={[
         styles.TherapistBlock,
         animatedStyles,
-        {
-          paddingHorizontal: isSmallDevice
-            ? horizontalScale(10)
-            : horizontalScale(40),
-        },
         {backgroundColor: isDark ? colors.bgTertiaryColor : colors.white},
       ]}>
       {selectedTherapist && <ArranKennedyBlock therapist={selectedTherapist} />}
@@ -150,9 +145,9 @@ const styles = StyleSheet.create({
     // left: 0,
     // right: 0,
     borderRadius: moderateScale(20),
-    // paddingHorizontal: horizontalScale(40),
+    paddingHorizontal: horizontalScale(40),
     justifyContent: 'center',
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(40),
     // borderWidth: 2,
     // borderColor: 'yellow',
   },

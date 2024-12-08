@@ -1,5 +1,5 @@
 import React, {memo, useCallback, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View, Text} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {observer} from 'mobx-react-lite';
 import {SvgXml} from 'react-native-svg';
@@ -35,6 +35,8 @@ const PreSessionPage = () => {
   const {isDark} = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [visible, setVisible] = useState(false);
+
+  console.log(isDark, 'isDark');
 
   const hasUserSubscription = userStore.getUserHasSubscription();
 
@@ -87,20 +89,26 @@ const PreSessionPage = () => {
 
   if (isLoading || !isLevelAndSessionsValid) {
     return (
-      <View style={styles.PreSessionPage}>
-        {image}
-        <View style={styles.textWrapper}>
-          <Skeleton height={20} width={horizontalScale(200)} />
-          <View style={styles.skeleton}>
-            <Skeleton height={30} width={horizontalScale(120)} />
-          </View>
-        </View>
-        <QuadrantList
-          allSessionsCount={currentLevel.allSessionsCount}
-          withBottomSpace={false}
-          quadrantList={[]}
-          isLoading={true}
+      <View>
+        <StatusBar
+          barStyle={isDark ? 'light-content' : 'dark-content'}
+          backgroundColor={colors.bgColor}
         />
+        <View style={styles.PreSessionPage}>
+          {image}
+          <View style={styles.textWrapper}>
+            <Skeleton height={20} width={horizontalScale(200)} />
+            <View style={styles.skeleton}>
+              <Skeleton height={30} width={horizontalScale(120)} />
+            </View>
+          </View>
+          <QuadrantList
+            allSessionsCount={currentLevel.allSessionsCount}
+            withBottomSpace={false}
+            quadrantList={[]}
+            isLoading={true}
+          />
+        </View>
       </View>
     );
   }
@@ -121,6 +129,10 @@ const PreSessionPage = () => {
 
   return (
     <View style={styles.PreSessionPage}>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.bgColor}
+      />
       {image}
 
       <View style={styles.textWrapper}>
@@ -146,6 +158,7 @@ const PreSessionPage = () => {
             : [currentQuadrantWithAllSessions]
         }
         isLoading={isLoading}
+        horizontalMargin={0}
       />
 
       <Button onPress={onCollapseHandler} style={styles.seeAllSessionsWrapper}>

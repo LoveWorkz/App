@@ -36,7 +36,12 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
   const {isLanguagePopupVisible, setIsLanguagePopupVisible} = props;
 
   const {t, i18n} = useTranslation();
-  const languages = getLanguages(t);
+  // const languages = getLanguages(t);
+  const languages = getLanguages(t).map(language =>
+    language.value === 'en'
+      ? language
+      : {label: language.label + ' - coming soon', value: language.value},
+  );
 
   const onLanguageChangeHandler = useCallback(
     (value: string) => {
@@ -67,6 +72,7 @@ const LanguageSwitcher = (props: LanguageSwitcherProps) => {
         closingTime={220}
         onClose={() => {}}
         onSelect={onLanguageChangeHandler}
+        lang={true}
       />
     </View>
   );

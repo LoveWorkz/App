@@ -17,6 +17,7 @@ interface QuadrantListProps {
   isLoading: boolean;
   withBottomSpace?: boolean;
   allSessionsCount: number;
+  horizontalMargin?: number;
 }
 
 const QuadrantList = (props: QuadrantListProps) => {
@@ -25,6 +26,7 @@ const QuadrantList = (props: QuadrantListProps) => {
     isLoading,
     withBottomSpace = false,
     allSessionsCount,
+    horizontalMargin,
   } = props;
 
   if (isLoading) {
@@ -46,7 +48,11 @@ const QuadrantList = (props: QuadrantListProps) => {
   }
 
   return (
-    <View style={{marginHorizontal: horizontalScale(globalPadding)}}>
+    <View
+      style={{
+        marginHorizontal:
+          horizontalMargin === 0 ? 0 : horizontalScale(globalPadding),
+      }}>
       {quadrantList.map((quadrant, i) => {
         const isLastElement = i === quadrantList.length - 1;
         const marginBottom = horizontalScale(40);

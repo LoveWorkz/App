@@ -17,6 +17,7 @@ import {
   isPlatformIos,
 } from '@src/shared/consts/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useRoute} from '@react-navigation/native';
 
 interface CustomHeaderProps {
   headerTitle?: string;
@@ -47,6 +48,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
   const {isGradient} = useGradient();
   const [headerHeight, setHeaderHeight] = useState<null | number>(null);
   const insets = useSafeAreaInsets();
+  const route = useRoute();
 
   const color =
     isSecondaryBackground || isGradient
@@ -67,10 +69,18 @@ const CustomHeader = (props: CustomHeaderProps) => {
           transparent && styles.transparentStyle,
           containerStyle,
           {
+            marginTop:
+              route.name === 'coreChallengeCards' ||
+              route.name === 'specialChallengeCards'
+                ? 0
+                : 25,
             height: isPlatformIos
               ? HEADER_HEIGHT_IOS
               : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-                HEADER_HEIGHT_ADNDROID,
+              route.name === 'coreChallengeCards' ||
+                route.name === 'specialChallengeCards'
+              ? 100
+              : HEADER_HEIGHT_ADNDROID,
           },
           // {borderWidth: 4, borderColor: 'red'},
         ]}>
@@ -118,7 +128,6 @@ const styles = StyleSheet.create({
     // height: isPlatformIos
     //   ? HEADER_HEIGHT_IOS
     //   : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-    marginTop: globalPadding,
     paddingHorizontal: globalPadding,
   },
   headerLeft: {

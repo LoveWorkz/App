@@ -63,22 +63,15 @@ const ChallengeCard = (props: ChallengeCardProps) => {
           backgroundColor: isDark ? colors.bgTertiaryColor : colors.white,
         },
       ]}>
-      <View style={styles.iconWrapper}>
+      {/* <View style={styles.iconWrapper}>
         <SvgXml
           xml={HeartsIcon}
           width={horizontalScale(60)}
           height={horizontalScale(60)}
         />
-      </View>
+      </View> */}
 
-      {isSvg && svgUrl && (
-        <SvgUri
-          width="100%"
-          height="100%"
-          uri={svgUrl}
-          viewBox={`0 0 ${CARD_WIDTH} ${CARD_HEIGHT}`}
-        />
-      )}
+      {isSvg && svgUrl && <SvgUri width="100%" height="100%" uri={svgUrl} />}
 
       {!isSvg && (
         <WebView
@@ -110,13 +103,13 @@ const ChallengeCard = (props: ChallengeCardProps) => {
         />
       )}
 
-      <View style={styles.appNameWrapper}>
+      {/* <View style={styles.appNameWrapper}>
         <GradientText
           size={TextSize.LEVEL_2}
           weight={'700'}
           text={`...${APPLICATION_NAME}`}
         />
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -127,11 +120,12 @@ const paddingHorizontal = horizontalScale(20);
 
 const styles = StyleSheet.create({
   ChallengeCard: {
-    height: verticalScale(CARD_HEIGHT),
+    // height: verticalScale(CARD_HEIGHT),
     width: horizontalScale(CARD_WIDTH),
+    aspectRatio: 0.577,
     borderRadius: moderateScale(20),
-    paddingHorizontal,
-    paddingTop: verticalScale(30),
+    // paddingHorizontal,
+    // paddingTop: verticalScale(30),
     overflow: 'hidden',
   },
   content: {

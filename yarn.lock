@@ -8888,6 +8888,7 @@ __metadata:
     react-native-view-shot: ^3.8.0
     react-native-webview: ^13.10.3
     react-test-renderer: 18.2.0
+    rn-faded-scrollview: ^1.0.13
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -11223,6 +11224,17 @@ __metadata:
   bin:
     rimraf: ./bin.js
   checksum: 3ea587b981a19016297edb96d1ffe48af7e6af69660e3b371dbfc73722a73a0b0e9be5c88089fbeeb866c389c1098e07f64929c7414290504b855f54f901ab10
+  languageName: node
+  linkType: hard
+
+"rn-faded-scrollview@npm:^1.0.13":
+  version: 1.0.13
+  resolution: "rn-faded-scrollview@npm:1.0.13"
+  peerDependencies:
+    react: "*"
+    react-native: ">=0.62.2"
+    react-native-linear-gradient: ^2.x.x
+  checksum: c20f48902ab5c2c18f5b5730f41bb0c3b9cf07378521410c7b1be6d12100bb7c237197072663e325010459c883d77cc90f0499270c83d06a1be8810644de1d07
   languageName: node
   linkType: hard
 
