@@ -94,7 +94,11 @@ const CompletionPage = () => {
 
   return (
     <View style={styles.CompletionPage}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor={'transparent'}
+      />
 
       <Button style={styles.arrowWrapper} onPress={goBack}>
         <SvgXml fill={colors.white} style={styles.icon} xml={ArrowLeftIcon} />

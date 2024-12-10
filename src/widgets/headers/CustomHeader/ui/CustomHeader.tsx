@@ -69,18 +69,11 @@ const CustomHeader = (props: CustomHeaderProps) => {
           transparent && styles.transparentStyle,
           containerStyle,
           {
-            marginTop:
-              route.name === 'coreChallengeCards' ||
-              route.name === 'specialChallengeCards'
-                ? 0
-                : 25,
+            marginTop: globalPadding + 4,
             height: isPlatformIos
               ? HEADER_HEIGHT_IOS
               : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-              route.name === 'coreChallengeCards' ||
-                route.name === 'specialChallengeCards'
-              ? 100
-              : HEADER_HEIGHT_ADNDROID,
+                HEADER_HEIGHT_ADNDROID,
           },
           // {borderWidth: 4, borderColor: 'red'},
         ]}>
@@ -104,6 +97,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
                   paddingRight: isTitleLarge ? horizontalScale(20) : 0,
                 },
               ]}
+              numberOfLines={1}
               size={TextSize.LEVEL_6}
               weight={'700'}
               text={t(title || headerTitle || '')}

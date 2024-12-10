@@ -4,7 +4,11 @@ import FastImage from 'react-native-fast-image';
 
 import {verticalScale} from '@src/shared/lib/Metrics';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
-import {AppIconImg, gradientBg, gradientBgDark} from '@src/shared/assets/images';
+import {
+  AppIconImg,
+  gradientBg,
+  gradientBgDark,
+} from '@src/shared/assets/images';
 import {TextSection} from '@src/shared/ui/TextSection/TextSection';
 import {GradientText} from '@src/shared/ui/GradientText/GradientText';
 import {TextSize} from '@src/shared/ui/AppText/AppText';
@@ -49,7 +53,7 @@ const AboutPage = () => {
 
   return (
     <View style={styles.about}>
-      <StatusBar barStyle={'light-content'} />
+      <StatusBar translucent backgroundColor="transparent" />
 
       <CustomHeaderWithImage
         title={t('common.about_the_app')}
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     height: imageHeight,
   },
   image: {
-    top: HEADER_HEIGHT,
+    top: HEADER_HEIGHT - 1,
     height: '100%',
     width: '100%',
     alignItems: 'center',
