@@ -265,7 +265,7 @@ class SessionStore {
     try {
       const db = firestore();
 
-      const quadrants = this.quadrants;
+      let quadrants = this.quadrants;
       const hasUserSubscription = userStore.getUserHasSubscription();
 
       const quadrantSessionsPromises = quadrants.map(quadrant => {
@@ -312,6 +312,7 @@ class SessionStore {
         };
       });
 
+      quadrants = quadrants.filter(quadrantListItem => quadrantListItem.step);
       const lastQuadrant = quadrants[quadrants.length - 1];
 
       this.setQuadrants(quadrantDetailsWithSessions as QuadrantType[]);
@@ -585,7 +586,7 @@ class SessionStore {
     return currentSessionNumber % SESSION_INTERVAL_FOR_RATE_PROMPT === 0;
   };
 
-  isLastQuadrant = () => {    
+  isLastQuadrant = () => {
     return this.currentQuadrant?.id === this.lastQuadrant?.id;
   };
 

@@ -48,9 +48,7 @@ const QuickStart = (props: QuickStartProps) => {
   if (hasUserCompletedAnySession && homePageCategory) {
     textContent = `${t('common.for_the')} ${ordinalSuffixOf(
       homePageCategory.currentSessionNumber,
-    )} ${t('common.of')} ${homePageCategory.allSessionsCount} ${t(
-      'sessions.sessions',
-    )}`;
+    )} ${t('common.of')} ${8} ${t('sessions.sessions')}`;
   } else {
     textContent = `${t('common.focus')}: ${homePageQuadrantName}`;
   }

@@ -24,7 +24,9 @@ const QuadrantCompletionPage = () => {
   const ratingResults = completionPageStore.ratingResults;
   const ratingInformationList = completionPageStore.ratingInformationList;
   const isSending = completionPageStore.isSending;
-  const quadrants = sessionStore.quadrants;
+  const quadrants = sessionStore.quadrants.filter(
+    quadrantListItem => quadrantListItem.step,
+  );
   const currentQuadrant = sessionStore.currentQuadrant;
   const description = completionPageStore.description;
 

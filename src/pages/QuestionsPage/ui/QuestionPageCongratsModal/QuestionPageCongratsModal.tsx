@@ -18,7 +18,7 @@ const QuestionPageCongratsModal = () => {
   const currentCategory = categoryStore.category;
   const currentCategoryName = currentCategory?.name;
   const nextCategory = categoryStore.getNextCategory(currentCategory?.id);
-  const isDeep = currentCategoryName === CategoryKey.Deep;
+  // const isDeep = currentCategoryName === CategoryKey.Deep;
 
   const content =
     getCongratsModalContent(t)[currentCategoryName as CategoryKey];
@@ -29,7 +29,7 @@ const QuestionPageCongratsModal = () => {
 
   const contentWithCategoryName: CongratsModalContentType = {
     ...content,
-    categoryName: isDeep ? '' : nextCategory.displayName[language],
+    categoryName: currentCategory?.displayName[language],
   };
 
   return (
