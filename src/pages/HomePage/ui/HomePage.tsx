@@ -131,7 +131,8 @@ const HomePage = (props: HomePageProps) => {
                 theme === Theme.Dark
                   ? HomepageBackgroundDark
                   : HomepageBackground
-              }>
+              }
+              resizeMode={FastImage.resizeMode.contain}>
               <ProgressBar />
             </FastImage>
           )}

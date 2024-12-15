@@ -16,6 +16,7 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {sessionStore} from '@src/entities/Session';
 import coreChallengeCardsPageStore from '../model/store/coreChallengeCardsPageStore';
+import {categoryStore} from '@src/entities/Category';
 
 interface SessionFlowCoreChallengesProps {
   isSessionFlow: boolean;
@@ -49,6 +50,29 @@ const SessionFlowCoreChallenges = (props: SessionFlowCoreChallengesProps) => {
       );
       filteredChallenges = sessionChallenge ? [sessionChallenge] : [];
     }
+
+    const levelToCategoryId = (level: string) => {
+      switch (level) {
+        case 'level_1':
+          return 'challenge_category_2';
+          break;
+        case 'level_2':
+          return 'challenge_category_3';
+          break;
+        case 'level_3':
+          return 'challenge_category_4';
+          break;
+        case 'level_4':
+          return 'challenge_category_5';
+          break;
+      }
+    };
+    const level: string = categoryStore.category?.id as string;
+    const activeCategoryId = levelToCategoryId(level);
+
+    filteredChallenges = filteredChallenges.filter(
+      challenge => challenge.categoryId === activeCategoryId,
+    );
 
     return filteredChallenges.map(challenge => ({
       ...challenge,

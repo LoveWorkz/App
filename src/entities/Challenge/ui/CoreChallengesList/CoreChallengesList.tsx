@@ -24,6 +24,7 @@ import {
   getActiveChallengesCount,
   getChallengeGroupsFromUnlockedCategories,
 } from '../../model/lib/challenge';
+import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 
 interface CoreChallengesListProps {
   isLoading: boolean;
@@ -87,7 +88,21 @@ export const renderChallengeGroups = ({
   isCore?: boolean;
   language: LanguageValueType;
 }) => {
-  const list = item.challenges;
+  let list;
+  let activeCategory = challengesStore.challengeCategories.find(
+    challengeCategory => challengeCategory.isActive,
+  ) as ChallengeCategoryType;
+
+  if (isCore && activeCategory.id !== 'challenge_category_1') {
+    let coreList = item.challenges.filter(
+      challenge => !challenge.isChallengeSpecial,
+    ) as ChallengeType[];
+    list = coreList.filter(
+      challenge => challenge.categoryId === activeCategory.id,
+    );
+  } else {
+    list = item.challenges;
+  }
   const activeChallengesCount = getActiveChallengesCount(list, isCore);
 
   return (

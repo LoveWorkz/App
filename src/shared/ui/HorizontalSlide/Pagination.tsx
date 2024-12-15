@@ -72,7 +72,9 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
   },
   dot: {
-    width: moderateScale(17),
+    flexBasis: moderateScale(17),
+    flexShrink: 1,
+    flexGrow: 0,
     height: moderateScale(4),
     borderRadius: moderateScale(6),
     marginHorizontal: horizontalScale(3),

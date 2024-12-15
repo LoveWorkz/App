@@ -400,7 +400,7 @@ class ChallengesStore {
         }),
       ]);
 
-      if (!(coreGroups.length && specialGroups.length)) {
+      if (!coreGroups.length && !specialGroups.length) {
         return;
       }
 

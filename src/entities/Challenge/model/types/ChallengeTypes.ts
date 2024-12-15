@@ -11,6 +11,7 @@ export interface ChallengeType {
   nomer: string;
   isChallengeSpecial: boolean;
   totalViews: number;
+  categoryId: string;
 }
 
 export interface SpecialChallengeType {

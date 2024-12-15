@@ -174,7 +174,7 @@ export const getLevelDescription = ({
   nextLevelName?: string;
 }) => {
   if (!nextLevelName) {
-    return 'last description text';
+    return `You've finished ${currentLevelName} level.`;
   }
 
   return `You’ve finished ${currentLevelName} level.  Next Step -> ${nextLevelName} Level.`;

@@ -18,6 +18,7 @@ import {CARD_WIDTH} from '@src/shared/consts/common';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {favoriteStore} from '@src/entities/Favorite';
+import {ChallengeCategoryType} from '@src/entities/ChallengeCategory';
 
 interface BaseCoreChallengesProps {
   currentCoreChallengeGroup: ChallengeGroupType<ChallengeType[]>;
@@ -37,6 +38,9 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
   // const challenges = challengesStore.challenges;
   const {challenges} = challengesStore;
   const coreChallengeFavorites = favoriteStore.coreChallengeFavorites;
+  const activeCategory = challengesStore.challengeCategories.find(
+    challengeCategory => challengeCategory.isActive,
+  ) as ChallengeCategoryType;
 
   const favoriteCoreChallengesList = challenges.filter(challenge =>
     (coreChallengeFavorites?.ids || []).includes(challenge.id),
@@ -53,9 +57,17 @@ const BaseCoreChallenges = (props: BaseCoreChallengesProps) => {
 
     let filteredChallenges = [];
 
-    filteredChallenges = challenges.filter(
-      challenge => challenge.groupId === currentCoreChallengeGroup.id,
-    );
+    let filter = (challenge: ChallengeType) => {
+      if (activeCategory.id !== 'challenge_category_1') {
+        return (
+          challenge.groupId === currentCoreChallengeGroup.id &&
+          challenge.categoryId === activeCategory.id
+        );
+      }
+      return challenge.groupId === currentCoreChallengeGroup.id;
+    };
+
+    filteredChallenges = challenges.filter(filter);
 
     return filteredChallenges.map(challenge => ({
       ...challenge,
