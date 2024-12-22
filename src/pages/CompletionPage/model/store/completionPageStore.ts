@@ -297,7 +297,8 @@ class CompletionPageStore {
       this.setRatingResults(initialRatingResults);
       navigation.navigate(TabRoutesNames.HOME);
       if (eventKey === EventEndType.LEVEL_END) {
-        questionsStore.setCongratsModalVisible(true);
+        currentSession.categoryId !== 'level_4' &&
+          questionsStore.setCongratsModalVisible(true);
       }
     } catch (error) {
       errorHandler({error});

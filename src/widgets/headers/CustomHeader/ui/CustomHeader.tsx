@@ -18,6 +18,7 @@ import {
 } from '@src/shared/consts/common';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useRoute} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface CustomHeaderProps {
   headerTitle?: string;
@@ -60,7 +61,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
   };
 
   return (
-    <>
+    <SafeAreaView edges={['top', 'left', 'right']}>
       <StatusBar animated={true} translucent={true} />
       <View
         style={[
@@ -69,13 +70,9 @@ const CustomHeader = (props: CustomHeaderProps) => {
           transparent && styles.transparentStyle,
           containerStyle,
           {
-            marginTop: globalPadding + 4,
-            height: isPlatformIos
-              ? HEADER_HEIGHT_IOS
-              : // : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
-                HEADER_HEIGHT_ADNDROID,
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
           },
-          // {borderWidth: 4, borderColor: 'red'},
         ]}>
         <View
           style={styles.headerLeft}
@@ -108,7 +105,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
           {HeaderRight && <HeaderRight />}
         </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 

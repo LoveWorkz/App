@@ -61,7 +61,7 @@ const BreakPage = () => {
           />
           <AppText
             style={[styles.description, textStyle]}
-            size={TextSize.LEVEL_5}
+            size={TextSize.LEVEL_4}
             align={'center'}
             weight="500"
             text={t('common.successfully_mastered_questions')}
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     // borderColor: 'red',
   },
   description: {
-    marginTop: verticalScale(20),
+    marginTop: verticalScale(15),
   },
   bottomPart: {
     width: textWidth,

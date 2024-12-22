@@ -15,14 +15,21 @@ export const getCongratsModalContent = (
         'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_small.png?alt=media&token=1314bee9-a566-4d39-8fb8-e80dafe139bc&_gl=1*85h64s*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODg2NDM2NS4xNjcuMS4xNjk4ODY0NDg2LjM3LjAuMA..',
     },
     Basic: {
+      title: t('questions.great_job'),
+      description1: t('questions.congrats_basic_description_1'),
+      description2: t('questions.congrats_basic_description_2'),
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FBasic%2FBasic_small.png?alt=media&token=1314bee9-a566-4d39-8fb8-e80dafe139bc&_gl=1*85h64s*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODg2NDM2NS4xNjcuMS4xNjk4ODY0NDg2LjM3LjAuMA..',
+    },
+    Deep: {
       title: t('questions.fantastic_work'),
       description1: t('questions.congrats_deep_description_1'),
       description2: t('questions.congrats_deep_description_2'),
       image:
         'https://firebasestorage.googleapis.com/v0/b/love-is-not-enough.appspot.com/o/categories%2FDeep%2FDeep_middle.png?alt=media&token=c00a8a27-ce44-476f-863b-3aff3db8d6aa&_gl=1*8k0lxh*_ga*MTUxNDc1OTYxNy4xNjg1MDk4OTg3*_ga_CW55HF8NVT*MTY5ODkzOTYzNC4xNjkuMS4xNjk4OTM5NjU1LjM5LjAuMA..',
     },
-    Deep: {
-      title: t('questions.way_to_go'),
+    Intimate: {
+      title: t('questions.great_job'),
       description1: t('questions.congrats_intimate_description_1'),
       description2: t('questions.congrats_intimate_description_2'),
       image:

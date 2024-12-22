@@ -25,6 +25,7 @@ export interface SpecialChallengeType {
   challengeCardsData: ChallengeCardType[];
   isChecked: boolean;
   totalViews: number;
+  categoryIds: string[];
 }
 
 export interface ChallengeCardType {

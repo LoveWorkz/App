@@ -200,7 +200,7 @@ const HomePage = (props: HomePageProps) => {
           {isGuidedTourCompleted && !isLoading && <Quotes />}
           {!isLoading && <GuidedTour />}
         </View>
-        <QuestionPageCongratsModal />
+        {!isLoading && <QuestionPageCongratsModal />}
       </View>
     </>
   );

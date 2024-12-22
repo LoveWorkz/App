@@ -18,12 +18,11 @@ const QuestionPageCongratsModal = () => {
   const currentCategory = categoryStore.category;
   const currentCategoryName = currentCategory?.name;
   const nextCategory = categoryStore.getNextCategory(currentCategory?.id);
-  // const isDeep = currentCategoryName === CategoryKey.Deep;
 
   const content =
     getCongratsModalContent(t)[currentCategoryName as CategoryKey];
 
-  if (!(content && nextCategory)) {
+  if (!content) {
     return <></>;
   }
 
@@ -34,7 +33,6 @@ const QuestionPageCongratsModal = () => {
 
   return (
     <CongratsModal
-      challengeCategoryId={nextCategory.challengeCategoryId}
       content={contentWithCategoryName}
       visible={questionsStore.congratsModalVisible}
       setVisible={questionsStore.setCongratsModalVisible}

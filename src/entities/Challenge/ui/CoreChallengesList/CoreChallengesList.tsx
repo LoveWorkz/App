@@ -100,10 +100,20 @@ export const renderChallengeGroups = ({
     list = coreList.filter(
       challenge => challenge.categoryId === activeCategory.id,
     );
+  } else if (!isCore && activeCategory.id !== 'challenge_category_1') {
+    let coreList = item.challenges.filter(
+      challenge => challenge.isChallengeSpecial,
+    ) as SpecialChallengeType[];
+    list = coreList.filter(
+      challenge => challenge.categoryIds.indexOf(activeCategory.id) !== -1,
+    );
   } else {
     list = item.challenges;
   }
   const activeChallengesCount = getActiveChallengesCount(list, isCore);
+  if (!list.length) {
+    return;
+  }
 
   return (
     <View style={styles.challengeGroupItem} key={item.id}>

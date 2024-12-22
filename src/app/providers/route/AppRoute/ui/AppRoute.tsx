@@ -18,8 +18,8 @@ import {Theme} from '@src/app/providers/themeProvider';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {CustomHeader} from '@src/widgets/headers/CustomHeader';
-
 const Stack = createNativeStackNavigator();
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 export const AppRoute = () => {
   const colors = useColors();
@@ -45,23 +45,25 @@ export const AppRoute = () => {
   };
 
   return (
-    <NavigationContainer
-      ref={navigation.navigationRef}
-      theme={isDarkMode ? Dark : Light}>
-      {isPlatformIos ? (
-        <StatusBar
-          animated={true}
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        />
-      ) : (
-        <StatusBar
-          animated={true}
-          backgroundColor={colors.bgColor}
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        />
-      )}
-      <Routes />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer
+        ref={navigation.navigationRef}
+        theme={isDarkMode ? Dark : Light}>
+        {isPlatformIos ? (
+          <StatusBar
+            animated={true}
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          />
+        ) : (
+          <StatusBar
+            animated={true}
+            backgroundColor={colors.bgColor}
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          />
+        )}
+        <Routes />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
