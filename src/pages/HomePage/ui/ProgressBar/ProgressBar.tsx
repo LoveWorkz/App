@@ -3,17 +3,11 @@ import {StyleSheet, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
-import {CopilotStep, walkthroughable} from 'react-native-copilot';
 
 import {useColors} from '@src/app/providers/colorsProvider';
 import {AppText} from '@src/shared/ui/AppText/AppText';
 import {globalPadding, windowWidth} from '@src/app/styles/GlobalStyle';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
-import {
-  quadrantImage,
-  guidedTourProgressBarImage,
-} from '@src/shared/assets/images';
-import {guidedTourStore} from '@src/widgets/GuidedTour';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {CategoryKey} from '@src/entities/Category';
 import {useTheme} from '@src/app/providers/themeProvider';
@@ -21,7 +15,6 @@ import homePageStore from '../../model/store/HomePageStore';
 import LevelNameItem from './LevelNameItem';
 // import {MiniFlower} from '@src/entities/MiniFlower/MiniFlower';
 
-const WalkthroughableWiew = walkthroughable(View);
 const progressBarImgTop = horizontalScale(20);
 
 const ProgressBar = () => {
@@ -30,7 +23,6 @@ const ProgressBar = () => {
   const {theme} = useTheme();
   const {progressBarCategoryName, progressBarCategoryKey, progressBarImg} =
     homePageStore;
-  const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
 
   useEffect(() => {
     homePageStore.getProgressBarImage(theme);
@@ -40,7 +32,7 @@ const ProgressBar = () => {
     return <></>;
   }
 
-  const content = isGuidedTourCompleted ? (
+  const content = (
     <>
       <FastImage
         resizeMode={'contain'}
@@ -68,34 +60,6 @@ const ProgressBar = () => {
         progressBarCategoryName={progressBarCategoryName}
         baseLevelKey={CategoryKey.Intimate}
       />
-    </>
-  ) : (
-    <>
-      <CopilotStep
-        name={t('copilot.step_1_name')}
-        order={1}
-        text={t('copilot.step_1_text')}>
-        <WalkthroughableWiew style={styles.progressImageCopilotStep}>
-          <FastImage
-            resizeMode={'cover'}
-            source={guidedTourProgressBarImage}
-            style={[styles.progressImage, styles.guidedTourProgressBar]}
-          />
-        </WalkthroughableWiew>
-      </CopilotStep>
-
-      <CopilotStep
-        name={t('copilot.step_2_name')}
-        order={2}
-        text={t('copilot.step_2_text')}>
-        <WalkthroughableWiew style={styles.quadrantCopilotStept}>
-          <FastImage
-            resizeMode={'cover'}
-            source={quadrantImage}
-            style={styles.quadrantImage}
-          />
-        </WalkthroughableWiew>
-      </CopilotStep>
     </>
   );
 

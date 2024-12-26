@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "test": "jest",
     "ios:15:pro": "react-native run-ios --simulator='iPhone 15 Pro'",
+    "ios:16:plus": "react-native run-ios --simulator='iPhone 16 Plus'",
     "release:android": "npx react-native build-android --mode=release && cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
@@ -36,7 +37,7 @@
     "i18n-iso-countries": "^7.11.2",
     "i18next": "^23.11.5",
     "lodash": "^4.17.21",
-    "lottie-react-native": "^6.7.2",
+    "lottie-react-native": "^7.1.0",
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
     "query-string": "^9.0.0",
@@ -45,6 +46,7 @@
     "react-native": "0.73.8",
     "react-native-copilot": "^3.3.2",
     "react-native-date-picker": "^5.0.4",
+    "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-fast-image": "^8.6.3",
     "react-native-flags": "^1.0.0",
     "react-native-gesture-handler": "^2.16.2",

@@ -11,15 +11,14 @@ import {useColors} from '@src/app/providers/colorsProvider';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {useGradient} from '@src/app/providers/GradientProvider';
 import {globalPadding} from '@src/app/styles/GlobalStyle';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useRoute} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {
   HEADER_HEIGHT_ADNDROID,
   HEADER_HEIGHT_IOS,
   isPlatformIos,
 } from '@src/shared/consts/common';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useRoute} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-
 interface CustomHeaderProps {
   headerTitle?: string;
   title?: string;
@@ -61,7 +60,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
   };
 
   return (
-    <SafeAreaView edges={['top', 'left', 'right']}>
+    <>
       <StatusBar animated={true} translucent={true} />
       <View
         style={[
@@ -72,6 +71,9 @@ const CustomHeader = (props: CustomHeaderProps) => {
           {
             paddingTop: insets.top,
             paddingBottom: insets.bottom,
+            height: isPlatformIos
+              ? HEADER_HEIGHT_IOS
+              : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
           },
         ]}>
         <View
@@ -105,7 +107,7 @@ const CustomHeader = (props: CustomHeaderProps) => {
           {HeaderRight && <HeaderRight />}
         </View>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -120,6 +122,8 @@ const styles = StyleSheet.create({
     //   ? HEADER_HEIGHT_IOS
     //   : HEADER_HEIGHT_ADNDROID + (StatusBar.currentHeight as number),
     paddingHorizontal: globalPadding,
+    alignContent: 'center',
+    alignItems: 'center',
   },
   headerLeft: {
     flexDirection: 'row',

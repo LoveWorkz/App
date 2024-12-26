@@ -1,14 +1,9 @@
-import React, {memo, useCallback, useEffect} from 'react';
-import {Dimensions, Platform, StatusBar, StyleSheet, View} from 'react-native';
+import React, {memo, useCallback, useEffect, useState} from 'react';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
 import {useTranslation} from 'react-i18next';
 import {useFocusEffect} from '@react-navigation/native';
-import {
-  CopilotProvider,
-  CopilotStep,
-  walkthroughable,
-} from 'react-native-copilot';
 
 import {
   HomepageBackground,
@@ -36,11 +31,7 @@ import {userStore} from '@src/entities/User';
 import {TrendingList} from '@src/entities/Rubric';
 import {TrendingChallengeList} from '@src/entities/Challenge';
 import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
-import {
-  GuidedTour,
-  GuidedTourModal,
-  guidedTourStore,
-} from '@src/widgets/GuidedTour';
+import {GuidedTour, guidedTourStore} from '@src/widgets/GuidedTour';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
@@ -48,13 +39,10 @@ import ProgressBar from './ProgressBar/ProgressBar';
 import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useColors} from '@src/app/providers/colorsProvider';
-
 interface HomePageProps {
   prevRouteName?: string;
   isTabScreen?: boolean;
 }
-
-const WalkthroughableWiew = walkthroughable(View);
 
 const contentTop = horizontalScale(isPlatformIos ? -165 : -195);
 const skeletonContentTop = -20;
@@ -155,42 +143,6 @@ const HomePage = (props: HomePageProps) => {
 
             <CategoriesCarousel isLoading={isLoading} />
 
-            <View style={{position: 'absolute', top: -46}}>
-              <CopilotStep
-                name={t('copilot.step_3_name')}
-                order={3}
-                text={t('copilot.step_3_text')}>
-                <WalkthroughableWiew
-                  onLayout={e => {
-                    console.log('Copilot height', e.nativeEvent.layout.height);
-                  }}
-                  style={[
-                    {
-                      top:
-                        Platform.OS === 'ios'
-                          ? Dimensions.get('screen').height -
-                            320 -
-                            tabBarHeight -
-                            insets.bottom
-                          : Dimensions.get('window').height -
-                            320 -
-                            tabBarHeight,
-                      left: globalPadding,
-                      width: 44,
-                      height: 56,
-                      // insets.bottom,
-                      // insets.bottom,
-                      // StatusBar.currentHeight,
-                      // StatusBar.currentHeight,
-                      // insets.top,
-                      // insets.top,
-                      // StatusBar.currentHeight,
-                    },
-                  ]}
-                />
-              </CopilotStep>
-            </View>
-
             <TrendingList isLoading={isLoading} />
             <View style={styles.trendingChallengeWrapper}>
               <TrendingChallengeList isLoading={isLoading} />
@@ -233,23 +185,7 @@ export default memo((props: HomePageWrapperProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <CopilotProvider
-      backdropColor="rgba(0, 0, 0, 0)"
-      stepNumberComponent={StepNumberComponent}
-      tooltipStyle={style}
-      tooltipComponent={GuidedTourModal}
-      verticalOffset={
-        Platform.OS === 'ios'
-          ? -(StatusBar.currentHeight as number) ?? -27
-          : -insets.top
-      }
-      // verticalOffset={Platform.OS === 'android' ? -insets.top : -27}
-      arrowSize={0}>
-      <HomePageWrapper
-        prevRouteName={prevRouteName}
-        isTabScreen={isTabScreen}
-      />
-    </CopilotProvider>
+    <HomePageWrapper prevRouteName={prevRouteName} isTabScreen={isTabScreen} />
   );
 });
 

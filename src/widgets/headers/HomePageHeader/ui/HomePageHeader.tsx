@@ -3,8 +3,6 @@ import {StyleSheet, View, Pressable, StatusBar} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {observer} from 'mobx-react-lite';
 import FastImage from 'react-native-fast-image';
-import {SvgXml} from 'react-native-svg';
-import {CopilotStep, walkthroughable} from 'react-native-copilot';
 
 import {Avatar} from '@src/shared/ui/Avatar/Avatar';
 import {AppText, TextSize} from '@src/shared/ui/AppText/AppText';
@@ -14,18 +12,17 @@ import {horizontalScale, moderateScale} from '@src/shared/lib/Metrics';
 import {globalPadding, globalStyles} from '@src/app/styles/GlobalStyle';
 import {userStore} from '@src/entities/User';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
-import {SettingsIcon} from '@src/shared/assets/icons/Settings';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {HEADER_HEIGHT, isPlatformIos} from '@src/shared/consts/common';
 import {HomepageBackground} from '@src/shared/assets/images';
 import {homepageBackgroundImgHeight} from '../model/lib/homePageHeaderLib';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import {SettingsIcon} from '@src/shared/assets/icons/Settings';
+import {SvgXml} from 'react-native-svg';
 
 interface HomePageHeaderProps {
   isLoading: boolean;
 }
-
-const WalkthroughableText = walkthroughable(View);
 
 const HomePageHeader = (props: HomePageHeaderProps) => {
   const {isLoading} = props;
@@ -111,28 +108,19 @@ const HomePageHeader = (props: HomePageHeaderProps) => {
             </View>
           </Pressable>
         </View>
-
-        <CopilotStep
-          name={t('copilot.step_4_name')}
-          text={t('copilot.step_4_text')}
-          order={4}>
-          <WalkthroughableText
+        <View style={{top: horizontalScale(isPlatformIos ? 0 : 27)}}>
+          <Pressable
             style={{
-              top: horizontalScale(isPlatformIos ? 0 : 27),
-            }}>
-            <Pressable
-              style={{
-                top: horizontalScale(isPlatformIos ? 0 : -27),
-              }}
-              onPress={onSettingsPressHandler}>
-              <SvgXml
-                xml={SettingsIcon}
-                style={styles.icon}
-                stroke={colors.white}
-              />
-            </Pressable>
-          </WalkthroughableText>
-        </CopilotStep>
+              top: horizontalScale(isPlatformIos ? 0 : -27),
+            }}
+            onPress={onSettingsPressHandler}>
+            <SvgXml
+              xml={SettingsIcon}
+              style={styles.icon}
+              stroke={colors.white}
+            />
+          </Pressable>
+        </View>
       </View>
     </View>
   );
