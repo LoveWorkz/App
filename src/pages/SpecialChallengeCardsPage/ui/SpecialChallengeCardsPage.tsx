@@ -75,12 +75,16 @@ const SpecialChallengeCardsPage = () => {
 
     const {challengeCardsData} = specialChallenge;
 
-    const listWithSpecialChallengeId = challengeCardsData.map(item => ({
+    let listWithSpecialChallengeId = challengeCardsData.map(item => ({
       ...item,
       specialChallengeId: specialChallenge.id,
       isSelectingChallenge,
       isChecked: specialChallenge.isChecked,
     }));
+
+    listWithSpecialChallengeId = listWithSpecialChallengeId.filter(
+      item => item.visibility.indexOf(language) !== -1,
+    );
 
     // If the challenge done button is not visible, return the original data.
     if (!isChallengeDoneButtonVisible) {

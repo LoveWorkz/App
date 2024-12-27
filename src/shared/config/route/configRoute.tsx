@@ -323,7 +323,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     headerTitle: '',
     Element: (props: ParamListBase) => {
       return (
-        <Layout deleteTopPadding={true}>
+        <Layout deleteTopPadding={true} deleteBottomPadding={true}>
           <QuestionsPage {...props} />
         </Layout>
       );
@@ -484,7 +484,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingNotifications,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColorOverride='bgOnboardingColor'>
+        <Layout bgColorOverride="bgOnboardingColor">
           <OnboardingNotificationsPage {...props} />
         </Layout>
       );
@@ -495,7 +495,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingStatistic,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColorOverride='bgOnboardingColor' deleteGlobalPadding>
+        <Layout bgColorOverride="bgOnboardingColor" deleteGlobalPadding>
           <OnboardingStatisticPage {...props} />
         </Layout>
       );
@@ -516,7 +516,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.BREAK]: {
     name: appRoutePaths.break,
-    headerShown: false, 
+    headerShown: false,
     bgColor: 'secondaryBackground',
     bgColorOverride: 'backgroundSecondary',
     headerTitle: '',

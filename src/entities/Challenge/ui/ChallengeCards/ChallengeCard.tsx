@@ -45,7 +45,11 @@ const ChallengeCard = (props: ChallengeCardProps) => {
   useEffect(() => {
     const asyncEffect = async () => {
       const url = await storage()
-        .ref(`/challenges_svg/${svgName ?? 'card-1-1'}-${language}.svg`)
+        .ref(
+          `/challenges_svg/${svgName ?? 'card-1-1'}-${
+            !isDark ? language : language + '-dark'
+          }.svg`,
+        )
         .getDownloadURL();
 
       setSvgUrl(url);

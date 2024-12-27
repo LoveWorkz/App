@@ -38,7 +38,11 @@ const QuestionCardsFooter = (props: QuestionCardsFooterProps) => {
   const isFirstElement = !hideSwipeIcon;
 
   return (
-    <View style={[styles.footer, {bottom: verticalScale(30)}]}>
+    <View
+      style={[
+        styles.footer,
+        {bottom: verticalScale(0), height: verticalScale(135)},
+      ]}>
       {isFirstElement ? (
         <AppText weight={'600'} text={`${currentIndex + 1}/${count}`} />
       ) : (
