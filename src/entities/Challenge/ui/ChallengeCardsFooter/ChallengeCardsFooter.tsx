@@ -15,20 +15,10 @@ const ChallengeCardsFooter = (props: ChallengeCardsFooterProps) => {
   const {isDark} = useTheme();
 
   return (
-    <View style={styles.footer}>
+    <View>
       <Pagination isWhite={!isDark} currentIndex={currentIndex} count={count} />
     </View>
   );
 };
 
 export default memo(ChallengeCardsFooter);
-
-const styles = StyleSheet.create({
-  footer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: verticalScale(50),
-    alignItems: 'center',
-  },
-});

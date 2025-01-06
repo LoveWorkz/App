@@ -135,7 +135,8 @@ export const HorizontalSlide = memo((props: HorizontalSlideProps) => {
             style={[
               animatedStyles,
               {
-                width: horizontalScale(itemWidth),
+                marginBottom: itemWidth ? 0 : 20,
+                width: itemWidth ? horizontalScale(itemWidth) : 'auto',
                 borderRadius: moderateScale(25),
               },
             ]}>

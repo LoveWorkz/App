@@ -24,6 +24,7 @@ import {useTheme} from '@src/app/providers/themeProvider';
 import {challengesStore} from '@src/pages/ChallengesPage';
 import {CheckIcon} from '@src/shared/assets/icons/Check';
 import {SvgXml} from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SpecialChallengeCardsPage = () => {
   const language = useLanguage();
@@ -39,19 +40,24 @@ const SpecialChallengeCardsPage = () => {
   const isChallengeDoneButtonVisible =
     challengeStore.isChallengeDoneButtonVisible;
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
+  const challengeDoneFromSession = challengeStore.challengeDoneFromSession;
+  const {isSessionFlow} = challengeStore;
+  // console.log(challengeDoneFromSession, "<--------------------challengeDoneFromSession");
 
   useFocusEffect(
     useCallback(() => {
       challengeStore.updateChallengeButtonVisibility();
+      challengeStore.updateChallangeDoneFromSession(specialChallenge?.id);
 
       return () => {
         challengeStore.setIsChallengeDoneButtonVisible(false);
+        challengeStore.removeChallangeDoneFromSession();
       };
     }, []),
   );
 
   const onSwipeHandler = useCallback(({cardId}: {cardId: string}) => {
-    challengeStore.swipeSpecialChallengeCard(cardId);
+    challengeStore.swipeSpecialChallengeCard(cardId, language);
   }, []);
 
   const onSpecialChallengeHandler = () => {
@@ -197,13 +203,18 @@ const SpecialChallengeCardsPage = () => {
         itemStyle={styles.itemStyle}
         Component={ChallengeCard}
         isSlideEnabled
-        itemWidth={CARD_WIDTH}
         Footer={ChallengeCardsFooter}
         showLength={4}
         opacityInterval={0.3}
       />
-      {showBottomButton &&
-        (specialChallengeisChecked ? DoneButton : ProceedButton)}
+      <View style={{height: 50}}>
+        {showBottomButton &&
+          (specialChallengeisChecked
+            ? isSessionFlow
+              ? ProceedButton
+              : DoneButton
+            : ProceedButton)}
+      </View>
     </View>
   );
 };
@@ -213,7 +224,6 @@ export default memo(observer(SpecialChallengeCardsPage));
 const styles = StyleSheet.create({
   ChallengeCardsPage: {
     flex: 1,
-    marginTop: verticalScale(20),
   },
   topPart: {
     alignItems: 'center',
@@ -228,11 +238,9 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     width: '100%',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: verticalScale(0),
     alignItems: 'center',
-    ...globalStyles.zIndex_1,
+  },
+  btnHidden: {
+    opacity: 0,
   },
 });

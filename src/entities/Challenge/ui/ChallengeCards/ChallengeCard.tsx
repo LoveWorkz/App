@@ -9,10 +9,18 @@ import {
   moderateScale,
   verticalScale,
 } from '@src/shared/lib/Metrics';
-import {getShadowOpacity, globalStyles} from '@src/app/styles/GlobalStyle';
+import {
+  getShadowOpacity,
+  globalStyles,
+  windowHeight,
+} from '@src/app/styles/GlobalStyle';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {HeartsIcon} from '@src/shared/assets/icons/Hearts';
-import {CARD_HEIGHT, CARD_WIDTH} from '@src/shared/consts/common';
+import {
+  CARD_HEIGHT,
+  CARD_HEIGHT_SPECIAL,
+  CARD_WIDTH,
+} from '@src/shared/consts/common';
 import {useColors} from '@src/app/providers/colorsProvider';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {DisplayText} from '@src/shared/types/types';
@@ -124,9 +132,11 @@ const paddingHorizontal = horizontalScale(20);
 
 const styles = StyleSheet.create({
   ChallengeCard: {
-    // height: verticalScale(CARD_HEIGHT),
-    width: horizontalScale(CARD_WIDTH),
-    aspectRatio: 0.577,
+    // height: '100%',
+    flex: 1,
+    // marginBottom: 20,
+    // width: horizontalScale(CARD_WIDTH),
+    aspectRatio: 0.576,
     borderRadius: moderateScale(20),
     // paddingHorizontal,
     // paddingTop: verticalScale(30),

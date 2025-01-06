@@ -53,7 +53,7 @@ export const renderChallenges = ({
         style={isFirstElement ? {} : styles.challengeItem}>
         <ChallengeItem
           challenge={challenge}
-          text={challenge.description}
+          text={challenge.title}
           id={challenge.id}
           isChecked={challenge.isChecked}
           isFavorite={isFavorite}

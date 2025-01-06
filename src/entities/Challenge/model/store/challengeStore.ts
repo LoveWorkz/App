@@ -25,6 +25,7 @@ import {userStore} from '@src/entities/User';
 import {removeDuplicates} from '@src/shared/lib/common';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
+import {challengeDoneFromSessionStorage} from '@src/shared/lib/storage/adapters/challengeDoneFromSessionAdapter';
 
 class ChallengeStore {
   specialChallenge: SpecialChallengeType | null = null;
@@ -35,6 +36,7 @@ class ChallengeStore {
   isSessionFlow: boolean = false;
   coreChallengeCardScreenshot: string = '';
   specialChallengeCardScreenshot: string = '';
+  challengeDoneFromSession: boolean = false;
 
   isSelectingChallenge: boolean = false;
 
@@ -253,7 +255,7 @@ class ChallengeStore {
   };
 
   // Swipes the special challenge card and updates button visibility if it's the last card
-  swipeSpecialChallengeCard = async (id: string) => {
+  swipeSpecialChallengeCard = async (id: string, lang: string) => {
     try {
       if (this.isChallengeDoneButtonVisible || !this.specialChallenge) {
         return;
@@ -263,7 +265,11 @@ class ChallengeStore {
         'Swiping and Updating challenge button visibility status.',
       );
 
-      const {challengeCardsData, id: challengeId} = this.specialChallenge;
+      let {challengeCardsData, id: challengeId} = this.specialChallenge;
+      challengeCardsData = challengeCardsData.filter(
+        item => item.visibility.indexOf(lang) !== -1,
+      );
+
       if (isLastCard(id, challengeCardsData)) {
         const specialChallengeInfo = await fetchChallengeButtonStatus();
         const updatedInfo = {
@@ -469,6 +475,9 @@ class ChallengeStore {
           challengeId: specialChallengeId,
           isCore: false,
         });
+        await challengeDoneFromSessionStorage.setChallengeDone(
+          specialChallengeId,
+        );
       }
 
       if (!isChecked && specialChallengeId) {
@@ -621,6 +630,20 @@ class ChallengeStore {
 
   clearForm = () => {
     this.setLockedChallengeId('');
+  };
+
+  updateChallangeDoneFromSession = async (challengeId: string | undefined) => {
+    if (challengeId) {
+      const isDone = await challengeDoneFromSessionStorage.getChallengeDone(
+        challengeId,
+      );
+      runInAction(() => {
+        this.challengeDoneFromSession = isDone === 'DONE';
+      });
+    }
+  };
+  removeChallangeDoneFromSession = () => {
+    this.challengeDoneFromSession = false;
   };
 }
 
