@@ -3,7 +3,7 @@ import { addDays, setHours, setMinutes, setSeconds, sub } from 'date-fns';
 import { PermissionsAndroid, Platform } from 'react-native';
 
 export interface Notifee {
-  scheduleWeeklyNotification: (time: Date) =>  Promise<string>;
+  scheduleWeeklyNotification: (time: Date, day: string) =>  Promise<string>;
   getTriggerNotificationIds: () => Promise<string[]>
   cancelNotification: (notificationId: string) => Promise<void>;
   cancelAllNotifications: () => Promise<void>;
@@ -21,7 +21,7 @@ async function requestAndroidPermissions() {
   }
 }
 
-const scheduleNotification = async (trigger: TimestampTrigger) => {
+const scheduleNotification = async (trigger: TimestampTrigger, time: Date, day: string) => {
   await requestAndroidPermissions();
   // Request notification permissions (required for iOS)
   await notifee.requestPermission();
@@ -30,7 +30,7 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
   const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
-      body: 'This is your weekly reminder!',
+      body: `Don't forget about your next session: ${day} at ${time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}.`,
       android: {
         channelId: 'default',
       },
@@ -41,7 +41,7 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
   return notificationId;
 }
 
- const scheduleWeeklyNotification = async (time: Date) => {
+ const scheduleWeeklyNotification = async (time: Date, day: string) => {
   // Create a trigger
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
@@ -49,7 +49,7 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
   };
 
-  const notificationId = await scheduleNotification(trigger);
+  const notificationId = await scheduleNotification(trigger, time, day);
   return notificationId;
 }
 

@@ -8,7 +8,7 @@ import { PermissionsAndroid, Platform } from "react-native";
 import notifee, { TriggerType, TimestampTrigger } from '@notifee/react-native';
 import { notifeeLib } from "@src/shared/lib/notifee/notifee";
 import { userStore } from "@src/entities/User";
-import { addDays, sub } from "date-fns";
+import { add, addDays, sub } from "date-fns";
 
 class UserSchedulerStore {
   isUserSchedulerLoading: boolean = true;
@@ -44,7 +44,7 @@ class UserSchedulerStore {
       // await notifeeLib.cancelAllNotifications();
 
       let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-      console.log(storage, "Storage");
+
       if(storage) {
         let newStorage = JSON.parse(storage);
         let newStorageUser = newStorage.find((userData: { userId: string; }) => userData.userId === userStore.userId); 
@@ -139,9 +139,9 @@ class UserSchedulerStore {
       })
     } else {
       // Add day to selectedDays and create a new block
-      let newBlock: DayBlock =  { day, time: this.scheduleWeeklyNotification(day, new Date(), this.dropdownOptions[0].value, this.weekdays), dropdownValue: this.dropdownOptions[0].value }
+      let newBlock: DayBlock =  { day, time: this.scheduleWeeklyNotification(day, add(new Date(), { minutes: 32 }), this.dropdownOptions[0].value, this.weekdays), dropdownValue: this.dropdownOptions[0].value }
 
-      const scheduleNotificationId =  await notifeeLib.scheduleWeeklyNotification(newBlock.time);
+      const scheduleNotificationId =  await notifeeLib.scheduleWeeklyNotification(newBlock.time, newBlock.day);
       newBlock = {...newBlock, scheduleNotificationId: scheduleNotificationId};
 
       // // Add item in storage
@@ -155,11 +155,6 @@ class UserSchedulerStore {
   };
 
   updateDayBlock = async (day: string, field: keyof DayBlock, value: any) => {
-    // this.dayBlocks = this.dayBlocks.map((block) =>
-    //   block.day === day ? { ...block, [field]: value } : block
-    // )
-
-
     const dayBlocks = await Promise.all(this.dayBlocks.map(async (block) => {
       if(block.day === day) {
         let newBlock = { ...block, [field]: value }
@@ -170,7 +165,7 @@ class UserSchedulerStore {
           // update Schedule for specific week day
           const oldScheduleNotificationId = block.scheduleNotificationId as string;
           await notifeeLib.cancelNotification(oldScheduleNotificationId);
-          const newScheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(newBlock.time);
+          const newScheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(newBlock.time, newBlock.day);
           newBlock = { ...newBlock, scheduleNotificationId: newScheduleNotificationId } 
         }
       

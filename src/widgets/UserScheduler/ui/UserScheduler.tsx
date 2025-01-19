@@ -65,16 +65,17 @@ const UserScheduler: React.FC = () => {
           }}
         />
       )}
-      <Text style={styles.selectedTime}>
-        Selected Time: {new Date(item.time).toLocaleTimeString()}
-        {/* Selected Time: {item.time} */}
-      </Text>
+    
       <Text style={styles.dropdownLabel}>Select an Option:</Text>
       <RNPickerSelect
         onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
         items={dropdownOptions}
         placeholder={{}}
       />
+      <Text style={styles.selectedTime}>
+        Selected Time: {new Date(item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+        {/* Selected Time: {item.time} */}
+      </Text>
     </View>
   );
 
