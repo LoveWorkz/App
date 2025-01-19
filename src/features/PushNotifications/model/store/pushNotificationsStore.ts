@@ -6,6 +6,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import {isPlatformIos} from '@src/shared/consts/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {User, userStore} from '@src/entities/User';
+import {PermissionsAndroid, Platform} from 'react-native';
 
 class PushNotificationsStore {
   constructor() {
@@ -68,7 +69,19 @@ class PushNotificationsStore {
   requestUserAndroidPermission = async () => {
     crashlytics().log('Request permissions for android');
 
-    return true;
+    if (Platform.Version >= 33) {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      );
+
+      if (result === PermissionsAndroid.RESULTS.GRANTED) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   };
 
   requestUserIosPermission = async () => {
