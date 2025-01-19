@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { autorun, makeAutoObservable, reaction, runInAction } from "mobx";
 import crashlytics from '@react-native-firebase/crashlytics';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import { USER_SCHEDULERS_KEY } from '@src/shared/consts/storage';
@@ -8,6 +8,7 @@ import { PermissionsAndroid, Platform } from "react-native";
 import notifee, { TriggerType, TimestampTrigger } from '@notifee/react-native';
 import { notifeeLib } from "@src/shared/lib/notifee/notifee";
 import { userStore } from "@src/entities/User";
+import { addDays, sub } from "date-fns";
 
 class UserSchedulerStore {
   isUserSchedulerLoading: boolean = true;
@@ -26,26 +27,27 @@ class UserSchedulerStore {
 
   constructor() {
     makeAutoObservable(this)
+  
+    reaction(() => this.dayBlocks, () => {
+      console.log(this.dayBlocks, "<---------------------------------------dayBlcoks");
+      
+      (async function(){
+        const notIds = await notifeeLib.getTriggerNotificationIds()
+        console.log(notIds, "<---------------------------------------This is notification ids scheduled by notifee");
+      })();
+    })
   }
 
   init = async () => {
     try {
-      crashlytics().log('Fetching user schedulers');
-      
-      userSchedulersAdapterStorage.removeUserSchedulers(USER_SCHEDULERS_KEY);
-      await notifeeLib.cancelAllNotifications();
-      let d = await notifeeLib.getTriggerNotificationIds();
-      console.log(d, "getTriggerNotificationIds")
-
-      // console.log("userId", userStore.userId)
+      // userSchedulersAdapterStorage.removeUserSchedulers(USER_SCHEDULERS_KEY);
+      // await notifeeLib.cancelAllNotifications();
 
       let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
+      console.log(storage, "Storage");
       if(storage) {
         let newStorage = JSON.parse(storage);
         let newStorageUser = newStorage.find((userData: { userId: string; }) => userData.userId === userStore.userId); 
-
-        console.log(newStorageUser, "newStorage");
-        console.log(this.selectedDays, "selectedDays");
 
         let selectedDays: string[] = [];
 
@@ -53,13 +55,15 @@ class UserSchedulerStore {
           selectedDays = newStorageUser.data.map((data: { day: any; }) => data.day);
         }
 
-
         if(newStorageUser) {
           runInAction(() => {
             this.dayBlocks = newStorageUser.data;
             this.selectedDays = selectedDays;
           });
         }
+
+        console.log(this.dayBlocks, "this.dayBlocks")
+        console.log( this.selectedDays , "this.selectedDays")
       }
 
       runInAction(() => {
@@ -75,111 +79,111 @@ class UserSchedulerStore {
     }
   }
 
-  async removeScheduleStorage(day: string) {
-    let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY) as string;
-    let newStorage = JSON.parse(storage);
-    let newStorageUser = newStorage.find((userData: { userId: string; }) => userData.userId === userStore.userId);
 
-    newStorageUser.data = newStorageUser.data.filter((userData: { day: string; }) => userData.day !== day)
+  quit = async () => {
+    if(!this.selectedDays) return;
 
-    await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(newStorage));
-
-    storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY) as string;
-
-    console.log(storage, "remove")
-  }
-
-  updateScheduleStorage() {
-    
-  }
-
-  async addScheduleStorage(newBlock: DayBlock) {
-    let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-    let newStorage;
+    const storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
+    const newStorage: string | { userId: string; data: DayBlock[]; }[] = [];
 
     if(!storage) {
-      // crete storage if null
-      newStorage = [];
-
       newStorage.push({
         userId: userStore.userId,
-        data: [newBlock]
-      })
+        data: this.dayBlocks
+      });
 
       await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(newStorage));
+      return;
+    } 
 
-      storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-      console.log(storage);
+    const storageParse = JSON.parse(storage);
+    const storageUser = storageParse.find((userData: { userId: string; }) => userData.userId === userStore.userId);
+
+    if(storageUser) {
+      storageUser.data = this.dayBlocks
+      await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(storageParse));
       return;
     }
+  }
 
-    newStorage = JSON.parse(storage);
-    let newStorageUser = newStorage.find((userData: { userId: string; }) => userData.userId === userStore.userId);
+  scheduleWeeklyNotification(day: string, time: Date, pastTimeMinute: number, weekdays: string[]) {
+     let weekday = weekdays.indexOf(day) + 1;
+     
+     // Get the current date and time
+     const scheduleTime = time;
+  
+     // Find the next occurrence of the target weekday
+     const targetDate = addDays(scheduleTime, (weekday - scheduleTime.getDay() + 7) % 7);
+  
+     const scheduleTimeAgo = sub(targetDate, {minutes: pastTimeMinute});
 
-
-    if(newStorageUser) {
-      newStorageUser.data.push(
-        newBlock 
-      )
-      await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(newStorage));
-
-      storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-      console.log(storage);
-      return;
-    }
-
-
-    // New user logic
-    newStorage.push({
-      userId: userStore.userId,
-      data: [newBlock]
-    })
-    
-    await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(newStorage));
-
-    storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-    console.log(storage);
+     return scheduleTimeAgo;
   }
 
   toggleDaySelection = async (day: string) => {
-
-    console.log(this.selectedDays, "this.selectedDays")
     if (this.selectedDays.includes(day)) {
-      // Remove day from selectedDays and dayBlocks
-      this.selectedDays = this.selectedDays.filter((d) => d !== day);
-      this.dayBlocks = this.dayBlocks.filter((block) => block.day !== day); 
+      // // Remove item from storage
+      // this.removeScheduleStorage(day);
+      const dayBlock = this.dayBlocks.find((block) => block.day === day) as DayBlock; 
+      const scheduleNotificationId = dayBlock.scheduleNotificationId as string;
 
+      console.log(scheduleNotificationId,"schid");
 
-      // Remove item from storage
-      this.removeScheduleStorage(day);
-    } else {
-      // Add day to selectedDays and create a new block
-      this.selectedDays = [...this.selectedDays, day];
-      let newBlock: DayBlock =  { day, time: new Date(), dropdownValue: this.dropdownOptions[0].value }
-
-      const scheduleNotificationId =  await notifeeLib.scheduleWeeklyNotification(newBlock.day, newBlock.time, newBlock.dropdownValue, this.weekdays);
-      console.log(scheduleNotificationId, "scheduleNotificationId")
-
-      newBlock = {...newBlock, scheduleNotificationId: scheduleNotificationId};
-
-
-      // // Add item in storage
-
-      await this.addScheduleStorage(newBlock);
+      await notifeeLib.cancelNotification(scheduleNotificationId);
 
 
       runInAction(() => {
+        // Remove day from selectedDays and dayBlocks
+        this.selectedDays = this.selectedDays.filter((d) => d !== day);
+        this.dayBlocks = this.dayBlocks.filter((block) => block.day !== day); 
+      })
+    } else {
+      // Add day to selectedDays and create a new block
+      let newBlock: DayBlock =  { day, time: this.scheduleWeeklyNotification(day, new Date(), this.dropdownOptions[0].value, this.weekdays), dropdownValue: this.dropdownOptions[0].value }
+
+      const scheduleNotificationId =  await notifeeLib.scheduleWeeklyNotification(newBlock.time);
+      newBlock = {...newBlock, scheduleNotificationId: scheduleNotificationId};
+
+      // // Add item in storage
+      // await this.addScheduleStorage(newBlock);
+
+      runInAction(() => {
+        this.selectedDays = [...this.selectedDays, day];
         this.dayBlocks = [...this.dayBlocks, newBlock]
       })
     }
   };
 
-  updateDayBlock = (day: string, field: keyof DayBlock, value: any) => {
-    this.dayBlocks = this.dayBlocks.map((block) =>
-      block.day === day ? { ...block, [field]: value } : block
-    )
+  updateDayBlock = async (day: string, field: keyof DayBlock, value: any) => {
+    // this.dayBlocks = this.dayBlocks.map((block) =>
+    //   block.day === day ? { ...block, [field]: value } : block
+    // )
 
-    // let storage 
+
+    const dayBlocks = await Promise.all(this.dayBlocks.map(async (block) => {
+      if(block.day === day) {
+        let newBlock = { ...block, [field]: value }
+
+        if(field !== 'showTimePicker') {
+          newBlock.time = this.scheduleWeeklyNotification(day,new Date(newBlock.time),newBlock.dropdownValue,this.weekdays)
+
+          // update Schedule for specific week day
+          const oldScheduleNotificationId = block.scheduleNotificationId as string;
+          await notifeeLib.cancelNotification(oldScheduleNotificationId);
+          const newScheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(newBlock.time);
+          newBlock = { ...newBlock, scheduleNotificationId: newScheduleNotificationId } 
+        }
+      
+        return newBlock
+      }
+      else {  
+        return block 
+      }
+    }))
+
+    runInAction(() => {
+      this.dayBlocks = dayBlocks;
+    })
 
   };
 }

@@ -2,9 +2,8 @@ import notifee, { TriggerType, TimestampTrigger, RepeatFrequency } from '@notife
 import { addDays, setHours, setMinutes, setSeconds, sub } from 'date-fns';
 import { PermissionsAndroid, Platform } from 'react-native';
 
-
 export interface Notifee {
-  scheduleWeeklyNotification: (day: string, time: Date, pastTimeMinute: number, weekdays: string[]) =>  Promise<string>;
+  scheduleWeeklyNotification: (time: Date) =>  Promise<string>;
   getTriggerNotificationIds: () => Promise<string[]>
   cancelNotification: (notificationId: string) => Promise<void>;
   cancelAllNotifications: () => Promise<void>;
@@ -42,27 +41,13 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
   return notificationId;
 }
 
- const scheduleWeeklyNotification = async (day: string, time: Date, pastTimeMinute: number, weekdays: string[]) => {
-  let weekday = weekdays.indexOf(day) + 1;
-  console.log(weekday, "weekday");
-
-  // Get the current date and time
-  const scheduleTime = time;
-
-  // Find the next occurrence of the target weekday
-  const targetDate = addDays(scheduleTime, (weekday - scheduleTime.getDay() + 7) % 7);
-
-  const scheduleTimeAgo = sub(targetDate, {minutes: pastTimeMinute})
-
+ const scheduleWeeklyNotification = async (time: Date) => {
   // Create a trigger
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
-    timestamp: scheduleTimeAgo.getTime(), // Timestamp in milliseconds
+    timestamp: time.getTime(), // Timestamp in milliseconds
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
   };
-
-  console.log(scheduleTimeAgo)
-  
 
   const notificationId = await scheduleNotification(trigger);
   return notificationId;

@@ -13,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 import userSchedulerStore from '../model/store/userSchedulerStore';
 import { DropdownOptions } from '../model/types/userSchedular';
 import { notifeeLib } from '@src/shared/lib/notifee/notifee';
+import { useFocusEffect } from '@react-navigation/native';
 // Define types for a single day block
 type DayBlock = {
   day: string;
@@ -22,16 +23,17 @@ type DayBlock = {
 };
 
 const UserScheduler: React.FC = () => {
+
   useEffect(() => {
     userSchedulerStore.init();
 
+    console.log("into page")
 
-    console.log(1111);
+    return (() => {
 
-    notifeeLib.getTriggerNotificationIds().then(data => console.log(data));
-    // notifeeLib.scheduleWeeklyNotification(3);
-    // notifeeLib.cancelAllNotifications();
-    // notifeeLib.cancelNotification('tam9oBIP6zZwzcbRKgBA');
+      userSchedulerStore.quit();
+      console.log("left page");
+    })
   },[]);
 
   const weekdays = userSchedulerStore.weekdays;
@@ -39,8 +41,7 @@ const UserScheduler: React.FC = () => {
   const selectedDays = userSchedulerStore.selectedDays;
   const dayBlocks = userSchedulerStore.dayBlocks;
 
-
-  if(userSchedulerStore.isUserSchedulerLoading) return;
+  if(userSchedulerStore.isUserSchedulerLoading) return <Text>Loading...</Text>;
 
   // Render function for a single block
   const renderBlock: ListRenderItem<DayBlock> = ({ item }) => (
@@ -58,9 +59,9 @@ const UserScheduler: React.FC = () => {
           mode="time"
           is24Hour={true}
           display="default"
-          onChange={(event, selectedTime) => {
-            userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
-            userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
+          onChange={async (event, selectedTime) => {
+            await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
+            await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
           }}
         />
       )}
