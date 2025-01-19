@@ -1,10 +1,10 @@
 import notifee, { TriggerType, TimestampTrigger, RepeatFrequency } from '@notifee/react-native';
-import { addDays, setHours, setMinutes, setSeconds } from 'date-fns';
+import { addDays, setHours, setMinutes, setSeconds, sub } from 'date-fns';
 import { PermissionsAndroid, Platform } from 'react-native';
 
 
 export interface Notifee {
-  scheduleWeeklyNotification: (targetWeekday: number) => void;
+  scheduleWeeklyNotification: (day: string, time: Date, pastTimeMinute: number, weekdays: string[]) =>  Promise<string>;
   getTriggerNotificationIds: () => Promise<string[]>
   cancelNotification: (notificationId: string) => Promise<void>;
   cancelAllNotifications: () => Promise<void>;
@@ -28,7 +28,7 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
   await notifee.requestPermission();
 
   
-  const data = await notifee.createTriggerNotification(
+  const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
       body: 'This is your weekly reminder!',
@@ -39,30 +39,33 @@ const scheduleNotification = async (trigger: TimestampTrigger) => {
     trigger
   );
 
-  return data;
+  return notificationId;
 }
 
- const scheduleWeeklyNotification = async (targetWeekday: number) => {
+ const scheduleWeeklyNotification = async (day: string, time: Date, pastTimeMinute: number, weekdays: string[]) => {
+  let weekday = weekdays.indexOf(day) + 1;
+  console.log(weekday, "weekday");
+
   // Get the current date and time
-  const now = new Date();
+  const scheduleTime = time;
 
   // Find the next occurrence of the target weekday
-  let targetDate = addDays(now, (targetWeekday - now.getDay() + 7) % 7);
+  const targetDate = addDays(scheduleTime, (weekday - scheduleTime.getDay() + 7) % 7);
 
-  // Set the specific time
-  targetDate = setHours(targetDate, 10); // 10 AM
-  targetDate = setMinutes(targetDate, 0);
-  targetDate = setSeconds(targetDate, 0);
+  const scheduleTimeAgo = sub(targetDate, {minutes: pastTimeMinute})
 
   // Create a trigger
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
-    timestamp: targetDate.getTime(), // Timestamp in milliseconds
+    timestamp: scheduleTimeAgo.getTime(), // Timestamp in milliseconds
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
   };
 
-  const data = await scheduleNotification(trigger);
-  console.log(data, "data");
+  console.log(scheduleTimeAgo)
+  
+
+  const notificationId = await scheduleNotification(trigger);
+  return notificationId;
 }
 
 const cancelNotification = async (notificationId: string) => {

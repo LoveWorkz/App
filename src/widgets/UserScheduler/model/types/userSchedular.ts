@@ -1,11 +1,12 @@
 export type DayBlock = {
   day: string;
   time: Date;
-  dropdownValue: string | null;
+  dropdownValue: number;
   showTimePicker?: boolean;
+  scheduleNotificationId?: string;
 };
 
 export type DropdownOptions = {
   label: string;
-  value: string;
+  value: number;
 }
