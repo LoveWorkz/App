@@ -46,6 +46,7 @@ import {SpecialChallengeIntroHeaderRight} from '@src/widgets/headers/SpecialChal
 import {SplashPage} from '@src/pages/SplashPage/ui/SplashPage';
 import themeStyle from '@src/app/styles/themeStyle';
 import {PartnerDetailsPage} from '@src/pages/PartnerDetailsPage';
+import { UserSchedulerPage } from '@src/pages/UserSchedulerPage';
 
 export enum AppRouteNames {
   AUTH = 'auth',
@@ -87,6 +88,7 @@ export enum AppRouteNames {
   SPECIAL_CHALLENGE_INTRO = 'specialChallengeIntro',
   WELCOME = 'welcome',
   YOUR_GOALS = 'yourGoals',
+  USER_SCHEDULER = 'userScheduler'
 }
 
 export const appRoutePaths: Record<AppRouteNames, string> = {
@@ -125,6 +127,7 @@ export const appRoutePaths: Record<AppRouteNames, string> = {
   [AppRouteNames.SPECIAL_CHALLENGE_CARDS]: 'specialChallengeCards',
   [AppRouteNames.SPECIAL_CHALLENGE_INTRO]: 'specialChallengeIntro',
   [AppRouteNames.YOUR_GOALS]: 'yourGoals',
+  [AppRouteNames.USER_SCHEDULER]: 'userScheduler',
 
   // onboarding
   [AppRouteNames.ONBOARDING_GOALS]: 'onboardingGoals',
@@ -484,7 +487,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingNotifications,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColorOverride="bgOnboardingColor">
+        <Layout bgColorOverride='bgOnboardingColor'>
           <OnboardingNotificationsPage {...props} />
         </Layout>
       );
@@ -495,7 +498,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
     name: appRoutePaths.onboardingStatistic,
     Element: (props: ParamListBase) => {
       return (
-        <Layout bgColorOverride="bgOnboardingColor" deleteGlobalPadding>
+        <Layout bgColorOverride='bgOnboardingColor' deleteGlobalPadding>
           <OnboardingStatisticPage {...props} />
         </Layout>
       );
@@ -516,7 +519,7 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
   },
   [AppRouteNames.BREAK]: {
     name: appRoutePaths.break,
-    headerShown: false,
+    headerShown: false, 
     bgColor: 'secondaryBackground',
     bgColorOverride: 'backgroundSecondary',
     headerTitle: '',
@@ -617,6 +620,19 @@ export const appRoutesConfig: Record<AppRouteNames, NewRouteProps> = {
           bgColor="secondaryBackground"
           bgColorOverride="backgroundSecondary">
           <CoreChallengeIntroPage {...props} />
+        </Layout>
+      );
+    },
+  },
+
+  [AppRouteNames.USER_SCHEDULER]: {
+    name: appRoutePaths.userScheduler,
+    headerShown: true,
+    headerTitle: 'settings.user_scheduler',
+    Element: (props: ParamListBase) => {
+      return (
+        <Layout>
+          <UserSchedulerPage {...props} />
         </Layout>
       );
     },
