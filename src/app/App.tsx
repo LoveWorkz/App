@@ -9,6 +9,7 @@ import {AppRoute} from './providers/route/AppRoute';
 import {ThemeProvider} from './providers/themeProvider';
 import {GradientProvider} from './providers/GradientProvider';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { Notification } from '@src/widgets/Notification';
 
 const App = () => {
   // TODO: enable Admob
@@ -30,6 +31,7 @@ const App = () => {
             <AppRoute />
             <Toast />
             <PushNotifications />
+            <Notification />
           </GradientProvider>
         </ColorsProvider>
       </ThemeProvider>
