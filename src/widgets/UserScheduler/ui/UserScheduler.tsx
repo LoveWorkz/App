@@ -10,7 +10,9 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import { observer } from 'mobx-react-lite';
-
+import userSchedulerStore from '../model/store/userSchedulerStore';
+import { DropdownOptions } from '../model/types/userSchedular';
+import { notifeeLib } from '@src/shared/lib/notifee/notifee';
 // Define types for a single day block
 type DayBlock = {
   day: string;
@@ -21,44 +23,24 @@ type DayBlock = {
 
 const UserScheduler: React.FC = () => {
   useEffect(() => {
-    console.log("eff");
+    userSchedulerStore.init();
+
+
+    console.log(1111);
+
+    notifeeLib.getTriggerNotificationIds().then(data => console.log(data));
+    // notifeeLib.scheduleWeeklyNotification(3);
+    // notifeeLib.cancelAllNotifications();
+    // notifeeLib.cancelNotification('tam9oBIP6zZwzcbRKgBA');
   },[]);
 
-  const [selectedDays, setSelectedDays] = useState<string[]>([]); // Track selected days
-  const [dayBlocks, setDayBlocks] = useState<DayBlock[]>([]); // Store blocks for each day
+  const weekdays = userSchedulerStore.weekdays;
+  const dropdownOptions = userSchedulerStore.dropdownOptions;
+  const selectedDays = userSchedulerStore.selectedDays;
+  const dayBlocks = userSchedulerStore.dayBlocks;
 
-  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const dropdownOptions = [
-    { label: '30m', value: '30m' },
-    { label: '1h', value: '1h' },
-    { label: '2h', value: '2h' },
-    { label: '3h', value: '3h' },
-    { label: '6h', value: '6h' },
-    { label: '12h', value: '12h' },
-    { label: '24h', value: '24h' },
-  ];
 
-  // Toggle selection of a weekday
-  const toggleDaySelection = (day: string) => {
-    if (selectedDays.includes(day)) {
-      // Remove day from selectedDays and dayBlocks
-      setSelectedDays(selectedDays.filter((d) => d !== day));
-      setDayBlocks(dayBlocks.filter((block) => block.day !== day));
-    } else {
-      // Add day to selectedDays and create a new block
-      setSelectedDays([...selectedDays, day]);
-      setDayBlocks([...dayBlocks, { day, time: new Date(), dropdownValue: null }]);
-    }
-  };
-
-  // Update a field in a specific day block
-  const updateDayBlock = (day: string, field: keyof DayBlock, value: any) => {
-    setDayBlocks((prevBlocks) =>
-      prevBlocks.map((block) =>
-        block.day === day ? { ...block, [field]: value } : block
-      )
-    );
-  };
+  if(userSchedulerStore.isUserSchedulerLoading) return;
 
   // Render function for a single block
   const renderBlock: ListRenderItem<DayBlock> = ({ item }) => (
@@ -66,7 +48,7 @@ const UserScheduler: React.FC = () => {
       <Text style={styles.blockTitle}>Selected: {item.day}</Text>
       <TouchableOpacity
         style={styles.timeButton}
-        onPress={() => updateDayBlock(item.day, 'showTimePicker', true)}
+        onPress={() => userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', true)}
       >
         <Text style={styles.timeButtonText}>Pick Time</Text>
       </TouchableOpacity>
@@ -77,19 +59,20 @@ const UserScheduler: React.FC = () => {
           is24Hour={true}
           display="default"
           onChange={(event, selectedTime) => {
-            updateDayBlock(item.day, 'time', selectedTime || item.time);
-            updateDayBlock(item.day, 'showTimePicker', false);
+            userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
+            userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
           }}
         />
       )}
       <Text style={styles.selectedTime}>
-        Selected Time: {item.time.toLocaleTimeString()}
+        Selected Time: {new Date(item.time).toLocaleTimeString()}
+        {/* Selected Time: {item.time} */}
       </Text>
       <Text style={styles.dropdownLabel}>Select an Option:</Text>
       <RNPickerSelect
-        onValueChange={(value) => updateDayBlock(item.day, 'dropdownValue', value)}
+        onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
         items={dropdownOptions}
-        placeholder={{ label: 'Select an option', value: null }}
+        placeholder={{}}
       />
     </View>
   );
@@ -105,7 +88,7 @@ const UserScheduler: React.FC = () => {
               styles.dayButton,
               selectedDays.includes(day) && styles.selectedButton,
             ]}
-            onPress={() => toggleDaySelection(day)}
+            onPress={() => userSchedulerStore.toggleDaySelection(day)}
           >
             <Text style={styles.dayText}>{day}</Text>
           </TouchableOpacity>
