@@ -3,7 +3,7 @@ import { addDays, setHours, setMinutes, setSeconds, sub } from 'date-fns';
 import { PermissionsAndroid, Platform } from 'react-native';
 
 export interface Notifee {
-  scheduleWeeklyNotification: (time: Date, day: string) =>  Promise<string>;
+  scheduleWeeklyNotification: (time: Date, scheduleTime: Date) =>  Promise<string>;
   getTriggerNotificationIds: () => Promise<string[]>
   cancelNotification: (notificationId: string) => Promise<void>;
   cancelAllNotifications: () => Promise<void>;
@@ -21,7 +21,21 @@ async function requestAndroidPermissions() {
   }
 }
 
-const scheduleNotification = async (trigger: TimestampTrigger, time: Date, day: string) => {
+function formatNotificationMessage(date: Date): string {
+  // Get the weekday name
+  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekDay = weekDays[date.getDay()]; // Get the weekday from the Date object
+
+  // Format the time in "HH:mm" format (24-hour clock)
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const formattedTime = `${hours}:${minutes}`;
+
+  // Construct the message
+  return `Don't forget about your next session: ${weekDay} at ${formattedTime}`;
+}
+
+const scheduleNotification = async (trigger: TimestampTrigger, scheduleTime: Date) => {
   await requestAndroidPermissions();
   // Request notification permissions (required for iOS)
   await notifee.requestPermission();
@@ -30,7 +44,7 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, day: 
   const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
-      body: `Don't forget about your next session: ${day} at ${time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}.`,
+      body: formatNotificationMessage(scheduleTime),
       android: {
         channelId: 'default',
       },
@@ -41,7 +55,7 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, day: 
   return notificationId;
 }
 
- const scheduleWeeklyNotification = async (time: Date, day: string) => {
+ const scheduleWeeklyNotification = async (time: Date, scheduleTime: Date) => {
   // Create a trigger
   const trigger: TimestampTrigger = {
     type: TriggerType.TIMESTAMP,
@@ -49,7 +63,7 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, day: 
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
   };
 
-  const notificationId = await scheduleNotification(trigger, time, day);
+  const notificationId = await scheduleNotification(trigger, scheduleTime);
   return notificationId;
 }
 

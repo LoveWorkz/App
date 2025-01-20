@@ -10,7 +10,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
 import { observer } from 'mobx-react-lite';
-import userSchedulerStore from '../model/store/userSchedulerStore';
+import userSchedulerStore from '../model/store/UserSchedulerStore';
 import { DropdownOptions } from '../model/types/userSchedular';
 import { notifeeLib } from '@src/shared/lib/notifee/notifee';
 import { useFocusEffect } from '@react-navigation/native';
@@ -36,6 +36,10 @@ const UserScheduler: React.FC = () => {
     })
   },[]);
 
+  function isValidDate(date: any): boolean {
+    return date && !isNaN(new Date(date).getTime());
+  }
+
   const weekdays = userSchedulerStore.weekdays;
   const dropdownOptions = userSchedulerStore.dropdownOptions;
   const selectedDays = userSchedulerStore.selectedDays;
@@ -54,16 +58,15 @@ const UserScheduler: React.FC = () => {
         <Text style={styles.timeButtonText}>Pick Time</Text>
       </TouchableOpacity>
       {item.showTimePicker && (
-        <DateTimePicker
-          value={item.time}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={async (event, selectedTime) => {
-            await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
-            await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
-          }}
-        />
+       <DateTimePicker
+        value={isValidDate(item.time) ? new Date(item.time) : new Date()} // Ensure item.time is a Date object
+        mode="time"
+        display="default"
+        onChange={async (event, selectedTime) => {
+          await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
+          await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
+        }}
+      />
       )}
     
       <Text style={styles.dropdownLabel}>Select an Option:</Text>

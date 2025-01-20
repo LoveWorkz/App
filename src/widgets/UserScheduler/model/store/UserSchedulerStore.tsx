@@ -106,81 +106,120 @@ class UserSchedulerStore {
     }
   }
 
-  scheduleWeeklyNotification(day: string, time: Date, pastTimeMinute: number, weekdays: string[]) {
-     let weekday = weekdays.indexOf(day) + 1;
-     
-     // Get the current date and time
-     const scheduleTime = time;
+  scheduleWeeklyNotification(
+    day: string,
+    originalTime: Date,
+    pastTimeMinute: number,
+    weekdays: string[]
+  ) {
+    const weekday = weekdays.indexOf(day) + 1; // 1-based index for weekday
+    const now = new Date();
   
-     // Find the next occurrence of the target weekday
-     const targetDate = addDays(scheduleTime, (weekday - scheduleTime.getDay() + 7) % 7);
+    let scheduleTime = new Date(originalTime);
+    const currentWeekday = now.getDay();
   
-     const scheduleTimeAgo = sub(targetDate, {minutes: pastTimeMinute});
-
-     return scheduleTimeAgo;
-  }
-
+    let daysToAdd = (weekday - currentWeekday + 7) % 7;
+  
+    if (daysToAdd === 0 && scheduleTime.getTime() > now.getTime()) {
+      scheduleTime.setDate(now.getDate());
+    } else {
+      scheduleTime.setDate(now.getDate() + daysToAdd);
+    }
+  
+    const adjustedTime = new Date(scheduleTime.getTime() - pastTimeMinute * 60 * 1000);
+  
+    if (adjustedTime <= now) {
+      adjustedTime.setDate(adjustedTime.getDate() + 7);
+    }
+  
+    return adjustedTime;
+  }  
+  
   toggleDaySelection = async (day: string) => {
     if (this.selectedDays.includes(day)) {
-      // // Remove item from storage
-      // this.removeScheduleStorage(day);
-      const dayBlock = this.dayBlocks.find((block) => block.day === day) as DayBlock; 
+      // Find the block to cancel the notification
+      const dayBlock = this.dayBlocks.find((block) => block.day === day) as DayBlock;
       const scheduleNotificationId = dayBlock.scheduleNotificationId as string;
-
-      console.log(scheduleNotificationId,"schid");
-
+  
+      // Cancel the notification
       await notifeeLib.cancelNotification(scheduleNotificationId);
-
-
+  
       runInAction(() => {
         // Remove day from selectedDays and dayBlocks
         this.selectedDays = this.selectedDays.filter((d) => d !== day);
-        this.dayBlocks = this.dayBlocks.filter((block) => block.day !== day); 
-      })
+        this.dayBlocks = this.dayBlocks.filter((block) => block.day !== day);
+      });
     } else {
-      // Add day to selectedDays and create a new block
-      let newBlock: DayBlock =  { day, time: this.scheduleWeeklyNotification(day, add(new Date(), { minutes: 32 }), this.dropdownOptions[0].value, this.weekdays), dropdownValue: this.dropdownOptions[0].value }
-
-      const scheduleNotificationId =  await notifeeLib.scheduleWeeklyNotification(newBlock.time, newBlock.day);
-      newBlock = {...newBlock, scheduleNotificationId: scheduleNotificationId};
-
-      // // Add item in storage
-      // await this.addScheduleStorage(newBlock);
-
+      // Create a new block with the default dropdown value and original time
+      const newBlock: DayBlock = {
+        day,
+        time: new Date(), // Default to current time for the picker
+        dropdownValue: this.dropdownOptions[0].value,
+      };
+  
+      // Calculate the notification time based on the dropdown value
+      const notificationTime = this.scheduleWeeklyNotification(
+        day,
+        newBlock.time,
+        newBlock.dropdownValue,
+        this.weekdays
+      );
+  
+      // Schedule the notification
+      const scheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(
+        notificationTime,
+        newBlock.time
+      );
+  
       runInAction(() => {
+        // Add the new block and update selectedDays
         this.selectedDays = [...this.selectedDays, day];
-        this.dayBlocks = [...this.dayBlocks, newBlock]
-      })
+        this.dayBlocks = [...this.dayBlocks, { ...newBlock, scheduleNotificationId }];
+      });
     }
   };
+  
 
   updateDayBlock = async (day: string, field: keyof DayBlock, value: any) => {
-    const dayBlocks = await Promise.all(this.dayBlocks.map(async (block) => {
-      if(block.day === day) {
-        let newBlock = { ...block, [field]: value }
-
-        if(field !== 'showTimePicker') {
-          newBlock.time = this.scheduleWeeklyNotification(day,new Date(newBlock.time),newBlock.dropdownValue,this.weekdays)
-
-          // update Schedule for specific week day
-          const oldScheduleNotificationId = block.scheduleNotificationId as string;
-          await notifeeLib.cancelNotification(oldScheduleNotificationId);
-          const newScheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(newBlock.time, newBlock.day);
-          newBlock = { ...newBlock, scheduleNotificationId: newScheduleNotificationId } 
+    const updatedDayBlocks = await Promise.all(
+      this.dayBlocks.map(async (block) => {
+        if (block.day === day) {
+          let updatedBlock = { ...block, [field]: value };
+  
+          // Trigger notification only for relevant fields
+          if (field === 'dropdownValue' || field === 'time') {
+            const notificationTime = this.scheduleWeeklyNotification(
+              day,
+              updatedBlock.time, // Use the unmodified `time`
+              updatedBlock.dropdownValue,
+              this.weekdays
+            );
+  
+            // Cancel the old notification
+            if (block.scheduleNotificationId) {
+              await notifeeLib.cancelNotification(block.scheduleNotificationId);
+            }
+  
+            // Schedule a new notification and update the notification ID
+            const newScheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(
+              notificationTime,
+              updatedBlock.time
+            );
+  
+            updatedBlock = { ...updatedBlock, scheduleNotificationId: newScheduleNotificationId };
+          }
+  
+          return updatedBlock;
         }
-      
-        return newBlock
-      }
-      else {  
-        return block 
-      }
-    }))
-
+        return block; // Leave other blocks unchanged
+      })
+    );
+  
     runInAction(() => {
-      this.dayBlocks = dayBlocks;
-    })
-
+      this.dayBlocks = updatedDayBlocks;
+    });
   };
+  
 }
 
 export default new UserSchedulerStore();
