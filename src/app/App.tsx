@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {AppState, Platform, StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {Toast} from '@src/shared/ui/Toast/Toast';
@@ -10,6 +10,7 @@ import {ThemeProvider} from './providers/themeProvider';
 import {GradientProvider} from './providers/GradientProvider';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import notifee, { AndroidImportance } from '@notifee/react-native';
+import UserSchedulerStore from '@src/widgets/UserScheduler/model/store/UserSchedulerStore';
 
 async function ensureNotificationChannelExists() {
   if (Platform.OS === 'android') {
@@ -36,6 +37,22 @@ async function ensureNotificationChannelExists() {
 const App = () => {
   useEffect(() => {
     ensureNotificationChannelExists();
+
+    const handleAppStateChange = (nextAppState) => {
+      if (nextAppState === 'background' || nextAppState === 'inactive') {
+        // Call quit when the app moves to the background or is closed
+        UserSchedulerStore.quit();
+        console.log("left page - app moved to background or closed");
+      }
+    };
+
+    // Add AppState change listener
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+      UserSchedulerStore.quit();
+    }
   }, []);
   // TODO: enable Admob
   // useEffect(() => {

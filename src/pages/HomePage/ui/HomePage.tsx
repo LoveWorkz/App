@@ -31,14 +31,23 @@ import {userStore} from '@src/entities/User';
 import {TrendingList} from '@src/entities/Rubric';
 import {TrendingChallengeList} from '@src/entities/Challenge';
 import {DiscountOfferCard} from '@src/widgets/DiscountOfferCard';
-import {GuidedTour, guidedTourStore} from '@src/widgets/GuidedTour';
+import {
+  GuidedTour,
+  guidedTourStore,
+} from '@src/widgets/GuidedTour';
 import CategoriesCarousel from './CategoriesCarousel/CategoriesCarousel';
 import QuickStart from './QuickStart/QuickStart';
 import homePageStore from '../model/store/HomePageStore';
 import ProgressBar from './ProgressBar/ProgressBar';
 import QuestionPageCongratsModal from '@src/pages/QuestionsPage/ui/QuestionPageCongratsModal/QuestionPageCongratsModal';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useColors} from '@src/app/providers/colorsProvider';
+import { useColors } from '@src/app/providers/colorsProvider';
+import { userSchedulersAdapterStorage } from '@src/shared/lib/storage/adapters/userSchedulersAdapter';
+import { USER_SCHEDULERS_KEY } from '@src/shared/consts/storage';
+import { DayBlock } from '@src/widgets/UserScheduler/model/types/userSchedular';
+import { notifeeLib } from '@src/shared/lib/notifee/notifee';
+import { add } from 'date-fns';
+import UserSchedulerStore from '@src/widgets/UserScheduler/model/store/UserSchedulerStore';
 interface HomePageProps {
   prevRouteName?: string;
   isTabScreen?: boolean;
@@ -63,6 +72,39 @@ const HomePage = (props: HomePageProps) => {
   const isLoading = homePageStore.isHomePageLoading;
   const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
 
+  useEffect(() => {
+    (async function() {
+       const storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
+      
+       if(!storage) return;
+
+       const storageParse = JSON.parse(storage);
+       let storageUser = storageParse.find((userData: { userId: string; }) => userData.userId === userStore.userId);
+       
+       storageUser.data = await Promise.all(storageUser.data.map(async (dayBlock: DayBlock) => {
+
+        // Calculate the notification time based on the dropdown value
+        const notificationTime = UserSchedulerStore.scheduleWeeklyNotification(
+          dayBlock.day,
+          dayBlock.time,
+          dayBlock.dropdownValue,
+          UserSchedulerStore.weekdays
+        );
+
+        // Schedule the notification
+        const scheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(
+          new Date(notificationTime),
+          new Date(dayBlock.time)
+        );
+
+        return {...dayBlock, scheduleNotificationId}
+       }));
+
+       // Update storage new notifications Id
+       await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(storageParse));
+    })();
+  },[]);
+
   useFocusEffect(
     useCallback(() => {
       // when user returns from any tab screen or completion page, get actual challenges and categories data
@@ -85,7 +127,7 @@ const HomePage = (props: HomePageProps) => {
   return (
     <>
       <StatusBar
-        barStyle={'light-content'}
+        barStyle={'light-content'} 
         backgroundColor={isDark ? colors.bgColor : 'transparent'}
         translucent={true}
       />
@@ -185,7 +227,10 @@ export default memo((props: HomePageWrapperProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <HomePageWrapper prevRouteName={prevRouteName} isTabScreen={isTabScreen} />
+      <HomePageWrapper
+        prevRouteName={prevRouteName}
+        isTabScreen={isTabScreen}
+      />
   );
 });
 

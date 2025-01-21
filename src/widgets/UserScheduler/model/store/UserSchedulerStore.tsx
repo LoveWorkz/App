@@ -44,6 +44,7 @@ class UserSchedulerStore {
       // await notifeeLib.cancelAllNotifications();
 
       let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
+      // console.log(storage, "storage");
 
       if(storage) {
         let newStorage = JSON.parse(storage);
@@ -104,6 +105,14 @@ class UserSchedulerStore {
       await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(storageParse));
       return;
     }
+
+    // create new user
+    storageParse.push({
+      userId: userStore.userId,
+      data: this.dayBlocks
+    });
+
+    await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(storageParse));
   }
 
   scheduleWeeklyNotification(
