@@ -25,6 +25,8 @@ function formatNotificationMessage(date: Date): string {
   // Get the weekday name
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekDay = weekDays[date.getDay()]; // Get the weekday from the Date object
+  console.log('WWWW', weekDay, date.getDay());
+  
 
   // Format the time in "HH:mm" format (24-hour clock)
   const hours = date.getHours().toString().padStart(2, '0');

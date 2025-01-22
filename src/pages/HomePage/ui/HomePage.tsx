@@ -80,6 +80,8 @@ const HomePage = (props: HomePageProps) => {
 
        const storageParse = JSON.parse(storage);
        let storageUser = storageParse.find((userData: { userId: string; }) => userData.userId === userStore.userId);
+
+       if(!storageUser) return;
        
        storageUser.data = await Promise.all(storageUser.data.map(async (dayBlock: DayBlock) => {
 

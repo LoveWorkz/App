@@ -8920,7 +8920,7 @@ __metadata:
     react-i18next: ^14.1.2
     react-native: 0.73.8
     react-native-copilot: ^3.3.2
-    react-native-date-picker: ^5.0.4
+    react-native-date-picker: ^5.0.8
     react-native-extra-dimensions-android: ^1.2.5
     react-native-fast-image: ^8.6.3
     react-native-flags: ^1.0.0
@@ -10553,13 +10553,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-date-picker@npm:^5.0.4":
-  version: 5.0.4
-  resolution: "react-native-date-picker@npm:5.0.4"
+"react-native-date-picker@npm:^5.0.8":
+  version: 5.0.8
+  resolution: "react-native-date-picker@npm:5.0.8"
   peerDependencies:
     react: ">= 17.0.1"
     react-native: ">= 0.64.3"
-  checksum: 67db7fba5de613c61a70b5b9274daef8c7d3b6f6cdc5a6063eb61126d4df43252c501c2cb78ebda37fb0997ccb0994e949976d0fb395453580019923100e03ad
+  checksum: e18dc66bcbfb70a51768bfa4edf09cbd63db72b0e6809c632218200a6e290a08ca9c059f145a4813357db38cddda14cafa284d4211ae41909567f2f196aa66ee
   languageName: node
   linkType: hard
 

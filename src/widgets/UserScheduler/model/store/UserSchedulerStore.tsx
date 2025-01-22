@@ -13,6 +13,8 @@ import { add, addDays, sub } from "date-fns";
 class UserSchedulerStore {
   isUserSchedulerLoading: boolean = true;
   weekdays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  visibleWeekDays: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
   dropdownOptions: DropdownOptions[] = [
     { label: '30m', value: 30 },
     { label: '1h', value: 60 },

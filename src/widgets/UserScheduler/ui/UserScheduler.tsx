@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,25 @@ import { observer } from 'mobx-react-lite';
 import userSchedulerStore from '../model/store/UserSchedulerStore';
 import { DropdownOptions } from '../model/types/userSchedular';
 import { notifeeLib } from '@src/shared/lib/notifee/notifee';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
+import { useColors } from '@src/app/providers/colorsProvider';
+import DatePicker from 'react-native-date-picker';
+import { AppText, TextSize } from '@src/shared/ui/AppText/AppText';
+import { Button, ButtonTheme } from '@src/shared/ui/Button/Button';
+import { Select } from '@src/shared/ui/Select/Select';
+import { TouchableComponent } from '@src/shared/ui/Select/TouchableComponent';
 // Define types for a single day block
 type DayBlock = {
   day: string;
   time: Date;
-  dropdownValue: string | null;
+  dropdownValue: string;
   showTimePicker?: boolean;
 };
 
 const UserScheduler: React.FC = () => {
+  const colors = useColors();
+  const [open, setOpen] = useState<string | null>(null);
+  const {isDark} = useTheme();
 
   useEffect(() => {
     userSchedulerStore.init();
@@ -40,7 +49,7 @@ const UserScheduler: React.FC = () => {
     return date && !isNaN(new Date(date).getTime());
   }
 
-  const weekdays = userSchedulerStore.weekdays;
+  const visibleWeekDays = userSchedulerStore.visibleWeekDays;
   const dropdownOptions = userSchedulerStore.dropdownOptions;
   const selectedDays = userSchedulerStore.selectedDays;
   const dayBlocks = userSchedulerStore.dayBlocks;
@@ -50,52 +59,70 @@ const UserScheduler: React.FC = () => {
   // Render function for a single block
   const renderBlock: ListRenderItem<DayBlock> = ({ item }) => (
     <View style={styles.block}>
-      <Text style={styles.blockTitle}>Selected: {item.day}</Text>
-      <TouchableOpacity
-        style={styles.timeButton}
-        onPress={() => userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', true)}
-      >
-        <Text style={styles.timeButtonText}>Pick Time</Text>
-      </TouchableOpacity>
-      {item.showTimePicker && (
-       <DateTimePicker
-        value={isValidDate(item.time) ? new Date(item.time) : new Date()} // Ensure item.time is a Date object
-        mode="time"
-        display="default"
-        onChange={async (event, selectedTime) => {
-          await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
-          await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
-        }}
-      />
-      )}
-    
-      <Text style={styles.dropdownLabel}>Select an Option:</Text>
-      <RNPickerSelect
-        onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
-        items={dropdownOptions}
-        placeholder={{}}
-      />
-      <Text style={styles.selectedTime}>
-        Selected Time: {new Date(item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-        {/* Selected Time: {item.time} */}
-      </Text>
+      <Text style={styles.blockTitle}>{item.day}</Text>
+      <View style={styles.item}>
+        <TouchableComponent
+          isLoading={false}
+          selectedDisplayValue={new Date(item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+          onSelectOpenHandler={()=>{
+            setOpen(item.day);
+            userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', true)
+          }}
+        />
+        <DatePicker
+          modal
+          mode="time"
+          open={open === item.day}
+          date={isValidDate(item.time) ? new Date(item.time) : new Date()}
+          onConfirm={async (selectedTime) => {
+            await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
+            await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
+            setOpen(null);
+          }}
+          onCancel={() => {
+            setOpen(null);
+          }}
+        />
+      </View>
+      
+      <View style={styles.item}>
+        <Select
+          isLoading={false}
+          initialValue={item.dropdownValue}
+          value={item.dropdownValue}
+          options={dropdownOptions}
+          onSelect={(value)=>{userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}}
+        />
+      </View>
+   
     </View>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select Weekdays</Text>
+      <Text style={{...styles.title, color: colors.bgTabViewColor}}>Weekdays</Text>
       <View style={styles.weekdayButtons}>
-        {weekdays.map((day) => (
+        {visibleWeekDays.map((day) => (
           <TouchableOpacity
             key={day}
             style={[
               styles.dayButton,
               selectedDays.includes(day) && styles.selectedButton,
+              {
+                borderColor: colors.bgSessionActive,
+                backgroundColor: selectedDays.includes(day) 
+                  ? colors.bgTabViewColor
+                  : 'transparent'
+              }
             ]}
             onPress={() => userSchedulerStore.toggleDaySelection(day)}
           >
-            <Text style={styles.dayText}>{day}</Text>
+            <Text style={{
+              ...styles.dayText, 
+              color: selectedDays.includes(day) 
+                ? colors.white 
+                : colors.primaryTextColor
+              }}>{day.slice(0, 1)}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -109,12 +136,15 @@ const UserScheduler: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  item: {
+    marginTop: 16
+  },
   container: {
     flex: 1,
     padding: 16,
   },
   title: {
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 16,
   },
@@ -125,17 +155,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dayButton: {
-    backgroundColor: '#007BFF',
     paddingVertical: 10,
     paddingHorizontal: 16,
-    borderRadius: 5,
     marginVertical: 5,
+    borderWidth: 1,
+    borderRadius: 8,
   },
   selectedButton: {
     backgroundColor: '#0056b3',
   },
   dayText: {
-    color: '#fff',
     fontSize: 16,
   },
   block: {
