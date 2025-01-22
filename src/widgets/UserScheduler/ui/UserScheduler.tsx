@@ -20,6 +20,10 @@ import { AppText, TextSize } from '@src/shared/ui/AppText/AppText';
 import { Button, ButtonTheme } from '@src/shared/ui/Button/Button';
 import { Select } from '@src/shared/ui/Select/Select';
 import { TouchableComponent } from '@src/shared/ui/Select/TouchableComponent';
+import { SvgXml } from 'react-native-svg';
+import { ArrowDownIcon } from '@src/shared/assets/icons/ArrowDown';
+import { horizontalScale, moderateScale, verticalScale } from '@src/shared/lib/Metrics';
+import { getShadowOpacity } from '@src/app/styles/GlobalStyle';
 // Define types for a single day block
 type DayBlock = {
   day: string;
@@ -30,8 +34,8 @@ type DayBlock = {
 
 const UserScheduler: React.FC = () => {
   const colors = useColors();
+  const {theme} = useTheme();
   const [open, setOpen] = useState<string | null>(null);
-  const {isDark} = useTheme();
 
   useEffect(() => {
     userSchedulerStore.init();
@@ -85,14 +89,38 @@ const UserScheduler: React.FC = () => {
         />
       </View>
       
-      <View style={styles.item}>
-        <Select
-          isLoading={false}
-          initialValue={item.dropdownValue}
-          value={item.dropdownValue}
-          options={dropdownOptions}
-          onSelect={(value)=>{userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}}
-        />
+      <View style={[styles.item, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
+        <RNPickerSelect
+        onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
+        items={dropdownOptions}
+        placeholder={{}}
+        style={{
+          inputIOS: {
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+            paddingVertical: verticalScale(8),
+            height: 40,
+            borderRadius:  moderateScale(10),
+            paddingHorizontal: horizontalScale(20),
+          },
+          inputAndroid: {
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexDirection: 'row',
+            paddingVertical: verticalScale(8),
+            height: 40,
+            borderRadius:  moderateScale(10),
+            paddingHorizontal: horizontalScale(20),
+            backgroundColor: colors.bgTertiaryColor,
+          },
+          iconContainer: {
+            top: 10,
+            right: 12,
+            display: 'none',
+          },
+        }}
+      />
       </View>
    
     </View>
@@ -137,7 +165,7 @@ const UserScheduler: React.FC = () => {
 
 const styles = StyleSheet.create({
   item: {
-    marginTop: 16
+    marginTop: 16,
   },
   container: {
     flex: 1,
@@ -201,6 +229,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 8,
     marginBottom: 4,
+  },
+  icon: {
+    height: horizontalScale(12),
+    width: horizontalScale(12),
   },
 });
 
