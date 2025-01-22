@@ -21,11 +21,11 @@ async function requestAndroidPermissions() {
   }
 }
 
-function formatNotificationMessage(date: Date): string {
+function formatNotificationMessage(time: Date, date: Date): string {
   // Get the weekday name
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const weekDay = weekDays[date.getDay()]; // Get the weekday from the Date object
-  console.log('WWWW', weekDay, date.getDay());
+  const weekDay = weekDays[time.getDay()]; // Get the weekday from the Date object
+  console.log('WWWW', weekDay, time.getDay());
   
 
   // Format the time in "HH:mm" format (24-hour clock)
@@ -37,7 +37,7 @@ function formatNotificationMessage(date: Date): string {
   return `Don't forget about your next session: ${weekDay} at ${formattedTime}`;
 }
 
-const scheduleNotification = async (trigger: TimestampTrigger, scheduleTime: Date) => {
+const scheduleNotification = async (trigger: TimestampTrigger, time: Date, scheduleTime: Date) => {
   await requestAndroidPermissions();
   // Request notification permissions (required for iOS)
   await notifee.requestPermission();
@@ -46,7 +46,7 @@ const scheduleNotification = async (trigger: TimestampTrigger, scheduleTime: Dat
   const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
-      body: formatNotificationMessage(scheduleTime),
+      body: formatNotificationMessage(time, scheduleTime),
       android: {
         channelId: 'default',
       },
@@ -65,7 +65,7 @@ const scheduleNotification = async (trigger: TimestampTrigger, scheduleTime: Dat
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
   };
 
-  const notificationId = await scheduleNotification(trigger, scheduleTime);
+  const notificationId = await scheduleNotification(trigger, time, scheduleTime);
   return notificationId;
 }
 
