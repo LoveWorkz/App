@@ -63,64 +63,70 @@ const UserScheduler: React.FC = () => {
   // Render function for a single block
   const renderBlock: ListRenderItem<DayBlock> = ({ item }) => (
     <View style={styles.block}>
-      <Text style={styles.blockTitle}>{item.day}</Text>
-      <View style={styles.item}>
-        <TouchableComponent
-          isLoading={false}
-          selectedDisplayValue={new Date(item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
-          onSelectOpenHandler={()=>{
-            setOpen(item.day);
-            userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', true)
-          }}
-        />
-        <DatePicker
-          modal
-          mode="time"
-          open={open === item.day}
-          date={isValidDate(item.time) ? new Date(item.time) : new Date()}
-          onConfirm={async (selectedTime) => {
-            await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
-            await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
-            setOpen(null);
-          }}
-          onCancel={() => {
-            setOpen(null);
-          }}
-        />
+      <AppText style={styles.blockTitle} text={item.day}></AppText>
+      <View style={[styles.itemWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
+        <View style={[styles.item]}>
+          <TouchableComponent
+            isLoading={false}
+            selectedDisplayValue={new Date(item.time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+            onSelectOpenHandler={()=>{
+              setOpen(item.day);
+              userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', true)
+            }}
+          />
+          <DatePicker
+            modal
+            mode="time"
+            open={open === item.day}
+            date={isValidDate(item.time) ? new Date(item.time) : new Date()}
+            onConfirm={async (selectedTime) => {
+              await userSchedulerStore.updateDayBlock(item.day, 'time', selectedTime || item.time);
+              await userSchedulerStore.updateDayBlock(item.day, 'showTimePicker', false);
+              setOpen(null);
+            }}
+            onCancel={() => {
+              setOpen(null);
+            }}
+          />
+        </View>
       </View>
       
-      <View style={[styles.item, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
-        <RNPickerSelect
-        onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
-        items={dropdownOptions}
-        placeholder={{}}
-        style={{
-          inputIOS: {
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'row',
-            paddingVertical: verticalScale(8),
-            height: 40,
-            borderRadius:  moderateScale(10),
-            paddingHorizontal: horizontalScale(20),
-          },
-          inputAndroid: {
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'row',
-            paddingVertical: verticalScale(8),
-            height: 40,
-            borderRadius:  moderateScale(10),
-            paddingHorizontal: horizontalScale(20),
-            backgroundColor: colors.bgTertiaryColor,
-          },
-          iconContainer: {
-            top: 10,
-            right: 12,
-            display: 'none',
-          },
-        }}
-      />
+      <View style={[styles.itemWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
+        <View style={[styles.item]}>
+          <RNPickerSelect
+          onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
+          items={dropdownOptions}
+          placeholder={{}}
+          style={{
+            inputIOS: {
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              // height: 40,
+              paddingVertical: verticalScale(8),
+              borderRadius:  moderateScale(12),
+              paddingHorizontal: horizontalScale(20),
+              color: colors.primaryTextColor,
+            },
+            inputAndroid: {
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'row',
+              // height: 40,
+              paddingVertical: verticalScale(8),
+              borderRadius:  moderateScale(12),
+              paddingHorizontal: horizontalScale(20),
+              backgroundColor: colors.bgTertiaryColor,
+              color: colors.primaryTextColor,
+            },
+            iconContainer: {
+              top: 10,
+              right: 12,
+              display: 'none',
+            },
+          }}
+        />
+        </View>
       </View>
    
     </View>
@@ -128,7 +134,7 @@ const UserScheduler: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={{...styles.title, color: colors.bgTabViewColor}}>Weekdays</Text>
+      <AppText style={{...styles.title, color: colors.bgTabViewColor}} text={'Weekdays'}></AppText>
       <View style={styles.weekdayButtons}>
         {visibleWeekDays.map((day) => (
           <TouchableOpacity
@@ -145,12 +151,15 @@ const UserScheduler: React.FC = () => {
             ]}
             onPress={() => userSchedulerStore.toggleDaySelection(day)}
           >
-            <Text style={{
-              ...styles.dayText, 
-              color: selectedDays.includes(day) 
-                ? colors.white 
-                : colors.primaryTextColor
-              }}>{day.slice(0, 1)}</Text>
+            <AppText 
+              style={{
+                ...styles.dayText, 
+                color: selectedDays.includes(day) 
+                  ? colors.white 
+                  : colors.primaryTextColor
+                }} 
+              text={day.slice(0, 1)}>
+            </AppText>
           </TouchableOpacity>
         ))}
       </View>
@@ -164,8 +173,13 @@ const UserScheduler: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  item: {
+  itemWrapper: {
     marginTop: 16,
+    borderRadius: moderateScale(10),
+  },
+  item: {
+    borderRadius: moderateScale(10),
+    overflow: 'hidden'
   },
   container: {
     flex: 1,
