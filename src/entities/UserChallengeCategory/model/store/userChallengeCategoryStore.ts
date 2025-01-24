@@ -174,6 +174,7 @@ class UserChallengeCategoryStore {
           specialChallengeFavorites: favorites,
           selectedSpecialChallengesIds: [],
           selectedChallengesIds: [],
+          activeSpecialChallangesIds: []
         });
     } catch (e) {
       errorHandler({error: e});

@@ -26,6 +26,7 @@ export interface SpecialChallengeType {
   isChecked: boolean;
   totalViews: number;
   categoryIds: string[];
+  long?: boolean;
 }
 
 export interface ChallengeCardType {

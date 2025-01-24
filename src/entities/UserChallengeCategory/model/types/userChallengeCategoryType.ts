@@ -7,6 +7,7 @@ export interface UserChallengeCategoryType {
   specialChallengeFavorites: FavoriteType;
   selectedChallengesIds: string[];
   selectedSpecialChallengesIds: string[];
+  activeSpecialChallangesIds: string[];
   challengeCategory: Record<
     CategoryKey,
     {
