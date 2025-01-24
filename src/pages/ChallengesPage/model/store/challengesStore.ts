@@ -20,6 +20,7 @@ import {
   ChallengeGroupType,
 } from '@src/entities/ChallengeGroup';
 import {CategoryKey} from '@src/entities/Category';
+import { UserChallengeCategoryType } from '@src/entities/UserChallengeCategory/model/types/userChallengeCategoryType';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -35,6 +36,7 @@ class ChallengesStore {
   specialChallenges: SpecialChallengeType[] = [];
   trendingChallenges: TrendingChallengeType[] = [];
   unlockedChallengeCategoriesIds: string[] = [];
+  activeChallenges = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -89,6 +91,10 @@ class ChallengesStore {
 
   setTrendingChallenges = (trendingChallenges: TrendingChallengeType[]) => {
     this.trendingChallenges = trendingChallenges;
+  };
+
+  setActiveChallenges = (activeChallenges: any) => {
+    this.activeChallenges = activeChallenges;
   };
 
   fetchChallengeCategories = async () => {
@@ -451,6 +457,48 @@ class ChallengesStore {
 
     return trendingChallenges;
   };
+
+
+  fetchActiveChallenges = async () => {
+    crashlytics().log('Getting active challenges.');
+      
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+    const userId = userStore.userId;
+    
+    const userChallengeCategoryData = await firestore()
+      .collection(Collections.USER_CHALLENGE_CATEGORIES)
+      .doc(userId)
+      .get({source});
+    const userChallengeCategory =
+      userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+    if (!userChallengeCategory) {
+      return;
+    }
+
+    const activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
+   
+    const specialChallengesData = await firestore()
+      .collection(Collections.SPECIAL_CHALLENGES_2)
+      .get({source});
+
+    let specialChallenges = specialChallengesData.docs.filter(doc => {
+      const specialChallenge = doc.data() as SpecialChallengeType;
+
+      return {
+        ...specialChallenge
+      };
+    });
+
+
+    const activeSpecialChallenges = specialChallenges.filter(specialChallenge=>activeSpecialChallangesIds.includes(specialChallenge.id));
+
+    console.log(activeSpecialChallangesIds, "activeSpecialChallangesIds");
+    console.log(activeSpecialChallenges, "activeSpecialChallenges");
+    
+
+    this.setActiveChallenges(activeSpecialChallenges);
+  }
 }
 
 export default new ChallengesStore();

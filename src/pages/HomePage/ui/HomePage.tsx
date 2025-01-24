@@ -48,6 +48,7 @@ import { DayBlock } from '@src/widgets/UserScheduler/model/types/userSchedular';
 import { notifeeLib } from '@src/shared/lib/notifee/notifee';
 import { add } from 'date-fns';
 import UserSchedulerStore from '@src/widgets/UserScheduler/model/store/UserSchedulerStore';
+import ActiveChallengeList from '@src/entities/Challenge/ui/ActiveChallenge/ActiveChallengeList';
 interface HomePageProps {
   prevRouteName?: string;
   isTabScreen?: boolean;
@@ -184,6 +185,8 @@ const HomePage = (props: HomePageProps) => {
                 <DiscountOfferCard isLoading={isLoading} />
               </View>
             )}
+
+            <ActiveChallengeList isLoading={isLoading} />
 
             <CategoriesCarousel isLoading={isLoading} />
 
