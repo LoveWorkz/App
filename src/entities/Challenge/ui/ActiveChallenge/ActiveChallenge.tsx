@@ -9,12 +9,13 @@ import {challengeImage} from '@src/shared/assets/images';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import Skeleton from '@src/shared/ui/Skeleton/Skeleton';
 import {windowWidthMinusPaddings} from '@src/app/styles/GlobalStyle';
-import {TrendingChallengeType} from '../../model/types/ChallengeTypes';
+import {ActiveChallengeType, TrendingChallengeType} from '../../model/types/ChallengeTypes';
 import challengeStore from '../../model/store/challengeStore';
 import {Theme, useTheme} from '@src/app/providers/themeProvider';
+import { DisplayText } from '@src/shared/types/types';
 
 interface TrendingChallengeProps {
-  challenge: TrendingChallengeType;
+  challenge: ActiveChallengeType;
   isLoading: boolean;
 }
 
@@ -23,9 +24,10 @@ const borderRadius = moderateScale(20);
 const TrendingChallenge = (props: TrendingChallengeProps) => {
   const {challenge, isLoading} = props;
 
-  const {description, title, isChallengeSpecial, group} = challenge;
+  const {description, title, isChallengeSpecial} = challenge;
+  
 
-  const displayName = group?.displayName;
+  const desc = description[0] as DisplayText
 
   const colors = useColors();
   const {theme} = useTheme();
@@ -74,20 +76,20 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
           source={challengeImage}
         />
         <View style={styles.textWrapper}>
-          {displayName && (
+          <AppText
+            weight={'700'}
+            text={title[languae]}
+            size={TextSize.LEVEL_3}
+          />
+           {description && (
             <AppText
-              style={styles.title}
-              weight={'600'}
-              size={TextSize.LEVEL_2}
-              text={displayName[languae]}
+              style={styles.description}
+              weight={'400'}
+              size={TextSize.LEVEL_4}
+              text={desc[languae]}
+              numberOfLines={2}
             />
           )}
-          <AppText
-            weight={'600'}
-            text={isChallengeSpecial ? title[languae] : description[languae]}
-            size={TextSize.LEVEL_4}
-            numberOfLines={2}
-          />
         </View>
       </View>
     </TouchableOpacity>
@@ -113,8 +115,9 @@ const styles = StyleSheet.create({
   textWrapper: {
     width: horizontalScale(220),
   },
-  title: {
-    width: '75%',
+  description: {
+    width: '90%',
+    marginTop: horizontalScale(4),
     marginBottom: horizontalScale(4),
   },
 });

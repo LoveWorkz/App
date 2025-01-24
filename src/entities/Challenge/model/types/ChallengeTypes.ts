@@ -53,3 +53,10 @@ export interface TrendingChallengeType {
   description: DisplayText;
   isChallengeSpecial: boolean;
 }
+
+export interface ActiveChallengeType {
+  group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]> | null;
+  title: DisplayText;
+  description: DisplayText[];
+  isChallengeSpecial: boolean;
+}

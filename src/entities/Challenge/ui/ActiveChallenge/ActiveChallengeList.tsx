@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -9,13 +9,14 @@ import {challengesStore} from '@src/pages/ChallengesPage';
 import {SeeAll} from '@src/shared/ui/SeeAll/SeeAll';
 import {navigation} from '@src/shared/lib/navigation/navigation';
 import {TabRoutesNames} from '@src/shared/config/route/tabConfigRoutes';
-import {TrendingChallengeType} from '../../model/types/ChallengeTypes';
-import {TrendingChallengeExample} from '../../model/lib/challenge';
+import {ActiveChallengeType} from '../../model/types/ChallengeTypes';
+import {ActiveChallengeExample} from '../../model/lib/challenge';
 import TrendingChallenge from './ActiveChallenge';
 import {useTranslation} from 'react-i18next';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface TrendingChallengeWrapperProps {
-  challenge: TrendingChallengeType;
+  challenge: ActiveChallengeType;
   index: number;
   listLength: number;
   isLoading: boolean;
@@ -32,6 +33,7 @@ const TrendingChallengeWrapper = memo(
     let content = challenge && <TrendingChallenge {...props} />;
 
     const onPress = useCallback(() => {
+      challengesStore.setChallengeTabIndex(1);
       navigation.navigate(TabRoutesNames.CHALLENGES);
     }, []);
 
@@ -59,10 +61,11 @@ const TrendingChallengeList = (props: ChallengeGroupProps) => {
   const {isLoading} = props;
   const {t} = useTranslation();
 
-  const trendingChallenges = challengesStore.trendingChallenges;
+  const trendingChallenges = challengesStore.activeChallenges;
 
-
-  console.log(trendingChallenges, "trendingChallengess")
+  useEffect(() => {
+    challengesStore.fetchActiveChallenges();
+  },[])
 
   const trendingListWithMetadata = useMemo(() => {
     // this empty object is needed to add a "view all" block
@@ -85,22 +88,22 @@ const TrendingChallengeList = (props: ChallengeGroupProps) => {
   if (isLoading) {
     return (
       <View>
-        <TrendingChallenge isLoading challenge={TrendingChallengeExample} />
+        <TrendingChallenge isLoading challenge={ActiveChallengeExample} />
       </View>
     );
   }
 
   return (
     <View>
-      {!isLoading && (
+      {!isLoading && trendingChallenges.length > 0 && (
         <View style={styles.titleWrapper}>
-          <AppText weight={'500'} text={t('common.trending_challenges')} />
+          <AppText weight={'500'} text={t('common.active_challenges')} />
         </View>
       )}
-      <HorizontalCarousel
+      {trendingChallenges.length > 0 && (<HorizontalCarousel
         data={trendingListWithMetadata}
         Component={TrendingChallengeWrapper}
-      />
+      />)}
     </View>
   );
 };
@@ -110,5 +113,6 @@ export default memo(observer(TrendingChallengeList));
 const styles = StyleSheet.create({
   titleWrapper: {
     marginBottom: horizontalScale(10),
+    marginTop: horizontalScale(40),
   },
 });

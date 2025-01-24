@@ -695,6 +695,8 @@ class ChallengeStore {
           activeSpecialChallangesIds: newActiveSpecialChallangesIds
         });
 
+      challengesStore.fetchActiveChallenges();
+
       runInAction(() => {
         this.activeSpecialChallangesIds = newActiveSpecialChallangesIds;
       })

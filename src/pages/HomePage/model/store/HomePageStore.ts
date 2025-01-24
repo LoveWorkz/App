@@ -97,9 +97,8 @@ class HomePageStore {
     const promise1 = challengesStore.fetchCoreAndSpecialTrendingChallenges();
     const promise2 =
       userChallengeCategoryStore.fetchUserChallengeFavoritesAndSelectedIds();
-    const pormise3 = challengesStore.fetchActiveChallenges();
 
-    await Promise.all([promise1, promise2, pormise3]);
+    await Promise.all([promise1, promise2]);
   };
 
   fetchHomePageCategoriesAndChallenges = async (

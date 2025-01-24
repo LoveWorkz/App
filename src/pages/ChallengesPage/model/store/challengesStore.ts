@@ -458,6 +458,27 @@ class ChallengesStore {
     return trendingChallenges;
   };
 
+  fetchDocumentsByIds = async (collectionName: string, docIds: string[]) => {
+    try {
+      const promises = docIds.map(async (id: string) => {
+        const docRef = firestore().collection(collectionName).doc(id);
+        const docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          const specialChallenge = docSnapshot.data() as SpecialChallengeType;
+          return { 
+            ...specialChallenge,
+          };
+        }
+      });
+
+      const results = await Promise.all(promises);
+
+      return results;
+    } catch (error) {
+      console.error("Error fetching documents: ", error);
+    }
+  };
 
   fetchActiveChallenges = async () => {
     crashlytics().log('Getting active challenges.');
@@ -477,26 +498,7 @@ class ChallengesStore {
     }
 
     const activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
-   
-    const specialChallengesData = await firestore()
-      .collection(Collections.SPECIAL_CHALLENGES_2)
-      .get({source});
-
-    let specialChallenges = specialChallengesData.docs.filter(doc => {
-      const specialChallenge = doc.data() as SpecialChallengeType;
-
-      return {
-        ...specialChallenge
-      };
-    });
-
-
-    const activeSpecialChallenges = specialChallenges.filter(specialChallenge=>activeSpecialChallangesIds.includes(specialChallenge.id));
-
-    console.log(activeSpecialChallangesIds, "activeSpecialChallangesIds");
-    console.log(activeSpecialChallenges, "activeSpecialChallenges");
-    
-
+    const activeSpecialChallenges = await this.fetchDocumentsByIds(Collections.SPECIAL_CHALLENGES_2, activeSpecialChallangesIds);
     this.setActiveChallenges(activeSpecialChallenges);
   }
 }
