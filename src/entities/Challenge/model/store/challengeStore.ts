@@ -468,6 +468,18 @@ class ChallengeStore {
     }
   };
 
+  specialChallengeSessionFlow = async (isSessionFlow: boolean, specialChallengeId: string) => {
+    if (isSessionFlow) {
+      await sessionStore.processSessionCompletion();
+      await this.checkEventAndNavigateToCompletionPage();
+      await this.incrementChallengeViewCount({
+        challengeId: specialChallengeId,
+        isCore: false,
+      });
+      await challengeDoneFromSessionStorage.setChallengeDone(specialChallengeId);
+    }
+  }
+
   specialChallengeCardButtonPressHandler = async (
     specialChallengeId: string,
     isChecked: boolean,
@@ -477,15 +489,7 @@ class ChallengeStore {
 
       const isSessionFlow = this.isSessionFlow;
 
-      if (isSessionFlow) {
-        await sessionStore.processSessionCompletion();
-        await this.checkEventAndNavigateToCompletionPage();
-        await this.incrementChallengeViewCount({
-          challengeId: specialChallengeId,
-          isCore: false,
-        });
-        await challengeDoneFromSessionStorage.setChallengeDone(specialChallengeId);
-      }
+      await this.specialChallengeSessionFlow(isSessionFlow, specialChallengeId);
 
       if (!isChecked && specialChallengeId) {
         this.selectSpecialChallenge({

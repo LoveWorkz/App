@@ -93,7 +93,7 @@ const SpecialChallengeCardsPage = () => {
     console.log("Activate special challenge");
 
     if(isSessionFlow) {
-     onSpecialChallengeHandler();
+     challengeStore.specialChallengeSessionFlow(isSessionFlow, specialChallenge?.id as string)
     }
 
     challengeStore.setActiveSpecialChallangesIds(specialChallengeId, 'add');
@@ -138,6 +138,8 @@ const SpecialChallengeCardsPage = () => {
     () => listWithMetadata[0].showButton,
     [listWithMetadata],
   );
+
+  console.log(showBottomButton, "showBottomButton")
 
   if (!specialChallenge) {
     return null;
@@ -290,7 +292,7 @@ const SpecialChallengeCardsPage = () => {
       />
      <View style={{height: 50}}>
       {/* {inActivateButton} */}
-      {isLong ? challengeIsActive ? null : (showActivateButton ? activateButton : inActivateButton) : null}
+      {showBottomButton && isLong ? challengeIsActive ? null : (showActivateButton ? activateButton : inActivateButton) : null}
       
       {(challengeIsActive || !isLong) && showBottomButton && (
         specialChallengeisChecked ? ( isSessionFlow ? ProceedButton : DoneButton ) : ProceedButton
