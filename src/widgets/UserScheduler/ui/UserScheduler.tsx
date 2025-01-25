@@ -94,6 +94,7 @@ const UserScheduler: React.FC = () => {
       <View style={[styles.itemWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
         <View style={[styles.item]}>
           <RNPickerSelect
+          value={item.dropdownValue}
           onValueChange={(value) => userSchedulerStore.updateDayBlock(item.day, 'dropdownValue', value)}
           items={dropdownOptions}
           placeholder={{}}

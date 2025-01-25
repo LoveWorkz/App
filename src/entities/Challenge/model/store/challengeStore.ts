@@ -452,6 +452,15 @@ class ChallengeStore {
     try {
       crashlytics().log('Selecting special challenge.');
 
+      this.setActiveSpecialChallangesIds(id, 'remove');
+
+      if(newValue) {
+        this.setChallengeIsAcitve(true);
+         
+      } else {
+        this.setChallengeIsAcitve(false);
+      }
+      
       await this.updateSpecialChallenge({id, isChallengeCard});
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
@@ -642,7 +651,7 @@ class ChallengeStore {
    this.challengeDoneFromSession = false;
   }
 
-  getActiveSpecialChallangesIds = async () => {
+  getActiveSpecialChallangesIds = async (specialChallengeId: string, specialChallengeisChecked: boolean) => {
     try {
       crashlytics().log('Getting active special challanges Ids.');
       
@@ -663,8 +672,10 @@ class ChallengeStore {
       runInAction(() => {
         this.activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
 
-        if (userChallengeCategory.activeSpecialChallangesIds.includes(this.specialChallenge?.id as string)) {
+        if (userChallengeCategory.activeSpecialChallangesIds.includes(specialChallengeId as string) || specialChallengeisChecked) {
           this.setChallengeIsAcitve(true);
+        } else {
+          this.setChallengeIsAcitve(false);
         }
       })
     } catch (e) {

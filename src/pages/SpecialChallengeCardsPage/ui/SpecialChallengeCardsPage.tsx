@@ -51,8 +51,10 @@ const SpecialChallengeCardsPage = () => {
       challengeStore.updateChallengeButtonVisibility();
       challengeStore.updateChallangeDoneFromSession(specialChallenge?.id);
       console.log('You are in special challenge cards page');
+      console.log(challengeIsActive, "challengeIsActive");
+      console.log(specialChallengeisChecked, "specialChallengeisChecked")
 
-      challengeStore.getActiveSpecialChallangesIds();
+      challengeStore.getActiveSpecialChallangesIds(specialChallenge?.id as string, specialChallengeisChecked as boolean);
 
       return () => {
         challengeStore.setIsChallengeDoneButtonVisible(false);
@@ -71,6 +73,9 @@ const SpecialChallengeCardsPage = () => {
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
     );
+    if(isLong) {
+      challengeStore.setActiveSpecialChallangesIds(specialChallenge.id as string, "remove");
+    }
   };
 
   const undoHandler = () => {
@@ -80,16 +85,19 @@ const SpecialChallengeCardsPage = () => {
     );
 
     if(isLong) {
-      challengeStore.setActiveSpecialChallangesIds(specialChallenge.id as string, "remove");
-      challengeStore.setChallengeIsAcitve(false);
       challengeStore.setChallengeIsAcitve(false);
     }
   };
 
   const onActivateButtonPressHandler = () => {
     console.log("Activate special challenge");
+
+    if(isSessionFlow) {
+     onSpecialChallengeHandler();
+    }
+
     challengeStore.setActiveSpecialChallangesIds(specialChallengeId, 'add');
-    setShowActivateButton(false);
+    !isSessionFlow && setShowActivateButton(false);
   }
 
   const onInActivateButtonPressHandler = () => {
