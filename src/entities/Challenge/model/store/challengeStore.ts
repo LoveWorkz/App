@@ -662,15 +662,35 @@ class ChallengeStore {
       const source = await userStore.checkIsUserOfflineAndReturnSource();
       const userId = userStore.userId;
       
-      const userChallengeCategoryData = await firestore()
+      let userChallengeCategoryData = await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
         .get({source});
-      const userChallengeCategory =
+      let userChallengeCategory =
         userChallengeCategoryData.data() as UserChallengeCategoryType;
 
       if (!userChallengeCategory) {
         return;
+      }
+
+      if(!userChallengeCategory.activeSpecialChallangesIds) {
+       await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            activeSpecialChallangesIds: []
+          })
+
+        userChallengeCategoryData = await firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .get({source});
+       
+        userChallengeCategory = userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+        if (!userChallengeCategory) {
+          return;
+        }
       }
 
       runInAction(() => {
