@@ -10,3 +10,4 @@ export const SPECIAL_CHALLENGE_BUTTON_STATUS_KEY =
   'specialChallengeStatusButton';
 export const EVENT_END_TYPE_KEY = 'eventEndType';
 export const GUIDED_TOUR_COMPLETED_KEY = 'guidedTourCompleted';
+export const USER_SCHEDULERS_KEY = 'userSchedulers';

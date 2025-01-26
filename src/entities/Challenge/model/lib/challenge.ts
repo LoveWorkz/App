@@ -5,6 +5,7 @@ import {LanguageValueType} from '@src/widgets/LanguageSwitcher';
 import {challengeInfoStorage} from '@src/shared/lib/storage/adapters/challengeInforAdapter';
 import {SPECIAL_CHALLENGE_BUTTON_STATUS_KEY} from '@src/shared/consts/storage';
 import {
+  ActiveChallengeType,
   ChallengeType,
   SpecialChallengeType,
   TrendingChallengeType,
@@ -81,5 +82,20 @@ export const TrendingChallengeExample: TrendingChallengeType = {
     de: '',
     pt: '',
   },
+  isChallengeSpecial: false,
+};
+
+export const ActiveChallengeExample: ActiveChallengeType = {
+  group: null,
+  title: {
+    en: '',
+    de: '',
+    pt: '',
+  },
+  description: [{
+    en: '',
+    de: '',
+    pt: '',
+  }],
   isChallengeSpecial: false,
 };

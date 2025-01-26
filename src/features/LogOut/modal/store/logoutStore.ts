@@ -9,6 +9,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {authStorage} from '@src/shared/lib/storage/adapters/authAdapter';
 import {AUTH_METHOD_STORAGE_KEY} from '@src/shared/consts/storage';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
+import { notifeeLib } from '@src/shared/lib/notifee/notifee';
 
 class LogoutStore {
   isLoading: boolean = false;
@@ -48,6 +49,7 @@ class LogoutStore {
       await auth().signOut();
       actionAfterLogout();
       userStore.clearUserInfo();
+      notifeeLib.cancelAllNotifications();
 
       this.setIsLoading(false);
       navigation.resetHistoryAndNavigate(AppRouteNames.AUTH);

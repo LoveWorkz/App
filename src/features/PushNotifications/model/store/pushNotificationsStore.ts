@@ -7,6 +7,7 @@ import {isPlatformIos} from '@src/shared/consts/common';
 import {errorHandler} from '@src/shared/lib/errorHandler/errorHandler';
 import {User, userStore} from '@src/entities/User';
 import {PermissionsAndroid, Platform} from 'react-native';
+import notifee from '@notifee/react-native';
 
 class PushNotificationsStore {
   constructor() {
@@ -53,6 +54,8 @@ class PushNotificationsStore {
 
   requestUserPermission = async () => {
     try {
+      await notifee.requestPermission({criticalAlert: true});
+
       if (isPlatformIos) {
         const result = this.requestUserIosPermission();
         return result;

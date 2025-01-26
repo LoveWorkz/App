@@ -1,7 +1,7 @@
 import {NavigationState, SceneRendererProps} from 'react-native-tab-view';
 
 export interface SelectOption {
-  value: string;
+  value: string | number;
   label: string;
 }
 

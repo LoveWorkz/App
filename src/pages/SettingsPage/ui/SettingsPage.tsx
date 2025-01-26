@@ -28,7 +28,7 @@ import {
   getMoreItems,
   getSubscriptionItems,
 } from '../model/lib/settingslib';
-import {useColors} from '@src/app/providers/colorsProvider';
+import { useColors } from '@src/app/providers/colorsProvider';
 
 const SettingsPage = () => {
   const statusBarHeight = getStatusBarHeight();
@@ -99,6 +99,11 @@ const SettingsPage = () => {
         text: t('settings.your_goals'),
         path: AppRouteNames.YOUR_GOALS,
       },
+      {
+        Icon: YourGoalsIcon,
+        text: t('settings.user_scheduler'),
+        path: AppRouteNames.USER_SCHEDULER,
+      },
     ];
   }, [isDarkMode, t]);
 
@@ -110,10 +115,7 @@ const SettingsPage = () => {
           minHeight: windowHeightMinusPaddings - navbarHeight,
         },
       ]}>
-      <StatusBar
-        barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.bgColor}
-      />
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.bgColor} />
 
       <View style={styles.settingGroupItem}>
         <SettingGroup

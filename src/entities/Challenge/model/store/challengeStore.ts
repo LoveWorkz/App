@@ -25,7 +25,8 @@ import {userStore} from '@src/entities/User';
 import {removeDuplicates} from '@src/shared/lib/common';
 import {ChallengeType, SpecialChallengeType} from '../types/ChallengeTypes';
 import {fetchChallengeButtonStatus, isLastCard} from '../lib/challenge';
-import {challengeDoneFromSessionStorage} from '@src/shared/lib/storage/adapters/challengeDoneFromSessionAdapter';
+import { challengeDoneFromSessionStorage } from '@src/shared/lib/storage/adapters/challengeDoneFromSessionAdapter';
+import { UserChallengeCategoryType } from '@src/entities/UserChallengeCategory/model/types/userChallengeCategoryType';
 
 class ChallengeStore {
   specialChallenge: SpecialChallengeType | null = null;
@@ -37,8 +38,9 @@ class ChallengeStore {
   coreChallengeCardScreenshot: string = '';
   specialChallengeCardScreenshot: string = '';
   challengeDoneFromSession: boolean = false;
-
+  activeSpecialChallangesIds: string[] = [];
   isSelectingChallenge: boolean = false;
+  challengeIsActive: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -266,10 +268,8 @@ class ChallengeStore {
       );
 
       let {challengeCardsData, id: challengeId} = this.specialChallenge;
-      challengeCardsData = challengeCardsData.filter(
-        item => item.visibility.indexOf(lang) !== -1,
-      );
-
+      challengeCardsData = challengeCardsData.filter((item)=>(item.visibility.indexOf(lang) !== -1))
+      
       if (isLastCard(id, challengeCardsData)) {
         const specialChallengeInfo = await fetchChallengeButtonStatus();
         const updatedInfo = {
@@ -452,12 +452,33 @@ class ChallengeStore {
     try {
       crashlytics().log('Selecting special challenge.');
 
+      this.setActiveSpecialChallangesIds(id, 'remove');
+
+      if(newValue) {
+        this.setChallengeIsAcitve(true);
+         
+      } else {
+        this.setChallengeIsAcitve(false);
+      }
+      
       await this.updateSpecialChallenge({id, isChallengeCard});
       this.updateLocalSpecialChallenge({id, newValue});
     } catch (e) {
       errorHandler({error: e});
     }
   };
+
+  specialChallengeSessionFlow = async (isSessionFlow: boolean, specialChallengeId: string) => {
+    if (isSessionFlow) {
+      await sessionStore.processSessionCompletion();
+      await this.checkEventAndNavigateToCompletionPage();
+      await this.incrementChallengeViewCount({
+        challengeId: specialChallengeId,
+        isCore: false,
+      });
+      await challengeDoneFromSessionStorage.setChallengeDone(specialChallengeId);
+    }
+  }
 
   specialChallengeCardButtonPressHandler = async (
     specialChallengeId: string,
@@ -468,17 +489,7 @@ class ChallengeStore {
 
       const isSessionFlow = this.isSessionFlow;
 
-      if (isSessionFlow) {
-        await sessionStore.processSessionCompletion();
-        await this.checkEventAndNavigateToCompletionPage();
-        await this.incrementChallengeViewCount({
-          challengeId: specialChallengeId,
-          isCore: false,
-        });
-        await challengeDoneFromSessionStorage.setChallengeDone(
-          specialChallengeId,
-        );
-      }
+      await this.specialChallengeSessionFlow(isSessionFlow, specialChallengeId);
 
       if (!isChecked && specialChallengeId) {
         this.selectSpecialChallenge({
@@ -633,18 +644,105 @@ class ChallengeStore {
   };
 
   updateChallangeDoneFromSession = async (challengeId: string | undefined) => {
-    if (challengeId) {
-      const isDone = await challengeDoneFromSessionStorage.getChallengeDone(
-        challengeId,
-      );
+    if(challengeId) {
+      const isDone =  await challengeDoneFromSessionStorage.getChallengeDone(challengeId);
       runInAction(() => {
-        this.challengeDoneFromSession = isDone === 'DONE';
-      });
+        this.challengeDoneFromSession = (isDone === 'DONE');
+      })
     }
-  };
+  }
   removeChallangeDoneFromSession = () => {
-    this.challengeDoneFromSession = false;
-  };
+   this.challengeDoneFromSession = false;
+  }
+
+  getActiveSpecialChallangesIds = async (specialChallengeId: string, specialChallengeisChecked: boolean) => {
+    try {
+      crashlytics().log('Getting active special challanges Ids.');
+      
+      const source = await userStore.checkIsUserOfflineAndReturnSource();
+      const userId = userStore.userId;
+      
+      let userChallengeCategoryData = await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .get({source});
+      let userChallengeCategory =
+        userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+      if (!userChallengeCategory) {
+        return;
+      }
+
+      if(!userChallengeCategory.activeSpecialChallangesIds) {
+       await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .update({
+            activeSpecialChallangesIds: []
+          })
+
+        userChallengeCategoryData = await firestore()
+          .collection(Collections.USER_CHALLENGE_CATEGORIES)
+          .doc(userId)
+          .get({source});
+       
+        userChallengeCategory = userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+        if (!userChallengeCategory) {
+          return;
+        }
+      }
+
+      runInAction(() => {
+        this.activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
+
+        if (userChallengeCategory.activeSpecialChallangesIds.includes(specialChallengeId as string) || specialChallengeisChecked) {
+          this.setChallengeIsAcitve(true);
+        } else {
+          this.setChallengeIsAcitve(false);
+        }
+      })
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  }
+
+  setActiveSpecialChallangesIds = async (specialChallengeId: string, type: 'add' | 'remove') => {
+    try {
+      crashlytics().log('Setting active special challanges Ids.');
+      let newActiveSpecialChallangesIds: string[];
+      let indexToRemove;
+
+      if(type==='add') {
+        newActiveSpecialChallangesIds = [specialChallengeId,...this.activeSpecialChallangesIds];
+      }
+      else {
+        indexToRemove = this.activeSpecialChallangesIds.indexOf(specialChallengeId);
+        newActiveSpecialChallangesIds = [...this.activeSpecialChallangesIds.slice(0, indexToRemove), ...this.activeSpecialChallangesIds.slice(indexToRemove + 1)];;
+      }
+
+      const userId = userStore.userId;
+
+      await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .update({
+          activeSpecialChallangesIds: newActiveSpecialChallangesIds
+        });
+
+      challengesStore.fetchActiveChallenges();
+
+      runInAction(() => {
+        this.activeSpecialChallangesIds = newActiveSpecialChallangesIds;
+      })
+    } catch (e) {
+      errorHandler({error: e});
+    }
+  }
+
+  setChallengeIsAcitve(status: boolean) {
+    this.challengeIsActive=status;
+  }
 }
 
 export default new ChallengeStore();

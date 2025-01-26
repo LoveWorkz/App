@@ -26,6 +26,7 @@ export interface SpecialChallengeType {
   isChecked: boolean;
   totalViews: number;
   categoryIds: string[];
+  long?: boolean;
 }
 
 export interface ChallengeCardType {
@@ -50,5 +51,12 @@ export interface TrendingChallengeType {
   group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]> | null;
   title: DisplayText;
   description: DisplayText;
+  isChallengeSpecial: boolean;
+}
+
+export interface ActiveChallengeType {
+  group: ChallengeGroupType<SpecialChallengeType[] | ChallengeType[]> | null;
+  title: DisplayText;
+  description: DisplayText[];
   isChallengeSpecial: boolean;
 }

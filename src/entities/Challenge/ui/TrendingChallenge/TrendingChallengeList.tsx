@@ -32,6 +32,7 @@ const TrendingChallengeWrapper = memo(
     let content = challenge && <TrendingChallenge {...props} />;
 
     const onPress = useCallback(() => {
+      challengesStore.setChallengeTabIndex(0);
       navigation.navigate(TabRoutesNames.CHALLENGES);
     }, []);
 

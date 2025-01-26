@@ -20,6 +20,7 @@ import {
   ChallengeGroupType,
 } from '@src/entities/ChallengeGroup';
 import {CategoryKey} from '@src/entities/Category';
+import { UserChallengeCategoryType } from '@src/entities/UserChallengeCategory/model/types/userChallengeCategoryType';
 
 class ChallengesStore {
   challengeCategories: ChallengeCategoryType[] = [];
@@ -35,6 +36,7 @@ class ChallengesStore {
   specialChallenges: SpecialChallengeType[] = [];
   trendingChallenges: TrendingChallengeType[] = [];
   unlockedChallengeCategoriesIds: string[] = [];
+  activeChallenges = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -89,6 +91,10 @@ class ChallengesStore {
 
   setTrendingChallenges = (trendingChallenges: TrendingChallengeType[]) => {
     this.trendingChallenges = trendingChallenges;
+  };
+
+  setActiveChallenges = (activeChallenges: any) => {
+    this.activeChallenges = activeChallenges;
   };
 
   fetchChallengeCategories = async () => {
@@ -451,6 +457,52 @@ class ChallengesStore {
 
     return trendingChallenges;
   };
+
+  fetchDocumentsByIds = async (collectionName: string, docIds: string[]) => {
+    try {
+      const promises = docIds.map(async (id: string) => {
+        const docRef = firestore().collection(collectionName).doc(id);
+        const docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          const specialChallenge = docSnapshot.data() as SpecialChallengeType;
+          return { 
+            ...specialChallenge,
+          };
+        }
+      });
+
+      const results = await Promise.all(promises);
+
+      return results;
+    } catch (error) {
+      console.error("Error fetching documents: ", error);
+    }
+  };
+
+  fetchActiveChallenges = async () => {
+    crashlytics().log('Getting active challenges.');
+      
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+    const userId = userStore.userId;
+    
+    const userChallengeCategoryData = await firestore()
+      .collection(Collections.USER_CHALLENGE_CATEGORIES)
+      .doc(userId)
+      .get({source});
+    const userChallengeCategory =
+      userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+    if (!userChallengeCategory) {
+      return;
+    }
+
+    if(!userChallengeCategory.activeSpecialChallangesIds) return;
+
+    const activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
+    const activeSpecialChallenges = await this.fetchDocumentsByIds(Collections.SPECIAL_CHALLENGES_2, activeSpecialChallangesIds);
+    this.setActiveChallenges(activeSpecialChallenges);
+  }
 }
 
 export default new ChallengesStore();
