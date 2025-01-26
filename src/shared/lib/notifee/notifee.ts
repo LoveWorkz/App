@@ -38,9 +38,6 @@ function formatNotificationMessage(time: Date, date: Date): string {
 }
 
 const scheduleNotification = async (trigger: TimestampTrigger, time: Date, scheduleTime: Date) => {
-  console.log('---- MTAV STE ----');
-  
-
   const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
@@ -48,11 +45,16 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, sched
       android: {
         channelId: 'important',
         importance: AndroidImportance.HIGH,
+        pressAction: {
+          launchActivity: "default",
+          id: "default",
+        }
       },
       ios: {
         critical: true,
         interruptionLevel: "timeSensitive", // High priority for critical notifications
-      }
+      },
+      
     },
     trigger
   );

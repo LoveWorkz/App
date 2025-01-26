@@ -37,7 +37,6 @@ async function ensureNotificationChannelExists() {
 const App = () => {
   useEffect(() => {
     ensureNotificationChannelExists();
-    notifee.onBackgroundEvent(async ({ type, detail }) => {});
   }, []);
   // TODO: enable Admob
   // useEffect(() => {
