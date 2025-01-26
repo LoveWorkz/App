@@ -6,6 +6,7 @@ import {navigation} from '@src/shared/lib/navigation/navigation';
 import {AppRouteNames} from '@src/shared/config/route/configRoute';
 import {onboardingStorage} from '@src/shared/lib/storage/adapters/onboardingAdapter';
 import {HAS_COMPLETED_ONBOARDING_KEY} from '@src/shared/consts/storage';
+import pushNotificationsStore from '@src/features/PushNotifications/model/store/pushNotificationsStore';
 
 class OnboardingStore {
   constructor() {
@@ -14,6 +15,7 @@ class OnboardingStore {
 
   allowNotificationsAndNavigate = async () => {
     try {
+      await pushNotificationsStore.requestUserPermission();
       await notificationStore.allowNotifications();
       navigation.navigate(AppRouteNames.ONBOARDING_STATISTIC);
     } catch (e) {

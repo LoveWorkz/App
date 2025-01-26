@@ -5,7 +5,7 @@ import { USER_SCHEDULERS_KEY } from '@src/shared/consts/storage';
 import { userSchedulersAdapterStorage } from "@src/shared/lib/storage/adapters/userSchedulersAdapter";
 import { DayBlock, DropdownOptions } from "../types/userSchedular";
 import { PermissionsAndroid, Platform } from "react-native";
-import notifee, { TriggerType, TimestampTrigger, AndroidImportance } from '@notifee/react-native';
+import notifee, { TriggerType, TimestampTrigger, AndroidImportance, AndroidNotificationSetting } from '@notifee/react-native';
 import { notifeeLib } from "@src/shared/lib/notifee/notifee";
 import { userStore } from "@src/entities/User";
 import { add, addDays, sub } from "date-fns";
@@ -175,6 +175,11 @@ class UserSchedulerStore {
         newBlock.dropdownValue,
         this.weekdays
       );
+
+      const settings = await notifee.getNotificationSettings();
+      if (settings.android.alarm !== AndroidNotificationSetting.ENABLED) {
+        await notifee.openAlarmPermissionSettings();
+      }
   
       // Schedule the notification
       const scheduleNotificationId = await notifeeLib.scheduleWeeklyNotification(

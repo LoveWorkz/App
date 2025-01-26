@@ -1,4 +1,4 @@
-import notifee, { TriggerType, TimestampTrigger, RepeatFrequency, AndroidImportance  } from '@notifee/react-native';
+import notifee, { TriggerType, TimestampTrigger, RepeatFrequency, AndroidImportance, AndroidNotificationSetting  } from '@notifee/react-native';
 import { addDays, setHours, setMinutes, setSeconds, sub } from 'date-fns';
 import { PermissionsAndroid, Platform } from 'react-native';
 
@@ -38,19 +38,19 @@ function formatNotificationMessage(time: Date, date: Date): string {
 }
 
 const scheduleNotification = async (trigger: TimestampTrigger, time: Date, scheduleTime: Date) => {
-  await requestAndroidPermissions();
-  // Request notification permissions (required for iOS)
-  await notifee.requestPermission();
+  console.log('---- MTAV STE ----');
+  
 
   const notificationId = await notifee.createTriggerNotification(
     {
       title: 'Weekly Reminder',
       body: formatNotificationMessage(time, scheduleTime),
       android: {
-        channelId: 'default',
+        channelId: 'important',
         importance: AndroidImportance.HIGH,
       },
       ios: {
+        critical: true,
         interruptionLevel: "timeSensitive", // High priority for critical notifications
       }
     },
@@ -61,6 +61,9 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, sched
 }
 
  const scheduleWeeklyNotification = async (time: Date, scheduleTime: Date) => {
+
+  // const intent = 'android.settings.IGNORE_BATTERY_OPTIMIZATION_SETTINGS';
+  // await Linking.openSettings();
   // Create a trigger
 
   console.log(time, "tIME")
@@ -68,6 +71,9 @@ const scheduleNotification = async (trigger: TimestampTrigger, time: Date, sched
     type: TriggerType.TIMESTAMP,
     timestamp: time.getTime(), // Timestamp in milliseconds
     repeatFrequency: RepeatFrequency.WEEKLY, // Repeats every week
+    alarmManager: {
+      allowWhileIdle: true,
+    }
   };
 
   const notificationId = await scheduleNotification(trigger, time, scheduleTime);

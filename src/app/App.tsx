@@ -17,19 +17,19 @@ async function ensureNotificationChannelExists() {
     // Get the list of all channels
     const channels = await notifee.getChannels();
 
-    // Check if the "default" channel exists
-    const channelExists = channels.some(channel => channel.id === 'default');
+    // Check if the "important" channel exists
+    const channelExists = channels.some(channel => channel.id === 'important');
 
     if (!channelExists) {
       // Create the channel if it doesn't exist
       await notifee.createChannel({
-        id: 'default',
-        name: 'Default Channel',
+        id: 'important',
+        name: 'Important Notifications',
         importance: AndroidImportance.HIGH,
       });
-      console.log('Default channel created');
+      console.log('Channel created');
     } else {
-      console.log('Default channel already exists');
+      console.log('Channel already exists');
     }
   }
 }
