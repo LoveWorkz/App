@@ -75,6 +75,9 @@ const HomePage = (props: HomePageProps) => {
 
   useEffect(() => {
     (async function() {
+       const triggerNotificationIds = await notifeeLib.getTriggerNotificationIds();
+       if(triggerNotificationIds.length) return;
+
        const storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
       
        if(!storage) return;

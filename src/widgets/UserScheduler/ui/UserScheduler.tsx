@@ -39,14 +39,6 @@ const UserScheduler: React.FC = () => {
 
   useEffect(() => {
     userSchedulerStore.init();
-
-    console.log("into page")
-
-    return (() => {
-
-      userSchedulerStore.quit();
-      console.log("left page");
-    })
   },[]);
 
   function isValidDate(date: any): boolean {

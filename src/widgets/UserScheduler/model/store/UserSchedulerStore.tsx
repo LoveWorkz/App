@@ -30,9 +30,12 @@ class UserSchedulerStore {
   constructor() {
     makeAutoObservable(this)
   
-    reaction(() => this.dayBlocks, () => {
+    reaction(() => [this.selectedDays, this.dayBlocks], () => {
       console.log(this.dayBlocks, "<---------------------------------------dayBlcoks");
-      
+      console.log(this.selectedDays, "<--------------------------------------- selectedDays");
+
+      this.setStorage();
+
       (async function(){
         const notIds = await notifeeLib.getTriggerNotificationIds()
         console.log(notIds, "<---------------------------------------This is notification ids scheduled by notifee");
@@ -46,7 +49,7 @@ class UserSchedulerStore {
       // await notifeeLib.cancelAllNotifications();
 
       let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
-      // console.log(storage, "storage");
+      console.log(storage, "storage");
 
       if(storage) {
         let newStorage = JSON.parse(storage);
@@ -83,8 +86,10 @@ class UserSchedulerStore {
   }
 
 
-  quit = async () => {
+  setStorage = async () => {
     if(!this.selectedDays) return;
+
+    console.log("setting up storage")
 
     const storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
     const newStorage: string | { userId: string; data: DayBlock[]; }[] = [];
@@ -96,6 +101,11 @@ class UserSchedulerStore {
       });
 
       await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(newStorage));
+      let storage = await userSchedulersAdapterStorage.getUserSchedulers(USER_SCHEDULERS_KEY);
+
+
+      console.log(storage, "storrr")
+      console.log("storage set up")
       return;
     } 
 

@@ -37,22 +37,7 @@ async function ensureNotificationChannelExists() {
 const App = () => {
   useEffect(() => {
     ensureNotificationChannelExists();
-
-    const handleAppStateChange = (nextAppState) => {
-      if (nextAppState === 'background' || nextAppState === 'inactive') {
-        // Call quit when the app moves to the background or is closed
-        UserSchedulerStore.quit();
-        console.log("left page - app moved to background or closed");
-      }
-    };
-
-    // Add AppState change listener
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
-
-    return () => {
-      subscription.remove();
-      UserSchedulerStore.quit();
-    }
+    notifee.onBackgroundEvent(async ({ type, detail }) => {});
   }, []);
   // TODO: enable Admob
   // useEffect(() => {
