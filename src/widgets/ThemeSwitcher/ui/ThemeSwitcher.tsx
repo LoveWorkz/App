@@ -16,7 +16,6 @@ const ThemeSwitcher = () => {
       ios_backgroundColor="#3e3e3e"
       onValueChange={toggleTheme}
       value={isLightMode}
-      disabled
     />
   );
 };

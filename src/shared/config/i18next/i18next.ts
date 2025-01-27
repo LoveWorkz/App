@@ -19,23 +19,21 @@ const LANGUAGE_DETECTOR = {
         } else {
           console.info('No language is set, choosing English as fallback');
         }
-        // const deviceLanguageInfo = RNLocalize.getLocales()?.[0];
+        const deviceLanguageInfo = RNLocalize.getLocales()?.[0];
 
-        // if (!deviceLanguageInfo) {
-        //   callback('en');
+        if (!deviceLanguageInfo) {
+          callback('en');
 
-        //   return;
-        // }
+          return;
+        }
 
-        // if (LANG_CODES.includes(deviceLanguageInfo.languageCode)) {
-        //   // set default language from device
-        //   callback(deviceLanguageInfo.languageCode);
-        // } else {
-        //   // default language
-        //   callback('en');
-        // }
-
-        callback('en');
+        if (LANG_CODES.includes(deviceLanguageInfo.languageCode)) {
+          // set default language from device
+          callback(deviceLanguageInfo.languageCode);
+        } else {
+          // default language
+          callback('en');
+        }
 
         return;
       }

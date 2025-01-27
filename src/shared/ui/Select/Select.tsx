@@ -30,7 +30,6 @@ interface SelectProps {
   error?: string | null;
   isCountry?: boolean;
   onClose?: () => void;
-  lang?: boolean;
 }
 
 export const Select = memo((props: SelectProps) => {
@@ -51,7 +50,6 @@ export const Select = memo((props: SelectProps) => {
     isCountry,
     error,
     onClose,
-    lang,
   } = props;
 
   const itemHeight = verticalScale(60);
@@ -103,11 +101,6 @@ export const Select = memo((props: SelectProps) => {
 
   const onSelectHandler = useCallback(
     (itemValue: string) => {
-      // Will be removed later
-      if (lang && itemValue !== 'en') {
-        return;
-      }
-
       onSelect?.(itemValue);
 
       // using setTimeout for a bit delay
