@@ -17,6 +17,12 @@ import More from '@src/shared/assets/json/More.json';
 import Settings from '@src/shared/assets/json/Settings.json';
 import {isPlatformIos} from '@src/shared/consts/common';
 
+import WayDark from '@src/shared/assets/json/Way-dark.json';
+import FlowerDark from '@src/shared/assets/json/Flower-dark.json';
+import MoreDark from '@src/shared/assets/json/More-dark.json';
+import SettingsDark from '@src/shared/assets/json/Settings-dark.json';
+import {useTheme} from '@src/app/providers/themeProvider';
+
 const Animation = memo(({source, onLoad, visible}: any) => {
   const animationRef = useRef(null);
 
@@ -83,6 +89,7 @@ const GuidedTourContent = observer(() => {
   const [showAnimation2, setShowAnimation2] = useState(false);
   const [showAnimation3, setShowAnimation3] = useState(false);
   const [showAnimation4, setShowAnimation4] = useState(false);
+  const {isDark} = useTheme()
 
   const hideModal1 = useCallback(() => {
     setGuideModal2Visible(true);
@@ -129,20 +136,20 @@ const GuidedTourContent = observer(() => {
       animationIn={'fadeIn'}
       animationOut={'fadeOut'}>
       <View style={{flex: 1}}>
-        <Animation visible={showAnimation1} source={Way} />
+        <Animation visible={showAnimation1} source={isDark ? WayDark : Way} />
         <Animation
           visible={showAnimation2}
-          source={Flower}
+          source={isDark ? FlowerDark : Flower}
           onLoad={() => setShowAnimation1(false)}
         />
         <Animation
           visible={showAnimation3}
-          source={More}
+          source={isDark ? MoreDark : More}
           onLoad={() => setShowAnimation2(false)}
         />
         <Animation
           visible={showAnimation4}
-          source={Settings}
+          source={isDark ? SettingsDark : Settings}
           onLoad={() => setShowAnimation3(false)}
         />
 
