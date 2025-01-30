@@ -41,7 +41,6 @@ const SpecialChallengeCardsPage = () => {
   const challengeDoneFromSession = challengeStore.challengeDoneFromSession;
   const {isSessionFlow} = challengeStore;
   // console.log(challengeDoneFromSession, "<--------------------challengeDoneFromSession");
-  const isLong = specialChallenge?.long;
   const specialChallengeId = specialChallenge?.id as string;
   const challengeIsActive = challengeStore.challengeIsActive;
   const [showActivateButton, setShowActivateButton] = useState(true);
@@ -73,9 +72,7 @@ const SpecialChallengeCardsPage = () => {
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
     );
-    if(isLong) {
-      challengeStore.setActiveSpecialChallangesIds(specialChallenge.id as string, "remove");
-    }
+    challengeStore.setActiveSpecialChallangesIds(specialChallenge?.id as string, "remove");
   };
 
   const undoHandler = () => {
@@ -83,18 +80,13 @@ const SpecialChallengeCardsPage = () => {
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
     );
-
-    if(isLong) {
-      challengeStore.setChallengeIsAcitve(false);
-    }
+    challengeStore.setChallengeIsAcitve(false);
   };
 
   const onActivateButtonPressHandler = () => {
     console.log("Activate special challenge");
 
-    if(isSessionFlow) {
-     challengeStore.specialChallengeSessionFlow(isSessionFlow, specialChallenge?.id as string)
-    }
+    challengeStore.specialChallengeSessionFlow(isSessionFlow, specialChallenge?.id as string)
 
     challengeStore.setActiveSpecialChallangesIds(specialChallengeId, 'add');
     !isSessionFlow && setShowActivateButton(false);
@@ -291,10 +283,9 @@ const SpecialChallengeCardsPage = () => {
         opacityInterval={0.3}
       />
      <View style={{height: 50}}>
-      {/* {inActivateButton} */}
-      {showBottomButton && isLong ? challengeIsActive ? null : (showActivateButton ? activateButton : inActivateButton) : null}
+      {showBottomButton ? challengeIsActive ? null : (showActivateButton ? activateButton : inActivateButton) : null}
       
-      {(challengeIsActive || !isLong) && showBottomButton && (
+      {challengeIsActive && showBottomButton && (
         specialChallengeisChecked ? ( isSessionFlow ? ProceedButton : DoneButton ) : ProceedButton
       )}
      </View>
