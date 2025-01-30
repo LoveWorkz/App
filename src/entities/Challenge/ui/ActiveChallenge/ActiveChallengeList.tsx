@@ -39,6 +39,7 @@ const TrendingChallengeWrapper = memo(
 
     if (isSeeAll) {
       content = <SeeAll seeAllTheme="large" onPressHandler={onPress} />;
+      return;
     }
 
     return (

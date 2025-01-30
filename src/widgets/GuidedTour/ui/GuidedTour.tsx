@@ -148,7 +148,7 @@ const GuidedTourContent = observer(() => {
           onLoad={() => setShowAnimation2(false)}
         />
         <Animation
-          visible={showAnimation4}
+          visible={showAnimation4} 
           source={isDark ? SettingsDark : Settings}
           onLoad={() => setShowAnimation3(false)}
         />

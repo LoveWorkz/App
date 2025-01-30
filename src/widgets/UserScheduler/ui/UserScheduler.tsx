@@ -13,7 +13,7 @@ import { observer } from 'mobx-react-lite';
 import userSchedulerStore from '../model/store/UserSchedulerStore';
 import { DropdownOptions } from '../model/types/userSchedular';
 import { notifeeLib } from '@src/shared/lib/notifee/notifee';
-import { useFocusEffect, useTheme } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useColors } from '@src/app/providers/colorsProvider';
 import DatePicker from 'react-native-date-picker';
 import { AppText, TextSize } from '@src/shared/ui/AppText/AppText';
@@ -24,6 +24,7 @@ import { SvgXml } from 'react-native-svg';
 import { ArrowDownIcon } from '@src/shared/assets/icons/ArrowDown';
 import { horizontalScale, moderateScale, verticalScale } from '@src/shared/lib/Metrics';
 import { getShadowOpacity } from '@src/app/styles/GlobalStyle';
+import {useTheme} from '@src/app/providers/themeProvider';
 // Define types for a single day block
 type DayBlock = {
   day: string;
@@ -34,7 +35,7 @@ type DayBlock = {
 
 const UserScheduler: React.FC = () => {
   const colors = useColors();
-  const {theme} = useTheme();
+  const {theme, isDark} = useTheme();
   const [open, setOpen] = useState<string | null>(null);
 
   useEffect(() => {
@@ -54,8 +55,8 @@ const UserScheduler: React.FC = () => {
 
   // Render function for a single block
   const renderBlock: ListRenderItem<DayBlock> = ({ item }) => (
-    <View style={styles.block}>
-      <AppText style={styles.blockTitle} text={item.day}></AppText>
+    <View style={[styles.block, {padding: isDark ? 0 : 16, backgroundColor: isDark ? 'transparent' : colors.bgTertiaryColor, shadowColor: isDark ? 'transparent' : '#000' }]}>
+      <AppText style={[styles.blockTitle, {color: colors.bgTabViewColor}]} text={item.day}></AppText>
       <View style={[styles.itemWrapper, {...getShadowOpacity(theme, colors.bgColor).shadowOpacity_level_1,}]}>
         <View style={[styles.item]}>
           <TouchableComponent
@@ -116,6 +117,7 @@ const UserScheduler: React.FC = () => {
               top: 10,
               right: 12,
               display: 'none',
+              backgroundColor: 'red'
             },
           }}
         />
@@ -204,10 +206,7 @@ const styles = StyleSheet.create({
   },
   block: {
     marginTop: 16,
-    padding: 16,
-    backgroundColor: '#fff',
     borderRadius: 8,
-    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 4,

@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
   btnWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
   },
   authByGoogleBtn: {
     marginRight: horizontalScale(20),
