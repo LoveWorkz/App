@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react';
+import React, {act, memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
 
@@ -17,6 +17,7 @@ import {ChallengeType} from '../../model/types/ChallengeTypes';
 import {useTranslation} from 'react-i18next';
 import {useTheme} from '@src/app/providers/themeProvider';
 import {challengesStore} from '@src/pages/ChallengesPage';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface CoreChallengeCardsFooterProps {
   count?: number;
@@ -30,26 +31,61 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const {isDark} = useTheme();
 
   const {isSessionFlow} = challengeStore;
-  const currentCoreChallenge = challengesStore.challenges
-    .filter(challenge => challenge.id === challengeStore.coreChallenge?.id)
-    .pop();
+  const currentCoreChallenge = challengesStore.challenges.filter(challenge => challenge.id === challengeStore.coreChallenge?.id).pop();
+  const currentCoreChallengeIsChecked = currentCoreChallenge?.isChecked;
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
+  
+  const challengeIsActive = challengeStore.activeChallangesIds.includes(currentCoreChallenge.id);
+  const [acceptedChallengeIds, setAcceptedChallengeIds] = useState([]);
+  const challengeIsAccept = acceptedChallengeIds.includes(currentCoreChallenge.id);
+  const isChallengeLockedIn = challengeStore.isChallengeLockedIn(currentCoreChallenge.id)
+
+  useFocusEffect(
+    useCallback(() => {
+      challengeStore.getActiveChallengeIds();
+    }, [])
+  );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onCompleteHandler = () => {
     challengeStore.coreChallengeCardButtonPressHandler({
+      challenge: currentCoreChallenge as ChallengeType,
       coreChallengeId: currentCoreChallenge!.id,
       isChecked: currentCoreChallenge!.isChecked,
     });
+    challengeStore.setActiveSpecialChallangesIds(currentCoreChallenge as ChallengeType, "remove");
   };
 
   const undoHandler = (challenge: ChallengeType) => {
     challengeStore.coreChallengeCardButtonPressHandler({
+      challenge: currentCoreChallenge as ChallengeType,
       coreChallengeId: challenge.id,
       isChecked: challenge.isChecked,
     });
+    challengeStore.setChallengeIsAcitve(false);
+    challengeStore.getActiveChallengeIds();
   };
+
+  const onActivateButtonPressHandler = () => {
+    console.log("Activate special challenge");
+
+    challengeStore.coreChallengeSessionFlow(isSessionFlow, currentCoreChallenge?.id as string)
+
+    challengeStore.setActiveSpecialChallangesIds(currentCoreChallenge as ChallengeType, 'add');
+
+    const newAcceptedChallengeIds = [...acceptedChallengeIds];
+    newAcceptedChallengeIds.push(currentCoreChallenge.id);
+    setAcceptedChallengeIds(newAcceptedChallengeIds);
+  }
+
+  const onInActivateButtonPressHandler = () => {
+    console.log("InActivate special challenge");
+    challengeStore.setActiveSpecialChallangesIds(currentCoreChallenge as ChallengeType, 'remove');
+    
+    const newAcceptedChallengeIds = [...acceptedChallengeIds].filter(id=>id!==currentCoreChallenge.id);
+    setAcceptedChallengeIds(newAcceptedChallengeIds);
+  }
 
   const showPagination = currentIndex !== undefined && count;
 
@@ -180,9 +216,75 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
     showPagination,
     t,
   ]);
+  const activateButton = useMemo(() => {
+    return (
+      <Button
+        onPress={onActivateButtonPressHandler}
+        theme={isDark ? ButtonTheme.GRADIENT : ButtonTheme.CLEAR}
+        style={[styles.btn, isDark ? {} : {backgroundColor: colors.white,  borderRadius: 10}]}>
+        {isDark ? (
+          <AppText
+            style={{color: colors.white}}
+            weight={'600'}
+            size={TextSize.LEVEL_4}
+            text={t('common.activate_button')}
+          />
+        ) : (
+          <GradientText
+            size={TextSize.LEVEL_4}
+            weight={'600'}
+            text={t('common.activate_button')}
+          />
+        )}
+      </Button>
+    )
+  }, [currentCoreChallenge]);
+  
+  const inActivateButton = useMemo(() => {
+    return (
+      <Button
+        theme={ButtonTheme.CLEAR}
+        onPress={onInActivateButtonPressHandler}
+        backgroundColor="##8581cf"
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          paddingHorizontal: 20,
+          backgroundColor: '#8581cf',
+          borderRadius: 10,
+          flexDirection: 'row',
+          alignSelf: 'flex-start',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}>
+        <SvgXml
+          xml={CheckIcon}
+          stroke={colors.white}
+          style={{width: horizontalScale(16), height: verticalScale(12)}}
+        />
+
+        <AppText
+          text={t('common.in_activate_button')}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{color: colors.white, fontWeight: '600', paddingLeft: 12}}
+          size={TextSize.LEVEL_4}
+        />
+      </Button>
+    )
+  }, [currentCoreChallenge]);
 
   if (!currentCoreChallenge) {
     return null;
+  }
+
+
+  if(isSessionFlow && !isChallengeLockedIn) return RegularFooter;
+  
+  if(!challengeIsActive && !challengeIsAccept) {
+    return activateButton
+  }
+
+  if(!challengeIsActive && challengeIsAccept) {
+    return inActivateButton;
   }
 
   if (!isSessionFlow && currentCoreChallenge.isChecked) {

@@ -38,9 +38,10 @@ class ChallengeStore {
   coreChallengeCardScreenshot: string = '';
   specialChallengeCardScreenshot: string = '';
   challengeDoneFromSession: boolean = false;
-  activeSpecialChallangesIds: string[] = [];
+  activeSpecialChallangesIds: Array<SpecialChallengeType | ChallengeType> = [];
   isSelectingChallenge: boolean = false;
   challengeIsActive: boolean = false;
+  activeChallangesIds: string[] = []
 
   constructor() {
     makeAutoObservable(this);
@@ -422,16 +423,20 @@ class ChallengeStore {
   };
 
   selectChallenge = async ({
+    challenge,
     id,
     newValue,
     isChallengeCard = false,
   }: {
+    challenge: ChallengeType;
     id: string;
     newValue: boolean;
     isChallengeCard?: boolean;
   }) => {
     try {
       crashlytics().log('Selecting Core challenge.');
+
+      this.setActiveSpecialChallangesIds(challenge, 'remove');
 
       await this.updateChallenge({id, isChallengeCard});
       this.updateLocalChallenge(id, newValue);
@@ -441,10 +446,12 @@ class ChallengeStore {
   };
 
   selectSpecialChallenge = async ({
+    challenge,
     id,
     newValue,
     isChallengeCard = false,
   }: {
+    challenge: SpecialChallengeType;
     id: string;
     newValue: boolean;
     isChallengeCard?: boolean;
@@ -452,7 +459,7 @@ class ChallengeStore {
     try {
       crashlytics().log('Selecting special challenge.');
 
-      this.setActiveSpecialChallangesIds(id, 'remove');
+      this.setActiveSpecialChallangesIds(challenge, 'remove');
 
       if(newValue) {
         this.setChallengeIsAcitve(true);
@@ -481,6 +488,7 @@ class ChallengeStore {
   }
 
   specialChallengeCardButtonPressHandler = async (
+    challenge: SpecialChallengeType,
     specialChallengeId: string,
     isChecked: boolean,
   ) => {
@@ -493,6 +501,7 @@ class ChallengeStore {
 
       if (!isChecked && specialChallengeId) {
         this.selectSpecialChallenge({
+          challenge,
           id: specialChallengeId,
           newValue: true,
           isChallengeCard: true,
@@ -501,6 +510,7 @@ class ChallengeStore {
 
       if (isChecked && specialChallengeId) {
         this.selectSpecialChallenge({
+          challenge,
           id: specialChallengeId,
           newValue: false,
           isChallengeCard: true,
@@ -513,18 +523,8 @@ class ChallengeStore {
     }
   };
 
-  coreChallengeCardButtonPressHandler = async ({
-    coreChallengeId,
-    isChecked,
-  }: {
-    coreChallengeId: string;
-    isChecked: boolean;
-  }) => {
-    try {
-      this.setIsSelectingChallenge(true);
-
-      const isSessionFlow = this.isSessionFlow;
-      const session = sessionStore.session;
+  async coreChallengeSessionFlow(isSessionFlow: boolean, coreChallengeId: string) {
+    const session = sessionStore.session;
       const level = categoryStore.category;
 
       if (isSessionFlow && session && level) {
@@ -535,9 +535,27 @@ class ChallengeStore {
           isCore: true,
         });
       }
+  }
+
+  coreChallengeCardButtonPressHandler = async ({
+    challenge,
+    coreChallengeId,
+    isChecked,
+  }: {
+    challenge: ChallengeType;
+    coreChallengeId: string;
+    isChecked: boolean;
+  }) => {
+    try {
+      this.setIsSelectingChallenge(true);
+
+      const isSessionFlow = this.isSessionFlow;
+  
+      await this.coreChallengeSessionFlow(isSessionFlow, coreChallengeId);
 
       if (!isChecked && coreChallengeId) {
         this.selectChallenge({
+          challenge: challenge,
           id: coreChallengeId,
           newValue: true,
           isChallengeCard: true,
@@ -546,6 +564,7 @@ class ChallengeStore {
 
       if (isChecked && coreChallengeId) {
         this.selectChallenge({
+          challenge: challenge,
           id: coreChallengeId,
           newValue: false,
           isChallengeCard: true,
@@ -655,7 +674,7 @@ class ChallengeStore {
    this.challengeDoneFromSession = false;
   }
 
-  getActiveSpecialChallangesIds = async (specialChallengeId: string, specialChallengeisChecked: boolean) => {
+  getActiveSpecialChallangesIds = async (challengeId: string, challengeisChecked: boolean) => {
     try {
       crashlytics().log('Getting active special challanges Ids.');
       
@@ -694,9 +713,10 @@ class ChallengeStore {
       }
 
       runInAction(() => {
+        const ids = userChallengeCategory.activeSpecialChallangesIds.map(challenge=>challenge.id)
         this.activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
 
-        if (userChallengeCategory.activeSpecialChallangesIds.includes(specialChallengeId as string) || specialChallengeisChecked) {
+        if (ids.includes(challengeId as string) || challengeisChecked) {
           this.setChallengeIsAcitve(true);
         } else {
           this.setChallengeIsAcitve(false);
@@ -707,17 +727,62 @@ class ChallengeStore {
     }
   }
 
-  setActiveSpecialChallangesIds = async (specialChallengeId: string, type: 'add' | 'remove') => {
+  getActiveChallengeIds = async () => {
+    crashlytics().log('Getting active special challanges Ids.');
+      
+    const source = await userStore.checkIsUserOfflineAndReturnSource();
+    const userId = userStore.userId;
+    
+    let userChallengeCategoryData = await firestore()
+      .collection(Collections.USER_CHALLENGE_CATEGORIES)
+      .doc(userId)
+      .get({source});
+    let userChallengeCategory =
+      userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+    if (!userChallengeCategory) {
+      return;
+    }
+
+    if(!userChallengeCategory.activeSpecialChallangesIds) {
+     await firestore()
+      .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .update({
+          activeSpecialChallangesIds: []
+        })
+
+      userChallengeCategoryData = await firestore()
+        .collection(Collections.USER_CHALLENGE_CATEGORIES)
+        .doc(userId)
+        .get({source});
+     
+      userChallengeCategory = userChallengeCategoryData.data() as UserChallengeCategoryType;
+
+      if (!userChallengeCategory) {
+        return;
+      }
+    }
+
+    const ids = userChallengeCategory.activeSpecialChallangesIds.map(challenge => challenge.id);
+
+    runInAction(() => {
+      this.activeChallangesIds = ids;
+    })
+  }
+
+  setActiveSpecialChallangesIds = async (challenge: SpecialChallengeType | ChallengeType, type: 'add' | 'remove') => {
     try {
       crashlytics().log('Setting active special challanges Ids.');
-      let newActiveSpecialChallangesIds: string[];
+      let newActiveSpecialChallangesIds: Array<SpecialChallengeType | ChallengeType>;
       let indexToRemove;
 
       if(type==='add') {
-        newActiveSpecialChallangesIds = [specialChallengeId,...this.activeSpecialChallangesIds];
+        newActiveSpecialChallangesIds = [challenge,...this.activeSpecialChallangesIds];
       }
       else {
-        indexToRemove = this.activeSpecialChallangesIds.indexOf(specialChallengeId);
+        let ids = this.activeSpecialChallangesIds.map(challenge => challenge.id);
+        indexToRemove = ids.indexOf(challenge.id);
         newActiveSpecialChallangesIds = [...this.activeSpecialChallangesIds.slice(0, indexToRemove), ...this.activeSpecialChallangesIds.slice(indexToRemove + 1)];;
       }
 

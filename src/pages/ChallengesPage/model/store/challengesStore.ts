@@ -500,8 +500,8 @@ class ChallengesStore {
     if(!userChallengeCategory.activeSpecialChallangesIds) return;
 
     const activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
-    const activeSpecialChallenges = await this.fetchDocumentsByIds(Collections.SPECIAL_CHALLENGES_2, activeSpecialChallangesIds);
-    this.setActiveChallenges(activeSpecialChallenges);
+    // const activeSpecialChallenges = await this.fetchDocumentsByIds(Collections.SPECIAL_CHALLENGES_2, activeSpecialChallangesIds);
+    this.setActiveChallenges(activeSpecialChallangesIds);
   }
 }
 

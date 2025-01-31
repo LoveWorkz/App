@@ -26,8 +26,13 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
 
   const {description, title, isChallengeSpecial} = challenge;
   
+  let desc;
 
-  const desc = description[0] as DisplayText
+  if(Array.isArray(description)) {
+    desc = description[0] as DisplayText
+  } else {
+    desc =  description
+  }
 
   const colors = useColors();
   const {theme} = useTheme();

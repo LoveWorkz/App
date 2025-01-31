@@ -19,6 +19,7 @@ import {ChallengeHeartIcon} from '@src/shared/assets/icons/ChallengeHeart';
 import {useLanguage} from '@src/shared/lib/hooks/useLanguage';
 import {
   ChallengeType,
+  SpecialChallengeEnum,
   SpecialChallengeType,
 } from '../../model/types/ChallengeTypes';
 import challengeStore from '../../model/store/challengeStore';
@@ -33,7 +34,10 @@ interface ChallengeItemProps {
 }
 
 const ChallengeItem = (props: ChallengeItemProps) => {
-  const {isChecked, text, id, challenge, specailChallenge} = props;
+  const {isChecked, text, id} = props;
+
+  const specailChallenge = props.specailChallenge as SpecialChallengeType; 
+  const challenge = props.challenge as ChallengeType; 
   const colors = useColors();
   const language = useLanguage();
   const {theme} = useTheme();
@@ -41,9 +45,9 @@ const ChallengeItem = (props: ChallengeItemProps) => {
 
   const onChangeHandler = useCallback(() => {
     if (isCoreChallenge) {
-      challengeStore.selectChallenge({id, newValue: !isChecked});
+      challengeStore.selectChallenge({challenge: challenge, id, newValue: !isChecked});
     } else {
-      challengeStore.selectSpecialChallenge({id, newValue: !isChecked});
+      challengeStore.selectSpecialChallenge({challenge: specailChallenge, id, newValue: !isChecked});
     }
   }, [id, isChecked, isCoreChallenge]);
 

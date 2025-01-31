@@ -8,6 +8,7 @@ import {
   ChallengeCardsFooter,
   ChallengeCategoryBlock,
   challengeStore,
+  SpecialChallengeType,
 } from '@src/entities/Challenge';
 import {horizontalScale, verticalScale} from '@src/shared/lib/Metrics';
 import {HorizontalSlide} from '@src/shared/ui/HorizontalSlide/HorizontalSlide';
@@ -69,14 +70,16 @@ const SpecialChallengeCardsPage = () => {
 
   const onSpecialChallengeHandler = () => {
     challengeStore.specialChallengeCardButtonPressHandler(
+      specialChallenge as SpecialChallengeType,
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
     );
-    challengeStore.setActiveSpecialChallangesIds(specialChallenge?.id as string, "remove");
+    challengeStore.setActiveSpecialChallangesIds(specialChallenge as SpecialChallengeType, "remove");
   };
 
   const undoHandler = () => {
     challengeStore.specialChallengeCardButtonPressHandler(
+      specialChallenge as SpecialChallengeType,
       specialChallenge?.id as string,
       specialChallenge?.isChecked as boolean,
     );
@@ -88,13 +91,13 @@ const SpecialChallengeCardsPage = () => {
 
     challengeStore.specialChallengeSessionFlow(isSessionFlow, specialChallenge?.id as string)
 
-    challengeStore.setActiveSpecialChallangesIds(specialChallengeId, 'add');
+    challengeStore.setActiveSpecialChallangesIds(specialChallenge as SpecialChallengeType, 'add');
     !isSessionFlow && setShowActivateButton(false);
   }
 
   const onInActivateButtonPressHandler = () => {
     console.log("InActivate special challenge");
-    challengeStore.setActiveSpecialChallangesIds(specialChallengeId, 'remove');
+    challengeStore.setActiveSpecialChallangesIds(specialChallenge as SpecialChallengeType, 'remove');
     setShowActivateButton(true);
   }
 

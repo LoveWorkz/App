@@ -1,4 +1,5 @@
 import {CategoryKey} from '@src/entities/Category';
+import { ChallengeType, SpecialChallengeType } from '@src/entities/Challenge';
 import {FavoriteType} from '@src/entities/Favorite';
 
 export interface UserChallengeCategoryType {
@@ -7,7 +8,7 @@ export interface UserChallengeCategoryType {
   specialChallengeFavorites: FavoriteType;
   selectedChallengesIds: string[];
   selectedSpecialChallengesIds: string[];
-  activeSpecialChallangesIds: string[];
+  activeSpecialChallangesIds: Array<SpecialChallengeType | ChallengeType>;
   challengeCategory: Record<
     CategoryKey,
     {
