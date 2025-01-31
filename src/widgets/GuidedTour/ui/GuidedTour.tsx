@@ -110,7 +110,6 @@ const GuidedTourContent = observer(() => {
   }, []);
 
   const hideModal4 = useCallback(() => {
-    setGuideModal5Visible(true);
     setGuideModal4Visible(false);
     setShowAnimation4(false);
 
@@ -118,6 +117,8 @@ const GuidedTourContent = observer(() => {
   }, []);
 
   const hideModal5 = useCallback(() => {
+    setGuideModal5Visible(false);
+
     setShowAnimation1(true);
     setGuideModal1Visible(true);
   }, []);
