@@ -36,15 +36,15 @@ const CoreChallengeCardsFooter = (props: CoreChallengeCardsFooterProps) => {
   const isSelectingChallenge = challengeStore.isSelectingChallenge;
   const {session} = sessionStore;
   
-  const challengeIsActive = challengeStore.activeChallangesIds.includes(currentCoreChallenge?.id);
+  const challengeIsActive = challengeStore.activeChallangesIdsForCoreChallenges.includes(currentCoreChallenge?.id);
   const [acceptedChallengeIds, setAcceptedChallengeIds] = useState([]);
   const challengeIsAccept = acceptedChallengeIds.includes(currentCoreChallenge?.id);
   const isChallengeLockedIn = challengeStore.isChallengeLockedIn(currentCoreChallenge?.id)
 
   useFocusEffect(
     useCallback(() => {
-      challengeStore.getActiveChallengeIds();
-      challengeStore.getActiveSpecialChallangesIds(currentCoreChallenge?.id, currentCoreChallenge?.isChecked);
+      challengeStore.getActiveChallangesIdsForCoreChallenges();
+      challengeStore.getActiveChallangesIds(currentCoreChallenge?.id, currentCoreChallenge?.isChecked);
     }, [])
   );
 

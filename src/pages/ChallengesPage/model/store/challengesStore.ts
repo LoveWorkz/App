@@ -497,11 +497,10 @@ class ChallengesStore {
       return;
     }
 
-    if(!userChallengeCategory.activeSpecialChallangesIds) return;
+    if(!userChallengeCategory.activeChallangesIds) return;
 
-    const activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
-    // const activeSpecialChallenges = await this.fetchDocumentsByIds(Collections.SPECIAL_CHALLENGES_2, activeSpecialChallangesIds);
-    this.setActiveChallenges(activeSpecialChallangesIds);
+    const activeChallangesIds = userChallengeCategory.activeChallangesIds;
+    this.setActiveChallenges(activeChallangesIds);
   }
 }
 

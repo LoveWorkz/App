@@ -38,10 +38,10 @@ class ChallengeStore {
   coreChallengeCardScreenshot: string = '';
   specialChallengeCardScreenshot: string = '';
   challengeDoneFromSession: boolean = false;
-  activeSpecialChallangesIds: Array<SpecialChallengeType | ChallengeType> = [];
+  activeChallangesIds: Array<SpecialChallengeType | ChallengeType> = [];
   isSelectingChallenge: boolean = false;
   challengeIsActive: boolean = false;
-  activeChallangesIds: string[] = []
+  activeChallangesIdsForCoreChallenges: string[] = []
 
   constructor() {
     makeAutoObservable(this);
@@ -674,7 +674,7 @@ class ChallengeStore {
    this.challengeDoneFromSession = false;
   }
 
-  getActiveSpecialChallangesIds = async (challengeId: string, challengeisChecked: boolean) => {
+  getActiveChallangesIds = async (challengeId: string, challengeisChecked: boolean) => {
     try {
       crashlytics().log('Getting active special challanges Ids.');
       
@@ -692,12 +692,12 @@ class ChallengeStore {
         return;
       }
 
-      if(!userChallengeCategory.activeSpecialChallangesIds) {
+      if(!userChallengeCategory.activeChallangesIds) {
        await firestore()
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
           .doc(userId)
           .update({
-            activeSpecialChallangesIds: []
+            activeChallangesIds: []
           })
 
         userChallengeCategoryData = await firestore()
@@ -713,8 +713,8 @@ class ChallengeStore {
       }
 
       runInAction(() => {
-        const ids = userChallengeCategory.activeSpecialChallangesIds.map(challenge=>challenge.id)
-        this.activeSpecialChallangesIds = userChallengeCategory.activeSpecialChallangesIds;
+        const ids = userChallengeCategory.activeChallangesIds.map(challenge=>challenge.id)
+        this.activeChallangesIds = userChallengeCategory.activeChallangesIds;
 
         if (ids.includes(challengeId as string) || challengeisChecked) {
           this.setChallengeIsAcitve(true);
@@ -727,7 +727,7 @@ class ChallengeStore {
     }
   }
 
-  getActiveChallengeIds = async () => {
+  getActiveChallangesIdsForCoreChallenges = async () => {
     crashlytics().log('Getting active special challanges Ids.');
       
     const source = await userStore.checkIsUserOfflineAndReturnSource();
@@ -744,12 +744,12 @@ class ChallengeStore {
       return;
     }
 
-    if(!userChallengeCategory.activeSpecialChallangesIds) {
+    if(!userChallengeCategory.activeChallangesIds) {
      await firestore()
       .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
         .update({
-          activeSpecialChallangesIds: []
+          activeChallangesIds: []
         })
 
       userChallengeCategoryData = await firestore()
@@ -764,10 +764,10 @@ class ChallengeStore {
       }
     }
 
-    const ids = userChallengeCategory.activeSpecialChallangesIds.map(challenge => challenge.id);
+    const ids = userChallengeCategory.activeChallangesIds.map(challenge => challenge.id);
 
     runInAction(() => {
-      this.activeChallangesIds = ids;
+      this.activeChallangesIdsForCoreChallenges = ids;
     })
   }
 
@@ -778,12 +778,12 @@ class ChallengeStore {
       let indexToRemove;
 
       if(type==='add') {
-        newActiveSpecialChallangesIds = [challenge,...this.activeSpecialChallangesIds];
+        newActiveSpecialChallangesIds = [challenge,...this.activeChallangesIds];
       }
       else {
-        let ids = this.activeSpecialChallangesIds.map(challenge => challenge.id);
+        let ids = this.activeChallangesIds.map(challenge => challenge.id);
         indexToRemove = ids.indexOf(challenge.id);
-        newActiveSpecialChallangesIds = [...this.activeSpecialChallangesIds.slice(0, indexToRemove), ...this.activeSpecialChallangesIds.slice(indexToRemove + 1)];;
+        newActiveSpecialChallangesIds = [...this.activeChallangesIds.slice(0, indexToRemove), ...this.activeChallangesIds.slice(indexToRemove + 1)];;
       }
 
       const userId = userStore.userId;
@@ -792,13 +792,13 @@ class ChallengeStore {
         .collection(Collections.USER_CHALLENGE_CATEGORIES)
         .doc(userId)
         .update({
-          activeSpecialChallangesIds: newActiveSpecialChallangesIds
+          activeChallangesIds: newActiveSpecialChallangesIds
         });
 
       challengesStore.fetchActiveChallenges();
 
       runInAction(() => {
-        this.activeSpecialChallangesIds = newActiveSpecialChallangesIds;
+        this.activeChallangesIds = newActiveSpecialChallangesIds;
       })
     } catch (e) {
       errorHandler({error: e});

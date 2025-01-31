@@ -54,7 +54,7 @@ const SpecialChallengeCardsPage = () => {
       console.log(challengeIsActive, "challengeIsActive");
       console.log(specialChallengeisChecked, "specialChallengeisChecked")
 
-      challengeStore.getActiveSpecialChallangesIds(specialChallenge?.id as string, specialChallengeisChecked as boolean);
+      challengeStore.getActiveChallangesIds(specialChallenge?.id as string, specialChallengeisChecked as boolean);
 
       return () => {
         challengeStore.setIsChallengeDoneButtonVisible(false);
