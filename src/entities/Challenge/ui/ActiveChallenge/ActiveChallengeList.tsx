@@ -28,7 +28,7 @@ const TrendingChallengeWrapper = memo(
     const {challenge, index, listLength, isSeeAll} = props;
 
     const isFirstElement = index === 0;
-    const isLastElement = index === listLength - 1;
+    const isLastElement = index === listLength - 2;
 
     let content = challenge && <TrendingChallenge {...props} />;
 

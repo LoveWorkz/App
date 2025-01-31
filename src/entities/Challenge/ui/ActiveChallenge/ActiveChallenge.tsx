@@ -85,6 +85,7 @@ const TrendingChallenge = (props: TrendingChallengeProps) => {
             weight={'700'}
             text={title[languae]}
             size={TextSize.LEVEL_3}
+            numberOfLines={1}
           />
            {description && (
             <AppText
