@@ -70,9 +70,9 @@ const Animation = memo(({source, onLoad, visible}: any) => {
 
 const GuidedTour = observer(() => {
   const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
-  // if (isGuidedTourCompleted) {
-  //   return null;
-  // }
+  if (isGuidedTourCompleted) {
+    return null;
+  }
 
   return <GuidedTourContent />;
 });
