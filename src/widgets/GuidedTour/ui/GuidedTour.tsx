@@ -70,22 +70,22 @@ const Animation = memo(({source, onLoad, visible}: any) => {
 
 const GuidedTour = observer(() => {
   const isGuidedTourCompleted = guidedTourStore.isGuidedTourCompleted;
-  if (isGuidedTourCompleted) {
-    return null;
-  }
+  // if (isGuidedTourCompleted) {
+  //   return null;
+  // }
 
   return <GuidedTourContent />;
 });
 
 const GuidedTourContent = observer(() => {
   const [visible, setVisible] = useState(true);
-  const [guideModal1Visible, setGuideModal1Visible] = useState(true);
+  const [guideModal1Visible, setGuideModal1Visible] = useState(false);
   const [guideModal2Visible, setGuideModal2Visible] = useState(false);
   const [guideModal3Visible, setGuideModal3Visible] = useState(false);
   const [guideModal4Visible, setGuideModal4Visible] = useState(false);
-  const [guideModal5Visible, setGuideModal5Visible] = useState(false);
+  const [guideModal5Visible, setGuideModal5Visible] = useState(true);
 
-  const [showAnimation1, setShowAnimation1] = useState(true);
+  const [showAnimation1, setShowAnimation1] = useState(false);
   const [showAnimation2, setShowAnimation2] = useState(false);
   const [showAnimation3, setShowAnimation3] = useState(false);
   const [showAnimation4, setShowAnimation4] = useState(false);
@@ -113,14 +113,16 @@ const GuidedTourContent = observer(() => {
     setGuideModal5Visible(true);
     setGuideModal4Visible(false);
     setShowAnimation4(false);
-  }, []);
 
-  const hideModal5 = useCallback(() => {
-    setGuideModal5Visible(false);
     guidedTourStore.handleGuidedTourCompleteLogic();
   }, []);
 
-  const onModal5Hide = useCallback(() => {
+  const hideModal5 = useCallback(() => {
+    setShowAnimation1(true);
+    setGuideModal1Visible(true);
+  }, []);
+
+  const onModal4Hide = useCallback(() => {
     setVisible(false);
   }, []);
 
@@ -148,21 +150,22 @@ const GuidedTourContent = observer(() => {
           onLoad={() => setShowAnimation2(false)}
         />
         <Animation
-          visible={showAnimation4} 
+          visible={showAnimation4}
           source={isDark ? SettingsDark : Settings}
           onLoad={() => setShowAnimation3(false)}
+        />
+
+        <GuidedTourModal5
+          visible={guideModal5Visible}
+          hideModal={hideModal5}
         />
 
         <GuidedTourModal1 visible={guideModal1Visible} hideModal={hideModal1} />
         <GuidedTourModal2 visible={guideModal2Visible} hideModal={hideModal2} />
         <GuidedTourModal3 visible={guideModal3Visible} hideModal={hideModal3} />
-        <GuidedTourModal4 visible={guideModal4Visible} hideModal={hideModal4} />
+        <GuidedTourModal4 visible={guideModal4Visible} hideModal={hideModal4} onModalHide={onModal4Hide} />
 
-        <GuidedTourModal5
-          visible={guideModal5Visible}
-          onModalHide={onModal5Hide}
-          hideModal={hideModal5}
-        />
+       
       </View>
     </Modal>
   );

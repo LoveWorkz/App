@@ -14,6 +14,7 @@ import { memo } from "react";
 interface guideModalProps {
   visible: boolean,
   hideModal: Function,
+  onModalHide: () => void
 }
 
 const deviceWidth = Dimensions.get("window").width;
@@ -24,7 +25,7 @@ const deviceHeight =
         "REAL_WINDOW_HEIGHT"
       );
 
-function GuidedTourModal4({visible, hideModal }: guideModalProps) {
+function GuidedTourModal4({visible, hideModal, onModalHide }: guideModalProps) {
   const toggleNextModal = () => {
     hideModal();
   };
@@ -37,6 +38,7 @@ function GuidedTourModal4({visible, hideModal }: guideModalProps) {
 
   return (
       <Modal
+        onModalHide={onModalHide}
         coverScreen={false}
         isVisible={visible} 
         backdropOpacity={0}

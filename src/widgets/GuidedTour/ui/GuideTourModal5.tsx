@@ -15,7 +15,6 @@ import { memo } from "react";
 interface guideModalProps {
   visible: boolean,
   hideModal: Function,
-  onModalHide: () => void
 }
 
 const deviceWidth = Dimensions.get("window").width;
@@ -37,7 +36,6 @@ function GuidedTourModal5({visible, hideModal, onModalHide }: guideModalProps) {
   return (
     <View style={{ flex: 1 }}>
       <Modal 
-        onModalHide={onModalHide}
         isVisible={visible} 
         backdropOpacity={0}
         animationOutTiming={1000}
