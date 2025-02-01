@@ -49,6 +49,7 @@ import { notifeeLib } from '@src/shared/lib/notifee/notifee';
 import { add } from 'date-fns';
 import UserSchedulerStore from '@src/widgets/UserScheduler/model/store/UserSchedulerStore';
 import ActiveChallengeList from '@src/entities/Challenge/ui/ActiveChallenge/ActiveChallengeList';
+import { challengesStore } from '@src/pages/ChallengesPage';
 interface HomePageProps {
   prevRouteName?: string;
   isTabScreen?: boolean;
@@ -109,6 +110,7 @@ const HomePage = (props: HomePageProps) => {
        // Update storage new notifications Id
        await userSchedulersAdapterStorage.setUserSchedulers(USER_SCHEDULERS_KEY, JSON.stringify(storageParse));
     })();
+    challengesStore.init();
   },[]);
 
   useFocusEffect(

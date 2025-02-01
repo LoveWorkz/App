@@ -130,7 +130,7 @@ const SpecialChallengeCardsPage = () => {
   }, [isChallengeDoneButtonVisible, specialChallenge, isSelectingChallenge]);
 
   const showBottomButton = useMemo(
-    () => listWithMetadata[0].showButton,
+    () => listWithMetadata[0]?.showButton,
     [listWithMetadata],
   );
 
